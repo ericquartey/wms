@@ -41,13 +41,15 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attaccare il metro:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.PlaceMeter}" /><Run Text=":" />
+
+                    </TextBlock>
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro."
+                               Text="{x:Static res:InstallationApp.MoveElevatorToPlaceMeter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -56,7 +58,7 @@
                                     Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartPositionCommand}"
-                                    Content="Vai a quota"
+                                    Content="{x:Static res:InstallationApp.MoveToQuote}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -66,7 +68,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="Quota di partenza"
+                                   LabelText="{x:Static res:InstallationApp.StartQuote}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
@@ -74,13 +76,13 @@
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Completare riposizionando il carter e ripristinare lo stato di marcia."
+                           Text="{x:Static res:InstallationApp.RemoveCarterRestore}"
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
                                     Command="{Binding MoveToCellPositioningCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -101,12 +103,12 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire la misurazione di una cella:"
+                               Text="{x:Static res:InstallationApp.ExecuteCellMeasurement}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire il posizionamento dell'elevatore di fronte ad una cella."
+                               Text="{x:Static res:InstallationApp.ExecuteElevatorCellPositioning}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -293,7 +295,7 @@
                                        VerticalAlignment="Center"
                                        EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        IsEnabled="{Binding IsCanStartPosition}"
-                                       LabelText="Cella selezionata"
+                                       LabelText="{x:Static res:InstallationApp.SelectedCell}"
                                        MaxValue="999"
                                        MinValue="1" />
 
@@ -303,7 +305,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToCellCommand}"
-                                        Content="Vai a quota"
+                                        Content="{x:Static res:InstallationApp.MoveToQuote}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                 </Grid>
@@ -312,7 +314,7 @@
                            Margin="0,20,0,0"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Correggere la posizione dell'elevatore fino al perfetto allineamento e premere Avanti."
+                           Text="{x:Static res:InstallationApp.CorrectElevatorPositionNext}"
                            TextWrapping="Wrap" />
 
                 <Grid Grid.Row="4">
@@ -338,7 +340,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Command="{Binding DisplacementCommand}"
-                                        Content="Sposta elevatore"
+                                        Content="{x:Static res:InstallationApp.MoveElevator}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Column="2"
@@ -346,7 +348,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToConfirmCommand}"
-                                        Content="Avanti"
+                                        Content="{x:Static res:InstallationApp.Next}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </Grid>
 
@@ -366,12 +368,14 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Conferma nuovo offset:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.ConfirmNewOffset}" /><Run Text=":" />
+                    </TextBlock>
+
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verificare il nuovo valore di offset calcolato e premere Salva per rendere la modifica effettiva. Tutti i posizionamenti successivi terranno conto della correzione."
+                               Text="{x:Static res:InstallationApp.VerifyConfirmWarn}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -392,7 +396,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                   Text="Nuovo offset (mm)" />
+                                   Text="{x:Static res:InstallationApp.NewOffset}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="8,4"
@@ -408,7 +412,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding ApplyCorrectionCommand}"
-                                    Content="Salva"
+                                    Content="{x:Static res:General.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -428,13 +432,13 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire calibrazione dell'origine "
+                               Text="{x:Static res:InstallationApp.ExecuteOriginCalibration}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="A causa del cambiamento dell'offset appena eseguito, è richiesta nuovamente la calibrazione dell'origine dell'asse verticale. Premi su Inizia per cominciare."
+                               Text="{x:Static res:InstallationApp.RepeatOriginCalibration}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 

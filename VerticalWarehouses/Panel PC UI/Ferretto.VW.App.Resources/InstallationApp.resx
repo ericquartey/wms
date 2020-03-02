@@ -1837,13 +1837,55 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
     <value />
   </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Confirm new offset</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Correct the position of the elevator until it is perfectly aligned and press Next.</value>
+  </data>
   <data name="Current" xml:space="preserve">
     <value>Current [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Eseguire la misurazione di una cella</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Eseguire il posizionamento dell'elevatore di fronte ad una cella.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Execute Origin Calibration</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Move the elevator at a height that allows you to attach the meter.</value>
   </data>
   <data name="MoveToElevatorPosition" xml:space="preserve">
     <value>Move to elevator position</value>
   </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Move to quote</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>New offset (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Place the meter</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Proceed to remove one of the carters and placing the meter. Complete by repositioning the carter and restoring Machine PowerOn state.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Due to the offset change just performed, calibration of the vertical axis origin is required again. Press Start to begin.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Selected cell</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Start quote</value>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>Time [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Check the new calculated offset value and press Save to make the change effective. All subsequent placements will be affected by the correction.</value>
   </data>
 </root>
