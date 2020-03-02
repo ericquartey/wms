@@ -1764,4 +1764,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
     <value>Select the target location of the drawer</value>
   </data>
+  <data name="Current" xml:space="preserve">
+    <value>Corrente [A]</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Sposta a posizione elevatore</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Tempo [s]</value>
+  </data>
 </root>
