@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isCalibrationNotCompleted;
 
+        private bool isChainOffsetVisible;
+
         private bool isErrorNegative = true;
 
         private bool isErrorPositive = false;
@@ -66,9 +68,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingStopInPhase;
 
+        private bool isNewErrorValueVisible;
+
         private bool isTuningBay;
 
-        private double? newErrorValue;
+        private int? newErrorValue;
 
         private int oldPerformedCycle = 0;
 
@@ -131,8 +135,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.applyCommand = new DelegateCommand(
                 async () => await this.ApplyCorrectionAsync(), this.CanApply));
 
+        public double? ChainOffset => Math.Abs(this.MachineService.Bay.ChainOffset);
+
         public ICommand CompleteCommand =>
-            this.completeCommand
+                    this.completeCommand
             ??
             (this.completeCommand = new DelegateCommand(
                 async () => await this.CompleteAsync(), this.CanComplete));
@@ -190,6 +196,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isCalibrationNotCompleted, value);
         }
 
+        public bool IsChainOffsetVisible
+        {
+            get => this.isChainOffsetVisible;
+            set => this.SetProperty(ref this.isChainOffsetVisible, value);
+        }
+
         public bool IsErrorNegative
         {
             get => this.isErrorNegative;
@@ -242,13 +254,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
+        public bool IsNewErrorValueVisible
+        {
+            get => this.isNewErrorValueVisible;
+            set => this.SetProperty(ref this.isNewErrorValueVisible, value);
+        }
+
         public bool IsTuningBay
         {
             get => this.isTuningBay;
             private set => this.SetProperty(ref this.isTuningBay, value);
         }
 
-        public double? NewErrorValue
+        public int? NewErrorValue
         {
             get => this.newErrorValue;
             set => this.SetProperty(ref this.newErrorValue, value);
@@ -366,7 +384,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.NewErrorValue):
                         if (!this.NewErrorValue.HasValue)
                         {
-                            return "manca il valore";
+                            return "Manca il valore";
+                        }
+
+                        if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
+                        {
+                            return "Il dato deve essere positivo.";
+                        }
+
+                        if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
+                        {
+                            return "Valore massimo permesso è 9.";
                         }
 
                         break;
@@ -510,6 +538,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
 
             this.RaisePropertyChanged(nameof(this.NewErrorValue));
+            this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 
         private async Task ApplyCorrectionAsync()
@@ -520,12 +549,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage("Vuoi davvero applicare la correzione?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    var nev = this.NewErrorValue;
-                    var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
+                    double newElevatorDistance = 0;
 
-                    var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-
-                    double newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                    if (this.IsNewErrorValueVisible)
+                    {
+                        var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
+                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                    }
+                    else
+                    {
+                        var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
+                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                    }
 
                     await this.machineCarouselWebService.UpdateElevatorChainDistanceAsync(newElevatorDistance);
 
@@ -655,7 +692,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
 
                 this.IsCalibrationCompletedOrStopped = false;
-                this.NewErrorValue = Math.Abs(this.MachineService.Bay.ChainOffset);
+
+                this.IsChainOffsetVisible = true;
+                this.IsNewErrorValueVisible = false;
 
                 this.IsExecutingProcedure = false;
 
@@ -665,6 +704,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.MachineError != null)
                 {
+                    this.IsChainOffsetVisible = false;
+                    this.IsNewErrorValueVisible = false;
                     this.IsCalibrationNotCompleted = true;
                 }
 
@@ -698,6 +739,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsCalibrationNotCompleted = false;
 
+                this.IsChainOffsetVisible = false;
+                this.IsNewErrorValueVisible = true;
+
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
 
@@ -714,6 +758,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Status == MessageStatus.OperationStop)
             {
                 this.IsCalibrationNotCompleted = true;
+
+                this.IsChainOffsetVisible = false;
+                this.IsNewErrorValueVisible = false;
+
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
