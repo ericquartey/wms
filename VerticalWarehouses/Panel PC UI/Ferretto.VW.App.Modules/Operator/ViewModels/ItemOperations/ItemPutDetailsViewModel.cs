@@ -84,6 +84,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            if (this.Data is DrawerActivityItemDetail itemDetail)
+            {
+                this.ItemDetail = itemDetail;
+            }
+
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
             this.ItemDescription = this.ItemDetail.ItemDescription;

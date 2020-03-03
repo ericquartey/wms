@@ -31,33 +31,33 @@ namespace Ferretto.VW.Installer.Core
 
         #region Methods
 
-        protected override Task<StepStatus> OnApplyAsync()
+        protected override async Task<StepStatus> OnApplyAsync()
         {
-            var success = this.TryRunCommandline(this.Script);
+            var success = await this.TryRunCommandlineAsync(this.Script);
 
-            return Task.FromResult(
+            return
                 success
                     ? StepStatus.Done
-                    : StepStatus.Failed);
+                    : StepStatus.Failed;
         }
 
-        protected override Task<StepStatus> OnRollbackAsync()
+        protected override async Task<StepStatus> OnRollbackAsync()
         {
             if (string.IsNullOrWhiteSpace(this.RollbackScript))
             {
                 this.LogInformation("Nulla da annullare in questo step.");
-                return Task.FromResult(StepStatus.RolledBack);
+                return StepStatus.RolledBack;
             }
 
-            var success = this.TryRunCommandline(this.RollbackScript);
+            var success = await this.TryRunCommandlineAsync(this.RollbackScript);
 
-            return Task.FromResult(
+            return
                 success
                     ? StepStatus.RolledBack
-                    : StepStatus.RollbackFailed);
+                    : StepStatus.RollbackFailed;
         }
 
-        protected abstract bool TryRunCommandline(string command);
+        protected abstract Task<bool> TryRunCommandlineAsync(string command);
 
         #endregion
     }

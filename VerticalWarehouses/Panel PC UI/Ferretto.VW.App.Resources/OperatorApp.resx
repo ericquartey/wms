@@ -1172,6 +1172,9 @@
   <data name="QuantityToPick" xml:space="preserve">
     <value>Quantity to pick</value>
   </data>
+  <data name="QuantityToPut" xml:space="preserve">
+    <value>Quantity to put</value>
+  </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Picked quantity [{0}]</value>
   </data>
@@ -1189,9 +1192,8 @@
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>Pick request for item {0} (q.ty {1}) was accepted.</value>
   </data>
-  <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
-    <value>Executable</value>
-    <comment>Waiting lists header </comment>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Available</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Empty</value>
@@ -1430,7 +1432,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Not defined</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Loading unit in bay</value>
+    <value>Loading unit {0} in bay</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Recall Drawer</value>
@@ -1547,4 +1549,3 @@ Please put back any moved pieces in their original position.</value>
     <value>Code</value>
   </data>
 </root>
-

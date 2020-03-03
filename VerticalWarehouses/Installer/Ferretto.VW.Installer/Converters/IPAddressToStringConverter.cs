@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Ferretto.VW.App.Scaffolding.Converters
+namespace Ferretto.VW.Installer
 {
     public class IPAddressToStringConverter : IValueConverter
     {

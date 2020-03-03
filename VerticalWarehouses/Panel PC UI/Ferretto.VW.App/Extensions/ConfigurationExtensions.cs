@@ -5,14 +5,6 @@ namespace Ferretto.VW.App
 {
     public static class ConfigurationExtensions
     {
-        #region Fields
-
-        private const string WmsServiceUrlEnvName = "WMS_DATASERVICE_URL";
-
-        private const string WmsServiceUrlKey = "WMS:DataService:Url";
-
-        #endregion
-
         #region Methods
 
         public static string GetAutomationServiceInstallationHubPath(this NameValueCollection appSettings)
@@ -63,29 +55,6 @@ namespace Ferretto.VW.App
             }
 
             return new Uri(appSettings.Get("AutomationService:Url"));
-        }
-
-        public static Uri GetWMSDataServiceUrl(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                var environmentVariable = Environment.GetEnvironmentVariable(WmsServiceUrlEnvName);
-                if (!string.IsNullOrWhiteSpace(environmentVariable))
-                {
-                    return new Uri(environmentVariable);
-                }
-
-                return new Uri(appSettings.Get(WmsServiceUrlKey));
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
 
         #endregion

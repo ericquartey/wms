@@ -3,7 +3,6 @@ using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Views;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
@@ -41,13 +40,14 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             containerProvider.UseMachineAutomationHubs();
 
-            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+            if (ConfigurationManager.AppSettings.GetBarcodeReaderEnabled())
             {
                 containerProvider.UseBarcodeReader();
             }
 
             containerProvider.Resolve<IOperatorNavigationService>();
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
+            containerProvider.Resolve<IWmsDataProvider>().Start();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

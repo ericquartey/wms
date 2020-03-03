@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using MahApps.Metro.IconPacks;
-using Prism.Events;
 
 namespace Ferretto.VW.Installer.Controls
 {
@@ -33,14 +31,14 @@ namespace Ferretto.VW.Installer.Controls
         public static readonly DependencyProperty IsCompletedProperty = DependencyProperty.Register(
                     nameof(IsCompleted), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty KindFontAwesomeProperty =
-            DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
+        //public static readonly DependencyProperty KindFontAwesomeProperty =
+        //    DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty KindMaterialProperty =
-            DependencyProperty.Register(nameof(KindMaterial), typeof(PackIconMaterialKind?), typeof(PpcButton), new PropertyMetadata(null));
+        //public static readonly DependencyProperty KindMaterialProperty =
+        //    DependencyProperty.Register(nameof(KindMaterial), typeof(PackIconMaterialKind?), typeof(PpcButton), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty KindProperty =
-            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+        //public static readonly DependencyProperty KindProperty =
+        //    DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register(nameof(Title), typeof(string), typeof(PpcButton), new PropertyMetadata(string.Empty));
@@ -84,11 +82,11 @@ namespace Ferretto.VW.Installer.Controls
             set { this.SetValue(ContentProperty, value); }
         }
 
-        public bool HasKind => !(this.Kind is null);
+        //public bool HasKind => !(this.Kind is null);
 
-        public bool HasKindFontAwesome => !(this.KindFontAwesome is null);
+        //public bool HasKindFontAwesome => !(this.KindFontAwesome is null);
 
-        public bool HasKindMaterial => !(this.KindMaterial is null);
+        //public bool HasKindMaterial => !(this.KindMaterial is null);
 
         public ImageSource ImageSource
         {
@@ -120,23 +118,23 @@ namespace Ferretto.VW.Installer.Controls
             set => this.SetValue(IsCompletedProperty, value);
         }
 
-        public PackIconMaterialLightKind? Kind
-        {
-            get => (PackIconMaterialLightKind?)this.GetValue(KindProperty);
-            set => this.SetValue(KindProperty, value);
-        }
+        //public PackIconMaterialLightKind? Kind
+        //{
+        //    get => (PackIconMaterialLightKind?)this.GetValue(KindProperty);
+        //    set => this.SetValue(KindProperty, value);
+        //}
 
-        public PackIconFontAwesomeKind? KindFontAwesome
-        {
-            get => (PackIconFontAwesomeKind?)this.GetValue(KindFontAwesomeProperty);
-            set => this.SetValue(KindFontAwesomeProperty, value);
-        }
+        //public PackIconFontAwesomeKind? KindFontAwesome
+        //{
+        //    get => (PackIconFontAwesomeKind?)this.GetValue(KindFontAwesomeProperty);
+        //    set => this.SetValue(KindFontAwesomeProperty, value);
+        //}
 
-        public PackIconMaterialKind? KindMaterial
-        {
-            get => (PackIconMaterialKind?)this.GetValue(KindMaterialProperty);
-            set => this.SetValue(KindMaterialProperty, value);
-        }
+        //public PackIconMaterialKind? KindMaterial
+        //{
+        //    get => (PackIconMaterialKind?)this.GetValue(KindMaterialProperty);
+        //    set => this.SetValue(KindMaterialProperty, value);
+        //}
 
         public string Title
         {

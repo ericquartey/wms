@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Accessories
 
         private const string DefaultBaudRate = "115200";
 
+        private const string EnabledKey = "Devices:BarcodeReader:Enabled";
+
         private const string SerialPortNameKey = "Devices:BarcodeReader:SerialPortName";
 
         #endregion
@@ -36,6 +38,25 @@ namespace Ferretto.VW.App.Accessories
             else
             {
                 return null;
+            }
+        }
+
+        public static bool GetBarcodeReaderEnabled(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            var enabledString = appSettings.Get(EnabledKey);
+
+            if (bool.TryParse(enabledString, out var enabled))
+            {
+                return enabled;
+            }
+            else
+            {
+                return false;
             }
         }
 

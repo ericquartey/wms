@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool canConfirmOnEmpty;
+
         private DelegateCommand emptyOperationCommand;
 
         #endregion
@@ -36,8 +38,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string ActiveContextName => OperationalContext.ItemPick.ToString();
 
+        public bool CanConfirmOnEmpty
+        {
+            get => this.canConfirmOnEmpty;
+            set => this.SetProperty(ref this.canConfirmOnEmpty, value);
+        }
+
         public ICommand EmptyOperationCommand =>
-            this.emptyOperationCommand
+                    this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
@@ -85,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
-            return
+            this.CanConfirmOnEmpty =
                 this.MissionOperation != null
                 &&
                 !this.IsWaitingForResponse
@@ -99,6 +107,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity.Value >= 0
                 &&
                 this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+
+            return this.CanConfirmOnEmpty;
         }
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()

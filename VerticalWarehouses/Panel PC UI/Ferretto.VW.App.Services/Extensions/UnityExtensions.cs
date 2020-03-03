@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -13,8 +14,7 @@ namespace Ferretto.VW.App.Services
 
         public static IContainerRegistry RegisterAppServices(
             this IContainerRegistry containerRegistry,
-            System.Uri serviceMasUrl,
-            System.Uri serviceWmsUrl,
+            Uri serviceMasUrl,
             string serviceLiveHealthPath,
             string serviceReadyHealthPath)
         {
@@ -39,9 +39,9 @@ namespace Ferretto.VW.App.Services
                  new InjectionFactory(c =>
                      new HealthProbeService(
                          serviceMasUrl,
-                         serviceWmsUrl,
                          serviceLiveHealthPath,
                          serviceReadyHealthPath,
+                         c.Resolve<IMachineWmsStatusWebService>(),
                          c.Resolve<IEventAggregator>())));
 
             return containerRegistry;

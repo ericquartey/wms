@@ -4,6 +4,12 @@ namespace Ferretto.VW.App.Modules.Operator
 {
     public interface IWmsDataProvider
     {
+        #region Properties
+
+        bool IsEnabled { get; }
+
+        #endregion
+
         #region Methods
 
         Task<string> GetItemImagePathAsync(int itemId);
@@ -11,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator
         Task PickAsync(int itemId, double requestedQuantity);
 
         Task PutAsync(int itemId, double requestedQuantity);
+
+        void Start();
 
         #endregion
     }

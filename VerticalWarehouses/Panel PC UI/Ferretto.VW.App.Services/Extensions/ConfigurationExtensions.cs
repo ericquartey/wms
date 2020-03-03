@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Services
 
         private const string WmsServiceEnabledEnvKey = "WMS_ENABLED";
 
-        private const string WmsServiceEnabledKey = "WMS:DataService:Enabled";
-
         #endregion
 
         #region Methods
@@ -69,30 +67,6 @@ namespace Ferretto.VW.App.Services
             var sessionUser = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
             var enableOverrideSetupStatusString = appSettings.Get(OverrideSetupStatusKey);
             return (bool.Parse(enableOverrideSetupStatusString) || (sessionUser.UserAccessLevel == UserAccessLevel.Admin));
-        }
-
-        public static bool GetWmsDataServiceEnabled(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            var bayNumberStringEnv = Environment.GetEnvironmentVariable(WmsServiceEnabledEnvKey);
-            if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
-            {
-                return bool.Parse(bayNumberStringEnv);
-            }
-
-            var enabledString = appSettings.Get(WmsServiceEnabledKey) ?? WmsServiceEnabledDefaultValue;
-            try
-            {
-                return bool.Parse(enabledString);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{WmsServiceEnabledKey}' is not specified or invalid.", ex);
-            }
         }
 
         public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)

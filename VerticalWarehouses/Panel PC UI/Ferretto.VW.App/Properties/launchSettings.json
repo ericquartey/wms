@@ -4,50 +4,20 @@
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "1",
-        "LOGOUT_WHEN_UNHEALTHY": "False",
-        "WMS_ENABLED": "false"
+        "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 2)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "2",
-        "LOGOUT_WHEN_UNHEALTHY": "False",
-        "WMS_ENABLED": "false"
+        "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 3)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "3",
-        "LOGOUT_WHEN_UNHEALTHY": "False",
-        "WMS_ENABLED": "false"
-      }
-    },
-    "PanelPC (Bay 1 - EjLog - Localhost)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "1",
-        "WMS_ENABLED": "true",
-        "WMS_DATASERVICE_URL": "http://localhost:10000",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
-      }
-    },
-    "PanelPC (Bay 1 - EjLog - Server R&D)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "1",
-        "WMS_ENABLED": "true",
-        "WMS_DATASERVICE_URL": "http://server_rd.ferrettogroup.com:10000",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
-      }
-    },
-    "PanelPC (Bay 2 - EjLog)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "2",
-        "WMS_ENABLED": "true",
-        "WMS_DATASERVICE_URL": "http://localhost:10000",
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     }

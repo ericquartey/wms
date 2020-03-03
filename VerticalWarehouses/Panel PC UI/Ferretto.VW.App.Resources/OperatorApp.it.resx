@@ -924,6 +924,9 @@
   <data name="QuantityToPick" xml:space="preserve">
     <value>Quantità da prelevare</value>
   </data>
+  <data name="QuantityToPut" xml:space="preserve">
+    <value>Quantità da versare</value>
+  </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Quantità prelevata [{0}]</value>
   </data>
@@ -939,8 +942,8 @@
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>La richiesta di prelievo per l'articolo {0} (quantità {1}) è stata accettata.</value>
   </data>
-  <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
-    <value>Prelevabile</value>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Disponibile</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Vuoto</value>
@@ -1136,7 +1139,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Non definito</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Cassetto in baia</value>
+    <value>Cassetto {0} in baia</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Rientro Cassetto</value>
@@ -1235,4 +1238,3 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value />
   </data>
 </root>
-

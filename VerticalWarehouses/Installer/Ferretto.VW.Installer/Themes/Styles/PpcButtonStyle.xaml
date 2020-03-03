@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Ferretto.VW.Installer"
                     xmlns:controls="clr-namespace:Ferretto.VW.Installer.Controls">
 
     <Style x:Key="{x:Type controls:PpcButton}"
@@ -10,10 +11,10 @@
                 <ControlTemplate TargetType="{x:Type controls:PpcButton}">
                     <ControlTemplate.Resources>
                         <BooleanToVisibilityConverter x:Key="BTVC" />
-                        <!--<converters:ReferenceToVisibilityConverter x:Key="RTVC" />
+                        <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
                         <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
                         <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
-                                                                   Invert="True" />-->
+                                                                   Invert="True" />
                     </ControlTemplate.Resources>
                     <Grid>
                         <Border Name="PpcButton_Border"
@@ -617,28 +618,9 @@
         </Setter>
     </Style>
 
-    <Style x:Key="WizardIntoButton"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
 
-    <Style x:Key="WizardConfirmButton"
-           BasedOn="{StaticResource WizardIntoButton}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+
+
     <Style x:Key="BorderTimeLine"
            TargetType="{x:Type Border}">
         <Setter Property="HorizontalAlignment" Value="Center" />

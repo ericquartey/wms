@@ -17,8 +17,9 @@ namespace Ferretto.VW.Installer.Core
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Application.Current?.Dispatcher.Invoke(() =>
-                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            //Application.Current?.Dispatcher.Invoke(() =>
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                     //));
         }
 
         protected bool SetProperty<T>(ref T field, T value, [CallerMemberName]string propertyName = null)

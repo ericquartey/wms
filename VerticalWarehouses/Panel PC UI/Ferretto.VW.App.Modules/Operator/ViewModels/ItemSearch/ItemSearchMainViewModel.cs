@@ -268,7 +268,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.tokenSource = new CancellationTokenSource();
                 await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
