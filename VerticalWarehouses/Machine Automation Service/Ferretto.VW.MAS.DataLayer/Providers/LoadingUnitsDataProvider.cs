@@ -250,6 +250,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             int? cellIdOld = null;
             double luHeightOld = 0;
+            var originalStatus = loadingUnit.Status;
 
             var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
             if (luDb is null)
@@ -265,7 +266,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (luDb.CellId.HasValue &&
                 (luDb.CellId != loadingUnit.CellId ||
-                luDb.Height != loadingUnit.Height))
+                luDb.Height != loadingUnit.Height ||
+                loadingUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InElevator))
             {
                 cellIdOld = luDb.CellId.Value;
                 luHeightOld = luDb.Height;
@@ -307,13 +309,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.GrossWeight = loadingUnit.GrossWeight;
                 luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
                 luDb.Tare = loadingUnit.Tare;
-                luDb.Status = loadingUnit.Status;
+                if (originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+                {
+                    luDb.Status = loadingUnit.Status;
+                }
+                else
+                {
+                    luDb.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                }
 
                 this.dataContext.SaveChanges();
             }
 
             if (loadingUnit.CellId.HasValue &&
-                luDb.CellId != loadingUnit.CellId)
+                luDb.CellId != loadingUnit.CellId &&
+                originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }

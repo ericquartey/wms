@@ -11,5 +11,7 @@
         OnMovementToBay,
 
         InLocation,
+
+        InElevator, // Gestito solo dal PPC per aggiornamento dati
     }
 }

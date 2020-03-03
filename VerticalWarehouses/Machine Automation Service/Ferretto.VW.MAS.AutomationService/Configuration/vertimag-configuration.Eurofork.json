@@ -2,49 +2,959 @@
   "$schema": "./schemas/vertimag-configuration-schema.json",
   "LoadingUnits": [
     {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 1,
+        "Position": 1995.0,
+        "Priority": 1,
+        "Side": "Front",
+        "Id": 1
+      },
+      "CellId": 1,
       "Code": "001",
-      "GrossWeight": 0.0,
-      "Height": 0.0,
-      "IsIntoMachine": false,
+      "GrossWeight": 155.50851199999988,
+      "Height": 173.88437499999998,
+      "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 0,
-      "NetWeight": 0.0,
-      "Status": "Undefined",
-      "Tare": 125.0,
+      "MissionsCount": 27,
+      "NetWeight": 35.508511999999882,
+      "Status": "InLocation",
+      "Tare": 120.0,
       "Id": 1
     },
     {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 2,
+        "Position": 445.0,
+        "Priority": 14,
+        "Side": "Back",
+        "Id": 14
+      },
+      "CellId": 14,
       "Code": "002",
-      "GrossWeight": 0.0,
-      "Height": 0.0,
-      "IsIntoMachine": false,
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.246875,
+      "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 0,
-      "NetWeight": 0.0,
-      "Status": "Undefined",
-      "Tare": 125.0,
+      "MissionsCount": 1,
+      "NetWeight": 22.278125000000045,
+      "Status": "InLocation",
+      "Tare": 120.0,
       "Id": 2
     },
     {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 4,
+        "Position": 645.0,
+        "Priority": 30,
+        "Side": "Back",
+        "Id": 30
+      },
+      "CellId": 30,
       "Code": "003",
-      "GrossWeight": 0.0,
-      "Height": 0.0,
-      "IsIntoMachine": false,
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.42812499999997,
+      "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 0,
-      "NetWeight": 0.0,
-      "Status": "Undefined",
-      "Tare": 125.0,
+      "MissionsCount": 1,
+      "NetWeight": 22.278125000000045,
+      "Status": "InLocation",
+      "Tare": 120.0,
       "Id": 3
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 1,
+        "Position": 2195.0,
+        "Priority": 17,
+        "Side": "Front",
+        "Id": 17
+      },
+      "CellId": 17,
+      "Code": "004",
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 4
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 6,
+        "Position": 844.5,
+        "Priority": 46,
+        "Side": "Back",
+        "Id": 46
+      },
+      "CellId": 46,
+      "Code": "005",
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 5
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 3,
+        "Position": 2395.5,
+        "Priority": 33,
+        "Side": "Front",
+        "Id": 33
+      },
+      "CellId": 33,
+      "Code": "006",
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 6
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 5,
+        "Position": 2595.0,
+        "Priority": 49,
+        "Side": "Front",
+        "Id": 49
+      },
+      "CellId": 49,
+      "Code": "008",
+      "GrossWeight": 142.27812500000005,
+      "Height": 174.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 8
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 8,
+        "Position": 1245.0,
+        "Priority": 78,
+        "Side": "Back",
+        "Id": 78
+      },
+      "CellId": 78,
+      "Code": "009",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 9
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 7,
+        "Position": 2795.5,
+        "Priority": 65,
+        "Side": "Front",
+        "Id": 65
+      },
+      "CellId": 65,
+      "Code": "010",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 10
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 10,
+        "Position": 1420.0,
+        "Priority": 92,
+        "Side": "Back",
+        "Id": 92
+      },
+      "CellId": 92,
+      "Code": "011",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 11
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 7,
+        "Position": 2970.5,
+        "Priority": 79,
+        "Side": "Front",
+        "Id": 79
+      },
+      "CellId": 79,
+      "Code": "012",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 12
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 12,
+        "Position": 1595.0,
+        "Priority": 106,
+        "Side": "Back",
+        "Id": 106
+      },
+      "CellId": 106,
+      "Code": "013",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 13
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 9,
+        "Position": 3145.0,
+        "Priority": 93,
+        "Side": "Front",
+        "Id": 93
+      },
+      "CellId": 93,
+      "Code": "014",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 14
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 12,
+        "Position": 1770.0,
+        "Priority": 120,
+        "Side": "Back",
+        "Id": 120
+      },
+      "CellId": 120,
+      "Code": "015",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 15
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 11,
+        "Position": 3320.5,
+        "Priority": 107,
+        "Side": "Front",
+        "Id": 107
+      },
+      "CellId": 107,
+      "Code": "016",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 16
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 14,
+        "Position": 1944.5,
+        "Priority": 134,
+        "Side": "Back",
+        "Id": 134
+      },
+      "CellId": 134,
+      "Code": "017",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.065625,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 17
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 13,
+        "Position": 3495.0,
+        "Priority": 121,
+        "Side": "Front",
+        "Id": 121
+      },
+      "CellId": 121,
+      "Code": "018",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.065625,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 18
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 16,
+        "Position": 2119.0,
+        "Priority": 148,
+        "Side": "Back",
+        "Id": 148
+      },
+      "CellId": 148,
+      "Code": "019",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 19
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 13,
+        "Position": 3670.0,
+        "Priority": 135,
+        "Side": "Front",
+        "Id": 135
+      },
+      "CellId": 135,
+      "Code": "020",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 20
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 18,
+        "Position": 2293.0,
+        "Priority": 162,
+        "Side": "Back",
+        "Id": 162
+      },
+      "CellId": 162,
+      "Code": "021",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 21
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 15,
+        "Position": 3845.5,
+        "Priority": 149,
+        "Side": "Front",
+        "Id": 149
+      },
+      "CellId": 149,
+      "Code": "022",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 22
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 18,
+        "Position": 2468.0,
+        "Priority": 176,
+        "Side": "Back",
+        "Id": 176
+      },
+      "CellId": 176,
+      "Code": "023",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 23
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 17,
+        "Position": 4020.0,
+        "Priority": 163,
+        "Side": "Front",
+        "Id": 163
+      },
+      "CellId": 163,
+      "Code": "024",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.065625,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 24
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 20,
+        "Position": 2644.5,
+        "Priority": 190,
+        "Side": "Back",
+        "Id": 190
+      },
+      "CellId": 190,
+      "Code": "025",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 25
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 17,
+        "Position": 4195.0,
+        "Priority": 177,
+        "Side": "Front",
+        "Id": 177
+      },
+      "CellId": 177,
+      "Code": "026",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 26
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 22,
+        "Position": 2819.0,
+        "Priority": 204,
+        "Side": "Back",
+        "Id": 204
+      },
+      "CellId": 204,
+      "Code": "027",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 27
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 19,
+        "Position": 4370.5,
+        "Priority": 191,
+        "Side": "Front",
+        "Id": 191
+      },
+      "CellId": 191,
+      "Code": "028",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 28
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 22,
+        "Position": 2994.0,
+        "Priority": 218,
+        "Side": "Back",
+        "Id": 218
+      },
+      "CellId": 218,
+      "Code": "029",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.246875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 29
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 21,
+        "Position": 4545.0,
+        "Priority": 205,
+        "Side": "Front",
+        "Id": 205
+      },
+      "CellId": 205,
+      "Code": "030",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 30
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 24,
+        "Position": 3170.0,
+        "Priority": 232,
+        "Side": "Back",
+        "Id": 232
+      },
+      "CellId": 232,
+      "Code": "031",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 31
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 21,
+        "Position": 4720.0,
+        "Priority": 219,
+        "Side": "Front",
+        "Id": 219
+      },
+      "CellId": 219,
+      "Code": "032",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 32
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 26,
+        "Position": 3344.5,
+        "Priority": 246,
+        "Side": "Back",
+        "Id": 246
+      },
+      "CellId": 246,
+      "Code": "033",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 33
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 23,
+        "Position": 4895.0,
+        "Priority": 233,
+        "Side": "Front",
+        "Id": 233
+      },
+      "CellId": 233,
+      "Code": "034",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 34
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 26,
+        "Position": 3519.5,
+        "Priority": 260,
+        "Side": "Back",
+        "Id": 260
+      },
+      "CellId": 260,
+      "Code": "035",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 35
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 25,
+        "Position": 5069.5,
+        "Priority": 247,
+        "Side": "Front",
+        "Id": 247
+      },
+      "CellId": 247,
+      "Code": "036",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 36
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 28,
+        "Position": 3695.0,
+        "Priority": 274,
+        "Side": "Back",
+        "Id": 274
+      },
+      "CellId": 274,
+      "Code": "037",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 37
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 27,
+        "Position": 5245.0,
+        "Priority": 261,
+        "Side": "Front",
+        "Id": 261
+      },
+      "CellId": 261,
+      "Code": "038",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 38
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 30,
+        "Position": 3869.0,
+        "Priority": 288,
+        "Side": "Back",
+        "Id": 288
+      },
+      "CellId": 288,
+      "Code": "039",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 39
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 27,
+        "Position": 5420.0,
+        "Priority": 275,
+        "Side": "Front",
+        "Id": 275
+      },
+      "CellId": 275,
+      "Code": "040",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 40
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 32,
+        "Position": 4044.0,
+        "Priority": 302,
+        "Side": "Back",
+        "Id": 302
+      },
+      "CellId": 302,
+      "Code": "041",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 41
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 29,
+        "Position": 5595.0,
+        "Priority": 289,
+        "Side": "Front",
+        "Id": 289
+      },
+      "CellId": 289,
+      "Code": "042",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 42
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 32,
+        "Position": 4219.0,
+        "Priority": 316,
+        "Side": "Back",
+        "Id": 316
+      },
+      "CellId": 316,
+      "Code": "043",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.609375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 43
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "IsFree": false,
+        "PanelId": 31,
+        "Position": 5770.0,
+        "Priority": 303,
+        "Side": "Front",
+        "Id": 303
+      },
+      "CellId": 303,
+      "Code": "044",
+      "GrossWeight": 142.27812500000005,
+      "Height": 149.42812499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 1,
+      "NetWeight": 17.278125000000045,
+      "Status": "InLocation",
+      "Tare": 125.0,
+      "Id": 44
     }
   ],
   "Machine": {
     "Bays": [
       {
         "EmptyLoadMovement": {
-          "Acceleration": 1,
-          "Deceleration": 1,
-          "Speed": 1
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 110
         },
         "FullLoadMovement": {
           "Acceleration": 200,
@@ -88,6 +998,18 @@
           {
             "Height": 447.0,
             "IsUpper": false,
+            "LoadingUnit": {
+              "Code": "007",
+              "GrossWeight": 142.27812500000005,
+              "Height": 174.42812499999997,
+              "IsIntoMachine": false,
+              "MaxNetWeight": 800.0,
+              "MissionsCount": 1,
+              "NetWeight": 17.278125000000045,
+              "Status": "InBay",
+              "Tare": 125.0,
+              "Id": 7
+            },
             "Location": "InternalBay1Down",
             "LocationUpDown": "Down",
             "MaxDoubleHeight": 0.0,
@@ -110,10 +1032,10 @@
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "HighSpeedDurationClose": 13.0,
+            "HighSpeedDurationClose": 14.0,
             "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 5.0,
-            "HighSpeedHalfDurationOpen": 6.0,
+            "HighSpeedHalfDurationClose": 6.0,
+            "HighSpeedHalfDurationOpen": 7.0,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0,
             "Id": 2
@@ -174,7 +1096,7 @@
             "Type": "Ang",
             "Id": 3
           },
-          "LastIdealPosition": 892.0,
+          "LastIdealPosition": 447.0,
           "LowerBound": 445.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -213,9 +1135,9 @@
           "BrakeReleaseTime": 0.0,
           "ChainOffset": -6.5,
           "EmptyLoadMovement": {
-            "Acceleration": 1500.0,
-            "Deceleration": 1500.0,
-            "Speed": 650.0,
+            "Acceleration": 2000.0,
+            "Deceleration": 2000.0,
+            "Speed": 700.0,
             "Id": 2
           },
           "FullLoadMovement": {
@@ -226,7 +1148,7 @@
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
-          "LastIdealPosition": 0.0,
+          "LastIdealPosition": 2820.0,
           "LowerBound": 0.0,
           "ManualMovements": {
             "FeedRate": 0.04,
@@ -248,25 +1170,25 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 115.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 7
                 },
                 {
                   "AdjustByWeight": false,
                   "Number": 1,
-                  "Position": 450.0,
-                  "Acceleration": 5000.0,
+                  "Position": 250.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 250.0,
+                  "Speed": 100.0,
                   "Id": 13
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
-                  "Position": 866.0,
-                  "Acceleration": 1500.0,
+                  "Position": 900.0,
+                  "Acceleration": 1750.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 12
@@ -283,14 +1205,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1410.0,
+                  "Position": 1411.5,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 150.0,
                   "Id": 10
                 }
               ],
-              "TotalDistance": 1410.0,
+              "TotalDistance": 1411.5,
               "Id": 1
             },
             {
@@ -300,25 +1222,25 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 115.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 23
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 1,
-                  "Position": 450.0,
-                  "Acceleration": 5000.0,
+                  "Position": 250.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 250.0,
+                  "Speed": 100.0,
                   "Id": 22
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
-                  "Position": 866.0,
-                  "Acceleration": 1500.0,
+                  "Position": 900.0,
+                  "Acceleration": 1750.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 16
@@ -335,14 +1257,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1410.0,
+                  "Position": 1411.5,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 150.0,
                   "Id": 20
                 }
               ],
-              "TotalDistance": 1410.0,
+              "TotalDistance": 1411.5,
               "Id": 2
             },
             {
@@ -379,7 +1301,7 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 200.0,
                   "Id": 25
@@ -387,14 +1309,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1410.0,
+                  "Position": 1411.5,
                   "Acceleration": 5000.0,
                   "Deceleration": 0.0,
                   "Speed": 830.0,
                   "Id": 15
                 }
               ],
-              "TotalDistance": 1410.0,
+              "TotalDistance": 1411.5,
               "Id": 3
             },
             {
@@ -431,7 +1353,7 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 200.0,
                   "Id": 24
@@ -439,14 +1361,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1410.0,
+                  "Position": 1411.5,
                   "Acceleration": 5000.0,
                   "Deceleration": 0.0,
                   "Speed": 830.0,
                   "Id": 26
                 }
               ],
-              "TotalDistance": 1410.0,
+              "TotalDistance": 1411.5,
               "Id": 4
             }
           ],
@@ -468,19 +1390,18 @@
       "Id": 1
     },
     "Height": 7661.0,
-    "LoadUnitMaxHeight": 395.0, // 150 to simulate first load test, else 395.0,
+    "LoadUnitMaxHeight": 395.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 150.0,
     "LoadUnitTare": 125.0,
     "MaxGrossWeight": 58767.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
-
     "Panels": [
       {
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 1995.0,
             "Priority": 1,
@@ -489,7 +1410,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2020.0,
             "Priority": 3,
@@ -498,7 +1419,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2045.0,
             "Priority": 5,
@@ -507,7 +1428,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2070.0,
             "Priority": 7,
@@ -516,7 +1437,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2095.0,
             "Priority": 9,
@@ -525,7 +1446,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2120.0,
             "Priority": 11,
@@ -534,7 +1455,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2145.0,
             "Priority": 13,
@@ -543,7 +1464,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2170.0,
             "Priority": 15,
@@ -552,7 +1473,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2195.0,
             "Priority": 17,
@@ -561,7 +1482,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2220.0,
             "Priority": 19,
@@ -631,7 +1552,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 445.0,
             "Priority": 14,
@@ -640,7 +1561,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 470.0,
             "Priority": 16,
@@ -649,7 +1570,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 495.0,
             "Priority": 18,
@@ -658,7 +1579,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 520.0,
             "Priority": 20,
@@ -674,7 +1595,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2245.5,
             "Priority": 21,
@@ -683,7 +1604,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2270.5,
             "Priority": 23,
@@ -692,7 +1613,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2295.5,
             "Priority": 25,
@@ -701,7 +1622,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2320.5,
             "Priority": 27,
@@ -710,7 +1631,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2345.5,
             "Priority": 29,
@@ -719,7 +1640,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2370.5,
             "Priority": 31,
@@ -728,7 +1649,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2395.5,
             "Priority": 33,
@@ -737,7 +1658,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2420.5,
             "Priority": 35,
@@ -746,7 +1667,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2445.5,
             "Priority": 37,
@@ -755,7 +1676,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2470.5,
             "Priority": 39,
@@ -771,7 +1692,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 545.0,
             "Priority": 22,
@@ -780,7 +1701,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 570.0,
             "Priority": 24,
@@ -789,7 +1710,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 595.0,
             "Priority": 26,
@@ -798,7 +1719,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 620.0,
             "Priority": 28,
@@ -807,7 +1728,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 645.0,
             "Priority": 30,
@@ -816,7 +1737,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 670.0,
             "Priority": 32,
@@ -825,7 +1746,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 695.0,
             "Priority": 34,
@@ -834,7 +1755,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 720.0,
             "Priority": 36,
@@ -843,7 +1764,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 745.0,
             "Priority": 38,
@@ -852,7 +1773,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 4,
             "Position": 770.0,
             "Priority": 40,
@@ -868,7 +1789,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2495.0,
             "Priority": 41,
@@ -877,7 +1798,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2520.0,
             "Priority": 43,
@@ -886,7 +1807,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2545.0,
             "Priority": 45,
@@ -895,7 +1816,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2570.0,
             "Priority": 47,
@@ -904,7 +1825,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2595.0,
             "Priority": 49,
@@ -913,7 +1834,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2620.0,
             "Priority": 51,
@@ -922,7 +1843,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2645.0,
             "Priority": 53,
@@ -931,7 +1852,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2670.0,
             "Priority": 55,
@@ -940,7 +1861,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2695.0,
             "Priority": 57,
@@ -949,7 +1870,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2720.0,
             "Priority": 59,
@@ -965,7 +1886,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 794.5,
             "Priority": 42,
@@ -974,7 +1895,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 819.5,
             "Priority": 44,
@@ -983,7 +1904,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 844.5,
             "Priority": 46,
@@ -992,7 +1913,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 869.5,
             "Priority": 48,
@@ -1001,7 +1922,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 894.5,
             "Priority": 50,
@@ -1010,7 +1931,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 919.5,
             "Priority": 52,
@@ -1019,7 +1940,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 944.5,
             "Priority": 54,
@@ -1028,7 +1949,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 969.5,
             "Priority": 56,
@@ -1037,7 +1958,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 994.5,
             "Priority": 58,
@@ -1046,7 +1967,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 6,
             "Position": 1019.5,
             "Priority": 60,
@@ -1062,7 +1983,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2745.5,
             "Priority": 61,
@@ -1071,7 +1992,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2770.5,
             "Priority": 63,
@@ -1080,7 +2001,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2795.5,
             "Priority": 65,
@@ -1089,7 +2010,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2820.5,
             "Priority": 67,
@@ -1098,7 +2019,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2845.5,
             "Priority": 69,
@@ -1107,7 +2028,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2870.5,
             "Priority": 71,
@@ -1116,7 +2037,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2895.5,
             "Priority": 73,
@@ -1125,7 +2046,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2920.5,
             "Priority": 75,
@@ -1134,7 +2055,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2945.5,
             "Priority": 77,
@@ -1143,7 +2064,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 7,
             "Position": 2970.5,
             "Priority": 79,
@@ -1231,7 +2152,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 8,
             "Position": 1245.0,
             "Priority": 78,
@@ -1240,7 +2161,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 8,
             "Position": 1270.0,
             "Priority": 80,
@@ -1256,7 +2177,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 2995.0,
             "Priority": 81,
@@ -1265,7 +2186,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3020.0,
             "Priority": 83,
@@ -1274,7 +2195,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3045.0,
             "Priority": 85,
@@ -1283,7 +2204,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3070.0,
             "Priority": 87,
@@ -1292,7 +2213,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3095.0,
             "Priority": 89,
@@ -1301,7 +2222,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3120.0,
             "Priority": 91,
@@ -1310,7 +2231,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3145.0,
             "Priority": 93,
@@ -1319,7 +2240,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3170.0,
             "Priority": 95,
@@ -1328,7 +2249,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3195.0,
             "Priority": 97,
@@ -1337,7 +2258,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 9,
             "Position": 3220.0,
             "Priority": 99,
@@ -1353,7 +2274,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1295.0,
             "Priority": 82,
@@ -1362,7 +2283,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1320.0,
             "Priority": 84,
@@ -1371,7 +2292,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1345.0,
             "Priority": 86,
@@ -1380,7 +2301,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1370.0,
             "Priority": 88,
@@ -1389,7 +2310,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1395.0,
             "Priority": 90,
@@ -1398,7 +2319,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1420.0,
             "Priority": 92,
@@ -1407,7 +2328,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1445.0,
             "Priority": 94,
@@ -1416,7 +2337,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1470.0,
             "Priority": 96,
@@ -1425,7 +2346,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1495.0,
             "Priority": 98,
@@ -1434,7 +2355,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 10,
             "Position": 1520.0,
             "Priority": 100,
@@ -1450,7 +2371,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3245.5,
             "Priority": 101,
@@ -1459,7 +2380,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3270.5,
             "Priority": 103,
@@ -1468,7 +2389,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3295.5,
             "Priority": 105,
@@ -1477,7 +2398,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3320.5,
             "Priority": 107,
@@ -1486,7 +2407,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3345.5,
             "Priority": 109,
@@ -1495,7 +2416,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3370.5,
             "Priority": 111,
@@ -1504,7 +2425,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3395.5,
             "Priority": 113,
@@ -1513,7 +2434,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3420.5,
             "Priority": 115,
@@ -1522,7 +2443,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3445.5,
             "Priority": 117,
@@ -1531,7 +2452,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 11,
             "Position": 3470.5,
             "Priority": 119,
@@ -1547,7 +2468,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1545.0,
             "Priority": 102,
@@ -1556,7 +2477,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1570.0,
             "Priority": 104,
@@ -1565,7 +2486,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1595.0,
             "Priority": 106,
@@ -1574,7 +2495,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1620.0,
             "Priority": 108,
@@ -1583,7 +2504,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1645.0,
             "Priority": 110,
@@ -1592,7 +2513,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1670.0,
             "Priority": 112,
@@ -1601,7 +2522,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1695.0,
             "Priority": 114,
@@ -1610,7 +2531,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1720.0,
             "Priority": 116,
@@ -1619,7 +2540,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1745.0,
             "Priority": 118,
@@ -1628,7 +2549,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 12,
             "Position": 1770.0,
             "Priority": 120,
@@ -1644,7 +2565,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3495.0,
             "Priority": 121,
@@ -1653,7 +2574,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3520.0,
             "Priority": 123,
@@ -1662,7 +2583,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3545.0,
             "Priority": 125,
@@ -1671,7 +2592,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3570.0,
             "Priority": 127,
@@ -1680,7 +2601,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3595.0,
             "Priority": 129,
@@ -1689,7 +2610,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3620.0,
             "Priority": 131,
@@ -1698,7 +2619,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3645.0,
             "Priority": 133,
@@ -1707,7 +2628,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3670.0,
             "Priority": 135,
@@ -1716,7 +2637,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3695.0,
             "Priority": 137,
@@ -1725,7 +2646,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 13,
             "Position": 3720.0,
             "Priority": 139,
@@ -1741,7 +2662,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1794.5,
             "Priority": 122,
@@ -1750,7 +2671,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1819.5,
             "Priority": 124,
@@ -1759,7 +2680,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1844.5,
             "Priority": 126,
@@ -1768,7 +2689,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1869.5,
             "Priority": 128,
@@ -1777,7 +2698,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1894.5,
             "Priority": 130,
@@ -1786,7 +2707,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1919.5,
             "Priority": 132,
@@ -1795,7 +2716,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1944.5,
             "Priority": 134,
@@ -1804,7 +2725,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1969.5,
             "Priority": 136,
@@ -1813,7 +2734,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 1994.5,
             "Priority": 138,
@@ -1822,7 +2743,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 14,
             "Position": 2019.5,
             "Priority": 140,
@@ -1838,7 +2759,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3745.5,
             "Priority": 141,
@@ -1847,7 +2768,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3770.5,
             "Priority": 143,
@@ -1856,7 +2777,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3795.5,
             "Priority": 145,
@@ -1865,7 +2786,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3820.5,
             "Priority": 147,
@@ -1874,7 +2795,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3845.5,
             "Priority": 149,
@@ -1883,7 +2804,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3870.5,
             "Priority": 151,
@@ -1892,7 +2813,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3895.5,
             "Priority": 153,
@@ -1901,7 +2822,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3920.5,
             "Priority": 155,
@@ -1910,7 +2831,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3945.5,
             "Priority": 157,
@@ -1919,7 +2840,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 15,
             "Position": 3970.5,
             "Priority": 159,
@@ -1935,7 +2856,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2044.0,
             "Priority": 142,
@@ -1944,7 +2865,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2069.0,
             "Priority": 144,
@@ -1953,7 +2874,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2094.0,
             "Priority": 146,
@@ -1962,7 +2883,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2119.0,
             "Priority": 148,
@@ -1971,7 +2892,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2144.0,
             "Priority": 150,
@@ -1980,7 +2901,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2169.0,
             "Priority": 152,
@@ -1989,7 +2910,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2194.0,
             "Priority": 154,
@@ -1998,7 +2919,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2219.0,
             "Priority": 156,
@@ -2007,7 +2928,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2244.0,
             "Priority": 158,
@@ -2016,7 +2937,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 16,
             "Position": 2269.0,
             "Priority": 160,
@@ -2032,7 +2953,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 3995.0,
             "Priority": 161,
@@ -2041,7 +2962,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4020.0,
             "Priority": 163,
@@ -2050,7 +2971,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4045.0,
             "Priority": 165,
@@ -2059,7 +2980,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4070.0,
             "Priority": 167,
@@ -2068,7 +2989,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4095.0,
             "Priority": 169,
@@ -2077,7 +2998,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4120.0,
             "Priority": 171,
@@ -2086,7 +3007,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4145.0,
             "Priority": 173,
@@ -2095,7 +3016,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4170.0,
             "Priority": 175,
@@ -2104,7 +3025,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4195.0,
             "Priority": 177,
@@ -2113,7 +3034,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 17,
             "Position": 4220.0,
             "Priority": 179,
@@ -2129,7 +3050,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2293.0,
             "Priority": 162,
@@ -2138,7 +3059,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2318.0,
             "Priority": 164,
@@ -2147,7 +3068,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2343.0,
             "Priority": 166,
@@ -2156,7 +3077,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2368.0,
             "Priority": 168,
@@ -2165,7 +3086,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2393.0,
             "Priority": 170,
@@ -2174,7 +3095,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2418.0,
             "Priority": 172,
@@ -2183,7 +3104,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2443.0,
             "Priority": 174,
@@ -2192,7 +3113,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2468.0,
             "Priority": 176,
@@ -2201,7 +3122,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2493.0,
             "Priority": 178,
@@ -2210,7 +3131,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 18,
             "Position": 2518.0,
             "Priority": 180,
@@ -2226,7 +3147,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4245.5,
             "Priority": 181,
@@ -2235,7 +3156,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4270.5,
             "Priority": 183,
@@ -2244,7 +3165,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4295.5,
             "Priority": 185,
@@ -2253,7 +3174,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4320.5,
             "Priority": 187,
@@ -2262,7 +3183,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4345.5,
             "Priority": 189,
@@ -2271,7 +3192,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4370.5,
             "Priority": 191,
@@ -2280,7 +3201,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4395.5,
             "Priority": 193,
@@ -2289,7 +3210,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4420.5,
             "Priority": 195,
@@ -2298,7 +3219,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4445.5,
             "Priority": 197,
@@ -2307,7 +3228,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4470.5,
             "Priority": 199,
@@ -2323,7 +3244,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2544.5,
             "Priority": 182,
@@ -2332,7 +3253,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2569.5,
             "Priority": 184,
@@ -2341,7 +3262,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2594.5,
             "Priority": 186,
@@ -2350,7 +3271,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2619.5,
             "Priority": 188,
@@ -2359,7 +3280,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2644.5,
             "Priority": 190,
@@ -2368,7 +3289,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2669.5,
             "Priority": 192,
@@ -2377,7 +3298,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2694.5,
             "Priority": 194,
@@ -2386,7 +3307,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2719.5,
             "Priority": 196,
@@ -2395,7 +3316,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2744.5,
             "Priority": 198,
@@ -2404,7 +3325,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 20,
             "Position": 2769.5,
             "Priority": 200,
@@ -2420,7 +3341,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4495.0,
             "Priority": 201,
@@ -2429,7 +3350,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4520.0,
             "Priority": 203,
@@ -2438,7 +3359,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4545.0,
             "Priority": 205,
@@ -2447,7 +3368,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4570.0,
             "Priority": 207,
@@ -2456,7 +3377,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4595.0,
             "Priority": 209,
@@ -2465,7 +3386,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4620.0,
             "Priority": 211,
@@ -2474,7 +3395,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4645.0,
             "Priority": 213,
@@ -2483,7 +3404,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4670.0,
             "Priority": 215,
@@ -2492,7 +3413,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4695.0,
             "Priority": 217,
@@ -2501,7 +3422,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4720.0,
             "Priority": 219,
@@ -2517,7 +3438,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2794.0,
             "Priority": 202,
@@ -2526,7 +3447,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2819.0,
             "Priority": 204,
@@ -2535,7 +3456,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2844.0,
             "Priority": 206,
@@ -2544,7 +3465,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2869.0,
             "Priority": 208,
@@ -2553,7 +3474,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2894.0,
             "Priority": 210,
@@ -2562,7 +3483,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2919.0,
             "Priority": 212,
@@ -2571,7 +3492,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2944.0,
             "Priority": 214,
@@ -2580,7 +3501,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2969.0,
             "Priority": 216,
@@ -2589,7 +3510,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 2994.0,
             "Priority": 218,
@@ -2598,7 +3519,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 22,
             "Position": 3019.0,
             "Priority": 220,
@@ -2614,7 +3535,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4745.0,
             "Priority": 221,
@@ -2623,7 +3544,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4770.0,
             "Priority": 223,
@@ -2632,7 +3553,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4795.0,
             "Priority": 225,
@@ -2641,7 +3562,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4820.0,
             "Priority": 227,
@@ -2650,7 +3571,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4845.0,
             "Priority": 229,
@@ -2659,7 +3580,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4870.0,
             "Priority": 231,
@@ -2668,7 +3589,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4895.0,
             "Priority": 233,
@@ -2677,7 +3598,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4920.0,
             "Priority": 235,
@@ -2686,7 +3607,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4945.0,
             "Priority": 237,
@@ -2695,7 +3616,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 23,
             "Position": 4970.0,
             "Priority": 239,
@@ -2711,7 +3632,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3045.0,
             "Priority": 222,
@@ -2720,7 +3641,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3070.0,
             "Priority": 224,
@@ -2729,7 +3650,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3095.0,
             "Priority": 226,
@@ -2738,7 +3659,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3120.0,
             "Priority": 228,
@@ -2747,7 +3668,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3145.0,
             "Priority": 230,
@@ -2756,7 +3677,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3170.0,
             "Priority": 232,
@@ -2765,7 +3686,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3195.0,
             "Priority": 234,
@@ -2774,7 +3695,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3220.0,
             "Priority": 236,
@@ -2783,7 +3704,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3245.0,
             "Priority": 238,
@@ -2792,7 +3713,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 24,
             "Position": 3270.0,
             "Priority": 240,
@@ -2808,7 +3729,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 4994.5,
             "Priority": 241,
@@ -2817,7 +3738,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5019.5,
             "Priority": 243,
@@ -2826,7 +3747,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5044.5,
             "Priority": 245,
@@ -2835,7 +3756,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5069.5,
             "Priority": 247,
@@ -2844,7 +3765,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5094.5,
             "Priority": 249,
@@ -2853,7 +3774,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5119.5,
             "Priority": 251,
@@ -2862,7 +3783,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5144.5,
             "Priority": 253,
@@ -2871,7 +3792,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5169.5,
             "Priority": 255,
@@ -2880,7 +3801,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5194.5,
             "Priority": 257,
@@ -2889,7 +3810,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 25,
             "Position": 5219.5,
             "Priority": 259,
@@ -2905,7 +3826,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3294.5,
             "Priority": 242,
@@ -2914,7 +3835,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3319.5,
             "Priority": 244,
@@ -2923,7 +3844,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3344.5,
             "Priority": 246,
@@ -2932,7 +3853,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3369.5,
             "Priority": 248,
@@ -2941,7 +3862,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3394.5,
             "Priority": 250,
@@ -2950,7 +3871,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3419.5,
             "Priority": 252,
@@ -2959,7 +3880,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3444.5,
             "Priority": 254,
@@ -2968,7 +3889,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3469.5,
             "Priority": 256,
@@ -2977,7 +3898,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3494.5,
             "Priority": 258,
@@ -2986,7 +3907,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 26,
             "Position": 3519.5,
             "Priority": 260,
@@ -3002,7 +3923,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5245.0,
             "Priority": 261,
@@ -3011,7 +3932,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5270.0,
             "Priority": 263,
@@ -3020,7 +3941,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5295.0,
             "Priority": 265,
@@ -3029,7 +3950,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5320.0,
             "Priority": 267,
@@ -3038,7 +3959,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5345.0,
             "Priority": 269,
@@ -3047,7 +3968,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5370.0,
             "Priority": 271,
@@ -3056,7 +3977,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5395.0,
             "Priority": 273,
@@ -3065,7 +3986,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5420.0,
             "Priority": 275,
@@ -3074,7 +3995,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5445.0,
             "Priority": 277,
@@ -3083,7 +4004,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 27,
             "Position": 5470.0,
             "Priority": 279,
@@ -3099,7 +4020,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3545.0,
             "Priority": 262,
@@ -3108,7 +4029,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3570.0,
             "Priority": 264,
@@ -3117,7 +4038,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3595.0,
             "Priority": 266,
@@ -3126,7 +4047,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3620.0,
             "Priority": 268,
@@ -3135,7 +4056,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3645.0,
             "Priority": 270,
@@ -3144,7 +4065,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3670.0,
             "Priority": 272,
@@ -3153,7 +4074,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3695.0,
             "Priority": 274,
@@ -3162,7 +4083,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3720.0,
             "Priority": 276,
@@ -3171,7 +4092,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3745.0,
             "Priority": 278,
@@ -3180,7 +4101,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 28,
             "Position": 3770.0,
             "Priority": 280,
@@ -3196,7 +4117,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5495.0,
             "Priority": 281,
@@ -3205,7 +4126,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5520.0,
             "Priority": 283,
@@ -3214,7 +4135,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5545.0,
             "Priority": 285,
@@ -3223,7 +4144,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5570.0,
             "Priority": 287,
@@ -3232,7 +4153,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5595.0,
             "Priority": 289,
@@ -3241,7 +4162,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5620.0,
             "Priority": 291,
@@ -3250,7 +4171,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5645.0,
             "Priority": 293,
@@ -3259,7 +4180,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5670.0,
             "Priority": 295,
@@ -3268,7 +4189,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5695.0,
             "Priority": 297,
@@ -3277,7 +4198,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 29,
             "Position": 5720.0,
             "Priority": 299,
@@ -3293,7 +4214,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3794.0,
             "Priority": 282,
@@ -3302,7 +4223,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3819.0,
             "Priority": 284,
@@ -3311,7 +4232,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3844.0,
             "Priority": 286,
@@ -3320,7 +4241,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3869.0,
             "Priority": 288,
@@ -3329,7 +4250,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3894.0,
             "Priority": 290,
@@ -3338,7 +4259,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3919.0,
             "Priority": 292,
@@ -3347,7 +4268,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3944.0,
             "Priority": 294,
@@ -3356,7 +4277,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3969.0,
             "Priority": 296,
@@ -3365,7 +4286,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 3994.0,
             "Priority": 298,
@@ -3374,7 +4295,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 30,
             "Position": 4019.0,
             "Priority": 300,
@@ -3390,7 +4311,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5745.0,
             "Priority": 301,
@@ -3399,7 +4320,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5770.0,
             "Priority": 303,
@@ -3408,7 +4329,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5795.0,
             "Priority": 305,
@@ -3417,7 +4338,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5820.0,
             "Priority": 307,
@@ -3426,7 +4347,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5845.0,
             "Priority": 309,
@@ -3435,7 +4356,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5870.0,
             "Priority": 311,
@@ -3444,7 +4365,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5895.0,
             "Priority": 313,
@@ -3453,7 +4374,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 31,
             "Position": 5920.0,
             "Priority": 315,
@@ -3487,7 +4408,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4044.0,
             "Priority": 302,
@@ -3496,7 +4417,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4069.0,
             "Priority": 304,
@@ -3505,7 +4426,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4094.0,
             "Priority": 306,
@@ -3514,7 +4435,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4119.0,
             "Priority": 308,
@@ -3523,7 +4444,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4144.0,
             "Priority": 310,
@@ -3532,7 +4453,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4169.0,
             "Priority": 312,
@@ -3541,7 +4462,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4194.0,
             "Priority": 314,
@@ -3550,7 +4471,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4219.0,
             "Priority": 316,
@@ -3559,7 +4480,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4244.0,
             "Priority": 318,
@@ -3568,7 +4489,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4269.0,
             "Priority": 320,
@@ -3681,7 +4602,7 @@
         "Cells": [
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4294.0,
             "Priority": 322,
@@ -3690,7 +4611,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4319.0,
             "Priority": 324,
@@ -3699,7 +4620,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4344.0,
             "Priority": 326,
@@ -3708,7 +4629,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4369.0,
             "Priority": 328,
@@ -5450,8 +6371,29 @@
       }
     ],
     "SerialNumber": "MV20-0004",
-    "Simulation": true,
-    "Id": 1
+    "Simulation": false,
+    "Id": 2
+  },
+  "MachineStatistics": {
+    "AutomaticTimePercentage": 0.0,
+    "TotalAutomaticTime": "00:00:00",
+    "TotalBayChainKilometers1": 0.0,
+    "TotalBayChainKilometers2": 0.0,
+    "TotalBayChainKilometers3": 0.0,
+    "TotalHorizontalAxisCycles": 134,
+    "TotalHorizontalAxisKilometers": 0.188969313926941,
+    "TotalLoadUnitsInBay1": 58,
+    "TotalLoadUnitsInBay2": 0,
+    "TotalLoadUnitsInBay3": 0,
+    "TotalMissionTime": "01:23:46.2653899",
+    "TotalPowerOnTime": "00:00:00",
+    "TotalVerticalAxisCycles": 133,
+    "TotalVerticalAxisKilometers": 0.25443699819875187,
+    "TotalWeightBack": 3130.1187499999996,
+    "TotalWeightFront": 3143.3491369999992,
+    "UsageTimePercentage": 0.0,
+    "WeightCapacityPercentage": 10.6751542311161,
+    "Id": -1
   },
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
@@ -5496,7 +6438,7 @@
     "Bay2CarouselCalibration": {
       "InProgress": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 600,
+      "RequiredCycles": 0,
       "FeedRate": 1.0,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5535,7 +6477,7 @@
     "Bay3CarouselCalibration": {
       "InProgress": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 600,
+      "RequiredCycles": 0,
       "FeedRate": 1.0,
       "IsBypassed": false,
       "IsCompleted": false,

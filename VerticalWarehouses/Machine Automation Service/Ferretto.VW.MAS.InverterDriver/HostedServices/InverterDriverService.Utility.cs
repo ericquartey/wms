@@ -254,7 +254,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                             }
-
+                            this.currentStateMachines.TryGetValue(acuInverter.SystemIndex, out var acuStateMachine);
+                            acuStateMachine?.ValidateCommandResponse(message);
                             break;
 
                         case AglInverterStatus aglInverter:
@@ -277,6 +278,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     this.forceStatusPublish[(int)inverter.SystemIndex] = false;
                 }
+                currentStateMachine?.ValidateCommandResponse(message);
             }
             else if (message.ParameterId == InverterParameterId.ActualPositionShaft)
             {
@@ -605,64 +607,41 @@ namespace Ferretto.VW.MAS.InverterDriver
                     inverter.CommonStatusWord.IsVoltageEnabled &
                     inverter.CommonStatusWord.IsQuickStopTrue)
                 {
-                    if (inverter.CommonControlWord.HorizontalAxis == (switchOnData.AxisToSwitchOn == Axis.Horizontal))
+                    if (inverter.CommonControlWord.HorizontalAxis == (switchOnData.AxisToSwitchOn == Axis.Horizontal)
+                        && inverter.CommonStatusWord.IsSwitchedOn
+                        )
                     {
-                        if (inverter.CommonStatusWord.IsSwitchedOn)
-                        {
-                            this.Logger.LogDebug($"Inverter Already active on selected axis {switchOnData.AxisToSwitchOn}");
+                        this.Logger.LogDebug($"Inverter Already active on selected axis {switchOnData.AxisToSwitchOn}");
 
-                            var notificationMessageData = new InverterSwitchOnFieldMessageData(switchOnData.AxisToSwitchOn);
-                            var notificationMessage = new FieldNotificationMessage(
-                                notificationMessageData,
-                                $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
-                                FieldMessageActor.DeviceManager,
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageType.InverterSwitchOn,
-                                MessageStatus.OperationEnd,
-                                (byte)currentInverter);
+                        var notificationMessageData = new InverterSwitchOnFieldMessageData(switchOnData.AxisToSwitchOn);
+                        var notificationMessage = new FieldNotificationMessage(
+                            notificationMessageData,
+                            $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.InverterSwitchOn,
+                            MessageStatus.OperationEnd,
+                            (byte)currentInverter);
 
-                            this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+                        this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-                        }
-                        else
-                        {
-                            this.Logger.LogDebug("3: Switch On the inverter state machine");
-                            this.Logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
-
-                            this.Logger.LogTrace("Start the timer for update status word");
-                            this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
-
-                            var currentStateMachine = new SwitchOnStateMachine(
-                                switchOnData.AxisToSwitchOn,
-                                inverter,
-                                this.Logger,
-                                this.eventAggregator,
-                                this.inverterCommandQueue,
-                                this.ServiceScopeFactory);
-
-                            this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                            currentStateMachine.Start();
-                        }
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
                     }
                     else
                     {
-                        this.Logger.LogDebug("4:Switch Off the inverter state machine");
-
-                        inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
-
-                        this.Logger.LogDebug($"Inverter requires switching off axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
+                        this.Logger.LogDebug("3: Switch On the inverter state machine");
+                        this.Logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn} inverter {inverter.SystemIndex}");
 
                         this.Logger.LogTrace("Start the timer for update status word");
                         this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
 
-                        var currentStateMachine = new SwitchOffStateMachine(
+                        var currentStateMachine = new SwitchOnStateMachine(
+                            switchOnData.AxisToSwitchOn,
                             inverter,
                             this.Logger,
                             this.eventAggregator,
                             this.inverterCommandQueue,
-                            this.ServiceScopeFactory,
-                            receivedMessage);
+                            this.ServiceScopeFactory);
 
                         this.currentStateMachines.Add(currentInverter, currentStateMachine);
                         currentStateMachine.Start();

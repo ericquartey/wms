@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         public IPositioningInverterStatus Inverter { get; }
 
+        public bool SignalsArrived { get; private set; }
+
         protected bool TargetPositionReached =>
             this.Inverter.PositionStatusWord.SetPointAcknowledge
             &&
@@ -118,21 +120,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-            if (message.ParameterId == InverterParameterId.ActualPositionShaft)
+            if (message.ParameterId == InverterParameterId.ActualPositionShaft
+                && message.SystemIndex == this.Inverter.SystemIndex
+                )
             {
                 if (this.TargetPositionReached)
                 {
-                    this.Logger.LogDebug("Target position reached.");
+                    if (this.SignalsArrived)
+                    {
+                        this.Logger.LogDebug("Target position reached.");
 
-                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    this.ParentStateMachine.ChangeState(
-                        new PositioningDisableOperationState(
-                            this.ParentStateMachine,
-                            this.Inverter,
-                            this.Logger));
+                        this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningDisableOperationState(
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
+                    }
                 }
                 else
                 {
+                    this.SignalsArrived = false;
                     int? position = null;
                     if (this.Inverter is AngInverterStatus angInverter)
                     {
@@ -166,6 +174,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.oldPosition = position;
                     }
                 }
+            }
+            else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
+            {
+                this.SignalsArrived = true;
             }
 
             return true; //INFO Next status word request handled by timer

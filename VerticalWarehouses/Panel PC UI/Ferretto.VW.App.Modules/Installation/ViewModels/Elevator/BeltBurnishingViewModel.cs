@@ -497,7 +497,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage("Vuoi davvero resettare il numero totale di cicli completati?", InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ResetTotalCyclesNumber, InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;

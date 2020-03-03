@@ -20,6 +20,13 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    public enum CellPanelsCheckStep
+    {
+        Inizialize,
+
+        Measured,
+    }
+
     [Warning(WarningsArea.Installation)]
     internal sealed class CellPanelsCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
@@ -46,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int currentPanelMinValue;
 
         private int currentPanelNumber;
+
+        private CellPanelsCheckStep currentStep;
 
         private double displacement;
 
@@ -163,6 +172,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public CellPanelsCheckStep CurrentStep
+        {
+            get => this.currentStep;
+            set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
+        }
+
         public double Displacement
         {
             get => this.displacement;
@@ -189,6 +204,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
            (this.goToCellHeightCommand = new DelegateCommand(
                async () => await this.GoToCellHeightAsync(),
                this.CanGoToCellHeight));
+        
+        public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
+
+        public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
 
         public bool IsCanStartPosition => this.CanBaseExecute();
 
@@ -358,20 +377,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected void OnStepChanged(StepChangedMessage e)
         {
-            if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+            switch (this.CurrentStep)
             {
-                this.CurrentPanelNumber++;
+                case CellPanelsCheckStep.Inizialize:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                    }
 
-                this.RaiseCanExecuteChanged();
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber > 1)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber == 1)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Inizialize;
+                    }
+
+                    this.Displacement = 0;
+
+                    break;
+
+                default:
+                    break;
             }
-            else if (e.Back && this.CurrentPanelNumber > 1)
-            {
-                this.CurrentPanelNumber--;
 
-                this.RaiseCanExecuteChanged();
-            }
-
-            this.Displacement = 0;
+            this.RaiseCanExecuteChanged();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -534,9 +576,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void UpdateStatusButtonFooter()
         {
-            this.ShowPrevStepSinglePage(true, true);
-            this.ShowNextStepSinglePage(true, true);
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+            }
+
             this.ShowAbortStep(true, true);
+
+            this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+            this.RaisePropertyChanged(nameof(this.HasStepMeasured));
         }
 
         #endregion

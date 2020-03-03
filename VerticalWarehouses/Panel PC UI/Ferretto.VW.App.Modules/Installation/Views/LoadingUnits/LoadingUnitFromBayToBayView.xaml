@@ -40,7 +40,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Spostamento cassetto da baia a baia" />
+                       Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBay}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -50,7 +50,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                   Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBayDescription}"
                    TextWrapping="Wrap" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
@@ -136,7 +136,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="Selezionare la posizione di destinazione del cassetto"
+                   Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBaySelectDrawerPosition}"
                    TextWrapping="Wrap" />
 
         <StackPanel Grid.Row="4"

@@ -477,7 +477,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
                    !(cellPosition?.IsFree ?? true) &&
-                   this.MachineStatus.EmbarkedLoadingUnit is null;
+                   this.MachineStatus.EmbarkedLoadingUnit is null &&
+                   this.LoadingUnitInCell != null;
             return res;
         }
 
@@ -719,11 +720,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var selectedBayPosition = this.SelectedBayPosition();
-                if (selectedBayPosition.LoadingUnit is null)
-                {
-                    await this.machineElevatorWebService.LoadFromBayAsync(selectedBayPosition.Id);
-                }
-                else
+                if (selectedBayPosition.LoadingUnit != null)
                 {
                     await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
                 }
@@ -747,11 +744,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.LoadingUnitInCell is null)
-                {
-                    await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
-                }
-                else
+                if (this.LoadingUnitInCell != null)
                 {
                     await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitInCell.Id, LoadingUnitLocation.Elevator);
                 }
