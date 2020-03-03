@@ -39,9 +39,7 @@ namespace Ferretto.VW.Installer.ViewModels
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-            this.installationService.Finished += this.OnInstallationServiceFinished;
-
-            //this.SelectedStep = this.Steps.FirstOrDefault();
+            this.installationService.Finished += this.OnInstallationServiceFinished;            
 
             this.StartInstallation();
         }

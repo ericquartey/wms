@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="Ferretto.VW.Installer.Views.InstallTypeView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:ctrls="clr-namespace:Ferretto.VW.Installer.Controls"
              mc:Ignorable="d">
-    <dxmvvm:Interaction.Behaviors>
+    <!--<dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService Title="{Binding Title}"/>
-    </dxmvvm:Interaction.Behaviors>
+    </dxmvvm:Interaction.Behaviors>-->
 
     <Grid x:Name="Root"
           Margin="50">

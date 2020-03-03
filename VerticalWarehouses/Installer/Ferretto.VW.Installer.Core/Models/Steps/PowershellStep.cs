@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management.Automation;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -34,7 +36,7 @@ namespace Ferretto.VW.Installer.Core
 
         #region Methods
 
-        protected override bool TryRunCommandline(string command)
+        protected override async Task<bool> TryRunCommandlineAsync(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -51,19 +53,10 @@ namespace Ferretto.VW.Installer.Core
                 using (var shell = PowerShell.Create())
                 {
                     shell.AddScript(command);
-                    var result = shell.BeginInvoke();
 
-                    while (!result.IsCompleted)
-                    {
-                        var p = shell.Streams.Progress.LastOrDefault();
-                        this.ProgressPercentage = p?.PercentComplete;
-                        Thread.Sleep(300);
-                    }
-
-                    // result.Select(r => r.Properties["Message"]?.ToString()).ToList().ForEach(l => this.LogInformation(l));
-
-                    //shell.Streams.Information.Select(i => i.MessageData.ToString()).ToList().ForEach(l => this.LogInformation(l));
-
+                    var output = new PSDataCollection<PSObject>();
+                    output.DataAdded += (object snd, DataAddedEventArgs evt) => this.output_DataAdded(snd, evt, shell);                    
+                    var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
                     if (shell.HadErrors)
                     {
                         this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
@@ -80,6 +73,21 @@ namespace Ferretto.VW.Installer.Core
             }
 
             return true;
+        }
+
+
+        void output_DataAdded(object snd, DataAddedEventArgs evt, PowerShell shell)
+        {
+            var col = (PSDataCollection<PSObject>)snd;
+            var rsl = col.ReadAll();
+
+            foreach (PSObject r in rsl)
+            {
+                this.LogInformation(r.ToString());                
+            }
+            
+            var p = shell.Streams.Progress.LastOrDefault();
+            this.ProgressPercentage = p?.PercentComplete;
         }
 
         #endregion

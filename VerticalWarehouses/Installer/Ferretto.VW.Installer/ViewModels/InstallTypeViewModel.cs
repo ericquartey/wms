@@ -4,23 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Mvvm;
-using DevExpress.Mvvm.DataAnnotations;
-using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.Installer.Core;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.Installer.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using NLog.Time;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    [POCOViewModel]
-    public class InstallTypeViewModel : Core.BindableBase, IOperationResult, ISupportServices
+    public class InstallTypeViewModel : Core.BindableBase, IOperationResult    
     {
         #region Fields
 
@@ -38,7 +32,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool isSuccessful;
 
-        private VertimagConfiguration masConfiguration;
+        private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
 
@@ -48,9 +42,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private RelayCommand nextCommand;
 
-        private RelayCommand openFileCommand;
-
-        private IServiceContainer serviceContainer = null;
+        private RelayCommand openFileCommand;        
 
         private string messageSlave;
 
@@ -128,26 +120,13 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public virtual string ResultFileName { get; protected set; }
 
-        public IServiceContainer ServiceContainer
-        {
-            get
-            {
-                if (this.serviceContainer == null)
-                {
-                    this.serviceContainer = new ServiceContainer(this);
-                }
-
-                return this.serviceContainer;
-            }
-        }
-
         public string SoftwareVersion => string.Format("Welcome to installation {0}", this.installationService?.SoftwareVersion);
 
         public virtual string Title { get; set; }
 
-        protected IOpenFileDialogService OpenFileDialogService { get { return this.ServiceContainer.GetService<IOpenFileDialogService>(); } }
+        //protected IOpenFileDialogService OpenFileDialogService { get { return this.ServiceContainer.GetService<IOpenFileDialogService>(); } }
 
-        protected ISaveFileDialogService SaveFileDialogService { get { return this.ServiceContainer.GetService<ISaveFileDialogService>(); } }
+        //protected ISaveFileDialogService SaveFileDialogService { get { return this.ServiceContainer.GetService<ISaveFileDialogService>(); } }
 
         #endregion
 
@@ -155,26 +134,20 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenFileAsync()
         {
-            this.MessageMaster = string.Empty;
-            this.OpenFileDialogService.Filter = this.Filter;
-            this.OpenFileDialogService.FilterIndex = this.FilterIndex;
-            this.DialogResult = this.OpenFileDialogService.ShowDialog();
-            if (!this.DialogResult)
+            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "File di configuirazione");
+
+            if ((resultFiles?.Length == 1) == false)
             {
                 this.ResultFileName = string.Empty;
                 this.isMasConfigurationValid = false;
             }
             else
             {
+                var file = resultFiles.First();
 
-               
-                var file = this.OpenFileDialogService.Files.First();
-                string fileContents;
-                using (var stream = file.OpenText())
-                {
-                    fileContents = stream.ReadToEnd();
-                }
-
+                var sr = new StreamReader(file);
+                var fileContents = sr.ReadToEnd();
+             
                 this.isMasConfigurationValid = this.LoadConfiguration(fileContents);
 
                 if (this.isMasConfigurationValid)
@@ -192,18 +165,6 @@ namespace Ferretto.VW.Installer.ViewModels
         public void Save()
         {
             this.isSuccessful = true;
-        }
-
-        private static void ValidateJson(JObject jsonObject)
-        {            
-            using (var streamReader = new StreamReader("../Machine Automation Service/configuration/schemas/vertimag-configuration-schema.json"))
-            {
-                using (var textReader = new JsonTextReader(streamReader))
-                {
-                    var schema = JSchema.Load(textReader);
-                    jsonObject.Validate(schema);
-                }
-            }
         }
 
         private bool CanCheckMasConfiguration()
@@ -324,10 +285,10 @@ namespace Ferretto.VW.Installer.ViewModels
                 // ValidateJson(jsonObject);
 
                 var settings = new JsonSerializerSettings();
-                settings.Converters.Add(new IPAddressConverter());
+                settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
 
-                this.masConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
-                this.masConfiguration.Validate();                
+                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
+                //this.masConfiguration.Validate();                
 
                 return !(this.masConfiguration is null);
             }

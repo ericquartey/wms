@@ -69,7 +69,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public bool IsSuccessful => this.isSuccessful;
 
-        public Machine Machine => this.installationService.MasConfiguration.Machine;
+        public MAS.DataModels.Machine Machine => this.installationService.MasConfiguration.Machine;
 
         public ICommand NextCommand =>
                 this.nextCommand
@@ -165,6 +165,7 @@ namespace Ferretto.VW.Installer.ViewModels
             try
             {
                 this.installationService.UpdateMachineRole();
+                //this.SavePanelPcConfig();
                 this.installationService.SetOperation(OperationMode.Update);
                 this.isSuccessful = true;
             }
@@ -175,9 +176,12 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void SavePanelPcConfig()
         {
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();            
 
-            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            var confFile = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+            //xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            xmlDoc.Load(confFile);
 
             foreach (XmlElement element in xmlDoc.DocumentElement)
             {
@@ -196,7 +200,9 @@ namespace Ferretto.VW.Installer.ViewModels
                 }
             }
 
-            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            //xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            xmlDoc.Save(confFile);
         }
 
         private void RaiseCanExecuteChanged()

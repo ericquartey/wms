@@ -1,13 +1,14 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NLog;
 
@@ -33,7 +34,7 @@ namespace Ferretto.VW.Installer.Core
 
         private bool isRollbackInProgress;
 
-        private VertimagConfiguration masConfiguration;
+        private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
 
@@ -79,7 +80,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         [JsonIgnore]
-        public VertimagConfiguration MasConfiguration => this.masConfiguration;
+        public MAS.DataModels.VertimagConfiguration MasConfiguration => this.masConfiguration;
 
         [JsonIgnore]
         public IPAddress MasIpAddress => this.masIpAddress;
@@ -143,7 +144,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         public bool CanStart()
-        {            
+        {
             if (this.SetupMode == SetupMode.Any)
             {
                 if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
@@ -246,7 +247,7 @@ namespace Ferretto.VW.Installer.Core
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
-        public void SetConfiguration(IPAddress masIpAddress, VertimagConfiguration masConfiguration)
+        public void SetConfiguration(IPAddress masIpAddress, MAS.DataModels.VertimagConfiguration masConfiguration)
         {
             this.masIpAddress = masIpAddress;
             this.masConfiguration = masConfiguration;
@@ -324,7 +325,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         private void LoadSoftwareVersion()
-        {            
+        {
             this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
         }
 
@@ -370,7 +371,7 @@ namespace Ferretto.VW.Installer.Core
         {
             try
             {
-               File.WriteAllText(configurationFilePath, fileContents);
+                File.WriteAllText(configurationFilePath, fileContents);
             }
             catch (Exception ex)
             {
@@ -384,13 +385,13 @@ namespace Ferretto.VW.Installer.Core
         {
             try
             {
-            var stepsJsonFile = File.ReadAllText(this.fileName);
-            var serviceAnon = new { Steps = Array.Empty<Step>() };
-            serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-            this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any)
-                                                      &&
-                                                      (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
-                                                      .OrderBy(s => s.Number).ToArray();
+                var stepsJsonFile = File.ReadAllText(this.fileName);
+                var serviceAnon = new { Steps = Array.Empty<Step>() };
+                serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
+                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any)
+                                                          &&
+                                                          (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
+                                                          .OrderBy(s => s.Number).ToArray();
             }
             catch (Exception ex)
             {

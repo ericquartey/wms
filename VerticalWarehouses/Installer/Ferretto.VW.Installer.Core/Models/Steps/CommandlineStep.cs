@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -17,7 +18,7 @@ namespace Ferretto.VW.Installer.Core
 
         #region Methods
 
-        protected override bool TryRunCommandline(string command)
+        protected override Task<bool> TryRunCommandlineAsync(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -44,7 +45,7 @@ namespace Ferretto.VW.Installer.Core
                 process.WaitForExit();
                 thread.Join();
 
-                return process.ExitCode >= 0;
+                return Task.FromResult(process.ExitCode >= 0);
             }
         }
 
