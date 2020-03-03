@@ -120,7 +120,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-            if (message.ParameterId == InverterParameterId.ActualPositionShaft)
+            if (message.ParameterId == InverterParameterId.ActualPositionShaft
+                && message.SystemIndex == this.Inverter.SystemIndex
+                )
             {
                 if (this.TargetPositionReached)
                 {

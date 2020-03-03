@@ -67,7 +67,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.Appear(
                nameof(Utils.Modules.Operator),
                Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
-               null,
+               new DrawerActivityItemDetail
+               {
+                   ItemCode = this.MissionOperation.ItemCode,
+                   ItemDescription = this.MissionOperation.ItemDescription,
+                   ListCode = this.MissionOperation.ItemListCode,
+                   ListDescription = this.MissionOperation.ItemListDescription,
+                   ListRow = this.MissionOperation.ItemListRowCode,
+                   Batch = this.MissionOperation.ItemListShipmentUnitCode,
+                   ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
+                   RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
+               },
                trackCurrentView: true);
         }
 

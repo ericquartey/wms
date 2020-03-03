@@ -177,14 +177,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var output = this.ExportingConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
 
-                string json = JsonConvert.SerializeObject(
-                    output,
-                    Formatting.Indented,
-                    new JsonConverter[]
+                var settings = new JsonSerializerSettings()
+                {
+                    Formatting = Formatting.Indented,
+                    ContractResolver = new Models.OrderedContractResolver(),
+                    Converters = new JsonConverter[]
                     {
                         new CommonUtils.Converters.IPAddressConverter(),
                         new Newtonsoft.Json.Converters.StringEnumConverter(),
-                    });
+                    },
+                };
+                var json = JsonConvert.SerializeObject(output, settings);
 
                 string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
                 File.WriteAllText(fullPath, json);

@@ -1763,6 +1763,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string ListAvailable {
+            get {
+                return ResourceManager.GetString("ListAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List description.
         /// </summary>
         public static string ListDescription {
@@ -1853,7 +1862,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit in bay.
+        ///   Looks up a localized string similar to Loading unit {0} in bay.
         /// </summary>
         public static string LoadingUnitInBay {
             get {
@@ -2906,6 +2915,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity to put.
+        /// </summary>
+        public static string QuantityToPut {
+            get {
+                return ResourceManager.GetString("QuantityToPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recall Drawer.
         /// </summary>
         public static string RecallDrawer {
@@ -3271,15 +3289,6 @@ namespace Ferretto.VW.App.Resources {
         public static string WaitingListDataGridHeaderDescription {
             get {
                 return ResourceManager.GetString("WaitingListDataGridHeaderDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executable.
-        /// </summary>
-        public static string WaitingListDataGridHeaderExecutable {
-            get {
-                return ResourceManager.GetString("WaitingListDataGridHeaderExecutable", resourceCulture);
             }
         }
         

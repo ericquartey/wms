@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Converters;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using NLog;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -19,13 +21,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static void ValidateJson(JObject jsonObject)
         {
-            using (var streamReader = new StreamReader("configuration/schemas/vertimag-configuration-schema.json"))
+            try
             {
-                using (var textReader = new JsonTextReader(streamReader))
+                using (var streamReader = new StreamReader("configuration/schemas/vertimag-configuration-schema.json"))
                 {
-                    var schema = JSchema.Load(textReader);
-                    jsonObject.Validate(schema);
+                    using (var textReader = new JsonTextReader(streamReader))
+                    {
+                        var schema = JSchema.Load(textReader);
+                        jsonObject.Validate(schema);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                var logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex, ex.Message);
+                throw;
             }
         }
 

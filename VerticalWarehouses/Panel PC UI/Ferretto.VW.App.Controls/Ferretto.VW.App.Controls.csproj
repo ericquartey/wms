@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="NewFolder\**" />
     <Content Remove="Assets\*.*" />
     <Content Remove="Fonts\*.*" />
   </ItemGroup>
@@ -38,12 +37,6 @@
   <ItemGroup>
     <Resource Include="Assets\*.*" />
     <Resource Include="Fonts\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="NewFolder\**" />
-    <None Remove="NewFolder\**" />
-    <Page Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

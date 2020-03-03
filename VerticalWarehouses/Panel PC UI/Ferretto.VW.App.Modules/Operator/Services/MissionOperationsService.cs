@@ -70,10 +70,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task CompleteCurrentAsync(double quantity)
+        public async Task CompleteAsync(int operationId, double quantity)
         {
             await this.missionOperationsWebService.CompleteAsync(
-                this.ActiveWmsOperation.Id,
+                operationId,
                 quantity,
                 ConfigurationManager.AppSettings.GetLabelPrinterName());
 

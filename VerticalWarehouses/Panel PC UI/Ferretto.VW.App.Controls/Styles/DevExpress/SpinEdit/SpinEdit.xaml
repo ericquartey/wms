@@ -96,10 +96,10 @@
            TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
-        <Setter Property="Increment" Value="1.0" />
+        <Setter Property="Increment" Value="0.5" />
         <Setter Property="NullValue" Value="0.0" />
         <Setter Property="MaskType" Value="Numeric" />
-        <Setter Property="Mask" Value="N0" />
+        <Setter Property="Mask" Value="F2" />
     </Style>
 
     <Style x:Key="VWAPP_SpinEdit_DecimalStyle"
@@ -107,10 +107,10 @@
            TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:Decimal}" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
-        <Setter Property="Increment" Value="1.0" />
+        <Setter Property="Increment" Value="0.5" />
         <Setter Property="NullValue" Value="0.0" />
         <Setter Property="MaskType" Value="Numeric" />
-        <Setter Property="Mask" Value="N0" />
+        <Setter Property="Mask" Value="F2" />
     </Style>
 
     <!--  SpinEdit  -->

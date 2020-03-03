@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -76,10 +75,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public BaseLoadingUnitViewModel(
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IWmsDataProvider wmsDataProvider)
             : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.WmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => this.itemsCompartments?.Any(ic => ic.Id == compartment.Id && ic.ItemId != null) == true ? "#444444" : "#222222";
@@ -150,7 +151,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsWmsEnabledAndHealthy =>
             this.IsWmsHealthy
             &&
-            ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+            this.WmsDataProvider.IsEnabled;
 
         public override bool IsWmsHealthy
         {
@@ -252,6 +253,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         protected IMissionOperationsService MissionOperationsService { get; }
+
+        protected IWmsDataProvider WmsDataProvider { get; }
 
         #endregion
 
@@ -379,11 +382,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
             }
+            else if (this.Compartments.Count() == 1)
+            {
+                this.SelectedCompartment = this.Compartments.First();
+            }
 
             var lastItemId = this.SelectedItemCompartment?.ItemId;
             if (lastItemId != null)
             {
                 this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+            }
+            else if (this.Items.Count() == 1)
+            {
+                this.SelectedItem = this.Items.First();
             }
 
             await base.OnDataRefreshAsync();
@@ -493,7 +504,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
             this.IsNewOperationAvailable =
-                ConfigurationManager.AppSettings.GetWmsDataServiceEnabled()
+                this.WmsDataProvider.IsEnabled
                 &&
                 this.MissionOperationsService.ActiveWmsMission != null
                 &&

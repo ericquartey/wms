@@ -38,8 +38,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperationCanceled;
 
-        protected bool IsOperationConfirmed { get; set; }
-
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
@@ -144,6 +142,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.showDetailsCommand = new DelegateCommand(this.ShowOperationDetails));
 
+        protected bool IsOperationConfirmed { get; set; }
+
         #endregion
 
         #region Methods
@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
-                await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
+                await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
 
                 this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }

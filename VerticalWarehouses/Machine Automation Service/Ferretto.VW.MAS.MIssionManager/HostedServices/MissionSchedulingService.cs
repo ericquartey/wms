@@ -202,8 +202,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 MessageType.MoveTest,
                 machineProvider.BayTestNumber,
                 machineProvider.BayTestNumber,
-                messageStatus
-                );
+                messageStatus);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()

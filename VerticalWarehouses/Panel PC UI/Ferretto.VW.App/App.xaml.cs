@@ -124,11 +124,10 @@ namespace Ferretto.VW.App
                 new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
 
             // App services
-            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
-            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
+            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // USB Watcher
             RegisterUsbWatcher(containerRegistry);

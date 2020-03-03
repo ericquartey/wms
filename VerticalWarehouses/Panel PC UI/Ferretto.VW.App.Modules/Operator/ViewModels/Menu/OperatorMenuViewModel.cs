@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -30,6 +28,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private readonly IWmsDataProvider wmsDataProvider;
+
         private bool areItemsEnabled;
 
         private DelegateCommand drawerActivityButtonCommand;
@@ -53,7 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ISessionService sessionService,
             IOperatorNavigationService operatorNavigationService,
             IMachineBaysWebService machineBaysWebService,
-            IMissionOperationsService missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IWmsDataProvider wmsDataProvider)
         : base(PresentationMode.Operator)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
@@ -61,6 +62,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
         #endregion
@@ -135,7 +137,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
-            this.IsWmsEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+            this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
 
             await base.OnAppearedAsync();
         }

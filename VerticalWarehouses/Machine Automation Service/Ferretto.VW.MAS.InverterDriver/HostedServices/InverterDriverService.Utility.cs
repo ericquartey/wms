@@ -254,7 +254,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
                             }
-
+                            this.currentStateMachines.TryGetValue(acuInverter.SystemIndex, out var acuStateMachine);
+                            acuStateMachine?.ValidateCommandResponse(message);
                             break;
 
                         case AglInverterStatus aglInverter:
