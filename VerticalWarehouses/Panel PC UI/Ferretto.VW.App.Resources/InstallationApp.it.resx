@@ -1839,4 +1839,22 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="FullTestSessionCycles" xml:space="preserve">
     <value>Cicli sessione</value>
   </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Vuoi davvero applicare la correzione?</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Desideri confermare la procedura di calibrazione?</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Il seguente risultato modificherà il valore LowerBound della macchina, continuare?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Vuoi davvero resettare il numero totale di cicli completati?</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Vuoi iniziare la procedura</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Test stoppato in fase</value>
+  </data>
 </root>
