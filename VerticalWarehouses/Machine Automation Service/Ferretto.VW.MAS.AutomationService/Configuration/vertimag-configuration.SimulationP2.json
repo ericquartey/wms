@@ -6013,29 +6013,10 @@
     "Simulation": false,
     "Id": 1
   },
-  "MachineStatistics": {
-    "AutomaticTimePercentage": 0.0,
-    "TotalAutomaticTime": "00:00:00",
-    "TotalBayChainKilometers1": 0.33576999999999929,
-    "TotalBayChainKilometers2": 0.0,
-    "TotalBayChainKilometers3": 0.0,
-    "TotalHorizontalAxisCycles": 8,
-    "TotalHorizontalAxisKilometers": 0.010015983945326165,
-    "TotalLoadUnitsInBay1": 3,
-    "TotalLoadUnitsInBay2": 0,
-    "TotalLoadUnitsInBay3": 0,
-    "TotalMissionTime": "00:01:57.4509917",
-    "TotalPowerOnTime": "00:00:00",
-    "TotalVerticalAxisCycles": 8,
-    "TotalVerticalAxisKilometers": 0.0067476909638024621,
-    "TotalWeightBack": 534.42375200000038,
-    "TotalWeightFront": 322.08480000000009,
-    "UsageTimePercentage": 0.0,
-    "WeightCapacityPercentage": 1.7130171040000011,
-    "Id": -1
-  },
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
+      "PerformedCycles": 0,
+      "RequiredCycles": 600,
       "InProgress": false,
       "FeedRate": 0.9,
       "IsBypassed": false,
