@@ -92,7 +92,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli totali completati" />
+                               Text="{x:Static res:HelpDescriptions.TotalCompletedCycles}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
