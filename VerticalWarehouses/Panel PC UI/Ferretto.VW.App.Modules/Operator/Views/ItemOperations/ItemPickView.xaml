@@ -5,6 +5,7 @@
             xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
@@ -18,7 +19,7 @@
             ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
-    <Grid Margin="50,30,50,0">
+    <Grid Margin="50,30,15,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -26,10 +27,18 @@
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.DrawerActivityPickingPageHeader}" />
+        <StackPanel Orientation="Horizontal">
+
+            <iconPacks:PackIconModern Width="32"
+                                      Height="32"
+                                      Margin="0,0,15,0"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"
+                                      Kind="InboxOut" />
+            <TextBlock VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static resources:OperatorApp.DrawerActivityPickingPageHeader}" />
+        </StackPanel>
 
         <wpf:TrayControl Name="TrayControl"
                          Grid.Row="1"
@@ -55,8 +64,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -69,21 +78,20 @@
             <localControls:ItemInfoView Grid.RowSpan="5"
                                         Grid.ColumnSpan="3" />
 
-
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="2"
-                                     Grid.ColumnSpan="2"
-                                     Margin="0,5,150,0"
-                                     HorizontalAlignment="Right"
+                                     Grid.ColumnSpan="1"
+                                     Margin="0,5,0,0"
+                                     HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.RequestedQuantity}"
                                      LabelText="{x:Static resources:OperatorApp.QuantityToPick}" />
 
-            <ctrls:PpcSpinEdit Grid.Row="2"
+            <ctrls:PpcSpinEdit Grid.Row="1"
                                Grid.RowSpan="2"
-                               Grid.Column="2"
-                               Grid.ColumnSpan="2"
-                               Margin="0,0,10,0"
+                               Grid.Column="3"
+                               Grid.ColumnSpan="1"
+                               Width="200"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -91,52 +99,48 @@
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.PickedQuantity}}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MaxValue="{Binding MissionOperation.RequestedQuantity}"
                                MinValue="0" />
 
-            <StackPanel Grid.Row="4"
-                        Grid.ColumnSpan="4"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
 
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding ShowDetailsCommand}"
-                                    Content="{x:Static resources:OperatorApp.Details}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+            <controls:PpcButton Grid.Row="3"
+                                Grid.Column="3"
+                                Margin="0,0,0,15"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding EmptyOperationCommand}"
+                                Content="{x:Static resources:OperatorApp.ConfirmOnEmpty}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
+            <controls:PpcButton Grid.Row="3"
+                                Grid.Column="3"
+                                Margin="0,0,0,15"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding ConfirmOperationCommand}"
+                                Content="{x:Static resources:OperatorApp.Confirm}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="2"
-                                    Margin="40,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding EmptyOperationCommand}"
-                                    Content="{x:Static resources:OperatorApp.ConfirmOnEmpty}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+            <controls:PpcButton Grid.Row="4"
+                                Grid.Column="3"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding ShowDetailsCommand}"
+                                Content="{x:Static resources:OperatorApp.Details}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="3"
-                                    Margin="40,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
-                                    Content="{x:Static resources:OperatorApp.Confirm}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+            <controls:PpcButton Grid.Row="4"
+                                Grid.Column="3"
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding ConfirmOperationCanceledCommand}"
+                                Content="{x:Static resources:OperatorApp.CancelPick}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="3"
-                                    Margin="20,0,40,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCanceledCommand}"
-                                    Content="{x:Static resources:OperatorApp.CancelPick}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
-            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>

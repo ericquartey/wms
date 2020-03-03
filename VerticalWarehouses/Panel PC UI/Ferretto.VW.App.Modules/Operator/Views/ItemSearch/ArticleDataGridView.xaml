@@ -51,7 +51,7 @@
                 </DataGridTextColumn>
                 <DataGridTemplateColumn x:Name="Column3"
                                         Width="100"
-                                        Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecutable}">
+                                        Header="{x:Static Resources:OperatorApp.ListAvailable}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Rectangle Width="20"

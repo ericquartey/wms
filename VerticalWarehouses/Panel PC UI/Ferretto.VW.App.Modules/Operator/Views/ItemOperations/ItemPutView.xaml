@@ -6,6 +6,7 @@
             xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
@@ -25,10 +26,19 @@
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
+        <StackPanel Orientation="Horizontal">
+
+            <iconPacks:PackIconModern Width="32"
+                                      Height="32"
+                                      Margin="0,0,15,0"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"
+                                      Kind="InboxIn" />
+            <TextBlock VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
+        </StackPanel>
+
 
         <WmsControls:TrayControl Name="TrayControl"
                                  Grid.Row="1"
@@ -88,6 +98,7 @@
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MaxValue="{Binding MissionOperation.RequestedQuantity}"
                                MinValue="0" />
 
             <StackPanel Grid.Row="4"

@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.Logger.LogDebug("A total of {newMissionsCount} new WMS mission(s) are available.", newWmsMissions.Count());
                 }
 
-                foreach (var wmsMission in newWmsMissions)
+                foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status is MissionOperationStatus.Executing)))
                 {
                     var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                     try
@@ -130,15 +130,15 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                 }
 
-                //// 4. Select the known missions that were aborted on WMS and abort them
-                //var localMissionsToAbort = localMissions
-                //    .Where(m => m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
-                //    .Where(m => wmsMissions.Any(m1 => m1.Id == m.WmsId && m1.Status == MissionStatus.Completed)).ToArray();
+                // 4. Select the known missions that were aborted/completed on WMS and abort them
+                var localMissionsToAbort = localMissions
+                    .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
+                    .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId && m.Status == MissionStatus.Completed)).ToArray();
 
-                //foreach (var localMissionToAbort in localMissionsToAbort)
-                //{
-                //    missionSchedulingProvider.AbortMission(localMissionToAbort);
-                //}
+                foreach (var localMissionToAbort in localMissionsToAbort)
+                {
+                    missionSchedulingProvider.AbortMission(localMissionToAbort);
+                }
             }
         }
 

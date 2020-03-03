@@ -59,7 +59,7 @@
                 </DataGridTextColumn>
                 <DataGridTemplateColumn x:Name="Column4"
                                         Width="100"
-                                        Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecutable}">
+                                        Header="{x:Static Resources:OperatorApp.ListAvailable}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <dxga:StateIndicatorControl Name="stateIndicatorControl1"
