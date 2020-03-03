@@ -319,7 +319,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.DisplacementDown != null && this.LowerBound > this.NewPositionDown)
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ModifyLowerBoundDialog, InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.No)
                     {
                         return;

@@ -531,7 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage("Vuoi davvero applicare la correzione?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ApplyCorrectionMessage, InstallationApp.CarouselCalibration, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     var nev = this.NewErrorValue;
@@ -625,7 +625,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage("Desideri confermare la procedura di calibrazione?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCalibrationProcedure, InstallationApp.CarouselCalibration, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.IsExecutingStopInPhase = false;
@@ -680,7 +680,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if ((this.MachineError != null))
                 {
                     this.IsCalibrationNotCompleted = true;
-
                 }
                 return;
             }
@@ -703,7 +702,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (message.Data.IsTestStopped)
                 {
-                    this.ShowNotification("Test stoppato in fase", Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(InstallationApp.TestStopped, Services.Models.NotificationSeverity.Success);
                 }
                 else
                 {
@@ -749,7 +748,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage("Vuoi iniziare la procedura", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.StartProcedureMessage, InstallationApp.CarouselCalibration, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineCarouselWebService.ResetCalibrationAsync();

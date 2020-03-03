@@ -124,6 +124,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to apply the correction?.
+        /// </summary>
+        public static string ApplyCorrectionMessage {
+            get {
+                return ResourceManager.GetString("ApplyCorrectionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         public static string Auto {
@@ -822,6 +831,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmationOperation {
             get {
                 return ResourceManager.GetString("ConfirmationOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to confirm the calibration procedure?.
+        /// </summary>
+        public static string ConfirmCalibrationProcedure {
+            get {
+                return ResourceManager.GetString("ConfirmCalibrationProcedure", resourceCulture);
             }
         }
         
@@ -3184,6 +3202,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following result will change the machine&apos;s LowerBound value, continue?.
+        /// </summary>
+        public static string ModifyLowerBoundDialog {
+            get {
+                return ResourceManager.GetString("ModifyLowerBoundDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month.
         /// </summary>
         public static string Month {
@@ -4482,6 +4509,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You want to start the procedure.
+        /// </summary>
+        public static string StartProcedureMessage {
+            get {
+                return ResourceManager.GetString("StartProcedureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start quote.
         /// </summary>
         public static string StartQuote {
@@ -4676,6 +4712,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TestRun {
             get {
                 return ResourceManager.GetString("TestRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped test in phase.
+        /// </summary>
+        public static string TestStopped {
+            get {
+                return ResourceManager.GetString("TestStopped", resourceCulture);
             }
         }
         

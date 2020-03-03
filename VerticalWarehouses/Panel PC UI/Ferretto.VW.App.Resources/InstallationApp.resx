@@ -1912,4 +1912,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="FullTestSessionCycles" xml:space="preserve">
     <value>Session cycles</value>
   </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Do you really want to apply the correction?</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Do you want to confirm the calibration procedure?</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>The following result will change the machine's LowerBound value, continue?</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>You want to start the procedure</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Stopped test in phase</value>
+  </data>
 </root>
