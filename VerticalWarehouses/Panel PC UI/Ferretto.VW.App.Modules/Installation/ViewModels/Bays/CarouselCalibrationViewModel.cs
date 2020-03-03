@@ -5,17 +5,14 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
-
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -25,7 +22,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         RunningCalibration,
 
-        ConfirmAdjustment
+        ConfirmAdjustment,
     }
 
     [Warning(WarningsArea.Installation)]
@@ -55,7 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? cyclesPercent;
 
-        private TimeSpan firstCycleTime = new TimeSpan();
+        private TimeSpan firstCycleTime = default(TimeSpan);
 
         private bool isCalibrationCompletedOrStopped;
 
@@ -79,7 +76,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken positioningMessageReceivedToken;
 
-        private TimeSpan remainingTime = new TimeSpan();
+        private TimeSpan remainingTime = default(TimeSpan);
 
         private DelegateCommand repeatCalibrationCommand;
 
@@ -107,12 +104,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public CarouselCalibrationViewModel(IEventAggregator eventAggregator,
+        public CarouselCalibrationViewModel(
+            IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService
-            )
+            IMachineBaysWebService machineBaysWebService)
           : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -279,10 +276,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.repeatCalibrationCommand
             ??
             (this.repeatCalibrationCommand = new DelegateCommand(
-               () =>
-               {
-                   this.CurrentStep = CarouselCalibrationStep.StartCalibration;
-               },
+                () =>
+                {
+                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                },
                 this.CanRepeat));
 
         public int RequiredCycles
@@ -310,11 +307,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand StartCalibrationCommand =>
-                   this.startCalibrationCommand
-           ??
-           (this.startCalibrationCommand = new DelegateCommand(
-               () =>
-               this.StartCalibrationAsync(),
+            this.startCalibrationCommand
+            ??
+            (this.startCalibrationCommand = new DelegateCommand(
+               async () => await this.StartCalibrationAsync(),
                this.CanStartCalibration));
 
         public int StartPerformedCycles
@@ -340,10 +336,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopInPhaseCommand
             ??
             (this.stopInPhaseCommand = new DelegateCommand(
-                () =>
-                {
-                    this.StopInPhaseAsync();
-                },
+                async () => await this.StopInPhaseAsync(),
                 this.CanStopInPhase));
 
         public ICommand TuningBayCommand =>
@@ -363,8 +356,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                //this.currentError = null;
-
                 if (this.IsWaitingForResponse)
                 {
                     return null;
@@ -379,11 +370,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
 
                         break;
-                }
-
-                if (this.IsVisible /*&& string.IsNullOrEmpty(this.currentError)*/)
-                {
-                    //this.ClearNotifications();
                 }
 
                 return null;
@@ -677,11 +663,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
-                if ((this.MachineError != null))
+                if (this.MachineError != null)
                 {
                     this.IsCalibrationNotCompleted = true;
-
                 }
+
                 return;
             }
 
@@ -764,7 +750,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.startTime = DateTime.Now;
 
                     if (this.RemainingTime != null)
-                    { this.RemainingTime = new TimeSpan(); }
+                    {
+                        this.RemainingTime = default(TimeSpan);
+                    }
 
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
@@ -883,14 +871,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.singleRaisingTicks = 0;
 
                     if (this.firstCycleTime != null)
-                    { this.firstCycleTime = new TimeSpan(); }
+                    {
+                        this.firstCycleTime = default(TimeSpan);
+                    }
 
                     if (this.RemainingTime != null)
-                    { this.RemainingTime = new TimeSpan(); }
+                    {
+                        this.RemainingTime = default(TimeSpan);
+                    }
                 }
                 else
                 {
-                    if ((this.PerformedCycles > this.oldPerformedCycle))
+                    if (this.PerformedCycles > this.oldPerformedCycle)
                     {
                         this.oldPerformedCycle = this.PerformedCycles;
 
