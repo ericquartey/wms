@@ -133,6 +133,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attach the meter:.
+        /// </summary>
+        public static string AttachMeter {
+            get {
+                return ResourceManager.GetString("AttachMeter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         public static string Auto {
@@ -880,6 +889,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm new resolution:.
+        /// </summary>
+        public static string ConfirmNewResolution {
+            get {
+                return ResourceManager.GetString("ConfirmNewResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
@@ -1101,6 +1119,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DesiredMovement {
             get {
                 return ResourceManager.GetString("DesiredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination target.
+        /// </summary>
+        public static string DestinationPosition {
+            get {
+                return ResourceManager.GetString("DestinationPosition", resourceCulture);
             }
         }
         
@@ -1339,6 +1366,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position the elevator at a height that allows you to attach the meter..
+        /// </summary>
+        public static string ElevatorHighAttachMeter {
+            get {
+                return ResourceManager.GetString("ElevatorHighAttachMeter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Position [mm].
         /// </summary>
         public static string ElevatorHorizontalPosition {
@@ -1551,6 +1587,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ExecuteElevatorCellPositioning {
             get {
                 return ResourceManager.GetString("ExecuteElevatorCellPositioning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take the first measurement (1/2):.
+        /// </summary>
+        public static string ExecuteFirstMisurationPart1 {
+            get {
+                return ResourceManager.GetString("ExecuteFirstMisurationPart1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take the first measurement (2/2):.
+        /// </summary>
+        public static string ExecuteFirstMisurationPart2 {
+            get {
+                return ResourceManager.GetString("ExecuteFirstMisurationPart2", resourceCulture);
             }
         }
         
@@ -2100,6 +2154,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InBayWithNumber {
             get {
                 return ResourceManager.GetString("InBayWithNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicate the height measured with the meter and press Next.
+        /// </summary>
+        public static string IndicateMisuredPosition {
+            get {
+                return ResourceManager.GetString("IndicateMisuredPosition", resourceCulture);
             }
         }
         
@@ -3193,6 +3256,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measured height.
+        /// </summary>
+        public static string MisuredPosition {
+            get {
+                return ResourceManager.GetString("MisuredPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loadunit Operations.
         /// </summary>
         public static string ModeLoadUnitOperations {
@@ -3708,6 +3780,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position the elevator at the indicated height.
+        /// </summary>
+        public static string PositionElevatorIndicatedHeight {
+            get {
+                return ResourceManager.GetString("PositionElevatorIndicatedHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
         public static string PositionOnBotton {
@@ -4028,6 +4109,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
@@ -4977,6 +5067,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check the new calculated resolution value and press Save to make the change effective.
+        /// </summary>
+        public static string VerifyNewCalcolatedValue {
+            get {
+                return ResourceManager.GetString("VerifyNewCalcolatedValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verify Panel Position.
         /// </summary>
         public static string VerifyPanelPosition {
@@ -5126,6 +5225,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalResolutionCalibration {
             get {
                 return ResourceManager.GetString("VerticalResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New resolution.
+        /// </summary>
+        public static string VerticalResolutionCalibrationNewResolution {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationNewResolution", resourceCulture);
             }
         }
         

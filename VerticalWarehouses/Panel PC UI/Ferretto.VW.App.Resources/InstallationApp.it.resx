@@ -1842,19 +1842,55 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ApplyCorrectionMessage" xml:space="preserve">
     <value>Vuoi davvero applicare la correzione?</value>
   </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Attaccare il metro:</value>
+  </data>
   <data name="ConfirmCalibrationProcedure" xml:space="preserve">
     <value>Desideri confermare la procedura di calibrazione?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Conferma nuova risoluzione:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Quota di destinazione</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Eseguire la prima misurazione (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Eseguire la seconda misurazione (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Indicare la quota misurata con il metro e premere Avanti</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Quota misurata</value>
   </data>
   <data name="ModifyLowerBoundDialog" xml:space="preserve">
     <value>Il seguente risultato modificherà il valore LowerBound della macchina, continuare?</value>
   </data>
+  <data name="PositionElevatorIndicatedHeight" xml:space="preserve">
+    <value>Posizionare l'elevatore alla quota indicata</value>
+  </data>
   <data name="ResetTotalCyclesNumber" xml:space="preserve">
     <value>Vuoi davvero resettare il numero totale di cicli completati?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salva</value>
   </data>
   <data name="StartProcedureMessage" xml:space="preserve">
     <value>Vuoi iniziare la procedura</value>
   </data>
   <data name="TestStopped" xml:space="preserve">
     <value>Test stoppato in fase</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Verificare il nuovo valore di risoluzione calcolato e premere Salva per rendere la modifica effettiva</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Nuova risoluzione</value>
   </data>
 </root>
