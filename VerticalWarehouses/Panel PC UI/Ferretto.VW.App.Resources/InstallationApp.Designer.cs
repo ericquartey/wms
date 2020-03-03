@@ -4869,15 +4869,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total cycles completed.
-        /// </summary>
-        public static string TotalCyclesCompleted {
-            get {
-                return ResourceManager.GetString("TotalCyclesCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total panels.
         /// </summary>
         public static string TotalPanels {
