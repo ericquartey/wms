@@ -196,9 +196,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
 
-                if (this.WmsDataProvider.IsEnabled)
+                if (this.WmsDataProvider.IsEnabled && activeOperation != null)
                 {
-                    await this.MissionOperationsService.CompleteCurrentAsync(1);
+                    await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
                 }
                 else
                 {
