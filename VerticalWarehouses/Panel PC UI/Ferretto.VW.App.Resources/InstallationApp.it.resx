@@ -1893,7 +1893,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
     <value>Nuova risoluzione</value>
   </data>
-  <data name="String1" xml:space="preserve">
+  <data name="TotalCyclesCompleted" xml:space="preserve">
     <value>Cicli totali completati</value>
   </data>
 </root>

@@ -4860,20 +4860,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total cycles completed.
-        /// </summary>
-        public static string TotalCompletedCycles {
-            get {
-                return ResourceManager.GetString("TotalCompletedCycles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total completed cycles are greater than required cycles..
         /// </summary>
         public static string TotalCycleMoreThanRequired {
             get {
                 return ResourceManager.GetString("TotalCycleMoreThanRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total cycles completed.
+        /// </summary>
+        public static string TotalCyclesCompleted {
+            get {
+                return ResourceManager.GetString("TotalCyclesCompleted", resourceCulture);
             }
         }
         
