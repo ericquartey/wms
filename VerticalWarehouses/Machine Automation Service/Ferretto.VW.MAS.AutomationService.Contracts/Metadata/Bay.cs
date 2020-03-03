@@ -31,11 +31,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public int? CurrentWmsMissionOperationId { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
-            [Id(50)]
+            [Id(90)]
             public MovementParameters EmptyLoadMovement { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
-            [Id(60)]
+            [Id(95)]
             public MovementParameters FullLoadMovement { get; set; }
 
             [ScaffoldColumn(false)]
