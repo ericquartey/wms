@@ -1848,6 +1848,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ModifyLowerBoundDialog" xml:space="preserve">
     <value>Il seguente risultato modificherà il valore LowerBound della macchina, continuare?</value>
   </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Vuoi davvero resettare il numero totale di cicli completati?</value>
+  </data>
   <data name="StartProcedureMessage" xml:space="preserve">
     <value>Vuoi iniziare la procedura</value>
   </data>

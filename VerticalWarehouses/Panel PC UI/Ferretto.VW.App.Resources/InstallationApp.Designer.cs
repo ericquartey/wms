@@ -3924,6 +3924,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to reset the total number of completed cycles?.
+        /// </summary>
+        public static string ResetTotalCyclesNumber {
+            get {
+                return ResourceManager.GetString("ResetTotalCyclesNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resolution.
         /// </summary>
         public static string Resolution {

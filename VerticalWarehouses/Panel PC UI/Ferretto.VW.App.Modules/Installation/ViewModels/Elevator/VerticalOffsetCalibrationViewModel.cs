@@ -207,7 +207,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToCellCommand = new DelegateCommand(
                 async () =>
                 {
-                    await this.StartAsync(this.SelectedCell.Position);                    
+                    await this.StartAsync(this.SelectedCell.Position);
                 },
                 this.CanMoveToCellCommand));
 
@@ -509,7 +509,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.AxisLowerBound > this.NewDisplacement)
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ModifyLowerBoundDialog, InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.No)
                     {
                         return;
