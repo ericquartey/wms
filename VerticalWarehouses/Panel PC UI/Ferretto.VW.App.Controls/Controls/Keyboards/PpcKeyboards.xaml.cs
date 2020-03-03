@@ -82,6 +82,23 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         #region Methods
 
+        private object ChangeType(object value, Type conversion)
+        {
+            var type = conversion;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (value == null)
+                {
+                    return null;
+                }
+
+                type = Nullable.GetUnderlyingType(type);
+            }
+
+            return Convert.ChangeType(value, type);
+        }
+
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
         {
             // reset inactive timeout
@@ -99,7 +116,12 @@ namespace Ferretto.VW.App.Controls.Keyboards
                 if (this._ctrl != null)
                 {
                     IFormatProvider culture = this.Language.GetEquivalentCulture();
-                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._outputType, culture));
+
+                    var response = this.TryChangeType(this.textBox.Text, this._outputType);
+                    if (response.IsSuccess)
+                    {
+                        this._ctrl.SetValue(this._property, response.Value);
+                    }
                 }
             }
 
@@ -139,6 +161,30 @@ namespace Ferretto.VW.App.Controls.Keyboards
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.ViewModel.IsValid = !Validation.GetHasError((DependencyObject)sender);
+        }
+
+        private (bool IsSuccess, object Value) TryChangeType(object value, Type conversionType)
+        {
+            (bool IsSuccess, object Value) response = (false, null);
+            var isNotConvertible =
+                conversionType == null
+                    || value == null
+                    || !(value is IConvertible)
+                || !(value.GetType() == conversionType);
+            if (isNotConvertible)
+            {
+                return response;
+            }
+            try
+            {
+                response = (true, this.ChangeType(value, conversionType));
+            }
+            catch (Exception)
+            {
+                response.Value = null;
+            }
+
+            return response;
         }
 
         #endregion
