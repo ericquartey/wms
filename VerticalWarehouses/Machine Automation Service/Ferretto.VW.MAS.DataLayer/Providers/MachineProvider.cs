@@ -174,6 +174,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<ServicingInfo> GetServicingInfo()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.ServicingInfo.AsNoTracking();
+            }
+        }
+
         public MachineStatistics GetStatistics()
         {
             lock (this.dataContext)
