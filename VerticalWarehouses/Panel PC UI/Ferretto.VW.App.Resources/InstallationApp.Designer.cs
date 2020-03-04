@@ -907,11 +907,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm restore..
+        ///   Looks up a localized string similar to Confirm restore.
         /// </summary>
         public static string ConfirmRestore {
             get {
                 return ResourceManager.GetString("ConfirmRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm restore to previous version ?.
+        /// </summary>
+        public static string ConfirmRestoreToPreviousVersion {
+            get {
+                return ResourceManager.GetString("ConfirmRestoreToPreviousVersion", resourceCulture);
             }
         }
         
@@ -4055,6 +4064,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RestoreConfiguration {
             get {
                 return ResourceManager.GetString("RestoreConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore ended with errors.
+        /// </summary>
+        public static string RestoreEndedWithErrors {
+            get {
+                return ResourceManager.GetString("RestoreEndedWithErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore in progress....
+        /// </summary>
+        public static string RestoreInProgress {
+            get {
+                return ResourceManager.GetString("RestoreInProgress", resourceCulture);
             }
         }
         

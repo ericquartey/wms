@@ -1309,7 +1309,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>A file is already present on device.</value>
   </data>
   <data name="ConfirmRestore" xml:space="preserve">
-    <value>Confirm restore.</value>
+    <value>Confirm restore</value>
   </data>
   <data name="RestoreConfiguration" xml:space="preserve">
     <value>Restore configuration</value>
@@ -1965,5 +1965,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
     <value>New resolution</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Confirm restore to previous version ?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Restore in progress...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Restore ended with errors</value>
   </data>
 </root>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -13,15 +15,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
+        private const string BAKUPZIPFILENAME = "C:\\Update\\Backup\\Current_Version_Backup.zip";
+
+        private readonly IDialogService dialogService;
+
         private DelegateCommand nextCommand;
+
+        private DelegateCommand restoreCommand;
 
         #endregion
 
         #region Constructors
 
-        public UpdateStep1ViewModel()
+        public UpdateStep1ViewModel(IDialogService dialogService)
             : base()
         {
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
@@ -32,6 +41,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         this.nextCommand
                         ??
                         (this.nextCommand = new DelegateCommand(() => this.GoNextStep(), this.CanGoNextStep));
+
+        public ICommand RestoreCommand =>
+                        this.restoreCommand
+                        ??
+                        (this.restoreCommand = new DelegateCommand(() => this.Restore(), this.CanRestore));
 
         #endregion
 
@@ -58,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            this.restoreCommand.RaiseCanExecuteChanged();
             this.nextCommand.RaiseCanExecuteChanged();
             base.RaiseCanExecuteChanged();
         }
@@ -67,6 +82,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return this.Installations.Count > 0
                    &&
                    this.IsInstallationReady;
+        }
+
+        private bool CanRestore()
+        {
+            return File.Exists(BAKUPZIPFILENAME);
         }
 
         private void GoNextStep()
@@ -95,6 +115,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
+            }
+        }
+
+        private void Restore()
+        {
+            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmRestoreToPreviousVersion, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult is DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsBackNavigationAllowed = false;
+
+                    this.IsWaitingForResponse = true;
+
+                    this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Update.STEP2,
+                            BAKUPZIPFILENAME,
+                            trackCurrentView: false);
+
+                    this.RaiseCanExecuteChanged();
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                    this.IsBackNavigationAllowed = true;
+                }
             }
         }
 
