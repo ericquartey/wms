@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private Timer delayTimer;
 
+        private double? findZeroPosition = null;
+
         private double horizontalStartingPosition;
 
         private bool isDisposed;
@@ -247,10 +249,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.profileCalibratePosition = null;
                         this.profileStartPosition = null;
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-                        var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-                        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-                        this.targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 0.75;
+                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition);
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
@@ -310,6 +310,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.FindZero:
                     {
+                        this.findZeroPosition = null;
+                        this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        statusWordPollingInterval = 500;
+
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
