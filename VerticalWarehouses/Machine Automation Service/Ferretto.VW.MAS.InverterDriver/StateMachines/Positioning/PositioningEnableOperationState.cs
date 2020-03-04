@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Enable Operation");
+            this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Enable Operation");
             this.startTime = DateTime.MinValue;
 
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
