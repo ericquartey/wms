@@ -114,16 +114,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ExecuteListAsync()
         {
-            if (!this.areaId.HasValue
-                ||
-                this.selectedListRow is null)
+            if (!this.areaId.HasValue || this.list is null)
             {
                 return;
             }
 
             try
             {
-                await this.itemListsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value, null);
+                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, null);
                 await this.LoadListRowsAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

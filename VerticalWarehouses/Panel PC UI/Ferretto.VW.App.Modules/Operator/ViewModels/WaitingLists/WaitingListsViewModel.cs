@@ -109,7 +109,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public void ChangeSelectedList(bool isUp)
+        public void ChangeSelectedList(bool selectPrevious)
         {
             if (this.lists is null)
             {
@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.lists.Any())
             {
-                var newIndex = isUp ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
+                var newIndex = selectPrevious ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
 
                 this.currentItemIndex = Math.Max(0, Math.Min(newIndex, this.lists.Count - 1));
             }
