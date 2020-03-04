@@ -464,6 +464,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
+        private void FindZeroNextPosition()
+        {
+            var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+            var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            this.machineData.MessageData.TargetPosition = axis.ChainOffset * 2;
+            var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+
+            var inverterMessage = new FieldCommandMessage(
+                positioningFieldMessageData,
+                "Continue Message Command",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.ContinueMovement,
+                (byte)this.machineData.CurrentInverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}");
+        }
+
         private bool IsBracketSensorError()
         {
             return !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
@@ -594,21 +613,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.FindZero:
                     {
-                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                        if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
                         {
-                            var inverterIndex = this.machineData.CurrentInverterIndex;
-                            var commandMessage = new FieldCommandMessage(
-                                null,
-                                $"Stop Operation due to zero position reached",
-                                FieldMessageActor.InverterDriver,
-                                FieldMessageActor.DeviceManager,
-                                FieldMessageType.InverterStop,
-                                (byte)inverterIndex);
-
-                            this.Logger.LogTrace(
-                                $"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-                            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+                            var data = message.Data as InverterStatusUpdateFieldMessageData;
+                            var chainPosition = data.CurrentPosition;
+                            if (chainPosition.HasValue
+                                && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                                && Math.Abs(this.horizontalStartingPosition - chainPosition.Value) > 25
+                                )
+                            {
+                                if (this.findZeroPosition is null)
+                                {
+                                    this.findZeroPosition = chainPosition;
+                                    this.Logger.LogInformation($"first Zero sensor reached! Value {chainPosition:0.0000}");
+                                    this.FindZeroNextPosition();
+                                }
+                                else
+                                {
+                                    // TODO finish procedure
+                                }
+                            }
                         }
 
                         break;
