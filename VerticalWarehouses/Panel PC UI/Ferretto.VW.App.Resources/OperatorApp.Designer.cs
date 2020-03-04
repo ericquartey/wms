@@ -439,20 +439,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment.
+        /// </summary>
+        public static string Compartment {
+            get {
+                return ResourceManager.GetString("Compartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Depth.
         /// </summary>
         public static string CompartmentDepth {
             get {
                 return ResourceManager.GetString("CompartmentDepth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Comp. Id.
-        /// </summary>
-        public static string CompartmentId {
-            get {
-                return ResourceManager.GetString("CompartmentId", resourceCulture);
             }
         }
         

@@ -96,9 +96,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.changeModeListCommand = new DelegateCommand(this.ChangeMode, this.CanSwitchToListMode));
 
         public ICommand ChangeModeLoadingUnitCommand =>
-               this.changeModeLoadingUnitCommand
-               ??
-               (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanSwitchToLoadingUnitMode));
+            this.changeModeLoadingUnitCommand
+            ??
+            (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanSwitchToLoadingUnitMode));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -168,14 +168,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand ItemCompartmentDownCommand =>
-              this.itemCompartmentDownCommand
-              ??
-              (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(false), this.CanSelectNextItemCompartment));
+            this.itemCompartmentDownCommand
+            ??
+            (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(false), this.CanSelectNextItemCompartment));
 
         public ICommand ItemCompartmentUpCommand =>
-              this.itemCompartmentUpCommand
-              ??
-              (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(true), this.CanSelectPreviousItemCompartment));
+            this.itemCompartmentUpCommand
+            ??
+            (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(true), this.CanSelectPreviousItemCompartment));
 
         public ICommand ItemDownCommand =>
             this.itemDownCommand
