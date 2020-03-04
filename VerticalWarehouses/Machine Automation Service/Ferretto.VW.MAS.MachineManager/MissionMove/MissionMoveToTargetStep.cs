@@ -61,7 +61,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                if (this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitSource))
+                var loadUnitInBay = bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitSource)?.LoadingUnit;
+                if (this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitSource)
+                    && (loadUnitInBay is null
+                        || loadUnitInBay.Id == this.Mission.LoadUnitId
+                        )
+                    )
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);

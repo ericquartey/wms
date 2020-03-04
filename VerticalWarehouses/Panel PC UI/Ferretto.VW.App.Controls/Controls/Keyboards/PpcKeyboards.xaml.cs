@@ -82,6 +82,38 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         #region Methods
 
+        private bool CanChangeType(object value, Type conversionType)
+        {
+            if (conversionType == null)
+            {
+                return false;
+            }
+
+            if (value is string)
+            {
+                string v = Convert.ToString(value);
+                if (string.IsNullOrWhiteSpace(v))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (value == null)
+                {
+                    return false;
+                }
+            }
+
+            IConvertible convertible = value as IConvertible;
+            if (convertible == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private object ChangeType(object value, Type conversion)
         {
             var type = conversion;
@@ -96,7 +128,8 @@ namespace Ferretto.VW.App.Controls.Keyboards
                 type = Nullable.GetUnderlyingType(type);
             }
 
-            return Convert.ChangeType(value, type);
+            IFormatProvider culture = this.Language.GetEquivalentCulture();
+            return Convert.ChangeType(value, type, culture);
         }
 
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
@@ -115,12 +148,10 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
                 if (this._ctrl != null)
                 {
-                    IFormatProvider culture = this.Language.GetEquivalentCulture();
-
-                    var response = this.TryChangeType(this.textBox.Text, this._outputType);
-                    if (response.IsSuccess)
+                    var response = this.CanChangeType(this.textBox.Text, this._outputType);
+                    if (response)
                     {
-                        this._ctrl.SetValue(this._property, response.Value);
+                        this._ctrl.SetValue(this._property, this.ChangeType(this.textBox.Text, this._outputType));
                     }
                 }
             }
@@ -161,30 +192,6 @@ namespace Ferretto.VW.App.Controls.Keyboards
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.ViewModel.IsValid = !Validation.GetHasError((DependencyObject)sender);
-        }
-
-        private (bool IsSuccess, object Value) TryChangeType(object value, Type conversionType)
-        {
-            (bool IsSuccess, object Value) response = (false, null);
-            var isNotConvertible =
-                conversionType == null
-                    || value == null
-                    || !(value is IConvertible)
-                || !(value.GetType() == conversionType);
-            if (isNotConvertible)
-            {
-                return response;
-            }
-            try
-            {
-                response = (true, this.ChangeType(value, conversionType));
-            }
-            catch (Exception)
-            {
-                response.Value = null;
-            }
-
-            return response;
         }
 
         #endregion

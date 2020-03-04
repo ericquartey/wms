@@ -57,6 +57,11 @@ namespace Ferretto.VW.MAS.IODriver
             // do nothing
         }
 
+        public void Dispose()
+        {
+            // do nothing
+        }
+
         /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {

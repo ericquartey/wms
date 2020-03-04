@@ -9,7 +9,7 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    internal class IoTransport : IIoTransport, IDisposable
+    internal class IoTransport : IIoTransport
     {
         #region Fields
 
@@ -123,6 +123,11 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public void Disconnect()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             if (!this.transportClient?.Connected ?? false)
             {
                 return;
@@ -258,21 +263,23 @@ namespace Ferretto.VW.MAS.IODriver
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.isDisposed)
+            if (this.isDisposed)
             {
-                if (disposing)
-                {
-                    this.transportStream?.Close();
-                    this.transportStream?.Dispose();
-                    this.transportStream = null;
-
-                    this.transportClient?.Close();
-                    this.transportClient?.Dispose();
-                    this.transportClient = null;
-                }
-
-                this.isDisposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.transportStream?.Close();
+                this.transportStream?.Dispose();
+                this.transportStream = null;
+
+                this.transportClient?.Close();
+                this.transportClient?.Dispose();
+                this.transportClient = null;
+            }
+
+            this.isDisposed = true;
         }
 
         #endregion

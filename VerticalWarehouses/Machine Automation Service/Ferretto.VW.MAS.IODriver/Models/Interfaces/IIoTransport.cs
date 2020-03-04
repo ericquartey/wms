@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    internal interface IIoTransport
+    internal interface IIoTransport : IDisposable
     {
         #region Properties
 

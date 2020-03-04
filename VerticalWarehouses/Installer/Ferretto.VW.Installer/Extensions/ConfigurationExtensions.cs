@@ -21,11 +21,51 @@ namespace Ferretto.VW.Installer
 
         private const string InstallDefaultMasIpportName = "Install:Default:MasIpport";
 
+        private const string InstallPpcPath = "Install:PPC:Path";
+
+        private const string InstallPpcFilePath = "Install:PPC:FilePath";
+
+
         private const string InstallMasPath = "Install:MAS:Path";
 
         #endregion
 
         #region Methods
+        
+        public static string GetIGetInstallPpcFilePath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(InstallPpcFilePath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{InstallPpcFilePath}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetInstallPpcPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(InstallPpcPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{InstallPpcPath}' is not specified or invalid.", ex);
+            }
+        }
+
         public static string GetInstallRootPath(this NameValueCollection appSettings)
         {
             if (appSettings is null)

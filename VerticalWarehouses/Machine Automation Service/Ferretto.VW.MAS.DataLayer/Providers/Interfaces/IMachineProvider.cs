@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer
         double GetHeight();
 
         int GetIdentity();
-
+        IEnumerable<ServicingInfo> GetServicingInfo();
         MachineStatistics GetStatistics();
 
         void Import(Machine machine, DataLayerContext context);

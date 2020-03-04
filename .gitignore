@@ -340,3 +340,4 @@ ASALocalRun/
 # Other Files
 *.zip
 internal-nlog.txt
+/VerticalWarehouses/Machine Automation Service/clean.cmd
