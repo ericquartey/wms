@@ -37,11 +37,15 @@ namespace Ferretto.VW.Installer.ViewModels
         #region Methods
 
         public void StartInstallation()
-        {
-            //var currExeLocation = System.Reflection.Assembly.GetEntryAssembly().Location;
-            var exeLocation = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{INSTALLER}";
-            // Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(exeLocation));
-            Directory.SetCurrentDirectory(exeLocation);
+        {            
+            var installerLocation = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{INSTALLER}";
+
+            if (!Directory.Exists(installerLocation))
+            {
+                throw new DirectoryNotFoundException($"Folder '{installerLocation}' does not exists.");
+            }
+
+            Directory.SetCurrentDirectory(installerLocation);
 
             if (File.Exists("steps-snapshot.json"))
             {

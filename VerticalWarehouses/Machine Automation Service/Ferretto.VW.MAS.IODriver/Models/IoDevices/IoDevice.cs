@@ -60,13 +60,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly CancellationToken stoppingToken;
 
-        private readonly ManualResetEventSlim writeEnableEvent;
+        private readonly ManualResetEventSlim writeEnableEvent = new ManualResetEventSlim(true);
 
         private IIoStateMachine currentStateMachine;
 
-        private bool disposed;
-
         private bool forceIoStatusPublish;
+
+        private bool isDisposed;
 
         private Timer pollIoTimer;
 
@@ -96,11 +96,9 @@ namespace Ferretto.VW.MAS.IODriver
             this.logger = logger;
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
-            this.isCarousel = (bay.Carousel != null);
+            this.isCarousel = bay.Carousel != null;
             this.bayNumber = bay.Number;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction(env));
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
@@ -150,6 +148,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         public void DestroyStateMachine()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(IoDevice));
+            }
+
             if (this.CurrentStateMachine is IDisposable stateMachine)
             {
                 stateMachine.Dispose();
@@ -165,6 +168,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         public async Task ReceiveIoDataTaskFunction(IHostingEnvironment env)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(IoDevice));
+            }
+
             this.logger.LogTrace("1:Method Start");
 
             const int N_BYTES_16 = 16;
@@ -443,7 +451,7 @@ namespace Ferretto.VW.MAS.IODriver
                     }
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested && !this.disposed);
+            while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
         public async Task SendIoCommandTaskFunction()
@@ -547,7 +555,7 @@ namespace Ferretto.VW.MAS.IODriver
                     return;
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested && !this.disposed);
+            while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
         public void SendIoMessageData(object state)
@@ -669,7 +677,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -678,13 +686,14 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.DestroyStateMachine();
 
+                this.ioTransport?.Dispose();
                 this.pollIoTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
 
                 this.ioCommandQueue.Dispose();
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         #endregion

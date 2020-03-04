@@ -165,7 +165,7 @@ namespace Ferretto.VW.Installer.ViewModels
             try
             {
                 this.installationService.UpdateMachineRole();
-                //this.SavePanelPcConfig();
+                this.SavePanelPcConfig();
                 this.installationService.SetOperation(OperationMode.Update);
                 this.isSuccessful = true;
             }
@@ -176,33 +176,29 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void SavePanelPcConfig()
         {
-            var xmlDoc = new XmlDocument();            
+            var xmlDoc = new XmlDocument();
 
-            var confFile = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-            //xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            xmlDoc.Load(confFile);
+            var panelPcFileConfig =  $"..\\{ConfigurationManager.AppSettings.GetInstallPpcPath()}\\{ConfigurationManager.AppSettings.GetIGetInstallPpcFilePath()}.config";            
+            xmlDoc.Load(panelPcFileConfig);
 
             foreach (XmlElement element in xmlDoc.DocumentElement)
             {
                 if (element.Name == APPSETTINGS)
                 {
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == APPSETTINGSBAYNUMBER) is XmlElement bayNumberNode)
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSBAYNUMBER) is XmlElement bayNumberNode)
                     {
-                        bayNumberNode.Value = ((int)this.selectedBay.Number).ToString();
+                        bayNumberNode.Attributes["value"].Value = ((int)this.selectedBay.Number).ToString();
                     }
 
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
                     {
                         var masIp= (this.installationService.MasIpAddress is null)? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() :this.installationService.MasIpAddress.ToString();                        
-                        ipMasNode.Value = $"{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
+                        ipMasNode.Attributes["value"].Value = $"{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
                     }
                 }
             }
-
-
-            //xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            xmlDoc.Save(confFile);
+            
+            xmlDoc.Save(panelPcFileConfig);
         }
 
         private void RaiseCanExecuteChanged()

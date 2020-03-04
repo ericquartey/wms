@@ -1472,8 +1472,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Item code</value>
     <comment>Header text</comment>
   </data>
-  <data name="CompartmentId" xml:space="preserve">
-    <value>Comp. Id</value>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
     <comment>Header text</comment>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">

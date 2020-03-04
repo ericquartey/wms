@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
                 LoadingUnits = this.loadingUnitsDataProvider.GetAll(),
                 MachineStatistics = this.machineProvider.GetStatistics(),
+                ServicingInfo = this.machineProvider.GetServicingInfo(),
             };
             return r;
         }
