@@ -230,10 +230,9 @@ namespace Ferretto.VW.Installer.Core
                         if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
-                            {
-                                break;
-                                //this.IsRollbackInProgress = true;
-                                //await this.RollbackStep(this.ActiveStep);
+                            {                                
+                                this.IsRollbackInProgress = true;
+                                await this.RollbackStep(this.ActiveStep);
                             }
                         }
                     }
