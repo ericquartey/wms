@@ -5,63 +5,58 @@
              xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
-    <Grid>
-        <ctrls:PpcDataGrid Name="DataGrid"
-                           Width="auto"
-                           Height="auto"
-                           ItemsSource="{Binding Items}"
-                           SelectedItem="{Binding SelectedItem, Mode=OneWay}">
+    <DataGrid Name="DataGrid"
+              ItemsSource="{Binding Items}"
+              SelectedItem="{Binding SelectedItem, Mode=OneWay}">
+        <DataGrid.Columns>
+            <DataGridTextColumn x:Name="Column1"
+                                Width="1*"
+                                Binding="{Binding Path=Code}"
+                                Header="{x:Static Resources:OperatorApp.Code}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="1,0,0,0" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column2"
+                                Width="4*"
+                                Binding="{Binding Path=Description}"
+                                Header="{x:Static Resources:OperatorApp.Description}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
 
-            <ctrls:PpcDataGrid.Columns>
-                <DataGridTextColumn x:Name="Column1"
-                                    Width="1*"
-                                    Binding="{Binding Path=Code}"
-                                    Header="{x:Static Resources:OperatorApp.Code}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="1,0,0,0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn x:Name="Column2"
-                                    Width="4*"
-                                    Binding="{Binding Path=Description}"
-                                    Header="{x:Static Resources:OperatorApp.Description}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5,0,5,0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTemplateColumn x:Name="Column3"
-                                        Width="100"
-                                        Header="{x:Static Resources:OperatorApp.ListAvailable}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Rectangle Width="20"
-                                       Height="20"
-                                       Fill="{DynamicResource FerrettoGreen}"
-                                       Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </ctrls:PpcDataGrid.Columns>
-        </ctrls:PpcDataGrid>
-    </Grid>
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTemplateColumn x:Name="Column3"
+                                    Width="100"
+                                    Header="{x:Static Resources:OperatorApp.ListAvailable}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Rectangle Width="20"
+                                   Height="20"
+                                   Fill="{DynamicResource FerrettoGreen}"
+                                   Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>

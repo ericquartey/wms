@@ -101,13 +101,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.availableQuantity, value);
         }
 
-        public ICommand DownDataGridButtonCommand =>
-            this.selectNextItemCommand
-            ??
-            (this.selectNextItemCommand = new DelegateCommand(
-                async () => await this.SelectNextItemAsync(),
-                this.CanSelectNextItem));
-
         public override EnableMask EnableMask => EnableMask.Any;
 
         public double? InputQuantity
@@ -192,13 +185,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
         }
-
-        public ICommand UpDataGridButtonCommand =>
-            this.selectPreviousItemCommand
-            ??
-            (this.selectPreviousItemCommand = new DelegateCommand(
-                this.SelectPreviousItem,
-                this.CanSelectPreviousItem));
 
         #endregion
 
