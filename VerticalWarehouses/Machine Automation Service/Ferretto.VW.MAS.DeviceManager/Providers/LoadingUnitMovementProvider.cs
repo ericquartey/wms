@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Prism.Events;
@@ -447,6 +448,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (distance < Math.Abs(axis.ChainOffset / 2))
             {
                 return false;
+            }
+            if (distance > axis.Profiles.First().TotalDistance)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
+                throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
             }
             this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, null, requestingBay, sender);
             return true;
