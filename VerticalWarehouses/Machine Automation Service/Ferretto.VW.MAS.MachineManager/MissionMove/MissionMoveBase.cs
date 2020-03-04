@@ -220,7 +220,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                 if (bayShutter)
                 {
-                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
+                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                    var shutterClosed = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                    if (shutterPosition == shutterClosed)
+                    {
+                        bayShutter = false;
+                    }
+                    else
+                    {
+                        this.Mission.CloseShutterPosition = shutterClosed;
+                    }
                 }
             }
             if (restore)

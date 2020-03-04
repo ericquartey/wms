@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var waitContinue = (this.Mission.CloseShutterBayNumber != BayNumber.None && !bay.IsExternal);
-                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
+                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {false}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                     this.Mission.CloseShutterBayNumber,
                     this.Mission.CloseShutterPosition,
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 
-                        this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
+                        this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, closeShutterPosition {ShutterPosition.NotSpecified}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                         this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                             BayNumber.None,
                             ShutterPosition.NotSpecified,

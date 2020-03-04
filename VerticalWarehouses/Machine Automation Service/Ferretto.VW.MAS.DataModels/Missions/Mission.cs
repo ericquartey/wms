@@ -101,7 +101,8 @@ namespace Ferretto.VW.MAS.DataModels
                 $"RestoreConditions={this.RestoreConditions}; " +
                 $"Status={this.Status}; " +
                 $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
-                $"OpenShutterPosition={this.OpenShutterPosition}; " +
+                $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
+                $"CloseShutterPosition={this.CloseShutterPosition}; " +
                 $"DeviceNotifications={this.DeviceNotifications}; " +
                 $"Action={this.Action}; " +
                 $"BayNotifications={this.BayNotifications}; " +
