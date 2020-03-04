@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MachineStatistics MachineStatistics { get; set; }
 
+        public IEnumerable<ServicingInfo> ServicingInfo { get; set; }
+
         public SetupProceduresSet SetupProcedures { get; set; }
 
         #endregion
