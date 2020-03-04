@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public BayNumber CloseShutterBayNumber { get; set; }
 
+        public ShutterPosition CloseShutterPosition { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public int? DestinationCellId { get; set; }

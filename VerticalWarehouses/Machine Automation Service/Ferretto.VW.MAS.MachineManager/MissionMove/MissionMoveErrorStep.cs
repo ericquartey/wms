@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed))
                                 {
                                     this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false);
+                                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
                                 }
                                 else
                                 {
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.RestoreOriginalStep();
                                 }
                             }
-                            else if (shutterPosition == ShutterPosition.Closed
+                            else if (shutterPosition == this.Mission.CloseShutterPosition
                                 && this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed)
                                 )
                             {
@@ -294,6 +294,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreConditions = true;
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.NeedMovingBackward = false;
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                 var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
@@ -345,7 +347,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     return;
 
                 case MissionStep.CloseShutter:
-                    newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    {
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                        newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
                     break;
 
                 case MissionStep.Start:

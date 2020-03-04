@@ -218,6 +218,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                if (bayShutter)
+                {
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                }
             }
             if (restore)
             {

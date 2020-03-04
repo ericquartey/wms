@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
             this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
+            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
             this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
             this.MissionsDataProvider.Update(this.Mission);
         }
@@ -318,7 +318,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
                     this.MissionsDataProvider.Update(this.Mission);
                 }

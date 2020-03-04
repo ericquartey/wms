@@ -83,6 +83,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                         this.Mission.CloseShutterBayNumber,
+                        this.Mission.CloseShutterPosition,
                         measure: false,
                         MessageActor.MachineManager,
                         this.Mission.TargetBay,
@@ -146,6 +147,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
                         this.Mission.CloseShutterBayNumber,
+                        this.Mission.CloseShutterPosition,
                         measure: false,
                         MessageActor.MachineManager,
                         this.Mission.TargetBay,
@@ -189,6 +191,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                                 this.Mission.CloseShutterBayNumber,
+                                this.Mission.CloseShutterPosition,
                                 measure: false,
                                 MessageActor.MachineManager,
                                 this.Mission.TargetBay,
@@ -203,6 +206,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
                                 this.Mission.CloseShutterBayNumber,
+                                this.Mission.CloseShutterPosition,
                                 measure: false,
                                 MessageActor.MachineManager,
                                 this.Mission.TargetBay,

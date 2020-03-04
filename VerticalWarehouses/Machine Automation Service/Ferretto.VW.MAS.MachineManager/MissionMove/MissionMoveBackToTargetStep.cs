@@ -82,7 +82,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions);
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
                 }
             }
             else
@@ -91,6 +92,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                     this.Mission.CloseShutterBayNumber,
+                    this.Mission.CloseShutterPosition,
                     measure: false,
                     MessageActor.MachineManager,
                     this.Mission.TargetBay,
@@ -127,6 +129,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                         this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                             BayNumber.None,
+                            ShutterPosition.NotSpecified,
                             measure,
                             MessageActor.MachineManager,
                             notification.RequestingBay,
