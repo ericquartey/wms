@@ -663,11 +663,11 @@ namespace Ferretto.VW.App.Services
                                     this.MachineStatus.CurrentMissionId = messageData.MissionId;
 
                                     // TODO use messageData.MissionStep instead of message.Description
-                                    this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus.CurrentMissionId} " +
-                                        $"- LU {messageData.LoadUnitId} " +
-                                        $"- {message.Description} " +
-                                        $"- from {messageData.Source} {messageData.SourceCellId} " +
-                                        $"- to {messageData.Destination} {messageData.DestinationCellId})");
+                                    this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus.CurrentMissionId}, " +
+                                        $"Cassetto: {messageData.LoadUnitId}, " +
+                                        $"Stato: {message.Description}, " +
+                                        $"Movimento: da {messageData.Source} {messageData.SourceCellId} " +
+                                        $"a {messageData.Destination} {messageData.DestinationCellId})");
                                 }
 
                                 if (message?.Data is PositioningMessageData dataPositioning)
@@ -776,11 +776,11 @@ namespace Ferretto.VW.App.Services
                                 this.NotifyMachineStatusChanged();
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus?.CurrentMissionId} " +
-                                    $"- LU {moveLoadingUnitMessageData.LoadUnitId} " +
-                                    $"- {message.Description} " +
-                                    $"- from {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
-                                    $"- to {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})");
+                                this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus?.CurrentMissionId}, " +
+                                    $"Cassetto: {moveLoadingUnitMessageData.LoadUnitId}, " +
+                                    $"Stato: {message.Description}, " +
+                                    $"Movimento: da {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
+                                    $"a {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})");
                             }
 
                             break;
