@@ -701,6 +701,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void MoveHorizontalFindZeroPosition(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 2.5;
+
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+
+            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+
+            var speed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.ProfileCalibration,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Find zero position Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, BayNumber requestingBay, MessageActor sender)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
@@ -756,7 +792,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance;
+            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 0.75;
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
 
