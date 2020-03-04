@@ -48,36 +48,36 @@
                 BorderBrush="{DynamicResource PpcButtonBorderBrush}"                                                
                 CornerRadius="{DynamicResource PpcCornerRadius}">
             <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-                
-            <controls:PpcLabeledText Grid.Row="0"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <controls:PpcLabeledText Grid.Row="0"
                                      Margin="0,0,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding SystemInfo}"
                                      LabelText="Versione attuale PanelPc" />
 
-            <controls:PpcLabeledText Grid.Row="1"
+                <controls:PpcLabeledText Grid.Row="1"
                                      Margin="0,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding SharedFolderInfo}"
                                      LabelText="Cartella condivisa" />
 
-            <controls:PpcLabeledText Grid.Row="2"
+                <controls:PpcLabeledText Grid.Row="2"
                                      Margin="0,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding DeviceInfo}"
                                      LabelText="Stato Dispositivo " />
 
-            <controls:PpcLabeledText Grid.Row="3"
+                <controls:PpcLabeledText Grid.Row="3"
                                      Margin="0,15,0,15"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
@@ -104,11 +104,22 @@
             </StackPanel>
         </Grid>
 
-        <controls:PpcButton Grid.Row="2" Grid.Column="1"                                
+        <StackPanel  Grid.Row="2" Grid.Column="1"
+                     Orientation="Horizontal"
+                     HorizontalAlignment="Right">
+
+            <controls:PpcButton                          
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding RestoreCommand}"
+                                Content="Ripristino" />
+
+            <controls:PpcButton     Grid.Row="2" Grid.Column="1"
+                                Margin="15 0 0 0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding NextCommand}"
                                 Content="Next" />
-
+        </StackPanel>
     </Grid>
 </ctrls:View>
