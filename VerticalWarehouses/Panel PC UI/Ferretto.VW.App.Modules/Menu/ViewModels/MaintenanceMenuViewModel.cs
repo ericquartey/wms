@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return true;
+            return false;
         }
 
         private void MenuCommand(Menu menu)

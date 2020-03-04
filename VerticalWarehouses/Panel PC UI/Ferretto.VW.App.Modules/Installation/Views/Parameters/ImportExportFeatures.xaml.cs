@@ -235,6 +235,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                 if (!this.IncludeSetupProcedures)
                 {
                     output.SetupProcedures = null;
+                    output.ServicingInfo = null;
                 }
 
                 if (!this.IncludeStatistics)
