@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private const int CheckDelayTime = 100;
+        private const int CheckDelayTime = 200;
 
         private readonly IInverterPositioningFieldMessageData data;
 
