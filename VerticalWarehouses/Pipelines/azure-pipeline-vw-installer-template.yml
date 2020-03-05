@@ -47,7 +47,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Installer'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
     ArtifactName: 'installer'
 
 
