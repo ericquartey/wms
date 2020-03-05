@@ -114,7 +114,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             switch (direction)
             {
                 case VerticalMovementDirection.Down:
-                    if (isLoadingUnitInLowerPosition || isLoadingUnitInUpperPosition)
+                    if (isLoadingUnitInLowerPosition
+                        || (isLoadingUnitInUpperPosition && movementCategory != MovementCategory.Manual)
+                        )
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
                     }
@@ -124,7 +126,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case VerticalMovementDirection.Up:
                     if (
 #if CHECK_BAY_SENSOR
-                        isLoadingUnitInUpperPosition ||
+                        (isLoadingUnitInUpperPosition && movementCategory != MovementCategory.Manual) ||
 #endif
                         bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null
                         )
