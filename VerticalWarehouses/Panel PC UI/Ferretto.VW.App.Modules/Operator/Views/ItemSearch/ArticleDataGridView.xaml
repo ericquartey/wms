@@ -7,7 +7,7 @@
 
     <DataGrid Name="DataGrid"
               ItemsSource="{Binding Items}"
-              SelectedItem="{Binding SelectedItem, Mode=OneWay}">
+              SelectedItem="{Binding SelectedItem}">
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
                                 Width="1*"

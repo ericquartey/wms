@@ -12,7 +12,7 @@
         <Setter Property="CanUserResizeRows" Value="False" />
         <Setter Property="CanUserSortColumns" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="IsHitTestVisible" Value="True" />
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="RowHeight" Value="30" />

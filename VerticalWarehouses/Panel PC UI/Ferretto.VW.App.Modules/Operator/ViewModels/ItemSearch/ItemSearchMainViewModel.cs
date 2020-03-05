@@ -60,10 +60,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemInfo selectedItem;
 
-        private DelegateCommand selectNextItemCommand;
-
-        private DelegateCommand selectPreviousItemCommand;
-
         private DelegateCommand showItemDetailsCommand;
 
         private CancellationTokenSource tokenSource;
@@ -351,8 +347,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
-            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
-            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
         private void AdjustItemsAppearance()
