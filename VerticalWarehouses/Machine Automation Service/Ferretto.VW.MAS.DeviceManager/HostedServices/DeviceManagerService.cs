@@ -465,26 +465,26 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
-            BayNumber bayNumber;
+            var bayNumber = BayNumber.None;
             switch (receivedMessage.Source)
             {
                 case FieldMessageActor.IoDriver:
                     {
                         var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        bayNumber = baysDataProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                        if (messageIoIndex != IoIndex.None)
+                        {
+                            bayNumber = baysDataProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                        }
                         break;
                     }
 
                 case FieldMessageActor.InverterDriver:
                     {
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-                        bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex);
-                        break;
-                    }
-
-                default:
-                    {
-                        bayNumber = BayNumber.None;
+                        if (messageInverterIndex != InverterIndex.None)
+                        {
+                            bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex);
+                        }
                         break;
                     }
             }

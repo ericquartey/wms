@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CSVEXTENSION = ".csv";
 
+        private const string RESTOREARG = "--restore";
+
         private const string UPDATEARG = "--update";
 
         private readonly IDialogService dialogService;
@@ -42,6 +44,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private DelegateCommand downCommand;
 
         private bool isCurrentOperationValid;
+
+        private bool isUpdate;
+
+        private string restoreInfo;
 
         private InstallerInfo selectedUpdate;
 
@@ -76,6 +82,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.downCommand = new DelegateCommand(() => this.ChangeSelectedUpdate(false), this.CanDown));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsUpdate
+        {
+            get => this.isUpdate;
+            set => this.SetProperty(ref this.isUpdate, value);
+        }
+
+        public string RestoreInfo
+        {
+            get => this.restoreInfo;
+            set => this.SetProperty(ref this.restoreInfo, value);
+        }
 
         public InstallerInfo SelectedUpdate
         {
@@ -125,6 +143,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.DataCheck();
 
+            this.ClearNotifications();
+
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
@@ -132,6 +152,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public void RaisePropertyChanged()
         {
+            this.RaisePropertyChanged(nameof(this.IsUpdate));
             this.RaisePropertyChanged(nameof(this.UpdatesInfo));
         }
 
@@ -151,6 +172,35 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.UpdatesInfo));
         }
 
+        private async Task ApplyRestoreAsnc(string restoreFilePath)
+        {
+            this.ClearNotifications();
+
+            this.RestoreInfo = InstallationApp.RestoreInProgress;
+
+            this.isCurrentOperationValid = true;
+            this.IsEnabled = false;
+            this.updatesInfo = string.Empty;
+
+            await this.ClearTempFolderAsync();
+            await this.ExtractZipInFolderAsync(restoreFilePath);
+
+            await this.StartRestoreAsync();
+
+            this.IsEnabled = true;
+            this.RaisePropertyChanged();
+
+            if (this.isCurrentOperationValid)
+            {
+                this.ShowNotification(InstallationApp.UpdateSuccessfullyCompleted, Services.Models.NotificationSeverity.Success);
+            }
+            else
+            {
+                this.RestoreInfo = InstallationApp.RestoreEndedWithErrors;
+                this.ShowNotification(InstallationApp.ErrorOnInitialPhaseUpdate, Services.Models.NotificationSeverity.Error);
+            }
+        }
+
         private async Task ApplyUpdatesync()
         {
             if (!this.IsEnabled)
@@ -165,7 +215,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.updatesInfo = string.Empty;
 
             await this.ClearTempFolderAsync();
-            await this.ExtractZipInFolderAsync();
+            await this.ExtractZipInFolderAsync(this.selectedUpdate.FileName);
             await this.CheckIntegrityOnFilesAsync();
             await this.StartInstallerAppAsync();
 
@@ -282,12 +332,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             });
         }
 
-        private void DataCheck()
+        private async Task DataCheck()
         {
             if (this.Data is IList<InstallerInfo> updatesFound)
             {
+                this.IsUpdate = true;
+
                 this.updates.Clear();
                 updatesFound.ForEach(u => this.updates.Add(u));
+
                 var lastUpdateId = this.selectedUpdate?.Id;
 
                 this.RaisePropertyChanged(nameof(this.Updates));
@@ -296,9 +349,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.SelectLoadingUnit();
             }
+
+            if (this.Data is string restoreFilePath)
+            {
+                this.IsUpdate = false;
+                this.updates.Clear();
+                await this.ApplyRestoreAsnc(restoreFilePath);
+            }
         }
 
-        private async Task ExtractZipInFolderAsync()
+        private async Task ExtractZipInFolderAsync(string fileName)
         {
             await Task.Run(() =>
             {
@@ -311,8 +371,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 try
                 {
-                    this.AppendLine(string.Format(InstallationApp.StartExtractingFiles, this.selectedUpdate.FileName));
-                    ZipFile.ExtractToDirectory(this.selectedUpdate.FileName, this.updateExchangeTemp);
+                    this.AppendLine(string.Format(InstallationApp.StartExtractingFiles, fileName));
+                    ZipFile.ExtractToDirectory(fileName, this.updateExchangeTemp);
                     this.AppendLine(InstallationApp.ExtractingFilesCompleted);
                 }
                 catch (Exception ex)
@@ -365,7 +425,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void StartInstallerApp()
+        private void StartInstallerApp(string parameter)
         {
             if (!this.isCurrentOperationValid)
             {
@@ -385,7 +445,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = installerFilePath,
-                        Arguments = UPDATEARG
+                        Arguments = parameter
                     }
                 };
 
@@ -415,7 +475,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task StartInstallerAppAsync()
         {
-            await Task.Run(() => this.StartInstallerApp());
+            await Task.Run(() => this.StartInstallerApp(UPDATEARG));
+        }
+
+        private async Task StartRestoreAsync()
+        {
+            await Task.Run(() => this.StartInstallerApp(RESTOREARG));
         }
 
         private async Task UpdateAsync()

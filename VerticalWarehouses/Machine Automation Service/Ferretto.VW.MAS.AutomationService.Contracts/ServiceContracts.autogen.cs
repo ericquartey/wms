@@ -1720,6 +1720,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("CloseShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber CloseShutterBayNumber { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CloseShutterPosition", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterPosition CloseShutterPosition { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("CreationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset CreationDate { get; set; }
@@ -1866,6 +1869,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         ElevatorBay = 4,
     
         All = 10,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterPosition
+    {
+        NotSpecified = 0,
+    
+        Opened = 1,
+    
+        Half = 2,
+    
+        Closed = 3,
+    
+        Intermediate = 4,
     
     }
     
@@ -2184,21 +2202,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         HorizontalAndVertical = 3,
     
         BayChain = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterPosition
-    {
-        NotSpecified = 0,
-    
-        Opened = 1,
-    
-        Half = 2,
-    
-        Closed = 3,
-    
-        Intermediate = 4,
     
     }
     
