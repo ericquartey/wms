@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case LoadingUnitLocation.Elevator:
-                    returnValue = this.IsDrawerCompletelyOnCradle;
+                    returnValue = this.IsDrawerCompletelyOnCradle && !this.IsSensorZeroOnCradle;
                     break;
 
                 // If location can't be idientifies simply become a "no operation" function

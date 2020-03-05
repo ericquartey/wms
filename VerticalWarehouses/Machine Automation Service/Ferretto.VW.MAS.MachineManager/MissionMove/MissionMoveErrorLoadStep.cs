@@ -187,6 +187,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
                 var loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnitOnBoard is null
+                    && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                    )
+                {
+                    this.LoadUnitChangePosition();
+                    loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                }
                 if (loadUnitOnBoard != null
                     && loadUnitOnBoard.Id == this.Mission.LoadUnitId
                     )
