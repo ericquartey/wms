@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(destination)) != null
                 && bay.Shutter.Type != ShutterType.NotSpecified
                 && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
-                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Opened
+                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
                 )
             {
                 if (showErrors)
@@ -524,7 +524,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             && bay.Shutter.Type != ShutterType.NotSpecified)
                         {
                             var shutterInverter = bay.Shutter.Inverter.Index;
-                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed)
+                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                            if (shutterPosition != ShutterPosition.Closed
+                                && shutterPosition != ShutterPosition.Half
+                                )
                             {
                                 if (showErrors)
                                 {
@@ -689,7 +692,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source)) != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadUnit
-                        && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed)
+                        && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
+                        && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
+                        )
                     {
                         unitToMove = null;
                         if (showErrors)

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private const int CheckDelayTime = 100;
+        private const int CheckDelayTime = 200;
 
         private readonly IInverterPositioningFieldMessageData data;
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Enable Operation");
+            this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Enable Operation");
             this.startTime = DateTime.MinValue;
 
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);

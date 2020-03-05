@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Prism.Events;
@@ -120,11 +121,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
         /// <param name="restore"></param>
-        public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
+        public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore, ShutterPosition shutterPosition = ShutterPosition.Closed)
         {
             try
             {
-                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                this.shutterProvider.MoveTo(shutterPosition, requestingBay, sender);
             }
             catch (InvalidOperationException ex)
             {
@@ -238,6 +239,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             return axis.LastIdealPosition;
+        }
+
+        public ShutterPosition GetShutterClosedPosition(Bay bay, LoadingUnitLocation location)
+        {
+            var closeShutter = ShutterPosition.NotSpecified;
+            if (bay.Shutter.Type != ShutterType.NotSpecified)
+            {
+                if (bay.Shutter.Type == ShutterType.TwoSensors)
+                {
+                    closeShutter = ShutterPosition.Closed;
+                }
+                else
+                {
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == location);
+                    if (bayPosition is null)
+                    {
+                        // TODO: throw an exception?
+                        closeShutter = ShutterPosition.NotSpecified;
+                    }
+                    else if (bayPosition.IsUpper)
+                    {
+                        closeShutter = ShutterPosition.Half;
+                    }
+                    else
+                    {
+                        closeShutter = ShutterPosition.Closed;
+                    }
+                }
+            }
+            return closeShutter;
         }
 
         public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
@@ -418,6 +449,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return false;
             }
+            if (distance > axis.Profiles.First().TotalDistance)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
+                throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
+            }
             this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, null, requestingBay, sender);
             return true;
         }
@@ -490,11 +526,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// At the same time if sourceType is a bay it closes the shutter (only for external bays)
         /// </summary>
         /// <param name="targetHeight"></param>
-        /// <param name="closeShutter"></param>
+        /// <param name="shutterBay"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
         public void PositionElevatorToPosition(double targetHeight,
             BayNumber shutterBay,
+            ShutterPosition shutterPosition,
             bool measure,
             MessageActor sender,
             BayNumber requestingBay,
@@ -505,7 +542,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (shutterBay != BayNumber.None)
             {
-                this.CloseShutter(MessageActor.MachineManager, shutterBay, restore);
+                this.CloseShutter(MessageActor.MachineManager, shutterBay, restore, shutterPosition);
             }
 
             try
