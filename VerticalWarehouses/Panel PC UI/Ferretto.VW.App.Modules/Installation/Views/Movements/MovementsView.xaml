@@ -680,6 +680,28 @@
                                                            PressCommand="{Binding MoveBackwardsCommand}"
                                                            ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasBayExternal, Converter={StaticResource BTVC}}" />
+                        <controls:PpcButton Grid.Row="1"
+                                            Grid.Column="2"
+                                            Width="59"
+                                            Margin="150,5,5,5"
+                                            HorizontalAlignment="Center"
+                                            HorizontalContentAlignment="Center"
+                                            Command="{Binding LightCommand}"
+                                            Foreground="{StaticResource FerrettoPureWhite}"
+                                            KindMaterial="{Binding LightIcon}"
+                                            Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}">
+                            <controls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                                       TargetType="{x:Type controls:PpcButton}">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="KindMaterial" Value="LightbulbOutline">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:PpcButton.Style>
+                        </controls:PpcButton>
 
                     </Grid>
 
@@ -708,6 +730,8 @@
                                         HorizontalAlignment="Center"
                                         Command="{Binding StopMovingCommand}"
                                         Content="{x:Static res:InstallationApp.Stop}" />
+
+
 
                     <StackPanel Grid.Row="6"
                                 Grid.Column="3"
