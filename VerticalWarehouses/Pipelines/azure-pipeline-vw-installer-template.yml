@@ -23,7 +23,7 @@ steps:
   displayName: 'dotnet build'
   inputs:
     projects: ${{ parameters.RestoreBuildProjects }} 
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}' --runtime win10-x64
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }}' 
 
 
 - task: DotNetCoreCLI@2
