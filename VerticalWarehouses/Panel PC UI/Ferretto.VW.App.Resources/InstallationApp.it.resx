@@ -1902,4 +1902,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RestoreEndedWithErrors" xml:space="preserve">
     <value>Ripristino terminato con errori</value>
   </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Cancellazione file snapshot di installazione '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Errore durante la cancellazione del file di snapshot.</value>
+  </data>
 </root>

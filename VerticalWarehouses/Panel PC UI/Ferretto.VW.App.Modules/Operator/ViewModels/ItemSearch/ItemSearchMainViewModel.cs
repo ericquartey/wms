@@ -60,10 +60,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemInfo selectedItem;
 
-        private DelegateCommand selectNextItemCommand;
-
-        private DelegateCommand selectPreviousItemCommand;
-
         private DelegateCommand showItemDetailsCommand;
 
         private CancellationTokenSource tokenSource;
@@ -100,13 +96,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.availableQuantity;
             set => this.SetProperty(ref this.availableQuantity, value);
         }
-
-        public ICommand DownDataGridButtonCommand =>
-            this.selectNextItemCommand
-            ??
-            (this.selectNextItemCommand = new DelegateCommand(
-                async () => await this.SelectNextItemAsync(),
-                this.CanSelectNextItem));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -192,13 +181,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
         }
-
-        public ICommand UpDataGridButtonCommand =>
-            this.selectPreviousItemCommand
-            ??
-            (this.selectPreviousItemCommand = new DelegateCommand(
-                this.SelectPreviousItem,
-                this.CanSelectPreviousItem));
 
         #endregion
 
@@ -365,8 +347,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
-            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
-            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
         private void AdjustItemsAppearance()

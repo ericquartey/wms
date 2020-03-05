@@ -13,12 +13,16 @@ namespace Ferretto.VW.Installer.Core
 
         private const string SecondaryDbName = "secondary.db";
 
+        private string primaryDbPath;
+
+        private string secondaryDbPath;
+
         #endregion
 
         #region Constructors
 
         public DbBackupStep(int number, string title, string description, string automationServicePath, string backupPath, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+                            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
         {
             this.AutomationServicePath = InterpolateVariables(automationServicePath);
             this.BackupPath = InterpolateVariables(backupPath);
@@ -50,8 +54,8 @@ namespace Ferretto.VW.Installer.Core
 
                 Directory.CreateDirectory(this.BackupPath);
 
-                var primaryDbPath = appSettings.ConnectionStrings.PrimaryDbPath;
-                var secondaryDbPath = appSettings.ConnectionStrings.SecondaryDbPath;
+                this.primaryDbPath = appSettings.ConnectionStrings.PrimaryDbPath;
+                this.secondaryDbPath = appSettings.ConnectionStrings.SecondaryDbPath;
 
                 if (File.Exists(appSettingsProductionPath))
                 {
@@ -62,19 +66,19 @@ namespace Ferretto.VW.Installer.Core
                     return Task.FromResult(StepStatus.Failed);
                 }
 
-                if (!Path.IsPathRooted(primaryDbPath))
+                if (!Path.IsPathRooted(this.primaryDbPath))
                 {
-                    primaryDbPath = Path.Combine(this.AutomationServicePath, primaryDbPath);
+                    this.primaryDbPath = Path.Combine(this.AutomationServicePath, this.primaryDbPath);
                 }
-                this.LogInformation($"Backing up database file '{primaryDbPath}' ...");
-                File.Copy(primaryDbPath, Path.Combine(this.BackupPath, PrimaryDbName), true);
+                this.LogInformation($"Backing up database file '{this.primaryDbPath}' ...");
+                File.Copy(this.primaryDbPath, Path.Combine(this.BackupPath, PrimaryDbName), true);
 
-                if (!Path.IsPathRooted(secondaryDbPath))
+                if (!Path.IsPathRooted(this.secondaryDbPath))
                 {
-                    secondaryDbPath = Path.Combine(this.AutomationServicePath, secondaryDbPath);
+                    this.secondaryDbPath = Path.Combine(this.AutomationServicePath, this.secondaryDbPath);
                 }
-                this.LogInformation($"Backing up database file '{secondaryDbPath}' ...");
-                File.Copy(secondaryDbPath, Path.Combine(this.BackupPath, SecondaryDbName), true);
+                this.LogInformation($"Backing up database file '{this.secondaryDbPath}' ...");
+                File.Copy(this.secondaryDbPath, Path.Combine(this.BackupPath, SecondaryDbName), true);
 
                 return Task.FromResult(StepStatus.Done);
             }
@@ -89,8 +93,16 @@ namespace Ferretto.VW.Installer.Core
         {
             try
             {
-                File.Delete(Path.Combine(this.BackupPath, PrimaryDbName));
-                File.Delete(Path.Combine(this.BackupPath, SecondaryDbName));
+                if (this.SetupMode == SetupMode.Restore)
+                {
+                    File.Copy(Path.Combine(this.BackupPath, PrimaryDbName), this.primaryDbPath, true);
+                    File.Copy(Path.Combine(this.BackupPath, SecondaryDbName), this.secondaryDbPath, true);
+                }
+                else
+                {
+                    File.Delete(Path.Combine(this.BackupPath, PrimaryDbName));
+                    File.Delete(Path.Combine(this.BackupPath, SecondaryDbName));
+                }
 
                 return Task.FromResult(StepStatus.RolledBack);
             }

@@ -1975,4 +1975,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RestoreEndedWithErrors" xml:space="preserve">
     <value>Restore ended with errors</value>
   </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Delete installer snaphot file '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Error on deleting snapshot file.</value>
+  </data>
 </root>
