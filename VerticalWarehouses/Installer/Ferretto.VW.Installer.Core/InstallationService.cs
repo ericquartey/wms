@@ -387,7 +387,7 @@ namespace Ferretto.VW.Installer.Core
                 var stepsJsonFile = File.ReadAllText(this.fileName);
                 var serviceAnon = new { Steps = Array.Empty<Step>() };
                 serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any)
+                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any || ((this.setupMode == SetupMode.Update || this.setupMode == SetupMode.Restore) && s.SetupMode == SetupMode.UpdateAndRestore))                                                            
                                                           &&
                                                           (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
                                                           .OrderBy(s => s.Number).ToArray();
