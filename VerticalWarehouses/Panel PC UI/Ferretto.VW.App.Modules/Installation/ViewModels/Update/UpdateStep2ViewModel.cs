@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IDialogService dialogService;
 
+        private readonly string snapshotFileName;
+
         private readonly string updateExchangeInstallerName;
 
         private readonly string updateExchangeInstallerPath;
@@ -70,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.updateExchangeInstallerPath = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerPath();
             this.updateExchangeInstallerName = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerName();
             this.updateZipChecksumFileName = ConfigurationManager.AppSettings.GetUpdateZipChecksumFileName();
+            this.snapshotFileName = ConfigurationManager.AppSettings.GetInstallerSnapshotFileName();
         }
 
         #endregion
@@ -183,9 +186,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.updatesInfo = string.Empty;
 
             await this.ClearTempFolderAsync();
-            await this.ExtractZipInFolderAsync(restoreFilePath);
 
-            await this.StartRestoreAsync();
+            await this.ExtractZipInFolderAsync(restoreFilePath);
+            await this.DeleteSnapshotFileAsync();
+            await this.StartRestoreAppAsync();
 
             this.IsEnabled = true;
             this.RaisePropertyChanged();
@@ -217,6 +221,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.ClearTempFolderAsync();
             await this.ExtractZipInFolderAsync(this.selectedUpdate.FileName);
             await this.CheckIntegrityOnFilesAsync();
+            await this.DeleteSnapshotFileAsync();
             await this.StartInstallerAppAsync();
 
             this.IsEnabled = true;
@@ -358,6 +363,29 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private async Task DeleteSnapshotFileAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var snapshtoFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.snapshotFileName}";
+                    this.AppendLine(string.Format(InstallationApp.DeleteSnapshotFile, snapshtoFilePath));
+                    if (File.Exists(snapshtoFilePath))
+                    {
+                        Directory.Delete(snapshtoFilePath, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.isCurrentOperationValid = false;
+                    this.AppendLine(InstallationApp.ErrorDeleteSnapshotFile);
+                    var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
+                    this.AppendLine(errMsg);
+                }
+            });
+        }
+
         private async Task ExtractZipInFolderAsync(string fileName)
         {
             await Task.Run(() =>
@@ -478,7 +506,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await Task.Run(() => this.StartInstallerApp(UPDATEARG));
         }
 
-        private async Task StartRestoreAsync()
+        private async Task StartRestoreAppAsync()
         {
             await Task.Run(() => this.StartInstallerApp(RESTOREARG));
         }

@@ -1123,6 +1123,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete installer snaphot file &apos;{0}&apos;..
+        /// </summary>
+        public static string DeleteSnapshotFile {
+            get {
+                return ResourceManager.GetString("DeleteSnapshotFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Desired movement [mm].
         /// </summary>
         public static string DesiredMovement {
@@ -1524,6 +1533,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ErrorClearTempFolder {
             get {
                 return ResourceManager.GetString("ErrorClearTempFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on deleting snapshot file..
+        /// </summary>
+        public static string ErrorDeleteSnapshotFile {
+            get {
+                return ResourceManager.GetString("ErrorDeleteSnapshotFile", resourceCulture);
             }
         }
         
