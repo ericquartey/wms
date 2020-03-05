@@ -1248,7 +1248,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Un file è già presente nel dispositivo.</value>
   </data>
   <data name="ConfirmRestore" xml:space="preserve">
-    <value>Conferma ripristino.</value>
+    <value>Conferma ripristino</value>
   </data>
   <data name="RestoreConfiguration" xml:space="preserve">
     <value>Ripristino configurazione</value>
@@ -1380,7 +1380,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Conferma aggiornamento</value>
   </data>
   <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
-    <value>Aggiornamento completato con seccesso.</value>
+    <value>Aggiornamento completato con successo.</value>
   </data>
   <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
     <value>Errore in fase iniziale aggiornamento.</value>
@@ -1585,10 +1585,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Inizio controllo checksum dei file '{0}'.</value>
   </data>
   <data name="StartExtractingFiles" xml:space="preserve">
-    <value>Start excracting files from '{0}'.</value>
+    <value>Estrazione files da '{0}'.</value>
   </data>
   <data name="StartingApplication" xml:space="preserve">
-    <value>Starting application '{0}'.</value>
+    <value>Avvio applicazione '{0}'.</value>
   </data>
   <data name="StartPositionMustBePositive" xml:space="preserve">
     <value>Start position  deve essere strettamente positivo.</value>
@@ -1892,5 +1892,20 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
     <value>Nuova risoluzione</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Confermi ripristino a versione precedente ?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Ripristino in corso...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Ripristino terminato con errori</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Cancellazione file snapshot di installazione '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Errore durante la cancellazione del file di snapshot.</value>
   </data>
 </root>

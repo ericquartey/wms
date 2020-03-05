@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly ISensorsService sensorsService;
 
+        private readonly ISessionService sessionService;
+
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private string activeView;
@@ -143,7 +145,8 @@ namespace Ferretto.VW.App.Services
             IBayManager bayManagerService,
             IMachineMissionsWebService missionsWebService,
             IMachineIdentityWebService machineIdentityWebService,
-            IMachineSetupStatusWebService machineSetupStatusWebService)
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            ISessionService sessionService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -162,6 +165,7 @@ namespace Ferretto.VW.App.Services
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.MachineStatus = new Models.MachineStatus();
         }
@@ -660,14 +664,32 @@ namespace Ferretto.VW.App.Services
 
                                     this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
 
+                                    this.MachineStatus.CurrentMission = messageData;
                                     this.MachineStatus.CurrentMissionId = messageData.MissionId;
+                                    this.MachineStatus.CurrentMissionDescription = message.Description;
 
                                     // TODO use messageData.MissionStep instead of message.Description
-                                    this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus.CurrentMissionId} " +
-                                        $"- LU {messageData.LoadUnitId} " +
-                                        $"- {message.Description} " +
-                                        $"- from {messageData.Source} {messageData.SourceCellId} " +
-                                        $"- to {messageData.Destination} {messageData.DestinationCellId})");
+                                    var msg = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus.CurrentMissionId}, " +
+                                        $"Cassetto: {messageData.LoadUnitId}, " +
+                                        $"Stato: {message.Description}, " +
+                                        $"Movimento: da {messageData.Source} {messageData.SourceCellId}, " +
+                                        $"a {messageData.Destination}" +
+                                        $"{(messageData.DestinationCellId is null ? string.Empty : " ")}{messageData.DestinationCellId}" +
+                                        $")");
+
+                                    if (this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                                    {
+                                        this.Notification = msg;
+                                    }
+                                    else
+                                    {
+                                        this.logger.Debug(msg);
+                                    }
+                                    //this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus.CurrentMissionId}, " +
+                                    //    $"Cassetto: {messageData.LoadUnitId}, " +
+                                    //    $"Stato: {message.Description}, " +
+                                    //    $"Movimento: da {messageData.Source} {messageData.SourceCellId} " +
+                                    //    $"a {messageData.Destination} {messageData.DestinationCellId})");
                                 }
 
                                 if (message?.Data is PositioningMessageData dataPositioning)
@@ -770,17 +792,35 @@ namespace Ferretto.VW.App.Services
 
                                 lock (this.MachineStatus)
                                 {
+                                    this.MachineStatus.CurrentMission = moveLoadingUnitMessageData;
                                     this.MachineStatus.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
+                                    this.MachineStatus.CurrentMissionDescription = message.Description;
                                 }
 
                                 this.NotifyMachineStatusChanged();
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus?.CurrentMissionId} " +
-                                    $"- LU {moveLoadingUnitMessageData.LoadUnitId} " +
-                                    $"- {message.Description} " +
-                                    $"- from {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
-                                    $"- to {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})");
+                                var msg = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus?.CurrentMissionId}, " +
+                                    $"Cassetto: {moveLoadingUnitMessageData.LoadUnitId}, " +
+                                    $"Stato: {message.Description}, " +
+                                    $"Movimento: da {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId}, " +
+                                    $"a {moveLoadingUnitMessageData.Destination}" +
+                                    $"{(moveLoadingUnitMessageData.DestinationCellId is null ? string.Empty : " ")}{moveLoadingUnitMessageData.DestinationCellId}" +
+                                    $")");
+
+                                if (this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                                {
+                                    this.Notification = msg;
+                                }
+                                else
+                                {
+                                    this.logger.Debug(msg);
+                                }
+                                //this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus?.CurrentMissionId}, " +
+                                //    $"Cassetto: {moveLoadingUnitMessageData.LoadUnitId}, " +
+                                //    $"Stato: {message.Description}, " +
+                                //    $"Movimento: da {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
+                                //    $"a {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})");
                             }
 
                             break;
@@ -873,6 +913,8 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.MachineStatus.IsMovingLoadingUnit = false;
                                     this.MachineStatus.CurrentMissionId = null;
+                                    this.MachineStatus.CurrentMission = null;
+                                    this.MachineStatus.CurrentMissionDescription = null;
                                 }
 
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
@@ -1388,6 +1430,54 @@ namespace Ferretto.VW.App.Services
 
                     default:
                         break;
+                }
+            }
+            else if (!(view is null) && this.MachineStatus.IsMovingLoadingUnit)
+            {
+                if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                {
+                    switch (this.GetWarningAreaAttribute())
+                    {
+                        case WarningsArea.Picking:
+                            if (this.machineModeService.MachineMode == MachineMode.Automatic &&
+                                this.MachineStatus.IsMovingLoadingUnit &&
+                                this.MachineStatus.CurrentMission != null)
+                            {
+                                //switch (this.MachineStatus.CurrentMission.MissionStep)
+                                switch (this.MachineStatus.CurrentMissionDescription)
+                                {
+                                    //case CommonUtils.Messages.Enumerations.MissionStep.DepositUnit:
+                                    case "DepositUnit":
+                                    case "LoadElevator":
+                                        this.ShowNotification("Movimento cassetto in corso...", NotificationSeverity.Info);
+                                        break;
+
+                                    case "BackToTarget":
+                                    case "ToTarget":
+                                        this.ShowNotification("Movimento elevatore in corso...", NotificationSeverity.Info);
+                                        break;
+
+                                    case "WaitPick":
+                                        this.ShowNotification("Cassetto pronto all'operazione.", NotificationSeverity.Warning);
+                                        break;
+
+                                    case "BayChain":
+                                        this.ShowNotification("Movimento baia in corso...", NotificationSeverity.Warning);
+                                        break;
+
+                                    case "CloseShutter":
+                                        this.ShowNotification("Movimento serranda in corso...", NotificationSeverity.Info);
+                                        break;
+
+                                    case "Error":
+                                    case "ErrorLoad":
+                                    case "ErrorDeposit":
+                                        this.ShowNotification("Errore.", NotificationSeverity.Error);
+                                        break;
+                                }
+                            }
+                            break;
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
@@ -20,6 +21,10 @@ namespace Ferretto.VW.App.Services.Models
         private int? bayPositionId;
 
         private bool? bayPositionUpper;
+
+        private MoveLoadingUnitMessageData currentMission;
+
+        private string currentMissionDescription;
 
         private int? currentMissionId;
 
@@ -95,6 +100,18 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.bayPositionUpper;
             set => this.SetProperty(ref this.bayPositionUpper, value);
+        }
+
+        public MoveLoadingUnitMessageData CurrentMission
+        {
+            get => this.currentMission;
+            set => this.SetProperty(ref this.currentMission, value);
+        }
+
+        public string CurrentMissionDescription
+        {
+            get => this.currentMissionDescription;
+            set => this.SetProperty(ref this.currentMissionDescription, value);
         }
 
         public int? CurrentMissionId

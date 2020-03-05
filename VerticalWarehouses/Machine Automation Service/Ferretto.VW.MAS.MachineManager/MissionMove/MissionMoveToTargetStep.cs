@@ -61,12 +61,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                if (this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitSource))
+                var loadUnitInBay = bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitSource)?.LoadingUnit;
+                if (this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitSource)
+                    && (loadUnitInBay is null
+                        || loadUnitInBay.Id == this.Mission.LoadUnitId
+                        )
+                    )
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
+                if (this.Mission.CloseShutterBayNumber != BayNumber.None)
+                {
+                    if (bay.Positions.Any(p => p.LoadingUnit != null))
+                    {
+                        this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
+                    }
+                    else
+                    {
+                        this.Mission.CloseShutterPosition = ShutterPosition.Closed;
+                    }
+                    var shutterInverter = bay.Shutter.Inverter.Index;
+                    if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
+                    {
+                        this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
+                        this.Mission.CloseShutterBayNumber = BayNumber.None;
+                    }
+                }
                 waitContinue = (this.Mission.CloseShutterBayNumber != BayNumber.None && !bay.IsExternal);
             }
 
@@ -93,14 +115,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions);
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
                 }
             }
             else
             {
-                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {measure}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
+                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {measure}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                     this.Mission.CloseShutterBayNumber,
+                    this.Mission.CloseShutterPosition,
                     measure,
                     MessageActor.MachineManager,
                     this.Mission.TargetBay,
@@ -139,9 +162,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 
-                            this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
+                            this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, closeShutterPosition {ShutterPosition.NotSpecified}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                                 BayNumber.None,
+                                ShutterPosition.NotSpecified,
                                 measure,
                                 MessageActor.MachineManager,
                                 notification.RequestingBay,

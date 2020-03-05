@@ -7,5 +7,9 @@
         Install,
 
         Update,
+
+        Restore,
+
+        UpdateAndRestore,
     }
 }

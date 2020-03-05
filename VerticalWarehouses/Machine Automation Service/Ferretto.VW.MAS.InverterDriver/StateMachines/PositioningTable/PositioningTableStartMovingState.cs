@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Properties
 
-        public bool SignalsArrived { get; private set; }
+        public int SignalsArrived { get; private set; }
 
         #endregion
 
@@ -56,6 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
                 this.axisPositionUpdateTimer.Change(250, 250);
+                this.SignalsArrived = 0;
             }
             else
             {
@@ -123,16 +124,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     {
                         if (currentStatus.TableTravelStatusWord.TargetReached)
                         {
-                            if (this.SignalsArrived)
+                            if (this.SignalsArrived > 1)
                             {
+                                this.Logger.LogDebug("Table Position Reached !");
                                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                                 this.ParentStateMachine.ChangeState(new PositioningTableDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                                this.Logger.LogDebug("Table Position Reached !");
                             }
                         }
                         else
                         {
-                            this.SignalsArrived = false;
+                            this.SignalsArrived = 0;
                             int? position = null;
                             if (currentStatus is AngInverterStatus angInverter)
                             {
@@ -162,7 +163,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     }
                     else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
                     {
-                        this.SignalsArrived = true;
+                        this.SignalsArrived++;
                     }
                     else
                     {
