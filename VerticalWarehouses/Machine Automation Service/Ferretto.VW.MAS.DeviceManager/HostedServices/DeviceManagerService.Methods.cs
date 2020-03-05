@@ -287,7 +287,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (message.Data is IPowerEnableMessageData data)
             {
                 //TODO verify pre conditions (is this actually an error ?)
-                if (this.currentStateMachines.TryGetValue(InverterIndex.MainInverter, out var currentStateMachine))
+                var inverter = this.bayInverters.First(b => b.Value == BayNumber.BayOne).Key;
+                if (this.currentStateMachines.TryGetValue(inverter, out var currentStateMachine))
                 {
                     this.Logger.LogTrace($"1:Attempt to Power On a running State Machine {currentStateMachine.GetType().Name}");
                     var notificationMessage = new NotificationMessage(
@@ -319,9 +320,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.Logger,
                         this.ServiceScopeFactory);
 
-                    this.currentStateMachines.Add(InverterIndex.MainInverter, currentStateMachine);
+                    this.currentStateMachines.Add(inverter, currentStateMachine);
 
-                    this.StartStateMachine(InverterIndex.MainInverter);
+                    this.StartStateMachine(inverter);
 
                     if (!data.Enable)
                     {
@@ -378,7 +379,8 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (this.currentStateMachines.TryGetValue(InverterIndex.MainInverter, out var currentStateMachine))
+            var inverter = this.bayInverters.First(b => b.Value == BayNumber.BayOne).Key;
+            if (this.currentStateMachines.TryGetValue(inverter, out var currentStateMachine))
             {
                 this.Logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType().Name}");
                 var notificationMessage = new NotificationMessage(
@@ -405,9 +407,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
             this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-            this.currentStateMachines.Add(InverterIndex.MainInverter, currentStateMachine);
+            this.currentStateMachines.Add(inverter, currentStateMachine);
 
-            this.StartStateMachine(InverterIndex.MainInverter);
+            this.StartStateMachine(inverter);
         }
 
         private void ProcessSensorsChangedMessage(IServiceProvider serviceProvider)
