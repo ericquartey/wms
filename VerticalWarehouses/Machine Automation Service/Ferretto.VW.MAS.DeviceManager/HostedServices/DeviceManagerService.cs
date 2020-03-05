@@ -36,7 +36,9 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Fields
 
-        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
+        private readonly Dictionary<InverterIndex, BayNumber> bayInverters = new Dictionary<InverterIndex, BayNumber>();
+
+        private readonly Dictionary<InverterIndex, IStateMachine> currentStateMachines = new Dictionary<InverterIndex, IStateMachine>();
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
@@ -115,9 +117,15 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             lock (this.syncObject)
             {
-                if (!this.currentStateMachines.TryGetValue(command.TargetBay, out var messageCurrentStateMachine))
+                IStateMachine messageCurrentStateMachine = null;
+                if (this.bayInverters.Any(b => b.Value == command.TargetBay
+                        && command.TargetBay == BayNumber.ElevatorBay
+                        && this.currentStateMachines.ContainsKey(b.Key)
+                        )
+                    )
                 {
-                    messageCurrentStateMachine = null;
+                    var inverter = this.bayInverters.First(b => b.Value == command.TargetBay && this.currentStateMachines.ContainsKey(b.Key)).Key;
+                    messageCurrentStateMachine = this.currentStateMachines.FirstOrDefault(k => k.Key == inverter).Value;
                 }
 
                 if (messageCurrentStateMachine != null
@@ -212,23 +220,28 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
                 }
 
-                var notificationMessageData = new MachineStatusActiveMessageData(
-                    MessageActor.DeviceManager,
-                    command.Type.ToString(),
-                    MessageVerbosity.Info);
+                foreach (var inverter in this.bayInverters.Where(x => x.Value == command.TargetBay).Select(s => s.Key))
+                {
+                    if (this.currentStateMachines.TryGetValue(inverter, out messageCurrentStateMachine))
+                    {
+                        var notificationMessageData = new MachineStatusActiveMessageData(
+                            MessageActor.DeviceManager,
+                            command.Type.ToString(),
+                            MessageVerbosity.Info);
 
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"FSM current machine status {command.Type}",
-                    MessageActor.Any,
-                    MessageActor.DeviceManager,
-                    MessageType.MachineStatusActive,
-                    command.RequestingBay,
-                    command.RequestingBay,
-                    MessageStatus.OperationStart);
+                        var notificationMessage = new NotificationMessage(
+                            notificationMessageData,
+                            $"FSM current machine status {command.Type}",
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            MessageType.MachineStatusActive,
+                            command.RequestingBay,
+                            command.RequestingBay,
+                            MessageStatus.OperationStart);
 
-                messageCurrentStateMachine?.PublishNotificationMessage(notificationMessage);
-
+                        messageCurrentStateMachine.PublishNotificationMessage(notificationMessage);
+                    }
+                }
                 return Task.CompletedTask;
             }
         }
@@ -237,41 +250,46 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             lock (this.syncObject)
             {
-                this.currentStateMachines.TryGetValue(message.TargetBay, out var messageCurrentStateMachine);
-
                 if (message.Source is MessageActor.DeviceManager
                     &&
                     message.Destination is MessageActor.DeviceManager)
                 {
-                    switch (message.Type)
+                    foreach (var inverter in this.bayInverters.Where(x => x.Value == message.TargetBay).Select(s => s.Key))
                     {
-                        case MessageType.Positioning:
-                        case MessageType.Homing:
-                        case MessageType.ShutterPositioning:
-                        case MessageType.PowerEnable:
-                        case MessageType.InverterFaultReset:
-                        case MessageType.ResetSecurity:
-                        case MessageType.InverterPowerEnable:
-                            this.Logger.LogTrace($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status}");
-                            this.currentStateMachines.Remove(message.TargetBay);
-                            this.SendCleanDebug();
-                            break;
+                        this.currentStateMachines.TryGetValue(inverter, out var messageCurrentStateMachine);
+
+                        switch (message.Type)
+                        {
+                            case MessageType.Positioning:
+                            case MessageType.Homing:
+                            case MessageType.ShutterPositioning:
+                            case MessageType.PowerEnable:
+                            case MessageType.InverterFaultReset:
+                            case MessageType.ResetSecurity:
+                            case MessageType.InverterPowerEnable:
+                                this.Logger.LogTrace($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status}");
+                                this.currentStateMachines.Remove(inverter);
+                                this.SendCleanDebug();
+                                break;
+                        }
+
+                        var notificationMessage = new NotificationMessage(
+                            message.Data,
+                            message.Description,
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            message.Type,
+                            message.RequestingBay,
+                            message.TargetBay,
+                            message.Status,
+                            message.ErrorLevel);
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(notificationMessage);
+
+                        messageCurrentStateMachine?.ProcessNotificationMessage(message);
                     }
-
-                    var notificationMessage = new NotificationMessage(
-                        message.Data,
-                        message.Description,
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        message.Type,
-                        message.RequestingBay,
-                        message.TargetBay,
-                        message.Status,
-                        message.ErrorLevel);
-
-                    this.EventAggregator
-                        .GetEvent<NotificationEvent>()
-                        .Publish(notificationMessage);
                 }
 
                 if (message.Type is MessageType.DataLayerReady)
@@ -280,25 +298,45 @@ namespace Ferretto.VW.MAS.DeviceManager
                     // TEMP Retrieve the current configuration of IO devices
                     this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
+                    var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+                    for (var bay = BayNumber.BayOne; bay <= BayNumber.ElevatorBay; bay++)
+                    {
+                        try
+                        {
+                            var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(bay);
+                            if (inverterList.Any())
+                            {
+                                foreach (var bayInverter in inverterList)
+                                {
+                                    if (!this.bayInverters.ContainsKey(bayInverter.Index))
+                                    {
+                                        this.bayInverters.Add(bayInverter.Index, bay);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // do nothing
+                        }
+                    }
+
                     var fieldNotification = new FieldNotificationMessage(
-                        null,
-                        "Data Layer Ready",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.DeviceManager,
-                        FieldMessageType.DataLayerReady,
-                        MessageStatus.NotSpecified,
-                        (byte)InverterIndex.None);
+                    null,
+                    "Data Layer Ready",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.DataLayerReady,
+                    MessageStatus.NotSpecified,
+                    (byte)InverterIndex.None);
 
                     this.EventAggregator
                         .GetEvent<FieldNotificationEvent>()
                         .Publish(fieldNotification);
                     this.Logger.LogTrace("OnDataLayerReady end");
                 }
-
-                messageCurrentStateMachine?.ProcessNotificationMessage(message);
-
-                return Task.CompletedTask;
             }
+            return Task.CompletedTask;
         }
 
         private void DequeueFieldNotifications()
@@ -563,12 +601,21 @@ namespace Ferretto.VW.MAS.DeviceManager
                             }
 
                             this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0000}");
+                            var updatePosition = true;
+                            foreach (var inverter in this.bayInverters.Where(x => x.Value == bayNumber).Select(s => s.Key))
+                            {
+                                this.currentStateMachines.TryGetValue(inverter, out var tempStateMachine);
+                                if (!(tempStateMachine is InverterPowerEnableStateMachine) &&
+                                    !(tempStateMachine is ResetFaultStateMachine) &&
+                                    !(tempStateMachine is PowerEnableStateMachine)
+                                    )
+                                {
+                                    updatePosition = false;
+                                    break;
+                                }
+                            }
 
-                            this.currentStateMachines.TryGetValue(bayNumber, out var tempStateMachine);
-                            if (tempStateMachine is null ||
-                                tempStateMachine is InverterPowerEnableStateMachine ||
-                                tempStateMachine is ResetFaultStateMachine ||
-                                tempStateMachine is PowerEnableStateMachine)
+                            if (updatePosition)
                             {
                                 var notificationMessage = new NotificationMessage(
                                     notificationData,
@@ -729,8 +776,11 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
                 }
 
-                this.currentStateMachines.TryGetValue(bayNumber, out var messageCurrentStateMachine);
-                messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+                foreach (var inverter in this.bayInverters.Where(x => x.Value == bayNumber).Select(s => s.Key))
+                {
+                    this.currentStateMachines.TryGetValue(inverter, out var messageCurrentStateMachine);
+                    messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+                }
             }
         }
 

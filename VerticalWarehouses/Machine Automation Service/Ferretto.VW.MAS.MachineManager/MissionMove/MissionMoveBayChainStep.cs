@@ -67,6 +67,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.Status = MissionStatus.Executing;
                 this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+
+                var shutterInverter = bay.Shutter.Inverter.Index;
+                if (bay.Shutter.Type == ShutterType.ThreeSensors
+                    && this.SensorsProvider.GetShutterPosition(shutterInverter) == ShutterPosition.Closed)
+                {
+                    this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
+                    this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, ShutterPosition.Half, this.Mission.TargetBay, false);
+                }
             }
             catch (StateMachineException ex)
             {
@@ -205,6 +213,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
                     this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
+
+                    var shutterInverter = bay.Shutter.Inverter.Index;
+                    if (bay.Shutter.Type == ShutterType.ThreeSensors
+                        && this.SensorsProvider.GetShutterPosition(shutterInverter) == ShutterPosition.Closed)
+                    {
+                        this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, ShutterPosition.Half, this.Mission.TargetBay, false);
+                    }
                 }
                 catch (StateMachineException ex)
                 {
