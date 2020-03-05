@@ -1,46 +1,53 @@
 parameters:
   BuildConfiguration: 'debug'
-  BuildPlatform: 'any cpu'
+  BuildPlatform: 'any cpu'   
+  RestoreBuildProjects: '**/*.csproj'  
+  TargetFramework: 'netcoreapp3.1'
+  RuntimeIdentifier: 'win10-x64'
 
 steps:
 
-- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
-  parameters:
-    RestoreSolution: '**/Installer.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    feedsToUse: config
+    nugetConfigPath: nuget.config
 
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- task: VSBuild@1
-  displayName: 'Build Installer.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
-    solution: 'VerticalWarehouses/Installer.sln'
-    platform: ${{ parameters.BuildPlatform }}
-    configuration: ${{ parameters.BuildConfiguration }}
-    msbuildArchitecture: x64
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}' --runtime win10-x64
 
 
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
   inputs:
-    SearchPattern: 'VerticalWarehouses/Installer/**/bin/**/*.pdb'
-    PublishSymbols: false
-  continueOnError: true
+    command: publish
+    publishWebProjects: false
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
+    zipAfterPublish: false
 
 
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'VerticalWarehouses/Installer/**/bin/${{ parameters.BuildConfiguration }}/**'
+    Contents: 'VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Installer'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/net471'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}'
     ArtifactName: 'installer'
 
 
