@@ -1041,11 +1041,11 @@ namespace Ferretto.VW.App.Services
                     false);
 
             this.receiveHomingUpdateToken = this.eventAggregator
-                    .GetEvent<NotificationEventUI<HomingMessageData>>()
-                    .Subscribe(
-                        async (e) => await this.OnDataChangedAsync(e),
-                        ThreadOption.UIThread,
-                        false);
+                .GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Subscribe(
+                    async (e) => await this.OnDataChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
 
             this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
                 ??
