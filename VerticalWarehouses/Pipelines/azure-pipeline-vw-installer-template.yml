@@ -32,7 +32,7 @@ steps:
     command: publish
     publishWebProjects: false
     projects: ${{ parameters.RestoreBuildProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }} --no-build --no-restore'
     zipAfterPublish: false
 
 
