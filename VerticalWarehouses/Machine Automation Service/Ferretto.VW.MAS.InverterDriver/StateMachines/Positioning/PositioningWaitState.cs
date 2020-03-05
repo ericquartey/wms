@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Inverter {this.Inverter.SystemIndex} Positioning Wait State");
+            this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Positioning Wait State");
         }
 
         /// <inheritdoc />
