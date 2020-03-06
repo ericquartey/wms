@@ -57,7 +57,7 @@
       "number": 6,
       "title": "Auto-avvio installer",
       "description": "Imposta l'installatore in avvio automatico.",
-      "script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "Script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
       "rollbackScript": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
       //"script": "timeout /T 2", // ** fake
       "setupMode": "UpdateAndRestore",
@@ -96,26 +96,26 @@
       //"script": "timeout /T 2", // ** fake
       //rollbackScript": "timeout /T 2" // ** fake
     },
+	{
+	  "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
+      "number": 10,
+      "title": "Backup database",
+      "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
+      "automationServicePath": "$(Install:Root:Path)\\$(Install:MAS:Path)",
+      "backupPath": "$(Backup:Root:Path)\\Staging",
+      "machineRole": "Master",
+      "setupMode": "UpdateAndRestore"
+    },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 10,
+      "number": 11,
       "title": "Backup applicazione",
       "description": "Sposta l'applicazione nella cartella di backup",
       "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Copy-Item $installer $stageInstaller -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse;Remove-Item $installer -Force -Recurse",
       //"script": "timeout /T 2", // ** fake
       "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse;Remove-Item $stageInstaller -Force -Recurse",
       "setupMode": "UpdateAndRestore"
-    },
-    {
-      "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
-      "number": 11,
-      "title": "Backup database",
-      "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
-      "automationServicePath": "$(Install:Root:Path)\\$(Install:MAS:Path)",
-      "backupPath": "$(Backup:Root:Path)\\Staging",
-      "machineRole": "master",
-      "setupMode": "UpdateAndRestore"
-    },
+    },    
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 12,
@@ -253,10 +253,8 @@
       "number": 25,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
-      "script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
-      "rollbackScript": "\"Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\""
-      //"script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
-      //"rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F"
+	  "Script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+	  "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",      
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",

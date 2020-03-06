@@ -108,7 +108,7 @@ namespace Ferretto.VW.Installer.ViewModels
             if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
             {
                 var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
-                //this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
+                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
                 //this.AddAppConfig("Install:Parameter:BayNumber", ((int)bayFound.Number).ToString());
                 this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);                
                 this.canProcede = true;
@@ -165,6 +165,7 @@ namespace Ferretto.VW.Installer.ViewModels
             try
             {
                 this.installationService.UpdateMachineRole();
+                this.installationService.LoadSteps();
                 this.SavePanelPcConfig();
                 this.installationService.SetOperation(OperationMode.Update);
                 this.isSuccessful = true;

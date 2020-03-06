@@ -63,6 +63,10 @@ namespace Ferretto.VW.Installer.ViewModels
 
             this.installationService.SetArgsStartup();
 
+            this.installationService.GetInstallerParameters();
+
+            this.installationService.UpdateMachineRole();
+
             this.installationService.LoadSteps();
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
