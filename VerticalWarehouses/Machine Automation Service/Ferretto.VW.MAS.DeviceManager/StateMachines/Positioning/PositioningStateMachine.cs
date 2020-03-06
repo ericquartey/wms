@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             ILogger logger,
             IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
 

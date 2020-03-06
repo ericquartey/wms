@@ -214,9 +214,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public void DepositUnitEnd(bool restore = false)
         {
             var bayShutter = false;
+            Bay bay = null;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                 if (bayShutter)
                 {
@@ -261,16 +262,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                     }
 
-                    if (this.Mission.MissionType == MissionType.OUT
-                        || this.Mission.MissionType == MissionType.WMS
-                        )
+                    if (bay == null
+                        || bay.Positions.Count() == 1
+                        || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
+                        || bay.Carousel is null)
                     {
-                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        if (this.Mission.MissionType == MissionType.OUT
+                            || this.Mission.MissionType == MissionType.WMS
+                            )
+                        {
+                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                        else
+                        {
+                            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
                     }
                     else
                     {
-                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                        newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }
             }
