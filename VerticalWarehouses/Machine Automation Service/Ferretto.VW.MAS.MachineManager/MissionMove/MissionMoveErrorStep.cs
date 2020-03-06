@@ -195,6 +195,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
+                case MissionStep.WaitDeposit:
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.RestoreWaitDeposit();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
+                    break;
+
                 default:
                     this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
@@ -361,6 +373,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
+                case MissionStep.WaitDeposit:
+                    newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
                 default:
                     newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
@@ -389,6 +405,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreConditions = true;
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+        }
+
+        private void RestoreWaitDeposit()
+        {
+            this.Mission.NeedMovingBackward = false;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+            if (shutterPosition != ShutterPosition.Opened
+                && shutterPosition != ShutterPosition.Closed)
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
+                this.MissionsDataProvider.Update(this.Mission);
+            }
+            else
+            {
+                this.Mission.RestoreConditions = false;
+                var newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
         }

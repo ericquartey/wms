@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const int CheckDelayTime = 200;
+        private const int CheckDelayTime = 300;
 
         private readonly Axis axisToCalibrate;
 
