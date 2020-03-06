@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager
 {
     internal abstract class StateMachineBase : IStateMachine
@@ -22,10 +21,12 @@ namespace Ferretto.VW.MAS.DeviceManager
         #region Constructors
 
         protected StateMachineBase(
+            BayNumber bayNumber,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
         {
+            this.BayNumber = bayNumber;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -36,6 +37,8 @@ namespace Ferretto.VW.MAS.DeviceManager
         #endregion
 
         #region Properties
+
+        public BayNumber BayNumber { get; }
 
         public IEventAggregator EventAggregator { get; }
 

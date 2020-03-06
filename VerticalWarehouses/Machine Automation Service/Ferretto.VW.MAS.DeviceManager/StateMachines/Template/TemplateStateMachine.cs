@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Template
 {
     internal class TemplateStateMachine : StateMachineBase
@@ -27,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
             IEventAggregator eventAggregator,
             ILogger<DeviceManagerService> logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new TemplateMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
         }

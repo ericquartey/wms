@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 {
     internal class ResetFaultStateMachine : StateMachineBase
@@ -28,7 +27,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new ResetFaultMachineData(
                 receivedMessage.RequestingBay,

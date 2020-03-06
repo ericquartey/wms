@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 {
     internal class PowerEnableStateMachine : StateMachineBase
@@ -34,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.baysDataProvider = baysDataProvider;
 
