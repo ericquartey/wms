@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Properties
 
+        BayNumber BayNumber { get; }
+
         IEventAggregator EventAggregator { get; }
 
         ILogger Logger { get; }

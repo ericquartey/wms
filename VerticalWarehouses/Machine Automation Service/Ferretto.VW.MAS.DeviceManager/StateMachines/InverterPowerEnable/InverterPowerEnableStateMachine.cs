@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 {
     internal class InverterPowerEnableStateMachine : StateMachineBase
@@ -31,7 +30,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new InverterPowerEnableMachineData(
                 ((InverterPowerEnableMessageData)receivedMessage.Data).Enable,

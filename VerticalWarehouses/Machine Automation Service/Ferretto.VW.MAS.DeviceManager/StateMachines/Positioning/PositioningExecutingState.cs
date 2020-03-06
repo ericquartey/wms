@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     switch (message.Type)
                     {
                         case FieldMessageType.Positioning:
-                            this.Logger.LogDebug($"Trace Notification Message {message}");
+                            this.Logger.LogDebug($"Trace Notification Message {message.ToString()}");
                             this.ProcessEndPositioning();
                             break;
 

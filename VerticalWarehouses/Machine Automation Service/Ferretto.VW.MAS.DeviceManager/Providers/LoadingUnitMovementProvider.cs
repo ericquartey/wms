@@ -258,7 +258,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         // TODO: throw an exception?
                         closeShutter = ShutterPosition.NotSpecified;
                     }
-                    else if (bayPosition.IsUpper)
+                    else if (bayPosition.IsUpper
+                        || bay.Positions.Any(x => x.IsUpper && x.LoadingUnit != null)
+                        )
                     {
                         closeShutter = ShutterPosition.Half;
                     }
