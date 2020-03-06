@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessContinueMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("1:Method Start");
-            if (this.currentStateMachines.Any(x => x.Key == receivedMessage.TargetBay))
+            if (this.bayInverters.Any(b => b.Value == receivedMessage.TargetBay && this.currentStateMachines.ContainsKey(b.Key)))
             {
                 var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
                 var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
@@ -126,15 +126,15 @@ namespace Ferretto.VW.MAS.DeviceManager
                     targetBay = receivedMessage.RequestingBay;
                 }
 
-                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+                if (this.bayInverters.Any(b => b.Value == targetBay && this.currentStateMachines.ContainsKey(b.Key)))
                 {
                     this.SendCriticalErrorMessage(
-                        new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                        new FsmExceptionMessageData(null, $"Error while starting Homing. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
                 }
                 else
                 {
                     receivedMessage.TargetBay = targetBay;
-                    currentStateMachine = new HomingStateMachine(
+                    var currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         data.CalibrationType,
                         data.LoadingUnitId,
@@ -149,9 +149,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.ServiceScopeFactory);
 
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                    this.currentStateMachines.Add(targetBay, currentStateMachine);
+                    var inverterIndex = this.bayInverters.First(b => b.Value == targetBay).Key;
+                    this.currentStateMachines.Add(inverterIndex, currentStateMachine);
 
-                    this.StartStateMachine(targetBay);
+                    this.StartStateMachine(inverterIndex);
                 }
             }
             else
@@ -166,17 +167,17 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
 
-            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            if (this.bayInverters.Any(b => b.Value == receivedMessage.TargetBay && this.currentStateMachines.ContainsKey(b.Key)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
-                    $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on {receivedMessage.TargetBay}",
+                    $"Error while starting FaultReset state machine. Operation already in progress on {receivedMessage.TargetBay}",
                     1, MessageVerbosity.Error));
             }
             else
             {
                 var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
 
-                currentStateMachine = new ResetFaultStateMachine(
+                var currentStateMachine = new ResetFaultStateMachine(
                     receivedMessage,
                     inverterList,
                     this.EventAggregator,
@@ -184,18 +185,19 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
                 this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
+                var inverterIndex = this.bayInverters.First(b => b.Value == receivedMessage.TargetBay).Key;
+                this.currentStateMachines.Add(inverterIndex, currentStateMachine);
 
-                this.StartStateMachine(receivedMessage.TargetBay);
+                this.StartStateMachine(inverterIndex);
             }
         }
 
         private void ProcessInverterPowerEnable(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            if (this.bayInverters.Any(b => b.Value == receivedMessage.TargetBay && this.currentStateMachines.ContainsKey(b.Key)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
-                    $"Unable to start '{nameof(InverterPowerEnableStateMachine)}' FSM. Operation {currentStateMachine?.GetType().Name} already in progress on {receivedMessage.TargetBay}",
+                    $"Unable to start '{nameof(InverterPowerEnableStateMachine)}' FSM. Operation already in progress on {receivedMessage.TargetBay}",
                     1, MessageVerbosity.Error));
             }
             else
@@ -204,7 +206,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     .GetRequiredService<IDigitalDevicesDataProvider>()
                     .GetAllInvertersByBay(receivedMessage.TargetBay);
 
-                currentStateMachine = new InverterPowerEnableStateMachine(
+                var currentStateMachine = new InverterPowerEnableStateMachine(
                     receivedMessage,
                     inverterList,
                     this.EventAggregator,
@@ -212,9 +214,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
                 this.Logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType().Name}");
-                this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
+                var inverterIndex = this.bayInverters.First(b => b.Value == receivedMessage.TargetBay).Key;
+                this.currentStateMachines.Add(inverterIndex, currentStateMachine);
 
-                this.StartStateMachine(receivedMessage.TargetBay);
+                this.StartStateMachine(inverterIndex);
             }
         }
 
@@ -247,17 +250,18 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 targetBay = message.RequestingBay;
             }
+            var shutterIndex = baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index;
 
-            if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+            if (this.bayInverters.Any(b => b.Value == targetBay && b.Key != shutterIndex && this.currentStateMachines.ContainsKey(b.Key)))
             {
-                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
             }
             else
             {
                 data.IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value;
                 data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
-                currentStateMachine = new PositioningStateMachine(
+                var currentStateMachine = new PositioningStateMachine(
                     message.Source,
                     message.RequestingBay,
                     targetBay,
@@ -269,9 +273,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
                 this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                this.currentStateMachines.Add(targetBay, currentStateMachine);
+                var inverterIndex = this.bayInverters.First(b => b.Value == targetBay && b.Key != shutterIndex).Key;
+                this.currentStateMachines.Add(inverterIndex, currentStateMachine);
 
-                this.StartStateMachine(targetBay);
+                this.StartStateMachine(inverterIndex);
             }
         }
 
@@ -282,9 +287,9 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (message.Data is IPowerEnableMessageData data)
             {
                 //TODO verify pre conditions (is this actually an error ?)
-                if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
+                if (this.currentStateMachines.TryGetValue(InverterIndex.MainInverter, out var currentStateMachine))
                 {
-                    this.Logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType().Name}");
+                    this.Logger.LogTrace($"1:Attempt to Power On a running State Machine {currentStateMachine.GetType().Name}");
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Info",
@@ -314,9 +319,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.Logger,
                         this.ServiceScopeFactory);
 
-                    this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
+                    this.currentStateMachines.Add(InverterIndex.MainInverter, currentStateMachine);
 
-                    this.StartStateMachine(BayNumber.BayOne);
+                    this.StartStateMachine(InverterIndex.MainInverter);
 
                     if (!data.Enable)
                     {
@@ -373,7 +378,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
+            if (this.currentStateMachines.TryGetValue(InverterIndex.MainInverter, out var currentStateMachine))
             {
                 this.Logger.LogTrace($"1:Attempt to Power Off a running State Machine {currentStateMachine.GetType().Name}");
                 var notificationMessage = new NotificationMessage(
@@ -400,9 +405,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
             this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-            this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
+            this.currentStateMachines.Add(InverterIndex.MainInverter, currentStateMachine);
 
-            this.StartStateMachine(BayNumber.BayOne);
+            this.StartStateMachine(InverterIndex.MainInverter);
         }
 
         private void ProcessSensorsChangedMessage(IServiceProvider serviceProvider)
@@ -446,34 +451,33 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessShutterPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("1:Method Start");
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var shutterIndex = baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index;
 
-            if (this.currentStateMachines.TryGetValue(message.RequestingBay, out var currentStateMachine))
+            if (this.bayInverters.Any(b => b.Value == message.RequestingBay && b.Key == shutterIndex && this.currentStateMachines.ContainsKey(b.Key)))
             {
-                this.Logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType().Name}");
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
-                    $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay",
+                    $"Error while starting shutter position state machine. Operation already in progress on {message.RequestingBay}",
                     1, MessageVerbosity.Error));
             }
             else
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
-                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-
                     message.TargetBay = message.RequestingBay;
-                    currentStateMachine = new ShutterPositioningStateMachine(data,
+                    var currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
                         message.TargetBay,
-                        baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
+                        shutterIndex,
                         this.machineResourcesProvider,
                         this.EventAggregator,
                         this.Logger,
                         this.ServiceScopeFactory);
 
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                    this.currentStateMachines.Add(message.TargetBay, currentStateMachine);
+                    this.currentStateMachines.Add(shutterIndex, currentStateMachine);
 
-                    this.StartStateMachine(message.TargetBay);
+                    this.StartStateMachine(shutterIndex);
                 }
             }
         }
@@ -483,29 +487,37 @@ namespace Ferretto.VW.MAS.DeviceManager
             this.Logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
             if (receivedMessage.TargetBay == BayNumber.None)
             {
-                if (this.currentStateMachines.Any(x => x.Key == receivedMessage.RequestingBay))
+                if (this.bayInverters.Any(b => b.Value == receivedMessage.RequestingBay && this.currentStateMachines.ContainsKey(b.Key)))
                 {
                     receivedMessage.TargetBay = receivedMessage.RequestingBay;
                 }
                 else
                 {
                     // message received from the UI: let's stop the first active FSM
-                    receivedMessage.TargetBay = this.currentStateMachines.Keys.FirstOrDefault();
+                    if (this.currentStateMachines.Any())
+                    {
+                        receivedMessage.TargetBay = this.bayInverters.First(x => x.Key == this.currentStateMachines.Keys.First()).Value;
+                    }
                 }
             }
 
-            if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
+            var stopped = false;
+            foreach (var inverter in this.bayInverters.Where(x => x.Value == receivedMessage.TargetBay).Select(s => s.Key))
             {
-                if (receivedMessage.Data is IStopMessageData data)
+                if (this.currentStateMachines.TryGetValue(inverter, out var currentStateMachine))
                 {
-                    currentStateMachine.Stop(data.StopReason);
-                }
-                else
-                {
-                    currentStateMachine.Stop(StopRequestReason.Stop);
+                    if (receivedMessage.Data is IStopMessageData data)
+                    {
+                        currentStateMachine.Stop(data.StopReason);
+                    }
+                    else
+                    {
+                        currentStateMachine.Stop(StopRequestReason.Stop);
+                    }
+                    stopped = true;
                 }
             }
-            else
+            if (!stopped)
             {
                 var errorNotification = new NotificationMessage(
                     receivedMessage.Data,
@@ -526,24 +538,25 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessStopTest(CommandMessage receivedMessage)
         {
             this.Logger.LogTrace("1:Method Start");
-            var stateMachines = this.currentStateMachines.Where(x => x.Key == receivedMessage.RequestingBay && x.Value is PositioningStateMachine);
-            if (stateMachines.Any())
+            bool stopped = false;
+            foreach (var inverter in this.bayInverters.Where(x => x.Value == receivedMessage.RequestingBay).Select(s => s.Key))
             {
-                foreach (var fsm in stateMachines)
+                this.currentStateMachines.TryGetValue(inverter, out var fsm);
+                if (fsm is PositioningStateMachine)
                 {
-                    var stateMachine = fsm.Value as PositioningStateMachine;
-                    stateMachine.ProcessCommandMessage(receivedMessage);
+                    fsm.ProcessCommandMessage(receivedMessage);
+                    stopped = true;
                 }
             }
-            else
+            if (!stopped)
             {
                 this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
             }
         }
 
-        private void StartStateMachine(BayNumber bayNumber)
+        private void StartStateMachine(InverterIndex inverterIndex)
         {
-            var stateMachine = this.currentStateMachines[bayNumber];
+            var stateMachine = this.currentStateMachines[inverterIndex];
 
             try
             {

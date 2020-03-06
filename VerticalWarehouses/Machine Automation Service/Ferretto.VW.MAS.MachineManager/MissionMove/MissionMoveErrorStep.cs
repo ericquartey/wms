@@ -294,8 +294,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreConditions = true;
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.NeedMovingBackward = false;
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                 var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
@@ -348,8 +346,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.CloseShutter:
                     {
-                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                        this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                         newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     break;
