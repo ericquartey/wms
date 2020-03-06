@@ -19,14 +19,14 @@
             return null;
         }
 
-        public static string GetItemId(this UserActionEventArgs eventArgs)
+        public static string GetItemCode(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
             {
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemId.ToString(), out var itemBarcode))
+            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemCode.ToString(), out var itemBarcode))
             {
                 return itemBarcode;
             }
