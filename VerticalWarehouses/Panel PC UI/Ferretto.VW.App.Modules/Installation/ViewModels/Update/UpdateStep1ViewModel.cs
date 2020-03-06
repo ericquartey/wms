@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private const string BAKUPZIPFILENAME = "F:\\Update\\Backup\\Current_Version_Backup.zip";
+        private const string BAKUPZIPFILENAME = "F:\\Update\\Backup\\Backup.zip";
 
         private readonly IDialogService dialogService;
 
