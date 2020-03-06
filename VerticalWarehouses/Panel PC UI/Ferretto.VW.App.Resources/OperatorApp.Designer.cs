@@ -115,6 +115,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode &apos;{0}&apos; not recognized..
+        /// </summary>
+        public static string BarcodeNotRecognized {
+            get {
+                return ResourceManager.GetString("BarcodeNotRecognized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -535,6 +544,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CurrentOperationIsNoLongerAvailable {
             get {
                 return ResourceManager.GetString("CurrentOperationIsNoLongerAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current page does not support barcode scanning..
+        /// </summary>
+        public static string CurrentPageDoesNotSupportBarcodeScanning {
+            get {
+                return ResourceManager.GetString("CurrentPageDoesNotSupportBarcodeScanning", resourceCulture);
             }
         }
         
@@ -2632,6 +2650,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NewOperationsAvailable {
             get {
                 return ResourceManager.GetString("NewOperationsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No item with code &apos;{0}&apos; is available.
+        /// </summary>
+        public static string NoItemWithCodeIsAvailable {
+            get {
+                return ResourceManager.GetString("NoItemWithCodeIsAvailable", resourceCulture);
             }
         }
         

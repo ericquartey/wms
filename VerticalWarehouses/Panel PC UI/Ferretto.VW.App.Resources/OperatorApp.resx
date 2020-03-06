@@ -1548,4 +1548,13 @@ Please put back any moved pieces in their original position.</value>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Barcode '{0}' not recognized.</value>
+  </data>
+  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
+    <value>The current page does not support barcode scanning.</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>No item with code '{0}' is available</value>
+  </data>
 </root>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Printing.ExportHelpers;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
@@ -172,13 +173,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedItem;
             set
             {
-                if (this.SetProperty(ref this.selectedItem, value))
+                if (value is null)
                 {
-                    var machineId = this.bayManager.Identity.Id;
-                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
-                    this.InputQuantity = null;
-                    this.RaiseCanExecuteChanged();
+                    this.RaisePropertyChanged();
+                    return;
                 }
+
+                this.SetProperty(ref this.selectedItem, value);
+
+                var machineId = this.bayManager.Identity.Id;
+                this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
+                this.InputQuantity = null;
+                this.RaiseCanExecuteChanged();
             }
         }
 
@@ -454,14 +460,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
-            var itemBarcode = e.GetItemId();
-            if (itemBarcode != null)
+            var itemCode = e.GetItemCode();
+            if (itemCode != null)
             {
                 try
                 {
-                    // TODO when implemented GetByBarcodeAsync skip this
-                    this.SearchItem = itemBarcode;
-                    //var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                    var items = await this.areasWebService.GetItemsAsync(
+                        this.areaId.Value,
+                        0,
+                        1,
+                        null,
+                        null,
+                        itemCode);
+
+                    if (items.Any())
+                    {
+                        this.ClearNotifications();
+                        this.SearchItem = itemCode;
+                    }
+                    else
+                    {
+                        this.ShowNotification(string.Format(Ferretto.VW.App.Resources.OperatorApp.NoItemWithCodeIsAvailable, itemCode), Services.Models.NotificationSeverity.Warning);
+                    }
                 }
                 catch (Exception ex)
                 {

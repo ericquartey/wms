@@ -138,10 +138,16 @@ namespace Ferretto.VW.App.Accessories
 
         private async Task OnBarcodeReceivedAsync(object sender, ActionEventArgs e)
         {
+            var code = e.Code.Replace("\r", "").Replace("\n", "");
+
             var activeContext = this.GetActiveContext();
 
             if (activeContext is null)
             {
+                this.eventAggregator
+                   .GetEvent<PresentationNotificationPubSubEvent>()
+                   .Publish(new PresentationNotificationMessage(string.Format(Resources.OperatorApp.CurrentPageDoesNotSupportBarcodeScanning, code), Services.Models.NotificationSeverity.Warning));
+
                 System.Diagnostics.Debug.WriteLine($"Current view model does not specify an operational context.");
                 return;
             }
@@ -152,6 +158,10 @@ namespace Ferretto.VW.App.Accessories
 
             if (rule is null)
             {
+                this.eventAggregator
+                   .GetEvent<PresentationNotificationPubSubEvent>()
+                   .Publish(new PresentationNotificationMessage(string.Format(Resources.OperatorApp.BarcodeNotRecognized, code), Services.Models.NotificationSeverity.Warning));
+
                 System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} does not match any rule.");
             }
             else
