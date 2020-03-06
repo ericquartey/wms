@@ -221,11 +221,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.Closed)
+                && shutterPosition != ShutterPosition.Closed
+                && shutterPosition != ShutterPosition.Half
+                )
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
@@ -401,6 +404,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
