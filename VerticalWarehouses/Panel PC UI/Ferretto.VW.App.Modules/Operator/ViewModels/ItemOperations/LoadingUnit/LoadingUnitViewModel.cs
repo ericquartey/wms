@@ -198,7 +198,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.WmsDataProvider.IsEnabled && activeOperation != null)
                 {
-                    await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
+                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
+                    if (!canComplete)
+                    {
+                        await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+                    }
                 }
                 else
                 {

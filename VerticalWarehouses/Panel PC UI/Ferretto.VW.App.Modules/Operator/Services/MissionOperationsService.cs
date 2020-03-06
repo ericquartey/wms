@@ -70,24 +70,42 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task CompleteAsync(int operationId, double quantity)
+        public async Task<bool> CompleteAsync(int operationId, double quantity)
         {
-            await this.missionOperationsWebService.CompleteAsync(
-                operationId,
-                quantity,
-                ConfigurationManager.AppSettings.GetLabelPrinterName());
+            var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
 
-            await this.RefreshActiveMissionAsync();
+            if (operationToComplete.Status is MissionOperationStatus.Executing)
+            {
+                await this.missionOperationsWebService.CompleteAsync(
+                    operationId,
+                    quantity,
+                    ConfigurationManager.AppSettings.GetLabelPrinterName());
+
+                await this.RefreshActiveMissionAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
-        public async Task PartiallyCompleteCurrentAsync(double quantity)
+        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
         {
-            await this.missionOperationsWebService.PartiallyCompleteAsync(
-                this.ActiveWmsOperation.Id,
-                quantity,
-                ConfigurationManager.AppSettings.GetLabelPrinterName());
+            var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
 
-            await this.RefreshActiveMissionAsync();
+            if (operationToComplete.Status is MissionOperationStatus.Executing)
+            {
+                await this.missionOperationsWebService.PartiallyCompleteAsync(
+                    operationId,
+                    quantity,
+                    ConfigurationManager.AppSettings.GetLabelPrinterName());
+
+                await this.RefreshActiveMissionAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task RecallLoadingUnitAsync(int id)
@@ -99,6 +117,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.ActiveWmsOperation = null;
 
             this.RaiseMissionChangedEvent();
+        }
+
+        public async Task RefreshAsync()
+        {
+            await this.RefreshActiveMissionAsync();
         }
 
         public async Task StartAsync()
