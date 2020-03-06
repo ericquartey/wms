@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public MissionOperation MissionOperation
         {
             get => this.missionOperation;
-            set => this.SetProperty(ref this.missionOperation, value);
+            private set => this.SetProperty(ref this.missionOperation, value);
         }
 
         public double QuantityIncrement
@@ -109,6 +109,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            this.MissionOperation = null;
+            this.Mission = null;
+
+            base.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -129,7 +137,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.MissionOperationsService.ActiveWmsOperation is null)
             {
-                this.NavigationService.GoBack();
+                // ?????????????? this.NavigationService.GoBack();
                 return;
             }
 

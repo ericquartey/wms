@@ -19,13 +19,15 @@ namespace Ferretto.VW.App.Modules.Operator
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task CompleteAsync(int operationId, double quantity);
+        Task<bool> CompleteAsync(int operationId, double quantity);
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task PartiallyCompleteCurrentAsync(double quantity);
+        Task<bool> PartiallyCompleteAsync(int operationId, double quantity);
 
         Task RecallLoadingUnitAsync(int id);
+
+        Task RefreshAsync();
 
         Task StartAsync();
 

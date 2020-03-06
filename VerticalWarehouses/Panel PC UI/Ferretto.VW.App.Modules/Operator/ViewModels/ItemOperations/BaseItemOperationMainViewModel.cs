@@ -194,9 +194,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
-                await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
-
-                this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
+                var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (canComplete)
+                {
+                    this.ShowNotification(OperatorApp.OperationConfirmed);
+                }
+                else
+                {
+                    this.ShowOperationCanceledMessage();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -221,7 +227,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(OperatorApp.OperationCancelledConfirmed);
 
-                this.NavigationService.GoBack();
+                // ?????????????? this.NavigationService.GoBack();
+                //this.MissionOperation = null;
+                //this.Mission = null;
+
+                await this.MissionOperationsService.RefreshAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -277,6 +287,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected void ShowOperationCanceledMessage()
+        {
+            this.IsOperationCanceled = true;
+            this.CanInputQuantity = false;
+            this.IsWaitingForResponse = false;
+            this.IsBusyConfirmingOperation = false;
+            this.IsOperationConfirmed = false;
+
+            var msg = this.GetNoLongerOperationMessageByType();
+            this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled, DialogType.Error, DialogButtons.OK);
+            this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
+            this.HideNavigationBack();
         }
 
         protected abstract void ShowOperationDetails();
@@ -370,23 +394,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
         {
-            if (this.IsOperationConfirmed)
+            if (this.IsOperationConfirmed || this.IsOperationCanceled)
             {
                 this.IsOperationConfirmed = false;
 
                 await this.RetrieveMissionOperationAsync();
 
                 this.GetLoadingUnitDetails();
-            }
-            else if (this.MissionOperation?.Id != e.WmsOperation?.Id)
-            {
-                this.IsOperationCanceled = true;
-                this.CanInputQuantity = false;
-
-                var msg = this.GetNoLongerOperationMessageByType();
-                this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
-                this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
-                this.HideNavigationBack();
             }
 
             this.IsBusyConfirmingOperation = false;
