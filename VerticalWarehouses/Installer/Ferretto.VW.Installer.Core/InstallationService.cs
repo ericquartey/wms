@@ -21,6 +21,8 @@ namespace Ferretto.VW.Installer.Core
 
         private const string INSTALLARG = "--install";
 
+        private const string RESTOREARG = "--restore";
+
         private const string UPDATEARG = "--update";
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
@@ -270,7 +272,9 @@ namespace Ferretto.VW.Installer.Core
             {
                 this.OperationMode = OperationMode.ImstallType;
             }
-            else if (this.setupMode == SetupMode.Update)
+            else if (this.setupMode == SetupMode.Update
+                     ||
+                     this.setupMode == SetupMode.Restore)
             {
                 this.OperationMode = OperationMode.Update;
             }
@@ -355,6 +359,10 @@ namespace Ferretto.VW.Installer.Core
                 if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
                 {
                     this.SetupMode = SetupMode.Update;
+                }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == RESTOREARG)
+                {
+                    this.SetupMode = SetupMode.Restore;
                 }
                 else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
                 {

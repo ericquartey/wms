@@ -106,24 +106,24 @@
       "machineRole": "Master",
       "setupMode": "UpdateAndRestore"
     },
-    {
+	{
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 11,
+      "title": "Ripristino database",
+      "description": "Sostituisce i files di database esistenti con quelli di backup",
+      "script": "$AppSettings = \"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json\";$primDbStageFile = \"$(Backup:Root:Path)\\staging\\primary.db\";$secDbStageFile = \"$(Backup:Root:Path)\\staging\\secondary.db\";$json_object = Get-Content -Raw -Path $AppSettings | ConvertFrom-Json;$primDbName = $json_object.ConnectionStrings.AutomationServicePrimary;$secDbName = $json_object.ConnectionStrings.AutomationServiceSecondary;$primFileDbName = $primDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$secFileDbName = $secDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$primDbFilePath =  \"E:\\database\\\" +  ([io.fileinfo]$primFileDbName).Name;$secDbFileName = \"F:\\database\\\" + ([io.fileinfo]$secFileDbName).Name;Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force",
+      "machineRole": "master",
+      "setupMode": "Restore"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 12,
       "title": "Backup applicazione",
       "description": "Sposta l'applicazione nella cartella di backup",
       "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Copy-Item $installer $stageInstaller -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse;Remove-Item $installer -Force -Recurse",
       //"script": "timeout /T 2", // ** fake
       "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse;Remove-Item $stageInstaller -Force -Recurse",
       "setupMode": "UpdateAndRestore"
-    },    
-    {
-      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 12,
-      "title": "Ripristino database",
-      "description": "Sostituisce i files di database esistenti con quelli di backup",
-      "script": "$AppSettings = \\\"$(Backup:Root:Path)\\\\Staging\\\\$(Install:MAS:Path)\\\\appsettings.json\\\";$primDbStageFile = \\\"$(Backup:Root:Path)\\staging\\\\primary.db\\\";$secDbStageFile = \\\"$(Backup:Root:Path)\\\\staging\\\\secondary.db\\\";$json_object = Get-Content -Raw -Path $AppSettings | ConvertFrom-Json;$primDbName = $json_object.ConnectionStrings.AutomationServicePrimary;$secDbName = $json_object.ConnectionStrings.AutomationServiceSecondary;$primFileDbName = $primDbName.Replace(\\\"Data Source='\\\", \\\"\\\").TrimEnd(\\\"'\\\");$secFileDbName = $secDbName.Replace(\\\"Data Source='\\\", \\\"\\\").TrimEnd(\\\"'\\\");$primDbFilePath =  \\\"E:\\database\\\\\\\" +  ([io.fileinfo]$primFileDbName).Name;$secDbFileName = \\\"F:\\database\\\\\\\" + ([io.fileinfo]$secFileDbName).Name;Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force",
-      "machineRole": "master",
-      "setupMode": "Restore"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -215,7 +215,7 @@
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
-      "setupMode": "update",
+      "setupMode": "UpdateAndRestore",
       "skipRollback": true
     },
     {
