@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -160,6 +161,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.ToTarget:
                 case MissionStep.BackToTarget:
+                case MissionStep.WaitDeposit:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
@@ -195,18 +197,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
-                case MissionStep.WaitDeposit:
-                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
-                    {
-                        this.Mission.StepTime = DateTime.UtcNow;
-                        this.RestoreWaitDeposit();
-                    }
-                    else
-                    {
-                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
-                    }
-                    break;
-
                 default:
                     this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
@@ -232,10 +222,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            if (shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.Closed
-                && shutterPosition != ShutterPosition.Half
-                )
+            if (shutterPosition != ShutterPosition.Half)
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
@@ -327,18 +314,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
-                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                if (shutterPosition != ShutterPosition.Opened
-                    && shutterPosition != ShutterPosition.Closed
-                    )
+                if (bay.Shutter != null)
                 {
-                    this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                    this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
-                    this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
-                    this.MissionsDataProvider.Update(this.Mission);
-                    return;
+                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                    if (shutterPosition != ShutterPosition.Opened
+                        && shutterPosition != ShutterPosition.Half
+                        && shutterPosition != ShutterPosition.Closed
+                        )
+                    {
+                        this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                        this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                        this.MissionsDataProvider.Update(this.Mission);
+                        return;
+                    }
                 }
             }
 
@@ -374,7 +365,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.WaitDeposit:
-                    newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
                 default:
@@ -409,45 +400,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        private void RestoreWaitDeposit()
-        {
-            this.Mission.NeedMovingBackward = false;
-            this.Mission.StopReason = StopRequestReason.NoReason;
-            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
-            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            if (shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.Closed)
-            {
-                this.Mission.RestoreConditions = true;
-                this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
-                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
-                this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
-                this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
-                this.MissionsDataProvider.Update(this.Mission);
-            }
-            else
-            {
-                this.Mission.RestoreConditions = false;
-                var newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
-            }
-        }
-
         private void RestoreWaitPick()
         {
             this.Mission.NeedMovingBackward = false;
             this.Mission.StopReason = StopRequestReason.NoReason;
-            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
-            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            if (shutterPosition != ShutterPosition.Opened
+            var shutterInverter = InverterIndex.None;
+            var shutterPosition = ShutterPosition.NotSpecified;
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay.Shutter != null)
+            {
+                shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+                shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+            }
+            if (shutterInverter != InverterIndex.None
+                && shutterPosition != ShutterPosition.Opened
                 && shutterPosition != ShutterPosition.Closed)
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);

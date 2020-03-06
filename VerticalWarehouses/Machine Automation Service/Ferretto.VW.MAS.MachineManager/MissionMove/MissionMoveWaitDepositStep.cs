@@ -52,7 +52,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
-            if (bay.Shutter.Type != ShutterType.NotSpecified
+            if (bay.Shutter != null
+                && bay.Shutter.Type != ShutterType.NotSpecified
                 )
             {
                 var shutterInverter = bay.Shutter.Inverter.Index;

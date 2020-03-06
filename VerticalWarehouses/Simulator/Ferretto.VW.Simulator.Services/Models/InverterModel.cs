@@ -764,7 +764,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x0004;
                 if (!this.shutterTimerActive && !this.IsTargetReached)
                 {
-                    this.shutterTimer.Change(0, 500);
+                    this.shutterTimer.Change(0, 1000);
                     this.shutterTimerActive = true;
                 }
             }

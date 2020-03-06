@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
                 if (this.Mission.CloseShutterBayNumber != BayNumber.None)
                 {
-                    this.Mission.CloseShutterPosition = ShutterPosition.Closed;
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = bay.Shutter.Inverter.Index;
                     if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
                     {
