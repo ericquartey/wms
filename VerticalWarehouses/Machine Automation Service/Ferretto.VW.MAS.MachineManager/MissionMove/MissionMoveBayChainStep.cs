@@ -203,6 +203,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 || this.Mission.MissionType == MissionType.WMS
                 )
             {
+                var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
+                    .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
+                        && m.Step == MissionStep.WaitDeposit);
+
+                if (waitingMission != null)
+                {
+                    // wake up the mission waiting for the bay chain movement
+                    this.Logger.LogInformation($"Resume lower bay Mission:Id={waitingMission.Id}");
+                    this.LoadingUnitMovementProvider.ResumeOperation(
+                        waitingMission.Id,
+                        waitingMission.LoadUnitSource,
+                        waitingMission.LoadUnitDestination,
+                        waitingMission.WmsId,
+                        waitingMission.MissionType,
+                        waitingMission.TargetBay,
+                        MessageActor.MachineManager);
+                }
+
                 var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
