@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new ShutterPositioningMachineData(
                 positioningMessageData,

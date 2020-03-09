@@ -310,9 +310,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                 }
                 else if (
-                    mission.Status is MissionStatus.Waiting
-                    &&
-                    mission.Step is MissionStep.BayChain)
+                    (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.BayChain)
+                    || (mission.Status is MissionStatus.Executing && mission.Step is MissionStep.WaitDeposit)
+                    )
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
 

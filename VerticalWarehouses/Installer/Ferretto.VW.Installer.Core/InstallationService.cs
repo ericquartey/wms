@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.Installer.Core
 
         private const string INSTALLARG = "--install";
 
+        private const string RESTOREARG = "--restore";
+
         private const string UPDATEARG = "--update";
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
@@ -37,6 +40,8 @@ namespace Ferretto.VW.Installer.Core
         private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
+
+        private IPAddress ppcIpAddress;
 
         private string masVersion;
 
@@ -230,7 +235,7 @@ namespace Ferretto.VW.Installer.Core
                         if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
-                            {                                
+                            {
                                 this.IsRollbackInProgress = true;
                                 await this.RollbackStep(this.ActiveStep);
                             }
@@ -267,7 +272,9 @@ namespace Ferretto.VW.Installer.Core
             {
                 this.OperationMode = OperationMode.ImstallType;
             }
-            else if (this.setupMode == SetupMode.Update)
+            else if (this.setupMode == SetupMode.Update
+                     ||
+                     this.setupMode == SetupMode.Restore)
             {
                 this.OperationMode = OperationMode.Update;
             }
@@ -353,6 +360,10 @@ namespace Ferretto.VW.Installer.Core
                 {
                     this.SetupMode = SetupMode.Update;
                 }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == RESTOREARG)
+                {
+                    this.SetupMode = SetupMode.Restore;
+                }
                 else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
                 {
                     this.SetupMode = SetupMode.Install;
@@ -361,10 +372,42 @@ namespace Ferretto.VW.Installer.Core
         }
 
         public void UpdateMachineRole()
-        {
-            this.MachineRole = (this.masIpAddress is null) ? MachineRole.Master : MachineRole.Slave;
-            this.LoadSteps();
+        {            
+            this.MachineRole = (this.masIpAddress.Equals(this.ppcIpAddress)) ? MachineRole.Master : MachineRole.Slave;
         }
+
+        public void GetInstallerParameters()
+        {
+            try
+            {
+                this.masIpAddress = null;
+                this.ppcIpAddress = null;
+
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var masIpAddress = config.AppSettings.Settings["Install:Parameter:MasIpaddress"].Value;
+                if (!string.IsNullOrEmpty(masIpAddress)
+                    &&
+                    IPAddress.TryParse(masIpAddress.ToString(), out var masIpAddressFound))
+                {                    
+                    this.masIpAddress = masIpAddressFound;
+                }
+
+                var ppcIpAddress = config.AppSettings.Settings["Install:Parameter:PpcIpaddress"].Value;
+                if (!string.IsNullOrEmpty(ppcIpAddress)
+                  &&
+                  IPAddress.TryParse(ppcIpAddress.ToString(), out var ppcIpAddressFound))
+                {
+                    this.ppcIpAddress = ppcIpAddressFound;
+                }
+            }
+            catch (Exception)
+            {
+                this.masIpAddress = null;
+                this.ppcIpAddress = null;
+            }
+        }
+
+
 
         public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
         {
@@ -387,7 +430,7 @@ namespace Ferretto.VW.Installer.Core
                 var stepsJsonFile = File.ReadAllText(this.fileName);
                 var serviceAnon = new { Steps = Array.Empty<Step>() };
                 serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any)
+                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any || ((this.setupMode == SetupMode.Update || this.setupMode == SetupMode.Restore) && s.SetupMode == SetupMode.UpdateAndRestore))
                                                           &&
                                                           (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
                                                           .OrderBy(s => s.Number).ToArray();

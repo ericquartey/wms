@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             switch (message.Type)
             {
                 case FieldMessageType.InverterPowerOff:
+                case FieldMessageType.InverterPowerOn:
                 case FieldMessageType.CalibrateAxis:
                 case FieldMessageType.InverterSwitchOn:
                 case FieldMessageType.InverterSwitchOff:
@@ -103,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} stopRequest {this.stateData.StopRequestReason}");
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var targetInverter = this.machineData.CurrentInverterIndex;

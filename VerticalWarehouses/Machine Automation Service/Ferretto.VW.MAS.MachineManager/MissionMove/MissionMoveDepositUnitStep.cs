@@ -154,7 +154,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
 
-                        if (notification.Type == MessageType.ShutterPositioning)
+                        if (notification.Type == MessageType.ShutterPositioning
+                            && this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified
+                            )
                         {
                             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);

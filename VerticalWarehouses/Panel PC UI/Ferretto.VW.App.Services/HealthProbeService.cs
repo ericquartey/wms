@@ -141,8 +141,6 @@ namespace Ferretto.VW.App.Services
 
         private async Task<HealthStatus> CheckLivelinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
-            this.logger.Debug($"Checking liveliness of service at '{client.BaseAddress}' ...");
-
             try
             {
                 var livelinessResponse = await this.GetHealthCheckStatus(client, this.liveHealthCheckPath, cancellationToken);

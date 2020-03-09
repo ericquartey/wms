@@ -4,18 +4,21 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal sealed class CalibrateAxisEnableOperationState : InverterStateBase
     {
         #region Fields
 
+        private const int CheckDelayTime = 300;
+
         private readonly Axis axisToCalibrate;
 
         private readonly Calibration calibration;
 
         private readonly DateTime startTime;
+
+        private DateTime enableTime;
 
         #endregion
 
@@ -32,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
             this.startTime = DateTime.UtcNow;
+            this.enableTime = DateTime.MinValue;
         }
 
         #endregion
@@ -93,15 +97,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(
-                        new CalibrateAxisStartHomingState(
-                            this.ParentStateMachine,
-                            this.axisToCalibrate,
-                            this.calibration,
-                            this.InverterStatus as IHomingInverterStatus,
-                            this.Logger));
+                    if (this.enableTime == DateTime.MinValue)
+                    {
+                        this.enableTime = DateTime.UtcNow;
+                    }
+                    else if (DateTime.UtcNow.Subtract(this.enableTime).TotalMilliseconds > CheckDelayTime)
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new CalibrateAxisStartHomingState(
+                                this.ParentStateMachine,
+                                this.axisToCalibrate,
+                                this.calibration,
+                                this.InverterStatus as IHomingInverterStatus,
+                                this.Logger));
 
-                    returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
+                        returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
+                    }
                 }
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                 {

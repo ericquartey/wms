@@ -508,13 +508,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.MissionOperationsService.ActiveWmsMission != null
                 &&
+                this.MissionOperationsService.ActiveWmsOperation != null
+                &&
                 (
                     this.MissionOperationsService.ActiveWmsOperation.Type != MissionOperationType.LoadingUnitCheck
                     ||
                     this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
                         o.Status != MissionOperationStatus.Completed
                         &&
-                        o.Id != this.MissionOperationsService.ActiveWmsOperation?.Id));
+                        o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
         }
 
         private void SelectItemCompartment()

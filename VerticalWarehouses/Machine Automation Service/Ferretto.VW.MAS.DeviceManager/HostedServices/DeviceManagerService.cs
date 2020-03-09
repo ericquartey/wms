@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
+using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils;
@@ -26,7 +26,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -36,7 +35,7 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Fields
 
-        private readonly Dictionary<BayNumber, IStateMachine> currentStateMachines = new Dictionary<BayNumber, IStateMachine>();
+        private readonly List<IStateMachine> currentStateMachines = new List<IStateMachine>();
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
@@ -115,10 +114,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             lock (this.syncObject)
             {
-                if (!this.currentStateMachines.TryGetValue(command.TargetBay, out var messageCurrentStateMachine))
-                {
-                    messageCurrentStateMachine = null;
-                }
+                var messageCurrentStateMachine = this.currentStateMachines.FirstOrDefault(c => c.BayNumber == command.TargetBay);
 
                 if (messageCurrentStateMachine != null
                     && command.Type != MessageType.Stop
@@ -237,41 +233,65 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             lock (this.syncObject)
             {
-                this.currentStateMachines.TryGetValue(message.TargetBay, out var messageCurrentStateMachine);
-
                 if (message.Source is MessageActor.DeviceManager
-                    &&
-                    message.Destination is MessageActor.DeviceManager)
+                    && message.Destination is MessageActor.DeviceManager
+                    && this.currentStateMachines.Any(x => x.BayNumber == message.TargetBay)
+                    )
                 {
-                    switch (message.Type)
+                    foreach (var messageCurrentStateMachine in this.currentStateMachines.Where(x => x.BayNumber == message.TargetBay).ToList())
                     {
-                        case MessageType.Positioning:
-                        case MessageType.Homing:
-                        case MessageType.ShutterPositioning:
-                        case MessageType.PowerEnable:
-                        case MessageType.InverterFaultReset:
-                        case MessageType.ResetSecurity:
-                        case MessageType.InverterPowerEnable:
-                            this.Logger.LogTrace($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status}");
-                            this.currentStateMachines.Remove(message.TargetBay);
-                            this.SendCleanDebug();
-                            break;
+                        switch (message.Type)
+                        {
+                            case MessageType.Homing:
+                            case MessageType.PowerEnable:
+                            case MessageType.InverterFaultReset:
+                            case MessageType.ResetSecurity:
+                            case MessageType.InverterPowerEnable:
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+
+                            case MessageType.Positioning:
+                                if (!(messageCurrentStateMachine is PositioningStateMachine))
+                                {
+                                    // deallocate only Positioning state machine
+                                    continue;
+                                }
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+
+                            case MessageType.ShutterPositioning:
+                                if (!(messageCurrentStateMachine is ShutterPositioningStateMachine))
+                                {
+                                    // deallocate only ShutterPositioning state machine
+                                    continue;
+                                }
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+                        }
+
+                        var notificationMessage = new NotificationMessage(
+                            message.Data,
+                            message.Description,
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            message.Type,
+                            message.RequestingBay,
+                            message.TargetBay,
+                            message.Status,
+                            message.ErrorLevel);
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(notificationMessage);
+
+                        messageCurrentStateMachine?.ProcessNotificationMessage(message);
                     }
-
-                    var notificationMessage = new NotificationMessage(
-                        message.Data,
-                        message.Description,
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        message.Type,
-                        message.RequestingBay,
-                        message.TargetBay,
-                        message.Status,
-                        message.ErrorLevel);
-
-                    this.EventAggregator
-                        .GetEvent<NotificationEvent>()
-                        .Publish(notificationMessage);
                 }
 
                 if (message.Type is MessageType.DataLayerReady)
@@ -281,24 +301,21 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
                     var fieldNotification = new FieldNotificationMessage(
-                        null,
-                        "Data Layer Ready",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.DeviceManager,
-                        FieldMessageType.DataLayerReady,
-                        MessageStatus.NotSpecified,
-                        (byte)InverterIndex.None);
+                    null,
+                    "Data Layer Ready",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.DataLayerReady,
+                    MessageStatus.NotSpecified,
+                    (byte)InverterIndex.None);
 
                     this.EventAggregator
                         .GetEvent<FieldNotificationEvent>()
                         .Publish(fieldNotification);
                     this.Logger.LogTrace("OnDataLayerReady end");
                 }
-
-                messageCurrentStateMachine?.ProcessNotificationMessage(message);
-
-                return Task.CompletedTask;
             }
+            return Task.CompletedTask;
         }
 
         private void DequeueFieldNotifications()
@@ -564,11 +581,23 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                             this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0000}");
 
-                            this.currentStateMachines.TryGetValue(bayNumber, out var tempStateMachine);
-                            if (tempStateMachine is null ||
-                                tempStateMachine is InverterPowerEnableStateMachine ||
-                                tempStateMachine is ResetFaultStateMachine ||
-                                tempStateMachine is PowerEnableStateMachine)
+                            var updatePosition = true;
+                            if (this.currentStateMachines.Any(x => x.BayNumber == bayNumber))
+                            {
+                                foreach (var tempStateMachine in this.currentStateMachines.Where(x => x.BayNumber == bayNumber))
+                                {
+                                    if (!(tempStateMachine is InverterPowerEnableStateMachine)
+                                        && !(tempStateMachine is ResetFaultStateMachine)
+                                        && !(tempStateMachine is PowerEnableStateMachine)
+                                        )
+                                    {
+                                        updatePosition = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (updatePosition)
                             {
                                 var notificationMessage = new NotificationMessage(
                                     notificationData,
@@ -729,8 +758,13 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
                 }
 
-                this.currentStateMachines.TryGetValue(bayNumber, out var messageCurrentStateMachine);
-                messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+                if (this.currentStateMachines.Any(x => x.BayNumber == bayNumber))
+                {
+                    foreach (var messageCurrentStateMachine in this.currentStateMachines.Where(x => x.BayNumber == bayNumber))
+                    {
+                        messageCurrentStateMachine.ProcessFieldNotificationMessage(receivedMessage);
+                    }
+                }
             }
         }
 

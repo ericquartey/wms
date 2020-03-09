@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             ILogger logger,
             IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;

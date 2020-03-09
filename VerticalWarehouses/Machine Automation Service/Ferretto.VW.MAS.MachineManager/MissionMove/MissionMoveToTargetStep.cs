@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -74,14 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
                 if (this.Mission.CloseShutterBayNumber != BayNumber.None)
                 {
-                    if (bay.Positions.Any(p => p.LoadingUnit != null))
-                    {
-                        this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
-                    }
-                    else
-                    {
-                        this.Mission.CloseShutterPosition = ShutterPosition.Closed;
-                    }
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = bay.Shutter.Inverter.Index;
                     if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
                     {
@@ -282,23 +276,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                 )
             {
+                IMissionMoveBase newStep = null;
                 if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Elevator
                     && !this.Mission.EjectLoadUnit
                     )
                 {
-                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else if (this.Mission.EjectLoadUnit)
                 {
-                    var newStep = new MissionMoveBackToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    newStep = new MissionMoveBackToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+                {
+                    newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
                 {
-                    var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
+                newStep.OnEnter(null);
             }
         }
 

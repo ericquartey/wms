@@ -301,7 +301,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void Next()
         {
-            this.installationService.SetConfiguration(this.isMasConfiguration ? null : this.masIpAddress, this.masConfiguration);
+            this.installationService.SetConfiguration(this.isMasConfiguration ? this.masIpAddress : null, this.masConfiguration);
 
             this.installationService.SetOperation(OperationMode.InstallBay);
         }

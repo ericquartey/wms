@@ -9,6 +9,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -163,6 +164,10 @@ namespace Ferretto.VW.MAS.MissionManager
             if (exception is WmsWebApiException<ProblemDetails> problemDetailsException)
             {
                 problemDetails = problemDetailsException.Result;
+            }
+            else
+            {
+                problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(exception.Response);
             }
 
             switch (exception.StatusCode)

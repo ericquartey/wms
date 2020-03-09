@@ -125,7 +125,15 @@ namespace Ferretto.VW.App.Modules.Operator
         private bool IsViewTrackable()
         {
             var activeViewModelName = this.GetActiveViewModelName();
-            return activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT;
+
+            return
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PICK
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PUT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY;
         }
 
         private void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
@@ -133,7 +141,13 @@ namespace Ferretto.VW.App.Modules.Operator
             var activeViewModelName = this.GetActiveViewModelName();
             if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
                 &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT)
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PICK
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PUT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY)
             {
                 return;
             }
@@ -215,7 +229,13 @@ namespace Ferretto.VW.App.Modules.Operator
             var activeViewModelName = this.GetActiveViewModelName();
             if (activeViewModelName is Utils.Modules.Operator.OPERATOR_MENU
                 ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.WAIT)
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.WAIT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PICK
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PUT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.INVENTORY)
             {
                 this.NavigateToDrawerView();
             }

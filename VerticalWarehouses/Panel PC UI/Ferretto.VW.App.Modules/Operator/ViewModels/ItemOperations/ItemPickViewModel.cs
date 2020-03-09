@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand EmptyOperationCommand =>
-                    this.emptyOperationCommand
+            this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
@@ -118,7 +118,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (!canComplete)
+                {
+                    this.ShowOperationCanceledMessage();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

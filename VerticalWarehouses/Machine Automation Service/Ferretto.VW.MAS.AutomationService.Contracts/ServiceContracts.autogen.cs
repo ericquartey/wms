@@ -2228,7 +2228,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         BackToTarget = 9,
     
-        End = 10,
+        WaitDeposit = 10,
+    
+        End = 11,
     
         Error = 101,
     

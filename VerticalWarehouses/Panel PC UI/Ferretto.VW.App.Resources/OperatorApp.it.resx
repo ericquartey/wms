@@ -1237,4 +1237,13 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="String1" xml:space="preserve">
     <value />
   </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Codice a barre '{0}' non riconosciuto.</value>
+  </data>
+  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
+    <value>La pagina corrente non supporta la scansione di codici a barre.</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Non c'è un articolo disponibile con codice '{0}'.</value>
+  </data>
 </root>
