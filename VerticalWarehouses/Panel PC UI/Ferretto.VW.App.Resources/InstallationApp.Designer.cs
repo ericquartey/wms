@@ -5355,6 +5355,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS Settings.
+        /// </summary>
+        public static string WmsSettings {
+            get {
+                return ResourceManager.GetString("WmsSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Year.
         /// </summary>
         public static string Year {

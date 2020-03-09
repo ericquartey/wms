@@ -81,6 +81,7 @@
     <None Remove="Views\Parameters\ImportExportFeatures.xaml" />
     <None Remove="Views\Parameters\ParametersImportView.xaml" />
     <None Remove="Views\Profiles\ProfileHeightCheckView.xaml" />
+    <None Remove="Views\Wms\WmsSettingsView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -136,6 +137,9 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Profiles\ProfileHeightCheckView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Wms\WmsSettingsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

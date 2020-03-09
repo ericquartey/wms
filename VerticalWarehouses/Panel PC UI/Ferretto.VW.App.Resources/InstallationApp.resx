@@ -1981,6 +1981,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
     <value>Error on deleting snapshot file.</value>
   </data>
+  <data name="WmsSettings" xml:space="preserve">
+    <value>WMS Settings</value>
+  </data>
   <data name="DrawerManagement" xml:space="preserve">
     <value>Drawer management</value>
   </data>

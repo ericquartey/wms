@@ -40,11 +40,12 @@ namespace Ferretto.VW.App.Modules.Login.Models
             set
             {
                 this.SetProperty(ref this.userName, value);
-                this.RaisePropertyChanged(nameof(this.IsSupport));
-                if (this.IsSupport)
+                if (!this.IsSupport)
                 {
-                    this.RaisePropertyChanged(nameof(this.SupportToken));
+                    this.SupportToken = null;
                 }
+
+                this.RaisePropertyChanged(nameof(this.IsSupport));
             }
         }
 
