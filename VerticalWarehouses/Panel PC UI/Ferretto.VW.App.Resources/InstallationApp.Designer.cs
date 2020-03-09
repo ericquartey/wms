@@ -502,6 +502,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call unit.
+        /// </summary>
+        public static string CallUnit {
+            get {
+                return ResourceManager.GetString("CallUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
@@ -574,6 +583,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell editing.
+        /// </summary>
+        public static string CellEditing {
+            get {
+                return ResourceManager.GetString("CellEditing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell Height [mm].
         /// </summary>
         public static string CellHeight {
@@ -588,6 +606,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CellInsertedNotFree {
             get {
                 return ResourceManager.GetString("CellInsertedNotFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Management.
+        /// </summary>
+        public static string CellManagement {
+            get {
+                return ResourceManager.GetString("CellManagement", resourceCulture);
             }
         }
         
@@ -1182,6 +1209,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DeleteSnapshotFile {
             get {
                 return ResourceManager.GetString("DeleteSnapshotFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete unit.
+        /// </summary>
+        public static string DeleteUnit {
+            get {
+                return ResourceManager.GetString("DeleteUnit", resourceCulture);
             }
         }
         
@@ -1798,6 +1834,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falls drawer.
+        /// </summary>
+        public static string FallsUnit {
+            get {
+                return ResourceManager.GetString("FallsUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed rate.
         /// </summary>
         public static string FeedRate {
@@ -1866,6 +1911,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Forwards {
             get {
                 return ResourceManager.GetString("Forwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free unit.
+        /// </summary>
+        public static string FreeUnit {
+            get {
+                return ResourceManager.GetString("FreeUnit", resourceCulture);
             }
         }
         
@@ -2631,6 +2685,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InsertMeasuredMovement {
             get {
                 return ResourceManager.GetString("InsertMeasuredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert unit.
+        /// </summary>
+        public static string InsertUnit {
+            get {
+                return ResourceManager.GetString("InsertUnit", resourceCulture);
             }
         }
         
@@ -4410,6 +4473,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save unit.
+        /// </summary>
+        public static string SaveUnit {
+            get {
+                return ResourceManager.GetString("SaveUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security.
         /// </summary>
         public static string Security {
@@ -5126,6 +5198,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayWeight {
             get {
                 return ResourceManager.GetString("TrayWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit.
+        /// </summary>
+        public static string Unit {
+            get {
+                return ResourceManager.GetString("Unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editing of the unit.
+        /// </summary>
+        public static string UnitEditing {
+            get {
+                return ResourceManager.GetString("UnitEditing", resourceCulture);
             }
         }
         

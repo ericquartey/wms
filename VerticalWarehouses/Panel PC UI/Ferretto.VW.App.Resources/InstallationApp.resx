@@ -1990,8 +1990,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BayUp" xml:space="preserve">
     <value>Bay up</value>
   </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Call unit</value>
+  </data>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Wait for the end of the procedure, if necessary, the 'STOP' button for an immediate stop and 'STOP PROCEDURE' for a stop in phase.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Cell editing</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Cell Management</value>
   </data>
   <data name="CellPanelsCheckDescription" xml:space="preserve">
     <value>Be sure to adjust the drawer presence photocells, if not adjusted, the lift could block in the upper part of the machine.</value>
@@ -2001,6 +2010,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="CellPanelsCheckPhotocells" xml:space="preserve">
     <value>Photocell control:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Delete unit</value>
   </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevator back</value>
@@ -2014,8 +2026,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ElevatorUp" xml:space="preserve">
     <value>Elevator up</value>
   </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Falls drawer</value>
+  </data>
+  <data name="FreeUnit" xml:space="preserve">
+    <value>Free unit</value>
+  </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Go to cell</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Insert unit</value>
   </data>
   <data name="ProcedureNotCompleted" xml:space="preserve">
     <value>Procedure not completed</value>
@@ -2023,7 +2044,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RepeteProcedure" xml:space="preserve">
     <value>Repeat the procedure as it hasn't ended correctly</value>
   </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Save unit</value>
+  </data>
   <data name="TestedPanels" xml:space="preserve">
     <value>Tested panels</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Editing of the unit</value>
   </data>
 </root>

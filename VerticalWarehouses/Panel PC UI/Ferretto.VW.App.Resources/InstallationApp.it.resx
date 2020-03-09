@@ -1917,8 +1917,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BayUp" xml:space="preserve">
     <value>Baia su</value>
   </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Chiamata cassetto</value>
+  </data>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Editing delle celle</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Gestione Celle</value>
   </data>
   <data name="CellPanelsCheckDescription" xml:space="preserve">
     <value>Assicurarsi di regolare le fotocellule di presenza cassetto, se non regolate potrebbe verificarsi un blocco dell'elevatore nella parte più alta della macchina.</value>
@@ -1928,6 +1937,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="CellPanelsCheckPhotocells" xml:space="preserve">
     <value>Controllo fotocellule:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Elimina cassetto</value>
   </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevatore indietro</value>
@@ -1941,8 +1953,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ElevatorUp" xml:space="preserve">
     <value>Elevatore su</value>
   </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Rientra cassetto</value>
+  </data>
+  <data name="FreeUnit" xml:space="preserve">
+    <value>Libera cassetto</value>
+  </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Vai a cella</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Inserisci cassetto</value>
   </data>
   <data name="ProcedureNotCompleted" xml:space="preserve">
     <value>Procedura non completata</value>
@@ -1950,7 +1971,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RepeteProcedure" xml:space="preserve">
     <value>Ripetere la procedura in quanto non è terminata correttamente</value>
   </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Salva cassetto</value>
+  </data>
   <data name="TestedPanels" xml:space="preserve">
     <value>Pannelli testati</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Cassetti</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Editing dei cassetti</value>
   </data>
 </root>
