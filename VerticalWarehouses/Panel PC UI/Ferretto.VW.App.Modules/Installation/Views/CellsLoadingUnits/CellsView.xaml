@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DataContext="{d:DesignInstance Type=viewmodels:CellsViewModel,
                                              IsDesignTimeCreatable=False}"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -37,7 +37,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Gestione Celle" />
+                       Text="{x:Static res:InstallationApp.CellManagement}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -47,7 +47,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="Editing delle celle"
+                   Text="{x:Static res:InstallationApp.CellEditing}"
                    TextWrapping="Wrap" />
 
         <controls:CustomControlCellsDataGrid Grid.Row="2"

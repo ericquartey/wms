@@ -111,7 +111,7 @@
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase." />
+                        <Run Text="{x:Static res:InstallationApp.CarouselCalibrationDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -188,7 +188,7 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Procedura non completata" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.ProcedureNotCompleted}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -204,7 +204,7 @@
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Ripetere la procedura in quanto non è terminata correttamente"
+                           Text="{x:Static res:InstallationApp.RepeteProcedure}"
                            TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
 
