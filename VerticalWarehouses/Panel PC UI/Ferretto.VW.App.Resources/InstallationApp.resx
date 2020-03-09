@@ -1984,6 +1984,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DrawerManagement" xml:space="preserve">
     <value>Drawer management</value>
   </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Average Current [A]</value>
+  </data>
   <data name="BayDown" xml:space="preserve">
     <value>Bay down</value>
   </data>
@@ -2049,6 +2052,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="TestedPanels" xml:space="preserve">
     <value>Tested panels</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Total cycles completed</value>
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Unit</value>

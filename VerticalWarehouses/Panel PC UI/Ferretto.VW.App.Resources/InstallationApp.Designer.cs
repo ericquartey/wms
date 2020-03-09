@@ -151,6 +151,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average Current [A].
+        /// </summary>
+        public static string AverageCurrent {
+            get {
+                return ResourceManager.GetString("AverageCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Axis Calibrated Successfully.
         /// </summary>
         public static string AxisCalibratedSuccessfully {
@@ -5117,6 +5126,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TotalCycleMoreThanRequired {
             get {
                 return ResourceManager.GetString("TotalCycleMoreThanRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total cycles completed.
+        /// </summary>
+        public static string TotalCyclesCompleted {
+            get {
+                return ResourceManager.GetString("TotalCyclesCompleted", resourceCulture);
             }
         }
         

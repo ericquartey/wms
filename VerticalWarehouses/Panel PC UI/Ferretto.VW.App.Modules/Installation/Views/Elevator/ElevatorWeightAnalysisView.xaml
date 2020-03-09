@@ -70,7 +70,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding AverageCurrent, StringFormat={}{0:N4}}"
-                                 LabelText="Corrente Media [A]" />
+                                 LabelText="{x:Static res:InstallationApp.AverageCurrent}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
