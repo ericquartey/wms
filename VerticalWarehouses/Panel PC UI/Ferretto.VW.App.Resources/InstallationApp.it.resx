@@ -1917,6 +1917,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BayUp" xml:space="preserve">
     <value>Baia su</value>
   </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase.</value>
+  </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevatore indietro</value>
   </data>
@@ -1931,5 +1934,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Vai a cella</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Procedura non completata</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Ripetere la procedura in quanto non è terminata correttamente</value>
   </data>
 </root>

@@ -520,6 +520,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wait for the end of the procedure, if necessary, the &apos;STOP&apos; button for an immediate stop and &apos;STOP PROCEDURE&apos; for a stop in phase..
+        /// </summary>
+        public static string CarouselCalibrationDescription {
+            get {
+                return ResourceManager.GetString("CarouselCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel down.
         /// </summary>
         public static string CarouselDown {
@@ -3942,6 +3951,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Procedure not completed.
+        /// </summary>
+        public static string ProcedureNotCompleted {
+            get {
+                return ResourceManager.GetString("ProcedureNotCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The procedure was stopped..
         /// </summary>
         public static string ProcedureWasStopped {
@@ -4028,6 +4046,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RepeatProcedure {
             get {
                 return ResourceManager.GetString("RepeatProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeat the procedure as it hasn&apos;t ended correctly.
+        /// </summary>
+        public static string RepeteProcedure {
+            get {
+                return ResourceManager.GetString("RepeteProcedure", resourceCulture);
             }
         }
         

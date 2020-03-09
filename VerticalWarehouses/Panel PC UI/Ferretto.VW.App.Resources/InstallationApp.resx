@@ -1990,6 +1990,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BayUp" xml:space="preserve">
     <value>Bay up</value>
   </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Wait for the end of the procedure, if necessary, the 'STOP' button for an immediate stop and 'STOP PROCEDURE' for a stop in phase.</value>
+  </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevator back</value>
   </data>
@@ -2004,5 +2007,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Go to cell</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Procedure not completed</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Repeat the procedure as it hasn't ended correctly</value>
   </data>
 </root>
