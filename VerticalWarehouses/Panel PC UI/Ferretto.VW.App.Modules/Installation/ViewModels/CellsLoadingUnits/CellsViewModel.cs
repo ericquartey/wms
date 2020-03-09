@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().ToList();
+        public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
 
         public IEnumerable<Cell> Cells => this.MachineService.Cells;
 
