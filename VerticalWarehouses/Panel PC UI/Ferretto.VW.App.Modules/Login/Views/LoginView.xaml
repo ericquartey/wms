@@ -172,8 +172,10 @@
                                           FontFamily="{DynamicResource VWAPP_TitleFont}"
                                           FontSize="22"
                                           FontWeight="Light"
+                                          IsEditable="True"
                                           SelectedValue="{Binding UserLogin.UserName}"
-                                          Style="{DynamicResource FlatComboBoxStyle}">
+                                          Style="{DynamicResource FlatComboBoxStyle}"
+                                          Text="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemsSource>
                                         <x:Array Type="{x:Type clr:String}">
                                             <clr:String>operator</clr:String>

@@ -152,9 +152,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand SaveCommand =>
-                               this.saveCommand
-               ??
-               (this.saveCommand = new DelegateCommand(
+            this.saveCommand
+            ??
+            (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
         public ushort? Year
@@ -167,11 +167,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-        }
-
         protected override async Task OnDataRefreshAsync()
         {
             await this.GetTimeAsync();
@@ -179,11 +174,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanSave()
         {
-            return !this.IsBusy
-                   &&
-                   (this.IsAuto
-                   ||
-                   (!this.IsAuto && this.IsManualEnabled));
+            return
+                !this.IsBusy
+                &&
+                (this.IsAuto
+                ||
+                (!this.IsAuto && this.IsManualEnabled));
         }
 
         private DateTimeOffset? GetNewDateTime()

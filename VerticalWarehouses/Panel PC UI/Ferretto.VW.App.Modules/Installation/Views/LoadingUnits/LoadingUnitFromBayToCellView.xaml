@@ -199,7 +199,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Command="{Binding LoadingUnitsCommand}"
-                            Content="Gestione Cassetti" />
+                            Content="{x:Static res:InstallationApp.DrawerManagement}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="2"

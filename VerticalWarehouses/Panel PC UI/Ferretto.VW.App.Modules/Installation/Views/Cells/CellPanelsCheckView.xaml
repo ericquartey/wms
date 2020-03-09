@@ -42,13 +42,13 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo fotocellule:"
+                               Text="{x:Static res:InstallationApp.CellPanelsCheckPhotocells}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Assicurarsi di regolare le fotocellule di presenza cassetto, se non regolate potrebbe verificarsi un blocco dell'elevatore nella parte più alta della macchina."
+                               Text="{x:Static res:InstallationApp.CellPanelsCheckDescription}"
                                TextWrapping="Wrap" />
                 </StackPanel>
             </Grid>
@@ -73,7 +73,7 @@
                 <TextBlock Grid.ColumnSpan="3"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Controllo panelli:"
+                           Text="{x:Static res:InstallationApp.CellPanelsCheckPanel}"
                            TextWrapping="Wrap" />
 
                 <Border Grid.Row="1"
@@ -260,7 +260,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="Cella selezionata"
+                                   LabelText="{x:Static res:InstallationApp.CurrentCell}"
                                    MaxValue="{Binding CurrentPanelMaxValue}"
                                    MinValue="{Binding CurrentPanelMinValue}" />
 
@@ -270,7 +270,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToCellHeightCommand}"
-                                    Content="Vai a quota"
+                                    Content="{x:Static res:InstallationApp.GoToPosition}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
@@ -293,7 +293,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
-                                    Content="Sposta elevatore"
+                                    Content="{x:Static res:InstallationApp.MoveElevator}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <StackPanel Grid.Row="4"
@@ -344,7 +344,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Controllo quote celle" />
+                       Text="{x:Static res:InstallationApp.CellsControl}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -407,7 +407,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Pannelli testati" />
+                               Text="{x:Static res:InstallationApp.TestedPanels}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
