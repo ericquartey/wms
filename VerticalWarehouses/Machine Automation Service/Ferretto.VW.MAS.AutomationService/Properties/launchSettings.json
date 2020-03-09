@@ -47,6 +47,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Eurofork"
       }
+    },
+    "MAS (Todesco)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Todesco"
+      }
     }
   }
 }

@@ -35,6 +35,9 @@
       <Content Update="appsettings.*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+      <Content Update="appsettings.Todesco.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Update="appsettings.EjLog_Localhost.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
