@@ -1993,6 +1993,15 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Wait for the end of the procedure, if necessary, the 'STOP' button for an immediate stop and 'STOP PROCEDURE' for a stop in phase.</value>
   </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Be sure to adjust the drawer presence photocells, if not adjusted, the lift could block in the upper part of the machine.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Panel control:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Photocell control:</value>
+  </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevator back</value>
   </data>
@@ -2013,5 +2022,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="RepeteProcedure" xml:space="preserve">
     <value>Repeat the procedure as it hasn't ended correctly</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Tested panels</value>
   </data>
 </root>

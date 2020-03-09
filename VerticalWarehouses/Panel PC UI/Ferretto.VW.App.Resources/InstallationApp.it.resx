@@ -1920,6 +1920,15 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase.</value>
   </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Assicurarsi di regolare le fotocellule di presenza cassetto, se non regolate potrebbe verificarsi un blocco dell'elevatore nella parte più alta della macchina.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Controllo panelli:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Controllo fotocellule:</value>
+  </data>
   <data name="ElevatorBack" xml:space="preserve">
     <value>Elevatore indietro</value>
   </data>
@@ -1940,5 +1949,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="RepeteProcedure" xml:space="preserve">
     <value>Ripetere la procedura in quanto non è terminata correttamente</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Pannelli testati</value>
   </data>
 </root>

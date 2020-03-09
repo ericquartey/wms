@@ -610,6 +610,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Be sure to adjust the drawer presence photocells, if not adjusted, the lift could block in the upper part of the machine..
+        /// </summary>
+        public static string CellPanelsCheckDescription {
+            get {
+                return ResourceManager.GetString("CellPanelsCheckDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panel control:.
+        /// </summary>
+        public static string CellPanelsCheckPanel {
+            get {
+                return ResourceManager.GetString("CellPanelsCheckPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photocell control:.
+        /// </summary>
+        public static string CellPanelsCheckPhotocells {
+            get {
+                return ResourceManager.GetString("CellPanelsCheckPhotocells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell position verified.
         /// </summary>
         public static string CellPositionDone {
@@ -4937,6 +4964,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tested panels.
+        /// </summary>
+        public static string TestedPanels {
+            get {
+                return ResourceManager.GetString("TestedPanels", resourceCulture);
             }
         }
         
