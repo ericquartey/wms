@@ -1908,4 +1908,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
     <value>Errore durante la cancellazione del file di snapshot.</value>
   </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Gestione Cassetti</value>
+  </data>
 </root>

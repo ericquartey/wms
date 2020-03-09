@@ -1348,6 +1348,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drawer management.
+        /// </summary>
+        public static string DrawerManagement {
+            get {
+                return ResourceManager.GetString("DrawerManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drawer Number.
         /// </summary>
         public static string DrawerNumber {
