@@ -5,7 +5,7 @@
       "number": 1,
       "title": "Imposta chiavi di registro",
       "description": "Cambia, aggiunge chiavi di registro per configurazione iniziale.",
-      "script": "Rename-NetAdapter -Name \"$(PPC:Ethernet:Machine:FactoryAlias)\" -NewName \"Ethernet-Machine\";Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "script": "Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
       //"script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
@@ -25,7 +25,7 @@
       "number": 3,
       "title": "Imposta indirizzo ip su scheda ethernet 'Ethernet-Machine'",
       "description": "Imposta indirizzo ip e subnet su scheda ethernet che si interfaccia con la macchina.",
-      "script": "New-NetIPAddress -InterfaceAlias \"Ethernet-Machine\" -AddressFamily IPv4 $(Install:Parameter:PpcIpaddress) -PrefixLength 24 -Type Unicast",
+      "script": "netsh interface ipv4 set address name=\"Ethernet-Machine\"  static $(Install:Parameter:PpcIpaddress) 255.255.255.0 store=persistent",
       //"script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
@@ -96,8 +96,8 @@
       //"script": "timeout /T 2", // ** fake
       //rollbackScript": "timeout /T 2" // ** fake
     },
-	{
-	  "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
+    {
+      "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
       "number": 10,
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
@@ -106,7 +106,7 @@
       "machineRole": "Master",
       "setupMode": "UpdateAndRestore"
     },
-	{
+    {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 11,
       "title": "Ripristino database",
@@ -253,8 +253,8 @@
       "number": 25,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
-	  "Script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
-	  "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",      
+      "Script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+      "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
