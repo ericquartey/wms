@@ -1975,28 +1975,4 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RestoreEndedWithErrors" xml:space="preserve">
     <value>Restore ended with errors</value>
   </data>
-  <data name="BayDown" xml:space="preserve">
-    <value>Bay down</value>
-  </data>
-  <data name="BayUp" xml:space="preserve">
-    <value>Bay up</value>
-  </data>
-  <data name="DrawerManagement" xml:space="preserve">
-    <value>Drawer management</value>
-  </data>
-  <data name="ElevatorBack" xml:space="preserve">
-    <value>Elevator back</value>
-  </data>
-  <data name="ElevatorDown" xml:space="preserve">
-    <value>Elevator down</value>
-  </data>
-  <data name="ElevatorForwards" xml:space="preserve">
-    <value>Elevator forwards</value>
-  </data>
-  <data name="ElevatorUp" xml:space="preserve">
-    <value>Elevator up</value>
-  </data>
-  <data name="GoToCell" xml:space="preserve">
-    <value>Go to cell</value>
-  </data>
 </root>
