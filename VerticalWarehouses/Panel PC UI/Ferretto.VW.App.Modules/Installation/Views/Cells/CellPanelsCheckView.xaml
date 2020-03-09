@@ -283,7 +283,7 @@
                                    Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
-                                   Mask="#0.0"
+                                   Mask="##0.0"
                                    MaxValue="265.0"
                                    MinValue="-265.0" />
 

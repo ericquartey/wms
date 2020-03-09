@@ -255,7 +255,7 @@
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="180"
+                                   Width="215"
                                    Height="80"
                                    Margin="0"
                                    HorizontalAlignment="Left"
@@ -264,7 +264,7 @@
                                    Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
-                                   Mask="#0.0" />
+                                   Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="1"
@@ -516,7 +516,7 @@
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="180"
+                                   Width="215"
                                    Height="80"
                                    Margin="0"
                                    HorizontalAlignment="Left"
@@ -525,7 +525,7 @@
                                    Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
-                                   Mask="#0.0" />
+                                   Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="1"

@@ -1908,4 +1908,28 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
     <value>Errore durante la cancellazione del file di snapshot.</value>
   </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Gestione Cassetti</value>
+  </data>
+  <data name="BayDown" xml:space="preserve">
+    <value>Baia giù</value>
+  </data>
+  <data name="BayUp" xml:space="preserve">
+    <value>Baia su</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Elevatore indietro</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Elevatore giù</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Elevatore avanti</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Elevatore su</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Vai a cella</value>
+  </data>
 </root>
