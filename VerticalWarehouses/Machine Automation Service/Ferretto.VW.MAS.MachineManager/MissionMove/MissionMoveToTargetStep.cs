@@ -171,10 +171,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             || notification.TargetBay == BayNumber.ElevatorBay
                             )
                         {
+                            var alreadyMovedShutter = this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter);
                             if (this.UpdateResponseList(notification.Type))
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
-                                if (notification.Type == MessageType.ShutterPositioning)
+                                if (notification.Type == MessageType.ShutterPositioning
+                                    && !alreadyMovedShutter
+                                    )
                                 {
                                     if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                     {

@@ -41,6 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
+            this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
@@ -58,11 +59,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
-#if CHECK_BAY_SENSOR
-            if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
-#endif
+            if (this.Mission.RestoreConditions
+                && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
+                && Math.Abs(this.BaysDataProvider.GetChainPosition(bay.Number) - bay.Carousel.LastIdealPosition) > Math.Abs(bay.ChainOffset) + 1
+                )
             {
-                this.Mission.RestoreConditions = false;
+                this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, bay.Number);
+                throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, bay.Number, MessageActor.MachineManager);
             }
             try
             {
@@ -74,7 +77,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.SensorsProvider.GetShutterPosition(shutterInverter) == ShutterPosition.Closed)
                 {
                     this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, ShutterPosition.Half, this.Mission.TargetBay, false);
+                    this.Mission.OpenShutterPosition = ShutterPosition.Half;
+                    this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, false);
                 }
             }
             catch (StateMachineException ex)
@@ -210,7 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (waitingMission != null)
                 {
                     // wake up the mission waiting for the bay chain movement
-                    this.Logger.LogInformation($"Resume lower bay Mission:Id={waitingMission.Id}");
+                    this.Logger.LogInformation($"Resume waiting deposit Mission:Id={waitingMission.Id}");
                     this.LoadingUnitMovementProvider.ResumeOperation(
                         waitingMission.Id,
                         waitingMission.LoadUnitSource,
@@ -243,6 +247,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 try
                 {
+                    this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+                    this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
+                    this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
                     var shutterInverter = bay.Shutter.Inverter.Index;
                     if (bay.Shutter.Type == ShutterType.ThreeSensors
