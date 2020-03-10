@@ -1992,8 +1992,38 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UnitEditing" xml:space="preserve">
     <value>Editing dei cassetti</value>
   </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Calibrazione barriera</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Misurazione baia</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Calibrazione lato sinistro (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Risultato calibrazione:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Calibrazione lato destro (mm)</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Elevatore in posizione:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Correzione barriera</value>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>Importa</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>sinistra</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Misurazione lato sinistro</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>Al termine della procedure la pagina cambiera automaticamente.</value>
   </data>
   <data name="Panels" xml:space="preserve">
     <value>Pannelli</value>
@@ -2001,10 +2031,55 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Parameters" xml:space="preserve">
     <value>Parametri</value>
   </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Posizionare l'elevatore all'altezza della baia.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Posizionare la sagoma a</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>In base al risultato della calibrazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Se il risultato della calibrazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Aprire la serranda, posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Ripeti Calibrazione</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>destra</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Misurazione lato destro</value>
+  </data>
   <data name="Statistics" xml:space="preserve">
     <value>Statistiche</value>
   </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Errore di sistema</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura.</value>
+  </data>
   <data name="TestData" xml:space="preserve">
     <value>Dati collaudo</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Tolleranza richiesta</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Cassetto in Baia:</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Attendere il termine della procedura automatica.</value>
   </data>
 </root>
