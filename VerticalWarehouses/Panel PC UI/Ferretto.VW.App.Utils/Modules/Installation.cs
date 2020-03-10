@@ -14,8 +14,6 @@
 
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
-        public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
-
         public const string DATETIME = "DateTimeViewModel";
 
         public const string FULLTEST = "FullTestViewModel";
@@ -45,6 +43,8 @@
         public const string VERTICALRESOLUTIONCALIBRATION = "VerticalResolutionCalibrationViewModel";
 
         public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";
+
+        public const string WMSSETTINGS = "WmsSettingsViewModel";
 
         #endregion
 

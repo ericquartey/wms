@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to bypass this test?.
+        /// </summary>
+        public static string BypassTest {
+            get {
+                return ResourceManager.GetString("BypassTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration.
         /// </summary>
         public static string Calibration {
@@ -1141,6 +1150,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete the tests on the other bays.
+        /// </summary>
+        public static string CompleteOtherBayTest {
+            get {
+                return ResourceManager.GetString("CompleteOtherBayTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete Test.
+        /// </summary>
+        public static string CompleteTestMenuTitle {
+            get {
+                return ResourceManager.GetString("CompleteTestMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Importable &quot;{0}&quot; configuration detected..
         /// </summary>
         public static string ConfigurationDetected {
@@ -1182,6 +1209,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmChanges {
             get {
                 return ResourceManager.GetString("ConfirmChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to confirm the completion of the test?.
+        /// </summary>
+        public static string ConfirmCompleteTest {
+            get {
+                return ResourceManager.GetString("ConfirmCompleteTest", resourceCulture);
             }
         }
         
@@ -1434,6 +1470,24 @@ namespace Ferretto.VW.App.Resources {
         public static string DateTimeEnteredIsInvalid {
             get {
                 return ResourceManager.GetString("DateTimeEnteredIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Date and Time setting.
+        /// </summary>
+        public static string DateTimeMenuDescription {
+            get {
+                return ResourceManager.GetString("DateTimeMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date and Time.
+        /// </summary>
+        public static string DateTimeMenuTitle {
+            get {
+                return ResourceManager.GetString("DateTimeMenuTitle", resourceCulture);
             }
         }
         
@@ -2995,6 +3049,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New unit insertion procedure.
+        /// </summary>
+        public static string InsertMenuDescription {
+            get {
+                return ResourceManager.GetString("InsertMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inserting.
+        /// </summary>
+        public static string InsertMenuTitle {
+            get {
+                return ResourceManager.GetString("InsertMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert unit.
         /// </summary>
         public static string InsertUnit {
@@ -3117,6 +3189,24 @@ namespace Ferretto.VW.App.Resources {
         public static string InvalidValue {
             get {
                 return ResourceManager.GetString("InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading the inverter parameterization with standard parameters.
+        /// </summary>
+        public static string InverterParameterizationMenuDescription {
+            get {
+                return ResourceManager.GetString("InverterParameterizationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter parameterization.
+        /// </summary>
+        public static string InverterParameterizationMenuTitle {
+            get {
+                return ResourceManager.GetString("InverterParameterizationMenuTitle", resourceCulture);
             }
         }
         
@@ -3652,6 +3742,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local user management.
+        /// </summary>
+        public static string manageUserMenuDescription {
+            get {
+                return ResourceManager.GetString("manageUserMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Management.
+        /// </summary>
+        public static string ManageUserMenuTitle {
+            get {
+                return ResourceManager.GetString("ManageUserMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual.
         /// </summary>
         public static string Manual {
@@ -3855,6 +3963,42 @@ namespace Ferretto.VW.App.Resources {
         public static string Move {
             get {
                 return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure for moving the unit from bay to bay.
+        /// </summary>
+        public static string MoveBayToBayMenuDescription {
+            get {
+                return ResourceManager.GetString("MoveBayToBayMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving from bay to bay.
+        /// </summary>
+        public static string MoveBayToBayMenuTitle {
+            get {
+                return ResourceManager.GetString("MoveBayToBayMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure for moving the unit from cell to cell.
+        /// </summary>
+        public static string MoveCellToCellMenuDescription {
+            get {
+                return ResourceManager.GetString("MoveCellToCellMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving from cell to cell.
+        /// </summary>
+        public static string MoveCellToCellMenuTitle {
+            get {
+                return ResourceManager.GetString("MoveCellToCellMenuTitle", resourceCulture);
             }
         }
         
@@ -4282,6 +4426,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modification, import and export of machine parameters.
+        /// </summary>
+        public static string ParametersMenuDescription {
+            get {
+                return ResourceManager.GetString("ParametersMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string ParametersMenuTitle {
+            get {
+                return ResourceManager.GetString("ParametersMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pawl Encoder.
         /// </summary>
         public static string PawlEncoder {
@@ -4604,6 +4766,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveCarterRestore {
             get {
                 return ResourceManager.GetString("RemoveCarterRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit removal procedure.
+        /// </summary>
+        public static string RemoveMenuDescription {
+            get {
+                return ResourceManager.GetString("RemoveMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removal.
+        /// </summary>
+        public static string RemoveMenuTitle {
+            get {
+                return ResourceManager.GetString("RemoveMenuTitle", resourceCulture);
             }
         }
         
@@ -5643,6 +5823,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External bay test.
+        /// </summary>
+        public static string TestExternalBay {
+            get {
+                return ResourceManager.GetString("TestExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test in progress....
         /// </summary>
         public static string TestProgress {
@@ -5855,6 +6044,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitLowPosition {
             get {
                 return ResourceManager.GetString("UnitLowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Management.
+        /// </summary>
+        public static string UnitManageMenuTitle {
+            get {
+                return ResourceManager.GetString("UnitManageMenuTitle", resourceCulture);
             }
         }
         
@@ -6278,6 +6476,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WmsCommunication {
             get {
                 return ResourceManager.GetString("WmsCommunication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting the communication parameters with the WMS.
+        /// </summary>
+        public static string WMSComunicationMenuDescription {
+            get {
+                return ResourceManager.GetString("WMSComunicationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS communication.
+        /// </summary>
+        public static string WMSComunicationMenuTitle {
+            get {
+                return ResourceManager.GetString("WMSComunicationMenuTitle", resourceCulture);
             }
         }
         

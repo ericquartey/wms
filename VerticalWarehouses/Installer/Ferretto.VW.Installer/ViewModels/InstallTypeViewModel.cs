@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -192,10 +194,18 @@ namespace Ferretto.VW.Installer.ViewModels
                 {
                     ipPort = port;
                     var ipEndpoint = new IPEndPoint(this.masIpAddress, port);
-                    using (var client = new TcpClient(ipEndpoint))
+
+                    var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, false);
+                    var result = sock.BeginConnect(ipEndpoint, null, null);
+                    var success = result.AsyncWaitHandle.WaitOne(50, true);
+                    if (!success)
                     {
-                        return ipEndpoint;
+                        ipEndpoint = null;
                     }
+                    sock.Close();
+
+                    return ipEndpoint;
                 }
             }
             catch
@@ -228,7 +238,7 @@ namespace Ferretto.VW.Installer.ViewModels
                     {
                         var masConfiguration = await this.GetConfigurationFromMasAsync(this.masIpEndpoint);
                         this.isSlaveConfigurationValid = this.LoadConfiguration(masConfiguration);
-                    }
+                    }            
                 }
                 this.canNext = this.isSlaveConfigurationValid;
             }
@@ -284,15 +294,12 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             try
             {
-                var jsonObject = JObject.Parse(configuration);
-
-                // ValidateJson(jsonObject);
+                var jsonObject = JObject.Parse(configuration);                
 
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
 
-                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
-                //this.masConfiguration.Validate();                
+                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);                
 
                 return !(this.masConfiguration is null);
             }
@@ -305,7 +312,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void Next()
         {
-            this.installationService.SetConfiguration(this.isMasConfiguration ? this.masIpAddress : null, this.masConfiguration);
+            this.installationService.SetConfiguration(this.masIpAddress, this.masConfiguration);
 
             this.installationService.SetOperation(OperationMode.InstallBay);
         }

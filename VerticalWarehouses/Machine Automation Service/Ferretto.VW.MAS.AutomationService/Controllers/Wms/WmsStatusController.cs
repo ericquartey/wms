@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -29,6 +30,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("health")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetHealth()
         {
             if (!this.configuration.IsWmsEnabled())
@@ -45,7 +49,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
                 catch
                 {
-                    return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                    return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
                 }
             }
         }
@@ -54,6 +58,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> IsEnabled()
         {
             return this.Ok(this.configuration.IsWmsEnabled());
+        }
+
+        [HttpPut]
+        public async Task UpdateAsync(bool isEnabled, string ipAddress, int tcpPort)
+        {
         }
 
         #endregion
