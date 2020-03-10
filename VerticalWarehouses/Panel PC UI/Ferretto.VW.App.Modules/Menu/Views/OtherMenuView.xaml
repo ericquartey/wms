@@ -67,7 +67,7 @@
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuComunicationWmsCommand}"
                                     Content="Impostazione dei parametri di comunicazione con il WMS"
-                                    IsEnabled="False"
+                                    IsEnabled="True"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
