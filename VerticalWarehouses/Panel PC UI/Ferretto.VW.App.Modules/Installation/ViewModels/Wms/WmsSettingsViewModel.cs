@@ -85,9 +85,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
+        protected override async Task OnDataRefreshAsync()
         {
-            await base.OnAppearedAsync();
+            try
+            {
+                this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
+                if (this.IsWmsEnabled)
+                {
+                    await this.CheckEndpointAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+
+            await base.OnDataRefreshAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.saveCommand?.RaiseCanExecuteChanged();
+            this.checkEndpointCommand?.RaiseCanExecuteChanged();
+
+            base.RaiseCanExecuteChanged();
         }
 
         private bool CanCheckEndpoint()
@@ -116,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.HealthStatus = HealthStatus.Unknown;
                 }
             }
-            catch (MasWebApiException<ProblemDetails> ex)
+            catch (MasWebApiException ex)
             {
                 this.HealthStatus = HealthStatus.Unhealthy;
             }
