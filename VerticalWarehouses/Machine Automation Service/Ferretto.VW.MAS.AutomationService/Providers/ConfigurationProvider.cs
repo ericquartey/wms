@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,6 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.loadingUnitsDataProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
                         this.machineProvider.ImportMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
+                        this.machineProvider.ImportMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);
 
                         this.dataContext.SaveChanges();
 
@@ -99,6 +101,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.loadingUnitsDataProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
                         this.machineProvider.UpdateMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
+                        this.machineProvider.UpdateMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");

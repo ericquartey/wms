@@ -114,7 +114,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
 #if DEBUG
             this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-            this.importableFiles = new ReadOnlyCollection<FileInfo>(DriveInfo.GetDrives().First().FindConfigurationFiles().ToList());
+            //  this.importableFiles = new ReadOnlyCollection<FileInfo>(DriveInfo.GetDrives().First().FindConfigurationFiles().ToList());
 #endif
 
             await base.OnAppearedAsync();
@@ -213,7 +213,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             // exportable drives
             var drives = ((UsbWatcherService)sender).Drives;
-            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
+            try
+            {
+                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
+            }
+            catch (Exception ex)
+            {
+                var exc = ex;
+            }
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToExport?.RaiseCanExecuteChanged();
 
