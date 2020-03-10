@@ -214,6 +214,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menu Other.
+        /// </summary>
+        public static string OtherMenuName {
+            get {
+                return ResourceManager.GetString("OtherMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu Units.
         /// </summary>
         public static string UnitsMenuName {

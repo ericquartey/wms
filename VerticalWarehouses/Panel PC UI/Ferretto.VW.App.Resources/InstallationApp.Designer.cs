@@ -1447,6 +1447,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System Date and Time setting.
+        /// </summary>
+        public static string DateTimeMenuDescription {
+            get {
+                return ResourceManager.GetString("DateTimeMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date and Time.
+        /// </summary>
+        public static string DateTimeMenuTitle {
+            get {
+                return ResourceManager.GetString("DateTimeMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
         public static string Day {
@@ -3148,6 +3166,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading the inverter parameterization with standard parameters.
+        /// </summary>
+        public static string InverterParameterizationMenuDescription {
+            get {
+                return ResourceManager.GetString("InverterParameterizationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter parameterization.
+        /// </summary>
+        public static string InverterParameterizationMenuTitle {
+            get {
+                return ResourceManager.GetString("InverterParameterizationMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverter parameters.
         /// </summary>
         public static string InverterParameters {
@@ -3675,6 +3711,24 @@ namespace Ferretto.VW.App.Resources {
         public static string MachineNotRunWarning {
             get {
                 return ResourceManager.GetString("MachineNotRunWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local user management.
+        /// </summary>
+        public static string manageUserMenuDescription {
+            get {
+                return ResourceManager.GetString("manageUserMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Management.
+        /// </summary>
+        public static string ManageUserMenuTitle {
+            get {
+                return ResourceManager.GetString("ManageUserMenuTitle", resourceCulture);
             }
         }
         
@@ -4341,6 +4395,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Parameters {
             get {
                 return ResourceManager.GetString("Parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modification, import and export of machine parameters.
+        /// </summary>
+        public static string ParametersMenuDescription {
+            get {
+                return ResourceManager.GetString("ParametersMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string ParametersMenuTitle {
+            get {
+                return ResourceManager.GetString("ParametersMenuTitle", resourceCulture);
             }
         }
         
@@ -6368,6 +6440,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WmsCommunication {
             get {
                 return ResourceManager.GetString("WmsCommunication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting the communication parameters with the WMS.
+        /// </summary>
+        public static string WMSComunicationMenuDescription {
+            get {
+                return ResourceManager.GetString("WMSComunicationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS communication.
+        /// </summary>
+        public static string WMSComunicationMenuTitle {
+            get {
+                return ResourceManager.GetString("WMSComunicationMenuTitle", resourceCulture);
             }
         }
         
