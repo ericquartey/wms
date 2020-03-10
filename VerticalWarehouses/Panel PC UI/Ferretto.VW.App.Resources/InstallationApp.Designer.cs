@@ -3841,6 +3841,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Panels.
+        /// </summary>
+        public static string Panels {
+            get {
+                return ResourceManager.GetString("Panels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panels Control.
         /// </summary>
         public static string PanelsControl {
@@ -3855,6 +3864,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PanelsControlDescription {
             get {
                 return ResourceManager.GetString("PanelsControlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string Parameters {
+            get {
+                return ResourceManager.GetString("Parameters", resourceCulture);
             }
         }
         
@@ -4896,6 +4914,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string Statistics {
+            get {
+                return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Step 1.
         /// </summary>
         public static string Step1 {
@@ -5045,6 +5072,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test data.
+        /// </summary>
+        public static string TestData {
+            get {
+                return ResourceManager.GetString("TestData", resourceCulture);
             }
         }
         

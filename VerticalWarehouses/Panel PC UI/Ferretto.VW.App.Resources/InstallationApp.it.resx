@@ -1992,4 +1992,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UnitEditing" xml:space="preserve">
     <value>Editing dei cassetti</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importa</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Pannelli</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parametri</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Dati collaudo</value>
+  </data>
 </root>

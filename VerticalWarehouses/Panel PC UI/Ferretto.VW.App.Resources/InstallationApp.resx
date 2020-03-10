@@ -2065,4 +2065,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UnitEditing" xml:space="preserve">
     <value>Editing of the unit</value>
   </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panels</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Test data</value>
+  </data>
 </root>
