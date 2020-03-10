@@ -2007,6 +2007,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CalibrationRightSideMM" xml:space="preserve">
     <value>Calibrazione lato destro (mm)</value>
   </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Il dato deve essere positivo.</value>
+  </data>
   <data name="DeviceStatus" xml:space="preserve">
     <value>Stato Dispositivo </value>
   </data>
@@ -2019,6 +2022,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Import" xml:space="preserve">
     <value>Importa</value>
   </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} file di installazione trovati</value>
+  </data>
   <data name="InverterParameters" xml:space="preserve">
     <value>Parametri inverter</value>
   </data>
@@ -2027,6 +2033,18 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="LeftSideMeasurement" xml:space="preserve">
     <value>Misurazione lato sinistro</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Valore massimo permesso è 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Manca il valore</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Nessun file di installazione trovato</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>È stato trovato un file di installazione</value>
   </data>
   <data name="PageChangeAutomatically" xml:space="preserve">
     <value>Al termine della procedure la pagina cambiera automaticamente.</value>

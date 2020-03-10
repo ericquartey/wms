@@ -1222,6 +1222,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data must be positive..
+        /// </summary>
+        public static string DataBePositive {
+            get {
+                return ResourceManager.GetString("DataBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
@@ -2779,6 +2788,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} installation files found.
+        /// </summary>
+        public static string InstallationFileFound {
+            get {
+                return ResourceManager.GetString("InstallationFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation State.
         /// </summary>
         public static string InstallationState {
@@ -3445,6 +3463,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum allowed value is 9..
+        /// </summary>
+        public static string MaxValue9 {
+            get {
+                return ResourceManager.GetString("MaxValue9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Measured distance [mm].
         /// </summary>
         public static string MeasuredDistance {
@@ -3558,6 +3585,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Minutes {
             get {
                 return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value is missing.
+        /// </summary>
+        public static string MissValue {
+            get {
+                return ResourceManager.GetString("MissValue", resourceCulture);
             }
         }
         
@@ -3841,6 +3877,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No installation file found.
+        /// </summary>
+        public static string NoInstallationFileFound {
+            get {
+                return ResourceManager.GetString("NoInstallationFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string Off {
@@ -3873,6 +3918,15 @@ namespace Ferretto.VW.App.Resources {
         public static string On {
             get {
                 return ResourceManager.GetString("On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One installation file found.
+        /// </summary>
+        public static string OneInstallationFileFound {
+            get {
+                return ResourceManager.GetString("OneInstallationFileFound", resourceCulture);
             }
         }
         

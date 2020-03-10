@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using Ferretto.VW.App.Resources;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
@@ -100,15 +101,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.installations.Count == 0)
                 {
-                    return "No installation file found";
+                    return InstallationApp.NoInstallationFileFound;
                 }
 
                 if (this.installations.Count == 1)
                 {
-                    return "One installation file found";
+                    return InstallationApp.OneInstallationFileFound;
                 }
 
-                return string.Format("{0} installation files found", this.installations.Count);
+                return string.Format(InstallationApp.InstallationFileFound, this.installations.Count);
             }
         }
 
@@ -170,7 +171,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public override async Task OnAppearedAsync()
-        {            
+        {
             this.IsBusy = true;
 
             try
@@ -287,8 +288,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 //      &&
                 //      this.IsInstallationReady))
                 //{
-                    this.RefreshDevicesStatus();
-                   
+                this.RefreshDevicesStatus();
+
                 //}
 
                 this.RaiseCanExecuteChanged();
