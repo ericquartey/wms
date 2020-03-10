@@ -66,7 +66,7 @@
                                     Abbrevation="Imp"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding GoToImport}"
-                                    Content="Importa"
+                                    Content="{x:Static res:InstallationApp.Import}"
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />

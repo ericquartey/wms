@@ -132,7 +132,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli sessione" />
+                               Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"

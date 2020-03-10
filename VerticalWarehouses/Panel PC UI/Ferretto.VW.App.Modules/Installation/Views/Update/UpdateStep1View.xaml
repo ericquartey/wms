@@ -1,16 +1,18 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Installation.Views.UpdateStep1View"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:gif="http://wpfanimatedgif.codeplex.com"
-            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
-            mc:Ignorable="d" 
-            d:DesignHeight="450" d:DesignWidth="800">
+            mc:Ignorable="d">
 
     <ctrls:View.Resources>
         <conv:BoolToOpacityConverter x:Key="BTOC" />
@@ -33,20 +35,20 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Aggiornamento" />
+                   Text="{x:Static res:InstallationApp.Update}" />
 
 
-        <Border Grid.Row="1"               
+        <Border Grid.Row="1"
                 Grid.ColumnSpan="2"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
                 Width="900"
-                Opacity="{Binding IsBusy, Converter={StaticResource BTOC}, ConverterParameter='0,4'}"
-                Background="{DynamicResource PpcButtonBackground}"                 
-                Padding="15,20,15,0" 
+                Padding="15,20,15,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
                 BorderThickness="1"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"                                                
-                CornerRadius="{DynamicResource PpcCornerRadius}">
+                CornerRadius="{DynamicResource PpcCornerRadius}"
+                Opacity="{Binding IsBusy, Converter={StaticResource BTOC}, ConverterParameter='0,4'}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -57,69 +59,70 @@
                 </Grid.RowDefinitions>
 
                 <controls:PpcLabeledText Grid.Row="0"
-                                     Margin="0,0,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SystemInfo}"
-                                     LabelText="Versione attuale PanelPc" />
+                                         Margin="0,0,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding SystemInfo}"
+                                         LabelText="{x:Static res:InstallationApp.PanelPcCurrentVersion}" />
 
                 <controls:PpcLabeledText Grid.Row="1"
-                                     Margin="0,15,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SharedFolderInfo}"
-                                     LabelText="Cartella condivisa" />
+                                         Margin="0,15,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding SharedFolderInfo}"
+                                         LabelText="{x:Static res:InstallationApp.SharedFolder}" />
 
                 <controls:PpcLabeledText Grid.Row="2"
-                                     Margin="0,15,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding DeviceInfo}"
-                                     LabelText="Stato Dispositivo " />
+                                         Margin="0,15,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding DeviceInfo}"
+                                         LabelText="{x:Static res:InstallationApp.DeviceStatus}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
-                                     Margin="0,15,0,15"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding InstallationFilesInfo}"
-                                     LabelText="Aggiornamenti" />
+                                         Margin="0,15,0,15"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding InstallationFilesInfo}"
+                                         LabelText="{x:Static res:InstallationApp.Updates}" />
 
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1"               
+        <Grid Grid.Row="1"
               Grid.ColumnSpan="2"
-              VerticalAlignment="Center"
               HorizontalAlignment="Center"
+              VerticalAlignment="Center"
               Visibility="{Binding IsBusy, Converter={StaticResource BTVC}}">
             <StackPanel VerticalAlignment="Center">
                 <Image Width="60"
-                   Margin="30"
-                   gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
-                   gif:ImageBehavior.AutoStart="true" />
+                       Margin="30"
+                       gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+                       gif:ImageBehavior.AutoStart="true" />
                 <TextBlock HorizontalAlignment="Center"
-                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                       Text="Wait..." />
+                           Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Wait}" />
 
             </StackPanel>
         </Grid>
 
-        <StackPanel  Grid.Row="2" Grid.Column="1"
-                     Orientation="Horizontal"
-                     HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
 
-            <controls:PpcButton                          
-                                HorizontalAlignment="Right"
+            <controls:PpcButton HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding RestoreCommand}"
-                                Content="Ripristino" />
+                                Content="{x:Static res:InstallationApp.Restoration}" />
 
-            <controls:PpcButton     Grid.Row="2" Grid.Column="1"
-                                Margin="15 0 0 0"
+            <controls:PpcButton Grid.Row="2"
+                                Grid.Column="1"
+                                Margin="15,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding NextCommand}"
-                                Content="Next" />
+                                Content="{x:Static res:InstallationApp.Next}" />
         </StackPanel>
     </Grid>
 </ctrls:View>

@@ -2065,4 +2065,127 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UnitEditing" xml:space="preserve">
     <value>Editing of the unit</value>
   </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Bay measurement</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Left side calibration (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Calibration result:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Right side calibration (mm)</value>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>Device status </value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Elevator in position:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Gate correction</value>
+  </data>
+  <data name="InverterParameters" xml:space="preserve">
+    <value>Inverter parameters</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>left</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Left side measurement</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>At the end of the procedure the page will change automatically.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>PanelPc current version</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panels</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Position the elevator at the bay height.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Position the template a</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Based on the calibration result, you can decide whether to complete the operation, having a result of less than 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>If the calibration result exceeds 1 mm, the suggested modifications must be applied and the measurement repeated.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Load a bay unit or recall one to start the bay calibration wizard.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Open the damper, place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Place the adjustment template in the upper left corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Repeat calibration</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Restoration</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>right</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Right side measurement</value>
+  </data>
+  <data name="SharedFolder" xml:space="preserve">
+    <value>Shared folder</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>System error</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Once the template has been positioned, press the MEASUREMENT key which will start the procedure.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Test data</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Tolerance required</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Unit in bay:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Unit in high position</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Unit in low position</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Wait...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Wait for the automatic procedure to end.</value>
+  </data>
+  <data name="WmsCommunication" xml:space="preserve">
+    <value>Wms communication</value>
+  </data>
 </root>

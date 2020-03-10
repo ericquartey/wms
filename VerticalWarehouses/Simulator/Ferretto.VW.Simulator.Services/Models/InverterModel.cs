@@ -1233,12 +1233,15 @@ namespace Ferretto.VW.Simulator.Services.Models
                     && this.Id > 1)
                 {
                     // bay chain. simulate the lift process
-                    if (target - this.AxisPosition < 20
+                    if (target - this.AxisPosition < 20)
+                    {
+                        this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                    }
+                    else if (target - this.AxisPosition > 20
                         && this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value
                         )
                     {
                         this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                        this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
                     }
                 }
             }
