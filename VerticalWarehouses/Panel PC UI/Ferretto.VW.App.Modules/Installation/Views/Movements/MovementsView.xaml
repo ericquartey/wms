@@ -610,7 +610,7 @@
                                                            Grid.Column="1"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="Giostra su"
+                                                           Content="{x:Static res:InstallationApp.CarouselUp}"
                                                            IsEnabled="{Binding CanMoveCarouselOpenCommand}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveCarouselOpenCommand}"

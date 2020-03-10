@@ -1557,4 +1557,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>No item with code '{0}' is available</value>
   </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Start Update</value>
+  </data>
 </root>

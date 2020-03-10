@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:AccessoriesMenuViewModel,
@@ -50,18 +50,18 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Menu Accessori" />
+                       Text="{x:Static res:Menu.AccessoriesMenuName}" />
 
             <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="Puntatore Laser"
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.1"
                                         BorderBrush="{DynamicResource FerrettoBlue}"
                                         Command="{Binding LaserCommand}"
-                                        Content="Gestione della configurazione e test funzionalità del Laser"
+                                        Content="{x:Static res:Menu.AccessoriesMenuDescription}"
                                         IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />

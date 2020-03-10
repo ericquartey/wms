@@ -3005,6 +3005,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Update.
+        /// </summary>
+        public static string StartUpdate {
+            get {
+                return ResourceManager.GetString("StartUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tot Back.
         /// </summary>
         public static string StatisticsCellsDataGridHeaderBack {

@@ -41,13 +41,13 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Cassetto in Baia:"
+                               Text="{x:Static res:InstallationApp.UnitBay}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia."
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckDescription}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -67,14 +67,14 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CallLoadunitToBayCommand}"
-                                    Content="Chiamata cassetto"
+                                    Content="{x:Static res:InstallationApp.CallUnit}"
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
-                                    Content="Apri serranda"
+                                    Content="{x:Static res:InstallationApp.GateOpen}"
                                     Style="{StaticResource WizardIntoButton}"
                                     Visibility="Collapsed" />
 
@@ -82,7 +82,7 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
-                                    Content="Chiudi serranda"
+                                    Content="{x:Static res:InstallationApp.GateClose}"
                                     Style="{StaticResource WizardIntoButton}"
                                     Visibility="Collapsed" />
 
@@ -92,7 +92,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToElevatorPositionCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -116,13 +116,13 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Elevatore in posizione:"
+                               Text="{x:Static res:InstallationApp.ElevatorInPosition}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia."
+                               Text="{x:Static res:InstallationApp.PositionElevatorBayHeight}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -134,7 +134,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding BayPosition.Height}"
                                    IsEnabled="False"
-                                   LabelText="Posizione baia"
+                                   LabelText="{x:Static res:InstallationApp.BayPosition}"
                                    Mask="####0.00"
                                    MinValue="1" />
 
@@ -143,14 +143,14 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToBayCommand}"
-                                    Content="Vai a baia"
+                                    Content="{x:Static res:InstallationApp.GoToBay}"
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
-                                    Content="Apri serranda"
+                                    Content="{x:Static res:InstallationApp.GateOpen}"
                                     Style="{StaticResource WizardIntoButton}"
                                     Visibility="Collapsed" />
 
@@ -159,7 +159,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
-                                    Content="Chiudi serranda"
+                                    Content="{x:Static res:InstallationApp.GateClose}"
                                     Style="{StaticResource WizardIntoButton}"
                                     Visibility="Collapsed" />
 
@@ -169,7 +169,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToShapePositionDxCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -191,19 +191,19 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Posizionare la sagoma a" />
+                        <Run Text="{x:Static res:InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
-                             Text="destra" />
+                             Text="{x:Static res:InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Aprire la serranda, posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckProcedureDescription}"
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
+                               Text="{x:Static res:InstallationApp.TemplateMeasurement}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -223,7 +223,7 @@
                                         Margin="15,15,0,0"
                                         VerticalAlignment="Center"
                                         Command="{Binding OpenShutterCommand}"
-                                        Content="Apri serranda"
+                                        Content="{x:Static res:InstallationApp.GateOpen}"
                                         Style="{StaticResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
@@ -232,12 +232,12 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Command="{Binding CloseShutterCommand}"
-                                        Content="Chiudi serranda"
+                                        Content="{x:Static res:InstallationApp.GateClose}"
                                         Style="{StaticResource WizardIntoButton}" />
 
                     <controls:PpcButton Margin="15,15,0,0"
                                         Command="{Binding MensurationDxCommand}"
-                                        Content="Misurazione lato destro"
+                                        Content="{x:Static res:InstallationApp.RightSideMeasurement}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </StackPanel>
 
@@ -264,16 +264,16 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Misurazione baia" />
+                        <Run Text="{x:Static res:InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
-                             Text="destra" />
+                             Text="{x:Static res:InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendere il termine della procedura automatica."
+                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -315,7 +315,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Tolleranza richiesta"
+                                           Text="{x:Static res:InstallationApp.TolleranceRequired}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -354,7 +354,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Correzione barriera"
+                                           Text="{x:Static res:InstallationApp.GateCorrection2}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -393,7 +393,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Errore di sistema" />
+                                           Text="{x:Static res:InstallationApp.SystemError}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -459,7 +459,7 @@
                            VerticalAlignment="Bottom"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Al termine della procedure la pagina cambiera automaticamente."
+                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}"
                            TextWrapping="Wrap" />
             </Grid>
         </DataTemplate>
@@ -481,19 +481,19 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Posizionare la sagoma a" />
+                        <Run Text="{x:Static res:InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
-                             Text="sinistra:" />
+                             Text="{x:Static res:InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
+                               Text="{x:Static res:InstallationApp.ProfileHeightCheckProcedureLeftUnitDescription}"
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
+                               Text="{x:Static res:InstallationApp.TemplateMeasurement}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -509,7 +509,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MensurationSxCommand}"
-                                    Content="Misurazione lato sinistro"
+                                    Content="{x:Static res:InstallationApp.LeftSideMeasurement}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -535,16 +535,16 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Misurazione baia" />
+                        <Run Text="{x:Static res:InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
-                             Text="sinistra" />
+                             Text="{x:Static res:InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendere il termine della procedura automatica."
+                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -586,7 +586,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Tolleranza richiesta"
+                                           Text="{x:Static res:InstallationApp.TolleranceRequired}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -625,7 +625,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Correzione barriera"
+                                           Text="{x:Static res:InstallationApp.GateCorrection2}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -664,7 +664,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Errore di sistema" />
+                                           Text="{x:Static res:InstallationApp.SystemError}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -730,7 +730,7 @@
                            VerticalAlignment="Bottom"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Al termine della procedure la pagina cambiera automaticamente."
+                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}"
                            TextWrapping="Wrap" />
             </Grid>
         </DataTemplate>
@@ -753,16 +753,16 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Risultato calibrazione:"
+                               Text="{x:Static res:InstallationApp.CalibrationResult}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="In base al risultato della calibrazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm."
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationLess}"
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Se il risultato della calibrazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione."
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationMore}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -772,7 +772,7 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredSx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Calibrazione lato sinistro (mm)"
+                                   LabelText="{x:Static res:InstallationApp.CalibrationLeftSideMM}"
                                    Mask="###0.0" />
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -782,18 +782,18 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredDx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Calibrazione lato destro (mm)"
+                                   LabelText="{x:Static res:InstallationApp.CalibrationRightSideMM}"
                                    Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="0"
                                     Command="{Binding RepeatCommand}"
-                                    Content="Ripeti Calibrazione"
+                                    Content="{x:Static res:InstallationApp.RepeteCalibration}"
                                     Style="{StaticResource WizardConfirmButton}" />
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     Command="{Binding CompletedCommand}"
-                                    Content="Completa"
+                                    Content="{x:Static res:InstallationApp.Complete}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -836,7 +836,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Calibrazione barriera" />
+                       Text="{x:Static res:InstallationApp.BarrierCalibration2}" />
         </StackPanel>
         <!--#endregion-->
 

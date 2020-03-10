@@ -31,22 +31,21 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"                   
+                   HorizontalAlignment="Left"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Installazione" />
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <TextBlock
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding RestoreInfo}"
-                   Visibility="{Binding IsUpdate, Converter={StaticResource BTVIC}}"/>
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding RestoreInfo}"
+                       Visibility="{Binding IsUpdate, Converter={StaticResource BTVIC}}" />
 
-            <views:UpdatesDataGridView
-                                   Height="200"
-                                   VerticalAlignment="Stretch"
-                                   Visibility="{Binding IsUpdate, Converter={StaticResource BTVC}}"/>
+            <views:UpdatesDataGridView Height="200"
+                                       VerticalAlignment="Stretch"
+                                       Visibility="{Binding IsUpdate, Converter={StaticResource BTVC}}" />
         </Grid>
 
         <Grid Grid.Row="1"
@@ -59,14 +58,14 @@
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
-                                Margin="0 15 0 0"
+                                Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpCommand}"
                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Margin="0 15 0 0"
+                                Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownCommand}"
@@ -75,31 +74,31 @@
         </Grid>
 
         <Border Name="InstallLogBorder"
-                Grid.Column="1"
                 Grid.Row="2"
-                Grid.RowSpan="2"                
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Padding="15,20,15,0"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"                
-                Background="{DynamicResource PpcButtonBackground}"                 
-                Padding="15,20,15,0" 
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
                 BorderThickness="1"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"                                                
                 CornerRadius="{DynamicResource PpcCornerRadius}">
             <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   FontSize="12"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding UpdatesInfo}" />
+                       Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="12"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding UpdatesInfo}" />
         </Border>
 
         <controls:PpcButton Grid.Row="3"
-                            Grid.Column="3"                            
-                            Margin="0 0 0 0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding UpdateCommand}"
-                                Content="Sart Update" />
+                            Grid.Column="3"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding UpdateCommand}"
+                            Content="{x:Static Resources:OperatorApp.StartUpdate}" />
     </Grid>
 </ctrls:View>

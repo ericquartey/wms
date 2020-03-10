@@ -384,17 +384,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.NewErrorValue):
                         if (!this.NewErrorValue.HasValue)
                         {
-                            return "Manca il valore";
+                            return InstallationApp.MissValue;
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
                         {
-                            return "Il dato deve essere positivo.";
+                            return InstallationApp.DataBePositive;
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
                         {
-                            return "Valore massimo permesso è 9.";
+                            return InstallationApp.MaxValue9;
                         }
 
                         break;

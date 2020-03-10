@@ -2065,4 +2065,235 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UnitEditing" xml:space="preserve">
     <value>Editing of the unit</value>
   </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Bay measurement</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Left side calibration (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Calibration result:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Right side calibration (mm)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>The data must be positive.</value>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>Device status </value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Elevator in position:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Gate correction</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} installation files found</value>
+  </data>
+  <data name="InverterParameters" xml:space="preserve">
+    <value>Inverter parameters</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>left</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Left side measurement</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Maximum allowed value is 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>The value is missing</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>No installation file found</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>One installation file found</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>At the end of the procedure the page will change automatically.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>PanelPc current version</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panels</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Position the elevator at the bay height.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Position the template a</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Based on the calibration result, you can decide whether to complete the operation, having a result of less than 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>If the calibration result exceeds 1 mm, the suggested modifications must be applied and the measurement repeated.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Load a bay unit or recall one to start the bay calibration wizard.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Open the damper, place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Place the adjustment template in the upper left corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Repeat calibration</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Restoration</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>right</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Right side measurement</value>
+  </data>
+  <data name="SharedFolder" xml:space="preserve">
+    <value>Shared folder</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>System error</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Once the template has been positioned, press the MEASUREMENT key which will start the procedure.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Test data</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Tolerance required</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Unit in bay:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Unit in high position</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Unit in low position</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Wait...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Wait for the automatic procedure to end.</value>
+  </data>
+  <data name="WmsCommunication" xml:space="preserve">
+    <value>Wms communication</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Samples the current values ​​for weight acquisition</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Weight profile analysis</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Allows adjustment of the drawer height detection barrier</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>It allows you to check and correct the altitude of the various positions on the bays</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Bay control</value>
+  </data>
+  <data name="BayTestMenuDescription" xml:space="preserve">
+    <value>It allows to carry out a series of repetitive tests for the bay</value>
+  </data>
+  <data name="BayTestMenuTitle" xml:space="preserve">
+    <value>Bay test</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>It performs a series of cycles of movement of the vertical axis</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Belt Break-In</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Calibrate the carousel</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Carousel calibration</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Cell management</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Load first drawer and test cells</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Cell test</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Apply a correction to a group of cells</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Change cell block (obsolete)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Check the share of the cells, divided by panel, keeping track of the verification placements made</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Checking cell dimensions</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Check the quota of one or more cells</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Check cell quotas (obsolete)</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Embarkation / Disembarkation</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>It allows to carry out a series of repetitive tests for the gate</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Gate test</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Calibrate the vertical axis offset</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Vertical axis offset</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Calibrate the resolution of the vertical axis</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Vertical axis resolution</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Calibrate the origin of the vertical axis</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Vertical axis origin</value>
+  </data>
 </root>
