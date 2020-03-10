@@ -21,7 +21,7 @@
         <controls:PpcButton Margin="15,15,0,0"
                             HorizontalAlignment="Right"
                             Command="{Binding ConfirmSetupCommand}"
-                            Content="Conferma Collaudo"
+                            Content="{x:Static res:Menu.ConfirmTest}"
                             Visibility="{Binding ConfirmSetupVisible, Converter={StaticResource ResourceKey=BTVC}}" />
 
         <controls:PpcButton Grid.Column="1"
