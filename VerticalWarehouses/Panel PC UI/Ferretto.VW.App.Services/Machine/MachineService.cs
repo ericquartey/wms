@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isAxisTuningCompleted;
 
+        private Dictionary<MAS.AutomationService.Contracts.BayNumber, bool> isBayHoming;
+
         private bool isDisposed;
 
         private bool isHoming;
@@ -168,6 +170,8 @@ namespace Ferretto.VW.App.Services
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.MachineStatus = new Models.MachineStatus();
+
+            this.isBayHoming = new Dictionary<MAS.AutomationService.Contracts.BayNumber, bool>();
         }
 
         #endregion
@@ -565,7 +569,12 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializationHoming()
         {
-            this.IsHoming = await this.machinePowerWebService.GetIsHomingAsync();
+            this.isBayHoming = await this.machinePowerWebService.GetIsHomingAsync();
+
+            if (this.isBayHoming != null && this.isBayHoming.ContainsKey(MAS.AutomationService.Contracts.BayNumber.ElevatorBay))
+            {
+                this.IsHoming = this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay];
+            }
 
             this.eventAggregator
                 .GetEvent<HomingChangedPubSubEvent>()
@@ -625,16 +634,19 @@ namespace Ferretto.VW.App.Services
                 {
                     this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
-                    var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
-                    if (isHoming != this.IsHoming ||
-                    isHoming && message?.Status == MessageStatus.OperationEnd ||
-                    !isHoming && message?.Status == MessageStatus.OperationError)
+                    this.isBayHoming = await this.machinePowerWebService.GetIsHomingAsync();
+                    if (this.isBayHoming != null && this.isBayHoming.ContainsKey(MAS.AutomationService.Contracts.BayNumber.ElevatorBay)
+                        && (this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay] != this.IsHoming
+                            || (this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay] && message?.Status == MessageStatus.OperationEnd)
+                            || (!this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay] && message?.Status == MessageStatus.OperationError)
+                            )
+                        )
                     {
                         this.eventAggregator
                         .GetEvent<HomingChangedPubSubEvent>()
-                        .Publish(new HomingChangedMessage(isHoming));
+                        .Publish(new HomingChangedMessage(this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay]));
                     }
-                    this.IsHoming = isHoming;
+                    this.IsHoming = this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay];
                 }
 
                 switch (message.Status)
@@ -1384,6 +1396,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Impossibile eseguire la calibrazione della giostra. \r\n La catena della baia non è in posizione di zero.", NotificationSeverity.Warning);
                         }
+                        else if (!this.isBayHoming[this.bay.Number])
+                        {
+                            this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
@@ -1403,6 +1419,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
                         }
+                        else if (!this.isBayHoming[this.bay.Number])
+                        {
+                            this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
@@ -1421,6 +1441,10 @@ namespace Ferretto.VW.App.Services
                         if (this.IsMissionInError)
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
+                        }
+                        else if (!this.isBayHoming[this.bay.Number])
+                        {
+                            this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
                         }
                         else
                         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -35,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Properties
 
-        public bool IsHoming => this.machineVolatileDataProvider.IsHomingExecuted;
+        public Dictionary<BayNumber, bool> IsBayHoming => this.machineVolatileDataProvider.IsBayHomingExecuted;
 
         public MachinePowerState MachinePowerState => this.machineVolatileDataProvider.MachinePowerState;
 

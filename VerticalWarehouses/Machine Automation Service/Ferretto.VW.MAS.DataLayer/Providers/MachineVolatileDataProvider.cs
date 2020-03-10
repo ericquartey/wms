@@ -43,6 +43,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.IsBayHomingExecuted.Add(BayNumber.BayOne, false);
             this.IsBayHomingExecuted.Add(BayNumber.BayTwo, false);
             this.IsBayHomingExecuted.Add(BayNumber.BayThree, false);
+            this.IsBayHomingExecuted.Add(BayNumber.ElevatorBay, false);
 
             this.positions.Add(BayNumber.BayOne, 0);
             this.positions.Add(BayNumber.BayTwo, 0);
@@ -89,6 +90,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool IsHomingActive { get; set; }
 
+        // this is a duplicate for IsBayHomingExecuted[BayNumber.ElevatorBay].
+        // I keep it only to send the message to the UI
         public bool IsHomingExecuted
         {
             get => this.isHomingExecuted;
@@ -97,6 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (this.isHomingExecuted != value)
                 {
                     this.isHomingExecuted = value;
+                    this.IsBayHomingExecuted[BayNumber.ElevatorBay] = value;
 
                     // send a message to the UI
                     this.eventAggregator

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -44,9 +45,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<bool> GetIsHoming()
+        public ActionResult<Dictionary<BayNumber, bool>> GetIsHoming()
         {
-            return this.Ok(this.runningStateProvider?.IsHoming ?? false);
+            return this.Ok(this.runningStateProvider?.IsBayHoming);
         }
 
         [HttpPost("power-off")]

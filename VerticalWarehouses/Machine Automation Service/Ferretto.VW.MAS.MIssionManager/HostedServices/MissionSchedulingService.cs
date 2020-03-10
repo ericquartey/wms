@@ -389,7 +389,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private bool GenerateHoming(IBaysDataProvider bayProvider, bool isHomingExecuted)
+        private bool GenerateHoming(IBaysDataProvider bayProvider)
         {
             if (this.machineVolatileDataProvider.IsHomingActive)
             {
@@ -403,11 +403,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 bays.All(x => x.CurrentMission == null))
             {
                 var bayNumber = bays.FirstOrDefault(x =>
-                this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
-                    && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
-                    && x.Carousel != null
-                    && x.CurrentMission == null
-                    && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
+                    this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
+                        && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
+                        && x.Carousel != null
+                        && x.CurrentMission == null
+                        && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
 
                 if (bayNumber != BayNumber.None)
                 {
@@ -428,7 +428,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
             }
 
-            if (!generated && !isHomingExecuted)
+            if (!generated && !this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
             {
                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
 
@@ -513,7 +513,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                     && m.Step > MissionStep.New)
-                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
+                                && !this.GenerateHoming(bayProvider)
                                 )
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))
@@ -728,7 +728,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        this.machineVolatileDataProvider.IsHomingExecuted = true;
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] = true;
                     }
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }

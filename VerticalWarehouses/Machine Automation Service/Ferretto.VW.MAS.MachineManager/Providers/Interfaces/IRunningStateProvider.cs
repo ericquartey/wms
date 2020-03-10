@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
@@ -7,7 +8,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
     {
         #region Properties
 
-        bool IsHoming { get; }
+        Dictionary<BayNumber, bool> IsBayHoming { get; }
 
         MachinePowerState MachinePowerState { get; }
 
