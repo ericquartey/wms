@@ -1,11 +1,11 @@
 ﻿{
-  "steps": [
+  "steps": [  
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 1,
       "title": "Imposta chiavi di registro",
       "description": "Cambia, aggiunge chiavi di registro per configurazione iniziale.",
-      "script": "Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "script": "$adpater = netsh.exe interface ip show address \"Ethernet\"; if ($adpater) {NetSh.exe interface set interface name=\"Ethernet\" newname=\"Ethernet-Machine\";}; Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
       //"script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
