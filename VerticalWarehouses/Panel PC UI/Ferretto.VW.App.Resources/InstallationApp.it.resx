@@ -2007,6 +2007,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CalibrationRightSideMM" xml:space="preserve">
     <value>Calibrazione lato destro (mm)</value>
   </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>Stato Dispositivo </value>
+  </data>
   <data name="ElevatorInPosition" xml:space="preserve">
     <value>Elevatore in posizione:</value>
   </data>
@@ -2024,6 +2027,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="PageChangeAutomatically" xml:space="preserve">
     <value>Al termine della procedure la pagina cambiera automaticamente.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Versione attuale PanelPc</value>
   </data>
   <data name="Panels" xml:space="preserve">
     <value>Pannelli</value>
@@ -2055,11 +2061,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RepeteCalibration" xml:space="preserve">
     <value>Ripeti Calibrazione</value>
   </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Ripristino</value>
+  </data>
   <data name="Right" xml:space="preserve">
     <value>destra</value>
   </data>
   <data name="RightSideMeasurement" xml:space="preserve">
     <value>Misurazione lato destro</value>
+  </data>
+  <data name="SharedFolder" xml:space="preserve">
+    <value>Cartella condivisa</value>
   </data>
   <data name="Statistics" xml:space="preserve">
     <value>Statistiche</value>
@@ -2078,6 +2090,21 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="UnitBay" xml:space="preserve">
     <value>Cassetto in Baia:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Cassetto in posizione alta</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Cassetto in posizione bassa</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Aggiornamento</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Aggiornamenti</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Attendi...</value>
   </data>
   <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
     <value>Attendere il termine della procedura automatica.</value>

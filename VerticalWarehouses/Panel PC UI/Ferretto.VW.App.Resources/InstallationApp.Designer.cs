@@ -1348,6 +1348,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device status .
+        /// </summary>
+        public static string DeviceStatus {
+            get {
+                return ResourceManager.GetString("DeviceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disembark.
         /// </summary>
         public static string Disembark {
@@ -3931,6 +3940,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PanelPc current version.
+        /// </summary>
+        public static string PanelPcCurrentVersion {
+            get {
+                return ResourceManager.GetString("PanelPcCurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panels.
         /// </summary>
         public static string Panels {
@@ -4446,6 +4464,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restoration.
+        /// </summary>
+        public static string Restoration {
+            get {
+                return ResourceManager.GetString("Restoration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore.
         /// </summary>
         public static string Restore {
@@ -4847,6 +4874,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ShapeControl {
             get {
                 return ResourceManager.GetString("ShapeControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared folder.
+        /// </summary>
+        public static string SharedFolder {
+            get {
+                return ResourceManager.GetString("SharedFolder", resourceCulture);
             }
         }
         
@@ -5490,6 +5526,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit in high position.
+        /// </summary>
+        public static string UnitHightPosition {
+            get {
+                return ResourceManager.GetString("UnitHightPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit in low position.
+        /// </summary>
+        public static string UnitLowPosition {
+            get {
+                return ResourceManager.GetString("UnitLowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         public static string Unknown {
@@ -5526,11 +5580,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Resolution.
         /// </summary>
         public static string UpdateResolution {
             get {
                 return ResourceManager.GetString("UpdateResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string Updates {
+            get {
+                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
         
@@ -5783,6 +5855,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalResolutionDone {
             get {
                 return ResourceManager.GetString("VerticalResolutionDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait....
+        /// </summary>
+        public static string Wait {
+            get {
+                return ResourceManager.GetString("Wait", resourceCulture);
             }
         }
         

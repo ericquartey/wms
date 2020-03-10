@@ -1246,4 +1246,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>Non c'è un articolo disponibile con codice '{0}'.</value>
   </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Inizia Aggiornamento</value>
+  </data>
 </root>
