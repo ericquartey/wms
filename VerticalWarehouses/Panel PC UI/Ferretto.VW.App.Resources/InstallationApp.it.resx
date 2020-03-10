@@ -2136,4 +2136,34 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsCommunication" xml:space="preserve">
     <value>Comunicazione Wms</value>
   </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Permette la regolazione della barriera di rilevamento altezza del cassetto</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione barriera</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Permette di verificare e correggere la quota delle varie posizioni sulle baie</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Controllo baia</value>
+  </data>
+  <data name="BayTestMenuDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la baia</value>
+  </data>
+  <data name="BayTestMenuTitle" xml:space="preserve">
+    <value>Test baia</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della giostra</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione giostra</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la serranda</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Test serranda</value>
+  </data>
 </root>

@@ -223,6 +223,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows adjustment of the drawer height detection barrier.
+        /// </summary>
+        public static string BarrierCalibrationMenuDescription {
+            get {
+                return ResourceManager.GetString("BarrierCalibrationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barrier calibration.
+        /// </summary>
+        public static string BarrierCalibrationMenuTitle {
+            get {
+                return ResourceManager.GetString("BarrierCalibrationMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -273,6 +291,24 @@ namespace Ferretto.VW.App.Resources {
         public static string BayChainHorizontalPosition {
             get {
                 return ResourceManager.GetString("BayChainHorizontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It allows you to check and correct the altitude of the various positions on the bays.
+        /// </summary>
+        public static string BayControlMenuDescription {
+            get {
+                return ResourceManager.GetString("BayControlMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay control.
+        /// </summary>
+        public static string BayControlMenuTitle {
+            get {
+                return ResourceManager.GetString("BayControlMenuTitle", resourceCulture);
             }
         }
         
@@ -439,6 +475,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It allows to carry out a series of repetitive tests for the bay.
+        /// </summary>
+        public static string BayTestMenuDescription {
+            get {
+                return ResourceManager.GetString("BayTestMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay test.
+        /// </summary>
+        public static string BayTestMenuTitle {
+            get {
+                return ResourceManager.GetString("BayTestMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay up.
         /// </summary>
         public static string BayUp {
@@ -588,6 +642,24 @@ namespace Ferretto.VW.App.Resources {
         public static string CarouselCalibrationDescription {
             get {
                 return ResourceManager.GetString("CarouselCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate the carousel.
+        /// </summary>
+        public static string CarouselCalibrationMenuDescription {
+            get {
+                return ResourceManager.GetString("CarouselCalibrationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel calibration.
+        /// </summary>
+        public static string CarouselCalibrationMenuTitle {
+            get {
+                return ResourceManager.GetString("CarouselCalibrationMenuTitle", resourceCulture);
             }
         }
         
@@ -2226,6 +2298,24 @@ namespace Ferretto.VW.App.Resources {
         public static string GateSensorB {
             get {
                 return ResourceManager.GetString("GateSensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It allows to carry out a series of repetitive tests for the gate.
+        /// </summary>
+        public static string GateTestMenuDescription {
+            get {
+                return ResourceManager.GetString("GateTestMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate test.
+        /// </summary>
+        public static string GateTestMenuTitle {
+            get {
+                return ResourceManager.GetString("GateTestMenuTitle", resourceCulture);
             }
         }
         

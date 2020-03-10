@@ -2206,4 +2206,34 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsCommunication" xml:space="preserve">
     <value>Wms communication</value>
   </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Allows adjustment of the drawer height detection barrier</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>It allows you to check and correct the altitude of the various positions on the bays</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Bay control</value>
+  </data>
+  <data name="BayTestMenuDescription" xml:space="preserve">
+    <value>It allows to carry out a series of repetitive tests for the bay</value>
+  </data>
+  <data name="BayTestMenuTitle" xml:space="preserve">
+    <value>Bay test</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Calibrate the carousel</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Carousel calibration</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>It allows to carry out a series of repetitive tests for the gate</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Gate test</value>
+  </data>
 </root>

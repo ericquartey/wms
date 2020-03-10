@@ -88,6 +88,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menu Bay.
+        /// </summary>
+        public static string BaysMenuName {
+            get {
+                return ResourceManager.GetString("BaysMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation Status.
         /// </summary>
         public static string InstallationStatus {

@@ -126,6 +126,9 @@
   <data name="AccessoriesMenuTitle" xml:space="preserve">
     <value>Puntatore Laser</value>
   </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menu Baia</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
   </data>
