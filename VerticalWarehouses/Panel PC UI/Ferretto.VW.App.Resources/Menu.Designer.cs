@@ -61,6 +61,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration management and Laser functionality test.
+        /// </summary>
+        public static string AccessoriesMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessories Menu.
+        /// </summary>
+        public static string AccessoriesMenuName {
+            get {
+                return ResourceManager.GetString("AccessoriesMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser Pointer.
+        /// </summary>
+        public static string AccessoriesMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation Status.
         /// </summary>
         public static string InstallationStatus {
