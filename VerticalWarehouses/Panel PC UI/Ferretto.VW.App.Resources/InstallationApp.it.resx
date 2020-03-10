@@ -2019,6 +2019,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Import" xml:space="preserve">
     <value>Importa</value>
   </data>
+  <data name="InverterParameters" xml:space="preserve">
+    <value>Parametri inverter</value>
+  </data>
   <data name="Left" xml:space="preserve">
     <value>sinistra</value>
   </data>
@@ -2103,10 +2106,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Updates" xml:space="preserve">
     <value>Aggiornamenti</value>
   </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Gestione utenti</value>
+  </data>
   <data name="Wait" xml:space="preserve">
     <value>Attendi...</value>
   </data>
   <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
     <value>Attendere il termine della procedura automatica.</value>
+  </data>
+  <data name="WmsCommunication" xml:space="preserve">
+    <value>Comunicazione Wms</value>
   </data>
 </root>

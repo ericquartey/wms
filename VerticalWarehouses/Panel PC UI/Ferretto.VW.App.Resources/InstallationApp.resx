@@ -2089,6 +2089,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="GateCorrection2" xml:space="preserve">
     <value>Gate correction</value>
   </data>
+  <data name="InverterParameters" xml:space="preserve">
+    <value>Inverter parameters</value>
+  </data>
   <data name="Left" xml:space="preserve">
     <value>left</value>
   </data>
@@ -2173,10 +2176,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Updates" xml:space="preserve">
     <value>Updates</value>
   </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
   <data name="Wait" xml:space="preserve">
     <value>Wait...</value>
   </data>
   <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
     <value>Wait for the automatic procedure to end.</value>
+  </data>
+  <data name="WmsCommunication" xml:space="preserve">
+    <value>Wms communication</value>
   </data>
 </root>

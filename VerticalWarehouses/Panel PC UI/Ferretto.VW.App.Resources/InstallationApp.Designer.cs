@@ -2887,6 +2887,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter parameters.
+        /// </summary>
+        public static string InverterParameters {
+            get {
+                return ResourceManager.GetString("InverterParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Landing not performed due to missing drawer.
         /// </summary>
         public static string LandingNotExecutedMissingDrawer {
@@ -5634,6 +5643,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Management.
+        /// </summary>
+        public static string UserManagement {
+            get {
+                return ResourceManager.GetString("UserManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use weight control.
         /// </summary>
         public static string UseWeightControl {
@@ -5927,6 +5945,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WMSAutoSync {
             get {
                 return ResourceManager.GetString("WMSAutoSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wms communication.
+        /// </summary>
+        public static string WmsCommunication {
+            get {
+                return ResourceManager.GetString("WmsCommunication", resourceCulture);
             }
         }
         
