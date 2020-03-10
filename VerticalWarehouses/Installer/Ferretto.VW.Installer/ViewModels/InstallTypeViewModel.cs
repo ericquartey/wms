@@ -210,9 +210,13 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             this.canNext = false;
 
-            if (this.isMasConfiguration && this.isMasConfigurationValid)
+            if (this.isMasConfiguration)
             {
-                this.canNext = true;
+                this.MessageMaster = string.Empty;
+                if (this.isMasConfigurationValid)
+                {
+                    this.canNext = true;
+                }
             }
 
             if (!this.isMasConfiguration)
@@ -251,7 +255,7 @@ namespace Ferretto.VW.Installer.ViewModels
             }
             catch (Exception ex)
             {
-                this.MessageMaster = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
+                this.MessageSlave = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
             }
 
             return null;
