@@ -98,6 +98,7 @@
                                Grid.ColumnSpan="2"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
+                               TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSize_Normal}"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{Binding MessageMaster}" />
@@ -163,7 +164,8 @@
                                    Grid.Row="1"
                                    Grid.ColumnSpan="2"
                                    HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"                            
+                                   VerticalAlignment="Top"
+                                   TextWrapping="Wrap"
                                    FontSize="{DynamicResource FontSize_Normal}"
                                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                    Text="{Binding MessageSlave}" />
