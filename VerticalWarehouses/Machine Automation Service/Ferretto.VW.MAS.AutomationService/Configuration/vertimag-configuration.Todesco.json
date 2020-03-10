@@ -4294,7 +4294,7 @@
     ],
 
     "SerialNumber": "MV20-0003",
-    "Simulation": true
+    "Simulation": false
   },
   "MachineStatistics": {
     "AutomaticTimePercentage": 0.0,
