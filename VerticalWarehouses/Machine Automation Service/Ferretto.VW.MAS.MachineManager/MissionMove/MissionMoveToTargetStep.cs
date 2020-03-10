@@ -167,18 +167,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 targetBayPositionId,
                                 targetCellId);
                         }
-                        else if (notification.Type == MessageType.ShutterPositioning
+                        else if ((notification.Type == MessageType.ShutterPositioning && this.Mission.CloseShutterBayNumber != BayNumber.None)
                             || notification.TargetBay == BayNumber.ElevatorBay
                             )
                         {
-                            var alreadyMovedShutter = this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter);
                             if (this.UpdateResponseList(notification.Type))
                             {
-                                this.MissionsDataProvider.Update(this.Mission);
-                                if (notification.Type == MessageType.ShutterPositioning
-                                    && !alreadyMovedShutter
-                                    )
+                                if (notification.Type == MessageType.ShutterPositioning)
                                 {
+                                    this.Mission.CloseShutterBayNumber = BayNumber.None;
                                     if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                     {
                                         this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
@@ -190,6 +187,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                                     }
                                 }
+                                this.MissionsDataProvider.Update(this.Mission);
                             }
                         }
                     }
