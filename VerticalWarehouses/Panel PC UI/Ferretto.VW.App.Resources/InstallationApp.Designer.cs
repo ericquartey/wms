@@ -745,6 +745,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell management.
+        /// </summary>
+        public static string CellManagerMenuTitle {
+            get {
+                return ResourceManager.GetString("CellManagerMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell not valid.
         /// </summary>
         public static string CellNotValid {
@@ -916,6 +925,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load first drawer and test cells.
+        /// </summary>
+        public static string CellTestMenuDescription {
+            get {
+                return ResourceManager.GetString("CellTestMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell test.
+        /// </summary>
+        public static string CellTestMenuTitle {
+            get {
+                return ResourceManager.GetString("CellTestMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell {0}.
         /// </summary>
         public static string CellWithNumber {
@@ -934,11 +961,65 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply a correction to a group of cells.
+        /// </summary>
+        public static string ChangeCellBlockObsoleteMenuDescription {
+            get {
+                return ResourceManager.GetString("ChangeCellBlockObsoleteMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change cell block (obsolete).
+        /// </summary>
+        public static string ChangeCellBlockObsoleteMenuTitle {
+            get {
+                return ResourceManager.GetString("ChangeCellBlockObsoleteMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator..
         /// </summary>
         public static string CheckBayElevatorAlignment {
             get {
                 return ResourceManager.GetString("CheckBayElevatorAlignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the share of the cells, divided by panel, keeping track of the verification placements made.
+        /// </summary>
+        public static string CheckCellDimensionMenuDescription {
+            get {
+                return ResourceManager.GetString("CheckCellDimensionMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking cell dimensions.
+        /// </summary>
+        public static string CheckCellDimensionMenuTitle {
+            get {
+                return ResourceManager.GetString("CheckCellDimensionMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the quota of one or more cells.
+        /// </summary>
+        public static string CheckCellDimensionObsoleteMenuDescription {
+            get {
+                return ResourceManager.GetString("CheckCellDimensionObsoleteMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check cell quotas (obsolete).
+        /// </summary>
+        public static string CheckCellDimensionObsoleteMenuTitle {
+            get {
+                return ResourceManager.GetString("CheckCellDimensionObsoleteMenuTitle", resourceCulture);
             }
         }
         

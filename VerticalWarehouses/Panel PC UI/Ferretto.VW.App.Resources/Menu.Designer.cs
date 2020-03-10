@@ -97,6 +97,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menu Cells.
+        /// </summary>
+        public static string CellsMenuName {
+            get {
+                return ResourceManager.GetString("CellsMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation Status.
         /// </summary>
         public static string InstallationStatus {

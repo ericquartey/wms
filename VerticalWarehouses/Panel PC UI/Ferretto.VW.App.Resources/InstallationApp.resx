@@ -2230,6 +2230,33 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
     <value>Carousel calibration</value>
   </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Cell management</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Load first drawer and test cells</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Cell test</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Apply a correction to a group of cells</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Change cell block (obsolete)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Check the share of the cells, divided by panel, keeping track of the verification placements made</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Checking cell dimensions</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Check the quota of one or more cells</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Check cell quotas (obsolete)</value>
+  </data>
   <data name="GateTestMenuDescription" xml:space="preserve">
     <value>It allows to carry out a series of repetitive tests for the gate</value>
   </data>

@@ -2160,6 +2160,33 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
     <value>Calibrazione giostra</value>
   </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Gestione celle</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Carico primo cassetto e test celle</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Test celle</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Applica una correzione ad un gruppo di celle</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Modifica blocco celle (obsoleto)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Verifica la quota delle celle, suddivise per pannello, tenendo traccia dei posizionamenti di verifica effettuati</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Controllo quote celle</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Verifica la quota di una o più celle</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Controllo quote celle (obsoleto)</value>
+  </data>
   <data name="GateTestMenuDescription" xml:space="preserve">
     <value>Permette di effettuare una serie di test ripetitivi per la serranda</value>
   </data>
