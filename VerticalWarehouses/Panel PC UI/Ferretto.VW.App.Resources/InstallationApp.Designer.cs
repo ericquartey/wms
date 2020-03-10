@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to bypass this test?.
+        /// </summary>
+        public static string BypassTest {
+            get {
+                return ResourceManager.GetString("BypassTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration.
         /// </summary>
         public static string Calibration {
@@ -1141,6 +1150,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete the tests on the other bays.
+        /// </summary>
+        public static string CompleteOtherBayTest {
+            get {
+                return ResourceManager.GetString("CompleteOtherBayTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete Test.
         /// </summary>
         public static string CompleteTestMenuTitle {
@@ -1191,6 +1209,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmChanges {
             get {
                 return ResourceManager.GetString("ConfirmChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to confirm the completion of the test?.
+        /// </summary>
+        public static string ConfirmCompleteTest {
+            get {
+                return ResourceManager.GetString("ConfirmCompleteTest", resourceCulture);
             }
         }
         
@@ -5792,6 +5819,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TestedPanels {
             get {
                 return ResourceManager.GetString("TestedPanels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External bay test.
+        /// </summary>
+        public static string TestExternalBay {
+            get {
+                return ResourceManager.GetString("TestExternalBay", resourceCulture);
             }
         }
         

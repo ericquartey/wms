@@ -2236,6 +2236,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BeltBreakInMenuTitle" xml:space="preserve">
     <value>Belt Break-In</value>
   </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Are you sure you want to bypass this test?</value>
+  </data>
   <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
     <value>Calibrate the carousel</value>
   </data>
@@ -2269,8 +2272,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Check cell quotas (obsolete)</value>
   </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Complete the tests on the other bays</value>
+  </data>
   <data name="CompleteTestMenuTitle" xml:space="preserve">
     <value>Complete Test</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Do you want to confirm the completion of the test?</value>
   </data>
   <data name="DateTimeMenuDescription" xml:space="preserve">
     <value>System Date and Time setting</value>
@@ -2340,6 +2349,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
     <value>Vertical axis resolution</value>
+  </data>
+  <data name="TestExternalBay" xml:space="preserve">
+    <value>External bay test</value>
   </data>
   <data name="UnitManageMenuTitle" xml:space="preserve">
     <value>Unit Management</value>

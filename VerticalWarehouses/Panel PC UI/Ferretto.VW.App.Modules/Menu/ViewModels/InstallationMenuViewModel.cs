@@ -96,7 +96,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.IsExecutingProcedure = true;
 
-                    var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.CarouselCalibration, DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
@@ -123,7 +123,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.LoadFirstDrawerPageHeader, DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.LoadFirstDrawerPageHeader, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.LoadFirstDrawerTestBypassAsync();
@@ -151,7 +151,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         this.IsExecutingProcedure = true;
 
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BayHeightCheck, DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.BayHeightCheck, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.BayHeightCheckBypassAsync();
@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BarrierCalibration, DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.BarrierCalibration, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", "Test serranda", DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.GateControl, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.BayShutterTestBypassAsync();
@@ -232,7 +232,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BeltBurnishing, DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.BeltBurnishing, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.BeltBurnishingTestBypassAsync();
@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.CellsControl, DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.CellsControl, DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
@@ -326,7 +326,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsExecutingProcedure = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage("Vuoi confermare il completamento del collaudo?", InstallationApp.ConfirmSetup, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCompleteTest, InstallationApp.ConfirmSetup, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineSetupStatusWebService.ConfirmSetupAsync();
@@ -483,7 +483,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = "Calibrazione giostra",
+                        Text = InstallationApp.CarouselCalibration,
                         Status = bayStatus.CarouselCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.CarouselCalibration.IsCompleted,
                         Bypassed = bayStatus.CarouselCalibration.IsBypassed,
@@ -495,7 +495,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = "Test baia esterna",
+                        Text = InstallationApp.TestExternalBay,
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
                         Bypassed = false,
@@ -507,7 +507,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = "Test serranda",
+                        Text = InstallationApp.GateControl,
                         Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.Shutter.IsCompleted,
                         Bypassed = bayStatus.Shutter.IsBypassed,
@@ -528,7 +528,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = "Completare i test sulle altre baie",
+                        Text = InstallationApp.CompleteOtherBayTest,
                         Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
                         Bypassed = false,
@@ -540,7 +540,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 this.source.Add(new ItemListSetupProcedure()
                 {
-                    Text = "Conferma collaudo",
+                    Text = InstallationApp.ConfirmSetup,
                     Status = this.MachineService.IsTuningCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
                     Bypassed = false,

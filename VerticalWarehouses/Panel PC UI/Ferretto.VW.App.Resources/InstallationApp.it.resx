@@ -2166,6 +2166,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BeltBreakInMenuTitle" xml:space="preserve">
     <value>Rodaggio cinghia</value>
   </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Confermi di voler bypassare l'esecuzione di questo test?</value>
+  </data>
   <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
     <value>Effettua la calibrazione della giostra</value>
   </data>
@@ -2199,8 +2202,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Controllo quote celle (obsoleto)</value>
   </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Completare i test sulle altre baie</value>
+  </data>
   <data name="CompleteTestMenuTitle" xml:space="preserve">
     <value>Test Completo</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Vuoi confermare il completamento del collaudo?</value>
   </data>
   <data name="DateTimeMenuDescription" xml:space="preserve">
     <value>Impostazione Data e Ora di Sistema</value>
@@ -2270,6 +2279,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
     <value>Risoluzione asse verticale</value>
+  </data>
+  <data name="TestExternalBay" xml:space="preserve">
+    <value>Test baia esterna</value>
   </data>
   <data name="UnitManageMenuTitle" xml:space="preserve">
     <value>Gestione cassetto</value>
