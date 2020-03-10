@@ -152,11 +152,18 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                             }
                             else
                             {
-                                var problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(webApiException.Response);
+                                try
+                                { 
+                                    var problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(webApiException.Response);
 
-                                notificationMessage +=
-                                   System.Environment.NewLine +
-                                   problemDetails.Detail ?? problemDetails.Title;
+                                    notificationMessage +=
+                                       System.Environment.NewLine +
+                                       problemDetails.Detail ?? problemDetails.Title;
+                                }
+                                catch
+                                {
+                                    // do nothing
+                                }
                             }
 
                             this.NotificationMessage = notificationMessage;

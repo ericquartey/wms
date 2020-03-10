@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public ParametersImportViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
-            this._machineConfigurationWebService = machineConfigurationWebService;
+            this._machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this._usbWatcher = usb;
         }
 
@@ -163,11 +163,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             UsbWatcherService usb = this._usbWatcher;
             IEnumerable<FileInfo> configurationFiles = null;
 
-#if DEBUG
-            configurationFiles = this.configurationFiles = DriveInfo.GetDrives().First().FindConfigurationFiles();
-#else
             configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
-#endif
 
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())
@@ -226,7 +222,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var target = VertimagConfiguration.FromJson(result.ToString());
 
                 await this._machineConfigurationWebService.SetAsync(target);
-
                 this.SelectedFile = null;
                 this.ShowNotification(Resources.InstallationApp.RestoreSuccessful, Services.Models.NotificationSeverity.Success);
             }

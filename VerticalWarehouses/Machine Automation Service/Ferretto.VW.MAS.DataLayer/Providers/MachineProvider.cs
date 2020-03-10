@@ -221,6 +221,15 @@ namespace Ferretto.VW.MAS.DataLayer
             context.Machines.Add(machine);
         }
 
+        public void ImportMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext context)
+        {
+            _ = servicingInfo ?? throw new System.ArgumentNullException(nameof(servicingInfo));
+
+            context.ServicingInfo.RemoveRange(context.ServicingInfo);
+
+            context.ServicingInfo.Add(servicingInfo);
+        }
+
         public void ImportMachineStatistics(MachineStatistics machineStatistics, DataLayerContext context)
         {
             _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
@@ -387,6 +396,20 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.SaveChanges();
                 }
             }
+        }
+
+        public void UpdateMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext dataContext)
+        {
+            _ = servicingInfo ?? throw new System.ArgumentNullException(nameof(servicingInfo));
+
+            if (dataContext is null)
+            {
+                dataContext = this.dataContext;
+            }
+
+            dataContext.AddOrUpdate(servicingInfo, (e) => e.Id);
+
+            dataContext.SaveChanges();
         }
 
         public void UpdateMachineStatistics(MachineStatistics machineStatistics, DataLayerContext dataContext)

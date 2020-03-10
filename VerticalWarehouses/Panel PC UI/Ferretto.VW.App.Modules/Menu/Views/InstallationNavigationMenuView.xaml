@@ -31,7 +31,7 @@
                             Abbrevation="4.1"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuInstallatorCommand}"
-                            Content="Installazione"
+                            Content="{x:Static res:Menu.Installation}"
                             IsActive="{Binding IsGeneralActive}"
                             Kind="Magnify"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -53,7 +53,7 @@
                             Abbrevation="4.3"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuBaysCommand}"
-                            Content="Baia"
+                            Content="{x:Static res:Menu.Bay}"
                             IsActive="{Binding IsBaysActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -97,7 +97,7 @@
                             Abbrevation="4.7"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuOtherCommand}"
-                            Content="Altro"
+                            Content="{x:Static res:Menu.Other}"
                             IsActive="{Binding IsOtherActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />

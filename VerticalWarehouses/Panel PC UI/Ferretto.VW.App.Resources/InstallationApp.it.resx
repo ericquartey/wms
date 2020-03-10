@@ -2136,4 +2136,166 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsCommunication" xml:space="preserve">
     <value>Comunicazione Wms</value>
   </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Effettua il campionamento dei valori di corrente per l'acquisizione del peso</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Analisi profilo peso</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Permette la regolazione della barriera di rilevamento altezza del cassetto</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione barriera</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Permette di verificare e correggere la quota delle varie posizioni sulle baie</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Controllo baia</value>
+  </data>
+  <data name="BayTestMenuDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la baia</value>
+  </data>
+  <data name="BayTestMenuTitle" xml:space="preserve">
+    <value>Test baia</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Effettua una serie di cicli di spostamento dell'asse verticale</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Rodaggio cinghia</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Confermi di voler bypassare l'esecuzione di questo test?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della giostra</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione giostra</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Gestione celle</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Carico primo cassetto e test celle</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Test celle</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Applica una correzione ad un gruppo di celle</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Modifica blocco celle (obsoleto)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Verifica la quota delle celle, suddivise per pannello, tenendo traccia dei posizionamenti di verifica effettuati</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Controllo quote celle</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Verifica la quota di una o più celle</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Controllo quote celle (obsoleto)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Completare i test sulle altre baie</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Test Completo</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Vuoi confermare il completamento del collaudo?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Impostazione Data e Ora di Sistema</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Data e Ora</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Imbarco / Sbarco</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la serranda</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Test serranda</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Procedura di inserimento nuovo cassetto</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Caricamento della parametrizzazione dell'inverter con parametri standard</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Parametrizzazione Inverter</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Gestione utenti locali</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Gestione Utenti</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Procedura di spostamento cassetto da baia a baia</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Spostamento da baia a baia</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Procedura di spostamento cassetto da cella a cella</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Spostamento da cella a cella</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione dell'offset dell'asse verticale</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Offset asse verticale</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Modifica, importazione ed esportazione dei parametri macchina</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Parametri</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Procedura di rimozione cassetto</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Rimozione</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della risoluzione dell'asse verticale</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Risoluzione asse verticale</value>
+  </data>
+  <data name="TestExternalBay" xml:space="preserve">
+    <value>Test baia esterna</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Gestione cassetto</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione dell'origine dell'asse verticale</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Origine asse verticale</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Impostazione dei parametri di comunicazione con il WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>Comunicazione WMS</value>
+  </data>
 </root>

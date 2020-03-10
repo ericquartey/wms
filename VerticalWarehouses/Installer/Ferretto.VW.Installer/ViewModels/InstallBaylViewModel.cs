@@ -108,8 +108,7 @@ namespace Ferretto.VW.Installer.ViewModels
             if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
             {
                 var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
-                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
-                //this.AddAppConfig("Install:Parameter:BayNumber", ((int)bayFound.Number).ToString());
+                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());                
                 this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);                
                 this.canProcede = true;
                 this.SelectedBay = bayFound;
@@ -194,7 +193,7 @@ namespace Ferretto.VW.Installer.ViewModels
                     if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
                     {
                         var masIp= (this.installationService.MasIpAddress is null)? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() :this.installationService.MasIpAddress.ToString();                        
-                        ipMasNode.Attributes["value"].Value = $"{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
+                        ipMasNode.Attributes["value"].Value = $"http://{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
                     }
                 }
             }

@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:CellsMenuViewModel,
@@ -50,12 +50,12 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Menu Celle" />
+                       Text="{x:Static res:Menu.CellsMenuName}" />
 
             <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="Gestione celle"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.CellManagerMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.1"
@@ -64,47 +64,47 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Controllo quote celle"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.CheckCellDimensionMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellPanelsCheckCommand}"
-                                        Content="Verifica la quota delle celle, suddivise per pannello, tenendo traccia dei posizionamenti di verifica effettuati"
+                                        Content="{x:Static res:InstallationApp.CheckCellDimensionMenuDescription}"
                                         IsBypassed="{Binding IsCellPanelsCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellPanelsCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Controllo quote celle (obsoleto)"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.CheckCellDimensionObsoleteMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsHeightCheckCommand}"
-                                        Content="Verifica la quota di una o più celle"
+                                        Content="{x:Static res:InstallationApp.CheckCellDimensionObsoleteMenuDescription}"
                                         IsBypassed="{Binding IsCellsHeightCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellsHeightCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Modifica blocco celle (obsoleto)"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.ChangeCellBlockObsoleteMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsBlockTuningCommand}"
-                                        Content="Applica una correzione ad un gruppo di celle"
+                                        Content="{x:Static res:InstallationApp.ChangeCellBlockObsoleteMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Test celle"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.CellTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BayFirstLoadingUnitCommand}"
-                                        Content="Carico primo cassetto e test celle"
+                                        Content="{x:Static res:InstallationApp.CellTestMenuDescription}"
                                         IsBypassed="{Binding IsBayFirstLoadingUnitProcedureBypassed}"
                                         IsCompleted="{Binding IsBayFirstLoadingUnitProcedure}"
                                         Kind="Account"
