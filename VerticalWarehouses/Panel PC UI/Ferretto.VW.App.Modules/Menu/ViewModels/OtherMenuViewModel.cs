@@ -66,7 +66,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
-                this.CanExecuteCommand));
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuDateTimeCommand =>
             this.menuDateTimeCommand
@@ -152,7 +153,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case MenuOther.ComunicationWms:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.COMUNICATIONWMS,
+                            Utils.Modules.Installation.WMSSETTINGS,
                             data: null,
                             trackCurrentView: true);
                         break;
