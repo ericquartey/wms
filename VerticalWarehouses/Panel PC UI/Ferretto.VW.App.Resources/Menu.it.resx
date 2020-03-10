@@ -126,6 +126,24 @@
   <data name="AccessoriesMenuTitle" xml:space="preserve">
     <value>Puntatore Laser</value>
   </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menu Baia</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menu Celle</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Conferma Collaudo</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menu Elevatore</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installazione</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
   </data>
@@ -146,5 +164,14 @@
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Movimenti</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Menu Altro</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menu Cassetti</value>
   </data>
 </root>

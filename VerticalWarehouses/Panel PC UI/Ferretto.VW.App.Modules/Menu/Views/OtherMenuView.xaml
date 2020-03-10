@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:OtherMenuViewModel,
@@ -45,60 +45,60 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Menu Altro" />
+                       Text="{x:Static res:Menu.OtherMenuName}" />
 
             <WrapPanel Grid.Row="1">
 
-                <controls:PpcButton Title="Gestione Utenti"
+                <controls:PpcButton Title="{x:Static res:InstallationApp.ManageUserMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.1"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuUsersCommand}"
-                                    Content="Gestione utenti locali"
+                                    Content="{x:Static res:InstallationApp.manageUserMenuDescription}"
                                     IsEnabled="False"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Comunicazione WMS"
+                <controls:PpcButton Title="{x:Static res:InstallationApp.WMSComunicationMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.2"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuComunicationWmsCommand}"
-                                    Content="Impostazione dei parametri di comunicazione con il WMS"
-                                    IsEnabled="False"
+                                    Content="{x:Static res:InstallationApp.WMSComunicationMenuDescription}"
+                                    IsEnabled="True"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Parametri"
+                <controls:PpcButton Title="{x:Static res:InstallationApp.ParametersMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.3"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParametersCommand}"
-                                    Content="Modifica, importazione ed esportazione dei parametri macchina"
+                                    Content="{x:Static res:InstallationApp.ParametersMenuDescription}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Parametrizzazione Inverter"
+                <controls:PpcButton Title="{x:Static res:InstallationApp.InverterParameterizationMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParameterInverterCommand}"
-                                    Content="Caricamento della parametrizzazione dell'inverter con parametri standard"
+                                    Content="{x:Static res:InstallationApp.InverterParameterizationMenuDescription}"
                                     IsEnabled="False"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Data e Ora"
+                <controls:PpcButton Title="{x:Static res:InstallationApp.DateTimeMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.5"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuDateTimeCommand}"
-                                    Content="Impostazione Data e Ora di Sistema"
+                                    Content="{x:Static res:InstallationApp.DateTimeMenuDescription}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -20,7 +21,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand checkEndpointCommand;
 
+        private HealthStatus healthStatus;
+
         private IPEndPoint ipEndpoint;
+
+        private bool isCheckingEndpoint;
 
         private bool isWmsEnabled;
 
@@ -46,10 +51,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.checkEndpointCommand = new DelegateCommand(
                 async () => await this.CheckEndpointAsync(), this.CanCheckEndpoint));
 
+        public HealthStatus HealthStatus
+        {
+            get => this.healthStatus;
+            private set => this.SetProperty(ref this.healthStatus, value);
+        }
+
         public IPEndPoint IPEndPoint
         {
             get => this.ipEndpoint;
             set => this.SetProperty(ref this.ipEndpoint, value);
+        }
+
+        public bool IsCheckingEndpoint
+        {
+            get => this.isCheckingEndpoint;
+            private set => this.SetProperty(ref this.isCheckingEndpoint, value);
         }
 
         public bool IsWmsEnabled
@@ -68,14 +85,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
+        protected override async Task OnDataRefreshAsync()
         {
-            await base.OnAppearedAsync();
+            try
+            {
+                this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
+                if (this.IsWmsEnabled)
+                {
+                    await this.CheckEndpointAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+
+            await base.OnDataRefreshAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.saveCommand?.RaiseCanExecuteChanged();
+            this.checkEndpointCommand?.RaiseCanExecuteChanged();
+
+            base.RaiseCanExecuteChanged();
         }
 
         private bool CanCheckEndpoint()
         {
-            throw new NotImplementedException();
+            return !this.IsCheckingEndpoint;
         }
 
         private bool CanSave()
@@ -83,16 +121,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return true;
         }
 
-        private Task CheckEndpointAsync()
+        private async Task CheckEndpointAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.IsCheckingEndpoint = true;
+
+                var statusString = await this.wmsStatusWebService.GetHealthAsync();
+                if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                {
+                    this.HealthStatus = status;
+                }
+                else
+                {
+                    this.HealthStatus = HealthStatus.Unknown;
+                }
+            }
+            catch (MasWebApiException ex)
+            {
+                this.HealthStatus = HealthStatus.Unhealthy;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsCheckingEndpoint = false;
+            }
         }
 
         private async Task SaveAsync()
         {
             try
             {
-                //  await this.wmsStatusWebService.UpdateAsync(this.IsEnabled, this.IPEndPoint);
+                this.IsWaitingForResponse = true;
+                await this.wmsStatusWebService.UpdateAsync(this.IsEnabled, this.IPEndPoint.Address.ToString(), this.IPEndPoint.Port);
+                this.ShowNotification(VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -100,6 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
+                this.IsWaitingForResponse = false;
             }
         }
 

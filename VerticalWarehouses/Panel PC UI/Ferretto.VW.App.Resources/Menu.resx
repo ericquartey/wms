@@ -126,6 +126,24 @@
   <data name="AccessoriesMenuTitle" xml:space="preserve">
     <value>Laser Pointer</value>
   </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menu Bay</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menu Cells</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Confirm Test</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menu Elevator</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Installation Status</value>
   </data>
@@ -146,5 +164,14 @@
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Movements</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Menu Other</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menu Units</value>
   </data>
 </root>
