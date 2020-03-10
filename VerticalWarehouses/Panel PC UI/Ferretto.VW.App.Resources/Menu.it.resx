@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessoriesMenuDescription" xml:space="preserve">
+    <value>Gestione della configurazione e test funzionalità del Laser</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Menu Accessori</value>
+  </data>
+  <data name="AccessoriesMenuTitle" xml:space="preserve">
+    <value>Puntatore Laser</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
   </data>
