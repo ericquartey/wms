@@ -1141,6 +1141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Test.
+        /// </summary>
+        public static string CompleteTestMenuTitle {
+            get {
+                return ResourceManager.GetString("CompleteTestMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Importable &quot;{0}&quot; configuration detected..
         /// </summary>
         public static string ConfigurationDetected {
@@ -2995,6 +3004,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New unit insertion procedure.
+        /// </summary>
+        public static string InsertMenuDescription {
+            get {
+                return ResourceManager.GetString("InsertMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inserting.
+        /// </summary>
+        public static string InsertMenuTitle {
+            get {
+                return ResourceManager.GetString("InsertMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert unit.
         /// </summary>
         public static string InsertUnit {
@@ -3859,6 +3886,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Procedure for moving the unit from bay to bay.
+        /// </summary>
+        public static string MoveBayToBayMenuDescription {
+            get {
+                return ResourceManager.GetString("MoveBayToBayMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving from bay to bay.
+        /// </summary>
+        public static string MoveBayToBayMenuTitle {
+            get {
+                return ResourceManager.GetString("MoveBayToBayMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure for moving the unit from cell to cell.
+        /// </summary>
+        public static string MoveCellToCellMenuDescription {
+            get {
+                return ResourceManager.GetString("MoveCellToCellMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving from cell to cell.
+        /// </summary>
+        public static string MoveCellToCellMenuTitle {
+            get {
+                return ResourceManager.GetString("MoveCellToCellMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move elevator.
         /// </summary>
         public static string MoveElevator {
@@ -4604,6 +4667,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveCarterRestore {
             get {
                 return ResourceManager.GetString("RemoveCarterRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit removal procedure.
+        /// </summary>
+        public static string RemoveMenuDescription {
+            get {
+                return ResourceManager.GetString("RemoveMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removal.
+        /// </summary>
+        public static string RemoveMenuTitle {
+            get {
+                return ResourceManager.GetString("RemoveMenuTitle", resourceCulture);
             }
         }
         
@@ -5855,6 +5936,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitLowPosition {
             get {
                 return ResourceManager.GetString("UnitLowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Management.
+        /// </summary>
+        public static string UnitManageMenuTitle {
+            get {
+                return ResourceManager.GetString("UnitManageMenuTitle", resourceCulture);
             }
         }
         

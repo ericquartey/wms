@@ -2269,6 +2269,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Check cell quotas (obsolete)</value>
   </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Complete Test</value>
+  </data>
   <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
     <value>Embarkation / Disembarkation</value>
   </data>
@@ -2278,17 +2281,44 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="GateTestMenuTitle" xml:space="preserve">
     <value>Gate test</value>
   </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>New unit insertion procedure</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Inserting</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Procedure for moving the unit from bay to bay</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Moving from bay to bay</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Procedure for moving the unit from cell to cell</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Moving from cell to cell</value>
+  </data>
   <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
     <value>Calibrate the vertical axis offset</value>
   </data>
   <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
     <value>Vertical axis offset</value>
   </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Unit removal procedure</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Removal</value>
+  </data>
   <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
     <value>Calibrate the resolution of the vertical axis</value>
   </data>
   <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
     <value>Vertical axis resolution</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Unit Management</value>
   </data>
   <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
     <value>Calibrate the origin of the vertical axis</value>

@@ -2199,6 +2199,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Controllo quote celle (obsoleto)</value>
   </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Test Completo</value>
+  </data>
   <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
     <value>Imbarco / Sbarco</value>
   </data>
@@ -2208,17 +2211,44 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="GateTestMenuTitle" xml:space="preserve">
     <value>Test serranda</value>
   </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Procedura di inserimento nuovo cassetto</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Procedura di spostamento cassetto da baia a baia</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Spostamento da baia a baia</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Procedura di spostamento cassetto da cella a cella</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Spostamento da cella a cella</value>
+  </data>
   <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
     <value>Effettua la calibrazione dell'offset dell'asse verticale</value>
   </data>
   <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
     <value>Offset asse verticale</value>
   </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Procedura di rimozione cassetto</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Rimozione</value>
+  </data>
   <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
     <value>Effettua la calibrazione della risoluzione dell'asse verticale</value>
   </data>
   <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
     <value>Risoluzione asse verticale</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Gestione cassetto</value>
   </data>
   <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
     <value>Effettua la calibrazione dell'origine dell'asse verticale</value>

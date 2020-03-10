@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:LoadingUnitsMenuViewModel,
@@ -50,13 +50,13 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Menu Cassetti" />
+                       Text="{x:Static res:Menu.UnitsMenuName}" />
 
             <Grid Grid.Row="1"
                   Grid.RowSpan="2">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="Gestione cassetto"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.UnitManageMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.1"
@@ -65,47 +65,47 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Inserimento"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.InsertMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding InsertionLoadingUnitsCommand}"
-                                        Content="Procedura di inserimento nuovo cassetto"
+                                        Content="{x:Static res:InstallationApp.InsertMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Rimozione"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.RemoveMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding ExtractionLoadingUnitsCommand}"
-                                        Content="Procedura di rimozione cassetto"
+                                        Content="{x:Static res:InstallationApp.RemoveMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Spostamento da cella a cella"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.MoveCellToCellMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding MoveLoadingUnitsCommand}"
-                                        Content="Procedura di spostamento cassetto da cella a cella"
+                                        Content="{x:Static res:InstallationApp.MoveCellToCellMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Spostamento da baia a baia"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.MoveBayToBayMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.5"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding LoadingUnitsBayToBayCommand}"
-                                        Content="Procedura di spostamento cassetto da baia a baia"
+                                        Content="{x:Static res:InstallationApp.MoveBayToBayMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Test Completo"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.CompleteTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.6"
