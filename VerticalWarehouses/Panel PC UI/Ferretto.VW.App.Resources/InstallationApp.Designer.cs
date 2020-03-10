@@ -106,6 +106,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Samples the current values ​​for weight acquisition.
+        /// </summary>
+        public static string AnalysisWeightProfileMenuDescription {
+            get {
+                return ResourceManager.GetString("AnalysisWeightProfileMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight profile analysis.
+        /// </summary>
+        public static string AnalysisWeightProfileMenuTitle {
+            get {
+                return ResourceManager.GetString("AnalysisWeightProfileMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Anti intrusion gate.
         /// </summary>
         public static string AntiIntrusionGate {
@@ -516,6 +534,24 @@ namespace Ferretto.VW.App.Resources {
         public static string BeltBreakIn {
             get {
                 return ResourceManager.GetString("BeltBreakIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It performs a series of cycles of movement of the vertical axis.
+        /// </summary>
+        public static string BeltBreakInMenuDescription {
+            get {
+                return ResourceManager.GetString("BeltBreakInMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belt Break-In.
+        /// </summary>
+        public static string BeltBreakInMenuTitle {
+            get {
+                return ResourceManager.GetString("BeltBreakInMenuTitle", resourceCulture);
             }
         }
         
@@ -1830,6 +1866,15 @@ namespace Ferretto.VW.App.Resources {
         public static string EmbarkBackwards {
             get {
                 return ResourceManager.GetString("EmbarkBackwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embarkation / Disembarkation.
+        /// </summary>
+        public static string EmbarkDisembarkMenuTitle {
+            get {
+                return ResourceManager.GetString("EmbarkDisembarkMenuTitle", resourceCulture);
             }
         }
         
@@ -4084,6 +4129,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibrate the vertical axis offset.
+        /// </summary>
+        public static string OffsetVerticalAxisMenuDescription {
+            get {
+                return ResourceManager.GetString("OffsetVerticalAxisMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis offset.
+        /// </summary>
+        public static string OffsetVerticalAxisMenuTitle {
+            get {
+                return ResourceManager.GetString("OffsetVerticalAxisMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On.
         /// </summary>
         public static string On {
@@ -4694,6 +4757,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ResolutionModified {
             get {
                 return ResourceManager.GetString("ResolutionModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate the resolution of the vertical axis.
+        /// </summary>
+        public static string ResolutionVerticalAxisMenuDescription {
+            get {
+                return ResourceManager.GetString("ResolutionVerticalAxisMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis resolution.
+        /// </summary>
+        public static string ResolutionVerticalAxisMenuTitle {
+            get {
+                return ResourceManager.GetString("ResolutionVerticalAxisMenuTitle", resourceCulture);
             }
         }
         
@@ -6008,6 +6089,24 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalAxisMovementInProgress {
             get {
                 return ResourceManager.GetString("VerticalAxisMovementInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate the origin of the vertical axis.
+        /// </summary>
+        public static string VerticalAxisOriginMenuDescription {
+            get {
+                return ResourceManager.GetString("VerticalAxisOriginMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis origin.
+        /// </summary>
+        public static string VerticalAxisOriginMenuTitle {
+            get {
+                return ResourceManager.GetString("VerticalAxisOriginMenuTitle", resourceCulture);
             }
         }
         

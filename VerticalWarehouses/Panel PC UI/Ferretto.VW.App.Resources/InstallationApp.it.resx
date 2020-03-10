@@ -2136,6 +2136,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsCommunication" xml:space="preserve">
     <value>Comunicazione Wms</value>
   </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Effettua il campionamento dei valori di corrente per l'acquisizione del peso</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Analisi profilo peso</value>
+  </data>
   <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
     <value>Permette la regolazione della barriera di rilevamento altezza del cassetto</value>
   </data>
@@ -2153,6 +2159,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="BayTestMenuTitle" xml:space="preserve">
     <value>Test baia</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Effettua una serie di cicli di spostamento dell'asse verticale</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Rodaggio cinghia</value>
   </data>
   <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
     <value>Effettua la calibrazione della giostra</value>
@@ -2187,10 +2199,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Controllo quote celle (obsoleto)</value>
   </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Imbarco / Sbarco</value>
+  </data>
   <data name="GateTestMenuDescription" xml:space="preserve">
     <value>Permette di effettuare una serie di test ripetitivi per la serranda</value>
   </data>
   <data name="GateTestMenuTitle" xml:space="preserve">
     <value>Test serranda</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione dell'offset dell'asse verticale</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Offset asse verticale</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della risoluzione dell'asse verticale</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Risoluzione asse verticale</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione dell'origine dell'asse verticale</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Origine asse verticale</value>
   </data>
 </root>

@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menu Elevator.
+        /// </summary>
+        public static string ElevatorMenuName {
+            get {
+                return ResourceManager.GetString("ElevatorMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation Status.
         /// </summary>
         public static string InstallationStatus {

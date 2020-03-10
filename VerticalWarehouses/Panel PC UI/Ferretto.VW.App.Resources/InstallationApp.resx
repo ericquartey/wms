@@ -2206,6 +2206,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsCommunication" xml:space="preserve">
     <value>Wms communication</value>
   </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Samples the current values ​​for weight acquisition</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Weight profile analysis</value>
+  </data>
   <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
     <value>Allows adjustment of the drawer height detection barrier</value>
   </data>
@@ -2223,6 +2229,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="BayTestMenuTitle" xml:space="preserve">
     <value>Bay test</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>It performs a series of cycles of movement of the vertical axis</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Belt Break-In</value>
   </data>
   <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
     <value>Calibrate the carousel</value>
@@ -2257,10 +2269,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
     <value>Check cell quotas (obsolete)</value>
   </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Embarkation / Disembarkation</value>
+  </data>
   <data name="GateTestMenuDescription" xml:space="preserve">
     <value>It allows to carry out a series of repetitive tests for the gate</value>
   </data>
   <data name="GateTestMenuTitle" xml:space="preserve">
     <value>Gate test</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Calibrate the vertical axis offset</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Vertical axis offset</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Calibrate the resolution of the vertical axis</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Vertical axis resolution</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Calibrate the origin of the vertical axis</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Vertical axis origin</value>
   </data>
 </root>

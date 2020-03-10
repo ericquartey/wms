@@ -132,6 +132,9 @@
   <data name="CellsMenuName" xml:space="preserve">
     <value>Menu Celle</value>
   </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menu Elevatore</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
   </data>
