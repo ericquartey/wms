@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -51,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeWebService machineModeWebService;
+
+        private readonly INavigationService navigationService;
 
         private DelegateCommand automaticCommand;
 
@@ -131,7 +134,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
-            IMachineErrorsWebService machineErrorsWebService)
+            IMachineErrorsWebService machineErrorsWebService,
+            INavigationService navigationService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -139,6 +143,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
@@ -1069,6 +1074,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
+
+                if (this.Error == null)
+                {
+                    await Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
+                    {
+                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORLOADUNITMISSING))
+                        {
+                            this.navigationService.GoBack();
+                        }
+                    }));
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
