@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -14,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
+        private readonly INavigationService navigationService;
+
         private MachineError error;
 
         private string errorTime;
@@ -24,11 +28,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Constructors
 
-        public ErrorInverterFaultViewModel(IMachineErrorsWebService machineErrorsWebService)
+        public ErrorInverterFaultViewModel(IMachineErrorsWebService machineErrorsWebService, INavigationService navigationService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
-
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
 
@@ -102,6 +106,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 //await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
+
+                if (this.Error == null)
+                {
+                    await Application.Current.Dispatcher.BeginInvoke(
+                        System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                        new Action(() =>
+                        {
+                            if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORINVERTERFAULT))
+                            {
+                                this.navigationService.GoBack();
+                            }
+                        }));
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

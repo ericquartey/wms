@@ -2298,4 +2298,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WMSComunicationMenuTitle" xml:space="preserve">
     <value>Comunicazione WMS</value>
   </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Acceso</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Spento</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Obbligo di tensionare la cinghia a 56 Hz</value>
+  </data>
 </root>
