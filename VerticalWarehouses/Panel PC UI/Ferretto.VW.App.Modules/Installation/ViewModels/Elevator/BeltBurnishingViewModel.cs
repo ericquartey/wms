@@ -485,6 +485,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message.Data?.MovementMode == MovementMode.BeltBurnishing &&
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BeltMustBeTight, InstallationApp.BeltBurnishing, DialogType.Exclamation, DialogButtons.OK);
+                if (messageBoxResult == DialogResult.OK)
+                {
+                    ;
+                }
+
                 this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;

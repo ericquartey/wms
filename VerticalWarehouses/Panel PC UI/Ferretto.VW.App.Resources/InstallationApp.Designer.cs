@@ -574,6 +574,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must tight the belt to 56 hz.
+        /// </summary>
+        public static string BeltMustBeTight {
+            get {
+                return ResourceManager.GetString("BeltMustBeTight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boarding not performed due to missing drawer.
         /// </summary>
         public static string BoardingNotExecutedMissingDrawer {
