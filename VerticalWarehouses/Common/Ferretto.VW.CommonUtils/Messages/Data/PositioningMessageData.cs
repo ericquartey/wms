@@ -107,6 +107,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        public bool BypassConditions { get; set; } = false;
+
         public bool ComputeElongation { get; set; }
 
         public int Delay { get; set; }

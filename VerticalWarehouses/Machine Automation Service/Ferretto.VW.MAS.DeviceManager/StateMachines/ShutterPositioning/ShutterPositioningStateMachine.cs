@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
             if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle
-                && this.machineData.PositioningMessageData.MovementType != MovementType.Relative
+                && !this.machineData.PositioningMessageData.BypassConditions
                 )
             {
                 ok = false;
@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             }
             else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle
                 && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle
-                && this.machineData.PositioningMessageData.MovementType != MovementType.Relative
+                && !this.machineData.PositioningMessageData.BypassConditions
                 )
             {
                 ok = false;

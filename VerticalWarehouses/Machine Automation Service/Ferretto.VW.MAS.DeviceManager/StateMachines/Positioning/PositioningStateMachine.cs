@@ -93,7 +93,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stateData = new PositioningStateData(this, this.machineData);
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                if (this.CheckConditions(out var errorText, out var errorCode))
+                if (this.machineData.MessageData.BypassConditions
+                    || this.CheckConditions(out var errorText, out var errorCode)
+                    )
                 {
                     this.ChangeState(new PositioningStartState(stateData));
                 }

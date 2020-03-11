@@ -1442,10 +1442,6 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
                         }
-                        else if (!this.isBayHoming[this.bay.Number])
-                        {
-                            this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
-                        }
                         else
                         {
                             this.ClearNotifications();

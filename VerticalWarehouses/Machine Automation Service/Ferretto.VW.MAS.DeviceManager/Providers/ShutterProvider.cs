@@ -47,9 +47,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// It stops when top or bottom sensors are detected or when operator sends a stop command.
         /// </summary>
         /// <param name="direction"></param>
+        /// <param name="bypassConditions"></param>
         /// <param name="bayNumber"></param>
         /// <param name="sender"></param>
-        public void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
             var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
 
@@ -77,6 +78,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 highSpeedHalfDurationOpen: null,
                 highSpeedHalfDurationClose: null,
                 lowerSpeed: 0);
+
+            messageData.BypassConditions = bypassConditions;
 
             this.logger.LogDebug(
                 $"Move Shutter " +

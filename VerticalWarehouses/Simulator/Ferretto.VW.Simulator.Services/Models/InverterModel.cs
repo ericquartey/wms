@@ -1078,6 +1078,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.IsFault = !this.IsFault;
             if (this.IsFault)
             {
+                this.ioDeviceMain[(int)IoPorts.NormalState].Value = false;
                 this.IsReadyToSwitchOn = false;
                 this.IsSwitchedOn = false;
                 this.IsVoltageEnabled = false;

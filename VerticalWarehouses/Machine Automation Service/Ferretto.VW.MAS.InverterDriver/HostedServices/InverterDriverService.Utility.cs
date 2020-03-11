@@ -368,7 +368,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var error = message.UShortPayload;
                 if (error > 0)
                 {
-                    this.Logger.LogError($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
+                    //this.Logger.LogError($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
 
                     using (var scope = this.ServiceScopeFactory.CreateScope())
                     {

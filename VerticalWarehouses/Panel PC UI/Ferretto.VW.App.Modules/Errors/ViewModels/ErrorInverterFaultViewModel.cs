@@ -98,8 +98,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                // await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-                await this.machineErrorsWebService.ResolveAllAsync();
+                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
+                //await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }

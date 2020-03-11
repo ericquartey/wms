@@ -343,7 +343,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
                    this.moveToCellPolicy?.IsAllowed == true;
@@ -351,7 +351,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToHeight()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.InputHeight.HasValue &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.InputHeight.GetValueOrDefault());
@@ -491,12 +491,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false) &&
                                            !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                            !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
             this.CanShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false) &&
                                              !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                              !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
@@ -512,7 +514,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                            !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
-            this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                                      !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
                                      ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                      !this.IsCarouselOpening && !this.IsCarouselOpening &&
@@ -520,7 +522,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                      !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
-            this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                                        !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
                                        ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                        !this.IsCarouselOpening && !this.IsCarouselOpening &&

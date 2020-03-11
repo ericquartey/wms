@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (restore)
                 {
-                    this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                    this.shutterProvider.Move(ShutterMovementDirection.Down, bypassConditions: false, requestingBay, sender);
                 }
                 else
                 {
@@ -373,7 +373,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);
                 try
                 {
-                    this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, requestingBay, sender);
+                    this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, requestingBay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
                 throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, null, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, null, false, requestingBay, sender);
             return true;
         }
 
@@ -477,7 +477,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 // already arrived at destination?
                 distance = 1;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, positionId, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, positionId, false, requestingBay, sender);
             return true;
         }
 
@@ -505,7 +505,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (restore)
             {
-                this.shutterProvider.Move(ShutterMovementDirection.Up, requestingBay, sender);
+                this.shutterProvider.Move(ShutterMovementDirection.Up, bypassConditions: false, requestingBay, sender);
             }
             else
             {

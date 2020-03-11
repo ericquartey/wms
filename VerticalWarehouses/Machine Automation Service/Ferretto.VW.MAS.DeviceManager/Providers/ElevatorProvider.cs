@@ -737,7 +737,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
@@ -772,6 +772,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 messageData.LoadingUnitId = loadingUnitId;
                 messageData.SourceBayPositionId = positionId;
             }
+            messageData.BypassConditions = bypassConditions;
 
             this.PublishCommand(
                 messageData,
@@ -947,7 +948,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-            var manualParameters = this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Vertical);
+            var manualParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
             var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical, isLoadingUnitOnBoard);
 
             var speed = new[] { movementParameters.Speed * manualParameters.FeedRateAfterZero };
@@ -1030,6 +1031,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 deceleration,
                 switchPosition,
                 HorizontalMovementDirection.Forwards);
+
+            messageData.BypassConditions = true;
 
             this.PublishCommand(
                 messageData,
