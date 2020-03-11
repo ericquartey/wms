@@ -948,7 +948,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-            var manualParameters = this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Vertical);
+            var manualParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
             var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical, isLoadingUnitOnBoard);
 
             var speed = new[] { movementParameters.Speed * manualParameters.FeedRateAfterZero };

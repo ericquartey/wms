@@ -789,7 +789,9 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.CurrentError:
-                    var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(inverter.IsFault ? (ushort)random.Next(1, 100) : (ushort)0));
+                    //var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(inverter.IsFault ? (ushort)random.Next(1, 100) : (ushort)0));
+                    // simulate all inverters in fault 0x1454
+                    var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)0x1454));
                     result = client.Client.Send(errorMessage);
                     break;
 
