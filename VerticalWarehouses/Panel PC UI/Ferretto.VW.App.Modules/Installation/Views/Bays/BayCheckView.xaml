@@ -91,7 +91,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
@@ -130,7 +130,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
@@ -169,7 +169,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
@@ -204,7 +204,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
@@ -353,7 +353,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
@@ -392,7 +392,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
@@ -431,7 +431,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
@@ -466,7 +466,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
@@ -760,7 +760,7 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
-                    Background="{StaticResource PpcBackground}"
+                    Background="{DynamicResource PpcBackground}"
                     BorderBrush="{StaticResource PpcBorderBrush}"
                     BorderThickness="{StaticResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">

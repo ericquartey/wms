@@ -91,7 +91,7 @@
                        Margin="4,0"
                        FontSize="{StaticResource FontSize_Normal}"
                        FontWeight="Normal"
-                       Foreground="{DynamicResource FerrettoLightGray}"
+                       Foreground="{DynamicResource SpinEditTitle_Foreground}"
                        Text="{Binding LabelText}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"

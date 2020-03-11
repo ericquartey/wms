@@ -114,7 +114,7 @@
             <ctrls:PpcControl VerticalAlignment="Center"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
-                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                              Visibility="Visible">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
                                     Style="{DynamicResource PpcButtonThemeStyle}" />
             </ctrls:PpcControl>

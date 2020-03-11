@@ -114,7 +114,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Foreground="{DynamicResource Text_Foreground}"
                                Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
 
                     <StackPanel Grid.Row="1"

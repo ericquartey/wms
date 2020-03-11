@@ -107,7 +107,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"
                                    TextAlignment="Left" />
 
@@ -147,7 +147,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}"
                                    TextAlignment="Left" />
 
@@ -187,7 +187,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:OperatorApp.DrawerCompactingRearFreeSpace}" />
 
                         <TextBlock Grid.Row="1"
@@ -222,7 +222,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:OperatorApp.DrawerCompactingFrontFreeSpace}"
                                    TextAlignment="Left" />
 

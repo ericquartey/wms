@@ -4,13 +4,16 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <SolidColorBrush x:Key="PpcButtonBackground"
-                     Color="{DynamicResource EDBGrayH}" />
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcMenuButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcButtonForeground"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+    <SolidColorBrush x:Key="Foreground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
 
     <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
@@ -23,13 +26,13 @@
     <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
         <GradientStop Offset="0.5" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
-        <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayF}" />
+        <GradientStop Offset="1" Color="{DynamicResource EDBGrayF}" />
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
-                     Color="{DynamicResource EDBGrayF}" />
+                     Color="{DynamicResource EDBGrayA}" />
 
 </ResourceDictionary>

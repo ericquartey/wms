@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <Style TargetType="{x:Type controls:BaseMenuButton}">
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
             <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
             <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
@@ -125,7 +125,7 @@
                                 </Grid>
                                 <Grid x:Name="Grid_MenuButton"
                                       Grid.Column="1"
-                                      Background="{DynamicResource FerrettoDarkGray}">
+                                      Background="{DynamicResource MainButtonBackground}">
                                     <Grid.RowDefinitions>
                                         <!--  Margine Top  -->
                                         <RowDefinition Height="10" />
@@ -150,7 +150,7 @@
                                                Grid.Row="1"
                                                Grid.Column="1"
                                                FontSize="24"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource Text_Foreground}"
                                                Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
                                                TextWrapping="Wrap" />
 
@@ -158,7 +158,7 @@
                                                Grid.Row="2"
                                                Grid.Column="1"
                                                FontSize="{DynamicResource FontSize_Small}"
-                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Foreground="{DynamicResource TextLight_Foreground}"
                                                Text="{Binding ElementName=MenuButton, Path=Description, FallbackValue='bla bla bla bla bla'}"
                                                TextWrapping="Wrap" />
                                 </Grid>

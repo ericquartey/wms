@@ -101,7 +101,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:InstallationApp.LowerBound}"
                                    TextAlignment="Left" />
 
@@ -141,7 +141,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:InstallationApp.UpperBound}"
                                    TextAlignment="Left" />
 
@@ -181,7 +181,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:InstallationApp.Offset}" />
 
                         <TextBlock Grid.Row="1"
@@ -216,7 +216,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:InstallationApp.Resolution}"
                                    TextAlignment="Left" />
 

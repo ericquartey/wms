@@ -11,6 +11,8 @@
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcButtonForeground"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="Foreground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
 
     <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">

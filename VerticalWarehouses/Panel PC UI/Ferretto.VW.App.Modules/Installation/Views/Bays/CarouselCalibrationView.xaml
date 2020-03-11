@@ -394,7 +394,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Foreground="{DynamicResource Text_Foreground}"
                                Text="{x:Static res:InstallationApp.CurrentResolution}" />
 
                     <TextBlock Grid.Row="1"
@@ -436,7 +436,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Foreground="{DynamicResource Text_Foreground}"
                                Text="{x:Static res:InstallationApp.Interaxle}" />
 
                     <TextBlock Grid.Row="1"
@@ -479,7 +479,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Foreground="{DynamicResource Text_Foreground}"
                                Text="{x:Static res:InstallationApp.RaisingsPerformed}" />
 
                     <StackPanel Grid.Row="1"
@@ -556,7 +556,7 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
-                    Background="{StaticResource PpcBackground}"
+                    Background="{DynamicResource PpcBackground}"
                     BorderBrush="{StaticResource PpcBorderBrush}"
                     BorderThickness="{StaticResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">

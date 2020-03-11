@@ -930,7 +930,7 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
-                    Background="{StaticResource PpcBackground}"
+                    Background="{DynamicResource PpcBackground}"
                     BorderBrush="{StaticResource PpcBorderBrush}"
                     BorderThickness="{StaticResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">

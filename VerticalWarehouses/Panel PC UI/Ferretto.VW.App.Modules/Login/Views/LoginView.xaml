@@ -39,7 +39,6 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        FontSize="24"
-                       Foreground="{DynamicResource FerrettoPureWhite}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="10:10" />
         </StackPanel>
@@ -93,7 +92,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="22"
-                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                               Style="{StaticResource VWAPP_ViewTitleTextWhiteBlockStyle}"
                                                Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
                                                TextWrapping="Wrap" />
 
@@ -101,7 +100,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="{DynamicResource FontSize_High}"
-                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                               Style="{StaticResource VWAPP_ViewTitleTextWhiteBlockStyle}"
                                                Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber, StringFormat={x:Static res:General.SerialNumber}}" />
 
                                 </StackPanel>

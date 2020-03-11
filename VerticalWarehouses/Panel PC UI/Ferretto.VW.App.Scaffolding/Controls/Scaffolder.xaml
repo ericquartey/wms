@@ -57,7 +57,7 @@
 
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />

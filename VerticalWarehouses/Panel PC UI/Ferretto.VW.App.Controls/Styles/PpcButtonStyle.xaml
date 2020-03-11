@@ -51,7 +51,7 @@
                                                             Margin="5"
                                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                             VerticalAlignment="Center"
-                                                            Foreground="{TemplateBinding Foreground}"
+                                                            Foreground="{DynamicResource Foreground}"
                                                             Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alarm'}"
                                                             Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconMaterialLight.Style>
@@ -72,7 +72,7 @@
                                                        Margin="5"
                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                        VerticalAlignment="Center"
-                                                       Foreground="{TemplateBinding Foreground}"
+                                                       Foreground="{DynamicResource Foreground}"
                                                        Kind="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Account'}"
                                                        Tag="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconMaterial.Style>
@@ -93,7 +93,7 @@
                                                           Margin="5"
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                           VerticalAlignment="Center"
-                                                          Foreground="{TemplateBinding Foreground}"
+                                                          Foreground="{DynamicResource Foreground}"
                                                           Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='AngryRegular'}"
                                                           Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconFontAwesome.Style>
@@ -718,7 +718,7 @@
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{DynamicResource FontSize_Small}"
                                            FontWeight="{TemplateBinding FontWeight}"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource TextLight_Foreground}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap" />
 

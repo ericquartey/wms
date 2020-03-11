@@ -33,14 +33,12 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        FontSize="56"
-                       Foreground="{DynamicResource FerrettoPureWhite}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="10:10" />
             <TextBlock x:Name="txtDate"
                        Margin="0"
                        HorizontalAlignment="Center"
                        FontSize="24"
-                       Foreground="{DynamicResource FerrettoPureWhite}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="12/12/2019" />
         </StackPanel>

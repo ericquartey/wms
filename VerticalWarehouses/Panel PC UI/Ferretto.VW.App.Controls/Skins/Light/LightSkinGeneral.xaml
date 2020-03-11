@@ -27,6 +27,31 @@
     <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
+
+    <SolidColorBrush x:Key="VWAPP_ViewTitleTextBlock_Foreground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="SpinEditTitle_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="Text_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="TextLight_Foreground"
+                     Color="{DynamicResource EDBGrayC}" />
+
+
+    <SolidColorBrush x:Key="PopupText_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="PopupContent_Foreground"
+                     Color="{DynamicResource EDBGrayD}" />
+
+
+    <SolidColorBrush x:Key="MainButtonBackground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+
     <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <FontFamily x:Key="VWAPP_GridFont">pack://application:,,,/Fonts/#Microsoft-sans-serif.ttf</FontFamily>

@@ -29,11 +29,11 @@
     <Color x:Key="VWAPP_ShadowEffect_Color">#0A0A0A</Color>
 
     <SolidColorBrush x:Key="PpcBackground"
-                     Color="{DynamicResource EDBGrayH}" />
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
     <SolidColorBrush x:Key="PpcBorderBrush"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcForeground"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
 
     <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
