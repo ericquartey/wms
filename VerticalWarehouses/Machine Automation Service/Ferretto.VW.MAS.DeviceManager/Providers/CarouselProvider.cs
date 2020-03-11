@@ -345,12 +345,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
+        public void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
-            if (!policy.IsAllowed)
+            if (!bypassConditions)
             {
-                throw new InvalidOperationException(policy.Reason);
+                var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
+                if (!policy.IsAllowed)
+                {
+                    throw new InvalidOperationException(policy.Reason);
+                }
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
@@ -384,6 +387,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 messageData.LoadingUnitId = loadUnitId;
             }
+            messageData.BypassConditions = bypassConditions;
 
             this.logger.LogDebug(
                 $"Move Carousel Manual " +

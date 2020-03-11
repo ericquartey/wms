@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -67,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Move(ShutterMovementDirection direction)
         {
-            this.shutterProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
+            this.shutterProvider.Move(direction, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
