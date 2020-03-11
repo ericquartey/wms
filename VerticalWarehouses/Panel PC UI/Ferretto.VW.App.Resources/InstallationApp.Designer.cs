@@ -6498,6 +6498,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string WmsOff {
+            get {
+                return ResourceManager.GetString("WmsOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string WmsOn {
+            get {
+                return ResourceManager.GetString("WmsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WMS Settings.
         /// </summary>
         public static string WmsSettings {
