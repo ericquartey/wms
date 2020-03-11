@@ -453,6 +453,11 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
+
+                    <controls:PpcCheckBox Grid.Column="3"
+                                          Margin="30"
+                                          IsChecked="{Binding IsPolicyBypassed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          LabelText="Bypass" />
                     <Grid Grid.Row="0"
                           Grid.RowSpan="2"
                           Grid.Column="0"
@@ -477,6 +482,8 @@
                                             Command="{Binding MoveToCellHeightCommand}"
                                             Content="{x:Static res:InstallationApp.GoToCell}"
                                             IsBusy="{Binding IsElevatorMovingToCell}" />
+
+
 
                         <ctrls:PpcSpinEdit Grid.Row="0"
                                            Grid.Column="1"
@@ -514,6 +521,8 @@
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
                                            MinValue="1" />
+
+
 
                     </Grid>
 
@@ -575,6 +584,8 @@
                                                            Kind="ArrowRight"
                                                            PressCommand="{Binding MoveElevatorForwardsCommand}"
                                                            ReleaseCommand="{Binding StopMovingReleaseCommand}" />
+
+
 
                     </Grid>
 
