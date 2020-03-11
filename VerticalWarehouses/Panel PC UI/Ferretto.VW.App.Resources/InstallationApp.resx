@@ -2375,6 +2375,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Off</value>
   </data>
   <data name="BeltMustBeTight" xml:space="preserve">
-    <value>You must tight the belt to 56 hz</value>
+    <value>Please tight the belt to 56 hz</value>
   </data>
 </root>
