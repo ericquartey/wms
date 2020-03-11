@@ -671,7 +671,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.PositionAndMeasureProfile:
                 case MovementMode.PositionAndMeasureWeight:
                     {
-                        if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsSensorsError(this.machineData.MessageData.AxisMovement)
+                            )
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
@@ -789,7 +791,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                         }
 
-                        if (this.IsZeroSensorError())
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsZeroSensorError()
+                            )
                         {
                             if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                             {
@@ -941,7 +945,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
                         }
 
-                        if (this.IsBracketSensorError())
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsBracketSensorError()
+                            )
                         {
                             this.Logger.LogError($"Bracket sensor error");
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
