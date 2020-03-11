@@ -45,6 +45,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
             }
+            this.Mission.Status = MissionStatus.Executing;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
@@ -74,15 +75,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             var shutterInverter = bay.Shutter.Inverter.Index;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                            if (bayNumber != this.Mission.TargetBay)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bayNumber);
-                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, bayNumber, MessageActor.MachineManager);
-                            }
-                            else if (shutterPosition != ShutterPosition.Closed
+                            if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
                                 )
                             {
+                                if (bayNumber != this.Mission.TargetBay)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bayNumber);
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, bayNumber, MessageActor.MachineManager);
+                                }
                                 this.Mission.CloseShutterBayNumber = bayNumber;
                                 this.Mission.CloseShutterPosition = ShutterPosition.Closed;
                             }
@@ -137,15 +138,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             var shutterInverter = bay.Shutter.Inverter.Index;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                            if (bayNumber != this.Mission.TargetBay)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bayNumber);
-                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, bayNumber, MessageActor.MachineManager);
-                            }
-                            else if (shutterPosition != ShutterPosition.Closed
+                            if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
                                 )
                             {
+                                if (bayNumber != this.Mission.TargetBay)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bayNumber);
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, bayNumber, MessageActor.MachineManager);
+                                }
                                 this.Mission.CloseShutterBayNumber = bayNumber;
                                 this.Mission.CloseShutterPosition = ShutterPosition.Closed;
                             }
@@ -191,7 +192,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         sourceCellId);
                 }
             }
-            this.Mission.Status = MissionStatus.Executing;
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
