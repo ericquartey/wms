@@ -144,7 +144,9 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
                          && m.TargetBay == bayNumber
-                         && (m.Status == MissionStatus.New || m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting)
+                         && (m.Status == MissionStatus.New
+                            || m.Status == MissionStatus.Executing
+                            || (missionType == MissionType.OUT && m.Status == MissionStatus.Waiting))
                         )
                     )
                 {
