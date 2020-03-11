@@ -11,6 +11,7 @@
     <conv:BoolToVisibilityConverter x:Key="BTVHC"
                                     Hide="True" />
     <conv:BooleanNegationConverter x:Key="BNC" />
+    <conv:Int32ToStringConverter x:Key="I32TSC" />
 
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
@@ -38,4 +39,6 @@
     <!--  truthy to ui  -->
     <conv:TruthyToUiConverter x:Key="TTUI" />
     <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
+
+    <conv:EnumToHealthStatusConverter x:Key="ETHSC" />
 </ResourceDictionary>

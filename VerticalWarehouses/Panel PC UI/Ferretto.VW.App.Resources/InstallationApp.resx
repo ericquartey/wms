@@ -2368,4 +2368,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WMSComunicationMenuTitle" xml:space="preserve">
     <value>WMS communication</value>
   </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
 </root>
