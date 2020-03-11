@@ -513,6 +513,7 @@
                                            Width="200"
                                            Height="60"
                                            Margin="5"
+                                           Increment="0.5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -520,6 +521,7 @@
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
+                                           Mask="#####0.0"
                                            MinValue="1" />
 
 
