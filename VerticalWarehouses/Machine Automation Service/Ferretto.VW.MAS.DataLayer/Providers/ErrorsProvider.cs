@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.NotifyErrorCreation(newError, bayNumber);
 
-            this.logger.LogError($"Error: {code} ({(int)code}); {newError.Description}");
+            this.logger.LogError($"Error: {code} ({(int)code}); Bay {bayNumber}; {newError.Description}");
 
             return newError;
         }
@@ -232,6 +232,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.NotifyErrorCreation(newError, bayNumber);
+
+            this.logger.LogError($"Error: {MachineErrorCode.InverterFaultStateDetected} ({newError.Code}); Inverter Fault: 0x{detailCode:X4}; index {inverterIndex}; Bay {bayNumber}; {newError.Description}");
 
             return newError;
         }

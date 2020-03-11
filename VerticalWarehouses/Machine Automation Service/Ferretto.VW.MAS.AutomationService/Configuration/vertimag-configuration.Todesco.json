@@ -175,7 +175,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 7345.0,
+          "UpperBound": 6545.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,

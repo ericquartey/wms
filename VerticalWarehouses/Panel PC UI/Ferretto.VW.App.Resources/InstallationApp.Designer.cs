@@ -574,6 +574,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must tight the belt to 56 hz.
+        /// </summary>
+        public static string BeltMustBeTight {
+            get {
+                return ResourceManager.GetString("BeltMustBeTight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boarding not performed due to missing drawer.
         /// </summary>
         public static string BoardingNotExecutedMissingDrawer {
@@ -6494,6 +6503,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WMSComunicationMenuTitle {
             get {
                 return ResourceManager.GetString("WMSComunicationMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string WmsOff {
+            get {
+                return ResourceManager.GetString("WmsOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string WmsOn {
+            get {
+                return ResourceManager.GetString("WmsOn", resourceCulture);
             }
         }
         

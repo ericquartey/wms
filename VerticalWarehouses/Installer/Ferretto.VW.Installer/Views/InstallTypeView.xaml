@@ -7,9 +7,6 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:ctrls="clr-namespace:Ferretto.VW.Installer.Controls"
              mc:Ignorable="d">
-    <!--<dxmvvm:Interaction.Behaviors>
-        <dxmvvm:OpenFileDialogService Title="{Binding Title}"/>
-    </dxmvvm:Interaction.Behaviors>-->
 
     <Grid x:Name="Root"
           Margin="50">

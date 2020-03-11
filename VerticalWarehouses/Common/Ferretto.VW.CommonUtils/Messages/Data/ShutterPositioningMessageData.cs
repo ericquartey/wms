@@ -74,6 +74,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
+        public bool BypassConditions { get; set; } = false;
+
         public int Delay { get; set; }
 
         public double HighSpeedDurationClose { get; }

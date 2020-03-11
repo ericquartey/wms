@@ -171,6 +171,17 @@ namespace Ferretto.VW.App.Services
 
             if (this.ActiveError is null)
             {
+                //FRANCESCO 20200311
+                // errore è in questo punto... in pratica le view degli errori sono di tre tipi e si accumulano nello stack
+                // è abbastanza chiaro nel momento in cui si scatena un errore inverter (perchè si porta dietro anche un errore di macchina)
+                // un solo go back ti riporta ad una view vuota (l'analisi l'ho fatta controllando lo stack delle pagine)
+
+                //Soluzione 1: quando gli allarmi sono finiti lancio dei goback fino a che non trovo una pagina non di allarme (graficamente lenta)
+                // Soluzione 2: modifica al navigation service "go back to first without error"
+                // Soluzione 3: ad ogni mark as resolved faccio un go back (vedi errordetailsviewmodel ecc...), interfacciandomi con la navigazione
+
+                // soluzione temp per evitare di accumulare pagine, vedi riga 215
+
                 await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
@@ -199,6 +210,17 @@ namespace Ferretto.VW.App.Services
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
+                        //soluzione temp
+                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW)
+                            ||
+                            this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORINVERTERFAULT)
+                            ||
+                            this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORLOADUNITMISSING)
+                            )
+                        {
+                            this.navigationService.GoBack();
+                        }
+                        //
                         this.navigationService.Appear(
                             nameof(Utils.Modules.Errors),
                             this.ViewErrorActive,

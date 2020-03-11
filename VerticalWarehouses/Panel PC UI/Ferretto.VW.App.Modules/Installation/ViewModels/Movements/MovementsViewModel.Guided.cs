@@ -440,6 +440,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
         }
@@ -452,6 +453,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsShutterMoving
                 &&
                 this.BayIsShutterThreeSensors
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.Closed));
         }
@@ -554,6 +556,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay));
         }

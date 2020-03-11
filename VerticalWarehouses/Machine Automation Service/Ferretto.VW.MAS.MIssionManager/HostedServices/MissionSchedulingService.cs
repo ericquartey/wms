@@ -86,17 +86,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (nextMission is null)
             {
-                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+                var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
                 // send back the loading unit to the cell
-                moveLoadingUnitProvider.ResumeMoveLoadUnit(
-                    mission.Id,
-                    loadingUnitSource,
-                    LoadingUnitLocation.Cell,
-                    bayNumber,
-                    null,
-                    MissionType.IN,
-                    MessageActor.MissionManager);
+                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} WmsId {wmsId} back to cell.", mission.TargetBay, mission.Id, mission.WmsId);
+                missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber);
             }
             else
             {
