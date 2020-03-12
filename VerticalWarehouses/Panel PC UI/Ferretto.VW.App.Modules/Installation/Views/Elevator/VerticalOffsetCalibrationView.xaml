@@ -67,6 +67,7 @@
                                    Margin="0,-15,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanStartPosition}"
                                    LabelText="{x:Static res:InstallationApp.StartQuote}"
                                    MaxValue="{Binding AxisUpperBound}"
