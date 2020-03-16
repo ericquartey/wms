@@ -1560,4 +1560,37 @@ Please put back any moved pieces in their original position.</value>
   <data name="StartUpdate" xml:space="preserve">
     <value>Start Update</value>
   </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Alarms</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>General informations</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Machine number</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Total km traveled</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Total machine weight</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Total missions</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Total units</value>
+  </data>
 </root>

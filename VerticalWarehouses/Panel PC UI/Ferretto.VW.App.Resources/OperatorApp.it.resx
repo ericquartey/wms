@@ -1249,4 +1249,37 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="StartUpdate" xml:space="preserve">
     <value>Inizia Aggiornamento</value>
   </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Allarmi</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnostica</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Generali</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Informazioni generali</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Numero macchina</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Seriale</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Totale km percorsi</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Totale peso macchina</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Totale missioni</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Totale cassetti</value>
+  </data>
 </root>
