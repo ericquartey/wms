@@ -114,7 +114,6 @@
                           AllowDefaultButton="False"
                           FontSize="{StaticResource FontSize_Very_High}"
                           Foreground="{DynamicResource PpcForeground}"
-                          Increment="1"
                           IsEnabled="{Binding IsEnabled}"
                           MaxValue="{Binding MaxValue}"
                           MinValue="{Binding MinValue}"

@@ -261,7 +261,6 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueUp, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
                                    Mask="###0.0" />
@@ -522,7 +521,6 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueDown, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
                                    Mask="###0.0" />
