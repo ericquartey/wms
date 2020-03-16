@@ -68,7 +68,7 @@
                   Grid.ColumnSpan="12"
                   Margin="0,0,15,0">
                 <Image HorizontalAlignment="Center"
-                       Opacity="0.7"
+                       Opacity="0.6"
                        Source="{DynamicResource BgMilestone}"
                        Stretch="UniformToFill">
                     <Image.Effect>
@@ -95,14 +95,14 @@
                         <TextBlock Margin="10,10,5,5"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoModel}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Column="1"
                                    Margin="5,10,5,5"
                                    VerticalAlignment="Center"
                                    FontSize="18"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.ModelName}"
                                    TextWrapping="Wrap" />
 
@@ -111,7 +111,7 @@
                                    Margin="10,5,5,10"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="Seriale"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="1"
@@ -119,7 +119,7 @@
                                    Margin="5,5,5,10"
                                    VerticalAlignment="Center"
                                    FontSize="18"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.SerialNumber}"
                                    TextWrapping="Wrap" />
 
@@ -148,7 +148,7 @@
                         <TextBlock Margin="10"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}"
                                    TextAlignment="Right" />
 
@@ -156,7 +156,7 @@
                                    Margin="10"
                                    VerticalAlignment="Center"
                                    FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding SoftwareVersion}"
                                    TextWrapping="Wrap" />
 
@@ -184,14 +184,14 @@
                         <TextBlock Margin="10,5"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Column="1"
                                    Margin="5"
                                    VerticalAlignment="Center"
                                    FontSize="22"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.InstallationDate, TargetNullValue='-', StringFormat={}{0:dd/MM/yyyy}}"
                                    TextWrapping="Wrap" />
 
@@ -199,7 +199,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="1"
@@ -207,7 +207,7 @@
                                    Margin="5"
                                    VerticalAlignment="Center"
                                    FontSize="22"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.NextServiceDate, TargetNullValue='-', StringFormat={}{0:dd/MM/yyyy}}"
                                    TextWrapping="Wrap" />
 
@@ -215,7 +215,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="2"
@@ -223,7 +223,7 @@
                                    Margin="5"
                                    VerticalAlignment="Center"
                                    FontSize="22"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.LastServiceDate, TargetNullValue='-', StringFormat={}{0:dd/MM/yyyy}}"
                                    TextWrapping="Wrap" />
                     </Grid>
@@ -249,7 +249,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Bottom"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="Numero macchina"
                                    TextAlignment="Left" />
 
@@ -258,7 +258,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                    Text="{Binding Model.Id}"
                                    TextWrapping="Wrap" />
                     </Grid>
@@ -287,7 +287,7 @@
                         <TextBlock Margin="10,5"
                                    VerticalAlignment="Bottom"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}"
                                    TextAlignment="Right" />
                         <StackPanel Grid.Column="1"
@@ -301,7 +301,7 @@
                             <TextBlock Margin="5,5,20,5"
                                        VerticalAlignment="Center"
                                        FontSize="16"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding Model.ServiceStatus, Converter={StaticResource MSSEC}}"
                                        TextWrapping="Wrap" />
                         </StackPanel>
@@ -311,7 +311,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Top"
                                    FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                    Text="{x:Static Resources:OperatorApp.GeneralInfoWmsStatus}"
                                    TextAlignment="Right" />
                         <StackPanel Grid.Row="1"
@@ -326,7 +326,7 @@
                             <TextBlock Margin="5,5,20,5"
                                        VerticalAlignment="Center"
                                        FontSize="16"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding WmsServicesStatusDescription}"
                                        TextWrapping="Wrap" />
                         </StackPanel>
@@ -372,7 +372,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="{DynamicResource FontSize_Small}"
-                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="Totale cassetti"
                                        TextAlignment="Left" />
 
@@ -381,7 +381,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Top"
                                        FontSize="36"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding TotalDrawersCounter}"
                                        TextWrapping="Wrap" />
 
@@ -411,7 +411,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="{DynamicResource FontSize_Small}"
-                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="Totale missioni" />
 
                             <TextBlock Grid.Row="1"
@@ -419,7 +419,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Top"
                                        FontSize="36"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding TotalMissionCounter}"
                                        TextWrapping="Wrap" />
 
@@ -449,7 +449,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="{DynamicResource FontSize_Small}"
-                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="Totale km percorsi"
                                        TextAlignment="Left" />
 
@@ -458,7 +458,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Top"
                                        FontSize="36"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding Path=Statistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}}"
                                        TextWrapping="Wrap" />
 
@@ -485,7 +485,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="{DynamicResource FontSize_Small}"
-                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="Totale peso macchina"
                                        TextAlignment="Left" />
 
@@ -494,7 +494,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Top"
                                        FontSize="36"
-                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                       Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
                                        Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F2}}"
                                        TextWrapping="Wrap" />
 

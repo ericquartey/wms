@@ -35,6 +35,54 @@
     <SolidColorBrush x:Key="PpcForeground"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
+
+    <SolidColorBrush x:Key="RadioButtonBaseColor"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="RadioButtonDisabledColor"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="IPAddressDotColor"
+                     Color="{DynamicResource ColorFerrettoWhiteGray}" />
+
+    <SolidColorBrush x:Key="PpcHeaderButtonColor"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="PcpButtonUnknownStateColor"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="AccentKeyboardButtonColor"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="KeyboardBackground"
+                     Opacity=".5"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderForeground"
+                     Opacity="1"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderBackground"
+                     Opacity=".1"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ProgresBarBackground"
+                     Color="#424A50" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedBackground"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedForeground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextEnabled"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextDisabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+
+
     <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
         <GradientStop Offset="0.5" Color="Transparent" />

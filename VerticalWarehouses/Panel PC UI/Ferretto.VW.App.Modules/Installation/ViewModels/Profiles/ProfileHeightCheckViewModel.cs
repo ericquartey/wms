@@ -590,7 +590,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanOpenShutter()
         {
             return this.CanBaseExecute() &&
-                   this.SensorsService.ShutterSensors.Closed;
+                   (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay);
         }
 
         private bool CanStop()

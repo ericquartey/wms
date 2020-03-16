@@ -574,7 +574,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must tight the belt to 56 hz.
+        ///   Looks up a localized string similar to Please tight the belt to 56 hz.
         /// </summary>
         public static string BeltMustBeTight {
             get {

@@ -130,7 +130,7 @@
                     </TextBlock>
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezionare l'id del cassetto presente sull'elevatore."
+                               Text="{x:Static res:ErrorsApp.SelectUnitOnElevator}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -144,7 +144,7 @@
                                    IsEnabled="{Binding CanLuIdOnElevator}"
                                    KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                    KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                   LabelText="Cassetto su elevatore"
+                                   LabelText="{x:Static res:ErrorsApp.UnitOnElevator}"
                                    Mask="#0"
                                    MaxValue="999"
                                    MinValue="1" />
@@ -154,7 +154,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -172,12 +172,12 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezione del cassetto (Baia 1):"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay1}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -198,7 +198,7 @@
                                        EditValue="{Binding LuIdOnBay1Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione alta"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -213,7 +213,7 @@
                                        EditValue="{Binding LuIdOnBay1Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione bassa"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -225,7 +225,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -243,12 +243,12 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezione del cassetto (Baia 2):"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay2}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -269,7 +269,7 @@
                                        EditValue="{Binding LuIdOnBay2Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione alta"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -284,7 +284,7 @@
                                        EditValue="{Binding LuIdOnBay2Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione bassa"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -296,7 +296,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -314,12 +314,12 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezione del cassetto (Baia 3):"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay3}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -340,7 +340,7 @@
                                        EditValue="{Binding LuIdOnBay3Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione alta"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -355,7 +355,7 @@
                                        EditValue="{Binding LuIdOnBay3Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="Postazione bassa"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"

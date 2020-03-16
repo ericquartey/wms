@@ -2305,7 +2305,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Spento</value>
   </data>
   <data name="BeltMustBeTight" xml:space="preserve">
-    <value>Obbligo di tensionare la cinghia a 56 Hz</value>
+    <value>Ritensionare la cinghia a 56 Hz</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
     <value>Controlla Stato</value>

@@ -50,7 +50,7 @@
 
         <Style x:Key="BreadcrumbTextBlock"
                TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
             <Setter Property="Margin" Value="5,0,0,0" />
         </Style>
@@ -101,7 +101,7 @@
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Height" Value="54" />
-                        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                        <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
                         <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -150,8 +150,8 @@
                                     <Condition Property="IsSelected" Value="True" />
                                     <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
+                                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
                             </MultiTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -166,7 +166,7 @@
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsEnabled" Value="False" />
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextDisabled}" />
                             </MultiTrigger>
                         </Style.Triggers>
                     </Style>
@@ -219,8 +219,8 @@
         <Style x:Key="SearchTextBoxStyle"
                BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                TargetType="{x:Type TextBox}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
-            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource SearchTextBox_Foreground}" />
+            <Setter Property="Background" Value="{DynamicResource SearchTextBox_Background}" />
         </Style>
 
         <Style x:Key="IconButtonBorderStyle"
@@ -421,7 +421,7 @@
                 <TextBlock Margin="0,0,10,0"
                            VerticalAlignment="Center"
                            FontSize="{DynamicResource FontSize_High}"
-                           Foreground="{DynamicResource FerrettoWhiteGray}"
+                           Foreground="{DynamicResource Text_Foreground}"
                            Text="{x:Static resx:UI.Search}" />
 
                 <TextBox Grid.Column="1"
@@ -449,7 +449,7 @@
                     <Button.Template>
                         <ControlTemplate>
                             <Grid Margin="0"
-                                  Background="{TemplateBinding Background}">
+                                  Background="Transparent">
                                 <icons:PackIconFontAwesome Width="{TemplateBinding Width}"
                                                            Height="{TemplateBinding Height}"
                                                            Margin="2"

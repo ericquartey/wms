@@ -17,17 +17,17 @@
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
 
     <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
-                     Color="{DynamicResource EDBGrayD}" />
+                     Color="{DynamicResource EDBGrayF}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
                      Color="{DynamicResource EDBGrayG}" />
     <SolidColorBrush x:Key="PpcButtonForegroundPressed"
                      Color="{DynamicResource EDBGrayG}" />
 
-    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" Opacity="10" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
         <GradientStop Offset="0.5" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayF}" />
-        <GradientStop Offset="1" Color="{DynamicResource EDBGrayF}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH1}" />
+        <GradientStop Offset="1" Color="{DynamicResource EDBGrayH1}" />
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"

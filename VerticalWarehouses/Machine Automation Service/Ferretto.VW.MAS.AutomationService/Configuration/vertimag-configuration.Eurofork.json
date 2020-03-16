@@ -1167,7 +1167,7 @@
           "Offset": 0.0,
           "Orientation": "Horizontal",
           "ProfileCalibrateLength": 900.0,
-          "ProfileCalibratePosition": 300,
+          "ProfileCalibratePosition": 124,
           "ProfileCalibrateSpeed": 30.0,
           "Profiles": [
             {
@@ -6428,9 +6428,9 @@
       "Id": 22,
       "IsBypassed": true,
       "IsCompleted": true,
-      "ProfileCorrectDistance": 150.0,
+      "ProfileCorrectDistance": 124.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 265.0
+      "ProfileTotalDistance": 215.0
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,

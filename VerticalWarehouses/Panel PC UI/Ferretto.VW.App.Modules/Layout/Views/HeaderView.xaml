@@ -112,6 +112,7 @@
 
             <!--  ToggleThemeCommand  -->
             <ctrls:PpcControl VerticalAlignment="Center"
+                              Margin="15,0,0,0"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
                               Visibility="Visible">

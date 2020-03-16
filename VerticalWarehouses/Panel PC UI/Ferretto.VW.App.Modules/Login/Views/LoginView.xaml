@@ -80,19 +80,16 @@
                             </Grid.RowDefinitions>
 
 
-                            <Border BorderBrush="{DynamicResource FerrettoDarkGray}"
+                            <Border Background="{DynamicResource LogInBanner}"
+                                    BorderBrush="{DynamicResource FerrettoDarkGray}"
                                     BorderThickness="0"
                                     CornerRadius="4,0,0,0">
-                                <Border.Background>
-                                    <SolidColorBrush Opacity="0.7"
-                                                     Color="Black" />
-                                </Border.Background>
                                 <StackPanel Margin="4">
                                     <TextBlock Margin="25,25,25,8"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="22"
-                                               Style="{StaticResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                                Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
                                                TextWrapping="Wrap" />
 
@@ -100,7 +97,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="{DynamicResource FontSize_High}"
-                                               Style="{StaticResource VWAPP_ViewTitleTextWhiteBlockStyle}"
+                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                                Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber, StringFormat={x:Static res:General.SerialNumber}}" />
 
                                 </StackPanel>
@@ -109,7 +106,7 @@
                     </Border>
 
                     <Border Grid.Column="1"
-                            Background="{DynamicResource FerrettoLightGray}"
+                            Background="{DynamicResource LogIn_Background}"
                             BorderBrush="{x:Null}"
                             BorderThickness="0"
                             CornerRadius="0,4,4,0">
@@ -190,7 +187,7 @@
                                        FontFamily="{DynamicResource VWAPP_TitleFont}"
                                        FontSize="22"
                                        FontWeight="Light"
-                                       Foreground="{DynamicResource FerrettoDarkGray}">
+                                       Foreground="{DynamicResource Service_Foreground}">
                                     <Label.Style>
                                         <Style TargetType="Label">
                                             <Setter Property="Visibility" Value="Collapsed" />

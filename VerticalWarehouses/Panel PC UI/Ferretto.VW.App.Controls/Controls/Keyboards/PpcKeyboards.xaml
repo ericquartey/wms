@@ -67,10 +67,7 @@
         </Style>
 
     </dialog:PpcDialogView.Resources>
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="{DynamicResource ColorFerrettoDarkGray}" Opacity=".5" />
-        </Grid.Background>
+    <Grid Background="{DynamicResource KeyboardBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
             <RowDefinition Height="Auto" />
@@ -81,25 +78,19 @@
 
         <Border VerticalAlignment="Top"
                 Visibility="{Binding Path=LabelText, Converter={StaticResource TTUI}}"
-                Margin="15" Padding="15,5">
-            <Border.Background>
-                <SolidColorBrush Color="{DynamicResource ColorFerrettoLightGray}"
-                                 Opacity=".1" />
-            </Border.Background>
+                Margin="15" Padding="15,5" Background="{DynamicResource KeyboardHeaderBackground}">
 
             <TextBlock Text="{Binding LabelText}"
                        HorizontalAlignment="Center"
-                   FontSize="{DynamicResource FontSize_Very_High}">
-                <TextBlock.Foreground>
-                    <SolidColorBrush Color="{DynamicResource ColorFerrettoMediumGray}"
-                                 Opacity="1" />
-                </TextBlock.Foreground>
+                   FontSize="{DynamicResource FontSize_Very_High}"
+                       Foreground="{DynamicResource KeyboardHeaderForeground}">
             </TextBlock>
         </Border>
 
         <TextBox x:Name="textBox"
                  Grid.Row="1"
                  Margin="19,15"
+                 Foreground="{DynamicResource PasswordBoxKeyboard_Foreground}"
                  FontFamily="{Binding IsPassword, Converter={StaticResource BooleanToPasswordFontFamilyConverter}}"
                  Style="{StaticResource KeyboardTextBoxStyle}"
                  Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
