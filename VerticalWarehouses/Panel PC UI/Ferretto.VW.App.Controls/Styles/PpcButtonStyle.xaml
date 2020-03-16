@@ -142,6 +142,7 @@
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Center"
                                            FontSize="{TemplateBinding FontSize}"
+                                           Foreground="{DynamicResource Text_Foreground}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap">
                                     <TextBlock.Style>
@@ -205,7 +206,7 @@
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderThickness" Value="0,0,0,8" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcHeaderButtonColor}" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
     </Style>
@@ -214,7 +215,7 @@
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Content" Value="{x:Static res:InstallationApp.Off}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMachinePoweredOn}"
                          Value="True">
@@ -223,7 +224,7 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding IsUnknownState}"
                          Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Unknown}" />
             </DataTrigger>
         </Style.Triggers>
@@ -534,7 +535,7 @@
                                                    FontFamily="{TemplateBinding FontFamily}"
                                                    FontSize="18"
                                                    FontWeight="{TemplateBinding FontWeight}"
-                                                   Foreground="White"
+                                                   Foreground="{DynamicResource Text_Foreground}"
                                                    Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Border>
@@ -676,7 +677,7 @@
                                                        FontFamily="{TemplateBinding FontFamily}"
                                                        FontSize="16"
                                                        FontWeight="{TemplateBinding FontWeight}"
-                                                       Foreground="White"
+                                                       Foreground="{DynamicResource Text_Foreground}"
                                                        Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </Grid>
                                     </Grid>
@@ -854,7 +855,7 @@
     <Style x:Key="BorderTimeLine"
            TargetType="{x:Type Border}">
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="CornerRadius" Value="2" />
     </Style>
@@ -863,7 +864,7 @@
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
         <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
         <Setter Property="CornerRadius" Value="20" />
     </Style>
@@ -874,7 +875,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="Foreground" Value="{DynamicResource BorderTimeLineCirleTextBlock_Foreground}" />
     </Style>
     <Style x:Key="BorderTimeLinePath"
            TargetType="{x:Type Path}">

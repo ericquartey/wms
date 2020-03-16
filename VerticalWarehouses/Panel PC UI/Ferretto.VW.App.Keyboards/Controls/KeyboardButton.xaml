@@ -78,7 +78,7 @@
         <Style x:Key="AccentKeyboardButtonStyle"
                BasedOn="{StaticResource DefaultKeyboardButtonStyle}"
                TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource FerrettoBlack}" />
+            <Setter Property="Background" Value="{DynamicResource AccentKeyboardButtonColor}" />
         </Style>
 
     </UserControl.Resources>

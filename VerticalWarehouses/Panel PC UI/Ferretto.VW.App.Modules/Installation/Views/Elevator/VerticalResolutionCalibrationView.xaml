@@ -424,8 +424,8 @@
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
                     Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{StaticResource PpcBorderBrush}"
-                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">
                 <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
                                 ContentTemplateSelector="{StaticResource selector}" />

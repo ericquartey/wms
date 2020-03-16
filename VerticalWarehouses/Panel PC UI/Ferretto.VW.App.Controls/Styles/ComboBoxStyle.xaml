@@ -20,13 +20,13 @@
             </Grid.ColumnDefinitions>
             <Border x:Name="Border"
                     Grid.ColumnSpan="2"
-                    Background="{DynamicResource FerrettoLightGray}"
+                    Background="{DynamicResource ComboBox_Background}"
                     BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="0,0,0,1" />
             <Border x:Name="Border2"
                     Grid.Column="0"
                     Margin="1"
-                    Background="{DynamicResource FerrettoLightGray}"
+                    Background="{DynamicResource ComboBox_Background}"
                     BorderBrush="{x:Null}"
                     BorderThickness="0,0,0,0" />
             <Path x:Name="Arrow"
@@ -35,26 +35,26 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Data="M 2 2 L 11 11 L 20 2 Z"
-                  Fill="{DynamicResource FerrettoDarkGray}"
+                  Fill="{DynamicResource ComboBoxArrow_Background}"
                   StrokeEndLineCap="Round"
                   StrokeStartLineCap="Round" />
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="#808080" />
-                <Setter TargetName="Border2" Property="Background" Value="#808080" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxMouseOver}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource ComboBoxMouseOver}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
-                <Setter TargetName="Border2" Property="Background" Value="#E0E0E0" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxIsChecked}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource ComboBoxIsChecked}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
-                <Setter TargetName="Border2" Property="Background" Value="#EEEEEE" />
-                <Setter TargetName="Border2" Property="BorderBrush" Value="#AAAAAA" />
-                <Setter Property="Foreground" Value="#888888" />
-                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxIsEnabled_Background}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxIsEnabled_BorderBrush}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource ComboBoxIsEnabled_Background}" />
+                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ComboBoxIsEnabled_BorderBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource ComboBoxIsEnabled_Foreground}" />
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource ComboBoxIsEnabled_Foreground}" />
                 <Setter TargetName="Arrow" Property="Visibility" Value="Hidden" />
             </Trigger>
         </ControlTemplate.Triggers>
@@ -67,7 +67,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
+        <Setter Property="Foreground" Value="{DynamicResource ComboBoxContentColor}" />
         <Setter Property="ItemContainerStyle" Value="{DynamicResource ComboBoxItemStyle}" />
         <Setter Property="MinWidth" Value="100" />
         <Setter Property="Height" Value="32" />
@@ -91,6 +91,7 @@
                                           IsHitTestVisible="False" />
                         <TextBox x:Name="PART_EditableTextBox"
                                  Margin="3,3,23,3"
+                                 Foreground="{DynamicResource ComboBoxContentColor}"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
                                  Background="Transparent"
@@ -110,8 +111,8 @@
                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                   SnapsToDevicePixels="True">
                                 <Border x:Name="DropDownBorder"
-                                        Background="#FFFFFF"
-                                        BorderBrush="#888888"
+                                        Background="{DynamicResource ComboBoxDrop_Foreground}"
+                                        BorderBrush="{DynamicResource ComboBoxDrop_Foreground}"
                                         BorderThickness="1" />
                                 <ScrollViewer Margin="4,6,4,6"
                                               SnapsToDevicePixels="True">
@@ -126,7 +127,7 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="#888888" />
+                            <Setter Property="Foreground" Value="{DynamicResource ComboBoxIsEnabled_Foreground}" />
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
@@ -179,18 +180,18 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
-                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxMouseOver}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource ComboBoxMouseOver}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
-                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxIsChecked}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource ComboBoxIsChecked}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ComboBoxIsEnabledBorderBrush}" />
                 <Setter TargetName="Border2" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ComboBoxIsEnabledBorderBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                 <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                 <Setter TargetName="Arrow" Property="Visibility" Value="Hidden" />
@@ -307,7 +308,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ComboBoxItemBarColor}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
