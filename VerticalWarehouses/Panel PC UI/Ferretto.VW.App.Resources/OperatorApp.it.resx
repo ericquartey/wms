@@ -1252,6 +1252,9 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Alarms" xml:space="preserve">
     <value>Allarmi</value>
   </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Compattazione in corso</value>
+  </data>
   <data name="Diagnostics" xml:space="preserve">
     <value>Diagnostica</value>
   </data>
@@ -1281,5 +1284,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="TotalUnits" xml:space="preserve">
     <value>Totale cassetti</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>In attesa</value>
   </data>
 </root>

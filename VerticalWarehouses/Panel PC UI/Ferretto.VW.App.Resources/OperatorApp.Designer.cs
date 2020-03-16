@@ -457,6 +457,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compaction in progress.
+        /// </summary>
+        public static string CompactionInProgres {
+            get {
+                return ResourceManager.GetString("CompactionInProgres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment.
         /// </summary>
         public static string Compartment {
@@ -3415,6 +3424,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TotalUnits {
             get {
                 return ResourceManager.GetString("TotalUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        public static string Waiting {
+            get {
+                return ResourceManager.GetString("Waiting", resourceCulture);
             }
         }
         

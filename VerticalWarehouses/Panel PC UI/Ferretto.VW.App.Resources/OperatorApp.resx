@@ -1563,6 +1563,9 @@ Please put back any moved pieces in their original position.</value>
   <data name="Alarms" xml:space="preserve">
     <value>Alarms</value>
   </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Compaction in progress</value>
+  </data>
   <data name="Diagnostics" xml:space="preserve">
     <value>Diagnostics</value>
   </data>
@@ -1592,5 +1595,8 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="TotalUnits" xml:space="preserve">
     <value>Total units</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Waiting</value>
   </data>
 </root>
