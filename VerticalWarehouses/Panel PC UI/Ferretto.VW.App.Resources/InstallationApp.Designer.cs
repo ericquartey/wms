@@ -1087,6 +1087,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Status.
+        /// </summary>
+        public static string CheckStatus {
+            get {
+                return ResourceManager.GetString("CheckStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checksum files check successfully completed..
         /// </summary>
         public static string ChecksumCompleted {

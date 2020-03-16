@@ -2377,4 +2377,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BeltMustBeTight" xml:space="preserve">
     <value>Please tight the belt to 56 hz</value>
   </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Check Status</value>
+  </data>
 </root>
