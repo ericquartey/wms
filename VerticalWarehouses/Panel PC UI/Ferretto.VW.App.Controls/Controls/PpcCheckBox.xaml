@@ -158,7 +158,7 @@
                    VerticalAlignment="Center"
                    Effect="{x:Null}"
                    FontSize="{StaticResource FontSize_Normal}"
-                   Foreground="{DynamicResource PpcButtonForeground}"
+                   Foreground="{DynamicResource CheckBoxDescription}"
                    Text="{Binding ElementName=UserControl, Path=LabelText, FallbackValue='Descrizione'}"
                    TextWrapping="Wrap" />
     </Grid>

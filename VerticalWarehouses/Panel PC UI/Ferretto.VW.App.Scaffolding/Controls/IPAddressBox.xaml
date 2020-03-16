@@ -17,7 +17,7 @@
 
         <Style x:Key="IPAddressDot"
                TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoWhiteGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
             <Setter Property="Margin" Value="3,0,6,0" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
@@ -54,7 +54,7 @@
             </interactivity:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IPAddressDot}" />
+                   Style="{DynamicResource IPAddressDot}" />
         <TextBox Grid.Column="2"
                  IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
                  IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"

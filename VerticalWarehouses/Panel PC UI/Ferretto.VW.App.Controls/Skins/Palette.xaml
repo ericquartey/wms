@@ -10,6 +10,7 @@
     <Color x:Key="EDBGrayF">#828282</Color>
     <Color x:Key="EDBGrayG">#A0A0A0</Color>
     <Color x:Key="EDBGrayH">#B0B0B0</Color>
+    <Color x:Key="EDBGrayH1">#CCCCCC</Color>
     <Color x:Key="EDBGrayI">#E6E6E6</Color>
 
     <Color x:Key="ColorFerrettoWhiteGray">#E6E6E6</Color>
@@ -44,6 +45,8 @@
                      Color="{StaticResource EDBGrayG}" />
     <SolidColorBrush x:Key="GrayH"
                      Color="{StaticResource EDBGrayH}" />
+    <SolidColorBrush x:Key="GrayH1"
+                     Color="{StaticResource EDBGrayH1}" />
     <SolidColorBrush x:Key="GrayI"
                      Color="{StaticResource EDBGrayI}" />
 
