@@ -250,7 +250,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.profileStartPosition = null;
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
 
-                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                        this.targetPosition = axis.ProfileCalibrateLength;
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
@@ -709,6 +711,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                     this.Logger.LogInformation($"profileCalibratePosition reached! Value {this.profileCalibratePosition.Value:0.0000}");
                                     this.ReturnToStartPosition();
+                                    this.countProfileCalibrated = 2;
                                 }
                             }
                             else if (this.countProfileCalibrated == 0
@@ -718,9 +721,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.countProfileCalibrated = 1;
                             }
                             else if (chainPosition.HasValue
+                                && this.countProfileCalibrated < 2
                                 && Math.Abs(chainPosition.Value - this.horizontalStartingPosition) >= this.targetPosition
                                 )
                             {
+                                this.countProfileCalibrated = 2;
                                 this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
                                 this.ReturnToStartPosition();
                             }
@@ -860,13 +865,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                     double? measured = null;
 
+                                    var radians = procedure.ProfileDegrees * (Math.PI / 180);
                                     if (profileStartDistance.HasValue && profileCalibrateDistance.HasValue)
                                     {
-                                        measured = (procedure.ProfileCorrectDistance - (profileStartDistance - profileCalibrateDistance)) * Math.Tan(procedure.ProfileDegrees);
+                                        measured = (procedure.ProfileCorrectDistance - profileCalibrateDistance) * Math.Tan(radians);
                                     }
                                     else
                                     {
-                                        measured = (-procedure.ProfileTotalDistance) * Math.Tan(procedure.ProfileDegrees);
+                                        measured = (-procedure.ProfileTotalDistance) * Math.Tan(radians) / 2;
                                     }
 
                                     var notificationMessage = new NotificationMessage(
