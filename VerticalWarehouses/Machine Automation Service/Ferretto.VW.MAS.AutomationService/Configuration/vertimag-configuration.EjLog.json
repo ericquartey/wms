@@ -5955,8 +5955,21 @@
     "Bay3Laser": {
     },
     "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "BayHeightCheck": {
+      "FeedRate": 0.1,
+      "Step": 0.5
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
     },
     "WeightMeasurement": {
     }
+  },
+  "Wms": {
+    "IsEnabled": true,
+    "ServiceUrl": "http://localhost:10000",
+    "IsTimeSyncEnabled": true
   }
 }

@@ -2496,6 +2496,32 @@
           }
         }
       }
+    },
+    "Wms": {
+      "id": "#/properties/Wms",
+      "type": "object",
+      "title": "The Setupprocedures Schema",
+      "required": [
+        "IsEnabled",
+        "ServiceUrl"
+      ],
+      "properties": {
+        "IsEnabled": {
+          "id": "#/properties/Wms/properties/IsEnabled",
+          "type": "boolean",
+          "title": "The IsEnabled Schema"
+        },
+        "ServiceUrl": {
+          "id": "#/properties/Wms/properties/ServiceUrl",
+          "type": "string",
+          "title": "The IsTimeSyncEnabled Schema"
+        },
+        "IsTimeSyncEnabled": {
+          "id": "#/properties/Wms/properties/IsTimeSyncEnabled",
+          "type": "boolean",
+          "title": "The IsTimeSyncEnabled Schema"
+        }
+      }
     }
   }
 }
