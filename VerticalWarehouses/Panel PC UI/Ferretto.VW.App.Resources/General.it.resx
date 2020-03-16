@@ -363,4 +363,22 @@
   <data name="LoadUnitOperations" xml:space="preserve">
     <value>Operazioni cassetto</value>
   </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="DiagnosticDetailTitle" xml:space="preserve">
+    <value>DEBUG</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>Finite state machine</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
+  <data name="IODrive" xml:space="preserve">
+    <value>IO Drive</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>Status:</value>
+  </data>
 </root>
