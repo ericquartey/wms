@@ -304,6 +304,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devices.
+        /// </summary>
+        public static string Devices {
+            get {
+                return ResourceManager.GetString("Devices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DEBUG.
+        /// </summary>
+        public static string DiagnosticDetailTitle {
+            get {
+                return ResourceManager.GetString("DiagnosticDetailTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
         public static string Down {
@@ -385,6 +403,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finite state machine.
+        /// </summary>
+        public static string FiniteMachineState {
+            get {
+                return ResourceManager.GetString("FiniteMachineState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Front.
         /// </summary>
         public static string Front {
@@ -399,6 +426,24 @@ namespace Ferretto.VW.App.Resources {
         public static string HoursAgo {
             get {
                 return ResourceManager.GetString("HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter.
+        /// </summary>
+        public static string Inverter {
+            get {
+                return ResourceManager.GetString("Inverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IO Drive.
+        /// </summary>
+        public static string IODrive {
+            get {
+                return ResourceManager.GetString("IODrive", resourceCulture);
             }
         }
         
@@ -660,6 +705,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status:.
+        /// </summary>
+        public static string StatusDebug {
+            get {
+                return ResourceManager.GetString("StatusDebug", resourceCulture);
             }
         }
         
