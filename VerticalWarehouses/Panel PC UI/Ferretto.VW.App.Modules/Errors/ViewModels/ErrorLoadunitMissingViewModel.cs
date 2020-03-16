@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using Ferretto.VW.App.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -509,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnElevator.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnElevator && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -520,7 +521,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay1Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay1Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -531,7 +532,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay1Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay1Up && l.Status == LoadingUnitStatus.Undefined && l.Height == 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -542,7 +543,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay2Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay2Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -553,7 +554,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay2Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay2Up && l.Status == LoadingUnitStatus.Undefined && l.Height == 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -564,7 +565,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay3Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay3Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
@@ -575,7 +576,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             ((!this.LuIdOnBay3Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay3Up && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
                             var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
-                            return $"Cassetto non valido, inserire: {lus}";
+                            return ErrorsApp.InvalidUnit + lus;
                         }
 
                         break;
