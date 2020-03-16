@@ -2090,6 +2090,16 @@
     "Id": 1
   },
   "SetupProcedures": {
+    "CarouselManualMovements": {
+      "FeedRate": 0.1
+    },
+    "BayHeightCheck": {
+      "FeedRate": 0.1,
+      "Step": 0.5
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
+    },
     "Bay1HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
@@ -2214,6 +2224,7 @@
     "Bay3Laser": {
     },
     "ShutterHeightCheck": {
+      "FeedRate": 0.1
     },
     "WeightMeasurement": {
     }
