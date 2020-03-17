@@ -273,4 +273,109 @@
   <data name="VerticalPositionChanged" xml:space="preserve">
     <value>Posizione verticale errata.</value>
   </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Esiste un'altra missione attiva per questa baia</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Esiste un'altra missione attiva per questo cassetto</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Esiste un'altra missione attiva dello stesso tipo</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>L'inverter sta eseguendo un altro comando</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Il livello basso della baiaa è vuoto</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Il livello basso della baia è occupato</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Elevatore non carico in prelievo</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Elevatore non vuoto in deposito</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Destinazione minore del limite inferiore</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Destinazione maggiore del limite superiore</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>La configurazione della accelerazione del movimento dell'asse  {0} non è valida: accelerazione a vuoto minore del pieno carico</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La configurazione della velocità del movimento dell'asse  {0} non è valida: velocità a vuoto minore del pieno carico</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Sensori di presenza non validi</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Errore di connessione con l'inverter</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Errore di connessione con IoDevice</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>È stato rilevato un errore nell'IoDevice.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Errore di connessione con il laser</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Cassetto rilevato in un'altra baia</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Cassetto rilevato in cella</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Cassetto rilevato sull'elevatore</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Serranda chiusa</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Serranda aperta</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Peso troppo basso</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Modo macchina non valido</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Peso totale di magazzino superato</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Manca il sensore di zero con elevatore vuoto</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nessun errore</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Barrirea di sicurezza impegnata</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Pulsante di emergenza premuto</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Livello alto della baia vuoto</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Livello alto della baia occupato</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Magazzino pieno</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Il sensore di zero è attivo con elevatore occupato</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Manca il Sensore di zero dopo il deposito</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Il sensore di zero è attivo dopo il prelievo</value>
+  </data>
 </root>

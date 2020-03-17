@@ -148,9 +148,7 @@
 
                 <views:ArticleDataGridView Grid.Row="1"
                                            Grid.Column="0"
-                                           Margin="0,15,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" />
+                                           Margin="0,15,0,0" />
 
             </Grid>
 

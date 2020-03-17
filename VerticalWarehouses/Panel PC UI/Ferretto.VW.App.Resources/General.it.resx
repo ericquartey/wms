@@ -381,4 +381,7 @@
   <data name="StatusDebug" xml:space="preserve">
     <value>Status:</value>
   </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Nessuna riga presente nell'elenco</value>
+  </data>
 </root>
