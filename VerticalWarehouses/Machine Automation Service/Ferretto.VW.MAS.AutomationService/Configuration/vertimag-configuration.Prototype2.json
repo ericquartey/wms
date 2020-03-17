@@ -157,7 +157,6 @@
     }
   ],
   "Machine": {
-    "Id": 1,
     "Bays": [
       {
         "Inverter": {
@@ -484,12 +483,13 @@
       }
     },
     "Height": 9460,
+    "Id": 1,
+    "LoadUnitMaxHeight": 695,
+    "LoadUnitMaxNetWeight": 1100,
+    "LoadUnitMinHeight": 145.0,
+    "LoadUnitTare": 120,
     "MaxGrossWeight": 50000,
     "ModelName": "Vertimag 1000kg",
-    "LoadUnitTare": 120,
-    "LoadUnitMaxNetWeight": 1100,
-    "LoadUnitMaxHeight": 695,
-    "LoadUnitMinHeight": 145.0,
     "Panels": [
       {
         "Cells": [
