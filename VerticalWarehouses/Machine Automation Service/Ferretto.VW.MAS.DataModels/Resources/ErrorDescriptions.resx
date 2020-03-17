@@ -372,4 +372,10 @@
   <data name="VerticalPositionChanged" xml:space="preserve">
     <value>Vertical position has changed after machine start</value>
   </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value />
+  </data>
 </root>
