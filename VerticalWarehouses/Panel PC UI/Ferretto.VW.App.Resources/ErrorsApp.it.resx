@@ -123,6 +123,9 @@
   <data name="CurrentCell" xml:space="preserve">
     <value>Cella selezionata</value>
   </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detail Code</value>
+  </data>
   <data name="Displacement" xml:space="preserve">
     <value>Spostamento (mm)</value>
   </data>
@@ -150,16 +153,49 @@
   <data name="FirstSeen" xml:space="preserve">
     <value>Visto</value>
   </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Avanti</value>
+  </data>
+  <data name="HighPosition" xml:space="preserve">
+    <value>High position</value>
+  </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Quota iniziale (mm)</value>
   </data>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Cassetto non valido, inserire: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
   <data name="InverterFaultErrorRestore" xml:space="preserve">
     <value>Ripristino errore INVERTER FAULT</value>
   </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Low position</value>
+  </data>
   <data name="MarkAsResolved" xml:space="preserve">
     <value>Marca come risolto</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Selezionare l'id del cassetto presente sull'elevatore.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Cassetto su elevatore</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Selezione del cassetto (Baia 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Selezione del cassetto (Baia 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Selezione del cassetto (Baia 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Selezionare l'id del/i cassetto/i presente/i in baia.</value>
   </data>
 </root>

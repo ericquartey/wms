@@ -40,12 +40,12 @@
                                 <!--  The two borders  -->
                                 <Border Name="RadioOuter"
                                         Background="Transparent"
-                                        BorderBrush="{DynamicResource FerrettoPureWhite}"
+                                        BorderBrush="{DynamicResource RadioButtonBaseColor}"
                                         BorderThickness="2"
                                         CornerRadius="24" />
                                 <Border Name="RadioMark"
                                         Margin="8"
-                                        Background="{DynamicResource FerrettoPureWhite}"
+                                        Background="{DynamicResource RadioButtonBaseColor}"
                                         CornerRadius="24"
                                         Visibility="Hidden" />
                             </Grid>
@@ -55,7 +55,7 @@
                                    Margin="10,1"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    FontSize="22"
-                                   Foreground="{DynamicResource FerrettoPureWhite}">
+                                   Foreground="{DynamicResource RadioButtonBaseColor}">
                             <ContentPresenter />
                         </TextBlock>
                     </BulletDecorator>
@@ -68,15 +68,15 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <!--  If item is checked, trigger the visibility of the mark and change the color of the selected bullet into a darker gray for better highlighting  -->
-                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{DynamicResource FerrettoDarkGray}" />
-                            <Setter TargetName="RadioLabel" Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
-                            <Setter TargetName="RadioMark" Property="Background" Value="{DynamicResource FerrettoDarkGray}" />
+                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{DynamicResource RadioButtonDisabledColor}" />
+                            <Setter TargetName="RadioLabel" Property="Foreground" Value="{DynamicResource RadioButtonDisabledColor}" />
+                            <Setter TargetName="RadioMark" Property="Background" Value="{DynamicResource RadioButtonDisabledColor}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="true">
                             <!--  If item is checked, trigger the visibility of the mark and change the color of the selected bullet into a darker gray for better highlighting  -->
-                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
-                            <Setter TargetName="RadioLabel" Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                            <Setter TargetName="RadioMark" Property="Background" Value="{DynamicResource FerrettoPureWhite}" />
+                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{DynamicResource RadioButtonBaseColor}" />
+                            <Setter TargetName="RadioLabel" Property="Foreground" Value="{DynamicResource RadioButtonBaseColor}" />
+                            <Setter TargetName="RadioMark" Property="Background" Value="{DynamicResource RadioButtonBaseColor}" />
                         </Trigger>
 
                     </ControlTemplate.Triggers>

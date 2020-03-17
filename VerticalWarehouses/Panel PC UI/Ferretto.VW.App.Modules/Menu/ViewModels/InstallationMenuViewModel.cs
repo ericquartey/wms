@@ -313,8 +313,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public string SubTitleLabel =>
             this.ProceduresCompletedPercent == 100 ?
-            "Stato installazione completato." :
-            $"Stato installazione incompleto. Eseguite {this.ProceduresCompleted}/{this.ProceduresCount} procedure.";
+            InstallationApp.InstallationStateCompleted : String.Format(InstallationApp.InstallationStateIncompleted, this.ProceduresCompleted, this.ProceduresCount);
 
         #endregion
 

@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal abstract class InverterStateMachineBase : IInverterStateMachine
@@ -98,7 +97,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             }
         }
 
-        public virtual void Continue()
+        public virtual void Continue(double? targetPosition)
         {
             // do nothing
         }

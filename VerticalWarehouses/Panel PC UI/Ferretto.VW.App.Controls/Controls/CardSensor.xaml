@@ -304,7 +304,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -330,7 +330,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -356,7 +356,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -767,7 +767,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -797,7 +797,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -827,7 +827,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

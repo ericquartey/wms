@@ -1167,7 +1167,7 @@
           "Offset": 0.0,
           "Orientation": "Horizontal",
           "ProfileCalibrateLength": 900.0,
-          "ProfileCalibratePosition": 300,
+          "ProfileCalibratePosition": 124,
           "ProfileCalibrateSpeed": 30.0,
           "Profiles": [
             {
@@ -6428,9 +6428,9 @@
       "Id": 22,
       "IsBypassed": true,
       "IsCompleted": true,
-      "ProfileCorrectDistance": 150.0,
+      "ProfileCorrectDistance": 124.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 265.0
+      "ProfileTotalDistance": 215.0
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,
@@ -6519,6 +6519,10 @@
       "PerformedCycles": 0,
       "RequiredCycles": 20
     },
+    "BayHeightCheck": {
+      "FeedRate": 0.1,
+      "Step": 0.5
+    },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
       "Id": 6,
@@ -6527,6 +6531,9 @@
       "IsCompleted": true,
       "PerformedCycles": 200,
       "RequiredCycles": 200
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.1
     },
     "CellPanelsCheck": {
       "FeedRate": 0.2,
@@ -6567,6 +6574,9 @@
       "Id": 1,
       "IsBypassed": false,
       "IsCompleted": false
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
     },
     "VerticalOffsetCalibration": {
       "FeedRate": 0.2,

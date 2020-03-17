@@ -104,14 +104,14 @@
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="Compattazione in corso"
+                                     ContentText="{x:Static resources:OperatorApp.CompactionInProgres}"
                                      LabelText="{x:Static resources:OperatorApp.DrawerCompactingProcedureStatus}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="In attesa"
+                                     ContentText="{x:Static resources:OperatorApp.Waiting}"
                                      LabelText="{x:Static resources:OperatorApp.DrawerCompactingProcedureStatus}" />
 
             <controls:PpcButton Grid.Row="5"

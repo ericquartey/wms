@@ -234,7 +234,7 @@
     </UserControl.Resources>
 
     <!-- layout -->
-    <Grid Background="{DynamicResource FerrettoBlack}"
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}"
           d:DataContext="{d:DesignInstance Type=design:StringEntityViewModel, IsDesignTimeCreatable=True}"
           DataContext="{Binding Entity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
         <Border Width="600" Padding="15" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -249,7 +249,7 @@
 
                 <!-- header -->
                 <TextBlock Text="{Binding Converter={StaticResource DisplayNameConverter}}"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Foreground="{DynamicResource Text_Foreground}"
                            FontSize="{DynamicResource FontSize_Normal}"></TextBlock>
 
                 <!-- footer -->

@@ -701,7 +701,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalFindZeroPosition(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
@@ -719,7 +719,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.Relative,
-                MovementMode.ProfileCalibration,
+                MovementMode.HorizontalCalibration,
                 targetPosition,
                 speed,
                 acceleration,
@@ -729,7 +729,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute {Axis.Horizontal} Find zero position Command",
+                $"Execute {Axis.Horizontal} Horizontal calibration Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
@@ -793,7 +793,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 0.75;
+            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance;
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
 

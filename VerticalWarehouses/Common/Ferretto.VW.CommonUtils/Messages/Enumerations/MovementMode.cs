@@ -12,7 +12,7 @@
 
         BeltBurnishing,
 
-        FindZero,
+        HorizontalCalibration,
 
         TorqueCurrentSampling,
 

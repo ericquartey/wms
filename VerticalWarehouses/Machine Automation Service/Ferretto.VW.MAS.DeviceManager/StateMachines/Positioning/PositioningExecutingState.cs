@@ -53,7 +53,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private Timer delayTimer;
 
-        private double? findZeroPosition = null;
+        private double[] findZeroPosition = { 0, 0, 0, 0 };
+
+        private HorizontalCalibrationStep findZeroStep = HorizontalCalibrationStep.ForwardFindZeroSensor;
 
         private double horizontalStartingPosition;
 
@@ -177,6 +179,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
             var statusWordPollingInterval = DefaultStatusWordPollingInterval;
+            var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
             switch (this.machineData.MessageData.MovementMode)
             {
@@ -250,7 +253,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.profileStartPosition = null;
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
 
-                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                        this.targetPosition = axis.ProfileCalibrateLength;
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
@@ -308,11 +312,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     break;
 
-                case MovementMode.FindZero:
+                case MovementMode.HorizontalCalibration:
                     {
-                        this.findZeroPosition = null;
+                        this.findZeroStep = HorizontalCalibrationStep.ForwardFindZeroSensor;
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition) * 0.99;
                         statusWordPollingInterval = 500;
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
@@ -464,11 +468,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        private void FindZeroNextPosition()
+        private void FindZeroNextPosition(double targetPosition)
         {
-            var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-            var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-            this.machineData.MessageData.TargetPosition = axis.ChainOffset * 2;
+            this.machineData.MessageData.TargetPosition = targetPosition;
             var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
             var inverterMessage = new FieldCommandMessage(
@@ -611,26 +613,50 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             switch (this.machineData.MessageData.MovementMode)
             {
-                case MovementMode.FindZero:
+                case MovementMode.HorizontalCalibration:
                     {
                         if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
                         {
+                            var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                            var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
                             var data = message.Data as InverterStatusUpdateFieldMessageData;
                             var chainPosition = data.CurrentPosition;
                             if (chainPosition.HasValue
-                                && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
-                                && Math.Abs(this.horizontalStartingPosition - chainPosition.Value) > 25
+                                && Math.Abs(this.horizontalStartingPosition - chainPosition.Value) > Math.Abs(axis.ChainOffset) * 2
                                 )
                             {
-                                if (this.findZeroPosition is null)
+                                switch (this.findZeroStep)
                                 {
-                                    this.findZeroPosition = chainPosition;
-                                    this.Logger.LogInformation($"first Zero sensor reached! Value {chainPosition:0.0000}");
-                                    this.FindZeroNextPosition();
-                                }
-                                else
-                                {
-                                    // TODO finish procedure
+                                    case HorizontalCalibrationStep.ForwardFindZeroSensor:
+                                    case HorizontalCalibrationStep.BackwardFindZeroSensor:
+                                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                                        {
+                                            this.findZeroPosition[(int)this.findZeroStep] = chainPosition.Value;
+                                            this.findZeroStep++;
+                                            this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
+                                        }
+                                        break;
+
+                                    case HorizontalCalibrationStep.ForwardLeaveZeroSensor:
+                                        if (!this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                                        {
+                                            this.findZeroPosition[(int)this.findZeroStep] = chainPosition.Value;
+                                            this.findZeroStep++;
+                                            this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
+                                            this.FindZeroNextPosition(-Math.Abs(axis.ChainOffset) * 4);
+                                        }
+                                        break;
+
+                                    case HorizontalCalibrationStep.BackwardLeaveZeroSensor:
+                                        if (!this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                                        {
+                                            this.findZeroPosition[(int)this.findZeroStep] = chainPosition.Value;
+                                            this.findZeroStep++;
+                                            this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
+                                            this.FindZeroNextPosition(this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value / 2);
+                                        }
+                                        break;
                                 }
                             }
                         }
@@ -709,6 +735,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                     this.Logger.LogInformation($"profileCalibratePosition reached! Value {this.profileCalibratePosition.Value:0.0000}");
                                     this.ReturnToStartPosition();
+                                    this.countProfileCalibrated = 2;
                                 }
                             }
                             else if (this.countProfileCalibrated == 0
@@ -718,9 +745,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.countProfileCalibrated = 1;
                             }
                             else if (chainPosition.HasValue
+                                && this.countProfileCalibrated < 2
                                 && Math.Abs(chainPosition.Value - this.horizontalStartingPosition) >= this.targetPosition
                                 )
                             {
+                                this.countProfileCalibrated = 2;
                                 this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
                                 this.ReturnToStartPosition();
                             }
@@ -854,20 +883,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     {
                                         profileCalibrateDistance = Math.Abs(this.profileCalibratePosition.Value - this.profileStartPosition.Value);
                                     }
-                                    this.Logger.LogDebug($"Send Profile calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}");
 
                                     var procedure = this.setupProceduresDataProvider.GetBayProfileCheck(this.machineData.RequestingBay);
 
                                     double? measured = null;
 
+                                    var radians = procedure.ProfileDegrees * (Math.PI / 180);
                                     if (profileStartDistance.HasValue && profileCalibrateDistance.HasValue)
                                     {
-                                        measured = (procedure.ProfileCorrectDistance - (profileStartDistance - profileCalibrateDistance)) * Math.Tan(procedure.ProfileDegrees);
+                                        measured = (procedure.ProfileCorrectDistance - profileCalibrateDistance) * Math.Tan(radians);
                                     }
                                     else
                                     {
-                                        measured = (-procedure.ProfileTotalDistance) * Math.Tan(procedure.ProfileDegrees);
+                                        measured = (-procedure.ProfileTotalDistance) * Math.Tan(radians) / 2;
                                     }
+                                    this.Logger.LogDebug($"Send Profile calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}, measured {measured:0.0000}");
 
                                     var notificationMessage = new NotificationMessage(
                                         new ProfileCalibrationMessageData(profileStartDistance, profileCalibrateDistance, measured),
@@ -931,9 +961,45 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     break;
 
-                case MovementMode.FindZero:
-                    this.machineData.ExecutedSteps = this.performedCycles;
-                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                case MovementMode.HorizontalCalibration:
+                    {
+                        this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
+                        this.machineData.ExecutedSteps = this.performedCycles;
+                        var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                        double distance = 0.0;
+                        if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        {
+                            distance = Math.Abs(this.elevatorProvider.HorizontalPosition - this.horizontalStartingPosition);
+                            if (distance > 200)
+                            {
+                                machineProvider.UpdateHorizontalAxisStatistics(distance);
+                            }
+                        }
+
+                        double? profileStartDistance = this.horizontalStartingPosition;
+                        double? profileCalibrateDistance = null;
+                        double? measured = null;
+                        if (this.findZeroStep == HorizontalCalibrationStep.FindCenter)
+                        {
+                            profileCalibrateDistance = this.elevatorProvider.HorizontalPosition;
+                            measured = profileCalibrateDistance / 2;
+                        }
+                        this.Logger.LogDebug($"Send Horizontal calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}, measured {measured:0.0000}");
+
+                        var notificationMessage = new NotificationMessage(
+                            new ProfileCalibrationMessageData(profileStartDistance, profileCalibrateDistance, measured),
+                            $"Horizontal calibration result",
+                            MessageActor.AutomationService,
+                            MessageActor.DeviceManager,
+                            MessageType.ProfileCalibration,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
+                            MessageStatus.OperationEnd);
+
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                    }
                     break;
 
                 case MovementMode.BayChain:
@@ -1059,28 +1125,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 // stop timers
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
-            }
-            else if (
-                this.machineData.MessageData.MovementMode == MovementMode.Position ||       // TODO: could we remove this line???? please??
-                this.machineData.MessageData.MovementMode == MovementMode.FindZero
-                )
-            {
-                var switchPosition = new[] { 0.0 };
-                var speed = new[] { this.machineData.MessageData.TargetSpeed[0] / 2 };
-                var newPositioningMessageData = new PositioningMessageData(
-                    Axis.Horizontal,
-                    MovementType.Relative,
-                    MovementMode.FindZero,
-                    -this.machineData.MessageData.TargetPosition / 2,
-                    speed,
-                    this.machineData.MessageData.TargetAcceleration,
-                    this.machineData.MessageData.TargetDeceleration,
-                    switchPosition,
-                    HorizontalMovementDirection.Backwards);
-                this.machineData.MessageData = newPositioningMessageData;
-                // stop timers
-                this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
             }
         }
 

@@ -35,11 +35,63 @@
     <SolidColorBrush x:Key="PpcForeground"
                      Color="{DynamicResource ColorFerrettoBlack}" />
 
+
+    <SolidColorBrush x:Key="RadioButtonBaseColor"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="RadioButtonDisabledColor"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="IPAddressDotColor"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="PpcHeaderButtonColor"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="PcpButtonUnknownStateColor"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+
+    <SolidColorBrush x:Key="AccentKeyboardButtonColor"
+                     Color="{DynamicResource ColorFerrettoBlue}" />
+
+    <SolidColorBrush x:Key="KeyboardBackground"
+                     Opacity=".6"
+                     Color="{DynamicResource EDBGrayI}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderForeground"
+                     Opacity="1"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderBackground"
+                     Opacity=".5"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="ProgresBarBackground"
+                     Opacity=".4"
+                     Color="{DynamicResource EDBGrayH}" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedBackground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedForeground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextEnabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextDisabled"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+
+    <SolidColorBrush x:Key="TimeLineCirle_BorderBrush"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
     <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
-        <GradientStop Offset="0" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
         <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
-        <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource ColorFerrettoLightGray}" />
+        <GradientStop Offset="1" Color="{DynamicResource ColorFerrettoLightGray}" />
     </LinearGradientBrush>
 
 </ResourceDictionary>

@@ -57,12 +57,12 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                    <Setter Property="Background" Value="{DynamicResource KeyboardButtonBackgroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource KeyboardButtonForegroundPressed}" />
                     <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="Background" Value="{DynamicResource KeyboardButtonBackgroundPressed}" /> 
                     <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
                     <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
@@ -78,7 +78,7 @@
         <Style x:Key="AccentKeyboardButtonStyle"
                BasedOn="{StaticResource DefaultKeyboardButtonStyle}"
                TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource FerrettoBlack}" />
+            <Setter Property="Background" Value="{DynamicResource AccentKeyboardButtonColor}" />
         </Style>
 
     </UserControl.Resources>

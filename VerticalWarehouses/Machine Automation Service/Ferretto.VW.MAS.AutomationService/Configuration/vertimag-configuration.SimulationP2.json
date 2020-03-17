@@ -6132,6 +6132,10 @@
       "PerformedCycles": 0,
       "RequiredCycles": 20
     },
+    "BayHeightCheck": {
+      "FeedRate": 0.1,
+      "Step": 0.5
+    },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
       "Id": 7,
@@ -6140,6 +6144,9 @@
       "IsCompleted": false,
       "PerformedCycles": 0,
       "RequiredCycles": 20
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.1
     },
     "CellPanelsCheck": {
       "FeedRate": 0.2,
@@ -6180,6 +6187,9 @@
       "Id": 11,
       "IsBypassed": false,
       "IsCompleted": false
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
     },
     "VerticalOffsetCalibration": {
       "FeedRate": 0.2,

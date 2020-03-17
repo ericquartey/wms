@@ -82,6 +82,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseMasHealthChecks();
 
+            app.UseCors("AllowAll");
+
             app.UseDataLayer();
 
             app.UseMvc();

@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -39,7 +41,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 if (receivedMessage.Type == FieldMessageType.ContinueMovement)
                 {
-                    messageCurrentStateMachine.Continue();
+                    double? targetPosition = null;
+                    if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
+                    {
+                        var axisOrientation = positioningData.AxisMovement == Axis.Horizontal
+                            ? Orientation.Horizontal
+                            : Orientation.Vertical;
+                        var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
+                        targetPosition = invertersProvider.ConvertMillimetersToPulses(positioningData.TargetPosition, axisOrientation);
+                    }
+                    messageCurrentStateMachine.Continue(targetPosition);
 
                     return Task.CompletedTask;
                 }

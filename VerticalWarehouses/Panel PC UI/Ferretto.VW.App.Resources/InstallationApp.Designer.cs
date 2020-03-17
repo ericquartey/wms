@@ -1087,6 +1087,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Status.
+        /// </summary>
+        public static string CheckStatus {
+            get {
+                return ResourceManager.GetString("CheckStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checksum files check successfully completed..
         /// </summary>
         public static string ChecksumCompleted {
@@ -3099,6 +3108,24 @@ namespace Ferretto.VW.App.Resources {
         public static string InstallationState {
             get {
                 return ResourceManager.GetString("InstallationState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation status complete..
+        /// </summary>
+        public static string InstallationStateCompleted {
+            get {
+                return ResourceManager.GetString("InstallationStateCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete installation status. Perform {0} / {1} procedures..
+        /// </summary>
+        public static string InstallationStateIncompleted {
+            get {
+                return ResourceManager.GetString("InstallationStateIncompleted", resourceCulture);
             }
         }
         
