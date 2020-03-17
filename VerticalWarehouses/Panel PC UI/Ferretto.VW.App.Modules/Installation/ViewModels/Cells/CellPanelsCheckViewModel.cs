@@ -76,6 +76,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -204,7 +206,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
            (this.goToCellHeightCommand = new DelegateCommand(
                async () => await this.GoToCellHeightAsync(),
                this.CanGoToCellHeight));
-        
+
         public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
 
         public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
@@ -313,6 +315,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -572,6 +581,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+                           this.RaisePropertyChanged(nameof(this.HasStepMeasured));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()

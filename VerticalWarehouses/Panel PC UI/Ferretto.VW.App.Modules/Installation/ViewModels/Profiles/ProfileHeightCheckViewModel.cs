@@ -105,6 +105,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -348,6 +350,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.profileCalibrationToken);
                 this.profileCalibrationToken?.Dispose();
                 this.profileCalibrationToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -753,6 +762,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnProfileCalibrationMessage(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+                           this.RaisePropertyChanged(nameof(this.HasStepElevatorPosition));
+                           this.RaisePropertyChanged(nameof(this.HasStepShapePositionDx));
+                           this.RaisePropertyChanged(nameof(this.HasStepTuningChainDx));
+                           this.RaisePropertyChanged(nameof(this.HasStepShapePositionSx));
+                           this.RaisePropertyChanged(nameof(this.HasStepTuningChainSx));
+                           this.RaisePropertyChanged(nameof(this.HasStepResultCheck));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()

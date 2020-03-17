@@ -74,6 +74,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
+
         #endregion
 
         #region Constructors
@@ -270,6 +273,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -624,6 +634,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionDown));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionUp));
+                           this.RaisePropertyChanged(nameof(this.NumberStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.CurrentBayPosition));
+                           this.RaisePropertyChanged(nameof(this.BayPositionActive));
+                           this.RaisePropertyChanged(nameof(this.HasDisplacementUpValue));
+                           this.RaisePropertyChanged(nameof(this.HasDisplacementDownValue));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()
