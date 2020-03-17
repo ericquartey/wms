@@ -27,5 +27,7 @@
         BayChainManual,
 
         BayTest,
+
+        HorizontalForwardBackward,
     }
 }
