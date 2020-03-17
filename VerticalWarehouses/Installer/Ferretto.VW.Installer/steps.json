@@ -68,8 +68,8 @@
       "number": 7,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
-      //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2", // ** fake
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      //"script": "timeout /T 2", // ** fake
       "setupMode": "UpdateAndRestore",
       "skipOnResume": "true"
     },
@@ -78,7 +78,7 @@
       "number": 8,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia disabilitata.",
-      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if(!$uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT enabled.\"};",
+      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-CimInstance -className  UWF_Filter -Namespace $NAMESPACE;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disabled.\"};",
       //"script": "timeout /T 2", // ** fake
       "rollbackScript": "true",
       //"rollbackScript": "timeout /T 2" // ** fake
@@ -223,10 +223,10 @@
       "number": 22,
       "title": "Riabilita UWF",
       "description": "Riabilita la protezione del disco fisso per sigillare il PanelPC.",
-      //"script": "uwfmgr filter enable",
-      //"rollbackScript": "uwfmgr filter disable",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2", // ** fake
+      "script": "uwfmgr filter enable",
+      "rollbackScript": "uwfmgr filter disable",
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2", // ** fake
       "skipRollback": true
     },
     {
@@ -234,8 +234,8 @@
       "number": 23,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
-      //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2", // ** fake
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      //"script": "timeout /T 2", // ** fake
       "skipRollback": true
     },
     {
@@ -243,7 +243,7 @@
       "number": 24,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia abilitata.",
-      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disaabled.\"};",
+      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-CimInstance -className \"UWF_Filter\" -Namespace $NAMESPACE;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};if(!$uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT enabled.\"};",
       "rollbackScript": "uwfmgr filter disable"
       //"script": "timeout /T 2", // ** fake
       //"rollbackScript": "timeout /T 2" // ** fake
