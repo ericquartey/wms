@@ -101,9 +101,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
+                    <TextBlock FontSize="24" 
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
+                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart1}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
