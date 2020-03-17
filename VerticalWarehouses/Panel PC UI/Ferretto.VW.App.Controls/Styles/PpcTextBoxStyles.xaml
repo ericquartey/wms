@@ -108,5 +108,69 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="SearchTextBoxStyle"
+           BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
+        <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+    </Style>
+
+    <Style x:Key="IconButtonBorderStyle"
+           TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+    </Style>
+    <Style x:Key="IconButtonBorderInvertStyle"
+           BasedOn="{StaticResource IconButtonBorderStyle}"
+           TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+    </Style>
+
+    <Style x:Key="IconButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Style="{StaticResource IconButtonBorderStyle}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
+                            <Setter TargetName="border" Property="Cursor" Value="Hand" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
+                            <Setter TargetName="border" Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="IconButtonInvertStyle"
+           BasedOn="{StaticResource IconButtonStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Style="{StaticResource IconButtonBorderInvertStyle}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>
