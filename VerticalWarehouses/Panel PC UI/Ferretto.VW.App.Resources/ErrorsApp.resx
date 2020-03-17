@@ -123,6 +123,9 @@
   <data name="CurrentCell" xml:space="preserve">
     <value>Current cell</value>
   </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detail Code</value>
+  </data>
   <data name="Displacement" xml:space="preserve">
     <value>Displacement (mm)</value>
   </data>
@@ -155,17 +158,50 @@
     <value>First Seen</value>
     <comment>Label</comment>
   </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Forwards</value>
+  </data>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Postazione alta</value>
+  </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Initial position [mm]</value>
   </data>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Invalid unit, insert: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
   <data name="InverterFaultErrorRestore" xml:space="preserve">
     <value>Errore restore INVERTER FAULT</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Postazione bassa</value>
   </data>
   <data name="MarkAsResolved" xml:space="preserve">
     <value>Mark as resolved</value>
     <comment>Action</comment>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Select the unit id on the elevator.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Unit on elevator</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Unit selection (Bay 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Unit selection (Bay 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Unit selection (Bay 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Select the id of the unit/s present in the bay.</value>
   </data>
 </root>

@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <Style TargetType="{x:Type controls:BaseMenuButton}">
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
             <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
             <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
@@ -83,7 +83,7 @@
                                                           ViewportUnits="Absolute">
                                                 <DrawingBrush.Drawing>
                                                     <DrawingGroup>
-                                                        <GeometryDrawing Brush="White">
+                                                        <GeometryDrawing Brush="{DynamicResource MenuButtonBorderBrush}">
                                                             <GeometryDrawing.Geometry>
                                                                 <GeometryGroup>
                                                                     <RectangleGeometry Rect="0,0,50,50" />
@@ -106,7 +106,7 @@
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
                                                  Fill="{TemplateBinding MenuBrush}"
-                                                 Stroke="White"
+                                                 Stroke="{DynamicResource MenuButtonStroke}"
                                                  StrokeThickness="1">
                                             <Ellipse.BitmapEffect>
                                                 <DropShadowBitmapEffect Opacity="0.5"
@@ -119,7 +119,7 @@
                                                                Height="28"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
-                                                               Foreground="White"
+                                                               Foreground="{DynamicResource Foreground}"
                                                                Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Grid>

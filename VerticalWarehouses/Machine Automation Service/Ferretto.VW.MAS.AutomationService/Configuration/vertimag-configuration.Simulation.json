@@ -2094,11 +2094,33 @@
     "Id": 1
   },
   "SetupProcedures": {
+    "CarouselManualMovements": {
+      "FeedRate": 0.1
+    },
+    "BayHeightCheck": {
+      "FeedRate": 0.1,
+      "Step": 0.5
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
+    },
+    "Bay1CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1FirstLoadingUnit": {
+    },
     "Bay1HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay1Laser": {
+    },
+    "Bay1ProfileCheck": {
     },
     "Bay1ShutterTest": {
       "InProgress": false,
@@ -2107,11 +2129,23 @@
       "FeedRate": 1.0,
       "IsCompleted": true
     },
+    "Bay2CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2FirstLoadingUnit": {
+    },
     "Bay2HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay2Laser": {
+    },
+    "Bay2ProfileCheck": {
     },
     "Bay2ShutterTest": {
       "InProgress": false,
@@ -2120,11 +2154,23 @@
       "FeedRate": 1.0,
       "IsCompleted": false
     },
+    "Bay3CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3FirstLoadingUnit": {
+    },
     "Bay3HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay3Laser": {
+    },
+    "Bay3ProfileCheck": {
     },
     "Bay3ShutterTest": {
       "InProgress": false,
@@ -2163,6 +2209,9 @@
       "FeedRate": 0.2,
       "IsCompleted": false
     },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
       "InProgress": false,
@@ -2180,44 +2229,6 @@
       "StartPosition": 500.0,
       "FeedRate": 0.2,
       "IsCompleted": true
-    },
-    "Bay1ProfileCheck": {
-    },
-    "Bay2ProfileCheck": {
-    },
-    "Bay3ProfileCheck": {
-    },
-    "Bay1CarouselTest": {
-    },
-    "Bay1CarouselCalibration": {
-      "RequiredCycles": 600,
-      "FeedRate": 0.9
-    },
-    "Bay2CarouselCalibration": {
-      "RequiredCycles": 600,
-      "FeedRate": 0.9
-    },
-    "Bay3CarouselCalibration": {
-      "RequiredCycles": 600,
-      "FeedRate": 0.9
-    },
-    "Bay2CarouselTest": {
-    },
-    "Bay3CarouselTest": {
-    },
-    "Bay1FirstLoadingUnit": {
-    },
-    "Bay2FirstLoadingUnit": {
-    },
-    "Bay3FirstLoadingUnit": {
-    },
-    "Bay1Laser": {
-    },
-    "Bay2Laser": {
-    },
-    "Bay3Laser": {
-    },
-    "ShutterHeightCheck": {
     },
     "WeightMeasurement": {
     }

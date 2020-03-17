@@ -2307,4 +2307,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BeltMustBeTight" xml:space="preserve">
     <value>Ritensionare la cinghia a 56 Hz</value>
   </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Controlla Stato</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Stato installazione completato.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Stato installazione incompleto. Eseguite {0}/{1} procedure.</value>
+  </data>
 </root>

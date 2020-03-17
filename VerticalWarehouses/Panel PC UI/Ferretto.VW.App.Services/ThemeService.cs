@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Windows;
 using Ferretto.VW.App.Services.Models;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
     internal sealed class ThemeService : IThemeService
     {
+        #region Fields
+
+        private readonly IEventAggregator eventAggregator;
+
+        #endregion
+
         #region Constructors
 
-        public ThemeService()
+        public ThemeService(
+            IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+
             this.ApplyDXTheme(this.ActiveTheme);
         }
 
@@ -76,6 +86,10 @@ namespace Ferretto.VW.App.Services
                 default:
                     throw new NotSupportedException("The specified theme is not supported.");
             }
+
+            this.eventAggregator
+                .GetEvent<ThemeChangedPubSubEvent>()
+                .Publish(new ThemeChangedMessage(this.ActiveTheme));
         }
 
         #endregion

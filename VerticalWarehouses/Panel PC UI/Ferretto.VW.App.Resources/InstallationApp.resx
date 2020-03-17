@@ -2377,4 +2377,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BeltMustBeTight" xml:space="preserve">
     <value>Please tight the belt to 56 hz</value>
   </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Check Status</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Installation status complete.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Incomplete installation status. Perform {0} / {1} procedures.</value>
+  </data>
 </root>

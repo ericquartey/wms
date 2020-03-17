@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detail Code.
+        /// </summary>
+        public static string DetailCode {
+            get {
+                return ResourceManager.GetString("DetailCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Displacement (mm).
         /// </summary>
         public static string Displacement {
@@ -160,6 +169,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forwards.
+        /// </summary>
+        public static string Forwards {
+            get {
+                return ResourceManager.GetString("Forwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Postazione alta.
+        /// </summary>
+        public static string HighPosition {
+            get {
+                return ResourceManager.GetString("HighPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         public static string Id {
@@ -178,6 +205,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid unit, insert: .
+        /// </summary>
+        public static string InvalidUnit {
+            get {
+                return ResourceManager.GetString("InvalidUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter.
+        /// </summary>
+        public static string Inverter {
+            get {
+                return ResourceManager.GetString("Inverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errore restore INVERTER FAULT.
         /// </summary>
         public static string InverterFaultErrorRestore {
@@ -187,11 +232,74 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Postazione bassa.
+        /// </summary>
+        public static string LowPosition {
+            get {
+                return ResourceManager.GetString("LowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mark as resolved.
         /// </summary>
         public static string MarkAsResolved {
             get {
                 return ResourceManager.GetString("MarkAsResolved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the unit id on the elevator..
+        /// </summary>
+        public static string SelectUnitOnElevator {
+            get {
+                return ResourceManager.GetString("SelectUnitOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit on elevator.
+        /// </summary>
+        public static string UnitOnElevator {
+            get {
+                return ResourceManager.GetString("UnitOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit selection (Bay 1):.
+        /// </summary>
+        public static string UnitSelectBay1 {
+            get {
+                return ResourceManager.GetString("UnitSelectBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit selection (Bay 2):.
+        /// </summary>
+        public static string UnitSelectBay2 {
+            get {
+                return ResourceManager.GetString("UnitSelectBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit selection (Bay 3):.
+        /// </summary>
+        public static string UnitSelectBay3 {
+            get {
+                return ResourceManager.GetString("UnitSelectBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the id of the unit/s present in the bay..
+        /// </summary>
+        public static string UnitSelectIdBay {
+            get {
+                return ResourceManager.GetString("UnitSelectIdBay", resourceCulture);
             }
         }
     }

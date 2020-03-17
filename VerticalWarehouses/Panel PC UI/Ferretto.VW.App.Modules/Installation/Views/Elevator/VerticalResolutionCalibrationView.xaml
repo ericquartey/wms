@@ -18,7 +18,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -65,7 +65,6 @@
                                    Margin="0,-15,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanStartPosition}"
                                    LabelText="{x:Static res:InstallationApp.StartQuote}"
                                    MaxValue="{Binding AxisUpperBound}"
@@ -104,12 +103,12 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
+                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart1}"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.PositionElevatorIndicatedHeight}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -120,7 +119,6 @@
                                    Margin="0,-15,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanDestinationPosition1}"
                                    LabelText="{x:Static res:InstallationApp.DestinationPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
@@ -149,7 +147,6 @@
                                    Margin="0,0,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding MeasuredPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanMeasuredPosition1}"
                                    LabelText="{x:Static res:InstallationApp.MisuredPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
@@ -186,7 +183,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.PositionElevatorIndicatedHeight}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -196,7 +193,6 @@
                                    Height="90"
                                    Margin="0,-15,15,0"
                                    EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanDestinationPosition2}"
                                    LabelText="{x:Static res:InstallationApp.DestinationPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
@@ -223,7 +219,6 @@
                                    Height="90"
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment="0.01"
                                    IsEnabled="{Binding IsCanMeasuredPosition2}"
                                    LabelText="{x:Static res:InstallationApp.MisuredPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
@@ -424,8 +419,8 @@
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
                     Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{StaticResource PpcBorderBrush}"
-                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">
                 <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
                                 ContentTemplateSelector="{StaticResource selector}" />

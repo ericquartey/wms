@@ -19,9 +19,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Fields
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
-
-        private readonly INavigationService navigationService;
-
+        
         private MachineError error;
 
         private string errorTime;
@@ -32,13 +30,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Constructors
 
-        public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService, INavigationService navigationService)
+        public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
-
-            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-
+                        
             new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
 
@@ -114,19 +110,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 //await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-
-                if (this.Error == null)
-                {
-                    await Application.Current.Dispatcher.BeginInvoke(
-                   System.Windows.Threading.DispatcherPriority.ApplicationIdle,
-                   new Action(() =>
-                   {
-                       if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW))
-                       {
-                           this.navigationService.GoBack();
-                       }
-                   }));
-                }
+              
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {

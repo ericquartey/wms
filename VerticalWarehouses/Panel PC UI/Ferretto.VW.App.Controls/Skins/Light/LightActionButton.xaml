@@ -17,22 +17,28 @@
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
 
     <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
-                     Color="{DynamicResource EDBGrayD}" />
+                     Color="{DynamicResource EDBGrayF}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
                      Color="{DynamicResource EDBGrayG}" />
     <SolidColorBrush x:Key="PpcButtonForegroundPressed"
                      Color="{DynamicResource EDBGrayG}" />
 
-    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
-        <GradientStop Offset="0" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayF}" />
-        <GradientStop Offset="1" Color="{DynamicResource EDBGrayF}" />
+    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" Opacity="10" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+        <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource ColorFerrettoLightGray}" />
+        <GradientStop Offset="1" Color="{DynamicResource ColorFerrettoLightGray}" />
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
-                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayD}" />
+
+    <SolidColorBrush x:Key="MenuButtonBorderBrush"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="MenuButtonStroke"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
 
 </ResourceDictionary>

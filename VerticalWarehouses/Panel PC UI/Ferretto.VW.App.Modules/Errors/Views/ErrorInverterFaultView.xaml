@@ -70,7 +70,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="Inverter" />
+                           Text="{x:Static res:ErrorsApp.Inverter}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -86,7 +86,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="Detail Code" />
+                           Text="{x:Static res:ErrorsApp.DetailCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
