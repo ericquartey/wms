@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStateMachine : InverterStateMachineBase
@@ -38,10 +37,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
-        public override void Continue()
+        public override void Continue(double? targetPosition)
         {
             this.data.WaitContinue = false;
-            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}");
+            if (targetPosition.HasValue && this.data.IsHorizontalCalibrate)
+            {
+                this.data.TargetPosition = (int)targetPosition.Value;
+            }
+            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}, targetPosition {targetPosition:0.00}");
         }
 
         /// <inheritdoc />
