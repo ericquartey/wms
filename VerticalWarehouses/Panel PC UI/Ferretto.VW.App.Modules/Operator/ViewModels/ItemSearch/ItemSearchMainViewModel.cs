@@ -226,13 +226,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SearchItem = null;
             var machineIdentity = await this.identityService.GetAsync();
             this.areaId = machineIdentity.AreaId;
-            this.tokenSource = new CancellationTokenSource();
 
-            var startIndex = ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > 0) ? this.maxKnownIndexSelection - ItemsVisiblePageSize : 0;
-
-            this.RemoveOldItems(startIndex);
-
-            await this.SearchItemAsync(startIndex, this.tokenSource.Token);
+            await this.RefreshItemsAsync();
         }
 
         public async Task RequestItemPickAsync()
@@ -253,8 +248,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
 
-                this.tokenSource = new CancellationTokenSource();
-                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                await this.RefreshItemsAsync();
             }
             catch (Exception ex)
             {
@@ -414,6 +408,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
+        }
+
+        private async Task RefreshItemsAsync()
+        {
+            var startIndex = ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > 0) ? this.maxKnownIndexSelection - ItemsVisiblePageSize : 0;
+
+            this.RemoveOldItems(startIndex);
+
+            this.tokenSource = new CancellationTokenSource();
+            await this.SearchItemAsync(startIndex, this.tokenSource.Token);
         }
 
         private void RemoveOldItems(int startIndex)
