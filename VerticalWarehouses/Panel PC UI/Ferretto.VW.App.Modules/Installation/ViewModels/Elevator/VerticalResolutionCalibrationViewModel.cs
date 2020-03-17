@@ -97,6 +97,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         private CancellationTokenSource tokenSource;
 
         #endregion
@@ -462,6 +464,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
             }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -781,6 +790,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                    (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
                                    (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
                         });
+
+            this.themeChangedToken = this.themeChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<ThemeChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
+                            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
+                            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
+                            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                        },
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private void UpdateStatusButtonFooter()
