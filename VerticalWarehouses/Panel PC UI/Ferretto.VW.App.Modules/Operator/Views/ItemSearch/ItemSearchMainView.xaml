@@ -153,7 +153,7 @@
                     <TextBlock Margin="0,0,10,0"
                                VerticalAlignment="Center"
                                FontSize="{DynamicResource FontSize_High}"
-                               Foreground="{DynamicResource FerrettoWhiteGray}">
+                               Foreground="{DynamicResource SearchTextBox_Foreground}">
                         <Run Text="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
                         <Run Text=":" />
                     </TextBlock>
