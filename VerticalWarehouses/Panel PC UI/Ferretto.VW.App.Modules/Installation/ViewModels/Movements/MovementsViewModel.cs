@@ -281,7 +281,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SubscribeToEvents();
 
-                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
 
                 this.isManualMovementCompleted = false;
 
@@ -489,8 +489,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Bay?.Number == e.BayNumber)
             {
                 this.IsLightActive = e.IsLightOn;
-                //this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
-
                 this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
             }
         }
