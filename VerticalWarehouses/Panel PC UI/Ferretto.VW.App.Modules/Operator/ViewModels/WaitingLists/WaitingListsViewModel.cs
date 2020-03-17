@@ -42,10 +42,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemListExecution selectedList;
 
-        private DelegateCommand selectNextCommand;
-
-        private DelegateCommand selectPreviousCommand;
-
         #endregion
 
         #region Constructors
@@ -90,20 +86,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedList;
             set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
         }
-
-        public ICommand SelectNextCommand =>
-            this.selectNextCommand
-            ??
-            (this.selectNextCommand = new DelegateCommand(
-                () => this.ChangeSelectedList(false),
-                this.CanSelectNext));
-
-        public ICommand SelectPreviousCommand =>
-            this.selectPreviousCommand
-            ??
-            (this.selectPreviousCommand = new DelegateCommand(
-                () => this.ChangeSelectedList(true),
-                this.CanSelectPrevious));
 
         #endregion
 
@@ -223,8 +205,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.selectPreviousCommand?.RaiseCanExecuteChanged();
-            this.selectNextCommand?.RaiseCanExecuteChanged();
             this.listExecuteCommand?.RaiseCanExecuteChanged();
             this.listDetailButtonCommand.RaiseCanExecuteChanged();
         }
@@ -237,18 +217,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedList != null
                 &&
                 this.SelectedList.ExecutionMode != ListExecutionMode.None;
-        }
-
-        private bool CanSelectNext()
-        {
-            return
-                this.currentItemIndex < this.lists.Count - 1;
-        }
-
-        private bool CanSelectPrevious()
-        {
-            return
-                this.currentItemIndex > 0;
         }
 
         private bool CanShowDetailCommand()
