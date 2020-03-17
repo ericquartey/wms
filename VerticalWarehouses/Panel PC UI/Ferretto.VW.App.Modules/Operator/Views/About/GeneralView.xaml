@@ -68,7 +68,7 @@
                   Grid.ColumnSpan="12"
                   Margin="0,0,15,0">
                 <Image HorizontalAlignment="Center"
-                       Opacity="0.6"
+                       Opacity="{DynamicResource ImageOpacity}"
                        Source="{DynamicResource BgMilestone}"
                        Stretch="UniformToFill">
                     <Image.Effect>
