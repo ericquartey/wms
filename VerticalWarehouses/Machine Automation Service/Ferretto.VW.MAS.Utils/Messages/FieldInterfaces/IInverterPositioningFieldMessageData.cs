@@ -14,6 +14,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         double FeedRate { get; set; }
 
+        bool IsHorizontalCalibrate { get; }
+
+        bool IsPickupMission { get; set; }
+
         bool IsProfileCalibrate { get; set; }
 
         bool IsProfileCalibrateDone { get; set; }
@@ -51,7 +55,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         int[] TargetSpeed { get; set; }
 
         bool WaitContinue { get; set; }
-        bool IsPickupMission { get; set; }
 
         #endregion
     }
