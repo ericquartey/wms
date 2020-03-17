@@ -28,6 +28,104 @@
       "Id": 2
     },
     {
+      "CellId": 124,
+      "Code": "003",
+      "Description": null,
+      "GrossWeight": 926.94079999999985,
+      "Height": 278.465625,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 806.94079999999985,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 3
+    },
+    {
+      "CellId": 155,
+      "Code": "004",
+      "Description": null,
+      "GrossWeight": 978.755232,
+      "Height": 383.40937499999995,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 858.755232,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 4
+    },
+    {
+      "CellId": 148,
+      "Code": "005",
+      "Description": null,
+      "GrossWeight": 582.94611200000008,
+      "Height": 285.9875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 462.94611200000008,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 5
+    },
+    {
+      "CellId": 187,
+      "Code": "006",
+      "Description": null,
+      "GrossWeight": 747.65566799999988,
+      "Height": 145.51875,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 627.65566799999988,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 6
+    },
+    {
+      "CellId": 172,
+      "Code": "007",
+      "Description": null,
+      "GrossWeight": 790.5072,
+      "Height": 394.55625,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 670.5072,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 7
+    },
+    {
+      "CellId": 201,
+      "Code": "008",
+      "Description": null,
+      "GrossWeight": 455.66860800000018,
+      "Height": 342.809375,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 335.66860800000018,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 8
+    },
+    {
+      "CellId": 206,
+      "Code": "009",
+      "Description": null,
+      "GrossWeight": 235.39250000000015,
+      "Height": 296.77187499999997,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 930.0,
+      "MissionsCount": 1,
+      "NetWeight": 115.39250000000015,
+      "Status": 4,
+      "Tare": 120.0,
+      "Id": 9
+    },
+    {
       "CellId": 69,
       "Code": "043",
       "GrossWeight": 900.44236800000044,
@@ -310,7 +408,6 @@
             "Type": 1,
             "Id": 1
           },
-          "LastIdealPosition": 2964.0,
           "LowerBound": 350.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -371,7 +468,6 @@
             "Type": 3,
             "Id": 3
           },
-          "LastIdealPosition": 0.0,
           "LowerBound": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -620,8 +716,6 @@
       "Id": 1
     },
     "Height": 9460.0,
-    "Id": 2, // same ID as on EjLog
-    "Id": 2,
     "LoadUnitMaxHeight": 695.0,
     "LoadUnitMaxNetWeight": 930.0,
     "LoadUnitMinHeight": 145.0,
@@ -1326,7 +1420,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3364.0,
             "Priority": 155,
@@ -1335,7 +1429,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3389.0,
             "Priority": 157,
@@ -1344,7 +1438,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3414.0,
             "Priority": 159,
@@ -1353,7 +1447,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3439.0,
             "Priority": 161,
@@ -1362,7 +1456,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3464.0,
             "Priority": 163,
@@ -1371,7 +1465,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3489.0,
             "Priority": 165,
@@ -1380,7 +1474,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3514.0,
             "Priority": 167,
@@ -1389,7 +1483,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3539.0,
             "Priority": 169,
@@ -1398,7 +1492,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3564.0,
             "Priority": 171,
@@ -1407,7 +1501,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3589.0,
             "Priority": 173,
@@ -1416,7 +1510,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3614.0,
             "Priority": 175,
@@ -1425,7 +1519,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3639.0,
             "Priority": 177,
@@ -1434,7 +1528,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3664.0,
             "Priority": 179,
@@ -1443,7 +1537,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3689.0,
             "Priority": 181,
@@ -1452,7 +1546,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3714.0,
             "Priority": 183,
@@ -1461,7 +1555,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3739.0,
             "Priority": 185,
@@ -1470,7 +1564,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3764.0,
             "Priority": 187,
@@ -1479,7 +1573,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3789.0,
             "Priority": 189,
@@ -1488,7 +1582,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3814.0,
             "Priority": 191,
@@ -1497,7 +1591,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3839.0,
             "Priority": 193,
@@ -1506,7 +1600,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3864.0,
             "Priority": 195,
@@ -1515,7 +1609,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3889.0,
             "Priority": 197,
@@ -1524,7 +1618,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3914.0,
             "Priority": 199,
@@ -1533,7 +1627,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3939.0,
             "Priority": 201,
@@ -1542,7 +1636,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3964.0,
             "Priority": 203,
@@ -1551,7 +1645,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 3989.0,
             "Priority": 205,
@@ -1560,7 +1654,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4014.0,
             "Priority": 207,
@@ -1569,7 +1663,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4039.0,
             "Priority": 209,
@@ -1578,7 +1672,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4064.0,
             "Priority": 211,
@@ -1587,7 +1681,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4089.0,
             "Priority": 213,
@@ -1596,7 +1690,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4114.0,
             "Priority": 215,
@@ -1605,7 +1699,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4139.0,
             "Priority": 217,
@@ -1614,7 +1708,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4164.0,
             "Priority": 219,
@@ -1623,7 +1717,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4189.0,
             "Priority": 221,
@@ -1632,7 +1726,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4214.0,
             "Priority": 223,
@@ -1641,7 +1735,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4239.0,
             "Priority": 225,
@@ -1650,7 +1744,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4264.0,
             "Priority": 227,
@@ -1659,7 +1753,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 4289.0,
             "Priority": 229,
@@ -3898,7 +3992,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 2964.0,
             "Priority": 124,
@@ -3907,7 +4001,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 2989.0,
             "Priority": 126,
@@ -3916,7 +4010,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3014.0,
             "Priority": 128,
@@ -3925,7 +4019,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3039.0,
             "Priority": 130,
@@ -3934,7 +4028,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3064.0,
             "Priority": 132,
@@ -3943,7 +4037,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3089.0,
             "Priority": 134,
@@ -3952,7 +4046,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3114.0,
             "Priority": 136,
@@ -3961,7 +4055,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3139.0,
             "Priority": 138,
@@ -3970,7 +4064,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3164.0,
             "Priority": 140,
@@ -3979,7 +4073,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3189.0,
             "Priority": 142,
@@ -3988,7 +4082,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3214.0,
             "Priority": 144,
@@ -3997,7 +4091,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3239.0,
             "Priority": 146,
@@ -4006,7 +4100,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3264.0,
             "Priority": 148,
@@ -4015,7 +4109,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3289.0,
             "Priority": 150,
@@ -4024,7 +4118,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3314.0,
             "Priority": 152,
@@ -4033,7 +4127,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3339.0,
             "Priority": 154,
@@ -4042,7 +4136,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3364.0,
             "Priority": 156,
@@ -4051,7 +4145,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3389.0,
             "Priority": 158,
@@ -4060,7 +4154,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3414.0,
             "Priority": 160,
@@ -4069,7 +4163,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3439.0,
             "Priority": 162,
@@ -4078,7 +4172,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3464.0,
             "Priority": 164,
@@ -4087,7 +4181,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3489.0,
             "Priority": 166,
@@ -4096,7 +4190,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3514.0,
             "Priority": 168,
@@ -4105,7 +4199,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3539.0,
             "Priority": 170,
@@ -4114,7 +4208,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3564.0,
             "Priority": 172,
@@ -4123,7 +4217,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3589.0,
             "Priority": 174,
@@ -4132,7 +4226,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3614.0,
             "Priority": 176,
@@ -4141,7 +4235,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3639.0,
             "Priority": 178,
@@ -4150,7 +4244,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3664.0,
             "Priority": 180,
@@ -4159,7 +4253,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3689.0,
             "Priority": 182,
@@ -4168,7 +4262,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3714.0,
             "Priority": 184,
@@ -4177,7 +4271,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3739.0,
             "Priority": 186,
@@ -4186,7 +4280,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3764.0,
             "Priority": 188,
@@ -4195,7 +4289,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3789.0,
             "Priority": 190,
@@ -4204,7 +4298,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3814.0,
             "Priority": 192,
@@ -4213,7 +4307,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3839.0,
             "Priority": 194,
@@ -4222,7 +4316,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3864.0,
             "Priority": 196,
@@ -4231,7 +4325,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3889.0,
             "Priority": 198,
@@ -4240,7 +4334,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3914.0,
             "Priority": 200,
@@ -4249,7 +4343,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3939.0,
             "Priority": 202,
@@ -4258,7 +4352,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3964.0,
             "Priority": 204,
@@ -4267,7 +4361,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 3989.0,
             "Priority": 206,
@@ -4276,7 +4370,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4014.0,
             "Priority": 208,
@@ -4285,7 +4379,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4039.0,
             "Priority": 210,
@@ -4294,7 +4388,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4064.0,
             "Priority": 212,
@@ -4303,7 +4397,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4089.0,
             "Priority": 214,
@@ -4312,7 +4406,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4114.0,
             "Priority": 216,
@@ -4321,7 +4415,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4139.0,
             "Priority": 218,
@@ -4330,7 +4424,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4164.0,
             "Priority": 220,
@@ -4339,7 +4433,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4189.0,
             "Priority": 222,
@@ -4348,7 +4442,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4214.0,
             "Priority": 224,
@@ -4357,7 +4451,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4239.0,
             "Priority": 226,
@@ -4366,7 +4460,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4264.0,
             "Priority": 228,
@@ -4375,7 +4469,7 @@
           },
           {
             "BlockLevel": "None",
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 2,
             "Position": 4289.0,
             "Priority": 230,
@@ -6063,7 +6157,8 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "MV20-0003"
+    "SerialNumber": "MV20-0003",
+    "Id": 2
   },
   "SetupProcedures": {
     "BeltBurnishingTest": {
