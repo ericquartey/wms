@@ -104,6 +104,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand tuningBayCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -417,6 +419,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken.Dispose();
                 this.stepChangedToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -875,6 +884,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
                    .Subscribe(
                        this.OnPositioningMessageReceived,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
+                           this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
+                           this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
+                       },
                        ThreadOption.UIThread,
                        false);
         }

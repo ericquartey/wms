@@ -18,7 +18,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -394,7 +394,7 @@
                         <TextBlock Margin="8,4"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static res:InstallationApp.NewOffset}" />
 
                         <TextBlock Grid.Row="1"

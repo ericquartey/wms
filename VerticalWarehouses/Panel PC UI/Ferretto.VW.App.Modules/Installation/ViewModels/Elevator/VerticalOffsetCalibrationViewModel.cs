@@ -95,6 +95,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -397,6 +399,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
                 this.receiveHomingUpdateToken?.Dispose();
                 this.receiveHomingUpdateToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -773,6 +782,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         },
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepStart));
+                           this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
+                           this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.HasStepOriginCalibration));
+                           this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateSelectedCell()

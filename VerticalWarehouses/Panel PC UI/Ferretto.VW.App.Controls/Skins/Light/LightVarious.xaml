@@ -88,10 +88,10 @@
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
 
     <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
-        <GradientStop Offset="0" Color="Transparent" />
-        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
         <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
-        <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource ColorFerrettoLightGray}" />
+        <GradientStop Offset="1" Color="{DynamicResource ColorFerrettoLightGray}" />
     </LinearGradientBrush>
 
 </ResourceDictionary>
