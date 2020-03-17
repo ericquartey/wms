@@ -442,7 +442,7 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (data.MovementMode)
             {
                 case MovementMode.BeltBurnishing:
-                case MovementMode.FindZero:
+                case MovementMode.HorizontalCalibration:
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
                     targetBay = BayNumber.ElevatorBay;
@@ -572,7 +572,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = InverterIndex.MainInverter;
                             break;
 
-                        case MovementMode.FindZero:
+                        case MovementMode.HorizontalCalibration:
                             returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
