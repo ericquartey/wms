@@ -414,4 +414,7 @@
   <data name="StatusDebug" xml:space="preserve">
     <value>Status:</value>
   </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>No row in the list</value>
+  </data>
 </root>
