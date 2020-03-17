@@ -265,7 +265,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static Resources:OperatorApp.ItemMachinesAvailability}" />
 
                         <TextBlock Grid.Row="1"
@@ -306,7 +306,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
 
                         <TextBlock Grid.Row="1"
