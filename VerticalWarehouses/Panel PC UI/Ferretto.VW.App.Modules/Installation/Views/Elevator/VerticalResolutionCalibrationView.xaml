@@ -108,7 +108,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.PositionElevatorIndicatedHeight}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -183,7 +183,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.PositionElevatorIndicatedHeight}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
