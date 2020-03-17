@@ -38,7 +38,7 @@
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
-                     Color="{DynamicResource EDBGrayD}" />
+                     Color="{DynamicResource EDBGrayE}" />
 
     <SolidColorBrush x:Key="MenuButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoBlack}" />
