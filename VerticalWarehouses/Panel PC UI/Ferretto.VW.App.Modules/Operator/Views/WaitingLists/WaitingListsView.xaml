@@ -148,7 +148,7 @@
 
                 <views:WaitingListsDataGridView Grid.Row="1"
                                                 Grid.Column="0"
-                                                Margin="0,15,0,0" />
+                                                Margin="0" />
 
             </Grid>
 
@@ -166,6 +166,7 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
+                    Width="230"
                     Height="90"
                     MinHeight="90"
                     Margin="15,0"
