@@ -11,7 +11,7 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
+
     <Grid Margin="100,30,100,0">
 
         <Grid.RowDefinitions>
@@ -59,15 +59,15 @@
                                      LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
 
             <ctrls:PpcImage Grid.Row="1"
-                   Grid.RowSpan="4"
-                   Grid.Column="0"
-                   Width="180"
-                   Height="180"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Path="{Binding Item.Id}"                
-                   Stretch="Uniform" />
-            
+                            Grid.RowSpan="4"
+                            Grid.Column="0"
+                            Width="180"
+                            Height="180"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Path="{Binding Item.Id}"
+                            Stretch="Uniform" />
+
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"

@@ -83,7 +83,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Path="{Binding ItemId}"
-                            Stretch="UniformToFill" />
+                            Stretch="Uniform" />
 
 
             <controls:PpcLabeledText Grid.Row="4"
