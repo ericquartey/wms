@@ -2310,4 +2310,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckStatus" xml:space="preserve">
     <value>Controlla Stato</value>
   </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Stato installazione completato.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Stato installazione incompleto. Eseguite {0}/{1} procedure.</value>
+  </data>
 </root>

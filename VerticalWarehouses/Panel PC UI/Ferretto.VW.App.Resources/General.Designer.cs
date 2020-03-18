@@ -565,6 +565,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No row in the list.
+        /// </summary>
+        public static string NoRows {
+            get {
+                return ResourceManager.GetString("NoRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Just now.
         /// </summary>
         public static string Now {

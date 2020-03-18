@@ -232,6 +232,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidAxisAccelerationConfiguration {
+            get {
+                return ResourceManager.GetString("InvalidAxisAccelerationConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidAxisSpeedConfiguration {
+            get {
+                return ResourceManager.GetString("InvalidAxisSpeedConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string InvalidPresenceSensors {

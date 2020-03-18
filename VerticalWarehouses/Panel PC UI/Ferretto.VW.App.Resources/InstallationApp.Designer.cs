@@ -3112,6 +3112,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installation status complete..
+        /// </summary>
+        public static string InstallationStateCompleted {
+            get {
+                return ResourceManager.GetString("InstallationStateCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete installation status. Perform {0} / {1} procedures..
+        /// </summary>
+        public static string InstallationStateIncompleted {
+            get {
+                return ResourceManager.GetString("InstallationStateIncompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installer.
         /// </summary>
         public static string Installer {

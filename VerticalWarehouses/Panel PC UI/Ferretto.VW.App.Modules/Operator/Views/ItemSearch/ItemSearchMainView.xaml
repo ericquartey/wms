@@ -19,80 +19,6 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-
-        <Style x:Key="SearchTextBoxStyle"
-               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
-            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
-        </Style>
-
-        <Style x:Key="IconButtonBorderStyle"
-               TargetType="{x:Type Border}">
-            <Setter Property="Padding" Value="15" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-        </Style>
-        <Style x:Key="IconButtonBorderInvertStyle"
-               BasedOn="{StaticResource IconButtonBorderStyle}"
-               TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
-        </Style>
-
-        <Style x:Key="IconButtonStyle"
-               TargetType="{x:Type Button}">
-            <Setter Property="BorderBrush" Value="{x:Null}" />
-            <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Style="{StaticResource IconButtonBorderStyle}">
-                            <ContentPresenter />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
-                                <Setter TargetName="border" Property="Cursor" Value="Hand" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
-                                <Setter TargetName="border" Property="Cursor" Value="Hand" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="IconButtonInvertStyle"
-               BasedOn="{StaticResource IconButtonStyle}"
-               TargetType="{x:Type Button}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                Style="{StaticResource IconButtonBorderInvertStyle}">
-                            <ContentPresenter />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <DropShadowEffect x:Key="MyEffect"
-                          BlurRadius="20"
-                          Opacity="1"
-                          ShadowDepth="0"
-                          Color="Blue" />
-    </ctrls:View.Resources>
-
     <Grid Margin="15,0,0,0">
 
         <Grid.ColumnDefinitions>
@@ -131,9 +57,9 @@
 
         <Border Grid.Row="2"
                 Margin="0,15,0,0"
-                Background="{StaticResource PpcBackground}"
-                BorderBrush="{StaticResource PpcBorderBrush}"
-                BorderThickness="{StaticResource PpcBorderThickness}"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
                 CornerRadius="0">
             <Grid Margin="20">
                 <Grid.RowDefinitions>
@@ -153,7 +79,7 @@
                     <TextBlock Margin="0,0,10,0"
                                VerticalAlignment="Center"
                                FontSize="{DynamicResource FontSize_High}"
-                               Foreground="{DynamicResource FerrettoWhiteGray}">
+                               Foreground="{DynamicResource FerrettoPureWhite}">
                         <Run Text="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
                         <Run Text=":" />
                     </TextBlock>
@@ -161,7 +87,7 @@
                     <TextBox x:Name="SearchText"
                              Grid.Column="1"
                              Margin="0"
-                             Style="{StaticResource SearchTextBoxStyle}"
+                             Style="{DynamicResource SearchTextBoxStyle}"
                              Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}">
                         <i:Interaction.Behaviors>
                             <behaviors:TextBoxAutoSelectBehavior />
@@ -222,9 +148,7 @@
 
                 <views:ArticleDataGridView Grid.Row="1"
                                            Grid.Column="0"
-                                           Margin="0,15,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" />
+                                           Margin="0,15,0,0" />
 
             </Grid>
 
@@ -265,7 +189,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{x:Static Resources:OperatorApp.ItemMachinesAvailability}" />
 
                         <TextBlock Grid.Row="1"
@@ -306,7 +230,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Foreground="{DynamicResource Text_Foreground}"
                                    Text="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
 
                         <TextBlock Grid.Row="1"

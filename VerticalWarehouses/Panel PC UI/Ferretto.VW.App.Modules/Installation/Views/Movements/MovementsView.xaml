@@ -513,7 +513,6 @@
                                            Width="200"
                                            Height="60"
                                            Margin="5"
-                                           Increment="0.5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -721,7 +720,7 @@
                                        TargetType="{x:Type controls:PpcButton}">
                                     <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
                                     <Style.Triggers>
-                                        <Trigger Property="KindMaterial" Value="LightbulbOutline">
+                                        <Trigger Property="KindMaterial" Value="Brightness2">
                                             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
                                         </Trigger>
                                     </Style.Triggers>

@@ -1043,11 +1043,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                 force)
             {
                 if (force
-                    || (this.ioDeviceMain != null
-                        && this.InverterRole <= InverterRole.ElevatorChain
-                        && !this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value
-                        && !this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value
-                        )
+                    //|| (this.ioDeviceMain != null
+                    //    && this.InverterRole <= InverterRole.ElevatorChain
+                    //    && !this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value
+                    //    && !this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value
+                    //    )
                     )
                 {
                     if (this.InverterType == InverterType.Ang)

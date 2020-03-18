@@ -18,7 +18,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -261,7 +261,6 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueUp, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
                                    Mask="###0.0" />
@@ -522,7 +521,6 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueDown, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
                                    Mask="###0.0" />
@@ -599,7 +597,7 @@
                             <TextBlock Margin="8,4"
                                        FontSize="{StaticResource FontSize_Normal}"
                                        FontWeight="Normal"
-                                       Foreground="{DynamicResource FerrettoLightGray}"
+                                       Foreground="{DynamicResource Text_Foreground}"
                                        Text="{x:Static res:InstallationApp.BayPositionUpHeightNew}" />
 
                             <TextBlock Grid.Row="1"
@@ -632,7 +630,7 @@
                             <TextBlock Margin="8,4"
                                        FontSize="{StaticResource FontSize_Normal}"
                                        FontWeight="Normal"
-                                       Foreground="{DynamicResource FerrettoLightGray}"
+                                       Foreground="{DynamicResource Text_Foreground}"
                                        Text="{x:Static res:InstallationApp.BayPositionDownHeightNew}" />
 
                             <TextBlock Grid.Row="1"

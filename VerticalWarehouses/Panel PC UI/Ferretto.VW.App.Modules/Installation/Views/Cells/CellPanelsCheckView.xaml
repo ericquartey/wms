@@ -19,7 +19,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -280,7 +280,6 @@
                                    Margin="0,15,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValue, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{x:Static res:InstallationApp.StepValue}"
                                    Mask="##0.0"

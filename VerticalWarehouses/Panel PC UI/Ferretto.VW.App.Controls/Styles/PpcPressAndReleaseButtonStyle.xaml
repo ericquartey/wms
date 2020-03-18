@@ -80,7 +80,7 @@
                                                        Margin="5"
                                                        HorizontalAlignment="Center"
                                                        VerticalAlignment="Center"
-                                                       Foreground="{TemplateBinding BorderBrush}"
+                                                       Foreground="{TemplateBinding Foreground}"
                                                        Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}"
                                                        Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconMaterial.Style>
