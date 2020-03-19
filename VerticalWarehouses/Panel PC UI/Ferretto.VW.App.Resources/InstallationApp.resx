@@ -2386,4 +2386,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InstallationStateIncompleted" xml:space="preserve">
     <value>Incomplete installation status. Perform {0} / {1} procedures.</value>
   </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Correct distance</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Template inclination</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Template lenght</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Save parameters</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="IpAutomationService" xml:space="preserve">
+    <value>IP automation service</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>WMS Setting</value>
+  </data>
+  <data name="WmsState" xml:space="preserve">
+    <value>State Health Wms/EjLog: </value>
+  </data>
 </root>
