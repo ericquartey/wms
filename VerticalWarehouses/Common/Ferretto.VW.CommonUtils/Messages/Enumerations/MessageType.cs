@@ -111,5 +111,7 @@
         MoveTest,
 
         StopTest,
+
+        WmsEnableChanged,
     }
 }

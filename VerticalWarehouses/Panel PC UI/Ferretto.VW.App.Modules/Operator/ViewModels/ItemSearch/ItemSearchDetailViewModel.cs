@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
+            this.Item = null;
+
             base.Disappear();
         }
 

@@ -20,6 +20,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.MeasureUnitDescription = item.MeasureUnitDescription;
             this.Machines = item.Machines;
             this.PutTolerance = item.PutTolerance;
+            this.AbcClassDescription = item.AbcClassDescription;
+            this.Note = item.Note;
+            this.Image = item.Image;
             this.PickTolerance = item.PickTolerance;
             this.AverageWeight = item.AverageWeight;
             this.IsQtyOnMachine = item.Machines.Any(m => m.Id == machineId);
