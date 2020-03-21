@@ -475,14 +475,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (activeMission != null)
             {
-                this.Logger.LogTrace($"IsMachineOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
+                this.Logger.LogTrace($"IsMachineOk: waiting for active Mission:Id={activeMission.Id}, Load Unit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
                 }
                 else
                 {
-                    this.Logger.LogInformation(ErrorDescriptions.AnotherMissionIsActiveForThisBay);
+                    this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                 }
                 return false;
             }
