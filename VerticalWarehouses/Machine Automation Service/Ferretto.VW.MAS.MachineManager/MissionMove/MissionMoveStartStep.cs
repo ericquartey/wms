@@ -43,6 +43,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorCode = MachineErrorCode.NoError;
             if (this.Mission.NeedHomingAxis == Axis.None)
             {
+                this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
                 this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
             }
             this.Mission.Status = MissionStatus.Executing;
