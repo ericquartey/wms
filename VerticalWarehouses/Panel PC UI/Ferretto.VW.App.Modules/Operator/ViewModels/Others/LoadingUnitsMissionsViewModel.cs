@@ -22,11 +22,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentMissionIndex;
 
-        private DelegateCommand downCommand;
-
         private Mission selectedMission;
-
-        private DelegateCommand upCommand;
 
         #endregion
 
@@ -43,11 +39,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownCommand =>
-            this.downCommand
-            ??
-            (this.downCommand = new DelegateCommand(() => this.ChangeSelectedList(false), this.CanDown));
-
         public override EnableMask EnableMask => EnableMask.Any;
 
         public IList<Mission> Missions => new List<Mission>(this.missions);
@@ -57,11 +48,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedMission;
             set => this.SetProperty(ref this.selectedMission, value);
         }
-
-        public ICommand UpCommand =>
-            this.upCommand
-            ??
-            (this.upCommand = new DelegateCommand(() => this.ChangeSelectedList(true), this.CanUp));
 
         #endregion
 
@@ -93,26 +79,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadListRowsAsync();
 
             await this.RefreshMissionsAsync();
-        }
-
-        protected override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.upCommand?.RaiseCanExecuteChanged();
-            this.downCommand?.RaiseCanExecuteChanged();
-        }
-
-        private bool CanDown()
-        {
-            return
-              this.currentMissionIndex < this.missions.Count - 1;
-        }
-
-        private bool CanUp()
-        {
-            return
-                this.currentMissionIndex > 0;
         }
 
         private async Task LoadListRowsAsync()
