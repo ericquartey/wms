@@ -318,7 +318,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.StartStateMachine(currentStateMachine);
 
-                    if (!data.Enable)
+                    if (data.Enable)
                     {
                         this.machineVolatileDataProvider.ElevatorVerticalPositionOld = this.machineVolatileDataProvider.ElevatorVerticalPosition;
 

@@ -1033,6 +1033,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        public static string Check {
+            get {
+                return ResourceManager.GetString("Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator..
         /// </summary>
         public static string CheckBayElevatorAlignment {
@@ -1335,6 +1344,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Correct {
             get {
                 return ResourceManager.GetString("Correct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correct distance.
+        /// </summary>
+        public static string CorrectDistance {
+            get {
+                return ResourceManager.GetString("CorrectDistance", resourceCulture);
             }
         }
         
@@ -3094,6 +3112,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installation.
+        /// </summary>
+        public static string Installation {
+            get {
+                return ResourceManager.GetString("Installation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} installation files found.
         /// </summary>
         public static string InstallationFileFound {
@@ -3252,6 +3279,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InverterParameters {
             get {
                 return ResourceManager.GetString("InverterParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP automation service.
+        /// </summary>
+        public static string IpAutomationService {
+            get {
+                return ResourceManager.GetString("IpAutomationService", resourceCulture);
             }
         }
         
@@ -5139,6 +5175,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save parameters.
+        /// </summary>
+        public static string SaveParameters {
+            get {
+                return ResourceManager.GetString("SaveParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel loading.
         /// </summary>
         public static string SaveRestoreConfigAbortRestoreButton {
@@ -5819,6 +5864,24 @@ namespace Ferretto.VW.App.Resources {
         public static string SystemErrorMM {
             get {
                 return ResourceManager.GetString("SystemErrorMM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template inclination.
+        /// </summary>
+        public static string TemplateInclination {
+            get {
+                return ResourceManager.GetString("TemplateInclination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template lenght.
+        /// </summary>
+        public static string TemplateLenght {
+            get {
+                return ResourceManager.GetString("TemplateLenght", resourceCulture);
             }
         }
         
@@ -6552,11 +6615,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS Setting.
+        /// </summary>
+        public static string WmsSetting {
+            get {
+                return ResourceManager.GetString("WmsSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WMS Settings.
         /// </summary>
         public static string WmsSettings {
             get {
                 return ResourceManager.GetString("WmsSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State Health Wms/EjLog: .
+        /// </summary>
+        public static string WmsState {
+            get {
+                return ResourceManager.GetString("WmsState", resourceCulture);
             }
         }
         

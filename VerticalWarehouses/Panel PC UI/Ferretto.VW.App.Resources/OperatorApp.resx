@@ -1599,4 +1599,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="Waiting" xml:space="preserve">
     <value>Waiting</value>
   </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Counters</value>
+  </data>
 </root>

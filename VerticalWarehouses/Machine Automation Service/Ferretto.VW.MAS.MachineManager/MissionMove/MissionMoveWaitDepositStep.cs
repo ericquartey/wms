@@ -90,7 +90,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notification.Type)
             {
                 case MessageType.Stop:
-                    if (notification.RequestingBay == this.Mission.TargetBay)
+                    if (notification.RequestingBay == this.Mission.TargetBay
+                        || notification.TargetBay == this.Mission.TargetBay
+                        )
                     {
                         this.OnStop(StopRequestReason.Error);
                     }

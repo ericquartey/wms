@@ -2316,4 +2316,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InstallationStateIncompleted" xml:space="preserve">
     <value>Stato installazione incompleto. Eseguite {0}/{1} procedure.</value>
   </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Distanza corretta</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Inclinazione sagoma</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Lunghezza sagoma</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Salva parametri</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Controlla</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installazione</value>
+  </data>
+  <data name="IpAutomationService" xml:space="preserve">
+    <value>IP servizio di automazione </value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Impostazione WMS</value>
+  </data>
+  <data name="WmsState" xml:space="preserve">
+    <value>Stato Health Wms/EjLog: </value>
+  </data>
 </root>

@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verifica cassetto:.
+        /// </summary>
+        public static string CheckUnit {
+            get {
+                return ResourceManager.GetString("CheckUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current cell.
         /// </summary>
         public static string CurrentCell {

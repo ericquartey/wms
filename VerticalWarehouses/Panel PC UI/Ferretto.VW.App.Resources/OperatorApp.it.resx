@@ -1288,4 +1288,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Waiting" xml:space="preserve">
     <value>In attesa</value>
   </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Contatori</value>
+  </data>
 </root>
