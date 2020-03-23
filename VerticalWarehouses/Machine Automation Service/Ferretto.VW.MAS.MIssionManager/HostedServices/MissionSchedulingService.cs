@@ -891,8 +891,8 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
             {
-                // wms mission is finished => schedule loading unit movement back to cell
-                mission.Status = MissionStatus.Completing;
+                // wms mission is finished
+                mission.Status = MissionStatus.Completed;
                 missionsDataProvider.Update(mission);
 
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);

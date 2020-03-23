@@ -112,9 +112,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
                 {
-                    this.Mission.StepTime = DateTime.UtcNow;
                     if (messageData.MissionType == MissionType.NoType)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         // Remove LoadUnit
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
@@ -131,11 +131,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (activeMission != null)
                         {
-                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                         }
                         else
                         {
                             // Update mission and start moving
+                            this.Mission.StepTime = DateTime.UtcNow;
                             this.Mission.MissionType = messageData.MissionType;
                             this.Mission.WmsId = messageData.WmsId;
                             this.Mission.LoadUnitSource = bayPosition.Location;
