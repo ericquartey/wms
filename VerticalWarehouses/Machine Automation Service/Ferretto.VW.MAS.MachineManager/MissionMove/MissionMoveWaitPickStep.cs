@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (activeMission != null)
                         {
-                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                         }
                         else
                         {
