@@ -1602,4 +1602,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="Counters" xml:space="preserve">
     <value>Counters</value>
   </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>No item on selected compartment.</value>
+  </data>
 </root>

@@ -233,8 +233,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else if (this.SelectedItemCompartment is null || this.SelectedItemCompartment.Id != this.selectedCompartment.Id)
                     {
                         var newSelectedItemCompartment = this.itemsCompartments?.FirstOrDefault(c => c.Id == this.selectedCompartment.Id);
-                        this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
-                        this.SelectedItemCompartment = newSelectedItemCompartment;
+                        this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);                        
+                        this.SelectedItemCompartment = newSelectedItemCompartment;   
                     }
                 }
             }
@@ -319,8 +319,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LoadingUnitWidth = wmsLoadingUnit.Width;
                 this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                this.ItemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
-                this.Compartments = MapCompartments(this.ItemsCompartments);
+                var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
+                this.ItemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
+                this.Compartments = MapCompartments(itemsCompartments);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

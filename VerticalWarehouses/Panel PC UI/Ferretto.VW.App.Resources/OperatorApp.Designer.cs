@@ -2717,6 +2717,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No item on selected compartment..
+        /// </summary>
+        public static string NoItemOnSelectedCompartment {
+            get {
+                return ResourceManager.GetString("NoItemOnSelectedCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No item with code &apos;{0}&apos; is available.
         /// </summary>
         public static string NoItemWithCodeIsAvailable {

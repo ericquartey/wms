@@ -50,6 +50,7 @@
         <StackPanel Grid.Row="2"
                     Margin="0,10,0,0"
                     HorizontalAlignment="Left"
+                    IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}"
                     Orientation="Horizontal">
             <controls:PpcButton Width="180"
                                 Height="60"
