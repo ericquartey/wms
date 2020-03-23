@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
     internal sealed class PowerUpClearOutputsState : IoStateBase

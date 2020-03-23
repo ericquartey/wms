@@ -547,6 +547,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Counters.
+        /// </summary>
+        public static string Counters {
+            get {
+                return ResourceManager.GetString("Counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string CreationDate {
@@ -2704,6 +2713,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NewOperationsAvailable {
             get {
                 return ResourceManager.GetString("NewOperationsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No item on selected compartment..
+        /// </summary>
+        public static string NoItemOnSelectedCompartment {
+            get {
+                return ResourceManager.GetString("NoItemOnSelectedCompartment", resourceCulture);
             }
         }
         

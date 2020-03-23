@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.MoveHorizontalProfileCalibration(bayPositionId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpGet("parameters")]
+        public ActionResult<BayProfileCheckProcedure> GetParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber));
         }
 
         [HttpPost("save")]

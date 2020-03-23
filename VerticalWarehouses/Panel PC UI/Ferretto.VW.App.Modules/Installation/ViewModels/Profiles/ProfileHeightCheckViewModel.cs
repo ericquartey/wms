@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private string adminCalibration = "Collapsed";
+
         private DelegateCommand callLoadunitToBayCommand;
 
         private bool canLoadingUnitId;
@@ -95,11 +97,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken profileCalibrationToken;
 
+        private double profileCorrectDistance;
+
+        private double profileDegrees;
+
         private double? profileStartDistanceDx;
 
         private double? profileStartDistanceSx;
 
+        private double profileTotalDistance;
+
         private DelegateCommand repeatCommand;
+
+        private DelegateCommand saveParametersCommand;
+
+        private ISessionService sessionService = null;
 
         private SubscriptionToken stepChangedToken;
 
@@ -124,11 +136,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineProfileProcedureWeb = machineProfileProcedureWeb ?? throw new ArgumentNullException(nameof(machineProfileProcedureWeb));
 
             this.CurrentStep = ProfileCheckStep.Initialize;
+
+            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+            if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin)
+            {
+                this.AdminCalibration = "Visible";
+            }
         }
 
         #endregion
 
         #region Properties
+
+        public string AdminCalibration
+        {
+            get => this.adminCalibration;
+            private set => this.SetProperty(ref this.adminCalibration, value);
+        }
 
         public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
 
@@ -268,6 +293,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.profileCalibrateDistanceSx, value, this.RaiseCanExecuteChanged);
         }
 
+        public double ProfileCorrectDistance
+        {
+            get => this.profileCorrectDistance;
+            set
+            {
+                if (this.SetProperty(ref this.profileCorrectDistance, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public double ProfileDegrees
+        {
+            get => this.profileDegrees;
+            set
+            {
+                if (this.SetProperty(ref this.profileDegrees, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public double? ProfileStartDistanceDx
         {
             get => this.profileStartDistanceDx;
@@ -280,11 +329,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.profileStartDistanceSx, value, this.RaiseCanExecuteChanged);
         }
 
+        public double ProfileTotalDistance
+        {
+            get => this.profileTotalDistance;
+            set
+            {
+                if (this.SetProperty(ref this.profileTotalDistance, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand RepeatCommand =>
             this.repeatCommand
             ??
             (this.repeatCommand = new DelegateCommand(
                 () => this.CurrentStep = ProfileCheckStep.ShapePositionDx));
+
+        public ICommand SaveParametersCommand =>
+                                                                                                                                                                                                                                                    this.saveParametersCommand
+            ??
+            (this.saveParametersCommand = new DelegateCommand(
+                async () => await this.UpdateParameterAsync()));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -391,6 +458,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                var parameters = await this.machineProfileProcedureWeb.GetParametersAsync();
+                this.ProfileTotalDistance = parameters.ProfileTotalDistance;
+                this.ProfileDegrees = parameters.ProfileDegrees;
+                this.ProfileCorrectDistance = parameters.ProfileCorrectDistance;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -779,6 +850,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                        },
                        ThreadOption.UIThread,
                        false);
+        }
+
+        private async Task UpdateParameterAsync()
+        {
+            try
+            {
+                //da inserire il salvataggio
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void UpdateStatusButtonFooter()

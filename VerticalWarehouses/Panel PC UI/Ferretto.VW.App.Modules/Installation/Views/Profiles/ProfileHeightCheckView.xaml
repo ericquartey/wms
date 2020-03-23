@@ -70,6 +70,31 @@
                                     Content="{x:Static res:InstallationApp.CallUnit}"
                                     Style="{StaticResource WizardIntoButton}" />
 
+                <StackPanel Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Visibility="{Binding AdminCalibration}">
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="15,5,5,5"
+                                       EditValue="{Binding Path=ProfileCorrectDistance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{x:Static res:InstallationApp.CorrectDistance}"
+                                       Mask="N1" />
+
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="5"
+                                       EditValue="{Binding Path=ProfileDegrees, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{x:Static res:InstallationApp.TemplateInclination}"
+                                       Mask="N1" />
+
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="5,5,15,5"
+                                       EditValue="{Binding Path=ProfileTotalDistance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{x:Static res:InstallationApp.TemplateLenght}"
+                                       Mask="N1" />
+                </StackPanel>
+
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
@@ -85,15 +110,26 @@
                                     Content="{x:Static res:InstallationApp.GateClose}"
                                     Style="{StaticResource WizardIntoButton}"
                                     Visibility="Collapsed" />
+                <StackPanel Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding SaveParametersCommand}"
+                                        Content="{x:Static res:InstallationApp.SaveParameters}"
+                                        Visibility="{Binding AdminCalibration}" />
 
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="15,15,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToElevatorPositionCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
-                                    Style="{StaticResource WizardConfirmButton}" />
+
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding MoveToElevatorPositionCommand}"
+                                        Content="{x:Static res:InstallationApp.Forwards}"
+                                        Style="{StaticResource WizardConfirmButton}" />
+
+                </StackPanel>
 
             </Grid>
         </DataTemplate>
@@ -663,7 +699,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource PpcForeground}"
                                            Text="{x:Static res:InstallationApp.SystemError}" />
 
                                 <TextBlock Grid.Row="1"
@@ -698,7 +734,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Foreground="{DynamicResource PpcForeground}"
                                            Text="{x:Static res:InstallationApp.Output}"
                                            TextAlignment="Left" />
 

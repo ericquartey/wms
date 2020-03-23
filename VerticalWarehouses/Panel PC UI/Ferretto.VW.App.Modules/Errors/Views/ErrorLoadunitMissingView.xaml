@@ -42,7 +42,7 @@
 
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verifica cassetto:"
+                               Text="{x:Static res:ErrorsApp.CheckUnit}"
                                TextWrapping="Wrap" />
 
                     <StackPanel Grid.Column="1"

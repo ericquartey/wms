@@ -31,7 +31,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Contatori" />
+                   Text="{x:Static resources:OperatorApp.Counters}" />
 
         <views:AboutMenuNavigationView Grid.RowSpan="2" />
 

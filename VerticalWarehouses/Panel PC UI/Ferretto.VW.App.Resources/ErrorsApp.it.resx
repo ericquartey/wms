@@ -120,6 +120,9 @@
   <data name="CellSide" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Verifica cassetto:</value>
+  </data>
   <data name="CurrentCell" xml:space="preserve">
     <value>Cella selezionata</value>
   </data>
