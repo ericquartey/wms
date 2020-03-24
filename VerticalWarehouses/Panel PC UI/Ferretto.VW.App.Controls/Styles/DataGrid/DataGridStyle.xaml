@@ -168,7 +168,7 @@
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
-    <Style TargetType="DataGridCell">
+    <Style TargetType="{x:Type DataGridCell}">
         <Style.Resources>
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                              Color="{DynamicResource ColorFerrettoMediumGray}" />
@@ -185,11 +185,12 @@
         </Style.Resources>
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,0" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
     </Style>
 
-    <Style TargetType="DataGridRow">
+    <Style TargetType="{x:Type DataGridRow}">
         <Style.Resources>
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                              Color="{DynamicResource ColorFerrettoMediumGray}" />
@@ -209,11 +210,12 @@
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
     </Style>
 
-    <Style TargetType="DataGridColumnHeader">
+    <Style TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Height" Value="40" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,0" />
         <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
     </Style>

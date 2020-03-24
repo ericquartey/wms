@@ -9,7 +9,7 @@
               SelectedItem="{Binding SelectedMission}">
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="40"
+                                Width="Auto"
                                 Binding="{Binding Path=Id}"
                                 Header="{x:Static Res:OperatorApp.WaitingListDetailDataGridHeaderRow}">
                 <DataGridTextColumn.CellStyle>
@@ -26,7 +26,7 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
-                                Width="120"
+                                Width="*"
                                 Binding="{Binding Path=CreationDate, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"
                                 Header="{x:Static Res:OperatorApp.CreationDate}">
                 <DataGridTextColumn.ElementStyle>
@@ -37,7 +37,7 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTemplateColumn x:Name="Column3"
-                                    Width="119"
+                                    Width="Auto"
                                     Header="{x:Static Res:OperatorApp.MissionStep}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -120,7 +120,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTextColumn x:Name="Column4"
-                                Width="85"
+                                Width="Auto"
                                 Binding="{Binding Path=LoadUnitId}"
                                 Header="{x:Static Res:OperatorApp.LoadingUnitId}">
                 <DataGridTextColumn.ElementStyle>
@@ -131,7 +131,7 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTemplateColumn x:Name="Column5"
-                                    Width="120"
+                                    Width="Auto"
                                     Header="{x:Static Res:OperatorApp.MissionType}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -190,7 +190,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTemplateColumn x:Name="Column6"
-                                    Width="120"
+                                    Width="Auto"
                                     Header="{x:Static Res:OperatorApp.MissionStatus}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -243,9 +243,8 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTemplateColumn x:Name="Column7"
-                                    Width="130"
+                                    Width="Auto"
                                     Header="{x:Static Res:OperatorApp.BayTarget}">
-
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Center"
