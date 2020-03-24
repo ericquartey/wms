@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Controls.Converters
         public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
             nameof(Invert),
             typeof(bool),
-            typeof(ReferenceToVisibilityConverter));
+            typeof(ReferenceToBoolConverter));
 
         #endregion
 

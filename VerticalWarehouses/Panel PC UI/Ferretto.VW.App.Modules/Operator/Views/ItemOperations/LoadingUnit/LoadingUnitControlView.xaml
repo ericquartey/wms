@@ -49,9 +49,9 @@
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:OperatorApp.NoItemOnSelectedCompartment}"
-                       Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTBC}}" />
+                       Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVC}}" />
 
-                <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}">
+                <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}">
                     <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="720" />
