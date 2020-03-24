@@ -35,6 +35,7 @@
                                       Foreground="White"
                                       Kind="InboxOut" />
             <TextBlock VerticalAlignment="Center"
+                       Margin="0"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static resources:OperatorApp.DrawerActivityPickingPageHeader}" />
         </StackPanel>

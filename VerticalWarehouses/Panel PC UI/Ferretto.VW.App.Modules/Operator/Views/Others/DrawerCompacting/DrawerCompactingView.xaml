@@ -48,10 +48,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -105,9 +103,7 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Style="{DynamicResource VWAPP_CardSensor}"
                                    Text="{x:Static res:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"
                                    TextAlignment="Left" />
 
@@ -115,10 +111,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="TBD"
-                                   TextWrapping="Wrap" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="TBD" />
                         <!--  Text="{Binding LowerBound}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -145,9 +139,7 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Style="{DynamicResource VWAPP_CardSensor}"
                                    Text="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}"
                                    TextAlignment="Left" />
 
@@ -155,10 +147,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="TBD"
-                                   TextWrapping="Wrap" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="TBD" />
                         <!--  Text="{Binding UpperBound}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -185,19 +175,15 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Style="{DynamicResource VWAPP_CardSensor}"
                                    Text="{x:Static res:OperatorApp.DrawerCompactingRearFreeSpace}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="TBD"
-                                   TextWrapping="Wrap" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="TBD" />
                         <!--  Text="{Binding Offset, StringFormat={}{0:F2}}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -220,9 +206,7 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Style="{DynamicResource VWAPP_CardSensor}"
                                    Text="{x:Static res:OperatorApp.DrawerCompactingFrontFreeSpace}"
                                    TextAlignment="Left" />
 
@@ -230,10 +214,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="TBD"
-                                   TextWrapping="Wrap" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="TBD" />
                         <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
                     </Grid>
 

@@ -30,7 +30,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             if (item.Machines.Any())
             {
                 this.MachinesInfo = string.Join(", ", item.Machines.Select(m => m.Nickname).ToArray());
+                this.AvailableQuantity = item.Machines.Sum(m => m.AvailableQuantityItem);
             }
+
         }
 
         #endregion
@@ -40,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         public bool IsQtyOnMachine { get; }
 
         public string MachinesInfo { get; }
+
+        public double? AvailableQuantity { get; }
 
         public string MeasureUnit => this.MeasureUnitDescription.ToLowerInvariant() ?? Resources.OperatorApp.Pieces;
 

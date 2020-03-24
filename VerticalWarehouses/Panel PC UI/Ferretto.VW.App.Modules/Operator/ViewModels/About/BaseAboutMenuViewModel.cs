@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return true && false; // temp 20200212 : prevent to display empty pages alarms, diagnostics and statistics
+            return true; // temp 20200212 : prevent to display empty pages alarms, diagnostics and statistics
         }
 
         private void ExecuteCommand(Menu menu)

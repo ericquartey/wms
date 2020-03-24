@@ -252,7 +252,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             else
             {
                 this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
-                this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
+                this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber, MissionType.OUT, scope.ServiceProvider);
             }
 
             return this.Accepted();
@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RemoveFromBayAsync(int id)
         {
             this.logger.LogInformation($"Move load unit {id} back from bay {this.BayNumber}");
-            this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
+            this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber, MissionType.IN, this.serviceScopeFactory.CreateScope().ServiceProvider);
 
             return this.Accepted();
         }

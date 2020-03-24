@@ -51,8 +51,7 @@
         <TextBlock x:Name="Title"
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
-                   FontSize="36"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WmsSetting}" />
 
         <RadioButton Grid.Row="2"
@@ -63,10 +62,7 @@
                      IsChecked="{Binding IsWmsEnabled, Mode=TwoWay, Converter={StaticResource BNC}}">
             <RadioButton.Content>
                 <TextBlock Grid.Row="2"
-                           Margin="0,20"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{x:Static res:General.WmsDisabled}" />
             </RadioButton.Content>
         </RadioButton>
@@ -76,10 +72,8 @@
                      GroupName="test"
                      IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
             <RadioButton.Content>
-                <TextBlock Margin="0,10"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                <TextBlock
+                           Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{x:Static res:General.WmsEnabled}" />
             </RadioButton.Content>
 

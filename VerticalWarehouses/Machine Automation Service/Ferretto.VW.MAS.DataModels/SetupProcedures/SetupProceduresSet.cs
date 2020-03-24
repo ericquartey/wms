@@ -48,6 +48,8 @@
 
         public RepeatedTestProcedure DepositAndPickUpTest { get; set; }
 
+        public SetupProcedure HorizontalChainCalibration { get; set; }
+
         public PositioningProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }

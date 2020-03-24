@@ -43,11 +43,7 @@
             <RadioButton.Content>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Grid.Row="2"
-                               Margin="0,25"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               FontSize="{DynamicResource FontSize_High}"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
                                Text="{x:Static res:InstallationApp.SetManualSystemDateTime}" />
                 </StackPanel>
             </RadioButton.Content>
@@ -60,11 +56,7 @@
                      IsChecked="{Binding IsAuto, Mode=TwoWay}"
                      IsEnabled="{Binding CanGoAutoSync}">
             <RadioButton.Content>
-                <TextBlock Margin="0,25"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           FontSize="{DynamicResource FontSize_High}"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.WMSAutoSync}" />
             </RadioButton.Content>
         </RadioButton>

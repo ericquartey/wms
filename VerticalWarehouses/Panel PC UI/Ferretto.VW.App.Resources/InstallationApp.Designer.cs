@@ -2671,6 +2671,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal calibration.
+        /// </summary>
+        public static string HorizontalCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The horizontal chain calibration function ....
+        /// </summary>
+        public static string HorizontalChainCalibratioDescription {
+            get {
+                return ResourceManager.GetString("HorizontalChainCalibratioDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal chain calibration.
+        /// </summary>
+        public static string HorizontalChainCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalChainCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performs the horizontal calibration of the chain.
+        /// </summary>
+        public static string HorizontalChainCalibrationDescription {
+            get {
+                return ResourceManager.GetString("HorizontalChainCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Homing Completed.
         /// </summary>
         public static string HorizontalHomingCompleted {
@@ -2703,6 +2739,15 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalHomingStarted {
             get {
                 return ResourceManager.GetString("HorizontalHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the chain calibration procedure.
+        /// </summary>
+        public static string HorizzontalChainCalibrationProcedureRequired {
+            get {
+                return ResourceManager.GetString("HorizzontalChainCalibrationProcedureRequired", resourceCulture);
             }
         }
         

@@ -60,6 +60,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public List<MachineError> GetErrors()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Errors.ToList();
+            }
+        }
+
         public ErrorStatisticsSummary GetStatistics()
         {
             lock (this.dataContext)

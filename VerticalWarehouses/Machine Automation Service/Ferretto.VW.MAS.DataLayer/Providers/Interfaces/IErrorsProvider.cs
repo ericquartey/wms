@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         MachineError GetCurrent();
-
+        List<MachineError> GetErrors();
         ErrorStatisticsSummary GetStatistics();
 
         bool IsErrorSmall();

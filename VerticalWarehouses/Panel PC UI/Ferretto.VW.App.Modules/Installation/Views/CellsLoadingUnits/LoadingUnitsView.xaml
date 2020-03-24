@@ -48,10 +48,8 @@
                    Height="Auto"
                    Margin="0,0,15,15"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.UnitEditing}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.UnitEditing}" />
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="2"
                                                     Grid.ColumnSpan="2"

@@ -205,6 +205,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             if (this.Mission.MissionType == MissionType.OUT
                 || this.Mission.MissionType == MissionType.WMS
+                || this.Mission.MissionType == MissionType.FullTestOUT
                 )
             {
                 var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()

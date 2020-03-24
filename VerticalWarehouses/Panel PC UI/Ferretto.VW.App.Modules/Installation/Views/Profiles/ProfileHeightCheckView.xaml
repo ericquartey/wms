@@ -39,16 +39,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.UnitBay}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.UnitBay}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ProfileHeighCheckDescription}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckDescription}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -150,16 +146,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorInPosition}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ElevatorInPosition}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.PositionElevatorBayHeight}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.PositionElevatorBayHeight}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -224,23 +216,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
                              Text="{x:Static res:InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ProfileHeighCheckProcedureDescription}"
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.TemplateMeasurement}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckProcedureDescription}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.TemplateMeasurement}" />
                 </StackPanel>
 
                 <Image Grid.Row="1"
@@ -297,20 +283,16 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
                              Text="{x:Static res:InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               FontWeight="Bold"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}"
-                               TextWrapping="Wrap" />
+                    <TextBlock FontWeight="Bold"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
@@ -493,10 +475,8 @@
                            Grid.ColumnSpan="3"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}" />
             </Grid>
         </DataTemplate>
 
@@ -514,23 +494,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
                              Text="{x:Static res:InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ProfileHeightCheckProcedureLeftUnitDescription}"
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.TemplateMeasurement}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ProfileHeightCheckProcedureLeftUnitDescription}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.TemplateMeasurement}" />
                 </StackPanel>
 
                 <Image Grid.Row="1"
@@ -568,20 +542,16 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
                              Text="{x:Static res:InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               FontWeight="Bold"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}"
-                               TextWrapping="Wrap" />
+                    <TextBlock FontWeight="Bold"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.WaitAutomaticProcedureEnd}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
@@ -764,10 +734,8 @@
                            Grid.ColumnSpan="3"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.PageChangeAutomatically}" />
             </Grid>
         </DataTemplate>
 
@@ -787,19 +755,13 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.CalibrationResult}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.CalibrationResult}" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationLess}"
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationMore}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationLess}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ProfileHeighCheckCalibrationMore}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -882,10 +844,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpGHCDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->

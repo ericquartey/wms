@@ -116,6 +116,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.setupStatusProvider.Get());
         }
 
+        [HttpPost("horizontal-chain-calibration-bypass")]
+        public IActionResult HorizontalChainCalibrationBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), true);
+            return this.Ok();
+        }
+
         [HttpPost("load-first-drawer-test-bypass")]
         public IActionResult LoadFirstDrawerTestBypass()
         {

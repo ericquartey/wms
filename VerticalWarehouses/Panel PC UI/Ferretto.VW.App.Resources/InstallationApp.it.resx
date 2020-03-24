@@ -2346,4 +2346,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsHostAddress" xml:space="preserve">
     <value>Indirizzo dell'host</value>
   </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Calibrazione orizzontale catena</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Effetua la calibrazione orizzontale della catena </value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Esegui la procedura di taratura della catena</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>La funzione di calibrazione orizzontale della catena ...</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Calibrazione orizzontale</value>
+  </data>
 </root>
