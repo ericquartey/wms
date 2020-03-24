@@ -33,7 +33,7 @@
     </ctrls:View.Resources>
 
     <Grid x:Name="Root"
-          Margin="40,0,0,0">
+          Margin="40,0,15,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="30" />
@@ -59,14 +59,15 @@
                      Margin="10,20,10,0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
-                     GroupName="test">
+                     GroupName="test"
+                     IsChecked="{Binding IsWmsEnabled, Mode=TwoWay, Converter={StaticResource BNC}}">
             <RadioButton.Content>
                 <TextBlock Grid.Row="2"
                            Margin="0,20"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Disabled" />
+                           Text="{x:Static res:General.WmsDisabled}" />
             </RadioButton.Content>
         </RadioButton>
 
@@ -79,7 +80,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Enabled" />
+                           Text="{x:Static res:General.WmsEnabled}" />
             </RadioButton.Content>
 
         </RadioButton>
@@ -91,63 +92,44 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Grid.Row="0"
-                           Margin="0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           FontSize="{DynamicResource FontSize_High}"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.IpAutomationService}" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ctrlsScaff:IPAddressBox Width="460"
-                                             Height="60"
-                                             HorizontalAlignment="Left"
-                                             VerticalAlignment="Top"
-                                             FontSize="34"
-                                             IPAddress="{Binding IPEndPoint.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <TextBlock Grid.Column="1"
-                               Style="{DynamicResource IPAddressSeparator}" />
-                    <TextBox Grid.Column="2"
-                             Width="100"
-                             Height="60"
-                             VerticalAlignment="Top"
-                             Style="{StaticResource ByteTextBox}"
-                             Text="{Binding Path=IPEndPoint.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource I32TSC}}">
-                        <interactivity:Interaction.Behaviors>
-                            <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
-                            <ctrlBehaviors:TextBoxAutoSelectBehavior />
-                        </interactivity:Interaction.Behaviors>
-                    </TextBox>
-                    <controls:PpcButton Grid.Column="3"
-                                        Width="100"
-                                        Height="60"
-                                        Margin="10,0,0,10"
-                                        Command="{Binding CheckEndpointCommand}"
-                                        Content="{x:Static res:InstallationApp.Check}"
-                                        FontSize="18" />
-                </Grid>
-            </StackPanel>
-            <StackPanel Grid.Row="1"
+            <TextBlock Margin="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_High}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.WmsHostAddress}" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="0"
+                     Width="500"
+                     Height="60"
+                     VerticalAlignment="Top"
+                     VerticalContentAlignment="Center"
+                     FontSize="26"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                     Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <controls:PpcButton Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="10,0,0,10"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CheckEndpointCommand}"
+                                Content="{x:Static res:InstallationApp.CheckStatus}" />
+
+            <StackPanel Grid.Row="2"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Left"
+                <TextBlock Margin="0,0,5,0"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_Normal}"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.WmsState}" />
+                           Text="{x:Static res:OperatorApp.GeneralInfoWmsStatus}" />
                 <TextBlock HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_Normal}"
@@ -159,14 +141,10 @@
 
         <controls:PpcButton Grid.Row="5"
                             Grid.Column="1"
-                            Grid.ColumnSpan="3"
-                            Width="160"
-                            Height="60"
-                            Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SaveCommand}"
-                            Content="{x:Static res:InstallationApp.Save}"
+                            Content="{x:Static res:General.Save}"
                             FontSize="18" />
     </Grid>
 </ctrls:View>

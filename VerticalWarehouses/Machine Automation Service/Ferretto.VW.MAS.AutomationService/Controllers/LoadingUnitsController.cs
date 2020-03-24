@@ -10,8 +10,6 @@ using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -32,8 +30,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMoveLoadUnitProvider moveLoadingUnitProvider;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         #endregion
 
         #region Constructors
@@ -43,14 +39,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
-            IServiceScopeFactory serviceScopeFactory,
             ILogger<LoadingUnitsController> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
@@ -111,17 +105,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
-            [FromServices] IConfiguration configuration)
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            [FromServices] IMachinesWmsWebService machinesWmsWebService)
         {
+            if (wmsSettingsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            }
+
+            if (machinesWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(machinesWmsWebService));
+            }
+
             var statistics = this.loadingUnitsDataProvider.GetSpaceStatistics();
 
-            if (configuration.IsWmsEnabled())
+            if (wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var machineWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
-                    var loadingUnits = await machineWebService.GetLoadingUnitsByIdAsync(machineId);
+                    var loadingUnits = await machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -147,16 +151,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpGet("statistics/weight")]
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync(
-            [FromServices] IConfiguration configuration)
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            [FromServices] IMachinesWmsWebService machineWebService)
         {
+            if (wmsSettingsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            }
+
+            if (machineWebService is null)
+            {
+                throw new ArgumentNullException(nameof(machineWebService));
+            }
+
             var statistics = this.loadingUnitsDataProvider.GetWeightStatistics();
 
-            if (configuration.IsWmsEnabled())
+            if (wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var machineWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
 
                     var loadingUnits = await machineWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
@@ -216,16 +230,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> MoveToBayAsync(int id, [FromServices] IConfiguration configuration)
+        public async Task<IActionResult> MoveToBayAsync(
+            int id,
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
-            if (configuration.IsWmsEnabled())
+            if (wmsSettingsProvider is null)
             {
-                using (var scope = this.serviceScopeFactory.CreateScope())
-                {
-                    var loadingUnitsWmsWebService = scope.ServiceProvider.GetRequiredService<ILoadingUnitsWmsWebService>();
+                throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            }
 
-                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
-                }
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
             }
             else
             {
@@ -281,6 +303,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult ResumeWms(int id, int missionId, [FromServices] IBaysDataProvider baysDataProvider)
         {
+            if (baysDataProvider is null)
+            {
+                throw new ArgumentNullException(nameof(baysDataProvider));
+            }
+
             var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(id);
 
             this.moveLoadingUnitProvider.ResumeMoveLoadUnit(

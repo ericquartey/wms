@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private bool dataLayerIsReady;
@@ -38,14 +36,12 @@ namespace Ferretto.VW.MAS.MissionManager
         #region Constructors
 
         public MissionSchedulingService(
-            IConfiguration configuration,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
@@ -843,7 +839,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             System.Diagnostics.Debug.Assert(mission.WmsId.HasValue);
 
-            if (!this.configuration.IsWmsEnabled())
+            if (!serviceProvider.GetRequiredService<IWmsSettingsProvider>().IsEnabled)
             {
                 this.Logger.LogTrace("Skipping scheduling of WMS mission {wmsId}, because WMS is not enabled.", mission.WmsId);
                 return;

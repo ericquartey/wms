@@ -2343,4 +2343,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsState" xml:space="preserve">
     <value>Stato Health Wms/EjLog: </value>
   </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Indirizzo dell'host</value>
+  </data>
 </root>

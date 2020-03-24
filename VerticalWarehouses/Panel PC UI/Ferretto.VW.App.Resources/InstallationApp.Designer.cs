@@ -6597,6 +6597,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Host Address.
+        /// </summary>
+        public static string WmsHostAddress {
+            get {
+                return ResourceManager.GetString("WmsHostAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string WmsOff {

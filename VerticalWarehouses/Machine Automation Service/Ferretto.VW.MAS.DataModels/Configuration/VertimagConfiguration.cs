@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public SetupProceduresSet SetupProcedures { get; set; }
 
+        public WmsSettings Wms { get; set; }
+
         #endregion
 
         #region Methods

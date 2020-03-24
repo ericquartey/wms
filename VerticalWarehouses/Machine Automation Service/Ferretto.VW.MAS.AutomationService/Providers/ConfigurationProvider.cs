@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         #endregion
 
         #region Constructors
@@ -29,11 +31,13 @@ namespace Ferretto.VW.MAS.AutomationService
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
+            IWmsSettingsProvider wmsSettingsProvider,
             DataLayerContext dataContext,
             ILogger<ConfigurationProvider> logger)
         {
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -45,16 +49,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public VertimagConfiguration ConfigurationGet()
         {
-            this.logger.LogDebug($"Configuration Provider get");
-            var r = new VertimagConfiguration
+            return new VertimagConfiguration
             {
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
                 LoadingUnits = this.loadingUnitsDataProvider.GetAll(),
                 MachineStatistics = this.machineProvider.GetStatistics(),
                 ServicingInfo = this.machineProvider.GetServicingInfo(),
+                Wms = this.wmsSettingsProvider.GetAll()
             };
-            return r;
         }
 
         public void ConfigurationImport(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory)
