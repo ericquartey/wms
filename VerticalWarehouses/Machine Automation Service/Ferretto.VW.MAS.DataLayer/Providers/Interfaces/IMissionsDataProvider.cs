@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority, LoadingUnitLocation destination = LoadingUnitLocation.NoLocation);
 
-        Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber);
+        Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType);
 
         void Delete(int id);
 

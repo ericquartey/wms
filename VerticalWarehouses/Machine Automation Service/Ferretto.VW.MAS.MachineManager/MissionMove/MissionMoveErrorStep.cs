@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.NeedMovingBackward = false;
                 if (this.Mission.MissionType == MissionType.OUT
                     || this.Mission.MissionType == MissionType.WMS
+                    || this.Mission.MissionType == MissionType.FullTestOUT
                     )
                 {
                     var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);

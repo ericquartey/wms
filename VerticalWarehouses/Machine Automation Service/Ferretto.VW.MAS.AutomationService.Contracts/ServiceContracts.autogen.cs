@@ -2205,9 +2205,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTest = 6,
     
-        FullTest = 7,
+        FullTestIN = 7,
     
-        Compact = 8,
+        FullTestOUT = 8,
+    
+        Compact = 9,
     
     }
     

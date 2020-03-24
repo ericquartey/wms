@@ -218,19 +218,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> MoveToBayAsync(int id, [FromServices] IConfiguration configuration)
         {
-            if (configuration.IsWmsEnabled())
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                using (var scope = this.serviceScopeFactory.CreateScope())
+                if (configuration.IsWmsEnabled())
                 {
                     var loadingUnitsWmsWebService = scope.ServiceProvider.GetRequiredService<ILoadingUnitsWmsWebService>();
 
                     await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
                 }
-            }
-            else
-            {
-                this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
-                this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
+                else
+                {
+                    this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
+                    this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber, MissionType.OUT, scope.ServiceProvider);
+                }
             }
 
             return this.Accepted();
@@ -252,7 +252,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RemoveFromBayAsync(int id)
         {
             this.logger.LogInformation($"Move load unit {id} back from bay {this.BayNumber}");
-            this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
+            this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber, MissionType.IN, this.serviceScopeFactory.CreateScope().ServiceProvider);
 
             return this.Accepted();
         }
