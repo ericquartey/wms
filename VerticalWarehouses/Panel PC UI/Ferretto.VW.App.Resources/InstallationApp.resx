@@ -2413,4 +2413,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsState" xml:space="preserve">
     <value>State Health Wms/EjLog: </value>
   </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Horizontal chain calibration</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Performs the horizontal calibration of the chain</value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Perform the chain calibration procedure</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>The horizontal chain calibration function ...</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Horizontal calibration</value>
+  </data>
 </root>

@@ -32,7 +32,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="4.2.4" />
+                       Text="4.2.5" />
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
@@ -45,10 +45,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -89,9 +87,7 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{DynamicResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.TotalCyclesCompleted}" />
 
                     <StackPanel Grid.Row="1"
@@ -102,20 +98,17 @@
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="{Binding CumulativePerformedCycles}" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="/" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="{Binding InputRequiredCycles}" />
                     </StackPanel>
 
@@ -182,19 +175,15 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{DynamicResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding PerformedCyclesThisSession}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_CardSensor_Data}"
+                               Text="{Binding PerformedCyclesThisSession}" />
 
                 </Grid>
 

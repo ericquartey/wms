@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand beltBurnishingCommand;
 
+        private DelegateCommand horizontalChainCalibration;
+
         private DelegateCommand testDepositAndPickUpCommand;
 
         private DelegateCommand verticalOffsetCalibration;
@@ -67,6 +69,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             VerticalOriginCalibration,
 
             TestDepositAndPickUp,
+
+            HorizontalChainCalibration,
         }
 
         #endregion
@@ -86,11 +90,26 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        private SetupStepStatus HorizontalChain => this.SetupStatusCapabilities?.HorizontalChainCalibration ?? new SetupStepStatus();
+
+        public ICommand HorizontalChainCalibration =>
+                    this.horizontalChainCalibration
+            ??
+            (this.horizontalChainCalibration = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.HorizontalChainCalibration),
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.HorizontalChain.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+
         public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted && !this.BeltBurnishing.IsBypassed;
 
         public bool IsBeltBurnishingBypassed => this.BeltBurnishing.IsBypassed;
 
         public bool IsHoming => this.VerticalOriginCalibration.IsCompleted;
+
+        public bool IsHorizChainCompleted => this.HorizontalChain.IsCompleted && !this.BeltBurnishing.IsBypassed;
+
+        public bool IsHorizontalChainBypassed => this.HorizontalChain.IsBypassed;
 
         public bool IsVerticalOffsetProcedure => this.VerticalOffsetCalibration.IsCompleted;
 
@@ -180,6 +199,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsBeltBurnishing));
             this.RaisePropertyChanged(nameof(this.IsBeltBurnishingBypassed));
 
+            this.RaisePropertyChanged(nameof(this.IsHorizChainCompleted));
+            this.RaisePropertyChanged(nameof(this.IsHorizontalChainBypassed));
+
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
             this.verticalOriginCalibration?.RaiseCanExecuteChanged();
@@ -187,6 +209,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.weightAnalysisCommand?.RaiseCanExecuteChanged();
             this.weightMeasurement?.RaiseCanExecuteChanged();
             this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
+            this.horizontalChainCalibration?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -245,6 +268,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
                        Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
+                case Menu.HorizontalChainCalibration:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.HORIZONTALCHAINCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;

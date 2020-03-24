@@ -2227,6 +2227,8 @@
       "FeedRate": 0.1
     },
     "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   }
 }

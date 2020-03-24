@@ -6261,5 +6261,7 @@
     "IsEnabled": true,
     "ServiceUrl": "http://localhost:10000",
     "IsTimeSyncEnabled": true
+  },
+  "HorizontalChainCalibration": {
   }
 }

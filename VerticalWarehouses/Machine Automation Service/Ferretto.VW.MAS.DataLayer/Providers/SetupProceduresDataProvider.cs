@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     .Include(s => s.WeightMeasurement)
 
+                    .Include(s => s.HorizontalChainCalibration)
+
                     .Single());
 
         private readonly DataLayerContext dataContext;
@@ -59,7 +61,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public SetupProceduresDataProvider(
-            DataLayerContext dataContext,
+                    DataLayerContext dataContext,
             ILogger<SetupProceduresDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
@@ -168,6 +170,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public SetupProcedure GetHorizontalChainCalibration()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => s.HorizontalChainCalibration)
+                    .Single();
+            }
+        }
+
         public PositioningProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)
@@ -252,6 +264,8 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.VerticalOriginCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+
+            context.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
@@ -402,6 +416,8 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalOriginCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+
+            dataContext.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
 
             dataContext.SaveChanges();
         }

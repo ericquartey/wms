@@ -40,7 +40,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public GeneralViewModel(IMachineIdentityWebService identityService, IMachineAboutWebService machineAboutWebService, IHealthProbeService healthProbeService)
+        public GeneralViewModel(
+            IMachineIdentityWebService identityService,
+            IMachineAboutWebService machineAboutWebService,
+            IHealthProbeService healthProbeService)
             : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));

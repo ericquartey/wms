@@ -19,6 +19,7 @@
             VerticalOriginCalibration = SetupStepStatus.Complete,
             VerticalResolutionCalibration = SetupStepStatus.Complete,
             WeightMeasurement = SetupStepStatus.Complete,
+            HorizontalChainCalibration = SetupStepStatus.Complete,
         };
 
         #endregion
@@ -40,6 +41,8 @@
         public SetupStepStatus CellsHeightCheck { get; set; }
 
         public System.DateTime? CompletedDate { get; set; }
+
+        public SetupStepStatus HorizontalChainCalibration { get; set; }
 
         public SetupStepStatus HorizontalHoming { get; set; }
 
