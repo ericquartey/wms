@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void AbortMission(Mission localMissionToAbort);
 
-        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, MissionType missionType, IServiceProvider serviceProvider);
+        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, MissionType missionType);
 
         void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority);
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
 
-        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType, IServiceProvider serviceProvider);
+        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType);
 
         #endregion
     }

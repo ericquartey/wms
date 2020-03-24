@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 // send back the loading unit to the cell
                 this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} WmsId {wmsId} back to cell.", mission.TargetBay, mission.Id, mission.WmsId);
-                missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN, serviceProvider);
+                missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
             }
             else
             {
@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 && machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value
                 )
             {
-                missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT, serviceProvider);
+                missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
                 machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
                 machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
             }
@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.WaitPick)
                 {
                     this.Logger.LogInformation($"Move load unit {mission.LoadUnitId} back from bay {machineProvider.BayTestNumber}");
-                    missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN, serviceProvider);
+                    missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN);
                 }
             }
 
