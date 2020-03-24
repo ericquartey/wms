@@ -72,11 +72,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTuningChain;
 
+        private double? measuredDistance;
+
         private int? newErrorValue;
 
         private int performedCycles;
 
-        private SubscriptionToken positioningMessageReceivedToken;
+        private SubscriptionToken profileCalibrationToken;
 
         private DelegateCommand repeatCalibrationCommand;
 
@@ -262,6 +264,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isTuningChain, value);
         }
 
+        public double? MeasuredDistance
+        {
+            get => this.measuredDistance;
+            protected set => this.SetProperty(ref this.measuredDistance, value);
+        }
+
         public int? NewErrorValue
         {
             get => this.newErrorValue;
@@ -344,7 +352,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopInPhaseCommand
             ??
             (this.stopInPhaseCommand = new DelegateCommand(
-                async () => await this.StopInPhaseAsync(),
+                async () => await this.StopAsync(),
                 this.CanStopInPhase));
 
         public ICommand TuningChainCommand =>
@@ -407,6 +415,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken.Dispose();
                 this.stepChangedToken = null;
+            }
+
+            if (this.profileCalibrationToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.profileCalibrationToken);
+                this.profileCalibrationToken?.Dispose();
+                this.profileCalibrationToken = null;
             }
 
             if (this.themeChangedToken != null)
@@ -552,35 +567,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ApplyCorrectionMessage, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                if (this.MeasuredDistance.HasValue)
                 {
-                    double newElevatorDistance = 0;
-
-                    if (this.IsNewErrorValueVisible)
+                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ApplyCorrectionMessage, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
                     {
-                        var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                        await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+
+                        await this.MachineService.OnUpdateServiceAsync();
+
+                        this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
+
+                        this.ShowNotification(
+                                VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                                Services.Models.NotificationSeverity.Success);
+
+                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
                     }
-                    else
-                    {
-                        var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
-                    }
-
-                    await this.machineCarouselWebService.UpdateElevatorChainDistanceAsync(newElevatorDistance);
-
-                    await this.MachineService.OnUpdateServiceAsync();
-
-                    this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
-
-                    this.ShowNotification(
-                            VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
-                            Services.Models.NotificationSeverity.Success);
-
-                    this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -685,12 +688,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private void OnProfileCalibrationMessage(NotificationMessageUI<ProfileCalibrationMessageData> message)
         {
-            if (message.Data?.MovementMode != MovementMode.BayTest)
-            {
-                return;
-            }
+            var data = message.Data as ProfileCalibrationMessageData;
 
             if (message.IsNotRunning())
             {
@@ -723,28 +723,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            // ad ogni ciclo completato...aggiornamento dati
-            if (message.Status == MessageStatus.OperationExecuting)
-            {
-                // update cycle info
-                if (!this.IsExecutingStopInPhase)
-                {
-                    this.RequiredCycles = message.Data.RequiredCycles;
-                }
-                this.PerformedCycles = message.Data.ExecutedCycles;
-                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
-            }
-
             if (message.Status == MessageStatus.OperationEnd)
             {
-                if (message.Data.IsTestStopped)
-                {
-                    this.ShowNotification(InstallationApp.TestStopped, Services.Models.NotificationSeverity.Success);
-                }
-                else
-                {
-                    this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
-                }
+                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
 
                 this.IsCalibrationNotCompleted = false;
 
@@ -756,8 +737,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsCalibrationCompletedOrStopped = true;
 
-                this.PerformedCycles = message.Data.ExecutedCycles;
-                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+                this.MeasuredDistance = data.Measured;
 
                 this.NewErrorValue = 0;
                 this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment;
@@ -774,8 +754,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
-                this.PerformedCycles = message.Data.ExecutedCycles;
-                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
                 this.IsCalibrationCompletedOrStopped = false;
                 this.NewErrorValue = 0;
@@ -848,26 +826,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StopInPhaseAsync()
-        {
-            this.IsWaitingForResponse = true;
-            this.IsExecutingProcedure = false;
-            this.IsExecutingStopInPhase = true;
-            try
-            {
-                await this.machineCarouselWebService.StopCalibrationAsync();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsExecutingProcedure = false;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private void SubscribeToEvents()
         {
             this.stepChangedToken = this.stepChangedToken
@@ -878,14 +836,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
-               ??
-               this.eventAggregator
-                   .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                   .Subscribe(
-                       this.OnPositioningMessageReceived,
-                       ThreadOption.UIThread,
-                       false);
+            this.profileCalibrationToken = this.profileCalibrationToken
+                ?? this.EventAggregator
+                    .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
+                    .Subscribe(
+                        (m) => this.OnProfileCalibrationMessage(m),
+                        ThreadOption.UIThread,
+                        false);
 
             this.themeChangedToken = this.themeChangedToken
                ?? this.EventAggregator
