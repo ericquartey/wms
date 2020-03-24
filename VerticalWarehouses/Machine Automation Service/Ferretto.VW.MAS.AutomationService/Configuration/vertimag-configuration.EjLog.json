@@ -6255,13 +6255,13 @@
       "RequiredCycles": 200
     },
     "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   },
   "Wms": {
     "IsEnabled": true,
     "ServiceUrl": "http://localhost:10000",
     "IsTimeSyncEnabled": true
-  },
-  "HorizontalChainCalibration": {
   }
 }
