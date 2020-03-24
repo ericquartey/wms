@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
 
-        private readonly IUtcTimeWmsWebService utcTimeWmsWebService;
-
         private CancellationTokenSource cancellationTokenSource;
 
         #endregion
@@ -44,7 +42,6 @@ namespace Ferretto.VW.MAS.TimeManagement
         public SystemTimeSyncService(
             IEventAggregator eventAggregator,
             IDataLayerService dataLayerService,
-            IUtcTimeWmsWebService utcTimeWmsWebService,
             ILogger<SystemTimeSyncService> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
@@ -54,7 +51,6 @@ namespace Ferretto.VW.MAS.TimeManagement
             }
 
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
-            this.utcTimeWmsWebService = utcTimeWmsWebService ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
@@ -137,7 +133,8 @@ namespace Ferretto.VW.MAS.TimeManagement
                         try
                         {
                             this.logger.LogDebug("Attempting sync time with WMS.");
-                            var remoteUtcTime = await this.utcTimeWmsWebService.GetAsync(cancellationToken);
+                            var utcTimeWmsWebService = scope.ServiceProvider.GetRequiredService<IUtcTimeWmsWebService>();
+                            var remoteUtcTime = await utcTimeWmsWebService.GetAsync(cancellationToken);
                             var machineUtcTime = DateTimeOffset.Now;
 
                             var timeDifference = machineUtcTime - remoteUtcTime;
