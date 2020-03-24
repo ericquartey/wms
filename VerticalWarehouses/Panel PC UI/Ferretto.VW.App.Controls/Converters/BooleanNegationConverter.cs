@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (targetType != typeof(bool))
+            if (targetType != typeof(bool) && targetType != typeof(bool?))
             {
                 throw new InvalidOperationException();
             }
@@ -26,7 +26,17 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            if (targetType != typeof(bool) && targetType != typeof(bool?))
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (value is bool booleanValue)
+            {
+                return !booleanValue;
+            }
+
+            throw new InvalidOperationException();
         }
 
         #endregion

@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
 
         private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -34,12 +34,12 @@ namespace Ferretto.VW.MAS.MissionManager
             IEventAggregator eventAggregator,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsDataProvider missionsDataProvider,
-            IConfiguration configuration)
+            IWmsSettingsProvider wmsSettingsProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task AbortAsync(int wmsId)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         public async Task CompleteAsync(int wmsId, double quantity, string printerName)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         public async Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private void NegativeResult(WmsWebApiException exception)
         {
-            var problemDetails = new ProblemDetails();
+            ProblemDetails problemDetails;
             if (exception is WmsWebApiException<ProblemDetails> problemDetailsException)
             {
                 problemDetails = problemDetailsException.Result;

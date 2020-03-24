@@ -75,11 +75,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsRestoringType()
         {
-            return this.MissionType == MissionType.WMS
-                || this.MissionType == MissionType.IN
-                || this.MissionType == MissionType.LoadUnitOperation
-                || this.MissionType == MissionType.OUT
-                || this.MissionType == MissionType.Compact;
+            return this.MissionType is MissionType.WMS
+                || this.MissionType is MissionType.IN
+                || this.MissionType is MissionType.LoadUnitOperation
+                || this.MissionType is MissionType.OUT
+                || this.MissionType is MissionType.Compact
+                || this.MissionType is MissionType.FullTestIN
+                || this.MissionType is MissionType.FullTestOUT;
         }
 
         public override string ToString()

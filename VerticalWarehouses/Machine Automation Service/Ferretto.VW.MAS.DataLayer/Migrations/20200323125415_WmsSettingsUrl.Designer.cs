@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200323125415_WmsSettingsUrl")]
+    partial class WmsSettingsUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1216,8 +1218,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("DepositAndPickUpTestId");
 
-                    b.Property<int?>("HorizontalChainCalibrationId");
-
                     b.Property<int?>("LoadFirstDrawerTestId");
 
                     b.Property<int?>("ShutterHeightCheckId");
@@ -1275,8 +1275,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("CellsHeightCheckId");
 
                     b.HasIndex("DepositAndPickUpTestId");
-
-                    b.HasIndex("HorizontalChainCalibrationId");
 
                     b.HasIndex("LoadFirstDrawerTestId");
 
@@ -1768,10 +1766,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "DepositAndPickUpTest")
                         .WithMany()
                         .HasForeignKey("DepositAndPickUpTestId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "HorizontalChainCalibration")
-                        .WithMany()
-                        .HasForeignKey("HorizontalChainCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "LoadFirstDrawerTest")
                         .WithMany()

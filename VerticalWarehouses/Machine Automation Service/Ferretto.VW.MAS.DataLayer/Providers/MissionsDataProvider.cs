@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber)
+        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType)
         {
             lock (this.dataContext)
             {
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         TargetBay = bayNumber,
                         Status = MissionStatus.New,
                         LoadUnitDestination = LoadingUnitLocation.Cell,
-                        MissionType = MissionType.IN
+                        MissionType = missionType
                     });
 
                 this.dataContext.SaveChanges();

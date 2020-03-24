@@ -180,6 +180,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public PositioningProcedure GetFullTest()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => s.LoadFirstDrawerTest)
+                    .Single();
+                // TODO: DEFINE A NEW DATAMODEL???
+                //return this.dataContext.SetupProceduresSets.AsNoTracking()
+                //    .Select(s => s.FullTest)
+                //    .Single();
+            }
+        }
+
         public PositioningProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)

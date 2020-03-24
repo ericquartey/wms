@@ -108,6 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.MissionType == MissionType.OUT
                             || this.Mission.MissionType == MissionType.WMS
+                            || this.Mission.MissionType == MissionType.FullTestOUT
                             )
                         {
                             newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);

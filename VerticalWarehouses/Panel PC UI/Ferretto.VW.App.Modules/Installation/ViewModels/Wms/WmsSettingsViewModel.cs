@@ -23,13 +23,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private HealthStatus healthStatus;
 
-        private IPEndPoint ipEndpoint;
-
         private bool isCheckingEndpoint;
 
         private bool isWmsEnabled;
 
         private DelegateCommand saveCommand;
+
+        private string wmsHttpUrl;
 
         #endregion
 
@@ -51,22 +51,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.checkEndpointCommand = new DelegateCommand(
                 async () => await this.CheckEndpointAsync(), this.CanCheckEndpoint));
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public HealthStatus HealthStatus
         {
             get => this.healthStatus;
             private set => this.SetProperty(ref this.healthStatus, value);
         }
 
-        public IPEndPoint IPEndPoint
-        {
-            get => this.ipEndpoint;
-            set => this.SetProperty(ref this.ipEndpoint, value);
-        }
-
         public bool IsCheckingEndpoint
         {
             get => this.isCheckingEndpoint;
-            private set => this.SetProperty(ref this.isCheckingEndpoint, value);
+            private set
+            {
+                if (this.SetProperty(ref this.isCheckingEndpoint, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsWmsEnabled
@@ -81,6 +83,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public string WmsHttpUrl
+        {
+            get => this.wmsHttpUrl;
+            set
+            {
+                if (this.SetProperty(ref this.wmsHttpUrl, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -90,7 +104,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
-                if (this.IsWmsEnabled)
+                this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
+
+                if (this.IsWmsEnabled && this.WmsHttpUrl != null)
                 {
                     await this.CheckEndpointAsync();
                 }
@@ -118,7 +134,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanSave()
         {
-            return true;
+            return
+                this.WmsHttpUrl != null
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task CheckEndpointAsync()
@@ -137,7 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.HealthStatus = HealthStatus.Unknown;
                 }
             }
-            catch (MasWebApiException ex)
+            catch (MasWebApiException)
             {
                 this.HealthStatus = HealthStatus.Unhealthy;
             }
@@ -156,16 +175,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.wmsStatusWebService.UpdateAsync(this.IsEnabled, this.IPEndPoint.Address.ToString(), this.IPEndPoint.Port);
+                await this.wmsStatusWebService.UpdateAsync(this.IsEnabled, this.WmsHttpUrl);
                 this.ShowNotification(VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated);
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
+
+                await this.CheckEndpointAsync();
             }
         }
 

@@ -69,17 +69,14 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
-            if (this.configuration.IsWmsEnabled())
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var dataHubClient = this.ServiceScopeFactory
-                    .CreateScope()
-                    .ServiceProvider
-                    .GetRequiredService<IDataHubClient>();
+                var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
 
-                dataHubClient.EntityChanged += async (s, e) => await this.OnDataHubClientEntityChangedAsync(s, e);
-                dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
+                dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
+                dataHubClient.ConnectionStatusChanged += this.OnWmsConnectionStatusChanged;
 
-                await dataHubClient.ConnectAsync();
+                await this.OnWmsEnableChanged(scope.ServiceProvider);
             }
         }
 
@@ -106,12 +103,12 @@ namespace Ferretto.VW.MAS.AutomationService
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
-        private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private void OnWmsConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
             if (e.IsConnected)
             {
-                this.OnDataHubClientEntityChangedAsync(this, new EntityChangedEventArgs(
+                this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
                     nameof(MissionOperation),
                     null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
                     null,
@@ -119,7 +116,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private async Task OnDataHubClientEntityChangedAsync(object sender, EntityChangedEventArgs e)
+        private async Task OnWmsEntityChangedAsync(object sender, EntityChangedEventArgs e)
         {
             if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
             {

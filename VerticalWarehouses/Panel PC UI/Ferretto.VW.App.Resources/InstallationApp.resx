@@ -2413,6 +2413,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsState" xml:space="preserve">
     <value>State Health Wms/EjLog: </value>
   </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Host Address</value>
+  </data>
   <data name="HorizontalChainCalibration" xml:space="preserve">
     <value>Horizontal chain calibration</value>
   </data>

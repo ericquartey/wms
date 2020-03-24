@@ -72,14 +72,14 @@ namespace Ferretto.VW.MAS.MissionManager
             this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
-        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, MissionType missionType, IServiceProvider serviceProvider)
         {
             this.logger.LogDebug(
                 $"Queuing local mission for load unit {loadingUnitId} to bay {targetBayNumber}.",
                 loadingUnitId,
                 targetBayNumber);
 
-            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, MissionType.OUT);
+            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, missionType);
 
             if (mission != null)
             {
@@ -180,14 +180,14 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
+        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType, IServiceProvider serviceProvider)
         {
             this.logger.LogDebug(
               "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
               loadingUnitId,
               sourceBayNumber);
 
-            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
+            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber, missionType);
 
             this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }

@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.TimeManagement
     {
         #region Methods
 
-        public static IServiceCollection AddTimeServices(this IServiceCollection services, bool useWms)
+        public static IServiceCollection AddTimeServices(this IServiceCollection services)
         {
             if (services is null)
             {
@@ -17,15 +17,8 @@ namespace Ferretto.VW.MAS.TimeManagement
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
-            if (useWms)
-            {
-                services.AddHostedService<SystemTimeSyncService>();
-                services.AddScoped<ISystemTimeProvider, WmsSystemTimeProvider>();
-            }
-            else
-            {
-                services.AddScoped<ISystemTimeProvider, LocalSystemTimeProvider>();
-            }
+            services.AddHostedService<SystemTimeSyncService>();
+            services.AddScoped<ISystemTimeProvider, WmsSystemTimeProvider>();
 
             services.AddScoped(s => s.GetRequiredService<ISystemTimeProvider>() as IInternalSystemTimeProvider);
 

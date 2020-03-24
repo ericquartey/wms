@@ -448,15 +448,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         );
                     break;
 
+                case MissionType.FullTestIN:
+                case MissionType.FullTestOUT:
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FullTest
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest
+                        );
+                    break;
+
                 case MissionType.FirstTest:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FirstTest
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
                         );
-                    break;
-
-                case MissionType.FullTest:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Test);
                     break;
 
                 default:

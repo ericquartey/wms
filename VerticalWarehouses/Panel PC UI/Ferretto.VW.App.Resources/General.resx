@@ -417,4 +417,10 @@
   <data name="NoRows" xml:space="preserve">
     <value>No row in the list</value>
   </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
 </root>
