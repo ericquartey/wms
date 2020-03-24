@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IDataLayerService dataLayerService;
 
-        private readonly IMachinesWmsWebService machinesWmsWebService;
-
         private bool dataLayerIsReady;
 
         private int machineId;
@@ -40,7 +38,6 @@ namespace Ferretto.VW.MAS.MissionManager
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
         }
 
@@ -99,7 +96,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 try
                 {
                     // 1. Get all missions from WMS
-                    var wmsMissions = await this.machinesWmsWebService.GetMissionsByIdAsync(this.machineId);
+                    var machinesWmsWebService = scope.ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+                    var wmsMissions = await machinesWmsWebService.GetMissionsByIdAsync(this.machineId);
 
                     // 2. Get all known WMS missions (already recorded in the local database)
                     var localMissions = missionsDataProvider.GetAllWmsMissions();
