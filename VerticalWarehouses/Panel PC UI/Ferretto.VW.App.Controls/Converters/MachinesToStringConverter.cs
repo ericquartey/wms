@@ -23,6 +23,11 @@ namespace Ferretto.VW.App.Controls.Converters
                 return string.Join(", ", machines.Select(m => m.Id).ToArray());
             }
 
+            if (value is IEnumerable<Machine2> listRowMachines)
+            {
+                return string.Join(", ", listRowMachines.Select(m => m.Id).ToArray());
+            }
+
             return null;
         }
 

@@ -75,11 +75,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             }
 
-            if (this.Configuration.IsWmsEnabled())
-            {
-                app.UseDataHub();
-            }
-
             app.UseMasHealthChecks();
 
             app.UseCors("AllowAll");
@@ -161,18 +156,13 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void AddWmsServices(IServiceCollection services)
         {
-            if (this.Configuration.IsWmsEnabled())
-            {
-                var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
-                services.AddWmsWebServices(wmsServiceAddress);
+            services.AddWmsWebServices(s => s.GetRequiredService<IWmsSettingsProvider>().ServiceUrl);
 
-                var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
-                services.AddDataHub(wmsServiceAddressHubsEndpoint);
+            services.AddWmsDataHub();
 
-                services.AddWmsMissionManager();
-            }
+            services.AddWmsMissionManager();
 
-            services.AddTimeServices(this.Configuration.IsWmsEnabled());
+            services.AddTimeServices();
         }
 
         #endregion

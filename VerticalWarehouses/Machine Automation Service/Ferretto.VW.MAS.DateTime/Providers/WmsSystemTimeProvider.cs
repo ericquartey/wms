@@ -45,11 +45,11 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         #region Properties
 
-        public bool CanEnableWmsAutoSyncMode => this.configuration.IsWmsEnabled();
+        public bool CanEnableWmsAutoSyncMode => this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsEnabled;
 
         public bool IsWmsAutoSyncEnabled
         {
-            get => this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsWmsTimeSyncEnabled;
+            get => this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsTimeSyncEnabled;
             set
             {
                 if (!this.CanEnableWmsAutoSyncMode && value)
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                     throw new InvalidOperationException("Unable to enable WMS auto sync because WMS is not enabled.");
                 }
 
-                this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsWmsTimeSyncEnabled = value;
+                this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsTimeSyncEnabled = value;
 
                 this.syncStateChangeRequestEvent.Publish(new SyncStateChangeRequestEventArgs(value));
             }

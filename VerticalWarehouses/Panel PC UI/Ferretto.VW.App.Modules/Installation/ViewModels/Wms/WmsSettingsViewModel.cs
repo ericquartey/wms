@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -19,17 +20,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
+        private bool areSettingsChanged;
+
         private DelegateCommand checkEndpointCommand;
 
         private HealthStatus healthStatus;
-
-        private IPEndPoint ipEndpoint;
 
         private bool isCheckingEndpoint;
 
         private bool isWmsEnabled;
 
         private DelegateCommand saveCommand;
+
+        private string wmsHttpUrl;
+
+        private Brush wmsServicesStatusBrush;
+
+        private string wmsServicesStatusDescription;
 
         #endregion
 
@@ -45,34 +52,72 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool AreSettingsChanged
+        {
+            get => this.areSettingsChanged;
+            set
+            {
+                if (this.SetProperty(ref this.areSettingsChanged, value))
+                {
+                    if (this.AreSettingsChanged)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand CheckEndpointCommand =>
-            this.checkEndpointCommand
+                    this.checkEndpointCommand
             ??
             (this.checkEndpointCommand = new DelegateCommand(
                 async () => await this.CheckEndpointAsync(), this.CanCheckEndpoint));
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public HealthStatus HealthStatus
         {
             get => this.healthStatus;
-            private set => this.SetProperty(ref this.healthStatus, value);
-        }
-
-        public IPEndPoint IPEndPoint
-        {
-            get => this.ipEndpoint;
-            set => this.SetProperty(ref this.ipEndpoint, value);
+            private set
+            {
+                if (this.SetProperty(ref this.healthStatus, value))
+                {
+                    this.UpdateWmsStatus();
+                }
+            }
         }
 
         public bool IsCheckingEndpoint
         {
             get => this.isCheckingEndpoint;
-            private set => this.SetProperty(ref this.isCheckingEndpoint, value);
+            private set
+            {
+                if (this.SetProperty(ref this.isCheckingEndpoint, value))
+                {
+                    this.UpdateWmsStatus();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsWmsEnabled
         {
             get => this.isWmsEnabled;
-            set => this.SetProperty(ref this.isWmsEnabled, value);
+            set
+            {
+                if (this.SetProperty(ref this.isWmsEnabled, value))
+                {
+                    if (!this.isWmsEnabled)
+                    {
+                        this.HealthStatus = HealthStatus.Unknown;
+                    }
+
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand SaveCommand =>
@@ -80,6 +125,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
+
+        public string WmsHttpUrl
+        {
+            get => this.wmsHttpUrl;
+            set
+            {
+                if (this.SetProperty(ref this.wmsHttpUrl, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public Brush WmsServicesStatusBrush
+        {
+            get => this.wmsServicesStatusBrush;
+            set => this.SetProperty(ref this.wmsServicesStatusBrush, value);
+        }
+
+        public string WmsServicesStatusDescription
+        {
+            get => this.wmsServicesStatusDescription;
+            set => this.SetProperty(ref this.wmsServicesStatusDescription, value);
+        }
 
         #endregion
 
@@ -90,10 +160,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
-                if (this.IsWmsEnabled)
-                {
-                    await this.CheckEndpointAsync();
-                }
+                this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
+                this.AreSettingsChanged = false;
+
+                await this.CheckEndpointAsync();
             }
             catch (Exception ex)
             {
@@ -113,18 +183,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanCheckEndpoint()
         {
-            return !this.IsCheckingEndpoint;
+            return
+                !this.IsCheckingEndpoint
+                &&
+                !this.AreSettingsChanged
+                &&
+                this.IsWmsEnabled
+                &&
+                this.WmsHttpUrl != null;
         }
 
         private bool CanSave()
         {
-            return true;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.AreSettingsChanged;
         }
 
         private async Task CheckEndpointAsync()
         {
+            if (!this.IsWmsEnabled || this.WmsHttpUrl is null)
+            {
+                this.HealthStatus = HealthStatus.Unknown;
+                return;
+            }
+
             try
             {
+                this.ClearNotifications();
                 this.IsCheckingEndpoint = true;
 
                 var statusString = await this.wmsStatusWebService.GetHealthAsync();
@@ -137,7 +224,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.HealthStatus = HealthStatus.Unknown;
                 }
             }
-            catch (MasWebApiException ex)
+            catch (MasWebApiException)
             {
                 this.HealthStatus = HealthStatus.Unhealthy;
             }
@@ -156,16 +243,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.wmsStatusWebService.UpdateAsync(this.IsEnabled, this.IPEndPoint.Address.ToString(), this.IPEndPoint.Port);
+                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl);
                 this.ShowNotification(VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated);
+                this.AreSettingsChanged = false;
+
+                this.IsWaitingForResponse = false;
+
+                if (this.IsWmsEnabled)
+                {
+                    await this.CheckEndpointAsync();
+                }
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void UpdateWmsStatus()
+        {
+            if (this.isCheckingEndpoint)
+            {
+                this.WmsServicesStatusDescription = "Verifica in corso";
+                this.WmsServicesStatusBrush = Brushes.Gray;
+            }
+            else if (this.healthStatus is HealthStatus.Healthy)
+            {
+                this.WmsServicesStatusDescription = "Online";
+                this.WmsServicesStatusBrush = Brushes.Green;
+            }
+            else if (this.healthStatus is HealthStatus.Degraded)
+            {
+                this.WmsServicesStatusDescription = "Online";
+                this.WmsServicesStatusBrush = Brushes.Gold;
+            }
+            else if (this.healthStatus is HealthStatus.Unhealthy)
+            {
+                this.WmsServicesStatusDescription = "Offline";
+                this.WmsServicesStatusBrush = Brushes.Red;
+
+                this.ShowNotification("Il WMS è offline", Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.WmsServicesStatusDescription = "Sconosciuto";
+                this.WmsServicesStatusBrush = Brushes.Gray;
             }
         }
 

@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool? IsOneTonMachine { get; set; }
 
+        Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
+
         List<int> LoadUnitsToTest { get; set; }
 
         MachinePowerState MachinePowerState { get; set; }

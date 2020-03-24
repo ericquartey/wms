@@ -133,6 +133,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.MoveTest:
                     await this.OnMoveTest(message);
                     break;
+
+                case MessageType.WmsEnableChanged:
+                    await this.OnWmsEnableChanged(serviceProvider);
+                    break;
             }
         }
 

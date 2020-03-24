@@ -136,7 +136,7 @@
       "GrossWeight": 900.44236800000044,
       "Height": 322.41875,
       "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
+      "MaxNetWeight": 930.0,
       "MissionsCount": 0,
       "NetWeight": 780.44236800000044,
       "Status": 4,
@@ -149,7 +149,7 @@
       "GrossWeight": 644.22,
       "Height": 299.49062499999997,
       "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
+      "MaxNetWeight": 930.0,
       "MissionsCount": 1,
       "NetWeight": 524.22,
       "Status": 4,
@@ -162,7 +162,7 @@
       "GrossWeight": 644.22,
       "Height": 309.640625,
       "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
+      "MaxNetWeight": 930.0,
       "MissionsCount": 1,
       "NetWeight": 524.22,
       "Status": 4,
@@ -176,7 +176,7 @@
       "GrossWeight": 644.22,
       "Height": 349.60625,
       "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
+      "MaxNetWeight": 930.0,
       "MissionsCount": 1,
       "NetWeight": 524.22,
       "Status": 4,
@@ -6255,13 +6255,13 @@
       "RequiredCycles": 200
     },
     "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   },
   "Wms": {
     "IsEnabled": true,
     "ServiceUrl": "http://localhost:10000",
     "IsTimeSyncEnabled": true
-  },
-  "HorizontalChainCalibration": {
   }
 }

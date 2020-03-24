@@ -248,7 +248,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     CanBePerformed = true, // TODO this should be probably conditioned by the bay checks
                     IsBypassed = setup.WeightMeasurement.IsBypassed,
                 },
-
                 HorizontalChainCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.HorizontalChainCalibration.IsCompleted,

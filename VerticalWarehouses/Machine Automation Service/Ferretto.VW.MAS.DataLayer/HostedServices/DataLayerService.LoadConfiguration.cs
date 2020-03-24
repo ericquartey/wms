@@ -68,6 +68,13 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.Machines.Add(vertimagConfiguration.Machine);
             dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);
             dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
+            if (vertimagConfiguration.Wms != null)
+            {
+                var wmsSettings = dataContext.WmsSettings.Single();
+                vertimagConfiguration.Wms.Id = wmsSettings.Id;
+                dataContext.AddOrUpdate(vertimagConfiguration.Wms, s => s.Id);
+            }
+
             if (vertimagConfiguration.MachineStatistics != null)
             {
                 dataContext.AddOrUpdate(vertimagConfiguration.MachineStatistics, d => d.Id);
