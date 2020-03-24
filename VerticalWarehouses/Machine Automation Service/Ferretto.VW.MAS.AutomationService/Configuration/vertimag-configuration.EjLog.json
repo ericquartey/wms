@@ -6255,6 +6255,8 @@
       "RequiredCycles": 200
     },
     "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   },
   "Wms": {

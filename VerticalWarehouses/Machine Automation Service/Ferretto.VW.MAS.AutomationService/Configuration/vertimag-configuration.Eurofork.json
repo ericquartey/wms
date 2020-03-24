@@ -6607,6 +6607,8 @@
       "Id": 28,
       "IsBypassed": false,
       "IsCompleted": false
+    },
+    "HorizontalChainCalibration": {
     }
   }
 }

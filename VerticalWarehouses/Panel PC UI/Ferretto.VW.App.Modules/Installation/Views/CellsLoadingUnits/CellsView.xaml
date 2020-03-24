@@ -45,10 +45,8 @@
                    Height="Auto"
                    Margin="0,0,15,15"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.CellEditing}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.CellEditing}" />
 
         <controls:CustomControlCellsDataGrid Grid.Row="2"
                                              ItemsSource="{Binding Cells}"

@@ -40,16 +40,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.CellPanelsCheckPhotocells}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.CellPanelsCheckPhotocells}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.CellPanelsCheckDescription}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.CellPanelsCheckDescription}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -71,10 +67,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.ColumnSpan="3"
-                           FontSize="24"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.CellPanelsCheckPanel}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.CellPanelsCheckPanel}" />
 
                 <Border Grid.Row="1"
                         Grid.Column="0"
@@ -112,9 +106,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.CurrentPanel}"
                                            TextAlignment="Left" />
 
@@ -122,9 +114,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           TextWrapping="Wrap">
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}">
                                     <Run Text="{Binding CurrentPanelNumber, Mode=OneWay}" />
                                     <icon:PackIconMaterial Width="22"
                                                            Height="22"
@@ -158,9 +148,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.CellHeight}"
                                            TextAlignment="Left" />
 
@@ -168,10 +156,8 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding CurrentCell.Position, StringFormat={}{0:F2}}"
-                                           TextWrapping="Wrap" />
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                           Text="{Binding CurrentCell.Position, StringFormat={}{0:F2}}" />
 
                                 <Border Grid.RowSpan="2"
                                         Grid.Column="1"
@@ -232,9 +218,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
@@ -242,10 +226,8 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding Displacement, StringFormat={}{0:F1}, FallbackValue=0}"
-                                           TextWrapping="Wrap" />
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                           Text="{Binding Displacement, StringFormat={}{0:F1}, FallbackValue=0}" />
 
                             </Grid>
                         </Grid>
@@ -353,10 +335,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpVPPMDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -403,9 +383,7 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{DynamicResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.TestedPanels}" />
 
                     <StackPanel Grid.Row="1"
@@ -417,8 +395,7 @@
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}">
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
                             <Run Text="{Binding PanelsCheck, FallbackValue=0, Mode=OneWay}" />
                             <Run Text="/" />
                             <Run Text="{Binding Panels.Count, FallbackValue=0, Mode=OneWay}" />

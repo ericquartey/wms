@@ -27,6 +27,9 @@ namespace Ferretto.VW.MAS.DataLayer
         PositioningProcedure GetCellsHeightCheck();
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
+
+        SetupProcedure GetHorizontalChainCalibration();
+
         PositioningProcedure GetFullTest();
         PositioningProcedure GetLoadFirstDrawerTest();
 

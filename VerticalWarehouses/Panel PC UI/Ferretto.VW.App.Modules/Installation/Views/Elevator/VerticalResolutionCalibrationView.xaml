@@ -39,16 +39,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.AttachMeter}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.AttachMeter}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
@@ -72,10 +68,8 @@
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.RemoveCarterRestore}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.RemoveCarterRestore}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
@@ -101,15 +95,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart1}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart1}" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -135,10 +125,8 @@
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            VerticalAlignment="Center"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Grid.Column="0"
@@ -176,15 +164,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart2}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart2}" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -208,10 +192,8 @@
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}"
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Grid.Column="0"
@@ -243,15 +225,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ConfirmNewResolution}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ConfirmNewResolution}" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.VerifyNewCalcolatedValue}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.VerifyNewCalcolatedValue}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -315,10 +293,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -364,19 +340,15 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{DynamicResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.CurrentResolution}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_CardSensor_Data}"
+                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}" />
 
                 </Grid>
             </Border>

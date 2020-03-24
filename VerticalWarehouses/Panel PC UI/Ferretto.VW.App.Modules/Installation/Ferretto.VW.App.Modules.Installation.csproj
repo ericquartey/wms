@@ -105,6 +105,9 @@
     <Compile Update="Views\Cells\CellsHeightCheckView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\Elevator\HorizontalChainCalibrationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Elevator\VerticalOffsetCalibrationView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

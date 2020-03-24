@@ -343,6 +343,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("horizontal/calibration/set-completed")]
+        public IActionResult SetHorizontalChainCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), false);
+            return this.Ok();
+        }
+
         [HttpPost("set-loadunit-on-elevator")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
