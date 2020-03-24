@@ -21,6 +21,10 @@
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
                                          Invert="True" />
 
+    <conv:ReferenceToBoolConverter x:Key="RTBC" />
+    <conv:ReferenceToBoolConverter x:Key="RTBIC"
+                                         Invert="True" />
+
     <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />
     <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />

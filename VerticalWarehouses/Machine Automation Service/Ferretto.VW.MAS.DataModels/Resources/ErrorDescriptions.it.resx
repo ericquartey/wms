@@ -274,13 +274,13 @@
     <value>Posizione verticale errata.</value>
   </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>Esiste un'altra missione attiva per questa baia</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>Esiste un'altra missione attiva per questo cassetto</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>Esiste un'altra missione attiva dello stesso tipo</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
     <value>L'inverter sta eseguendo un altro comando</value>
@@ -370,12 +370,12 @@
     <value>Magazzino pieno</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>Il sensore di zero è attivo con elevatore occupato</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>Manca il Sensore di zero dopo il deposito</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>Il sensore di zero è attivo dopo il prelievo</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
 </root>

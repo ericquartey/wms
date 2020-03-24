@@ -1291,4 +1291,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Counters" xml:space="preserve">
     <value>Contatori</value>
   </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Nessun articolo nello scomparto selezionato.</value>
+  </data>
 </root>
