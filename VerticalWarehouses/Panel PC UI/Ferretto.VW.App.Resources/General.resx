@@ -417,4 +417,7 @@
   <data name="NoRows" xml:space="preserve">
     <value>No row in the list</value>
   </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>{0:dd.MM.yyyy HH:mm}</value>
+  </data>
 </root>
