@@ -219,6 +219,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                if (this.dataContext.Missions.Any(m =>
+                    m.LoadUnitId == loadingUnitId
+                    && m.MissionType == missionType
+                    && m.Status == MissionStatus.New)
+                    )
+                {
+                    throw new InvalidOperationException($"A recall mission for load unit {loadingUnitId} already exists.");
+                }
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
