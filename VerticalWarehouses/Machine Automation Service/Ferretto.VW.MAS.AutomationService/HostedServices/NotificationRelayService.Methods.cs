@@ -136,13 +136,18 @@ namespace Ferretto.VW.MAS.AutomationService
 
             baysDataProvider.AddElevatorPseudoBay();
 
-            if (this.configuration.IsWmsEnabled())
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
             {
                 var client = serviceProvider.GetRequiredService<System.Net.Http.HttpClient>();
                 client.DefaultRequestHeaders.Add(
                        "Machine-Id",
                        serviceProvider.GetRequiredService<IMachineProvider>().GetIdentity().ToString(System.Globalization.CultureInfo.InvariantCulture));
+
+                var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+                dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
             }
+
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
@@ -228,6 +233,27 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnSystemTimeChangedAsync()
         {
             await this.installationHub.Clients.All.SystemTimeChanged();
+        }
+
+        private async Task OnWmsEnableChanged(IServiceProvider serviceProvider)
+        {
+            var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+            }
+            else
+            {
+                try
+                {
+                    await dataHubClient.DisconnectAsync();
+                }
+                catch
+                {
+                    // do nothing
+                }
+            }
         }
 
         private async Task ResolutionCalibrationMethod(NotificationMessage receivedMessage)

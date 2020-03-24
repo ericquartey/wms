@@ -6,9 +6,13 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public bool IsWmsTimeSyncEnabled { get; set; }
+        public bool IsEnabled { get; set; }
+
+        public bool IsTimeSyncEnabled { get; set; }
 
         public DateTimeOffset LastWmsTimeSync { get; set; }
+
+        public Uri ServiceUrl { get; set; }
 
         public int TimeSyncIntervalMilliseconds { get; set; }
 

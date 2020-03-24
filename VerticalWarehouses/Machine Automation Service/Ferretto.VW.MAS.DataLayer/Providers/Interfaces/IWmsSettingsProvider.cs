@@ -1,4 +1,5 @@
 using System;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -6,11 +7,21 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        bool IsWmsTimeSyncEnabled { get; set; }
+        bool IsEnabled { get; set; }
+
+        bool IsTimeSyncEnabled { get; set; }
 
         DateTimeOffset LastWmsSyncTime { get; set; }
 
+        Uri ServiceUrl { get; set; }
+
         int TimeSyncIntervalMilliseconds { get; }
+
+        #endregion
+
+        #region Methods
+
+        WmsSettings GetAll();
 
         #endregion
     }

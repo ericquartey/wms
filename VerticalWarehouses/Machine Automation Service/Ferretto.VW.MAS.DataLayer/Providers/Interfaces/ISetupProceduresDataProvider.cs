@@ -30,6 +30,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetHorizontalChainCalibration();
 
+        PositioningProcedure GetFullTest();
         PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();

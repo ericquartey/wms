@@ -384,4 +384,10 @@
   <data name="NoRows" xml:space="preserve">
     <value>Nessuna riga presente nell'elenco</value>
   </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Disabilitato</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
 </root>

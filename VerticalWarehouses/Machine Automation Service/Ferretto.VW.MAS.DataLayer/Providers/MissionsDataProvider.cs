@@ -215,10 +215,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber)
+        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType)
         {
             lock (this.dataContext)
             {
+                if (this.dataContext.Missions.Any(m =>
+                    m.LoadUnitId == loadingUnitId
+                    && m.MissionType == missionType
+                    && m.Status == MissionStatus.New)
+                    )
+                {
+                    throw new InvalidOperationException($"A recall mission for load unit {loadingUnitId} already exists.");
+                }
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
@@ -228,7 +236,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         TargetBay = bayNumber,
                         Status = MissionStatus.New,
                         LoadUnitDestination = LoadingUnitLocation.Cell,
-                        MissionType = MissionType.IN
+                        MissionType = missionType
                     });
 
                 this.dataContext.SaveChanges();

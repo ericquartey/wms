@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private const int SyncToleranceMilliseconds = 10 * 1000;
 
-        private readonly IConfiguration configuration;
-
         private readonly IDataLayerService dataLayerService;
 
         private readonly ILogger<SystemTimeSyncService> logger;
@@ -35,8 +33,6 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
 
-        private readonly IUtcTimeWmsWebService utcTimeWmsWebService;
-
         private CancellationTokenSource cancellationTokenSource;
 
         #endregion
@@ -46,8 +42,6 @@ namespace Ferretto.VW.MAS.TimeManagement
         public SystemTimeSyncService(
             IEventAggregator eventAggregator,
             IDataLayerService dataLayerService,
-            IUtcTimeWmsWebService utcTimeWmsWebService,
-            IConfiguration configuration,
             ILogger<SystemTimeSyncService> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
@@ -57,8 +51,6 @@ namespace Ferretto.VW.MAS.TimeManagement
             }
 
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
-            this.utcTimeWmsWebService = utcTimeWmsWebService ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
@@ -86,6 +78,12 @@ namespace Ferretto.VW.MAS.TimeManagement
                     m => m.Type is CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
             }
 
+            this.notificationEvent.Subscribe(
+                   this.OnDataLayerReady,
+                   ThreadOption.PublisherThread,
+                   false,
+                   m => m.Type is CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged);
+
             this.syncStateChangeRequestEvent.Subscribe(
                   this.OnSyncStateChangeRequested,
                   ThreadOption.PublisherThread,
@@ -107,6 +105,7 @@ namespace Ferretto.VW.MAS.TimeManagement
         private void Disable()
         {
             this.cancellationTokenSource?.Cancel();
+            this.cancellationTokenSource = null;
         }
 
         private void Enable()
@@ -134,7 +133,8 @@ namespace Ferretto.VW.MAS.TimeManagement
                         try
                         {
                             this.logger.LogDebug("Attempting sync time with WMS.");
-                            var remoteUtcTime = await this.utcTimeWmsWebService.GetAsync(cancellationToken);
+                            var utcTimeWmsWebService = scope.ServiceProvider.GetRequiredService<IUtcTimeWmsWebService>();
+                            var remoteUtcTime = await utcTimeWmsWebService.GetAsync(cancellationToken);
                             var machineUtcTime = DateTimeOffset.Now;
 
                             var timeDifference = machineUtcTime - remoteUtcTime;
@@ -186,19 +186,23 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private void OnDataLayerReady(NotificationMessage message)
         {
-            this.logger.LogTrace("OnDataLayerReady start");
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var wmsSettingsProvider = scope.ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
 
-                if (wmsSettingsProvider.IsWmsTimeSyncEnabled && this.configuration.IsWmsEnabled())
+                if (wmsSettingsProvider.IsTimeSyncEnabled && wmsSettingsProvider.IsEnabled)
                 {
-                    this.logger.LogDebug("Data layer is ready, starting WMS time sync service.");
+                    this.logger.LogDebug("Starting WMS time sync service.");
 
                     this.Enable();
                 }
+                else
+                {
+                    this.logger.LogDebug("Stopping WMS time sync service.");
+
+                    this.Disable();
+                }
             }
-            this.logger.LogTrace("OnDataLayerReady end");
         }
 
         private void OnSyncStateChangeRequested(SyncStateChangeRequestEventArgs e)
