@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<IActionResult> MoveToBayAsync(
             int id,
             [FromServices] IWmsSettingsProvider wmsSettingsProvider,
-            ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
             if (wmsSettingsProvider is null)
             {

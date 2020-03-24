@@ -564,6 +564,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationCompletedAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationDistanceAsync(double distance);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationDistanceAsync(double distance, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLoadUnitOnElevatorAsync(int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -804,11 +811,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToBayAsync(int id, ILoadingUnitsWmsWebService loadingUnitsWmsWebService);
+        System.Threading.Tasks.Task MoveToBayAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToBayAsync(int id, ILoadingUnitsWmsWebService loadingUnitsWmsWebService, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay);
@@ -4489,21 +4496,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         MonoReference = 77,
     
         PluriReference = 80,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public abstract partial class ILoadingUnitsWmsWebService 
-    {
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static ILoadingUnitsWmsWebService FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ILoadingUnitsWmsWebService>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
     
     }
     
