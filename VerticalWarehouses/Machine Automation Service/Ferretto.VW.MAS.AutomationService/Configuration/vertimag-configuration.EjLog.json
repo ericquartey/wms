@@ -6262,6 +6262,7 @@
   "Wms": {
     "IsEnabled": true,
     "ServiceUrl": "http://localhost:10000",
-    "IsTimeSyncEnabled": true
+    "IsTimeSyncEnabled": true,
+    "TimeSyncIntervalMilliseconds": 10000
   }
 }
