@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("ip-endpoint")]
         public async Task<ActionResult<string>> GetIpEndpoint()
         {
-            return this.Ok(this.wmsSettingsProvider.ServiceUrl.ToString());
+            return this.Ok(this.wmsSettingsProvider.ServiceUrl?.ToString());
         }
 
         [HttpGet("enabled")]
@@ -70,8 +70,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut]
         public async Task UpdateAsync(bool isEnabled, string httpUrl)
         {
+            if (isEnabled && string.IsNullOrEmpty(httpUrl))
+            {
+                throw new ArgumentException("The url must be specified");
+            }
+
             this.wmsSettingsProvider.IsEnabled = isEnabled;
-            this.wmsSettingsProvider.ServiceUrl = new Uri(httpUrl);
+            this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
         }
 
         #endregion
