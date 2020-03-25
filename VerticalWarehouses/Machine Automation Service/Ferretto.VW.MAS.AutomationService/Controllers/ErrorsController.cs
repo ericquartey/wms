@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public ActionResult<IEnumerable<Mission>> GetAll()
+        public ActionResult<IEnumerable<MachineError>> GetAll()
         {
             var errors = this.errorsProvider.GetErrors();
             return this.Ok(errors);

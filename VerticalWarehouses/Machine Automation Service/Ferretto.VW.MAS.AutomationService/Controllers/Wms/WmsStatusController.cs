@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
