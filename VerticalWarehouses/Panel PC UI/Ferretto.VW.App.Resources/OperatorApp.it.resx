@@ -1303,4 +1303,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
     <value>Operazione cassetto</value>
   </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
 </root>

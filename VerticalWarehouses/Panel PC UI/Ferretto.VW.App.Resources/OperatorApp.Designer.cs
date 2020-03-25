@@ -421,6 +421,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string CommonLot {
+            get {
+                return ResourceManager.GetString("CommonLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note:.
         /// </summary>
         public static string CommonNote {

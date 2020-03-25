@@ -1617,4 +1617,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
     <value>Load Unit Operation</value>
   </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
 </root>

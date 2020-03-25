@@ -4,6 +4,7 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
@@ -15,100 +16,164 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="50,30,50,0">
+    <Grid Margin="15,0,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.InventoryOperation}" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
 
-        <wpf:TrayControl Name="TrayControl"
-                         Grid.Row="1"
-                         Margin="0"
-                         HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch"
-                         Compartments="{Binding Compartments}"
-                         DefaultCompartmentColor="#444444"
-                         DimensionHeight="{Binding LoadingUnitDepth}"
-                         DimensionWidth="{Binding LoadingUnitWidth}"
-                         GridLinesColor="#3c3c3c"
-                         IsEnabled="False"
-                         IsRotated="{Binding IsBaySideBack}"
-                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
-                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
-                         ShowBackground="False"
-                         ShowRuler="False" />
+            <iconPacks:PackIconModern Width="32"
+                                      Height="32"
+                                      Margin="3,10,15,10"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"
+                                      Kind="Inbox" />
+
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="10,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static resources:OperatorApp.InventoryOperation}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Height="Auto"
+                   Margin="0,0,0,0"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static resources:HelpDescriptions.HelpDrawerActivityInventoryDescription}"
+                   TextWrapping="Wrap" />
+
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="0">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="165" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <wpf:TrayControl Name="TrayControl"
+                                 Grid.Row="0"
+                                 Grid.Column="0"
+                                 Margin="0,0,0,0"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 Compartments="{Binding Compartments}"
+                                 DefaultCompartmentColor="#444444"
+                                 DimensionHeight="{Binding LoadingUnitDepth}"
+                                 DimensionWidth="{Binding LoadingUnitWidth}"
+                                 GridLinesColor="#3c3c3c"
+                                 IsEnabled="False"
+                                 IsRotated="{Binding IsBaySideBack}"
+                                 SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                 ShowBackground="False"
+                                 ShowRuler="False" />
+
+                <localControls:ItemInfoView Grid.Row="1"
+                                            Margin="0,0,0,0"
+                                            VerticalAlignment="Top" />
+
+            </Grid>
+
+        </Border>
 
         <Grid Grid.Row="2"
+              Grid.Column="1"
               Margin="0,15,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+            <Border Grid.Row="0"
+                    Width="230"
+                    Height="90"
+                    MinHeight="90"
+                    Margin="15,0"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
 
-            <localControls:ItemInfoView Grid.RowSpan="5"
-                                        Grid.ColumnSpan="3" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <ctrls:PpcSpinEdit Grid.Row="2"
-                               Grid.RowSpan="2"
-                               Grid.Column="2"
-                               Grid.ColumnSpan="2"
-                               Margin="0,0,10,0"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Top"
+                        <TextBlock Margin="8,4"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Text="{x:Static resources:OperatorApp.ItemCode}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                                   TextWrapping="Wrap" />
+
+                    </Grid>
+                </Border>
+            </Border>
+
+            <ctrls:PpcSpinEdit Grid.Row="1"
+                               Width="230"
+                               Height="90"
+                               Margin="15,15,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.InventoryQuantityDetected}}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MaxValue="{Binding QuantityTolerance}"
                                MinValue="0" />
 
-            <StackPanel Grid.Row="4"
-                        Grid.ColumnSpan="4"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
+            <controls:PpcButton Grid.Row="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding ShowDetailsCommand}"
+                                Content="{x:Static resources:OperatorApp.Details}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-                <StackPanel Grid.Row="4"
-                            Grid.ColumnSpan="4"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+            <controls:PpcButton Grid.Row="4"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Background="{DynamicResource FerrettoBlue}"
+                                Command="{Binding ConfirmOperationCommand}"
+                                Content="{x:Static resources:OperatorApp.Confirm}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-                    <controls:PpcButton Grid.Row="4"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding ShowDetailsCommand}"
-                                        Content="{x:Static resources:OperatorApp.Details}"
-                                        Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
-
-
-                    <controls:PpcButton Grid.Row="4"
-                                        Grid.Column="3"
-                                        Margin="40,0,60,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding ConfirmOperationCommand}"
-                                        Content="{x:Static resources:OperatorApp.Confirm}"
-                                        IsBusy="{Binding IsBusyConfirmingOperation}"
-                                        Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
-                </StackPanel>
-
-            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>
