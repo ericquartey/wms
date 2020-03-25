@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                         this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                     }
 
                     if (bay == null

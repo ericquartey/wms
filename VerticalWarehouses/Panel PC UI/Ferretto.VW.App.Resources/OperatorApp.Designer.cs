@@ -421,6 +421,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string CommonLot {
+            get {
+                return ResourceManager.GetString("CommonLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note:.
         /// </summary>
         public static string CommonNote {
@@ -2564,6 +2573,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Test.
+        /// </summary>
+        public static string MissionTypeFirstTest {
+            get {
+                return ResourceManager.GetString("MissionTypeFirstTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full test.
         /// </summary>
         public static string MissionTypeFullTest {
@@ -2573,11 +2591,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Test IN.
+        /// </summary>
+        public static string MissionTypeFullTestIN {
+            get {
+                return ResourceManager.GetString("MissionTypeFullTestIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Test OUT.
+        /// </summary>
+        public static string MissionTypeFullTestOUT {
+            get {
+                return ResourceManager.GetString("MissionTypeFullTestOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In.
         /// </summary>
         public static string MissionTypeIn {
             get {
                 return ResourceManager.GetString("MissionTypeIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Unit Operation.
+        /// </summary>
+        public static string MissionTypeLoadUnitOperation {
+            get {
+                return ResourceManager.GetString("MissionTypeLoadUnitOperation", resourceCulture);
             }
         }
         

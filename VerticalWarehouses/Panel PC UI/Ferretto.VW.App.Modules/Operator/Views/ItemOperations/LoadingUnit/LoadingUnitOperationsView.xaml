@@ -86,13 +86,25 @@
                                 Path="{Binding SelectedItemCompartment.ItemId}"
                                 Stretch="UniformToFill" />
 
-                <controls:PpcLabeledText Grid.Column="2"
+                <StackPanel Orientation="Vertical"  Grid.Row="0"  Grid.Column="2">
+
+                <controls:PpcLabeledText 
                                          Margin="10,0,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding SelectedItemCompartment.ItemDescription}"
                                          LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
 
+                <controls:PpcLabeledText
+                                         Grid.Row="1"
+                                        
+                                         Margin="10,0,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding SelectedItemCompartment.Lot}"
+                                         LabelText="{x:Static res:OperatorApp.Lot}" />
+                </StackPanel>
+                
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="2"
                                          Margin="10,0,0,0"
@@ -102,7 +114,7 @@
                                          LabelText="{x:Static res:OperatorApp.ItemStock}"
                                          Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
 
-                <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="1"                            
                             Grid.Column="2"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">

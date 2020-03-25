@@ -154,7 +154,7 @@
                     MinHeight="90"
                     Margin="15,0"
                     Background="{DynamicResource PpcBackground}">
-                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                <Border BorderBrush="{DynamicResource FerrettoBlue}"
                         BorderThickness="{DynamicResource PpcBorderThickness}">
                     <Grid Grid.Column="8"
                           Grid.ColumnSpan="4">
@@ -244,6 +244,7 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
+                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding RequestItemPickCommand}"
                                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                                 IsBusy="{Binding IsBusyRequestingItemPick}" />

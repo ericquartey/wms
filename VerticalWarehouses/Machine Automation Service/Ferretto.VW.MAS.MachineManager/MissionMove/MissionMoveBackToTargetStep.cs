@@ -73,35 +73,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
             }
 
-            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
-            {
-                if (this.Mission.CloseShutterBayNumber == BayNumber.None)
-                {
-                    this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
-                else
-                {
-                    this.Mission.CloseShutterPosition = ShutterPosition.Closed;
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
-                }
-            }
-            else
-            {
-                var waitContinue = (this.Mission.CloseShutterBayNumber != BayNumber.None && !bay.IsExternal);
-                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {false}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
-                this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                    this.Mission.CloseShutterBayNumber,
-                    this.Mission.CloseShutterPosition,
-                    measure: false,
-                    MessageActor.MachineManager,
-                    this.Mission.TargetBay,
-                    this.Mission.RestoreConditions,
-                    targetBayPositionId,
-                    targetCellId,
-                    waitContinue);
-                this.Mission.RestoreConditions = false;
-            }
+            var waitContinue = (this.Mission.CloseShutterBayNumber != BayNumber.None && !bay.IsExternal);
+            this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {false}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                this.Mission.CloseShutterBayNumber,
+                this.Mission.CloseShutterPosition,
+                measure: false,
+                MessageActor.MachineManager,
+                this.Mission.TargetBay,
+                this.Mission.RestoreConditions,
+                targetBayPositionId,
+                targetCellId,
+                waitContinue);
+            this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
@@ -116,49 +100,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.Homing)
+                    if (notification.Type == MessageType.ShutterPositioning
+                        || notification.TargetBay == BayNumber.ElevatorBay
+                        )
                     {
-                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        if (this.UpdateResponseList(notification.Type))
                         {
-                            this.Mission.NeedHomingAxis = Axis.None;
                             this.MissionsDataProvider.Update(this.Mission);
-                        }
-
-                        var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
-
-                        this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, closeShutterPosition {ShutterPosition.NotSpecified}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
-                        this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                            BayNumber.None,
-                            ShutterPosition.NotSpecified,
-                            measure,
-                            MessageActor.MachineManager,
-                            notification.RequestingBay,
-                            this.Mission.RestoreConditions,
-                            targetBayPositionId,
-                            targetCellId);
-                    }
-                    else
-                    {
-                        if (notification.Type == MessageType.ShutterPositioning
-                            || notification.TargetBay == BayNumber.ElevatorBay
-                            )
-                        {
-                            if (this.UpdateResponseList(notification.Type))
+                            if (notification.Type == MessageType.ShutterPositioning)
                             {
-                                this.MissionsDataProvider.Update(this.Mission);
-                                if (notification.Type == MessageType.ShutterPositioning)
-                                {
-                                    if (this.Mission.NeedHomingAxis == Axis.Horizontal)
-                                    {
-                                        this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
-                                        this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
-                                    }
-                                    else
-                                    {
-                                        this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
-                                        this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
-                                    }
-                                }
+                                this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                             }
                         }
                     }

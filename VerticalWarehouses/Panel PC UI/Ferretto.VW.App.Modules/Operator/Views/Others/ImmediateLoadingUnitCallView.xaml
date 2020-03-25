@@ -220,6 +220,7 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
+                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding LoadingUnitCallCommand}"
                                 Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}" />
 

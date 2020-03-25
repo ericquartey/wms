@@ -215,6 +215,7 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
+                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding ListExecuteCommand}"
                                 Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}" />
 

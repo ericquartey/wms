@@ -189,7 +189,7 @@
       {
         "Carousel": {
           "AssistedMovements": {
-            "FeedRate": 0.2,
+            "FeedRate": 1.0,
             "Id": 1
           },
           "ElevatorDistance": 460.0,
@@ -202,19 +202,19 @@
           },
           "Id": 1
         },
-        "ChainOffset": -5.0,
+        "ChainOffset": -8.0,
         "CurrentMission": null,
         "EmptyLoadMovement": {
-          "Acceleration": 1.0,
-          "Deceleration": 1.0,
-          "Speed": 1.0,
-          "Id": 3
+          "Acceleration": 200.0,
+          "Deceleration": 500.0,
+          "Id": 3,
+          "Speed": 110.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 500.0,
-          "Speed": 110.0,
-          "Id": 5
+          "Id": 5,
+          "Speed": 110.0
         },
         "Inverter": {
           "Index": 3,
@@ -6262,6 +6262,7 @@
   "Wms": {
     "IsEnabled": true,
     "ServiceUrl": "http://localhost:10000",
-    "IsTimeSyncEnabled": true
+    "IsTimeSyncEnabled": true,
+    "TimeSyncIntervalMilliseconds": 10000
   }
 }

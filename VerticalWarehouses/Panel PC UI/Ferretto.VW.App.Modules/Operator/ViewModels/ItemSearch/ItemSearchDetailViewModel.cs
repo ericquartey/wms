@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemSearchDetailViewModel(
-                    IWmsDataProvider wmsDataProvider,
+            IWmsDataProvider wmsDataProvider,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)

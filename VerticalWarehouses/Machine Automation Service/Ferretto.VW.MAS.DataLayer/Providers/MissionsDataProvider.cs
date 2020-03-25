@@ -321,7 +321,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .Where(x => x.WmsId != null)
+                    .Where(x => x.WmsId != null
+                        && x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted)
                     .ToList();
             }
         }

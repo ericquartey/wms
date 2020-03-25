@@ -109,6 +109,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 var error = this.ErrorsProvider.RecordNew(result, bay.Number);
                                 throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
                             }
+                            if (this.Mission.NeedHomingAxis == Axis.None)
+                            {
+                                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+                            }
                         }
 #endif
                         if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
