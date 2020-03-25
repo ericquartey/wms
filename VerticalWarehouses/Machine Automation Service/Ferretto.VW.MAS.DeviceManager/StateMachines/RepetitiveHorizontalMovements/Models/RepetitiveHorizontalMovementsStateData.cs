@@ -1,14 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DeviceManager.HorizontalFwdBckw.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.DeviceManager.HorizontalFwdBckw.Models
+namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements.Models
 {
-    internal class HorizontalFwdBckwStateData : IHorizontalFwdBckwStateData
+    internal class RepetitiveHorizontalMovementsStateData : IRepetitiveHorizontalMovementsStateData
     {
         #region Constructors
 
-        public HorizontalFwdBckwStateData(IStateMachine parentMachine, IMachineData machineData)
+        public RepetitiveHorizontalMovementsStateData(IStateMachine parentMachine, IMachineData machineData)
         {
             this.ParentMachine = parentMachine;
             this.MachineData = machineData;

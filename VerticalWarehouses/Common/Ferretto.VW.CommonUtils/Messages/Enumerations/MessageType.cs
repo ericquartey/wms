@@ -111,5 +111,10 @@
         MoveTest,
 
         StopTest,
+
+        /// <summary>
+        /// Repetitive horizontal movements on a specified bay.
+        /// </summary>
+        RepetitiveHorizontalMovements
     }
 }

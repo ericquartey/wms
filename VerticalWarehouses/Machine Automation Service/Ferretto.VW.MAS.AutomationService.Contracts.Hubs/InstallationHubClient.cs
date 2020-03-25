@@ -103,6 +103,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On(
                 nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
+
+            connection.On<NotificationMessageUI<RepetitiveHorizontalMovementsMessageData>>(
+                nameof(IInstallationHub.RepetitiveHorizontalMovementsNotify), this.OnRepetitiveHorizontalMovementsNotify);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -188,6 +191,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnProfileCalibrationNotify(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnRepetitiveHorizontalMovementsNotify(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

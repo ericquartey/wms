@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
@@ -248,7 +249,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                 targetBay = message.RequestingBay;
             }
 
-            if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
+            if (this.currentStateMachines.Any(
+                    x => x.BayNumber == targetBay &&
+                    !(x is ShutterPositioningStateMachine) &&
+                    !(x is RepetitiveHorizontalMovementsStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
             }
@@ -366,6 +370,41 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
+            }
+        }
+
+        private void ProcessRepetitiveHorizontalMovements(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            System.Diagnostics.Debug.Assert(
+                message.Data is IRepetitiveHorizontalMovementsMessageData,
+                "Message data should be consistent with message.Type");
+
+            var data = message.Data as IRepetitiveHorizontalMovementsMessageData;
+            var targetBay = BayNumber.ElevatorBay;
+
+            if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Repetitive Horizontal Movements state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var currentStateMachine = new RepetitiveHorizontalMovementsStateMachine(
+                    message.Source,
+                    message.RequestingBay,
+                    targetBay,
+                    data,
+                    this.machineResourcesProvider,
+                    this.EventAggregator,
+                    this.Logger,
+                    baysDataProvider,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
             }
         }
 

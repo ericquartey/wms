@@ -219,6 +219,13 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private async Task OnRepetitiveHorizontalMovementsChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+
+            await this.installationHub.Clients.All.RepetitiveHorizontalMovementsNotify(message);
+        }
+
         private async Task OnSensorsChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);

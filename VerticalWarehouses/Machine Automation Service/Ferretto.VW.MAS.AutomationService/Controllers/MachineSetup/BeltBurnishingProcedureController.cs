@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
@@ -63,7 +62,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(double upperPosition, double lowerPosition, int delayStart)
         {
-            this.elevatorProvider.StartBeltBurnishing(upperPosition, lowerPosition, delayStart, this.BayNumber, MessageActor.AutomationService);
+            // Remove
+            var bayPositionId = 2;
+            var loadingUnitId = 1;
+            this.elevatorProvider.StartRepetitiveHorizontalMovements(bayPositionId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+
+            // Uncomment
+            //this.elevatorProvider.StartBeltBurnishing(upperPosition, lowerPosition, delayStart, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
