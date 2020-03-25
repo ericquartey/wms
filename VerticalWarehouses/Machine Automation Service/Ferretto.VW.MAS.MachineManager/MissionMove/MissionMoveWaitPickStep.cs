@@ -89,7 +89,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notification.Type)
             {
                 case MessageType.Stop:
-                    if (notification.RequestingBay == this.Mission.TargetBay)
+                    if (notification.RequestingBay == this.Mission.TargetBay
+                        || notification.TargetBay == this.Mission.TargetBay
+                        )
                     {
                         this.OnStop(StopRequestReason.Error);
                     }
@@ -110,9 +112,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
                 {
-                    this.Mission.StepTime = DateTime.UtcNow;
                     if (messageData.MissionType == MissionType.NoType)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         // Remove LoadUnit
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
@@ -124,24 +126,35 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        // Update mission and start moving
-                        this.Mission.MissionType = messageData.MissionType;
-                        this.Mission.WmsId = messageData.WmsId;
-                        this.Mission.LoadUnitSource = bayPosition.Location;
-                        if (messageData.Destination == LoadingUnitLocation.Cell)
+                        var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
+                            .FirstOrDefault(x => x.Status == MissionStatus.Executing);
+
+                        if (activeMission != null)
                         {
-                            // prepare for finding a new empty cell
-                            this.Mission.DestinationCellId = null;
-                            this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                         }
-                        else if (bayPosition.Location != messageData.Destination)
+                        else
                         {
-                            // bay to bay movement
-                            this.Mission.LoadUnitDestination = messageData.Destination;
+                            // Update mission and start moving
+                            this.Mission.StepTime = DateTime.UtcNow;
+                            this.Mission.MissionType = messageData.MissionType;
+                            this.Mission.WmsId = messageData.WmsId;
+                            this.Mission.LoadUnitSource = bayPosition.Location;
+                            if (messageData.Destination == LoadingUnitLocation.Cell)
+                            {
+                                // prepare for finding a new empty cell
+                                this.Mission.DestinationCellId = null;
+                                this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                            }
+                            else if (bayPosition.Location != messageData.Destination)
+                            {
+                                // bay to bay movement
+                                this.Mission.LoadUnitDestination = messageData.Destination;
+                            }
+                            this.MissionsDataProvider.Update(this.Mission);
+                            var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
                         }
-                        this.MissionsDataProvider.Update(this.Mission);
-                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
                     }
                 }
                 else

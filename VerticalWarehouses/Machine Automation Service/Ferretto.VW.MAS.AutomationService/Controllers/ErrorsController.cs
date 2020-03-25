@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -33,6 +33,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpGet]
+        public ActionResult<IEnumerable<MachineError>> GetAll()
+        {
+            var errors = this.errorsProvider.GetErrors();
+            return this.Ok(errors);
+        }
 
         [HttpGet("current")]
         public ActionResult<MachineError> GetCurrent()

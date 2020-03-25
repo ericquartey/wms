@@ -259,6 +259,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:dd.MM.yyyy HH:mm}.
+        /// </summary>
+        public static string DateFormat {
+            get {
+                return ResourceManager.GetString("DateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:0} days ago.
         /// </summary>
         public static string DaysAgo {
@@ -565,6 +574,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No row in the list.
+        /// </summary>
+        public static string NoRows {
+            get {
+                return ResourceManager.GetString("NoRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Just now.
         /// </summary>
         public static string Now {
@@ -840,6 +858,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WarehouseSide_Front {
             get {
                 return ResourceManager.GetString("WarehouseSide_Front", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string WmsDisabled {
+            get {
+                return ResourceManager.GetString("WmsDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string WmsEnabled {
+            get {
+                return ResourceManager.GetString("WmsEnabled", resourceCulture);
             }
         }
         

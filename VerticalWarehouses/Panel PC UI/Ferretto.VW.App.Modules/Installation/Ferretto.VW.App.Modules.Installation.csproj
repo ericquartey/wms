@@ -63,7 +63,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ViewsAndViewModels\SingleViews\ComunicationWmsView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
@@ -94,9 +93,6 @@
     <Compile Update="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="ViewsAndViewModels\SingleViews\ComunicationWmsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\UsersView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -107,6 +103,9 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Cells\CellsHeightCheckView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Elevator\HorizontalChainCalibrationView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Elevator\VerticalOffsetCalibrationView.xaml.cs">

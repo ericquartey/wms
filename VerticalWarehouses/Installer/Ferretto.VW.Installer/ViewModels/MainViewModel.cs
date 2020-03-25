@@ -50,7 +50,7 @@ namespace Ferretto.VW.Installer.ViewModels
             if (File.Exists("steps-snapshot.json"))
             {
                 this.installationService = InstallationService.GetInstance("steps-snapshot.json");
-                //this.installationService = InstallationService.LoadAsync("steps.json");
+                this.installationService.GetInfoFromSnapShot();                
             }
             else if (File.Exists("steps.json"))
             {

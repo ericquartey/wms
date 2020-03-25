@@ -8,9 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLog;
 
 namespace Ferretto.VW.Installer.Core
@@ -56,6 +55,8 @@ namespace Ferretto.VW.Installer.Core
         private MachineRole machineRole;
 
         private readonly string fileName;
+
+        private bool isStartedFromSnapShot;
 
         public InstallationService(string fileName)
         {
@@ -268,6 +269,12 @@ namespace Ferretto.VW.Installer.Core
             this.LoadPanelPcVersion();
             this.LoadMasVersion();
 
+            if (this.isStartedFromSnapShot)
+            {
+                this.OperationMode = OperationMode.Update;
+                return;
+            }
+
             if (this.setupMode == SetupMode.Install)
             {
                 this.OperationMode = OperationMode.ImstallType;
@@ -422,6 +429,25 @@ namespace Ferretto.VW.Installer.Core
                 throw new InvalidOperationException(msg);
             }
         }
+
+        public void GetInfoFromSnapShot()
+        {
+            try
+            {
+                this.isStartedFromSnapShot = true;
+                var stepsJsonFile = File.ReadAllText(this.fileName);
+                var parsedObject = JObject.Parse(stepsJsonFile);
+                this.IsRollbackInProgress = (bool)parsedObject[nameof(this.IsRollbackInProgress)].ToObject<bool>();
+                this.SetupMode = (SetupMode)parsedObject[nameof(this.SetupMode)].ToObject<SetupMode>();
+            }
+            catch (Exception ex)
+            {
+                var msg = $" Unable to read/assign data from Snapshot file \"{this.fileName}\"";
+                this.logger.Error(ex, msg);
+                throw new InvalidOperationException(msg);
+            }             
+        }
+
 
         public void LoadSteps()
         {

@@ -2,9 +2,9 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -14,15 +14,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
         #region Constructors
 
-        public WmsStatusController(IConfiguration configuration)
+        public WmsStatusController(IWmsSettingsProvider wmsSettingsProvider)
         {
-            this.configuration = configuration;
+            this.wmsSettingsProvider = wmsSettingsProvider;
         }
 
         #endregion
@@ -35,12 +35,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetHealth()
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 return this.UnprocessableEntity("WMS service is not enabled");
             }
 
-            using (var client = new HttpClient() { BaseAddress = this.configuration.GetWmsServiceUrl() })
+            using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
             {
                 try
                 {
@@ -54,15 +54,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
+        [HttpGet("ip-endpoint")]
+        public async Task<ActionResult<string>> GetIpEndpoint()
+        {
+            return this.Ok(this.wmsSettingsProvider.ServiceUrl?.ToString());
+        }
+
         [HttpGet("enabled")]
         public ActionResult<bool> IsEnabled()
         {
-            return this.Ok(this.configuration.IsWmsEnabled());
+            return this.Ok(this.wmsSettingsProvider.IsEnabled);
         }
 
         [HttpPut]
-        public async Task UpdateAsync(bool isEnabled, string ipAddress, int tcpPort)
+        public async Task UpdateAsync(bool isEnabled, string httpUrl)
         {
+            if (isEnabled && string.IsNullOrEmpty(httpUrl))
+            {
+                throw new ArgumentException("The url must be specified");
+            }
+
+            this.wmsSettingsProvider.IsEnabled = isEnabled;
+            this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
         }
 
         #endregion

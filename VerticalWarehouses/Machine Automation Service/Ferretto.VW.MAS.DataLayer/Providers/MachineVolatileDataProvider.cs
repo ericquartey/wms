@@ -50,6 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.positions.Add(BayNumber.BayThree, 0);
 
             this.LoadUnitsToTest = null;
+            this.LoadUnitsExecutedCycles = null;
             this.BayTestNumber = BayNumber.None;
 
             this.ElevatorVerticalPositionOld = -10000;
@@ -120,6 +121,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool IsMachineRunning => (this.MachinePowerState == MachinePowerState.Powered);
 
         public bool? IsOneTonMachine { get; set; }
+
+        public Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 
         public List<int> LoadUnitsToTest { get; set; }
 

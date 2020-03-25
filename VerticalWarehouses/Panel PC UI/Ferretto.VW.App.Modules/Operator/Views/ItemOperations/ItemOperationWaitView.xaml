@@ -2,7 +2,6 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,7 +10,7 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="100,30,50,0">
+    <Grid Margin="15,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -19,11 +18,10 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--#region Title-->
         <StackPanel Grid.ColumnSpan="2"
                     Orientation="Horizontal">
             <TextBlock Margin="0,10,15,10"
@@ -36,20 +34,16 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static Resources:OperatorApp.NavigationMainMenuDrawerOperation}" />
         </StackPanel>
-        <!--#endregion-->
-
 
         <TextBlock Grid.Row="1"
                    Grid.ColumnSpan="1"
                    Height="Auto"
-                   Margin="0,0,0,150"
+                   Margin="0,0,0,80"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding LoadingUnitsInfo}"
                    TextWrapping="Wrap" />
-
-        <!--  Text="{Binding LoadingUnitsInfo, FallbackValue='ddddddddddddddddddddddddddddddddddddddddddddddd'}"  -->
 
         <Image Grid.Row="1"
                Grid.RowSpan="2"

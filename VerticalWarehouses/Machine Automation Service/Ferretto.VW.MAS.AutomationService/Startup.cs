@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
@@ -75,11 +76,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             }
 
-            if (this.Configuration.IsWmsEnabled())
-            {
-                app.UseDataHub();
-            }
-
             app.UseMasHealthChecks();
 
             app.UseCors("AllowAll");
@@ -142,7 +138,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             });
 
-            this.AddWmsServices(services);
+            AddWmsServices(services);
 
             services
                 .AddIODriver()
@@ -159,20 +155,24 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
         }
 
-        private void AddWmsServices(IServiceCollection services)
+        private static void AddWmsServices(IServiceCollection services)
         {
-            if (this.Configuration.IsWmsEnabled())
-            {
-                var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
-                services.AddWmsWebServices(wmsServiceAddress);
+            services.AddWmsWebServices(
+                s => s.GetRequiredService<IWmsSettingsProvider>().ServiceUrl,
+                s =>
+                {
+                    var dataLayerService = s.GetRequiredService<IDataLayerService>();
 
-                var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
-                services.AddDataHub(wmsServiceAddressHubsEndpoint);
+                    return dataLayerService.IsReady
+                        ? s.GetRequiredService<IMachineProvider>().GetIdentity()
+                        : 0;
+                });
 
-                services.AddWmsMissionManager();
-            }
+            services.AddWmsDataHub();
 
-            services.AddTimeServices(this.Configuration.IsWmsEnabled());
+            services.AddWmsMissionManager();
+
+            services.AddTimeServices();
         }
 
         #endregion

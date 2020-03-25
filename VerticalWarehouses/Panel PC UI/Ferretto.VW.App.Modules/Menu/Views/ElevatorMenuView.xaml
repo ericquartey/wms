@@ -98,10 +98,22 @@
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="Collapsed" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.BeltBreakInMenuTitle}"
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.HorizontalChainCalibration}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.2.4"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding HorizontalChainCalibration}"
+                                        Content="{x:Static res:InstallationApp.HorizontalChainCalibrationDescription}"
+                                        IsBypassed="{Binding IsHorizChainBypassed}"
+                                        IsCompleted="{Binding IsHorizChainCompleted}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="{x:Static res:InstallationApp.BeltBreakInMenuTitle}"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BeltBurnishingCommand}"
                                         Content="{x:Static res:InstallationApp.BeltBreakInMenuDescription}"
@@ -114,13 +126,11 @@
                     <controls:PpcButton Title="{x:Static res:InstallationApp.EmbarkDisembarkMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
-                                        Abbrevation="4.2.5"
+                                        Abbrevation="4.2.6"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestDepositAndPickUpCommand}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-
                 </WrapPanel>
             </Grid>
 

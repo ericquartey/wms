@@ -424,9 +424,10 @@
       }
     },
     "Height": 4563.0,
+    "Id": 1,
     "LoadUnitMaxHeight": 695.0,
-    "LoadUnitMinHeight": 145.0,
     "LoadUnitMaxNetWeight": 800.0,
+    "LoadUnitMinHeight": 145.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 50000.0,
     "ModelName": "Vertimag 800kg",
@@ -2086,8 +2087,7 @@
         "Id": 10
       }
     ],
-    "SerialNumber": "Prototype #1",
-    "Id": 1
+    "SerialNumber": "Prototype #1"
   },
   "SetupProcedures": {
     "CarouselManualMovements": {
@@ -2227,6 +2227,8 @@
       "FeedRate": 0.1
     },
     "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   }
 }

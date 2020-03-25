@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.MachineManager
                                 || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
                                 )
                             {
-                                this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
+                                this.Logger.LogWarning($"Conditions not met to activate Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} .");
                             }
                         }
                         catch (Exception ex)

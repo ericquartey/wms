@@ -102,9 +102,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopInPhaseCommand;
 
-        private DelegateCommand tuningBayCommand;
-
         private SubscriptionToken themeChangedToken;
+
+        private DelegateCommand tuningBayCommand;
 
         #endregion
 
@@ -918,10 +918,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
-                this.IsTuningBay = false;
-                this.IsExecutingProcedure = false;
-                this.IsWaitingForResponse = false;
-
                 this.ShowNotification(ex);
             }
             finally

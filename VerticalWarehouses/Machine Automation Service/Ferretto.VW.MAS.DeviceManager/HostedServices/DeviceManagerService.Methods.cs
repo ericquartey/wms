@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     targetBay = receivedMessage.RequestingBay;
                 }
 
-                if (this.currentStateMachines.Any(x => x.BayNumber == targetBay))
+                if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
                 {
                     this.SendCriticalErrorMessage(
                         new FsmExceptionMessageData(null, $"Error while starting Homing. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.StartStateMachine(currentStateMachine);
 
-                    if (!data.Enable)
+                    if (data.Enable)
                     {
                         this.machineVolatileDataProvider.ElevatorVerticalPositionOld = this.machineVolatileDataProvider.ElevatorVerticalPosition;
 

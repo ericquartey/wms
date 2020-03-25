@@ -19,11 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly ILogger<UsersController> logger;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly IUsersProvider usersProvider;
 
@@ -33,13 +29,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public UsersController(
             IUsersProvider usersProvider,
-            IConfiguration configuration,
-            IServiceScopeFactory serviceScopeFactory,
             ILogger<UsersController> logger)
         {
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -60,16 +52,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<UserClaims>> AuthenticateWithResourceOwnerPassword(
             string userName,
             string password,
-            string supportToken)
+            string supportToken,
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            [FromServices] IUsersWmsWebService usersWmsWebService)
         {
             this.logger.LogDebug($"Login requested for user '{userName}' by '{this.BayNumber}'.");
 
-            if (string.IsNullOrEmpty(supportToken) && this.configuration.IsWmsEnabled())
+            if (string.IsNullOrEmpty(supportToken) && wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
-                    var usersWmsWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IUsersWmsWebService>();
-
                     var claims = await usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
                     this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' through WMS.");

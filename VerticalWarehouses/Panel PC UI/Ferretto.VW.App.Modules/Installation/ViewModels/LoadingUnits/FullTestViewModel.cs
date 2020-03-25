@@ -134,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                var lst = this.LoadingUnits.Where(w => w.Status == LoadingUnitStatus.InLocation).Select(s => s.Id).Take(3).ToList();
+                var lst = this.LoadingUnits.Where(w => w.Status == LoadingUnitStatus.InLocation).Select(s => s.Id).ToList();
                 await this.machineFullTestWebService.StartAsync(lst, this.RequiredCycles.Value);
 
                 this.IsExecutingProcedure = true;

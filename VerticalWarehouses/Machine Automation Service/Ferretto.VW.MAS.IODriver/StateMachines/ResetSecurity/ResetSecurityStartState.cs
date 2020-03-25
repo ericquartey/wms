@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         public override void Start()
         {
-            var resetIoMessage = new IoWriteMessage();
+            var resetIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
             resetIoMessage.ResetSecurity = true;
             resetIoMessage.PowerEnable = true;
 

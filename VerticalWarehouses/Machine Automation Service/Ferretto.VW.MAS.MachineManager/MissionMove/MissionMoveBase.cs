@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                         this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                     }
 
                     if (bay == null
@@ -269,6 +270,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.MissionType == MissionType.OUT
                             || this.Mission.MissionType == MissionType.WMS
+                            || this.Mission.MissionType == MissionType.FullTestOUT
                             )
                         {
                             newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);

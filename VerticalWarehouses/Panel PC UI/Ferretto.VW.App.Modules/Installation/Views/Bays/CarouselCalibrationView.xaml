@@ -42,15 +42,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.CalibrationProcedureRequired}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
@@ -68,9 +64,7 @@
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           TextWrapping="Wrap">
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
                     <Run Text="{x:Static res:InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
 
                 </TextBlock>
@@ -102,15 +96,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.Calibration}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.CarouselCalibrationDescription}" />
                     </TextBlock>
                 </StackPanel>
@@ -176,17 +166,14 @@
 
                 <StackPanel Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.ConfirmAdjustment}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
                                TextWrapping="Wrap">
                         <Run Text="{x:Static res:InstallationApp.ProcedureNotCompleted}" /><Run Text=":" />
                     </TextBlock>
@@ -194,18 +181,14 @@
 
                 <TextBlock Grid.Row="1"
                            Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.SelectDirectionAndApply}"
-                           TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <TextBlock Grid.Row="1"
                            Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.RepeteProcedure}"
-                           TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
 
                 <controls:PpcButton Grid.Row="2"
@@ -290,10 +273,8 @@
                 <TextBlock Grid.Row="5"
                            Grid.ColumnSpan="2"
                            Margin="0,20,0,0"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.RepeatProcedure}"
-                           TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="6"
@@ -352,10 +333,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.CarouselCalibrationFunctionDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.CarouselCalibrationFunctionDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -477,9 +456,7 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{DynamicResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.RaisingsPerformed}" />
 
                     <StackPanel Grid.Row="1"
@@ -490,20 +467,17 @@
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="{Binding PerformedCycles}" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="/" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="{Binding RequiredCycles}" />
                     </StackPanel>
 

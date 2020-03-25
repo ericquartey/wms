@@ -112,7 +112,7 @@
 
         StopTest,
 
-        /// <summary>
+        WmsEnableChanged,
         /// Repetitive horizontal movements on a specified bay.
         /// </summary>
         RepetitiveHorizontalMovements

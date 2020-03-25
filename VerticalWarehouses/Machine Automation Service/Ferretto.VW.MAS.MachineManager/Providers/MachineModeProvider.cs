@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -65,6 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.RequiredCycles = cycles;
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
                     break;
 

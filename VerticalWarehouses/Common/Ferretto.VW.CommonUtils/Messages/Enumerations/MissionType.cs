@@ -16,7 +16,9 @@
 
         FirstTest,
 
-        FullTest,
+        FullTestIN,
+
+        FullTestOUT,
 
         Compact
     }

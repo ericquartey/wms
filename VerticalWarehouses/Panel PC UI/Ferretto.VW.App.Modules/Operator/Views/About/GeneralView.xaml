@@ -68,7 +68,7 @@
                   Grid.ColumnSpan="12"
                   Margin="0,0,15,0">
                 <Image HorizontalAlignment="Center"
-                       Opacity="0.6"
+                       Opacity="{DynamicResource ImageOpacity}"
                        Source="{DynamicResource BgMilestone}"
                        Stretch="UniformToFill">
                     <Image.Effect>
@@ -369,21 +369,14 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Margin="0,20,0,0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="{DynamicResource FontSize_Small}"
                                        Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="{x:Static Resources:OperatorApp.TotalUnits}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Top"
-                                       FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
-                                       Text="{Binding TotalDrawersCounter}"
-                                       TextWrapping="Wrap" />
+                                       Text="{Binding TotalDrawersCounter}" />
 
                             <Border Grid.RowSpan="2"
                                     Grid.Column="1"
@@ -408,20 +401,13 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Margin="0,20,0,0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="{DynamicResource FontSize_Small}"
                                        Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="{x:Static Resources:OperatorApp.TotalMissions}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Top"
-                                       FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
-                                       Text="{Binding TotalMissionCounter}"
-                                       TextWrapping="Wrap" />
+                                       Text="{Binding TotalMissionCounter}" />
 
                             <Border Grid.RowSpan="2"
                                     Grid.Column="1"
@@ -446,21 +432,14 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Margin="0,20,0,0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="{DynamicResource FontSize_Small}"
                                        Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="{x:Static Resources:OperatorApp.TotalKm}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Top"
-                                       FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
-                                       Text="{Binding Path=Statistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}}"
-                                       TextWrapping="Wrap" />
+                                       Text="{Binding Path=Statistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}}" />
 
                             <Border Grid.RowSpan="2"
                                     Grid.Column="1"
@@ -482,21 +461,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Margin="0,20,0,0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="{DynamicResource FontSize_Small}"
                                        Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
                                        Text="{x:Static Resources:OperatorApp.TotalMachineWeight}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Top"
-                                       FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
-                                       Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F2}}"
-                                       TextWrapping="Wrap" />
+                                       Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F2}}" />
 
                         </Grid>
 

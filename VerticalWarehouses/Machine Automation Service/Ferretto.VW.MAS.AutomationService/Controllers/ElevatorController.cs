@@ -196,6 +196,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("horizontal/calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalCalibration(HorizontalMovementDirection direction)
+        {
+            this.elevatorProvider.MoveHorizontalCalibration(direction, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("horizontal/move-manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -332,6 +341,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
+        }
+
+        [HttpPost("horizontal/calibration/set-completed")]
+        public IActionResult SetHorizontalChainCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), false);
+            return this.Ok();
+        }
+
+        [HttpPost("horizontal/calibration/update-distance")]
+        public IActionResult SetHorizontalChainCalibrationDistance(double distance)
+        {
+            // TODO save parameters
+            return this.Ok();
         }
 
         [HttpPost("set-loadunit-on-elevator")]

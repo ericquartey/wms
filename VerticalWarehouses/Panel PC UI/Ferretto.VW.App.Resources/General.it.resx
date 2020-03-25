@@ -381,4 +381,16 @@
   <data name="StatusDebug" xml:space="preserve">
     <value>Status:</value>
   </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Nessuna riga presente nell'elenco</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Disabilitato</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>{0:dd.MM.yyyy HH:mm}</value>
+  </data>
 </root>

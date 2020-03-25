@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
@@ -7,6 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -19,17 +21,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
-        private Item item;
+        private readonly IWmsDataProvider wmsDataProvider;
+
+        private double? inputQuantity;
+
+        private bool isBusyRequestingItemPick;
+
+        private ItemInfo item;
+
+        private DelegateCommand requestItemPickCommand;
 
         #endregion
 
         #region Constructors
 
         public ItemSearchDetailViewModel(
+            IWmsDataProvider wmsDataProvider,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
@@ -42,11 +54,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public Item Item
+        public double? InputQuantity
+        {
+            get => this.inputQuantity;
+            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyRequestingItemPick
+        {
+            get => this.isBusyRequestingItemPick;
+            private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ItemInfo Item
         {
             get => this.item;
             set => this.SetProperty(ref this.item, value);
         }
+
+        public ICommand RequestItemPickCommand =>
+            this.requestItemPickCommand
+            ??
+            (this.requestItemPickCommand = new DelegateCommand(
+                async () => await this.RequestItemPickAsync(),
+                this.CanRequestItemPick));
 
         #endregion
 
@@ -78,6 +109,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
+            this.Item = null;
+
             base.Disappear();
         }
 
@@ -87,7 +120,66 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.Item = this.Data as Item;
+            this.Item = this.Data as ItemInfo;
+
+            this.InputQuantity = null;
+        }
+
+        public async Task RequestItemPickAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.IsBusyRequestingItemPick = true;
+
+                await this.wmsDataProvider.PickAsync(
+                    this.Item.Id,
+                    this.InputQuantity.Value);
+
+                this.ShowNotification(
+                    string.Format(
+                        Resources.OperatorApp.PickRequestWasAccepted,
+                        this.Item.Code,
+                        this.InputQuantity),
+                    Services.Models.NotificationSeverity.Success);
+
+                this.NavigationService.GoBack();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.InputQuantity = null;
+                this.IsBusyRequestingItemPick = false;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanRequestItemPick()
+        {
+            return
+                this.Item != null
+                &&
+                this.Item.AvailableQuantity.HasValue
+                &&
+                this.Item.AvailableQuantity.Value > 0
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity > 0
+                &&
+                this.InputQuantity <= this.Item.AvailableQuantity.Value
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)

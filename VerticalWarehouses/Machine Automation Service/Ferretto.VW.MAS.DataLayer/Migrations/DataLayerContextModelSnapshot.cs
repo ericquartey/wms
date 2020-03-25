@@ -1216,6 +1216,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("DepositAndPickUpTestId");
 
+                    b.Property<int?>("HorizontalChainCalibrationId");
+
                     b.Property<int?>("LoadFirstDrawerTestId");
 
                     b.Property<int?>("ShutterHeightCheckId");
@@ -1273,6 +1275,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("CellsHeightCheckId");
 
                     b.HasIndex("DepositAndPickUpTestId");
+
+                    b.HasIndex("HorizontalChainCalibrationId");
 
                     b.HasIndex("LoadFirstDrawerTestId");
 
@@ -1421,9 +1425,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsWmsTimeSyncEnabled");
+                    b.Property<bool>("IsEnabled");
+
+                    b.Property<bool>("IsTimeSyncEnabled");
 
                     b.Property<DateTimeOffset>("LastWmsTimeSync");
+
+                    b.Property<string>("ServiceUrl")
+                        .HasColumnType("text");
 
                     b.Property<int>("TimeSyncIntervalMilliseconds");
 
@@ -1435,8 +1444,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
-                            IsWmsTimeSyncEnabled = true,
+                            IsEnabled = false,
+                            IsTimeSyncEnabled = false,
                             LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceUrl = "http://127.0.0.1:10000/",
                             TimeSyncIntervalMilliseconds = 10000
                         });
                 });
@@ -1758,6 +1769,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "DepositAndPickUpTest")
                         .WithMany()
                         .HasForeignKey("DepositAndPickUpTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "HorizontalChainCalibration")
+                        .WithMany()
+                        .HasForeignKey("HorizontalChainCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "LoadFirstDrawerTest")
                         .WithMany()

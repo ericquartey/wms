@@ -61,6 +61,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
             containerRegistry.RegisterForNavigation<CellsSideControlView>();
 
+            containerRegistry.RegisterForNavigation<HorizontalChainCalibrationView>();
+
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToBayView>();
@@ -90,7 +92,6 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<UpdateStep2View>();
             containerRegistry.RegisterForNavigation<UsersView>();
             containerRegistry.RegisterForNavigation<ParameterInverterView>();
-            containerRegistry.RegisterForNavigation<ComunicationWmsView>();
             containerRegistry.RegisterForNavigation<DateTimeView>();
             containerRegistry.RegisterForNavigation<WmsSettingsView>();
 

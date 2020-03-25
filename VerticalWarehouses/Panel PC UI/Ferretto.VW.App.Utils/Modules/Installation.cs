@@ -18,6 +18,8 @@
 
         public const string FULLTEST = "FullTestViewModel";
 
+        public const string HORIZONTALCHAINCALIBRATION = "HorizontalChainCalibrationViewModel";
+
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";

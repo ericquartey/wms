@@ -1,24 +1,46 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.ItemInfoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <converter:ImageToSourceConverter x:Key="ITSC" />
     </UserControl.Resources>
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ctrls:PpcImage Grid.Row="0"
+                        Grid.Column="0"
+                        Width="180"
+                        Height="180"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Path="{Binding ItemId}"
+                        Stretch="Uniform" />
+
+        <Grid Grid.Row="0"
+              Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -27,58 +49,75 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText HorizontalAlignment="Left"
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     MaxHeight="65"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="0"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
 
-
-            <controls:PpcLabeledText Grid.Column="1"
-                                     Grid.ColumnSpan="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.ItemListDescription}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
-
-            <controls:PpcLabeledText Grid.Column="2"                                     
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="0,0,0,10"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListRowCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListRow}" />
 
-        <controls:PpcLabeledText Grid.Row="1"                                     
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.ItemCode}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
-
-        <ctrls:PpcImage Grid.Row="2"
-                   Grid.RowSpan="4"
-                   Grid.Column="0"
-                   Width="180"
-                   Height="180"                   
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Path="{Binding ItemId}"                   
-                   Stretch="UniformToFill" />
-
             <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
+                                     Grid.Column="2"
+                                     Margin="0,0,0,10"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.ItemDescription}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
-
-
+                                     ContentText="{Binding MissionOperation.ItemLot}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonLot}">
+                <controls:PpcLabeledText.Style>
+                    <Style TargetType="{x:Type controls:PpcLabeledText}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MissionOperation.ItemLot}"
+                                         Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MissionOperation.ItemLot}"
+                                         Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:PpcLabeledText.Style>
+            </controls:PpcLabeledText>
 
             <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.RowSpan="2"
-                                     Grid.Column="1"
-                                     Grid.ColumnSpan="2"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     MaxHeight="40"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.ItemNotes}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonNote}" />
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
+        </Grid>
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="2"
+                                 MaxHeight="65"
+                                 Margin="0,5,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemNotes}"
+                                 LabelText="{x:Static resources:OperatorApp.CommonNote}" />
 
     </Grid>
 </UserControl>

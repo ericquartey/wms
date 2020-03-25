@@ -33,7 +33,7 @@
         <TextBlock Grid.ColumnSpan="2"
                    HorizontalAlignment="Left"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Installazione" />
+                   Text="{x:Static Resources:InstallationApp.Installation}" />
 
         <Grid Grid.Row="1"
               Grid.Column="1">
