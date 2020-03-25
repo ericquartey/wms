@@ -1605,4 +1605,16 @@ Please put back any moved pieces in their original position.</value>
   <data name="NoItemOnSelectedCompartment" xml:space="preserve">
     <value>No item on selected compartment.</value>
   </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>First Test</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Full Test IN</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Full Test OUT</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Load Unit Operation</value>
+  </data>
 </root>
