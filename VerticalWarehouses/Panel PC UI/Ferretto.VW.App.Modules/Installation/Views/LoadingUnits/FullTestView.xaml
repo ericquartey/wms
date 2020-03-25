@@ -149,6 +149,7 @@
         </Border>
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                    Visibility="Collapsed"
                                                     Grid.ColumnSpan="4"
                                                     Margin="0,30,15,0"
                                                     ItemsSource="{Binding LoadingUnits}"
