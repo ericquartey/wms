@@ -37,7 +37,7 @@
                                       Margin="3,10,15,10"
                                       VerticalAlignment="Center"
                                       Foreground="White"
-                                      Kind="Inbox" />
+                                      Kind="Box" />
 
             <TextBlock Grid.ColumnSpan="2"
                        Margin="10,10,15,10"
@@ -159,13 +159,15 @@
                                MinValue="0" />
 
             <controls:PpcButton Grid.Row="2"
-                                HorizontalAlignment="Left"
+                                Margin="15,15,15,0"
+                                HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding ShowDetailsCommand}"
                                 Content="{x:Static resources:OperatorApp.Details}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="4"
+                                Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Background="{DynamicResource FerrettoBlue}"
