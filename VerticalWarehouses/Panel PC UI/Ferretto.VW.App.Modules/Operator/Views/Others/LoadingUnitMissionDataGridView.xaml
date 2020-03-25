@@ -27,7 +27,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
                                 Width="*"
-                                Binding="{Binding Path=CreationDate, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"
+                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormat}}"
                                 Header="{x:Static Res:OperatorApp.CreationDate}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
@@ -154,6 +154,12 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding MissionType}">
                                             <DataTrigger.Value>
+                                                <model:MissionType>LoadUnitOperation</model:MissionType>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeLoadUnitOperation}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MissionType}">
+                                            <DataTrigger.Value>
                                                 <model:MissionType>WMS</model:MissionType>
                                             </DataTrigger.Value>
                                             <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeWms}" />
@@ -172,9 +178,21 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding MissionType}">
                                             <DataTrigger.Value>
-                                                <model:MissionType>FullTest</model:MissionType>
+                                                <model:MissionType>FirstTest</model:MissionType>
                                             </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeFullTest}" />
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeFirstTest}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MissionType}">
+                                            <DataTrigger.Value>
+                                                <model:MissionType>FullTestIN</model:MissionType>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeFullTestIN}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MissionType}">
+                                            <DataTrigger.Value>
+                                                <model:MissionType>FullTestOUT</model:MissionType>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeFullTestOUT}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding MissionType}">
                                             <DataTrigger.Value>
