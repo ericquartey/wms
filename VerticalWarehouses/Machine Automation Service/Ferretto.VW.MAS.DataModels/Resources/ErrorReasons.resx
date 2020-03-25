@@ -238,7 +238,7 @@
     <value>The elevator chain zero sensor is active but the elevator is full.</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
-    <value>Unload the loading unit in the bay and remove the excess weight.</value>
+    <value>Unload the loading unit in the bay and remove the excess weight. Then set Auto mode.</value>
   </data>
   <data name="LoadUnitShutterClosed" xml:space="preserve">
     <value>The shutter is not open. Please check shutter sensors.</value>
@@ -295,7 +295,7 @@
     <value>No error</value>
   </data>
   <data name="LoadUnitWeightTooLow" xml:space="preserve">
-    <value>The load unit weight is below minimum value.</value>
+    <value>The load unit weight is below minimum value.  Then set Auto mode.</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
     <value>The sum of total load unit weights is exceeds the maximum value.</value>
@@ -352,7 +352,7 @@
     <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>Try to lower the height of the load unit.</value>
+    <value>Try to lower the height of the load unit. Then set Auto mode.</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>The shutter is not open nor closed. Please check shutter sensors.</value>

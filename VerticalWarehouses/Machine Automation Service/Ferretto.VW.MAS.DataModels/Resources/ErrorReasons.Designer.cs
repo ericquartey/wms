@@ -457,7 +457,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Try to lower the height of the load unit..
+        ///   Looks up a localized string similar to Try to lower the height of the load unit. Then set Auto mode..
         /// </summary>
         public static string LoadUnitHeightExceeded {
             get {
@@ -619,7 +619,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unload the loading unit in the bay and remove the excess weight..
+        ///   Looks up a localized string similar to Unload the loading unit in the bay and remove the excess weight. Then set Auto mode..
         /// </summary>
         public static string LoadUnitWeightExceeded {
             get {
@@ -628,7 +628,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The load unit weight is below minimum value..
+        ///   Looks up a localized string similar to The load unit weight is below minimum value.  Then set Auto mode..
         /// </summary>
         public static string LoadUnitWeightTooLow {
             get {
