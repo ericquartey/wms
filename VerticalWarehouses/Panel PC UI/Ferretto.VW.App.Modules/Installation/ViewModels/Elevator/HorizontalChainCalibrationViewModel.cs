@@ -84,6 +84,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int requiredCycles;
 
+        private DelegateCommand returnCalibration;
+
         private int sessionPerformedCycles;
 
         private DelegateCommand startCalibrationCommand;
@@ -291,6 +293,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public ICommand ReturnCalibration =>
+                                                                                                                                                                                                           this.returnCalibration
+           ??
+           (this.returnCalibration = new DelegateCommand(
+               async () =>
+               {
+                   try
+                   {
+                       this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                   }
+                   catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                   {
+                       this.ShowNotification(ex);
+                   }
+               }));
 
         public int SessionPerformedCycles
         {
@@ -576,10 +594,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //    }
         //}
 
-        private bool CanApply()
-        {
-            return this.CanBaseExecute();
-        }
+        //private bool CanApply()
+        //{
+        //    return this.CanBaseExecute();
+        //}
 
         private bool CanBaseExecute()
         {
@@ -594,10 +612,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute();
         }
 
-        private bool CanRepeat()
-        {
-            return this.CanBaseExecute();
-        }
+        //private bool CanRepeat()
+        //{
+        //    return this.CanBaseExecute();
+        //}
 
         private bool CanStartCalibration()
         {

@@ -1285,6 +1285,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm procedure.
+        /// </summary>
+        public static string ConfirmProcedure {
+            get {
+                return ResourceManager.GetString("ConfirmProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
@@ -3913,6 +3922,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measured.
+        /// </summary>
+        public static string Measured {
+            get {
+                return ResourceManager.GetString("Measured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Measured distance [mm].
         /// </summary>
         public static string MeasuredDistance {
@@ -4035,6 +4053,24 @@ namespace Ferretto.VW.App.Resources {
         public static string MissValue {
             get {
                 return ResourceManager.GetString("MissValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measurement done.
+        /// </summary>
+        public static string MisurationDone {
+            get {
+                return ResourceManager.GetString("MisurationDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply the following measurement to the machine.
+        /// </summary>
+        public static string MisurationDoneDescription {
+            get {
+                return ResourceManager.GetString("MisurationDoneDescription", resourceCulture);
             }
         }
         
@@ -4788,6 +4824,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProfileCalibrateDistance.
+        /// </summary>
+        public static string ProfileCalibrateDistance {
+            get {
+                return ResourceManager.GetString("ProfileCalibrateDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on the calibration result, you can decide whether to complete the operation, having a result of less than 1 mm..
         /// </summary>
         public static string ProfileHeighCheckCalibrationLess {
@@ -4829,6 +4874,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ProfileHeightCheckProcedureLeftUnitDescription {
             get {
                 return ResourceManager.GetString("ProfileHeightCheckProcedureLeftUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProfileStartDistance.
+        /// </summary>
+        public static string ProfileStartDistance {
+            get {
+                return ResourceManager.GetString("ProfileStartDistance", resourceCulture);
             }
         }
         
@@ -5171,6 +5225,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry procedure.
+        /// </summary>
+        public static string RetryProcedure {
+            get {
+                return ResourceManager.GetString("RetryProcedure", resourceCulture);
             }
         }
         
