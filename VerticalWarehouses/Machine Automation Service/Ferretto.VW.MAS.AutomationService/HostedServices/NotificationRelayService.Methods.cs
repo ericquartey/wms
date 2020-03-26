@@ -249,7 +249,10 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 try
                 {
-                    await dataHubClient.DisconnectAsync();
+                    if (dataHubClient.IsConnected)
+                    {
+                        await dataHubClient.DisconnectAsync();
+                    }
                 }
                 catch
                 {

@@ -133,6 +133,19 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 bayPosition.Id,
                 targetCellId: null,
                 waitContinue: false);
+
+            // Publish a notification message
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"Repetitive Horizontal Movements Current cycle: {this.machineData.MessageData.ExecutedCycles}",
+                MessageActor.AutomationService,
+                MessageActor.DeviceManager,
+                MessageType.RepetitiveHorizontalMovements,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop(StopRequestReason reason)

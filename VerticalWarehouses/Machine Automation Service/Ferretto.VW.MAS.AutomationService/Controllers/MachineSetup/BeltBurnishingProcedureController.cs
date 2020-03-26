@@ -62,13 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(double upperPosition, double lowerPosition, int delayStart)
         {
-            // Remove
-            var bayPositionId = 2;
-            var loadingUnitId = 1;
-            this.elevatorProvider.StartRepetitiveHorizontalMovements(bayPositionId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
-
-            // Uncomment
-            //this.elevatorProvider.StartBeltBurnishing(upperPosition, lowerPosition, delayStart, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.StartBeltBurnishing(upperPosition, lowerPosition, delayStart, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
