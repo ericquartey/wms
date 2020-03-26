@@ -1620,4 +1620,25 @@ Please put back any moved pieces in their original position.</value>
   <data name="CommonLot" xml:space="preserve">
     <value>Lot</value>
   </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>List of machine alarms</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay number</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detail code</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Inverter index</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Occurrence date</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Resolution date</value>
+  </data>
 </root>

@@ -1306,4 +1306,25 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="CommonLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Lista degli allarmi della macchina</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Numero baia</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Dettaglio codice</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Indice inverter</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Data evento</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Data di risoluzione</value>
+  </data>
 </root>

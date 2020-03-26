@@ -97,6 +97,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of machine alarms.
+        /// </summary>
+        public static string AlarmsDescription {
+            get {
+                return ResourceManager.GetString("AlarmsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Availability [units].
         /// </summary>
         public static string Availability {
@@ -138,6 +147,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Bay {
             get {
                 return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay number.
+        /// </summary>
+        public static string BayNumber {
+            get {
+                return ResourceManager.GetString("BayNumber", resourceCulture);
             }
         }
         
@@ -598,6 +616,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detail code.
+        /// </summary>
+        public static string DetailCode {
+            get {
+                return ResourceManager.GetString("DetailCode", resourceCulture);
             }
         }
         
@@ -1520,6 +1547,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
         public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
@@ -1588,6 +1624,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InventoryQuantityDetected {
             get {
                 return ResourceManager.GetString("InventoryQuantityDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter index.
+        /// </summary>
+        public static string InverterIndex {
+            get {
+                return ResourceManager.GetString("InverterIndex", resourceCulture);
             }
         }
         
@@ -2798,6 +2843,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Occurrence date.
+        /// </summary>
+        public static string OccurrenceDate {
+            get {
+                return ResourceManager.GetString("OccurrenceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation cancelled.
         /// </summary>
         public static string OperationCancelled {
@@ -3091,6 +3145,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RequestedQuantity {
             get {
                 return ResourceManager.GetString("RequestedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution date.
+        /// </summary>
+        public static string ResolutionDate {
+            get {
+                return ResourceManager.GetString("ResolutionDate", resourceCulture);
             }
         }
         

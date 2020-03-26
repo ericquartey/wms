@@ -32,12 +32,17 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.Alarms}" />
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static Resources:OperatorApp.Alarms}" />
+            <TextBlock Margin="0,0,0,15"
+                       Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{x:Static Resources:OperatorApp.AlarmsDescription}" />
+        </StackPanel>
+
 
         <Border Grid.Row="1"
                 Grid.Column="1"
@@ -140,7 +145,7 @@
                         <DataGridTextColumn x:Name="Column1"
                                             Width="60"
                                             Binding="{Binding Path=Id}"
-                                            Header="Id">
+                                            Header="{x:Static Resources:OperatorApp.Id}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -157,7 +162,7 @@
                         <DataGridTextColumn x:Name="Column2"
                                             Width="120"
                                             Binding="{Binding Path=BayNumber}"
-                                            Header="BayNumber">
+                                            Header="{x:Static Resources:OperatorApp.BayNumber}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -168,7 +173,7 @@
                         <DataGridTextColumn x:Name="Column3"
                                             Width="120"
                                             Binding="{Binding Path=Code}"
-                                            Header="Code">
+                                            Header="{x:Static Resources:OperatorApp.Code}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -177,20 +182,21 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column4"
-                                            Width="120"
-                                            Binding="{Binding Path=DetailCode}"
-                                            Header="DetailCode">
+                                            Width="300"
+                                            Binding="{Binding Path=Description, StringFormat={x:Static Resources:General.DateFormat}}"
+                                            Header="{x:Static Resources:OperatorApp.Description}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column5"
-                                            Width="120"
-                                            Binding="{Binding Path=InverterIndex}"
-                                            Header="InverterIndex">
+                                            Width="150"
+                                            Binding="{Binding Path=DetailCode}"
+                                            Header="{x:Static Resources:OperatorApp.DetailCode}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -199,9 +205,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column6"
-                                            Width="200"
-                                            Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static Resources:General.DateFormat}}"
-                                            Header="OccurrenceDate">
+                                            Width="150"
+                                            Binding="{Binding Path=InverterIndex}"
+                                            Header="{x:Static Resources:OperatorApp.InverterIndex}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -211,8 +217,8 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column7"
                                             Width="200"
-                                            Binding="{Binding Path=ResolutionDate, StringFormat={x:Static Resources:General.DateFormat}}"
-                                            Header="ResolutionDate">
+                                            Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static Resources:General.DateFormat}}"
+                                            Header="{x:Static Resources:OperatorApp.OccurrenceDate}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -221,14 +227,13 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column8"
-                                            Width="300"
-                                            Binding="{Binding Path=Description, StringFormat={x:Static Resources:General.DateFormat}}"
-                                            Header="Description">
+                                            Width="200"
+                                            Binding="{Binding Path=ResolutionDate, StringFormat={x:Static Resources:General.DateFormat}}"
+                                            Header="{x:Static Resources:OperatorApp.ResolutionDate}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
