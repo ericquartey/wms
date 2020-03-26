@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand cellsPanelCheckBypassCommand;
 
+        private DelegateCommand horizontalChainCalibrationTestBypassCommand;
+
         private int proceduresCompleted;
 
         private int proceduresCompletedPercent;
@@ -279,6 +281,33 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override bool ConfirmSetupVisible => (this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure && this.IsGeneralActive);
 
+        public ICommand HorizontalChainCalibrationTestBypassCommand =>
+                                    this.horizontalChainCalibrationTestBypassCommand
+            ??
+            (this.horizontalChainCalibrationTestBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BypassTest, InstallationApp.HorizontalChainCalibration, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.HorizontalChainCalibrationBypassAsync();
+
+                            await this.UpdateSetupStatusAsync();
+                        }
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                    finally
+                    {
+                        this.IsExecutingProcedure = false;
+                    }
+                }));
+
         public int ProceduresCompleted
         {
             get => this.proceduresCompleted;
@@ -445,7 +474,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.HorizontalChainCalibration, Status = status.HorizontalChainCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure()
+                {
+                    Text = InstallationApp.HorizontalChainCalibration,
+                    Status = status.HorizontalChainCalibration.InProgress ? InstallationStatus.Inprogress : status.HorizontalChainCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = !status.HorizontalChainCalibration.IsCompleted,
+                    Bypassed = status.HorizontalChainCalibration.IsBypassed,
+                    Command = this.HorizontalChainCalibrationTestBypassCommand,
+                });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.BeltBurnishingDone,

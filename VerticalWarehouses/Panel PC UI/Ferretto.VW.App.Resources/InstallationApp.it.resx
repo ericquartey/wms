@@ -2361,4 +2361,25 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Calibrazione orizzontale</value>
   </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Conferma procedura</value>
+  </data>
+  <data name="Measured" xml:space="preserve">
+    <value>Measured</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Misurazione effetuata</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Applicare la seguente misurazione alla macchina</value>
+  </data>
+  <data name="ProfileCalibrateDistance" xml:space="preserve">
+    <value>ProfileCalibrateDistance</value>
+  </data>
+  <data name="ProfileStartDistance" xml:space="preserve">
+    <value>ProfileStartDistance</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Riesegui procedura</value>
+  </data>
 </root>

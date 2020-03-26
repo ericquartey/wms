@@ -170,7 +170,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="Misurazione effetuata" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.MisurationDone}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -178,7 +178,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="Applicare la seguente misurazione alla macchina" />
+                        <Run Text="{x:Static res:InstallationApp.MisurationDoneDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -192,7 +192,7 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding Measured, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="Measured"
+                                       LabelText="{x:Static res:InstallationApp.Measured}"
                                        Visibility="Visible" />
                     <ctrls:PpcSpinEdit Width="180"
                                        Height="90"
@@ -200,7 +200,7 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding ProfileCalibrateDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="ProfileCalibrateDistance"
+                                       LabelText="{x:Static res:InstallationApp.ProfileCalibrateDistance}"
                                        Visibility="Visible" />
                     <ctrls:PpcSpinEdit Width="180"
                                        Height="90"
@@ -208,20 +208,29 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding ProfileStartDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="ProfileStartDistance"
+                                       LabelText="{x:Static res:InstallationApp.ProfileStartDistance}"
                                        Visibility="Visible" />
                 </StackPanel>
-                
+
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
                                     Margin="0,10,0,0"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
-                                    Command="{Binding ConfirmCalibration}"
-                                    Content="Conferma procedura"
+                                    Command="{Binding ReturnCalibration}"
+                                    Content="{x:Static res:InstallationApp.RetryProcedure}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,10,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ConfirmCalibration}"
+                                    Content="{x:Static res:InstallationApp.ConfirmProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
 
-                    <!--<StackPanel Grid.ColumnSpan="2"
+                <!--<StackPanel Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
