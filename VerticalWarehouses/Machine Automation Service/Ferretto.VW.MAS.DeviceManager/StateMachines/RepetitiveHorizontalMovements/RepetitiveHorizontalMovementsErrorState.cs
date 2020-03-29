@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
     {
         #region Fields
 
-        private readonly IErrorsProvider errorsProvider;
-
         private readonly IRepetitiveHorizontalMovementsMachineData machineData;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -35,7 +33,6 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IRepetitiveHorizontalMovementsMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
-            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.machineVolatileDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
         }
 

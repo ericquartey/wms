@@ -48,12 +48,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("stop")]
+        [HttpPost("stop/repetitive-horizontal")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
             this.elevatorProvider.Stop(this.BayNumber, MessageActor.WebApi);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("stop-test/repetitive-horizontal")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StopTest()
+        {
+            this.elevatorProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

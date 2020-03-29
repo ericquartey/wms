@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         private readonly IRepetitiveHorizontalMovementsStateData stateData;
 
+        private bool isTestStopped;
+
         #endregion
 
         #region Constructors
@@ -47,6 +49,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+            this.isTestStopped = false;
         }
 
         #endregion
@@ -56,6 +60,17 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+
+            switch (message.Type)
+            {
+                case MessageType.StopTest:
+                    this.Logger.LogInformation($"Stop Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} movements");
+                    this.isTestStopped = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -80,7 +95,10 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
                             var performedCycles = this.machineData.MessageData.ExecutedCycles++;  // 0;
 
-                            if (performedCycles >= this.machineData.MessageData.RequiredCycles)
+                            this.machineData.MessageData.IsTestStopped = this.isTestStopped;
+
+                            if (performedCycles >= this.machineData.MessageData.RequiredCycles ||
+                                this.isTestStopped)
                             {
                                 // Change to End state
                                 this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsEndState(this.stateData));

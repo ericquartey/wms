@@ -85,6 +85,17 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+
+            switch (message.Type)
+            {
+                case MessageType.StopTest:
+                    this.Logger.LogInformation($"Stop Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} movements");
+                    this.machineData.MessageData.IsTestStopped = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -173,11 +184,15 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                     ? HorizontalMovementDirection.Forwards
                     : HorizontalMovementDirection.Backwards;
 
+                var loadingUnitGrossWeight = (this.machineData.AcquiredWeight) ?
+                    loadingUnit.GrossWeight :
+                    0.0d;
+
                 this.MoveHorizontalAuto(
                     direction,
                     isLoadingUnitOnBoard: true,
                     loadingUnit.Id,
-                    loadingUnitGrossWeight: null,
+                    loadingUnitGrossWeight,
                     waitContinue: false,
                     measure: false,
                     this.machineData.RequestingBay,
@@ -200,15 +215,9 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                     ? HorizontalMovementDirection.Backwards
                     : HorizontalMovementDirection.Forwards;
 
-                var loadingUnitGrossWeight = 0.0d;
-                if (!this.machineData.AcquiredWeight)
-                {
-                    loadingUnitGrossWeight = bayPosition.LoadingUnit.MaxNetWeight + bayPosition.LoadingUnit.Tare;
-                }
-                else
-                {
-                    loadingUnitGrossWeight = bayPosition.LoadingUnit.GrossWeight;
-                }
+                var loadingUnitGrossWeight = (!this.machineData.AcquiredWeight) ?
+                    bayPosition.LoadingUnit.MaxNetWeight + bayPosition.LoadingUnit.Tare :
+                    bayPosition.LoadingUnit.GrossWeight;
 
                 this.MoveHorizontalAuto(
                     direction,
@@ -366,12 +375,6 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             int? sourceCellId = null,
             int? sourceBayPositionId = null)
         {
-            if (loadingUnitId.HasValue &&
-                loadingUnitGrossWeight.HasValue)
-            {
-                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
-            }
-
             var sensors = this.sensorsProvider.GetAll();
 
             var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value

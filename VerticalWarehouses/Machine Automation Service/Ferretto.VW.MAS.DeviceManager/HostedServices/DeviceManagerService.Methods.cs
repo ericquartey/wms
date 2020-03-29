@@ -570,7 +570,22 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessStopTest(CommandMessage receivedMessage)
         {
             this.Logger.LogTrace("1:Method Start");
-            var stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
+
+            // Check the stopTest message for the RepetitiveHorizontal state machine
+            var stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.TargetBay && x is RepetitiveHorizontalMovementsStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as RepetitiveHorizontalMovementsStartState;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+
+                return;
+            }
+
+            // Check the stopTest message for the Positioning state machine (see carousel)
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
             if (stateMachines.Any())
             {
                 foreach (var fsm in stateMachines)

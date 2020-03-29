@@ -106,6 +106,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Stop(BayNumber requestingBay, MessageActor sender);
 
+        void StopTest(BayNumber requestingBay, MessageActor sender);
+
         void UnloadToBay(int bayPosition, BayNumber bayNumber, MessageActor automationService);
 
         void UnloadToCell(int cellId, BayNumber bayNumber, MessageActor automationService);

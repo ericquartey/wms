@@ -56,6 +56,17 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+
+            switch (message.Type)
+            {
+                case MessageType.StopTest:
+                    this.Logger.LogInformation($"Stop Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} movements");
+                    this.machineData.MessageData.IsTestStopped = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -74,10 +85,10 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                     case MessageStatus.OperationEnd:
                         {
                             // The weight is acquired
+                            this.Logger.LogInformation($"LoadingUnit Id:{this.elevatorDataProvider.GetLoadingUnitOnBoard().Id} gross weight: {this.elevatorDataProvider.GetLoadingUnitOnBoard().GrossWeight} kg");
                             this.machineData.AcquiredWeight = true;
 
                             this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsPositionBayQuoteState(this.stateData));
-
                             break;
                         }
                     case MessageStatus.OperationError:

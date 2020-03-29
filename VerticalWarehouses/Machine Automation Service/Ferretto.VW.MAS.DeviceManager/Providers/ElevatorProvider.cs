@@ -1268,6 +1268,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void StopTest(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Stop Test Command on bay {requestingBay}",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
+                requestingBay,
+                BayNumber.ElevatorBay); // mandatory!!!!
+        }
+
         public void UnloadToBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanUnloadToBay(bayPositionId, bayNumber, isGuided: false);
