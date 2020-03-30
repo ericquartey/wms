@@ -16491,20 +16491,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductInMachine>> GetProductsAsync(int id, int? skip, int? take, string search, bool? groupByLot, bool? distinctBySerialNumber)
         {
-            return GetItemsAsync(id, skip, take, where, orderBy, search, System.Threading.CancellationToken.None);
+            return GetProductsAsync(id, skip, take, search, groupByLot, distinctBySerialNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductInMachine>> GetProductsAsync(int id, int? skip, int? take, string search, bool? groupByLot, bool? distinctBySerialNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/areas/{id}/items?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/areas/{id}/products?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (skip != null) 
             {
@@ -16514,17 +16514,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("take") + "=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (where != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("where") + "=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (orderBy != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("orderBy") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
             if (search != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("search") + "=").Append(System.Uri.EscapeDataString(ConvertToString(search, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (groupByLot != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("groupByLot") + "=").Append(System.Uri.EscapeDataString(ConvertToString(groupByLot, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (distinctBySerialNumber != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("distinctBySerialNumber") + "=").Append(System.Uri.EscapeDataString(ConvertToString(distinctBySerialNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -16556,7 +16556,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IEnumerable<Item>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IEnumerable<ProductInMachine>>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -16566,7 +16566,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.IEnumerable<Item>);
+                        return default(System.Collections.Generic.IEnumerable<ProductInMachine>);
                     }
                     finally
                     {
