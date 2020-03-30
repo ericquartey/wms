@@ -16,12 +16,9 @@
               Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"
-                               MaxHeight="300" />
-                <RowDefinition Height="*"
-                               MinHeight="220" />
+                <RowDefinition Height="190" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
 
             <WmsControls:TrayControl Name="TrayControl"
                                      Grid.Row="0"
@@ -45,45 +42,18 @@
                   Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
 
                 <TextBlock Grid.Row="1"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:OperatorApp.NoItemOnSelectedCompartment}"
-                       Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:OperatorApp.NoItemOnSelectedCompartment}"
+                           Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
 
                 <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVC}}">
                     <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="720" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
                         <views:ItemsDataGridView Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
-
-                        <Grid Grid.Column="1"
-                              Margin="0,0,0,0"
-                              VerticalAlignment="Top">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <controls:PpcButton Grid.Row="0"
-                                                VerticalAlignment="Top"
-                                                Command="{Binding ItemUpCommand}"
-                                                Content="{x:Static res:OperatorApp.CommonUp}" />
-
-                            <controls:PpcButton Grid.Row="1"
-                                                Margin="0,15,0,0"
-                                                Command="{Binding ItemDownCommand}"
-                                                Content="{x:Static res:OperatorApp.CommonDown}" />
-
-                        </Grid>
                     </Grid>
-               
 
-                <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
+                    <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
                 </Grid>
             </Grid>
 
@@ -98,34 +68,7 @@
         <Grid Name="ListGrid"
               Grid.Row="0"
               Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="720" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
             <views:ItemsCompartmentsDataGridView />
-
-            <Grid Grid.Row="0"
-                  Grid.Column="1"
-                  VerticalAlignment="Top">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <controls:PpcButton Grid.Row="0"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding ItemCompartmentUpCommand}"
-                                    Content="{x:Static res:OperatorApp.CommonUp}" />
-
-                <controls:PpcButton Grid.Row="1"
-                                    Margin="0,15,0,0"
-                                    Command="{Binding ItemCompartmentDownCommand}"
-                                    Content="{x:Static res:OperatorApp.CommonDown}" />
-
-            </Grid>
         </Grid>
     </Grid>
 </UserControl>
