@@ -403,6 +403,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateHorizontalDistance(double newDistance)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
+
+                var axis = this.GetAxis(Orientation.Horizontal);
+
+                foreach (var profile in axis.Profiles)
+                {
+                    profile.TotalDistance = newDistance;
+                    var lastStep = profile.Steps.Last();
+                    lastStep.Position = newDistance;
+                }
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal)
         {
             lock (this.dataContext)
