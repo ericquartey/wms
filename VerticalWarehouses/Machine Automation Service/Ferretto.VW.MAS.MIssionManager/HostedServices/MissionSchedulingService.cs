@@ -320,13 +320,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles.Last().Value;
                 if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
                 {
-                    this.Logger.LogError($"Full Test error for Load Units {machineProvider.LoadUnitsToTest.Count} on Bay {machineProvider.BayTestNumber}");
+                    this.Logger.LogError($"Full Test error for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
                     errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machineProvider.BayTestNumber);
                     messageStatus = MessageStatus.OperationError;
                 }
                 else
                 {
-                    this.Logger.LogInformation($"Full test finished successfully for Load Units {machineProvider.LoadUnitsToTest.Count} on Bay {machineProvider.BayTestNumber}");
+                    this.Logger.LogInformation($"Full test finished successfully for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
                     messageStatus = MessageStatus.OperationEnd;
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
