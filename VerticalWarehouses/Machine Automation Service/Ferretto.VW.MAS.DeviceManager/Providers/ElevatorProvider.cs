@@ -110,6 +110,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
             }
 
+            var cellId = this.cellsProvider.GetAll().FirstOrDefault(c => Math.Abs(bayPosition.Height - c.Position) < 25 && !c.IsFree)?.Id;
+
+            if (cellId != null)
+            {
+                return new ActionPolicy { Reason = Resources.Cells.TheCellIsNotFree };
+            }
+
             // check #2: a loading unit must not be present in the bay position
             if (this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
