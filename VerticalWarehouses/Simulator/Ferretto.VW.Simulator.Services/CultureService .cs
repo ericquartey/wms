@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 

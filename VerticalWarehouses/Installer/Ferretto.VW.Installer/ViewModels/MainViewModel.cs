@@ -37,7 +37,7 @@ namespace Ferretto.VW.Installer.ViewModels
         #region Methods
 
         public void StartInstallation()
-        {            
+        {
             var installerLocation = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{INSTALLER}";
 
             if (!Directory.Exists(installerLocation))
@@ -50,7 +50,7 @@ namespace Ferretto.VW.Installer.ViewModels
             if (File.Exists("steps-snapshot.json"))
             {
                 this.installationService = InstallationService.GetInstance("steps-snapshot.json");
-                this.installationService.GetInfoFromSnapShot();                
+                this.installationService.GetInfoFromSnapShot();
             }
             else if (File.Exists("steps.json"))
             {
@@ -81,7 +81,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void Close()
         {
-            Application.Current.Shutdown(this.CurrentMode?.IsSuccessful == true? 0 : -1);
+            Application.Current.Shutdown(this.CurrentMode?.IsSuccessful == true ? 0 : -1);
         }
 
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -6,7 +6,7 @@ namespace Ferretto.VW.Installer
     public static class ConfigurationExtensions
     {
         #region Fields
-        
+
         private const string InstallRootPath = "Install:Root:Path";
 
         private const string UpdateTempPath = "Update:Temp:Path";
@@ -31,7 +31,7 @@ namespace Ferretto.VW.Installer
         #endregion
 
         #region Methods
-        
+
         public static string GetIGetInstallPpcFilePath(this NameValueCollection appSettings)
         {
             if (appSettings is null)

@@ -1,10 +1,6 @@
 ﻿using System;
-using Ferretto.VW.Devices.BarcodeReader;
-using Prism.Events;
 using Prism.Ioc;
-using Prism.Unity;
 using Unity;
-using Unity.Injection;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
