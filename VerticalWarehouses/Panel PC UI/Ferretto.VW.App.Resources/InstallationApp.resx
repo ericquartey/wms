@@ -1119,7 +1119,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Prev</value>
     <comment>Button Text</comment>
   </data>
-  <data name="Abort" xml:space="preserve">
+  <data name="F" xml:space="preserve">
     <value>Abort</value>
     <comment>Button text</comment>
   </data>
@@ -1907,7 +1907,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Full Test</value>
   </data>
   <data name="FullTestDescription" xml:space="preserve">
-    <value>The procedure allows to perform the complete test of the drawers. To start the procedure, enter the number of cycles and then press Start</value>
+    <value>The procedure allows the complete test of all the drawers present in the machine. To start the procedure, enter the number of cycles and then press Start</value>
   </data>
   <data name="FullTestSessionCycles" xml:space="preserve">
     <value>Session cycles</value>

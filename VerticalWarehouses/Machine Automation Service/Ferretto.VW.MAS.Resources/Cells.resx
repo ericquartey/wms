@@ -150,4 +150,7 @@
   <data name="NoEmptyCellsAvailable" xml:space="preserve">
     <value>NoEmptyCellsAvailable</value>
   </data>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>The cell is not free.</value>
+  </data>
 </root>

@@ -61,15 +61,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abort.
-        /// </summary>
-        public static string Abort {
-            get {
-                return ResourceManager.GetString("Abort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance (%).
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -2212,6 +2203,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abort.
+        /// </summary>
+        public static string F {
+            get {
+                return ResourceManager.GetString("F", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Falls drawer.
         /// </summary>
         public static string FallsUnit {
@@ -2320,7 +2320,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows to perform the complete test of the drawers. To start the procedure, enter the number of cycles and then press Start.
+        ///   Looks up a localized string similar to The procedure allows the complete test of all the drawers present in the machine. To start the procedure, enter the number of cycles and then press Start.
         /// </summary>
         public static string FullTestDescription {
             get {

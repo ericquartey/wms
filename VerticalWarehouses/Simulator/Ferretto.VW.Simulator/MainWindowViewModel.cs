@@ -75,7 +75,7 @@ namespace Ferretto.VW.Simulator
         public ICommand ImportConfigurationCommand =>
             this.importConfigurationCommand
             ??
-            (this.importConfigurationCommand = new DelegateCommand(this.ImportConfiguration));
+            (this.importConfigurationCommand = new DelegateCommand(async () => await this.ImportConfiguration()));
 
         public bool IsBusy
         {
@@ -85,13 +85,13 @@ namespace Ferretto.VW.Simulator
 
         public bool IsDarkThemeActive => this.themeService.ActiveTheme == ApplicationTheme.Dark;
 
+        public bool IsEngCultureActive => this.cultureService.ActiveCulture == ApplicationCulture.Eng;
+
         public IMachineService MachineService
         {
             get => this.machineService;
             set => this.SetProperty(ref this.machineService, value);
         }
-
-        public bool IsEngCultureActive => this.cultureService.ActiveCulture == ApplicationCulture.Eng;
 
         public ICommand StartSimulatorCommand =>
                     this.startSimulatorCommand
@@ -117,7 +117,7 @@ namespace Ferretto.VW.Simulator
 
         #region Methods
 
-        public void ImportConfiguration()
+        public async Task ImportConfiguration()
         {
             try
             {
@@ -137,6 +137,7 @@ namespace Ferretto.VW.Simulator
 
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    await this.machineService.ProcessStopSimulatorAsync();
                     this.LoadConfiguration(openFileDialog.FileName);
                 }
             }
