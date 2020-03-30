@@ -235,7 +235,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
-                    && !m.WmsId.HasValue
                     && (m.Status == MissionStatus.Waiting
                         || m.Status == MissionStatus.New
                         || m.Status == MissionStatus.Completed
@@ -258,8 +257,16 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         mission.NeedHomingAxis = waitMission.NeedHomingAxis;
                     }
 
-                    missionsDataProvider.Delete(waitMission.Id);
-                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                    if (waitMission.WmsId.HasValue)
+                    {
+                        missionsDataProvider.Complete(waitMission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Complete {waitMission}");
+                    }
+                    else
+                    {
+                        missionsDataProvider.Delete(waitMission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                    }
                 }
                 catch (Exception ex)
                 {

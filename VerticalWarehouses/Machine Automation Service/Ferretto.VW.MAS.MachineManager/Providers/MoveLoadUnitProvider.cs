@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     sourceCellId: null,
                     destinationCellId: null,
                     loadingUnitId,
-                    insertLoadUnit: false,
+                    insertLoadUnit: true,
                     missionId,
                     CommandAction.Activate),
                 $"Bay {requestingBay} requested to activate move Loading unit {loadingUnitId} to Bay {requestingBay}",
