@@ -13,13 +13,11 @@ namespace Ferretto.VW.App.Installation.Views
     {
         #region Properties
 
-        public DataTemplate EnumConfirm { get; set; }
+        public DataTemplate EnumConfirmAdjustment { get; set; }
 
-        public DataTemplate EnumFirstMeasured { get; set; }
+        public DataTemplate EnumRunningCalibration { get; set; }
 
-        public DataTemplate EnumLastMeasured { get; set; }
-
-        public DataTemplate EnumPositionMeter { get; set; }
+        public DataTemplate EnumStartCalibration { get; set; }
 
         #endregion
 
@@ -27,20 +25,17 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CalibrationStep value = (CalibrationStep)(item ?? CalibrationStep.PositionMeter);
+            HorizontalChainCalibrationStep value = (HorizontalChainCalibrationStep)(item ?? HorizontalChainCalibrationStep.StartCalibration);
             switch (value)
             {
-                case CalibrationStep.PositionMeter:
-                    return this.EnumPositionMeter;
+                case HorizontalChainCalibrationStep.StartCalibration:
+                    return this.EnumStartCalibration;
 
-                case CalibrationStep.FirstMeasured:
-                    return this.EnumFirstMeasured;
+                case HorizontalChainCalibrationStep.RunningCalibration:
+                    return this.EnumRunningCalibration;
 
-                case CalibrationStep.LastMeasured:
-                    return this.EnumLastMeasured;
-
-                case CalibrationStep.Confirm:
-                    return this.EnumConfirm;
+                case HorizontalChainCalibrationStep.ConfirmAdjustment:
+                    return this.EnumConfirmAdjustment;
             }
 
             return base.SelectTemplate(item, container);

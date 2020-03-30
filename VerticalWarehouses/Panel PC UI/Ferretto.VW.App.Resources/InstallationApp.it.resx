@@ -1834,7 +1834,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Test completo</value>
   </data>
   <data name="FullTestDescription" xml:space="preserve">
-    <value>La procedura permette di eseguire il test completo dei cassetti. Per avviare la procedura inserire il numero di cicli e poi premere Inizia</value>
+    <value>La procedura permette di eseguire il test completo di tutti i cassetti presenti in macchina. Per avviare la procedura inserire il numero di cicli e poi premere Inizia</value>
   </data>
   <data name="FullTestSessionCycles" xml:space="preserve">
     <value>Cicli sessione</value>

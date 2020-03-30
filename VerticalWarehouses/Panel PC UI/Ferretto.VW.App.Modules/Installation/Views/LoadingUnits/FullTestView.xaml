@@ -149,11 +149,11 @@
         </Border>
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                    Visibility="Collapsed"
-                                                    Grid.ColumnSpan="4"
+                                                    Grid.ColumnSpan="2"
                                                     Margin="0,30,15,0"
                                                     ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Visibility="Collapsed" />
         <StackPanel Grid.Row="5"
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
