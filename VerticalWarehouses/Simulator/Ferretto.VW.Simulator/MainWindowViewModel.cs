@@ -167,7 +167,6 @@ namespace Ferretto.VW.Simulator
 
                 var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
 
-                this.machineService.Machine = null;
                 this.machineService.Machine = vertimagConfiguration?.Machine;
                 this.ConfigurationName = new FileInfo(fileName).Name;
             }
