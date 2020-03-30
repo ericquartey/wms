@@ -369,6 +369,34 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        // removes wms completed missions older than 1 day
+        public int PurgeWmsMissions()
+        {
+            lock (this.dataContext)
+            {
+                var count = 0;
+                foreach (var mission in this.dataContext.Missions
+                    .Where(x => x.WmsId != null
+                        && DateTime.UtcNow.Subtract(x.CreationDate).Days > 1
+                        && (x.Status == MissionStatus.Completed
+                            || x.Status == MissionStatus.Aborted)
+                        )
+                    .ToList()
+                    )
+                {
+                    this.dataContext.Missions.Remove(mission);
+
+                    this.logger.LogInformation($"Deleted MAS mission {mission.Id}, Wms Id {mission.WmsId}.");
+                    count++;
+                }
+                if (count > 0)
+                {
+                    this.dataContext.SaveChanges();
+                }
+                return count;
+            }
+        }
+
         public void Reload(Mission mission)
         {
             this.dataContext.Entry(mission).Reload();

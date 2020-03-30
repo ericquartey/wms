@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.MissionManager
             if (!loadUnitId.HasValue)
             {
                 this.Logger.LogError($"Full Test error: Load Units not defined!");
-                errorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, machineProvider.BayTestNumber);
+                errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber);
                 return false;
             }
 
@@ -239,8 +239,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 )
             {
                 missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
-                machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
                 machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
+                machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
             }
 
             // the mission scheduler
@@ -292,10 +292,19 @@ namespace Ferretto.VW.MAS.MissionManager
                         mission.MissionType,
                         MessageActor.MissionManager);
                 }
-                else if (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.WaitPick)
+                else if (mission.Status is MissionStatus.Waiting
+                    && mission.Step is MissionStep.WaitPick
+                    )
                 {
-                    this.Logger.LogInformation($"Move load unit {mission.LoadUnitId} back from bay {machineProvider.BayTestNumber}");
-                    missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN);
+                    try
+                    {
+                        missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN);
+                        this.Logger.LogInformation($"Move load unit {mission.LoadUnitId} back from bay {machineProvider.BayTestNumber}");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        this.Logger.LogTrace(ex.Message);
+                    }
                 }
             }
 
@@ -309,6 +318,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 )
             {
                 // testing is finished! Exit from FullTest mode
+                machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles.Last().Value;
                 if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
                 {
                     this.Logger.LogError($"Full Test error for Load Units {machineProvider.LoadUnitsToTest.Count} on Bay {machineProvider.BayTestNumber}");
@@ -478,6 +488,8 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
+            missionsDataProvider.PurgeWmsMissions();
+
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
             {
@@ -634,7 +646,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
-                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
+                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error || m.Status == MissionStatus.New))
                         {
                             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                             {
@@ -659,12 +671,15 @@ namespace Ferretto.VW.MAS.MissionManager
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                             }
+                        }
+                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
+                        {
                             await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
-                                    && m.Step > MissionStep.New)
-                                && !this.GenerateHoming(bayProvider)
-                                )
+                                && m.Step > MissionStep.New)
+                            && !this.GenerateHoming(bayProvider)
+                            )
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))
                             {
@@ -1025,6 +1040,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var missionsWmsWebService = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IMissionsWmsWebService>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             var wmsMission = await missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
             var newOperations = wmsMission.Operations.Where(o =>
@@ -1066,6 +1082,7 @@ namespace Ferretto.VW.MAS.MissionManager
             else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
             {
                 // wms mission is finished
+                baysDataProvider.ClearMission(bayNumber);
                 mission.Status = MissionStatus.Completed;
                 missionsDataProvider.Update(mission);
 
