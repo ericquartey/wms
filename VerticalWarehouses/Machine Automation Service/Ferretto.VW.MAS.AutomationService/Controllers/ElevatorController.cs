@@ -353,7 +353,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/calibration/update-distance")]
         public IActionResult SetHorizontalChainCalibrationDistance(double distance)
         {
-            // TODO save parameters
+            this.elevatorDataProvider.UpdateHorizontalDistance(distance);
             return this.Ok();
         }
 
