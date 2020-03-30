@@ -690,11 +690,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
+                await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
 
                 this.ShowNotification(
                         VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                         Services.Models.NotificationSeverity.Success);
+
+                this.NavigationService.GoBack();
+
+                this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
