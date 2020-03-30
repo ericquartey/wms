@@ -98,7 +98,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             requestingBay,
             MessageActor sender);
 
+        void StartRepetitiveHorizontalMovements(
+            int bayPositionId,
+            int loadingUnitId,
+            BayNumber requestingBay,
+            MessageActor sender);
+
         void Stop(BayNumber requestingBay, MessageActor sender);
+
+        void StopTest(BayNumber requestingBay, MessageActor sender);
 
         void UnloadToBay(int bayPosition, BayNumber bayNumber, MessageActor automationService);
 

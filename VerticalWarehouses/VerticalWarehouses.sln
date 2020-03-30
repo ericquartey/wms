@@ -110,9 +110,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Keyboards", "Panel PC UI\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj", "{139FEB03-A085-4A20-AAB4-A519D8A83770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.Installer", "Installer\Ferretto.VW.Installer\Ferretto.VW.Installer.csproj", "{61D69668-A410-4498-854C-3869D705EF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer", "Installer\Ferretto.VW.Installer\Ferretto.VW.Installer.csproj", "{61D69668-A410-4498-854C-3869D705EF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.Installer.Core", "Installer\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj", "{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer.Core", "Installer\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj", "{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

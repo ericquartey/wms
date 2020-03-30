@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
@@ -248,7 +249,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                 targetBay = message.RequestingBay;
             }
 
-            if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
+            if (this.currentStateMachines.Any(
+                    x => x.BayNumber == targetBay &&
+                    !(x is ShutterPositioningStateMachine) &&
+                    !(x is RepetitiveHorizontalMovementsStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
             }
@@ -366,6 +370,41 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
+            }
+        }
+
+        private void ProcessRepetitiveHorizontalMovements(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            System.Diagnostics.Debug.Assert(
+                message.Data is IRepetitiveHorizontalMovementsMessageData,
+                "Message data should be consistent with message.Type");
+
+            var data = message.Data as IRepetitiveHorizontalMovementsMessageData;
+            var targetBay = BayNumber.ElevatorBay;
+
+            if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Repetitive Horizontal Movements state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var currentStateMachine = new RepetitiveHorizontalMovementsStateMachine(
+                    message.Source,
+                    message.RequestingBay,
+                    targetBay,
+                    data,
+                    this.machineResourcesProvider,
+                    this.EventAggregator,
+                    this.Logger,
+                    baysDataProvider,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
             }
         }
 
@@ -531,7 +570,22 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessStopTest(CommandMessage receivedMessage)
         {
             this.Logger.LogTrace("1:Method Start");
-            var stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
+
+            // Check the stopTest message for the RepetitiveHorizontal state machine
+            var stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.TargetBay && x is RepetitiveHorizontalMovementsStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as RepetitiveHorizontalMovementsStartState;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+
+                return;
+            }
+
+            // Check the stopTest message for the Positioning state machine (see carousel)
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
             if (stateMachines.Any())
             {
                 foreach (var fsm in stateMachines)

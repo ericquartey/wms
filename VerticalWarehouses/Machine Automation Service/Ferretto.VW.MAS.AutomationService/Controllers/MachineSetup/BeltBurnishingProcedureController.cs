@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]

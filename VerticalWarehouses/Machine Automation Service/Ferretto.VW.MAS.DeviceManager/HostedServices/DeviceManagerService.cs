@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
@@ -116,38 +117,58 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 var messageCurrentStateMachine = this.currentStateMachines.FirstOrDefault(c => c.BayNumber == command.TargetBay);
 
-                if (messageCurrentStateMachine != null
-                    && command.Type != MessageType.Stop
-                    && command.Type != MessageType.StopTest
-                    && command.Type != MessageType.SensorsChanged
-                    && command.Type != MessageType.PowerEnable
-                    && command.Type != MessageType.ContinueMovement
-                    && command.Type != MessageType.BayLight)
+                var publishErrorNotification = false;
+                if (messageCurrentStateMachine != null)
                 {
-                    var errorNotification = new NotificationMessage(
-                        command.Data,
-                        $"Bay {command.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}",
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        command.Type,
-                        command.RequestingBay,
-                        command.RequestingBay,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Error);
+                    if (messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine)
+                    {
+                        publishErrorNotification = (command.Type != MessageType.Positioning
+                            && command.Type != MessageType.Stop
+                            && command.Type != MessageType.StopTest
+                            && command.Type != MessageType.SensorsChanged
+                            && command.Type != MessageType.PowerEnable
+                            && command.Type != MessageType.ContinueMovement
+                            && command.Type != MessageType.BayLight);
+                    }
+                    else
+                    {
+                        publishErrorNotification = (command.Type != MessageType.Stop
+                            && command.Type != MessageType.StopTest
+                            && command.Type != MessageType.SensorsChanged
+                            && command.Type != MessageType.PowerEnable
+                            && command.Type != MessageType.ContinueMovement
+                            && command.Type != MessageType.BayLight);
+                    }
 
-                    this.Logger.LogWarning($"Bay {command.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}");
-                    this.Logger.LogError($"Message [{command.Type}] will be discarded!");
+                    // Publish a notification error, if occurs
+                    if (publishErrorNotification)
+                    {
+                        var errorNotification = new NotificationMessage(
+                                command.Data,
+                                $"Bay {command.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}",
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                command.Type,
+                                command.RequestingBay,
+                                command.RequestingBay,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Error);
 
-                    this.EventAggregator
-                        .GetEvent<NotificationEvent>()
-                        .Publish(errorNotification);
+                        this.Logger.LogWarning($"Bay {command.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}");
+                        this.Logger.LogError($"Message [{command.Type}] will be discarded!");
 
-                    var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                    errorsProvider.RecordNew(MachineErrorCode.BayInvertersBusy, command.RequestingBay);
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(errorNotification);
 
-                    return Task.CompletedTask;
+                        var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                        errorsProvider.RecordNew(MachineErrorCode.BayInvertersBusy, command.RequestingBay);
+
+                        return Task.CompletedTask;
+                    }
                 }
 
+                // Process message and instantiate the related state machine
                 this.Logger.LogDebug($"Processing command [{command.Type}] by {command.RequestingBay} for {command.TargetBay} from {command.Source}");
                 switch (command.Type)
                 {
@@ -206,6 +227,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.BayLight:
                         this.ProcessBayLight(command, serviceProvider);
                         break;
+
+                    case MessageType.RepetitiveHorizontalMovements:
+                        this.ProcessRepetitiveHorizontalMovements(command, serviceProvider);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(
@@ -247,20 +272,40 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.InverterFaultReset:
                             case MessageType.ResetSecurity:
                             case MessageType.InverterPowerEnable:
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;
 
+                            //case MessageType.Positioning:
+                            //    if (!(messageCurrentStateMachine is PositioningStateMachine))
+                            //    {
+                            //        // deallocate only Positioning state machine
+                            //        continue;
+                            //    }
+                            //    this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                            //    this.currentStateMachines.Remove(messageCurrentStateMachine);
+                            //    this.SendCleanDebug();
+                            //    break;
+
+                            // NEW block
                             case MessageType.Positioning:
-                                if (!(messageCurrentStateMachine is PositioningStateMachine))
+                                if (messageCurrentStateMachine is PositioningStateMachine)
                                 {
                                     // deallocate only Positioning state machine
-                                    continue;
+                                    this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                    this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                    this.SendCleanDebug();
                                 }
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
-                                this.currentStateMachines.Remove(messageCurrentStateMachine);
-                                this.SendCleanDebug();
+                                else
+                                {
+                                    if (!(messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine))
+                                    {
+                                        continue;
+                                    }
+
+                                    // Current message can be processed by the RepetitiveHorizontalMovements state machine
+                                }
                                 break;
 
                             case MessageType.ShutterPositioning:
@@ -269,7 +314,18 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     // deallocate only ShutterPositioning state machine
                                     continue;
                                 }
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count{this.currentStateMachines.Count()}");
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+
+                            case MessageType.RepetitiveHorizontalMovements:
+                                if (!(messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine))
+                                {
+                                    // deallocate only RepetitiveHorizontalMovements state machine
+                                    continue;
+                                }
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;

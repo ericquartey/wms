@@ -120,11 +120,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided, bool enforceLoadUnitPresent = true)
         {
             // check #1: elevator must be located opposite to the specified bay position
-            var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
-            if (bayPosition?.Id != bayPositionId)
-            {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
-            }
+            //var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            //if (bayPosition?.Id != bayPositionId)
+            //{
+            //    return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
+            //}
 
             // check #2: a loading unit must be present in the bay position
             if (enforceLoadUnitPresent && !this.IsBayPositionOccupied(bayNumber, bayPositionId))
@@ -1141,7 +1141,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void StartBeltBurnishing(
-                        double upperBoundPosition,
+                double upperBoundPosition,
                 double lowerBoundPosition,
                 int delayStart,
                 BayNumber requestingBay,
@@ -1222,6 +1222,39 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void StartRepetitiveHorizontalMovements(int bayPositionId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        {
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            // Retrieve the required cycles from procedure Parameters object
+            // TODO Create the GetRepetitiveHorizontalMovementsTest at setupProceduresDataProvider object
+            // TODO Get the required cycles from the setupProcedureDataProvider object
+            //var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();   // substitute with GetRepetitiveHorizontalMovementsTest
+
+            var requiredCycles = 2;  // procedureParameters.RequiredCycles;
+
+            var delayStart = 0;
+            var data = new RepetitiveHorizontalMovementsMessageData(
+                bayPositionId,
+                loadingUnitId,
+                requestingBay,
+                /*procedureParameters.RequiredCycles*/ requiredCycles,
+                delayStart);
+
+            this.PublishCommand(
+                data,
+                "Execute Repetitive Horizontal Movements Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.RepetitiveHorizontalMovements,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         public void Stop(BayNumber requestingBay, MessageActor sender)
         {
             var messageData = new StopMessageData(StopRequestReason.Stop);
@@ -1233,6 +1266,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.Stop,
                 requestingBay,
                 BayNumber.ElevatorBay);
+        }
+
+        public void StopTest(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Stop Test Command on bay {requestingBay}",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
+                requestingBay,
+                BayNumber.ElevatorBay); // mandatory!!!!
         }
 
         public void UnloadToBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
