@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // get the LU with lowest executed cycles value that has no active missions
                 loadUnitId = nextLoadUnits
                     .OrderBy(o => o.Value)
-                    .First(lu => !missions.Any(m => m.LoadUnitId == lu.Key)).Key;
+                    .FirstOrDefault(lu => !missions.Any(m => m.LoadUnitId == lu.Key)).Key;
             }
             else
             {
