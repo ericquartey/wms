@@ -45,10 +45,11 @@
                                              Opacity="0.2"
                                              Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
-                                <icon:PackIconMaterialLight Grid.ColumnSpan="2"
+                                <icon:PackIconMaterialLight x:Name="PpcButton_Kind"
+                                                            Grid.ColumnSpan="2"
                                                             Width="32"
                                                             Height="32"
-                                                            Margin="5"
+                                                            Margin="10"
                                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                             VerticalAlignment="Center"
                                                             Foreground="{DynamicResource Foreground}"
@@ -69,7 +70,7 @@
                                 <icon:PackIconMaterial Grid.ColumnSpan="2"
                                                        Width="32"
                                                        Height="32"
-                                                       Margin="5"
+                                                       Margin="10"
                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource Foreground}"
@@ -90,7 +91,7 @@
                                 <icon:PackIconFontAwesome Grid.ColumnSpan="2"
                                                           Width="32"
                                                           Height="32"
-                                                          Margin="5"
+                                                          Margin="10"
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                           VerticalAlignment="Center"
                                                           Foreground="{DynamicResource Foreground}"
@@ -138,7 +139,7 @@
 
                                 <TextBlock x:Name="PpcButton_Text"
                                            Grid.Column="1"
-                                           Margin="10,0"
+                                           Margin="10,0,10,0"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Center"
                                            FontSize="{TemplateBinding FontSize}"
@@ -150,9 +151,9 @@
                                             <Setter Property="TextAlignment" Value="Center" />
                                             <Setter Property="Visibility" Value="Visible" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
+                                                <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Kind}"
                                                              Value="Visible">
-                                                    <Setter Property="TextAlignment" Value="Left" />
+                                                    <Setter Property="TextAlignment" Value="Center" />
                                                 </DataTrigger>
                                                 <Trigger Property="Text" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed" />
