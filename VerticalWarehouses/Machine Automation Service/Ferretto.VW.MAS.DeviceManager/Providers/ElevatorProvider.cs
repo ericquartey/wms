@@ -101,6 +101,49 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public ActionPolicy CanCalibrateHorizontal(int bayPositionId, BayNumber bayNumber)
+        {
+            // check #1: elevator must be located opposite to the specified bay position
+            var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            if (bayPosition?.Id != bayPositionId)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
+            }
+
+            // check #2: a loading unit must not be present in the bay position
+            if (this.IsBayPositionOccupied(bayNumber, bayPositionId))
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition };
+            }
+
+            // check #3: no loading unit must be on board of the elevator
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+            }
+
+            // check #4: the shutter must be completely open
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
+            if (shutterPosition != ShutterPosition.NotSpecified)
+            {
+                if (shutterPosition != ShutterPosition.Opened)
+                {
+                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                }
+            }
+
+            // check #5: elevator's pawl must be in zero position
+            if (!this.machineResourcesProvider.IsSensorZeroOnCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition };
+            }
+
+            return ActionPolicy.Allowed;
+        }
+
         public ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber)
         {
             // check #1: a loading unit must be present in the bay position
@@ -703,11 +746,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var bayPositionId = bay.Positions.OrderByDescending(b => b.Height).FirstOrDefault().Id;
+            var policy = this.CanCalibrateHorizontal(bayPositionId, requestingBay);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 2.5;
-
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
