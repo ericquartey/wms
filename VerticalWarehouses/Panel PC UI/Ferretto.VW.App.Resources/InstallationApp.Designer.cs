@@ -5076,6 +5076,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset session.
+        /// </summary>
+        public static string ResetSession {
+            get {
+                return ResourceManager.GetString("ResetSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset totali.
+        /// </summary>
+        public static string ResetTotal {
+            get {
+                return ResourceManager.GetString("ResetTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to reset the total number of completed cycles?.
         /// </summary>
         public static string ResetTotalCyclesNumber {
