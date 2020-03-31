@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using NLog;
 
 
 namespace Ferretto.VW.CommonUtils.Messages

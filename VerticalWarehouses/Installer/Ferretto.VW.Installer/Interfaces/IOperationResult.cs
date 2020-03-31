@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Installer.Core
 {
-    public interface  IOperationResult
+    public interface IOperationResult
     {
         bool IsSuccessful { get; }
     }

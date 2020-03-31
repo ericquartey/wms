@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management.Automation;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
@@ -55,12 +53,12 @@ namespace Ferretto.VW.Installer.Core
                     shell.AddScript(command);
 
                     var output = new PSDataCollection<PSObject>();
-                    output.DataAdded += (object snd, DataAddedEventArgs evt) => this.output_DataAdded(snd, evt, shell);                    
+                    output.DataAdded += (object snd, DataAddedEventArgs evt) => this.output_DataAdded(snd, evt, shell);
                     var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
                     if (shell.HadErrors)
                     {
                         this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
-                        this.LogError("Errors encountered while running the script." );
+                        this.LogError("Errors encountered while running the script.");
                         return false;
                     }
                 }
@@ -83,9 +81,9 @@ namespace Ferretto.VW.Installer.Core
 
             foreach (PSObject r in rsl)
             {
-                this.LogInformation(r.ToString());                
+                this.LogInformation(r.ToString());
             }
-            
+
             var p = shell.Streams.Progress.LastOrDefault();
             this.ProgressPercentage = p?.PercentComplete;
         }

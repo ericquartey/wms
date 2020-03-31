@@ -21,7 +21,7 @@ namespace Ferretto.VW.Installer.ViewModels
         private readonly InstallationService installationService;
 
         private bool canProcede;
-        
+
 
         private bool isSuccessful;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Properties
         public Bay SelectedBay
-    {
+        {
             get => this.selectedBay;
             set => this.SetProperty(ref this.selectedBay, value);
         }
@@ -108,13 +108,13 @@ namespace Ferretto.VW.Installer.ViewModels
             if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
             {
                 var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
-                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());                
-                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);                
+                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
+                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);
                 this.canProcede = true;
                 this.SelectedBay = bayFound;
                 this.SelectedBayInfo = $"Baia {(int)bayFound.Number} selezionata";
             }
-            
+
 
             this.RaiseCanExecuteChanged();
         }
@@ -178,7 +178,7 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             var xmlDoc = new XmlDocument();
 
-            var panelPcFileConfig =  $"..\\{ConfigurationManager.AppSettings.GetInstallPpcPath()}\\{ConfigurationManager.AppSettings.GetIGetInstallPpcFilePath()}.config";            
+            var panelPcFileConfig = $"..\\{ConfigurationManager.AppSettings.GetInstallPpcPath()}\\{ConfigurationManager.AppSettings.GetIGetInstallPpcFilePath()}.config";
             xmlDoc.Load(panelPcFileConfig);
 
             foreach (XmlElement element in xmlDoc.DocumentElement)
@@ -192,12 +192,12 @@ namespace Ferretto.VW.Installer.ViewModels
 
                     if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
                     {
-                        var masIp= (this.installationService.MasIpAddress is null)? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() :this.installationService.MasIpAddress.ToString();                        
+                        var masIp = (this.installationService.MasIpAddress is null) ? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() : this.installationService.MasIpAddress.ToString();
                         ipMasNode.Attributes["value"].Value = $"http://{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
                     }
                 }
             }
-            
+
             xmlDoc.Save(panelPcFileConfig);
         }
 

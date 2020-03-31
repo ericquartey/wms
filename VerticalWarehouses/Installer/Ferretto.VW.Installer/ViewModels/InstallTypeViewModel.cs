@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,11 +10,10 @@ using Ferretto.VW.Installer.Core;
 using Ferretto.VW.Installer.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class InstallTypeViewModel : Core.BindableBase, IOperationResult    
+    public class InstallTypeViewModel : Core.BindableBase, IOperationResult
     {
         #region Fields
 
@@ -24,7 +21,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool canNext;
 
-        private RelayCommand checkMasConfigurationCommand;        
+        private RelayCommand checkMasConfigurationCommand;
 
         private bool isMasConfiguration;
 
@@ -44,7 +41,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private RelayCommand nextCommand;
 
-        private RelayCommand openFileCommand;        
+        private RelayCommand openFileCommand;
 
         private string messageSlave;
 
@@ -149,7 +146,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
                 var sr = new StreamReader(file);
                 var fileContents = sr.ReadToEnd();
-             
+
                 this.isMasConfigurationValid = this.LoadConfiguration(fileContents);
 
                 if (this.isMasConfigurationValid)
@@ -187,7 +184,7 @@ namespace Ferretto.VW.Installer.ViewModels
         private IPEndPoint CheckMasHost()
         {
             this.MessageSlave = string.Empty;
-            int ? ipPort = null;
+            int? ipPort = null;
             try
             {
                 if (int.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpport(), out var port))
@@ -230,7 +227,7 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             if (!this.isMasConfiguration)
-            {                
+            {
                 this.isSlaveConfigurationValid = !(this.masIpEndpoint is null);
                 if (this.isSlaveConfigurationValid)
                 {
@@ -238,7 +235,7 @@ namespace Ferretto.VW.Installer.ViewModels
                     {
                         var masConfiguration = await this.GetConfigurationFromMasAsync(this.masIpEndpoint);
                         this.isSlaveConfigurationValid = this.LoadConfiguration(masConfiguration);
-                    }            
+                    }
                 }
                 this.canNext = this.isSlaveConfigurationValid;
             }
@@ -294,12 +291,12 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             try
             {
-                var jsonObject = JObject.Parse(configuration);                
+                var jsonObject = JObject.Parse(configuration);
 
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
 
-                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);                
+                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
 
                 return !(this.masConfiguration is null);
             }
