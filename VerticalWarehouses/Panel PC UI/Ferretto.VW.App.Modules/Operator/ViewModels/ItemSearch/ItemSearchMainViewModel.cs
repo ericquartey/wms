@@ -50,13 +50,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyRequestingItemPick;
 
+        private bool isDistinctBySerialNumber;
+
+        private bool isDistinctBySerialNumberEnabled;
+
         private bool isGroupbyLot;
 
         private bool isGroupbyLotEnabled;
-
-        private bool isGroupbySerial;
-
-        private bool isGroupbySerialEnabled;
 
         private bool isSearching;
 
@@ -129,6 +129,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsDistinctBySerialNumber
+        {
+            get => this.isDistinctBySerialNumber;
+            set => this.SetProperty(ref this.isDistinctBySerialNumber, value);
+        }
+
+        public bool IsDistinctBySerialNumberEnabled
+        {
+            get => this.isDistinctBySerialNumberEnabled;
+            private set => this.SetProperty(ref this.isDistinctBySerialNumberEnabled, value);
+        }
+
         public bool IsGroupbyLot
         {
             get => this.isGroupbyLot;
@@ -139,18 +151,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isGroupbyLotEnabled;
             private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
-        }
-
-        public bool IsGroupbySerial
-        {
-            get => this.isGroupbySerial;
-            set => this.SetProperty(ref this.isGroupbySerial, value);
-        }
-
-        public bool IsGroupbySerialEnabled
-        {
-            get => this.isGroupbySerialEnabled;
-            private set => this.SetProperty(ref this.isGroupbySerialEnabled, value);
         }
 
         public bool IsSearching
@@ -321,16 +321,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var groupByProduct = false;
-                var distinctBySerialNumber = false;
-
                 var newItems = await this.areasWebService.GetProductsAsync(
                     this.areaId.Value,
                     skip,
                     DefaultPageSize,
                     this.searchItem,
-                    groupByProduct,
-                    distinctBySerialNumber,
+                    this.IsGroupbyLot,
+                    this.isDistinctBySerialNumber,
                     cancellationToken);
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
@@ -338,14 +335,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.items.Count == 0)
                 {
                     this.IsGroupbyLot = false;
-                    this.IsGroupbySerial = false;
+                    this.IsDistinctBySerialNumber = false;
                     this.IsGroupbyLotEnabled = false;
-                    this.IsGroupbySerialEnabled = false;
+                    this.IsDistinctBySerialNumberEnabled = false;
                 }
                 else
                 {
                     this.IsGroupbyLotEnabled = true;
-                    this.IsGroupbySerialEnabled = true;
+                    this.IsDistinctBySerialNumberEnabled = true;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

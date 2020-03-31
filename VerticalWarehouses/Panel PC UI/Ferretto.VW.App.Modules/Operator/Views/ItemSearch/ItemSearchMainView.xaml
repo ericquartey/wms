@@ -177,8 +177,8 @@
                       Margin="15,0,15,15"
                       Content="Matricola"
                       Foreground="{DynamicResource CheckBoxDescription}"
-                      IsChecked="{Binding IsGroupbySerial, Mode=TwoWay}"
-                      IsEnabled="{Binding IsGroupbySerialEnabled}"
+                      IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
+                      IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             </StackPanel>
 

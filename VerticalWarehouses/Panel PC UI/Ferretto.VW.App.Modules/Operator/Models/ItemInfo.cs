@@ -10,6 +10,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         public ItemInfo(ProductInMachine product, int machineId)
              : this(product?.Item, machineId)
         {
+            this.Lot = product.Lot;
+            this.SerialNumber = product.SerialNumber;
+
             if (product.Machines?.Any() == true)
             {
                 this.IsQtyOnMachine = product.Machines.Any(m => m.Id == machineId);
@@ -54,11 +57,15 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         public bool IsQtyOnMachine { get; }
 
+        public string Lot { get; }
+
         public string MachinesInfo { get; }
 
         public string MeasureUnit => this.MeasureUnitDescription.ToLowerInvariant() ?? Resources.OperatorApp.Pieces;
 
         public double PickIncrement => this.PickTolerance.HasValue ? System.Math.Pow(10, -this.PickTolerance.Value) : 1;
+
+        public string SerialNumber { get; }
 
         #endregion
     }
