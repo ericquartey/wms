@@ -50,6 +50,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyRequestingItemPick;
 
+        private bool isGroupbyLot;
+
+        private bool isGroupbyLotEnabled;
+
+        private bool isGroupbySerial;
+
+        private bool isGroupbySerialEnabled;
+
         private bool isSearching;
 
         private List<ItemInfo> items = new List<ItemInfo>();
@@ -121,6 +129,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsGroupbyLot
+        {
+            get => this.isGroupbyLot;
+            set => this.SetProperty(ref this.isGroupbyLot, value);
+        }
+
+        public bool IsGroupbyLotEnabled
+        {
+            get => this.isGroupbyLotEnabled;
+            private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
+        }
+
+        public bool IsGroupbySerial
+        {
+            get => this.isGroupbySerial;
+            set => this.SetProperty(ref this.isGroupbySerial, value);
+        }
+
+        public bool IsGroupbySerialEnabled
+        {
+            get => this.isGroupbySerialEnabled;
+            private set => this.SetProperty(ref this.isGroupbySerialEnabled, value);
+        }
+
         public bool IsSearching
         {
             get => this.isSearching;
@@ -187,7 +219,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;
-                this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
+                this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
                 this.InputQuantity = null;
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
@@ -289,16 +321,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var newItems = await this.areasWebService.GetItemsAsync(
+                var groupByProduct = false;
+                var distinctBySerialNumber = false;
+
+                var newItems = await this.areasWebService.GetProductsAsync(
                     this.areaId.Value,
                     skip,
                     DefaultPageSize,
-                    null,
-                    null,
                     this.searchItem,
+                    groupByProduct,
+                    distinctBySerialNumber,
                     cancellationToken);
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+
+                if (this.items.Count == 0)
+                {
+                    this.IsGroupbyLot = false;
+                    this.IsGroupbySerial = false;
+                    this.IsGroupbyLotEnabled = false;
+                    this.IsGroupbySerialEnabled = false;
+                }
+                else
+                {
+                    this.IsGroupbyLotEnabled = true;
+                    this.IsGroupbySerialEnabled = true;
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -500,13 +548,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 try
                 {
-                    var items = await this.areasWebService.GetItemsAsync(
+                    var items = await this.areasWebService.GetProductsAsync(
                         this.areaId.Value,
                         0,
                         1,
-                        null,
-                        null,
-                        itemCode);
+                        itemCode,
+                        false,
+                        false);
 
                     if (items.Any())
                     {

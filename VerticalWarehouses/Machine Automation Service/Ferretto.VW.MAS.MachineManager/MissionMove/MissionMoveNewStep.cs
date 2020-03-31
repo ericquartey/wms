@@ -571,8 +571,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (sourceCell != null)
                         {
-                            mission.LoadUnitSource = LoadingUnitLocation.Cell;
-                            mission.LoadUnitCellSourceId = sourceCell.Id;
+                            if (!messageData.InsertLoadUnit)
+                            {
+                                mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                                mission.LoadUnitCellSourceId = sourceCell.Id;
+                            }
                         }
                         else
                         {
@@ -604,11 +607,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             unitToMove = null;
                             if (showErrors)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay);
+                                this.ErrorsProvider.RecordNew((messageData.InsertLoadUnit) ? MachineErrorCode.LoadUnitNotFound: MachineErrorCode.LoadUnitNotLoaded, requestingBay);
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotLoaded);
+                                this.Logger.LogInformation((messageData.InsertLoadUnit) ? ErrorDescriptions.LoadUnitNotFound : ErrorDescriptions.LoadUnitNotLoaded);
                             }
                         }
                     }

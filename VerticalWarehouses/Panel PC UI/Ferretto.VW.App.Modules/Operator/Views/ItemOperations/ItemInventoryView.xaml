@@ -155,7 +155,6 @@
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.InventoryQuantityDetected}}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MaxValue="{Binding QuantityTolerance}"
                                MinValue="0" />
 
             <controls:PpcButton Grid.Row="2"
@@ -170,10 +169,10 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding ConfirmOperationCommand}"
                                 Content="{x:Static resources:OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
         </Grid>

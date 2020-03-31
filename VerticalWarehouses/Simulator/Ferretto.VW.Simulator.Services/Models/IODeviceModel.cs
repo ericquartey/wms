@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.Simulator.Resources;
 using Prism.Mvvm;

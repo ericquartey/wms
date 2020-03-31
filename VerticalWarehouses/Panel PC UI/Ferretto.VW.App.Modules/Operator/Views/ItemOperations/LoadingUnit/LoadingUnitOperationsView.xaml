@@ -15,8 +15,8 @@
         <Style x:Key="OperationIndicatorStyle"
                BasedOn="{StaticResource BorderTimeLinePath}"
                TargetType="{x:Type Path}">
-            <Setter Property="Width" Value="26" />
-            <Setter Property="Height" Value="26" />
+            <Setter Property="Width" Value="23" />
+            <Setter Property="Height" Value="25" />
             <Setter Property="Stretch" Value="Fill" />
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
@@ -28,7 +28,7 @@
                     <TransformGroup>
                         <ScaleTransform />
                         <SkewTransform />
-                        <RotateTransform Angle="-90" />
+                        <RotateTransform Angle="180" />
                         <TranslateTransform />
                     </TransformGroup>
                 </Setter.Value>
@@ -38,38 +38,35 @@
         <Style x:Key="AdjustIndicatorStyle"
                BasedOn="{StaticResource OperationIndicatorStyle}"
                TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0,-2,550,2" />
+            <Setter Property="Margin" Value="0,55,-20,-55" />
         </Style>
 
         <Style x:Key="PickIndicatorStyle"
                BasedOn="{StaticResource OperationIndicatorStyle}"
                TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0,-2,380,2" />
+            <Setter Property="Margin" Value="0,130,-20,-130" />
         </Style>
 
         <Style x:Key="PutIndicatorStyle"
                BasedOn="{StaticResource OperationIndicatorStyle}"
                TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0,-2,200,2" />
+            <Setter Property="Margin" Value="0,205,-20,-205" />
         </Style>
 
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
             <RowDefinition Height="25" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border Background="{StaticResource PpcBackground}"
+        <Border Grid.Row="1"
+                Background="{StaticResource PpcBackground}"
                 BorderBrush="{StaticResource PpcBorderBrush}"
                 BorderThickness="{StaticResource PpcBorderThickness}"
                 CornerRadius="2,0,0,2">
             <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="5" />
@@ -77,73 +74,83 @@
                 </Grid.ColumnDefinitions>
 
                 <ctrls:PpcImage Grid.Row="0"
-                                Grid.RowSpan="2"
                                 Grid.Column="0"
                                 Width="180"
                                 Height="180"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 Path="{Binding SelectedItemCompartment.ItemId}"
                                 Stretch="UniformToFill" />
 
-                <StackPanel Orientation="Vertical"  Grid.Row="0"  Grid.Column="2">
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <controls:PpcLabeledText 
-                                         Margin="10,0,0,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedItemCompartment.ItemDescription}"
-                                         LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
+                    <controls:PpcLabeledText Grid.Row="0"
+                                             Grid.Column="2"
+                                             Margin="10,0,0,0"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             ContentText="{Binding SelectedItemCompartment.ItemDescription}"
+                                             LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
 
-                <controls:PpcLabeledText
-                                         Grid.Row="1"
-                                        
-                                         Margin="10,0,0,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedItemCompartment.Lot}"
-                                         LabelText="{x:Static res:OperatorApp.Lot}" />
-                </StackPanel>
-                
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="2"
-                                         Margin="10,0,0,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedItemCompartment.Stock}"
-                                         LabelText="{x:Static res:OperatorApp.ItemStock}"
-                                         Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
+                    <Grid Grid.Row="1"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="1"                            
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
+                        <controls:PpcLabeledText Grid.Column="1"
+                                                 Margin="10,10,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.Stock}"
+                                                 LabelText="{x:Static res:OperatorApp.ItemStock}"
+                                                 Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
 
+                        <controls:PpcLabeledText Margin="10,10,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.Lot}"
+                                                 LabelText="{x:Static res:OperatorApp.Lot}" />
+                    </Grid>
 
-                    <ctrls:PpcSpinEdit Margin="0,0,10,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       Increment="{Binding QuantityIncrement}"
-                                       IsEnabled="{Binding CanInputQuantity}"
-                                       LabelText="{Binding InputQuantityInfo}"
-                                       Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                                       MinValue="0" />
+                    <Grid Grid.Row="2"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="40,0,0,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding ConfirmOperationCommand}"
-                                        Content="{Binding ConfirmOperationInfo}"
-                                        IsBusy="{Binding IsBusyConfirmingOperation}" />
-                </StackPanel>
+                        <ctrls:PpcSpinEdit Width="230"
+                                           Height="90"
+                                           Margin="0,5,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Increment="{Binding QuantityIncrement}"
+                                           IsEnabled="{Binding CanInputQuantity}"
+                                           LabelText="{Binding InputQuantityInfo}"
+                                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                                           MinValue="0" />
 
+                        <controls:PpcButton Grid.Column="1"
+                                            Margin="0,5,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding ConfirmOperationCommand}"
+                                            Content="{Binding ConfirmOperationInfo}"
+                                            IsBusy="{Binding IsBusyConfirmingOperation}" />
+                    </Grid>
+                </Grid>
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1">
+        <Grid>
             <Path Style="{StaticResource AdjustIndicatorStyle}"
                   Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />
 

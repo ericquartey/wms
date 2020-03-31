@@ -3194,6 +3194,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serial.
+        /// </summary>
+        public static string SerialNumber {
+            get {
+                return ResourceManager.GetString("SerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Update.
         /// </summary>
         public static string StartUpdate {

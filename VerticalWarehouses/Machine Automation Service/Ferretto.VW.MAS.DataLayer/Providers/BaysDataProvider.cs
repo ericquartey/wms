@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 context.Bays
                     .AsNoTracking()
                     .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
                 .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
 
         private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =

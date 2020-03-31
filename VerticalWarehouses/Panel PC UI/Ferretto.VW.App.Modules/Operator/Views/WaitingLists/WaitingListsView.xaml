@@ -210,17 +210,17 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
-                                Command="{Binding ListExecuteCommand}"
-                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
-                                IsBusy="{Binding IsWaitingForResponse}" />
+                                Command="{Binding ListDetailButtonCommand}"
+                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Command="{Binding ListDetailButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                                Command="{Binding ListExecuteCommand}"
+                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                                IsBusy="{Binding IsWaitingForResponse}"
+                                Style="{StaticResource ConfirmButton}" />
 
         </Grid>
     </Grid>

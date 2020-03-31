@@ -31,7 +31,6 @@ namespace Ferretto.VW.MAS.MissionManager
         #region Constructors
 
         public WmsMissionProxyService(
-            IMachinesWmsWebService machinesWmsWebService,
             IDataLayerService dataLayerService,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,

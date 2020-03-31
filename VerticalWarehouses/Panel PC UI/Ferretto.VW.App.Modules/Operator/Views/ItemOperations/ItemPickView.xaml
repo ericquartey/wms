@@ -213,7 +213,6 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding ConfirmOperationCanceledCommand}"
                                 Content="{x:Static resources:OperatorApp.CancelPick}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
@@ -222,21 +221,21 @@
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Background="{DynamicResource FerrettoBlue}"
+                                VerticalAlignment="Bottom"
                                 Command="{Binding EmptyOperationCommand}"
                                 Content="{x:Static resources:OperatorApp.ConfirmOnEmpty}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Background="{DynamicResource FerrettoBlue}"
+                                VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCommand}"
                                 Content="{x:Static resources:OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVIC}}" />
 
 

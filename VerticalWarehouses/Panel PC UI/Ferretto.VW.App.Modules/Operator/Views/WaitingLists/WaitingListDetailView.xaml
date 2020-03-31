@@ -82,7 +82,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -214,10 +213,10 @@
             <controls:PpcButton Grid.Row="3"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Background="{DynamicResource FerrettoBlue}"
+                                VerticalAlignment="Bottom"
                                 Command="{Binding ListExecuteCommand}"
-                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}" />
+                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                                Style="{StaticResource ConfirmButton}" />
 
         </Grid>
     </Grid>

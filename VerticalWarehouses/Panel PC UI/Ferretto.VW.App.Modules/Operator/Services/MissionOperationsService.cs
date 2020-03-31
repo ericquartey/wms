@@ -235,7 +235,6 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
 
-                        //await this.loadingUnitsWebService.ResumeWmsAsync(newMachineMission.LoadUnitId, newMachineMission.Id);
                         await this.loadingUnitsWebService.RemoveFromBayAsync(newMachineMission.LoadUnitId);
 
                         newMachineMission = null;

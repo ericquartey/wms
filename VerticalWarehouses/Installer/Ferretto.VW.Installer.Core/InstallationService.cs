@@ -379,7 +379,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         public void UpdateMachineRole()
-        {            
+        {
             this.MachineRole = (this.masIpAddress.Equals(this.ppcIpAddress)) ? MachineRole.Master : MachineRole.Slave;
         }
 
@@ -395,7 +395,7 @@ namespace Ferretto.VW.Installer.Core
                 if (!string.IsNullOrEmpty(masIpAddress)
                     &&
                     IPAddress.TryParse(masIpAddress.ToString(), out var masIpAddressFound))
-                {                    
+                {
                     this.masIpAddress = masIpAddressFound;
                 }
 
@@ -445,7 +445,7 @@ namespace Ferretto.VW.Installer.Core
                 var msg = $" Unable to read/assign data from Snapshot file \"{this.fileName}\"";
                 this.logger.Error(ex, msg);
                 throw new InvalidOperationException(msg);
-            }             
+            }
         }
 
 

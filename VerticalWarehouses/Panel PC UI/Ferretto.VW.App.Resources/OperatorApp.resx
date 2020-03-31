@@ -1641,4 +1641,8 @@ Please put back any moved pieces in their original position.</value>
   <data name="ResolutionDate" xml:space="preserve">
     <value>Resolution date</value>
   </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial</value>
+    <comment>Header text</comment>
+  </data>
 </root>

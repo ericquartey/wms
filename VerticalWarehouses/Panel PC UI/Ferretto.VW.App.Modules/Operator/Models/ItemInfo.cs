@@ -7,6 +7,18 @@ namespace Ferretto.VW.App.Modules.Operator.Models
     {
         #region Constructors
 
+        public ItemInfo(ProductInMachine product, int machineId)
+             : this(product?.Item, machineId)
+        {
+            if (product.Machines?.Any() == true)
+            {
+                this.IsQtyOnMachine = product.Machines.Any(m => m.Id == machineId);
+
+                this.MachinesInfo = string.Join(", ", product.Machines.Select(m => m.Nickname).ToArray());
+                this.AvailableQuantity = (double?)product.Machines.Sum(m => m.ItemAvailableQuantity);
+            }
+        }
+
         public ItemInfo(Item item, int machineId)
         {
             if (item is null)
@@ -25,25 +37,24 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.Image = item.Image;
             this.PickTolerance = item.PickTolerance;
             this.AverageWeight = item.AverageWeight;
-            this.IsQtyOnMachine = item.Machines.Any(m => m.Id == machineId);
+            this.IsQtyOnMachine = item.Machines?.Any(m => m.Id == machineId) == true;
 
-            if (item.Machines.Any())
+            if (item.Machines?.Any() == true)
             {
                 this.MachinesInfo = string.Join(", ", item.Machines.Select(m => m.Nickname).ToArray());
                 this.AvailableQuantity = item.Machines.Sum(m => m.AvailableQuantityItem);
             }
-
         }
 
         #endregion
 
         #region Properties
 
+        public double? AvailableQuantity { get; }
+
         public bool IsQtyOnMachine { get; }
 
         public string MachinesInfo { get; }
-
-        public double? AvailableQuantity { get; }
 
         public string MeasureUnit => this.MeasureUnitDescription.ToLowerInvariant() ?? Resources.OperatorApp.Pieces;
 
