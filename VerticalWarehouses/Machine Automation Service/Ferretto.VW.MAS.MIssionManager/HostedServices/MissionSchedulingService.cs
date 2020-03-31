@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
@@ -16,7 +17,6 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -890,6 +890,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
             GetPersistedMissions(serviceProvider, this.EventAggregator);
+            this.RestoreFullTest(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
@@ -1008,6 +1009,23 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
+        }
+
+        private void RestoreFullTest(IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var mission = missionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT);
+            if (mission != null)
+            {
+                // TODO - restore values from saved procedure??
+                var loadUnitsProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                var loadUnits = loadUnitsProvider.GetAll().Where(l => l.Status != LoadingUnitStatus.Undefined).Select(x => x.Id).ToList();
+                this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                this.machineVolatileDataProvider.RequiredCycles = 1;
+                this.machineVolatileDataProvider.BayTestNumber = mission.TargetBay;
+                this.machineVolatileDataProvider.ExecutedCycles = 0;
+                this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
+            }
         }
 
         private async Task ScheduleRestore(IServiceProvider serviceProvider, IBaysDataProvider bayProvider, IEnumerable<Mission> activeMissions)
