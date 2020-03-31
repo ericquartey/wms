@@ -10,6 +10,10 @@
               extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
               ItemsSource="{Binding Items}"
               SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <DataGrid.Resources>
+            <ctrls:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </DataGrid.Resources>
+
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
                                 Width="1*"
@@ -59,6 +63,45 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
+            <DataGridTextColumn    x:Name="Column4"
+                                    Width="100"
+                                    Binding="{Binding Path=Lot}"
+                                    Visibility="{Binding Source={StaticResource proxy},Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}"
+                                    Header="{x:Static Resources:OperatorApp.Lot}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column5"
+                                    Width="100"                                
+                                    Binding="{Binding Path=Serial}"
+                                    Visibility="{Binding Source={StaticResource proxy},Path=Data.IsGroupbySerial, Converter={StaticResource BTVC}}"
+                                    Header="{x:Static Resources:OperatorApp.SerialNumber}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
+
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

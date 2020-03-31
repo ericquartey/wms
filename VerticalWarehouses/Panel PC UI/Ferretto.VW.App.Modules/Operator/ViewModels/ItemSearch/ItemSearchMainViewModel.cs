@@ -50,6 +50,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyRequestingItemPick;
 
+        private bool isGroupbyLot;
+
+        private bool isGroupbyLotEnabled;
+
+        private bool isGroupbySerial;
+
+        private bool isGroupbySerialEnabled;
+
         private bool isSearching;
 
         private List<ItemInfo> items = new List<ItemInfo>();
@@ -119,6 +127,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyRequestingItemPick;
             private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsGroupbyLot
+        {
+            get => this.isGroupbyLot;
+            set => this.SetProperty(ref this.isGroupbyLot, value);
+        }
+
+        public bool IsGroupbyLotEnabled
+        {
+            get => this.isGroupbyLotEnabled;
+            private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
+        }
+
+        public bool IsGroupbySerial
+        {
+            get => this.isGroupbySerial;
+            set => this.SetProperty(ref this.isGroupbySerial, value);
+        }
+
+        public bool IsGroupbySerialEnabled
+        {
+            get => this.isGroupbySerialEnabled;
+            private set => this.SetProperty(ref this.isGroupbySerialEnabled, value);
         }
 
         public bool IsSearching
@@ -299,6 +331,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     cancellationToken);
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+
+                if (this.items.Count == 0)
+                {
+                    this.IsGroupbyLot = false;
+                    this.IsGroupbySerial = false;
+                    this.IsGroupbyLotEnabled = false;
+                    this.IsGroupbySerialEnabled = false;
+                }
+                else
+                {
+                    this.IsGroupbyLotEnabled = true;
+                    this.IsGroupbySerialEnabled = true;
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

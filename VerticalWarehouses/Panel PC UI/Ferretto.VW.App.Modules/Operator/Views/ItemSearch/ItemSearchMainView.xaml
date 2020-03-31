@@ -14,7 +14,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
-            d:DesignHeight="450"
+            d:DesignHeight="1024"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
@@ -162,10 +162,27 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                  Margin="15,0,0,15"
+                  Content="Lotto"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
+                  IsEnabled="{Binding IsGroupbyLotEnabled}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+                <CheckBox
+                      Margin="15,0,15,15"
+                      Content="Matricola"
+                      Foreground="{DynamicResource CheckBoxDescription}"
+                      IsChecked="{Binding IsGroupbySerial, Mode=TwoWay}"
+                      IsEnabled="{Binding IsGroupbySerialEnabled}"
+                      Style="{StaticResource PpcCheckBoxStyle}" />
+            </StackPanel>
 
-            <Border Grid.Row="0"
+            <Border Grid.Row="1"
                     Height="90"
                     MinHeight="90"
                     Margin="15,0"
@@ -205,7 +222,7 @@
                 </Border>
             </Border>
 
-            <Border Grid.Row="1"
+            <Border Grid.Row="2"
                     Height="90"
                     MinHeight="90"
                     Margin="15,15,15,0"
@@ -246,8 +263,8 @@
                 </Border>
             </Border>
 
-            <ctrls:PpcSpinEdit Grid.Row="2"
-                               Width="230"
+            <ctrls:PpcSpinEdit Grid.Row="3"
+                               HorizontalAlignment="Stretch"
                                Height="90"
                                Margin="15,15,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -256,7 +273,17 @@
                                Mask="{Binding SelectedItem.PickTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 
-            <controls:PpcButton Grid.Row="3"
+            <StackPanel Orientation="Horizontal" Grid.Row="4">
+                
+                <controls:PpcButton                    
+                                Margin="15,15,0,0"
+                                Width="80"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ItemDetailButtonCommand}"
+                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                
+                <controls:PpcButton 
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
@@ -265,12 +292,7 @@
                                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                                 IsBusy="{Binding IsBusyRequestingItemPick}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Margin="15,15,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ItemDetailButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+            </StackPanel>
 
         </Grid>
     </Grid>
