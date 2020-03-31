@@ -40,11 +40,5 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
-
-        //[HttpGet("{id}/products")]
-        //public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(int id, int? skip = null, int? take = null, string where = null, string orderBy = null, string search = null)
-        //{
-        //    return this.Ok(await this.areasWmsWebService.GetItemsAsync(id, skip, take, where, orderBy, search));
-        //}
     }
 }
