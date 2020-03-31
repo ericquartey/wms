@@ -167,13 +167,13 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
                 <CheckBox Margin="15,0,0,15"
-                          Content="Lotto"
+                          Content="{x:Static Resources:OperatorApp.Lot}"
                           Foreground="{DynamicResource CheckBoxDescription}"
                           IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
                           IsEnabled="{Binding IsGroupbyLotEnabled}"
                           Style="{StaticResource PpcCheckBoxStyle}" />
                 <CheckBox Margin="15,0,15,15"
-                          Content="Matricola"
+                          Content="{x:Static Resources:OperatorApp.SerialNumber}"
                           Foreground="{DynamicResource CheckBoxDescription}"
                           IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
                           IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
