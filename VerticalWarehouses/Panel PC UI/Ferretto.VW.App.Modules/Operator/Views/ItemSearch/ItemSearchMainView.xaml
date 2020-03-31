@@ -267,10 +267,10 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding RequestItemPickCommand}"
                                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
-                                IsBusy="{Binding IsBusyRequestingItemPick}" />
+                                IsBusy="{Binding IsBusyRequestingItemPick}"
+                                Style="{StaticResource ConfirmButton}" />
 
         </Grid>
     </Grid>

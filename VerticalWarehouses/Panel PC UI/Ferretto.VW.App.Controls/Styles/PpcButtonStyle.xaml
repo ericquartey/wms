@@ -853,6 +853,30 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="ConfirmButton"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+                            <GradientStop Offset="0" Color="#003559" />
+                            <GradientStop Offset="0.5" Color="#003559" />
+                            <GradientStop Offset="0.5" Color="#002640" />
+                            <GradientStop Offset="1" Color="#002640" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="BorderTimeLine"
            TargetType="{x:Type Border}">
         <Setter Property="HorizontalAlignment" Value="Center" />

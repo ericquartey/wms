@@ -214,9 +214,9 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
                                 Command="{Binding ListExecuteCommand}"
-                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}" />
+                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                                Style="{StaticResource ConfirmButton}" />
 
         </Grid>
     </Grid>
