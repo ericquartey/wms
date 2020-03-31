@@ -234,6 +234,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // no more load unit to call. Just wait all missions to finish
             }
             if (loadUnitId != null
+                && loadUnitId != 0
                 && !missions.Any(m => m.Status == MissionStatus.New)
                 && machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value
                 )
