@@ -152,7 +152,8 @@
                     Height="90"
                     MinHeight="90"
                     Margin="15,15,15,0"
-                    Background="{DynamicResource PpcBackground}">
+                    Background="{DynamicResource PpcBackground}"
+                    Visibility="Collapsed">
                 <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                         BorderThickness="{DynamicResource PpcBorderThickness}">
 
