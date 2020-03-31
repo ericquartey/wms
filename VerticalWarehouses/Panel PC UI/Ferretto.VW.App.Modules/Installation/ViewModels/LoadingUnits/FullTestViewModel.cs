@@ -40,15 +40,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private int? requiredCycles;
 
-        private int? totalCycles;
+        private DelegateCommand resetSessionCommand;
+
+        private DelegateCommand resetTotalCommand;
 
         private DelegateCommand startCommand;
 
-        private DelegateCommand resetSession;
-
-        private DelegateCommand resetTotal;
-
         private DelegateCommand stopCommand;
+
+        private int? totalCycles;
 
         #endregion
 
@@ -94,32 +94,26 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.requiredCycles, value, () => this.startCommand?.RaiseCanExecuteChanged());
         }
 
-        public int? TotalCycles
-        {
-            get => this.totalCycles;
-            set => this.SetProperty(ref this.totalCycles, value, () => this.startCommand?.RaiseCanExecuteChanged());
-        }
+        public ICommand ResetSessionCommand =>
+            this.resetSessionCommand
+            ??
+            (this.resetSessionCommand = new DelegateCommand(
+                async () => await this.ResetSessionAsync(),
+                this.CanResetSession));
+
+        public ICommand ResetTotalCommand =>
+            this.resetTotalCommand
+            ??
+            (this.resetTotalCommand = new DelegateCommand(
+                async () => await this.ResetTotalAsync(),
+                this.CanResetTotal));
 
         public ICommand StartCommand =>
-                    this.startCommand
+            this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.StartAsync(),
                 this.CanStart));
-
-        public ICommand ResetSession =>
-                    this.resetSession
-            ??
-            (this.resetSession = new DelegateCommand(
-                async () => await this.ResetSessionAsync(),
-                this.CanResetSession));
-
-        public ICommand ResetTotal =>
-                    this.resetTotal
-            ??
-            (this.resetTotal = new DelegateCommand(
-                async () => await this.ResetTotalAsync(),
-                this.CanResetTotal));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -127,6 +121,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
                 this.CanStop));
+
+        public int? TotalCycles
+        {
+            get => this.totalCycles;
+            set => this.SetProperty(ref this.totalCycles, value, () => this.startCommand?.RaiseCanExecuteChanged());
+        }
 
         #endregion
 
@@ -155,13 +155,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             await base.OnDataRefreshAsync();
 
             await this.SensorsService.RefreshAsync(true);
 
-            if (this.RequiredCycles == null || this.PerformedCyclesThisSession == null  || this.totalCycles == null)
+            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+
+            if (this.RequiredCycles == null || this.PerformedCyclesThisSession == null || this.totalCycles == null)
             {
                 //var procedureParameters = await this.machineFullTestWebService.GetParametersAsync();
                 this.RequiredCycles = 200;
@@ -176,6 +185,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
+            this.resetSessionCommand?.RaiseCanExecuteChanged();
+            this.resetTotalCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanResetSession()
+        {
+            return this.requiredCycles != 0 &&
+                   !this.IsMoving;
+        }
+
+        private bool CanResetTotal()
+        {
+            return this.TotalCycles != 0 &&
+                   !this.IsMoving;
         }
 
         private bool CanStart()
@@ -183,16 +206,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsMoving &&
                    this.LoadingUnits.Any() &&
                    this.RequiredCycles.HasValue;
-        }
-
-        private bool CanResetSession()
-        {
-            return this.requiredCycles != 0;
-        }
-
-        private bool CanResetTotal()
-        {
-            return this.TotalCycles != 0;
         }
 
         private bool CanStop()
@@ -234,6 +247,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private async Task ResetSessionAsync()
+        {
+            this.PerformedCyclesThisSession = 0;
+            this.CyclesPercent = 0;
+        }
+
+        private async Task ResetTotalAsync()
+        {
+            this.TotalCycles = 0;
+        }
+
         private async Task StartAsync()
         {
             this.IsWaitingForResponse = true;
@@ -257,18 +281,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private async Task ResetSessionAsync()
-        {
-            this.RequiredCycles = 0;
-            this.PerformedCyclesThisSession = 0;
-            this.CyclesPercent = 0;
-        }
-
-        private async Task ResetTotalAsync()
-        {
-            this.TotalCycles = 0;
         }
 
         private async Task StopAsync()
