@@ -260,17 +260,17 @@
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Background="{DynamicResource FerrettoBlue}"
-                                Command="{Binding RequestItemPickCommand}"
-                                Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
-                                IsBusy="{Binding IsBusyRequestingItemPick}" />
+                                Command="{Binding ItemDetailButtonCommand}"
+                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Command="{Binding ItemDetailButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                                Background="{DynamicResource FerrettoBlue}"
+                                Command="{Binding RequestItemPickCommand}"
+                                Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                                IsBusy="{Binding IsBusyRequestingItemPick}" />
 
         </Grid>
     </Grid>

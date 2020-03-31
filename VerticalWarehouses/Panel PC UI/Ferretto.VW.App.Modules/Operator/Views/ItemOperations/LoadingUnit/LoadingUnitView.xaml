@@ -137,6 +137,7 @@
                 <controls:PpcButton Margin="15,15,15,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    Background="{DynamicResource FerrettoBlue}"
                                     Command="{Binding RecallLoadingUnitCommand}"
                                     Content="{Binding RecallLoadingUnitInfo}"
                                     IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
