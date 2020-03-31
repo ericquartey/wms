@@ -166,20 +166,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <CheckBox
-                  Margin="15,0,0,15"
-                  Content="Lotto"
-                  Foreground="{DynamicResource CheckBoxDescription}"
-                  IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
-                  IsEnabled="{Binding IsGroupbyLotEnabled}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
-                <CheckBox
-                      Margin="15,0,15,15"
-                      Content="Matricola"
-                      Foreground="{DynamicResource CheckBoxDescription}"
-                      IsChecked="{Binding IsGroupbySerial, Mode=TwoWay}"
-                      IsEnabled="{Binding IsGroupbySerialEnabled}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
+                <CheckBox Margin="15,0,0,15"
+                          Content="Lotto"
+                          Foreground="{DynamicResource CheckBoxDescription}"
+                          IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
+                          IsEnabled="{Binding IsGroupbyLotEnabled}"
+                          Style="{StaticResource PpcCheckBoxStyle}" />
+                <CheckBox Margin="15,0,15,15"
+                          Content="Matricola"
+                          Foreground="{DynamicResource CheckBoxDescription}"
+                          IsChecked="{Binding IsGroupbySerial, Mode=TwoWay}"
+                          IsEnabled="{Binding IsGroupbySerialEnabled}"
+                          Style="{StaticResource PpcCheckBoxStyle}" />
             </StackPanel>
 
             <Border Grid.Row="1"
@@ -264,34 +262,33 @@
             </Border>
 
             <ctrls:PpcSpinEdit Grid.Row="3"
-                               HorizontalAlignment="Stretch"
                                Height="90"
                                Margin="15,15,15,0"
+                               HorizontalAlignment="Stretch"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding SelectedItem.PickIncrement}"
                                LabelText="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.RequestedQuantity}}"
                                Mask="{Binding SelectedItem.PickTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 
-            <StackPanel Orientation="Horizontal" Grid.Row="4">
-                
-                <controls:PpcButton                    
-                                Margin="15,15,0,0"
-                                Width="80"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ItemDetailButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
-                
-                <controls:PpcButton 
-                                Margin="15,15,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding RequestItemPickCommand}"
-                                Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
-                                IsBusy="{Binding IsBusyRequestingItemPick}"
-                                Style="{StaticResource ConfirmButton}" />
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
 
+                <controls:PpcButton Width="80"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ItemDetailButtonCommand}"
+                                    Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+
+                <controls:PpcButton Margin="15,15,15,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding RequestItemPickCommand}"
+                                    Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                                    IsBusy="{Binding IsBusyRequestingItemPick}"
+                                    Style="{StaticResource ConfirmButton}" />
+            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>
