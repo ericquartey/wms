@@ -155,7 +155,6 @@
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.InventoryQuantityDetected}}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MaxValue="{Binding QuantityTolerance}"
                                MinValue="0" />
 
             <controls:PpcButton Grid.Row="2"

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
@@ -39,7 +38,7 @@ namespace Ferretto.VW.Installer.ViewModels
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-            this.installationService.Finished += this.OnInstallationServiceFinished;            
+            this.installationService.Finished += this.OnInstallationServiceFinished;
 
             this.StartInstallation();
         }
@@ -153,12 +152,12 @@ namespace Ferretto.VW.Installer.ViewModels
         }
 
         private void RaiseCanExecuteChanged()
-        {            
+        {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.closeCommand?.RaiseCanExecuteChanged();
-                    this.abortCommand?.RaiseCanExecuteChanged();                    
-                }), DispatcherPriority.Background);            
+                    this.abortCommand?.RaiseCanExecuteChanged();
+                }), DispatcherPriority.Background);
         }
 
         #endregion

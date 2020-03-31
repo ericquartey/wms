@@ -291,8 +291,7 @@
                                 Command="{Binding RequestItemPickCommand}"
                                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                                 IsBusy="{Binding IsBusyRequestingItemPick}" />
-
-            </StackPanel>
+           </StackPanel>
 
         </Grid>
     </Grid>

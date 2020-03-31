@@ -219,7 +219,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;
-                this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
+                this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
                 this.InputQuantity = null;
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
@@ -321,13 +321,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var newItems = await this.areasWebService.GetItemsAsync(
+                var groupByProduct = false;
+                var distinctBySerialNumber = false;
+
+                var newItems = await this.areasWebService.GetProductsAsync(
                     this.areaId.Value,
                     skip,
                     DefaultPageSize,
-                    null,
-                    null,
                     this.searchItem,
+                    groupByProduct,
+                    distinctBySerialNumber,
                     cancellationToken);
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
@@ -545,13 +548,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 try
                 {
-                    var items = await this.areasWebService.GetItemsAsync(
+                    var items = await this.areasWebService.GetProductsAsync(
                         this.areaId.Value,
                         0,
                         1,
-                        null,
-                        null,
-                        itemCode);
+                        itemCode,
+                        false,
+                        false);
 
                     if (items.Any())
                     {

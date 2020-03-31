@@ -81,23 +81,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemLot}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonLot}">
-                <controls:PpcLabeledText.Style>
-                    <Style TargetType="{x:Type controls:PpcLabeledText}">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding MissionOperation.ItemLot}"
-                                         Value="">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding MissionOperation.ItemLot}"
-                                         Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </controls:PpcLabeledText.Style>
-            </controls:PpcLabeledText>
+                                     LabelText="{x:Static resources:OperatorApp.CommonLot}" />
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
@@ -107,11 +91,12 @@
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
+
         </Grid>
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="0"
-                                 Grid.ColumnSpan="2"
+                                 Grid.ColumnSpan="3"
                                  MaxHeight="65"
                                  Margin="0,5,0,0"
                                  HorizontalAlignment="Left"

@@ -43,7 +43,7 @@ namespace Ferretto.VW.Installer.Service
             string initialDirectory,
             bool multiselect = false)
         {
-            
+
             var dialog = new OpenFileDialog()
             {
                 Title = title,
@@ -54,14 +54,14 @@ namespace Ferretto.VW.Installer.Service
             };
 
             SetDialogProperties(dialog, defaultExtension, defaultFileName, extFilters);
-                        
+
             if (dialog.ShowDialog().GetValueOrDefault() == true)
             {
                 return dialog.FileNames;
             }
 
             return null;
-        }        
+        }
 
         private static void SetDialogProperties(
             FileDialog dialog,
@@ -80,7 +80,7 @@ namespace Ferretto.VW.Installer.Service
             }
 
             if (filters == null)
-            {                
+            {
                 dialog.Filter = DefaultFilter;
             }
             else
@@ -112,7 +112,7 @@ namespace Ferretto.VW.Installer.Service
 
         private static string GetExtension(string extension)
         {
-          
+
             extension = extension.Trim();
 
             if (extension.StartsWith("*.") == false)

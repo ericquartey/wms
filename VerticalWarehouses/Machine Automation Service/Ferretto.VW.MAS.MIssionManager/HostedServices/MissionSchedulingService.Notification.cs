@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.MissionManager
 {

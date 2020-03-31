@@ -11,7 +11,7 @@ namespace Ferretto.VW.Installer.Core
         #region Constructors
 
         public MergeAppConfig(int number, string title, string description, string newPathName, string oldPathName, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log,  machineRole, setupMode, skipOnResume)
+            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
         {
             this.NewPathName = InterpolateVariables(newPathName);
             this.OldPathName = InterpolateVariables(oldPathName);

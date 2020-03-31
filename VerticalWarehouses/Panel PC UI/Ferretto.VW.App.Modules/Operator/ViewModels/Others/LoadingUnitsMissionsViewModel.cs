@@ -70,15 +70,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.missions.Clear();
+            this.RaisePropertyChanged(nameof(this.Missions));
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
-            await this.LoadListRowsAsync();
-
             await this.RefreshMissionsAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.LoadListRowsAsync();
         }
 
         private async Task LoadListRowsAsync()

@@ -150,20 +150,60 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
             // --------------------
             // Check the conditions
+            //  Table:
+            //      + ExternalBay         => NOT ALLOWED
+            //      + CarouselBay         => Drawer must be upper location
+            //      + Internal SingleBay  => Drawer must be upper location
+            //      + Internal DoubleBay  => Drawer must be upper location
 
-            // TODO
-            //  Prerequisites: Choose the upper position for the carousel bay
-
-            // Position of drawer (related to the top position)
+            // Get the bay (related to the requesting bay number)
+            var currentBay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            // Get the position bay
             var bayPosition = this.machineData.BaysDataProvider.GetPositionById(this.machineData.MessageData.BayPositionId);
-            var isUpper = bayPosition.IsUpper;
 
-            ok = this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay);
-            if (!ok)
+            // External bay
+            if (currentBay.IsExternal)
+            {
+                // TODO: Add these codes in the DataModels.Errors
+                // errorText = ErrorDescriptions.InvalidBay;
+                // errorCode = DataModels.MachineErrorCode.InvalidBay;
+                return false;
+            }
+
+            // Carousel bay
+            if (currentBay.Carousel != null)
+            {
+                // Check if bay position is upper
+                if (!bayPosition.IsUpper)
+                {
+                    // TODO: Add these codes in the DataModels.Errors
+                    // errorText = ErrorDescriptions.InvalidPositionBay;
+                    // errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
+                    return false;
+                }
+                // Check if drawer is located in the top location
+                if (!this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay))
+                {
+                    errorText = ErrorDescriptions.TopLevelBayEmpty;
+                    errorCode = DataModels.MachineErrorCode.TopLevelBayEmpty;
+                    return false;
+                }
+            }
+
+            // Internal bay (single or double type)
+            if (currentBay.IsDouble && !bayPosition.IsUpper)
+            {
+                // TODO: Add these codes in the DataModels.Errors
+                // errorText = ErrorDescriptions.InvalidPositionBay;
+                // errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
+                return false;
+            }
+            // Check if drawer is located in the top location
+            if (!this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay))
             {
                 errorText = ErrorDescriptions.TopLevelBayEmpty;
                 errorCode = DataModels.MachineErrorCode.TopLevelBayEmpty;
-                return ok;
+                return false;
             }
 
             // Check shutter positions for all bays
