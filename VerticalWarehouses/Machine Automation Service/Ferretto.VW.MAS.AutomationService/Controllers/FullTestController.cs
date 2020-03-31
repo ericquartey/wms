@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +17,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineModeProvider machineModeProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
-        public FullTestController(IMachineModeProvider machineModeProvider)
+        public FullTestController(
+            IMachineModeProvider machineModeProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -31,6 +38,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public BayNumber BayNumber { get; set; }
 
         #endregion
+
+        //[HttpGet("parameters")]
+        //public ActionResult<RepeatedTestProcedure> GetParameters()
+        //{
+        //    return this.Ok(this.setupProceduresDataProvider.GetFullTest());
+        //}
 
         #region Methods
 

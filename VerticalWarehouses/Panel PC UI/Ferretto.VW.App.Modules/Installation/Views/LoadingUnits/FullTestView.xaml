@@ -110,8 +110,9 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
+                               Style="{DynamicResource VWAPP_CardSensor}">
+                        <Run Text="{x:Static res:InstallationApp.FullTestSessionCycles}" /> <Run Text="(" /><Run Text="{Binding TotalCycles}" /><Run Text=")" />
+                    </TextBlock>
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -132,7 +133,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="{Binding InputRequiredCycles, FallbackValue=0}" />
+                                   Text="{Binding RequiredCycles, FallbackValue=0}" />
                     </StackPanel>
 
                     <controls:PpcProgressBar Grid.Row="2"
@@ -155,11 +156,22 @@
                                                     SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Visibility="Collapsed" />
         <StackPanel Grid.Row="5"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ResetSession}"
+                                Content="{x:Static res:InstallationApp.ResetSession}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ResetTotal}"
+                                Content="{x:Static res:InstallationApp.ResetTotal}" />
+
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"

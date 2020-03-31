@@ -2452,4 +2452,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RetryProcedure" xml:space="preserve">
     <value>Retry procedure</value>
   </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Reset session</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Reset totali</value>
+  </data>
 </root>
