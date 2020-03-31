@@ -1327,4 +1327,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ResolutionDate" xml:space="preserve">
     <value>Data di risoluzione</value>
   </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Matricola</value>
+  </data>
 </root>
