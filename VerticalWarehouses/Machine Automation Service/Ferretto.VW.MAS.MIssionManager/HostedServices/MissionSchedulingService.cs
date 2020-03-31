@@ -816,6 +816,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
                 {
+                    if (loadUnit.Height == 0)
+                    {
+                        var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                        var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+                        var machine = machineProvider.Get();
+                        loadingUnitProvider.SetHeight(loadUnit.Id, machine.LoadUnitMaxHeight);
+                    }
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
                     var missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
                     moveLoadingUnitProvider.InsertToCell(missionType, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
