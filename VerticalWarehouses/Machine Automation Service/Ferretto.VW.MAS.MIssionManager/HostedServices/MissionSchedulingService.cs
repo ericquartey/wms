@@ -836,7 +836,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var bays = bayProvider.GetAll();
                 foreach (var bay in bays)
                 {
-                    foreach (var position in bay.Positions)
+                    foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
                         if (sensorProvider.IsLoadingUnitInLocation(position.Location))
                         {
