@@ -5,11 +5,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -21,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         private readonly IBaysDataProvider baysDataProvider;
+
+        private readonly IHubContext<OperatorHub> hubContext;
 
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
@@ -36,9 +40,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMissionOperationsProvider missionOperationsProvider,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsWmsWebService missionsWmsWebService,
-            IBaysDataProvider baysDataProvider)
+            IBaysDataProvider baysDataProvider,
+            IHubContext<OperatorHub> hubContext)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
@@ -67,13 +73,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName);
 
-            return this.Ok();
-        }
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
-        [HttpGet("{type}/reasons")]
-        public async Task<ActionResult<IEnumerable<OperationReason>>> CompleteAsync(MissionOperationType type)
-        {
-            return this.Ok(await this.missionOperationsProvider.GetReasonsAsync(type));
+            return this.Ok();
         }
 
         [HttpPost("{id}/execute")]
@@ -114,6 +116,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(operation);
         }
 
+        [HttpGet("{type}/reasons")]
+        public async Task<ActionResult<IEnumerable<OperationReason>>> GetAllReasonsAsync(MissionOperationType type)
+        {
+            return this.Ok(await this.missionOperationsProvider.GetReasonsAsync(type));
+        }
+
         [HttpGet("count")]
         public ActionResult<int> GetByBayCount()
         {
@@ -132,6 +140,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, string printerName)
         {
             await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, printerName);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
             return this.Ok();
         }

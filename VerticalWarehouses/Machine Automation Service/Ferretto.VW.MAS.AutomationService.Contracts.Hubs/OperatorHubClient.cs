@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
 
+        public event EventHandler<ProductsChangedEventArgs> ProductsChanged;
+
         #endregion
 
         #region Methods
@@ -45,6 +47,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<int>(
                 nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged),
                 this.OnErrorStatusChanged);
+
+            connection.On(
+                nameof(AutomationService.Hubs.IOperatorHub.ProductsChanged),
+                this.OnProductsChanged);
         }
 
         private void OnAssignedMissionChanged(BayNumber bayNumber, int? missionId)
@@ -74,6 +80,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnErrorStatusChanged(int code)
         {
             this.ErrorStatusChanged?.Invoke(this, new ErrorStatusChangedEventArgs(code));
+        }
+
+        private void OnProductsChanged()
+        {
+            this.ProductsChanged?.Invoke(this, null);
         }
 
         #endregion
