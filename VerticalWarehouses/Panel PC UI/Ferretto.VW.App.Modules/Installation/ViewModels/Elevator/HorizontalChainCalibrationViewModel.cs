@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -33,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     public class HorizontalChainCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
 
         private readonly Services.IDialogService dialogService;
 
@@ -130,7 +133,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IDialogService dialogService,
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            IBayManager bayManager)
           : base(PresentationMode.Installer)
         {
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
@@ -139,6 +143,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
         }
@@ -846,6 +851,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                if (this.MeasuredDistance.HasValue)
+                {
+                    //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ApplyCorrectionMessage, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                    //if (messageBoxResult == DialogResult.Yes)
+                    //{
+                    await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+                    //}
+                }
+                await this.MachineService.OnUpdateServiceAsync();
                 await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
 
                 this.ShowNotification(
@@ -873,9 +887,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 //this.InputHeight = this.SelectedBayPosition().Height;
+                var bay = await this.bayManager.GetBayAsync();
+                var bayPosition = bay.Positions.Single(b => b.Height == bay.Positions.Max(p => p.Height));
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(
-                    (int)this.GetBayPosition(),
+                    bayPosition.Id,
                     computeElongation: true,
                     performWeighting: this.isUseWeightControl);
 

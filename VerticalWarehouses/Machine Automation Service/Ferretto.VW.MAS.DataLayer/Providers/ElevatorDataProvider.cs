@@ -415,7 +415,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var profile in axis.Profiles)
                 {
                     profile.TotalDistance = newDistance;
-                    var lastStep = profile.Steps.Last();
+                    var lastStep = profile.Steps.OrderBy(x => x.Number).Last();
                     lastStep.Position = newDistance;
                 }
                 this.dataContext.ElevatorAxes.Update(axis);
