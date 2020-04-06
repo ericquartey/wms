@@ -8,7 +8,7 @@
               ItemsSource="{Binding Missions}"
               SelectedItem="{Binding SelectedMission}">
         <DataGrid.Columns>
-            <DataGridTextColumn x:Name="Column1"
+            <DataGridTextColumn x:Name="ColumnId"
                                 Width="Auto"
                                 Binding="{Binding Path=Id}"
                                 Header="{x:Static Res:OperatorApp.WaitingListDetailDataGridHeaderRow}">
@@ -25,10 +25,11 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column2"
-                                Width="*"
-                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormat}}"
-                                Header="{x:Static Res:OperatorApp.CreationDate}">
+
+            <DataGridTextColumn x:Name="ColumnLoadingUnit"
+                                Width="Auto"
+                                Binding="{Binding Path=LoadUnitId}"
+                                Header="{x:Static Res:OperatorApp.LoadingUnitId}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -36,8 +37,9 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
+
             <DataGridTemplateColumn x:Name="Column3"
-                                    Width="Auto"
+                                    Width="*"
                                     Header="{x:Static Res:OperatorApp.MissionStep}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -119,18 +121,62 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn x:Name="Column4"
-                                Width="Auto"
-                                Binding="{Binding Path=LoadUnitId}"
-                                Header="{x:Static Res:OperatorApp.LoadingUnitId}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTemplateColumn x:Name="Column5"
+
+            <DataGridTemplateColumn x:Name="ColumnStatus"
+                                    Width="*"
+                                    Header="{x:Static Res:OperatorApp.MissionStatus}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>New</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusNew}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>Executing</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusExecuting}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>Waiting</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusWaiting}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>Completed</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusCompleted}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>Aborted</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusAborted}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStatus>Completing</model:MissionStatus>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusCompleting}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn x:Name="ColumnType"
                                     Width="Auto"
                                     Header="{x:Static Res:OperatorApp.MissionType}">
                 <DataGridTemplateColumn.CellTemplate>
@@ -207,60 +253,8 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn x:Name="Column6"
-                                    Width="Auto"
-                                    Header="{x:Static Res:OperatorApp.MissionStatus}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>New</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusNew}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Executing</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusExecuting}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Waiting</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusWaiting}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Completed</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusCompleted}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Aborted</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusAborted}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Completing</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{x:Static Res:OperatorApp.StatusCompleting}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            <DataGridTemplateColumn x:Name="Column7"
+
+            <DataGridTemplateColumn x:Name="ColumnBay"
                                     Width="Auto"
                                     Header="{x:Static Res:OperatorApp.BayTarget}">
                 <DataGridTemplateColumn.CellTemplate>
@@ -313,6 +307,19 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
+
+            <DataGridTextColumn x:Name="ColumnDate"
+                                Width="180"
+                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormat}}"
+                                Header="{x:Static Res:OperatorApp.CreationDate}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -66,6 +68,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName);
 
             return this.Ok();
+        }
+
+        [HttpGet("{type}/reasons")]
+        public async Task<ActionResult<IEnumerable<OperationReason>>> CompleteAsync(MissionOperationType type)
+        {
+            return this.Ok(await this.missionOperationsProvider.GetReasonsAsync(type));
         }
 
         [HttpPost("{id}/execute")]
