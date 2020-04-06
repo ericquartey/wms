@@ -11,9 +11,11 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -63,6 +65,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private List<ItemInfo> items = new List<ItemInfo>();
 
         private int maxKnownIndexSelection;
+
+        private SubscriptionToken productsChangedToken;
 
         private DelegateCommand requestItemPickCommand;
 
@@ -263,11 +267,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.currentItemIndex = 0;
             this.maxKnownIndexSelection = 0;
             this.items = new List<ItemInfo>();
+
+            this.productsChangedToken.Dispose();
+            this.productsChangedToken = null;
         }
 
         public override async Task OnAppearedAsync()
         {
             this.InputQuantity = null;
+
+            this.productsChangedToken =
+                this.productsChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
+                    .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
             await base.OnAppearedAsync();
         }
@@ -470,6 +484,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
+        }
+
+        private async Task OnProductsChangedAsync(ProductsChangedEventArgs e)
+        {
+            await this.RefreshItemsAsync();
         }
 
         private async Task RefreshItemsAsync()

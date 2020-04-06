@@ -22,23 +22,30 @@ namespace Ferretto.VW.App.Services
 
         private readonly Logger logger;
 
+        private readonly IOperatorHubClient operatorHubClient;
+
         #endregion
 
         #region Constructors
 
         public HubNotificationService(
             IEventAggregator eventAggregator,
-            IInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient,
+            IOperatorHubClient operatorHubClient)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
+            this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+
             this.installationHubClient.MessageReceived += this.OnMessageReceived;
             this.installationHubClient.MachineModeChanged += this.OnEventReceived;
             this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
             this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
             this.installationHubClient.BayChainPositionChanged += this.OnBayEventReceived;
             this.installationHubClient.SystemTimeChanged += this.OnEventReceived;
+
+            this.operatorHubClient.ProductsChanged += this.OnEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
 

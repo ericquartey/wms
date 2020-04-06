@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task ErrorStatusChanged(int code);
 
+        Task ProductsChanged();
+
         Task SetBayDrawerOperationToInventory();
 
         Task SetBayDrawerOperationToPick(IBaseNotificationMessageUI message);
