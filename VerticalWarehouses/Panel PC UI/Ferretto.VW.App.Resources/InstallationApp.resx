@@ -2464,4 +2464,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizzontalChainCalibrationGoToBay" xml:space="preserve">
     <value>Perform the movement that takes the elevator to bay</value>
   </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Stop test</value>
+  </data>
 </root>
