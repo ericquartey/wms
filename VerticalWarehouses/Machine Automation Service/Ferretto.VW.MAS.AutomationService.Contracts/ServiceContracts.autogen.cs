@@ -1489,11 +1489,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineCompartmentsWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails compartment, int id);
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails compartment, int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes, System.Threading.CancellationToken cancellationToken);
     
     }
     

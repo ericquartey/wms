@@ -5940,6 +5940,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop test.
+        /// </summary>
+        public static string StopTest {
+            get {
+                return ResourceManager.GetString("StopTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successful change.
         /// </summary>
         public static string SuccessfullChange {
