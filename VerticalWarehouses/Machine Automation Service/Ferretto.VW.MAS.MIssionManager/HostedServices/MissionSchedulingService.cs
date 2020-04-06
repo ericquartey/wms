@@ -237,11 +237,17 @@ namespace Ferretto.VW.MAS.MissionManager
                 && loadUnitId != 0
                 && !missions.Any(m => m.Status == MissionStatus.New)
                 && machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value
+                && !machineProvider.StopTest
                 )
             {
                 missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
                 machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
                 machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+            }
+            else
+            {
+                loadUnitId = null;
+                // no more load unit to call. Just wait all missions to finish
             }
 
             // the mission scheduler

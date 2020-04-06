@@ -54,7 +54,15 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     break;
 
                 case MachineMode.Manual:
-                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
+                    if (this.machineVolatileDataProvider.Mode == MachineMode.FullTest)
+                    {
+                        this.machineVolatileDataProvider.StopTest = true;
+                        return;
+                    }
+                    else
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
+                    }
                     break;
 
                 case MachineMode.Compact:
@@ -68,6 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                    this.machineVolatileDataProvider.StopTest = false;
                     break;
 
                 case MachineMode.FirstTest:
@@ -75,6 +84,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                    this.machineVolatileDataProvider.StopTest = false;
                     break;
 
                 default:
