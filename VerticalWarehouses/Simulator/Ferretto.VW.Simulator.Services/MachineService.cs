@@ -390,6 +390,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private void OnHorizontalMovementCompleted(object sender, HorizontalMovementEventArgs e)
         {
+            //Test
             if (this.Machine == null)
             {
                 return;
