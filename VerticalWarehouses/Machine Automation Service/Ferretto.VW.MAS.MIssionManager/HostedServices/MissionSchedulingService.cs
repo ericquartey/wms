@@ -316,7 +316,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-            var setupRecord = setupProceduresDataProvider.GetFullTest();
+            var setupRecord = setupProceduresDataProvider.GetFullTest(machineProvider.BayTestNumber);
 
             var returnValue = false;
             var messageStatus = MessageStatus.OperationExecuting;
@@ -336,13 +336,17 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     this.Logger.LogInformation($"Full test finished successfully for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
                     messageStatus = MessageStatus.OperationEnd;
+                    setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
             }
             else
             {
                 returnValue = true;
-                setupProceduresDataProvider.InProgressProcedure(setupRecord);
+                if (machineProvider.ExecutedCycles > setupRecord.PerformedCycles)
+                {
+                    setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
+                }
             }
 
             var notificationMessage = new NotificationMessage(

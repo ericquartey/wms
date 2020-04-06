@@ -17,17 +17,21 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MachineModeProvider(
             IMachineVolatileDataProvider machineVolatileDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<MachineModeProvider> logger,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -67,6 +71,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
+
+                    var procedureParameters = this.setupProceduresDataProvider.GetFullTest(bayNumber);
+                    this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
                     this.machineVolatileDataProvider.StopTest = false;
                     break;
