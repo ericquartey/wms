@@ -53,12 +53,31 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding TuningChainCommand}"
                                     Content="{x:Static res:InstallationApp.ChainCalibration}"
                                     IsBusy="{Binding IsTuningChain}"
                                     Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding ClosedShutterCommand}"
+                                    Content="{x:Static res:InstallationApp.GateClose}">
+                    <controls:PpcButton.Style>
+                        <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                               TargetType="{x:Type controls:PpcButton}">
+                            <Setter Property="Grid.Column" Value="3" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BayIsShutterThreeSensors}"
+                                             Value="False">
+                                    <Setter Property="Grid.Column" Value="2" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcButton.Style>
+                </controls:PpcButton>
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
