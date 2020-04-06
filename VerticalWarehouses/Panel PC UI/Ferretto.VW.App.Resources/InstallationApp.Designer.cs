@@ -2689,7 +2689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The horizontal chain calibration function ....
+        ///   Looks up a localized string similar to The chain horizontal calibration function allows you to calibrate the correct value through its specific procedure. The procedure works in successive steps until correct completion..
         /// </summary>
         public static string HorizontalChainCalibratioDescription {
             get {
@@ -2748,6 +2748,24 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalHomingStarted {
             get {
                 return ResourceManager.GetString("HorizontalHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the movement that opens the shutter.
+        /// </summary>
+        public static string HorizzontalChainCalibrationGateOpen {
+            get {
+                return ResourceManager.GetString("HorizzontalChainCalibrationGateOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the movement that takes the elevator to bay.
+        /// </summary>
+        public static string HorizzontalChainCalibrationGoToBay {
+            get {
+                return ResourceManager.GetString("HorizzontalChainCalibrationGoToBay", resourceCulture);
             }
         }
         

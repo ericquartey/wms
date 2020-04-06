@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -18,6 +19,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public enum HorizontalChainCalibrationStep
     {
+        ChainCalibration,
+
+        GoToBay,
+
         StartCalibration,
 
         RunningCalibration,
@@ -30,6 +35,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly Services.IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
@@ -39,6 +46,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
+
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private DelegateCommand completeCommand;
 
@@ -52,13 +61,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? cyclesPercent;
 
-        private TimeSpan firstCycleTime = default(TimeSpan);
-
         private bool isCalibrationCompletedOrStopped;
 
         private bool isCalibrationNotCompleted;
 
         private bool isChainOffsetVisible;
+
+        private bool isElevatorMovingToBay;
+
+        private bool isExecutingChainCalibration;
 
         private bool isExecutingProcedure;
 
@@ -68,11 +79,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTuningChain;
 
+        private bool isUseWeightControl;
+
         private double? measured;
 
         private double? measuredDistance;
 
+        private DelegateCommand moveToBayPositionCommand;
+
+        private DelegateCommand moveToGoToBayCommand;
+
+        private DelegateCommand moveToStartCalibrationCommand;
+
         private int? newErrorValue;
+
+        private DelegateCommand openShutterCommand;
 
         private int performedCycles;
 
@@ -110,17 +131,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
+            IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            IBayManager bayManager)
           : base(PresentationMode.Installer)
         {
+            this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
-            this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+            this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
         }
 
         #endregion
@@ -172,7 +197,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
 
+        public bool HasStepChainCalibration => this.currentStep is HorizontalChainCalibrationStep.ChainCalibration;
+
         public bool HasStepConfirmAdjustment => this.currentStep is HorizontalChainCalibrationStep.ConfirmAdjustment;
+
+        public bool HasStepGoToBay => this.currentStep is HorizontalChainCalibrationStep.GoToBay;
 
         public bool HasStepRunningCalibration => this.currentStep is HorizontalChainCalibrationStep.RunningCalibration;
 
@@ -200,6 +229,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isChainOffsetVisible;
             set => this.SetProperty(ref this.isChainOffsetVisible, value);
+        }
+
+        public bool IsElevatorMovingToBay
+        {
+            get => this.isElevatorMovingToBay;
+            private set => this.SetProperty(ref this.isElevatorMovingToBay, value);
+        }
+
+        public bool IsExecutingChainCalibration
+        {
+            get => this.isExecutingChainCalibration;
+            private set
+            {
+                if (this.SetProperty(ref this.isExecutingChainCalibration, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsExecutingProcedure
@@ -240,6 +287,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isTuningChain, value);
         }
 
+        public bool IsUseWeightControl
+        {
+            get => this.isUseWeightControl;
+            set => this.SetProperty(ref this.isUseWeightControl, value);
+        }
+
         public double? Measured
         {
             get => this.measured;
@@ -252,11 +305,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.measuredDistance, value);
         }
 
+        public ICommand MoveToBayPositionCommand =>
+            this.moveToBayPositionCommand
+            ??
+            (this.moveToBayPositionCommand = new DelegateCommand(
+                async () => await this.MoveToBayPositionAsync(),
+                () => this.CanMoveToBayPosition()));
+
+        public ICommand MoveToGoToBayCommand =>
+            this.moveToGoToBayCommand
+            ??
+            (this.moveToGoToBayCommand = new DelegateCommand(
+                () => this.CurrentStep = HorizontalChainCalibrationStep.GoToBay,
+                () => this.CanMoveToGoToBay()));
+
+        public ICommand MoveToStartCalibrationCommand =>
+            this.moveToStartCalibrationCommand
+            ??
+            (this.moveToStartCalibrationCommand = new DelegateCommand(
+                () => this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration,
+                () => this.CanMoveToStartCalibration()));
+
         public int? NewErrorValue
         {
             get => this.newErrorValue;
             set => this.SetProperty(ref this.newErrorValue, value);
         }
+
+        public ICommand OpenShutterCommand =>
+                                                                                                                                                                                                    this.openShutterCommand
+            ??
+            (this.openShutterCommand = new DelegateCommand(
+                async () => await this.OpenShutterAsync(),
+                this.CanOpenShutter));
 
         public int PerformedCycles
         {
@@ -302,7 +383,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                {
                    try
                    {
-                       this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                       this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
                    }
                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                    {
@@ -432,15 +513,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
+        {
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+            }
+
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+            }
+
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
 
             this.UpdateStatusButtonFooter(true);
-
-            await this.RetrieveProcedureInformationAsync();
-
-            this.RaiseCanExecuteChanged();
 
             await base.OnAppearedAsync();
         }
@@ -464,20 +561,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        //protected override async Task OnDataRefreshAsync()
-        //{
-        //    try
-        //    {
-        //        await this.SensorsService.RefreshAsync(true);
+        protected override async Task OnDataRefreshAsync()
+        {
+            try
+            {
+                await this.RetrieveProcedureInformationAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-        //        await this.RetrieveProcedureInformationAsync();
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
 
-        //        // devo controllare che non sia cambiata dai parametri o altre baie
-        //        this.CurrentResolution = this.MachineService.Bay.Resolution;
-
-        //        this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
-
-        //        this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
+            if (!this.IsMoving)
+            {
+                this.IsTuningChain = false;
+                this.IsExecutingChainCalibration = false;
+            }
+        }
 
         //        this.RaiseCanExecuteChanged();
         //    }
@@ -491,24 +600,38 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //    }
         //}
 
-        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
-        {
-            await base.OnMachineStatusChangedAsync(e);
-
-            if (!this.IsMoving)
-            {
-                this.IsTuningChain = false;
-            }
-        }
-
         protected void OnStepChanged(StepChangedMessage e)
         {
             switch (this.CurrentStep)
             {
+                case HorizontalChainCalibrationStep.ChainCalibration:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.GoToBay;
+                    }
+
+                    break;
+
+                case HorizontalChainCalibrationStep.GoToBay:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                    }
+                    else
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
+                    }
+
+                    break;
+
                 case HorizontalChainCalibrationStep.StartCalibration:
                     if (e.Next)
                     {
                         this.CurrentStep = HorizontalChainCalibrationStep.RunningCalibration;
+                    }
+                    else
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.GoToBay;
                     }
 
                     break;
@@ -520,7 +643,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
                     }
 
                     break;
@@ -528,7 +651,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case HorizontalChainCalibrationStep.ConfirmAdjustment:
                     if (!e.Next)
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
                     }
 
                     break;
@@ -540,6 +663,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        //this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -547,9 +671,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand?.RaiseCanExecuteChanged();
             this.stopInPhaseCommand?.RaiseCanExecuteChanged();
 
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+
             this.startCalibrationCommand?.RaiseCanExecuteChanged();
             this.completeCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
+            this.moveToGoToBayCommand?.RaiseCanExecuteChanged();
+            this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
@@ -560,6 +688,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 
+        private bool CanBaseExecute()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        }
+
+        //private bool CanApply()
+        //{
+        //    return this.CanBaseExecute();
+        //}
+
+        private bool CanComplete()
+        {
+            return this.CanBaseExecute();
+        }
+
+        private bool CanMoveToBayPosition()
+        {
+            return this.CanBaseExecute();
+        }
+
+        //protected override async Task OnDataRefreshAsync()
+        //{
+        //    try
+        //    {
+        //        await this.SensorsService.RefreshAsync(true);
+
+        //        await this.RetrieveProcedureInformationAsync();
+
+        //        // devo controllare che non sia cambiata dai parametri o altre baie
+        //        this.CurrentResolution = this.MachineService.Bay.Resolution;
+
+        //        this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
         //private async Task ApplyCorrectionAsync()
         //{
         //    this.IsWaitingForResponse = true;
@@ -580,6 +743,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //                        VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
         //                        Services.Models.NotificationSeverity.Success);
 
+        private bool CanMoveToGoToBay()
+        {
+            return this.CanBaseExecute() &&
+                   this.MachineStatus.ElevatorHorizontalPosition == 0;
+        }
+
+        private bool CanMoveToStartCalibration()
+        {
+            return this.CanBaseExecute() &&
+                this.MachineStatus.ElevatorPositionType == ElevatorPositionType.Bay;
+        }
+
         //                this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
         //            }
         //        }
@@ -593,29 +768,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //        this.IsWaitingForResponse = false;
         //    }
         //}
-
-        //private bool CanApply()
-        //{
-        //    return this.CanBaseExecute();
-        //}
-
-        private bool CanBaseExecute()
-        {
-            return !this.IsKeyboardOpened &&
-                   !this.IsMoving &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
-        }
-
-        private bool CanComplete()
-        {
-            return this.CanBaseExecute();
-        }
-
         //private bool CanRepeat()
         //{
         //    return this.CanBaseExecute();
         //}
+        private bool CanOpenShutter()
+        {
+            return this.CanBaseExecute() &&
+                   (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay);
+        }
 
         private bool CanStartCalibration()
         {
@@ -690,6 +851,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                if (this.MeasuredDistance.HasValue)
+                {
+                    //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ApplyCorrectionMessage, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                    //if (messageBoxResult == DialogResult.Yes)
+                    //{
+                    await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+                    //}
+                }
+                await this.MachineService.OnUpdateServiceAsync();
                 await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
 
                 this.ShowNotification(
@@ -707,6 +877,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveToBayPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                //this.InputHeight = this.SelectedBayPosition().Height;
+                var bay = await this.bayManager.GetBayAsync();
+                var bayPosition = bay.Positions.Single(b => b.Height == bay.Positions.Max(p => p.Height));
+
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                    bayPosition.Id,
+                    computeElongation: true,
+                    performWeighting: this.isUseWeightControl);
+
+                this.IsElevatorMovingToBay = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToBay = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMovingToBay = false;
             }
         }
 
@@ -789,6 +990,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.RaiseCanExecuteChanged();
 
                 this.IsExecutingProcedure = false;
+            }
+        }
+
+        private async Task OpenShutterAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Opened);
+                //this.IsShutterMoving = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -877,6 +1098,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    .Subscribe(
                        (m) =>
                        {
+                           this.RaisePropertyChanged(nameof(this.HasStepChainCalibration));
+                           this.RaisePropertyChanged(nameof(this.HasStepGoToBay));
                            this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
@@ -896,9 +1119,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     await this.machineElevatorWebService.SearchHorizontalZeroAsync();
                     this.IsTuningChain = true;
                     this.IsExecutingProcedure = true;
+                    this.IsExecutingChainCalibration = true;
                 }
                 catch (Exception ex)
                 {
+                    this.IsTuningChain = false;
+                    this.IsExecutingChainCalibration = false;
+
                     this.ShowNotification(ex);
                 }
                 finally
@@ -918,8 +1145,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             switch (this.CurrentStep)
             {
-                case HorizontalChainCalibrationStep.StartCalibration:
+                case HorizontalChainCalibrationStep.ChainCalibration:
                     this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, this.moveToGoToBayCommand?.CanExecute() ?? false);
+                    break;
+
+                case HorizontalChainCalibrationStep.GoToBay:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, this.moveToStartCalibrationCommand?.CanExecute() ?? false);
+                    break;
+
+                case HorizontalChainCalibrationStep.StartCalibration:
+                    this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
                     break;
 
@@ -936,6 +1173,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ShowAbortStep(true, !this.IsMoving);
 
+            this.RaisePropertyChanged(nameof(this.HasStepChainCalibration));
+            this.RaisePropertyChanged(nameof(this.HasStepGoToBay));
             this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
