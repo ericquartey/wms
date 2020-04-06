@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private DelegateCommand stopTestCommand;
+
         private int? totalCycles;
 
         #endregion
@@ -122,6 +124,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
+        public ICommand StopTestCommand =>
+            this.stopTestCommand
+            ??
+            (this.stopTestCommand = new DelegateCommand(
+                async () => await this.StopTestAsync(),
+                this.CanStop));
+
         public int? TotalCycles
         {
             get => this.totalCycles;
@@ -155,13 +164,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
-        {
-            await base.OnMachineStatusChangedAsync(e);
-
-            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
-        }
-
         protected override async Task OnDataRefreshAsync()
         {
             await base.OnDataRefreshAsync();
@@ -179,12 +181,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
+            this.stopTestCommand?.RaiseCanExecuteChanged();
             this.resetSessionCommand?.RaiseCanExecuteChanged();
             this.resetTotalCommand?.RaiseCanExecuteChanged();
         }
@@ -291,6 +301,30 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 await this.machineFullTestWebService.StopAsync();
                 this.MachineService.StopMovingByAllAsync();
+
+                this.IsExecutingProcedure = false;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopTestAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineFullTestWebService.StopAsync();
 
                 this.IsExecutingProcedure = false;
             }
