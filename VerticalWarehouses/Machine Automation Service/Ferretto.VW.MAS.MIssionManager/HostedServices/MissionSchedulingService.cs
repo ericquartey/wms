@@ -329,7 +329,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
                 {
                     this.Logger.LogError($"Full Test error for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
-                    errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machineProvider.BayTestNumber);
+                    errorsProvider.RecordNew(MachineErrorCode.FullTestFailed, machineProvider.BayTestNumber);
                     messageStatus = MessageStatus.OperationError;
                 }
                 else

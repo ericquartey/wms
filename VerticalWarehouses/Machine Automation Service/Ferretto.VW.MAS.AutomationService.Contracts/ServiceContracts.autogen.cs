@@ -2140,13 +2140,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTestFailed = 66,
     
-        WarehouseNotEmpty = 67,
+        FullTestFailed = 67,
     
-        SensorZeroBayNotActiveAtEnd = 68,
+        WarehouseNotEmpty = 68,
     
-        SecurityRightSensorWasTriggered = 69,
+        SensorZeroBayNotActiveAtEnd = 69,
     
-        VerticalPositionChanged = 70,
+        SecurityRightSensorWasTriggered = 70,
+    
+        VerticalPositionChanged = 71,
     
         InverterErrorBaseCode = 1000,
     

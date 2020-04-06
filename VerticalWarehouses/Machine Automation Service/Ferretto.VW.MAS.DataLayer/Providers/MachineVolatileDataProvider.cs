@@ -153,6 +153,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int? RequiredCycles { get; set; }
 
+        public bool StopTest { get; set; }
+
         public MachineMode UiFilteredMode
         {
             get

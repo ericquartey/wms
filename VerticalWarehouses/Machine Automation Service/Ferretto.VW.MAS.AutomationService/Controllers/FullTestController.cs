@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+            this.machineModeProvider.StopTest();
             return this.Accepted();
         }
 

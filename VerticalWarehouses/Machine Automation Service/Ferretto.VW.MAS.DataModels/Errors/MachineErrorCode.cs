@@ -209,6 +209,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(FirstTestFailed), 1)]
         FirstTestFailed,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(FullTestFailed), 1)]
+        FullTestFailed,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WarehouseNotEmpty), 1)]
         WarehouseNotEmpty,
 

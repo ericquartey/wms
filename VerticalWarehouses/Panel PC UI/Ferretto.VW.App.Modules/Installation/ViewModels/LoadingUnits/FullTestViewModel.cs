@@ -299,7 +299,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                await this.machineFullTestWebService.StopAsync();
                 this.MachineService.StopMovingByAllAsync();
 
                 this.IsExecutingProcedure = false;

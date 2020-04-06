@@ -358,7 +358,7 @@
     <value>Destination bay needs calibration</value>
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
-    <value>First load unit test failed: Not all cells could be tested!</value>
+    <value>Test not completed</value>
   </data>
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>Not empty warehouse.</value>
@@ -377,5 +377,8 @@
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
     <value />
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test not completed</value>
   </data>
 </root>

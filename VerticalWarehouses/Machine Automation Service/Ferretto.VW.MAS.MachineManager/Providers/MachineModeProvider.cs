@@ -54,15 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     break;
 
                 case MachineMode.Manual:
-                    if (this.machineVolatileDataProvider.Mode == MachineMode.FullTest)
-                    {
-                        this.machineVolatileDataProvider.StopTest = true;
-                        return;
-                    }
-                    else
-                    {
-                        this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
-                    }
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
                     break;
 
                 case MachineMode.Compact:
@@ -99,6 +91,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
+        }
+
+        public void StopTest()
+        {
+            this.machineVolatileDataProvider.StopTest = true;
         }
 
         #endregion
