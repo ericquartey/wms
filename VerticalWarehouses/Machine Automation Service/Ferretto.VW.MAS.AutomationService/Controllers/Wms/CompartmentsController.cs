@@ -26,12 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPut("{id}/update")]
-        public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails compartment, int id)
+        [HttpPut("{id}/items/{itemId}/stock")]
+        public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes)
         {
-            var updatedCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, id);
+            await this.compartmentsWmsWebService.UpdateItemStockAsync(id, itemId, stock, reasonId, reasonNotes);
 
-            return this.Ok(updatedCompartment);
+            return this.Ok();
         }
 
         #endregion

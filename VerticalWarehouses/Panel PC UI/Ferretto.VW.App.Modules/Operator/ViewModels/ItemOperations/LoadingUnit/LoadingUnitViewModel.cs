@@ -311,13 +311,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsAdjustmentVisible)
                 {
-                    var compartment = new CompartmentDetails()
-                    {
-                        ItemId = this.SelectedItemCompartment.ItemId,
-                        Stock = this.InputQuantity.Value,
-                    };
-
-                    var newItemCompartment = await this.compartmentsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
+                    await this.compartmentsWebService.UpdateItemStockAsync(
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItemCompartment.ItemId.Value,
+                        this.InputQuantity.Value,
+                        reasonId: null,
+                        reasonNotes: null);
 
                     await this.OnDataRefreshAsync();
                 }
