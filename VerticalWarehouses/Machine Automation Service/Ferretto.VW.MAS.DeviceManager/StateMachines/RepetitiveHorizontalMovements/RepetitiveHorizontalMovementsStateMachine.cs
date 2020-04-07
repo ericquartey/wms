@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
         /// <returns></returns>
         private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
         {
-            var ok = false;
+            var ok = true;
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.NoError;
 

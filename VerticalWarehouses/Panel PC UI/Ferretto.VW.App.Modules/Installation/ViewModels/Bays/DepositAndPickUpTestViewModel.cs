@@ -659,8 +659,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
-                !this.IsShutterMoving
-                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
+                //!this.IsShutterMoving &&
+                ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
         }
@@ -686,14 +686,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCycleTest()
         {
             return this.CanBaseExecute() &&
-                !this.IsShutterMoving &&
+                //!this.IsShutterMoving &&
                 this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMoveToEndTest()
         {
             return this.CanBaseExecute() &&
-                !this.IsShutterMoving &&
+                //!this.IsShutterMoving &&
                 this.SensorsService.ShutterSensors.Closed;
         }
 
@@ -712,13 +712,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanOpenShutter()
         {
             return
-                this.CanBaseExecute()
-                &&
-                !this.IsShutterMoving
-                &&
-                ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
-                &&
-                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay));
+                this.CanBaseExecute() &&
+                   (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay);
         }
 
         private bool CanStop()
