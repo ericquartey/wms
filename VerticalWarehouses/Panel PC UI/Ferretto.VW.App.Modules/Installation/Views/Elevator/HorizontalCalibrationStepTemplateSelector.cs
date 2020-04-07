@@ -19,6 +19,10 @@ namespace Ferretto.VW.App.Installation.Views
 
         public DataTemplate EnumStartCalibration { get; set; }
 
+        public DataTemplate EnumChainCalibration { get; set; }
+
+        public DataTemplate EnumGoToBay { get; set; }
+
         #endregion
 
         #region Methods
@@ -36,6 +40,12 @@ namespace Ferretto.VW.App.Installation.Views
 
                 case HorizontalChainCalibrationStep.ConfirmAdjustment:
                     return this.EnumConfirmAdjustment;
+
+                case HorizontalChainCalibrationStep.ChainCalibration:
+                    return this.EnumChainCalibration;
+
+                case HorizontalChainCalibrationStep.GoToBay:
+                    return this.EnumGoToBay;
             }
 
             return base.SelectTemplate(item, container);

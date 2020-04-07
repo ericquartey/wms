@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
 
+        event EventHandler<ProductsChangedEventArgs> ProductsChanged;
+
         #endregion
     }
 }

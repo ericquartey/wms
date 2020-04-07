@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -609,6 +611,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.EventAggregator.GetEvent<LoadUnitsChangedPubSubEvent>().Unsubscribe(this.loadunitsToken);
                 this.loadunitsToken.Dispose();
                 this.loadunitsToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
             }
         }
 
@@ -1177,6 +1186,29 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepStart));
+                           this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnElevator));
+                           this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay1));
+                           this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay2));
+                           this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay3));
+                           this.RaisePropertyChanged(nameof(this.HasStepAutomaticMode));
+
+                           this.RaisePropertyChanged(nameof(this.HasBay1PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.HasBay1PositionUpVisible));
+                           this.RaisePropertyChanged(nameof(this.HasBay2PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.HasBay2PositionUpVisible));
+                           this.RaisePropertyChanged(nameof(this.HasBay3PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.HasBay3PositionUpVisible));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()

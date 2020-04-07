@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -116,6 +117,11 @@ namespace Ferretto.VW.MAS.MissionManager
                     && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Aborted
                     )
                 .Count();
+        }
+
+        public async Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type)
+        {
+            return await this.missionOperationsWmsWebService.GetAllReasonsAsync(type);
         }
 
         /// <summary>

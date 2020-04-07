@@ -2356,7 +2356,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Esegui la procedura di taratura della catena</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
-    <value>La funzione di calibrazione orizzontale della catena ...</value>
+    <value>La funzione di calibrazione orizzontale della catena permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Calibrazione orizzontale</value>
@@ -2387,5 +2387,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ResetTotal" xml:space="preserve">
     <value>Reset totali</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGateOpen" xml:space="preserve">
+    <value>Esegui il movimento che apre la serranda</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGoToBay" xml:space="preserve">
+    <value>Esegui il movimento che porta l'elevatore in baia</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Stop test</value>
   </data>
 </root>

@@ -378,4 +378,7 @@
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>I sensori di presenza su elevatore risultano non attivi dopo un'operazione di carico.</value>
   </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Il test completo è fallito: non tutti i cicli previsti sono stati eseguiti.</value>
+  </data>
 </root>

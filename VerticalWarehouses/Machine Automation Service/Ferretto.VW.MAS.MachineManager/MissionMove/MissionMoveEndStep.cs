@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.StopReason == StopRequestReason.NoReason)
             {
+                this.Logger.LogInformation($"End Move load unit {this.Mission.LoadUnitId} to {this.Mission.LoadUnitDestination} {this.Mission.DestinationCellId} on bay {this.Mission.TargetBay} ");
+
                 this.Mission.Status = MissionStatus.Completed;
                 this.MissionsDataProvider.Update(this.Mission);
 
