@@ -310,7 +310,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyLoadingNextPage = false;
             }
 
-            return this.Reasons.Any();
+            return this.Reasons?.Any() == true;
         }
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
