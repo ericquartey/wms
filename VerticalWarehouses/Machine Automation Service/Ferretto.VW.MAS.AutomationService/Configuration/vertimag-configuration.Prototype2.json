@@ -5761,7 +5761,8 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "Prototype #2"
+    "SerialNumber": "Prototype #2",
+    "Simulation": false
   },
   "SetupProcedures": {
     "Bay1CarouselCalibration": {

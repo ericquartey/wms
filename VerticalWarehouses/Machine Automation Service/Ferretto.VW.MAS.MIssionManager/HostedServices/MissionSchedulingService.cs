@@ -930,7 +930,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] = true;
+                        this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
