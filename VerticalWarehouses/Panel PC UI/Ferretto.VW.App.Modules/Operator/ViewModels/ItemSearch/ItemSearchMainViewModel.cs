@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DevExpress.Printing.ExportHelpers;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
@@ -20,7 +20,7 @@ using Prism.Events;
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class ItemSearchMainViewModel : BaseOperatorViewModel, IOperationalContextViewModel
+    public class ItemSearchMainViewModel : BaseOperatorViewModel, IOperationalContextViewModel, IOperationReasonsSelector
     {
         #region Fields
 
@@ -38,11 +38,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
+        private readonly IMachineMissionOperationsWebService missionOperationsService;
+
         private readonly IWmsDataProvider wmsDataProvider;
 
         private int? areaId;
 
         private double? availableQuantity;
+
+        private DelegateCommand cancelReasonCommand;
+
+        private DelegateCommand confirmReasonCommand;
 
         private int currentItemIndex;
 
@@ -68,6 +74,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken productsChangedToken;
 
+        private int? reasonId;
+
+        private string reasonNotes;
+
+        private IEnumerable<OperationReason> reasons;
+
         private DelegateCommand requestItemPickCommand;
 
         private DelegateCommand<object> scrollCommand;
@@ -89,12 +101,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IBayManager bayManager,
             IMachineAreasWebService areasWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+            this.missionOperationsService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
@@ -112,6 +126,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.availableQuantity;
             set => this.SetProperty(ref this.availableQuantity, value);
         }
+
+        public ICommand CancelReasonCommand =>
+              this.cancelReasonCommand
+              ??
+              (this.cancelReasonCommand = new DelegateCommand(
+                  this.CancelReason));
+
+        public ICommand ConfirmReasonCommand =>
+          this.confirmReasonCommand
+          ??
+          (this.confirmReasonCommand = new DelegateCommand(
+              async () => await this.ExecuteItemPickAsync(),
+              this.CanExecuteItemPick));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -187,6 +214,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override bool KeepAlive => true;
 
+        public int? ReasonId
+        {
+            get => this.reasonId;
+            set => this.SetProperty(ref this.reasonId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ReasonNotes
+        {
+            get => this.reasonNotes;
+            set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public IEnumerable<OperationReason> Reasons
+        {
+            get => this.reasons;
+            set => this.SetProperty(ref this.reasons, value);
+        }
+
         public ICommand RequestItemPickCommand =>
             this.requestItemPickCommand
             ??
@@ -236,6 +281,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+        public async Task<bool> CheckReasonsAsync()
+        {
+            this.ReasonId = null;
+
+            try
+            {
+                this.IsBusyLoadingNextPage = true;
+
+                this.Reasons = null;
+                //this.Reasons = await this.missionOperationsService.GetAllReasonsAsync(MissionOperationType.Pick);
+
+                if (this.reasons?.Any() == true)
+                {
+                    if (this.reasons.Count() == 1)
+                    {
+                        this.ReasonId = this.reasons.First().Id;
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.Reasons = null;
+            }
+            finally
+            {
+                this.IsBusyLoadingNextPage = false;
+            }
+
+            return this.Reasons.Any();
+        }
+
         public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
             if (e is null)
@@ -268,25 +345,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.maxKnownIndexSelection = 0;
             this.items = new List<ItemInfo>();
 
-            this.productsChangedToken.Dispose();
+            this.productsChangedToken?.Dispose();
             this.productsChangedToken = null;
         }
 
-        public override async Task OnAppearedAsync()
-        {
-            this.InputQuantity = null;
-
-            this.productsChangedToken =
-                this.productsChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
-                    .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
-
-            await base.OnAppearedAsync();
-        }
-
-        public async Task RequestItemPickAsync()
+        public async Task ExecuteItemPickAsync()
         {
             try
             {
@@ -295,7 +358,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.wmsDataProvider.PickAsync(
                     this.SelectedItem.Id,
-                    this.InputQuantity.Value);
+                    this.InputQuantity.Value,
+                    this.reasonId,
+                    this.reasonNotes);
+
+                this.Reasons = null;
 
                 this.ShowNotification(
                     string.Format(
@@ -315,6 +382,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = null;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            this.InputQuantity = null;
+            this.Reasons = null;
+            this.productsChangedToken =
+      this.productsChangedToken
+      ??
+      this.EventAggregator
+          .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
+          .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
+
+            await base.OnAppearedAsync();
+        }
+
+        public async Task RequestItemPickAsync()
+        {
+            this.IsWaitingForResponse = true;
+            this.IsBusyRequestingItemPick = true;
+
+            var waitForReason = await this.CheckReasonsAsync();
+
+            if (!waitForReason)
+            {
+                await this.ExecuteItemPickAsync();
             }
         }
 
@@ -423,6 +517,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+
+            this.confirmReasonCommand?.RaiseCanExecuteChanged();
         }
 
         private void AdjustItemsAppearance()
@@ -438,6 +534,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
             }
+        }
+
+        private void CancelReason()
+        {
+            this.Reasons = null;
+        }
+
+        private bool CanExecuteItemPick()
+        {
+            return !(this.reasonId is null);
         }
 
         private bool CanRequestItemPick()

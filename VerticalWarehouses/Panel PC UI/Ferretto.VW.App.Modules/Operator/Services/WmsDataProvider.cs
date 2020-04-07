@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PickAsync(int itemId, double requestedQuantity)
+        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 MachineId = this.bayManager.Identity.Id,
                 RequestedQuantity = requestedQuantity,
                 RunImmediately = true,
+                ReasonId = reasonId,
+                ReasonNotes = reasonNotes,
             });
         }
 
