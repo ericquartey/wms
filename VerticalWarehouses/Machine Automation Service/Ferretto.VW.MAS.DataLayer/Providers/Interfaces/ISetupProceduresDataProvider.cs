@@ -28,9 +28,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
 
+        RepeatedTestProcedure GetFullTest(BayNumber bayNumber);
+
         SetupProcedure GetHorizontalChainCalibration();
 
-        PositioningProcedure GetFullTest();
         PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
@@ -43,7 +44,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
-        RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
+        RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest, int? requiredCycles = null);
 
         PositioningProcedure InProgressProcedure(PositioningProcedure procedure);
 
