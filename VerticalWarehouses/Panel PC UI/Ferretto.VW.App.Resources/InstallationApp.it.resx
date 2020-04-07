@@ -2397,4 +2397,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StopTest" xml:space="preserve">
     <value>Stop test</value>
   </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Seleziona cassetto da chiamare in baia</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Esegui il comando per chiudere la serranda</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Esegui il comando per aprire la serranda</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>La funzione di imbarco/sbarco cassetti permette di testare il corretto funzionamento dei movimenti dei cassetti tramite unsa serie di cicli. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
 </root>

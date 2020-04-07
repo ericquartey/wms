@@ -2467,4 +2467,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StopTest" xml:space="preserve">
     <value>Stop test</value>
   </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Select unit to call in bay</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Run the command to close the shutter</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Run the command to open the shutter</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion.</value>
+  </data>
 </root>
