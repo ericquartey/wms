@@ -183,6 +183,12 @@
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
+                                Command="{Binding StopTestCommand}"
+                                Content="{x:Static res:InstallationApp.StopTest}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
                                 Content="{x:Static res:InstallationApp.Stop}" />
         </StackPanel>

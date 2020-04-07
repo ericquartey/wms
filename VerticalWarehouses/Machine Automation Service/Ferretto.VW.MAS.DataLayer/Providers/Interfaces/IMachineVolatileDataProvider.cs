@@ -42,6 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int? RequiredCycles { get; set; }
 
+        bool StopTest { get; set; }
+
         MachineMode UiFilteredMode { get; }
 
         #endregion

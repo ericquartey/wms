@@ -237,11 +237,17 @@ namespace Ferretto.VW.MAS.MissionManager
                 && loadUnitId != 0
                 && !missions.Any(m => m.Status == MissionStatus.New)
                 && machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value
+                && !machineProvider.StopTest
                 )
             {
                 missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
                 machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
                 machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+            }
+            else
+            {
+                loadUnitId = null;
+                // no more load unit to call. Just wait all missions to finish
             }
 
             // the mission scheduler
@@ -310,7 +316,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-            var setupRecord = setupProceduresDataProvider.GetFullTest();
+            var setupRecord = setupProceduresDataProvider.GetFullTest(machineProvider.BayTestNumber);
 
             var returnValue = false;
             var messageStatus = MessageStatus.OperationExecuting;
@@ -323,20 +329,24 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
                 {
                     this.Logger.LogError($"Full Test error for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
-                    errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machineProvider.BayTestNumber);
+                    errorsProvider.RecordNew(MachineErrorCode.FullTestFailed, machineProvider.BayTestNumber);
                     messageStatus = MessageStatus.OperationError;
                 }
                 else
                 {
                     this.Logger.LogInformation($"Full test finished successfully for {machineProvider.LoadUnitsToTest.Count} Load Units on Bay {machineProvider.BayTestNumber}");
                     messageStatus = MessageStatus.OperationEnd;
+                    setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
             }
             else
             {
                 returnValue = true;
-                setupProceduresDataProvider.InProgressProcedure(setupRecord);
+                if (machineProvider.ExecutedCycles > setupRecord.PerformedCycles)
+                {
+                    setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
+                }
             }
 
             var notificationMessage = new NotificationMessage(
@@ -836,7 +846,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var bays = bayProvider.GetAll();
                 foreach (var bay in bays)
                 {
-                    foreach (var position in bay.Positions)
+                    foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
                         if (sensorProvider.IsLoadingUnitInLocation(position.Location))
                         {

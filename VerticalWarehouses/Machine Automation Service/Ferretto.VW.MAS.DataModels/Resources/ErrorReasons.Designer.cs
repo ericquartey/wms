@@ -232,6 +232,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full load unit  test failed: Not all requested loops could be performed!.
+        /// </summary>
+        public static string FullTestFailed {
+            get {
+                return ResourceManager.GetString("FullTestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {

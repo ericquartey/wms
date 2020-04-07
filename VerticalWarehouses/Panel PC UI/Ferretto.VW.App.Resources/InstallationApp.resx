@@ -2426,7 +2426,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Perform the chain calibration procedure</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
-    <value>The horizontal chain calibration function ...</value>
+    <value>The chain horizontal calibration function allows you to calibrate the correct value through its specific procedure. The procedure works in successive steps until correct completion.</value>
   </data>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Horizontal calibration</value>
@@ -2457,5 +2457,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ResetTotal" xml:space="preserve">
     <value>Reset totali</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGateOpen" xml:space="preserve">
+    <value>Perform the movement that opens the shutter</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGoToBay" xml:space="preserve">
+    <value>Perform the movement that takes the elevator to bay</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Stop test</value>
   </data>
 </root>
