@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -8,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class LoadingUnitViewModel : BaseLoadingUnitViewModel
+    public class LoadingUnitViewModel : BaseLoadingUnitViewModel, IOperationReasonsSelector
     {
         #region Fields
 
@@ -18,9 +20,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
+        private DelegateCommand cancelReasonCommand;
+
         private bool canInputQuantity;
 
         private DelegateCommand confirmOperationCommand;
+
+        private DelegateCommand confirmReasonCommand;
 
         private double? inputQuantity;
 
@@ -41,6 +47,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double quantityIncrement;
 
         private int? quantityTolerance;
+
+        private int? reasonId;
+
+        private string reasonNotes;
+
+        private IEnumerable<OperationReason> reasons;
 
         private DelegateCommand recallLoadingUnitCommand;
 
@@ -67,6 +79,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public ICommand CancelReasonCommand =>
+      this.cancelReasonCommand
+      ??
+      (this.cancelReasonCommand = new DelegateCommand(
+          this.CancelReason));
+
         public bool CanInputQuantity
         {
             get => this.canInputQuantity;
@@ -78,6 +96,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
+
+        public ICommand ConfirmReasonCommand =>
+                          this.confirmReasonCommand
+          ??
+          (this.confirmReasonCommand = new DelegateCommand(
+              async () => await this.ExecuteOperationAsync(),
+              this.CanExecuteItemPick));
 
         public double? InputQuantity
         {
@@ -168,6 +193,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public int? ReasonId
+        {
+            get => this.reasonId;
+            set => this.SetProperty(ref this.reasonId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ReasonNotes
+        {
+            get => this.reasonNotes;
+            set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public IEnumerable<OperationReason> Reasons
+        {
+            get => this.reasons;
+            set => this.SetProperty(ref this.reasons, value);
+        }
+
         public ICommand RecallLoadingUnitCommand =>
             this.recallLoadingUnitCommand
             ??
@@ -178,6 +221,45 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task<bool> CheckReasonsAsync()
+        {
+            this.ReasonId = null;
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+
+                this.Reasons = null;
+                //this.Reasons = await this.missionOperationsService.GetAllReasonsAsync(MissionOperationType.Pick);
+
+                if (this.reasons?.Any() == true)
+                {
+                    if (this.reasons.Count() == 1)
+                    {
+                        this.ReasonId = this.reasons.First().Id;
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.Reasons = null;
+            }
+            finally
+            {
+                this.IsBusyConfirmingOperation = false;
+            }
+
+            return this.Reasons?.Any() == true;
+        }
+
+        public override Task OnAppearedAsync()
+        {
+            this.Reasons = null;
+
+            return base.OnAppearedAsync();
+        }
 
         public override void RaisePropertyChanged()
         {
@@ -247,6 +329,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operationCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.confirmReasonCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void CancelReason()
+        {
+            this.Reasons = null;
         }
 
         private bool CanConfirmOperation()
@@ -277,6 +365,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWmsHealthy;
         }
 
+        private bool CanExecuteItemPick()
+        {
+            return !(this.reasonId is null);
+        }
+
         private bool CanRecallLoadingUnit()
         {
             return
@@ -289,6 +382,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmOperationAsync()
         {
+            this.IsWaitingForResponse = true;
+
+            var waitForReason = await this.CheckReasonsAsync();
+
+            if (!waitForReason)
+            {
+                await this.ExecuteOperationAsync();
+            }
+        }
+
+        private async Task ExecuteOperationAsync()
+        {
             try
             {
                 this.IsBusyConfirmingOperation = true;
@@ -299,7 +404,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     await this.WmsDataProvider.PickAsync(
                         this.SelectedItem.ItemId.Value,
-                        this.InputQuantity.Value);
+                        this.InputQuantity.Value,
+                        this.reasonId,
+                        this.reasonNotes);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -307,7 +414,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     await this.WmsDataProvider.PutAsync(
                         this.SelectedItem.ItemId.Value,
-                        this.InputQuantity.Value);
+                        this.InputQuantity.Value,
+                        this.reasonId,
+                        this.reasonNotes);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
@@ -315,8 +424,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItemCompartment.Id,
                         this.SelectedItemCompartment.ItemId.Value,
                         this.InputQuantity.Value,
-                        reasonId: null,
-                        reasonNotes: null);
+                        this.reasonId,
+                        this.reasonNotes);
 
                     await this.OnDataRefreshAsync();
                 }
@@ -331,6 +440,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
                 this.IsBusyConfirmingOperation = false;
+                this.Reasons = null;
                 this.RaiseCanExecuteChanged();
             }
         }
