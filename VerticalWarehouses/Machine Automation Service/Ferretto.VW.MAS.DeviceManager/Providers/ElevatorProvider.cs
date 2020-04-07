@@ -1290,6 +1290,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // TODO Get the required cycles from the setupProcedureDataProvider object
             //var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();   // substitute with GetRepetitiveHorizontalMovementsTest
 
+            // Use this code
+            //var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
+            //var requiredCycles = procedureParameters.RequiredCycles;
+
             var requiredCycles = 2;  // procedureParameters.RequiredCycles;
 
             var delayStart = 0;
