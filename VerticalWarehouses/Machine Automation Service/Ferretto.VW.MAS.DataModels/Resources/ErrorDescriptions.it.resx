@@ -244,7 +244,7 @@
     <value>Condizioni per la calibrazione non soddisfatte.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>L'altezza del cassetto è eccessiva.</value>
+    <value>L'altezza del cassetto supera il valore massimo oppure è inferiore al minimo</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
