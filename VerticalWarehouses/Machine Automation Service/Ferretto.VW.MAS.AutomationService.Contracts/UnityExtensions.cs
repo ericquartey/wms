@@ -138,6 +138,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IMachineFirstTestWebService>(
                 new InjectionFactory(c => new MachineFirstTestWebService(urlString, resolveFunction(c))));
 
+            container.RegisterType<IMachineEnduranceTestWebService>(
+                new InjectionFactory(c => new MachineEnduranceTestWebService(urlString, resolveFunction(c))));
+
             return containerRegistry;
         }
     }

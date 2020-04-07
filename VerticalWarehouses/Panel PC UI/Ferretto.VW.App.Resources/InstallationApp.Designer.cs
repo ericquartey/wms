@@ -664,6 +664,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select unit to call in bay.
+        /// </summary>
+        public static string CallUnitDescription {
+            get {
+                return ResourceManager.GetString("CallUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
@@ -1132,6 +1141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run the command to close the shutter.
+        /// </summary>
+        public static string CloseShutterCommand {
+            get {
+                return ResourceManager.GetString("CloseShutterCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
         public static string Compact {
@@ -1560,6 +1578,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DeleteUnit {
             get {
                 return ResourceManager.GetString("DeleteUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion..
+        /// </summary>
+        public static string DeposiAndPickUpDescription {
+            get {
+                return ResourceManager.GetString("DeposiAndPickUpDescription", resourceCulture);
             }
         }
         
@@ -4485,6 +4512,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run the command to open the shutter.
+        /// </summary>
+        public static string OpenShutterCommand {
+            get {
+                return ResourceManager.GetString("OpenShutterCommand", resourceCulture);
             }
         }
         
