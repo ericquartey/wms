@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
         private readonly IOperatorNavigationService operatorNavigationService;
 
         private DelegateCommand cancelReasonCommand;
@@ -66,6 +68,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
             IOperatorNavigationService operatorNavigationService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
             : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
@@ -73,6 +76,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
@@ -230,8 +234,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = true;
 
-                this.Reasons = null;
-                //this.Reasons = await this.missionOperationsService.GetAllReasonsAsync(MissionOperationType.Pick);
+                var missionOperationType = MissionOperationType.NotSpecified;
+                if (this.IsPickVisible)
+                {
+                    missionOperationType = MissionOperationType.Pick;
+                }
+                else if (this.IsPutVisible)
+                {
+                    missionOperationType = MissionOperationType.Put;
+                }
+                else if (this.IsAdjustmentVisible)
+                {
+                    missionOperationType = MissionOperationType.Inventory;
+                }
+
+                if (missionOperationType != MissionOperationType.NotSpecified)
+                {
+                    this.Reasons = null;
+                    // this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(missionOperationType);
+                }
 
                 if (this.reasons?.Any() == true)
                 {

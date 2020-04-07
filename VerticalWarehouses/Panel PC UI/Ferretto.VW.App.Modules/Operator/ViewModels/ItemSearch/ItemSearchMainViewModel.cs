@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IMachineMissionOperationsWebService missionOperationsService;
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
-            this.missionOperationsService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
@@ -290,7 +290,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyLoadingNextPage = true;
 
                 this.Reasons = null;
-                //this.Reasons = await this.missionOperationsService.GetAllReasonsAsync(MissionOperationType.Pick);
+                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {

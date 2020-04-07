@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
         private readonly IWmsDataProvider wmsDataProvider;
 
         private DelegateCommand cancelReasonCommand;
@@ -50,12 +52,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ItemSearchDetailViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineItemsWebService itemsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
@@ -135,7 +139,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 this.Reasons = null;
-                //this.Reasons = await this.missionOperationsService.GetAllReasonsAsync(MissionOperationType.Pick);
+                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {
