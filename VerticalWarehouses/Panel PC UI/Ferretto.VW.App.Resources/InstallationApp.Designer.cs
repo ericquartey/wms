@@ -1492,6 +1492,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycles.
+        /// </summary>
+        public static string Cycle {
+            get {
+                return ResourceManager.GetString("Cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the number of cycles you want to perform.
+        /// </summary>
+        public static string CycleDescription {
+            get {
+                return ResourceManager.GetString("CycleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycles Performed.
         /// </summary>
         public static string CyclesPerformed {
@@ -6098,6 +6116,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TestData {
             get {
                 return ResourceManager.GetString("TestData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test done.
+        /// </summary>
+        public static string TestDone {
+            get {
+                return ResourceManager.GetString("TestDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here is the number of cycles performed.
+        /// </summary>
+        public static string TestDoneDescription {
+            get {
+                return ResourceManager.GetString("TestDoneDescription", resourceCulture);
             }
         }
         

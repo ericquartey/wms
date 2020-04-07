@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand completeCommand;
 
+        private DelegateCommand confirmCalibration;
+
         private DepositAndPickUpStep currentStep;
 
         private double? cyclesPercent;
@@ -77,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTuningChain;
 
-        private int? loadingUnitId;
+        private int? loadingUnitId = 0;
 
         private double? measuredDistance;
 
@@ -96,6 +98,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken positioningMessageReceivedToken;
 
         private int? requiredCycles;
+
+        private DelegateCommand returnCalibration;
 
         private DelegateCommand startCycleCommand;
 
@@ -159,6 +163,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.completeCommand = new DelegateCommand(
                 async () => await this.CompleteAsync(), this.CanComplete));
+
+        public ICommand ConfirmCalibration =>
+            this.confirmCalibration
+            ??
+            (this.confirmCalibration = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        this.NavigationService.GoBack();
+
+                        this.CurrentStep = DepositAndPickUpStep.CallUnit;
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }
+                    ));
 
         public int? CumulativePerformedCycles
         {
@@ -311,6 +334,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.requiredCycles;
             set => this.SetProperty(ref this.requiredCycles, value, () => this.startCycleCommand?.RaiseCanExecuteChanged());
         }
+
+        public ICommand ReturnCalibration =>
+                                                                                                                                                                                                                                                                                                                                                                                                           this.returnCalibration
+           ??
+           (this.returnCalibration = new DelegateCommand(
+               async () =>
+               {
+                   try
+                   {
+                       this.RequiredCycles = 200;
+                       this.CumulativePerformedCycles = 0;
+                       this.CyclesPercent = 0;
+                       this.CurrentStep = DepositAndPickUpStep.CallUnit;
+                   }
+                   catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                   {
+                       this.ShowNotification(ex);
+                   }
+               }));
 
         public ICommand StartCycleCommand =>
            this.startCycleCommand
@@ -536,7 +578,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case DepositAndPickUpStep.EndTest:
                     if (!e.Next)
                     {
-                        this.CurrentStep = DepositAndPickUpStep.CallUnit;
+                        this.CurrentStep = DepositAndPickUpStep.CloseShutter;
                     }
 
                     break;
@@ -560,6 +602,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.callLoadUnitToBayCommand?.RaiseCanExecuteChanged();
             this.moveToOpenShutterCommand?.RaiseCanExecuteChanged();
+            this.moveToEndTestCommand?.RaiseCanExecuteChanged();
+            this.moveToCycleTestCommand?.RaiseCanExecuteChanged();
+            this.moveToCloseShutterCommand?.RaiseCanExecuteChanged();
 
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
@@ -604,6 +649,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             //       string.IsNullOrEmpty(this.Error);
 
             return this.CanBaseExecute() &&
+                !this.MachineService.Loadunits.DrawerInBay() &&
+                this.MachineService.Loadunits.DrawerExists(this.loadingUnitId.Value) &&
                    !this.SensorsService.IsLoadingUnitInBay;
         }
 
@@ -916,7 +963,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case DepositAndPickUpStep.EndTest:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
+                    this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
                     break;
             }

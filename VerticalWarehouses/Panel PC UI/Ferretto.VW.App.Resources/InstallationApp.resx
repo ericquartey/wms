@@ -2479,4 +2479,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DeposiAndPickUpDescription" xml:space="preserve">
     <value>The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion.</value>
   </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Test done</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Here is the number of cycles performed</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Enter the number of cycles you want to perform</value>
+  </data>
 </root>

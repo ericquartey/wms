@@ -147,13 +147,13 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Cicli" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.Cycle}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Inserisci il numero di cicli che vuoi effetuare" />
+                        <Run Text="{x:Static res:InstallationApp.CycleDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -176,11 +176,12 @@
                                     Content="{x:Static res:InstallationApp.Start}" />
 
                 <Border Grid.Row="2"
+                        Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Width="230"
                         Height="90"
                         Margin="0,15,15,0"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Background="{DynamicResource PpcBackground}">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -326,7 +327,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDone}" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.TestDone}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -334,9 +335,41 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDoneDescription}" />
+                        <Run Text="{x:Static res:InstallationApp.TestDoneDescription}" />
                     </TextBlock>
                 </StackPanel>
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,15,15,0"
+                                   HorizontalAlignment="Center"
+                                   EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="False"
+                                   LabelText="{x:Static res:InstallationApp.RequiredCycles}"
+                                   MaxValue="999"
+                                   MinValue="1" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,10,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ReturnCalibration}"
+                                    Content="{x:Static res:InstallationApp.RetryProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,10,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ConfirmCalibration}"
+                                    Content="{x:Static res:InstallationApp.ConfirmProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
             </Grid>
         </DataTemplate>
 

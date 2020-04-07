@@ -2407,6 +2407,18 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Esegui il comando per aprire la serranda</value>
   </data>
   <data name="DeposiAndPickUpDescription" xml:space="preserve">
-    <value>La funzione di imbarco/sbarco cassetti permette di testare il corretto funzionamento dei movimenti dei cassetti tramite unsa serie di cicli. La procedura opera per passi successivi fino al corretto completamento.</value>
+    <value>La funzione di imbarco/sbarco cassetti permette di testare il corretto funzionamento dei movimenti dei cassetti tramite una serie di cicli. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Test effetuato</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Ecco il numero di cicli effetuati</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Cicli</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Inserisci il numero di cicli che vuoi effetuare</value>
   </data>
 </root>
