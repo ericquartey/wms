@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
@@ -13,7 +15,7 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class ItemSearchDetailViewModel : BaseOperatorViewModel, IOperationalContextViewModel
+    public class ItemSearchDetailViewModel : BaseOperatorViewModel, IOperationalContextViewModel, IOperationReasonsSelector
     {
         #region Fields
 
@@ -21,13 +23,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
         private readonly IWmsDataProvider wmsDataProvider;
+
+        private DelegateCommand cancelReasonCommand;
+
+        private DelegateCommand confirmReasonCommand;
 
         private double? inputQuantity;
 
         private bool isBusyRequestingItemPick;
 
         private ItemInfo item;
+
+        private int? reasonId;
+
+        private string reasonNotes;
+
+        private IEnumerable<OperationReason> reasons;
 
         private DelegateCommand requestItemPickCommand;
 
@@ -38,12 +52,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ItemSearchDetailViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineItemsWebService itemsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
@@ -51,6 +67,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ItemsSearch.ToString();
+
+        public ICommand CancelReasonCommand =>
+            this.cancelReasonCommand
+            ??
+            (this.cancelReasonCommand = new DelegateCommand(
+                this.CancelReason));
+
+        public ICommand ConfirmReasonCommand =>
+          this.confirmReasonCommand
+          ??
+          (this.confirmReasonCommand = new DelegateCommand(
+              async () => await this.ExecuteItemPickAsync(),
+              this.CanExecuteItemPick));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -72,8 +101,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.item, value);
         }
 
+        public int? ReasonId
+        {
+            get => this.reasonId;
+            set => this.SetProperty(ref this.reasonId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ReasonNotes
+        {
+            get => this.reasonNotes;
+            set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public IEnumerable<OperationReason> Reasons
+        {
+            get => this.reasons;
+            set => this.SetProperty(ref this.reasons, value);
+        }
+
         public ICommand RequestItemPickCommand =>
-            this.requestItemPickCommand
+                                    this.requestItemPickCommand
             ??
             (this.requestItemPickCommand = new DelegateCommand(
                 async () => await this.RequestItemPickAsync(),
@@ -82,6 +129,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task<bool> CheckReasonsAsync()
+        {
+            this.ReasonId = null;
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.Reasons = null;
+                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+
+                if (this.reasons?.Any() == true)
+                {
+                    if (this.reasons.Count() == 1)
+                    {
+                        this.ReasonId = this.reasons.First().Id;
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.Reasons = null;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            return this.Reasons?.Any() == true;
+        }
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
@@ -114,18 +193,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.Disappear();
         }
 
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.Item = this.Data as ItemInfo;
-
-            this.InputQuantity = null;
-        }
-
-        public async Task RequestItemPickAsync()
+        public async Task ExecuteItemPickAsync()
         {
             try
             {
@@ -157,11 +225,45 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
+            this.Item = this.Data as ItemInfo;
+
+            this.InputQuantity = null;
+        }
+
+        public async Task RequestItemPickAsync()
+        {
+            this.IsWaitingForResponse = true;
+            this.IsBusyRequestingItemPick = true;
+
+            var waitForReason = await this.CheckReasonsAsync();
+
+            if (!waitForReason)
+            {
+                await this.ExecuteItemPickAsync();
+            }
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void CancelReason()
+        {
+            this.Reasons = null;
+        }
+
+        private bool CanExecuteItemPick()
+        {
+            return !(this.reasonId is null);
         }
 
         private bool CanRequestItemPick()
