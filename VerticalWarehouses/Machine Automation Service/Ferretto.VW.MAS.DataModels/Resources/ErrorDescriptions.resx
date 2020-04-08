@@ -349,7 +349,7 @@
     <value>Homing conditions not met.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>The height of the loading unit is over the maximum.</value>
+    <value>The height of the loading unit is over the maximum or below the minimum</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>

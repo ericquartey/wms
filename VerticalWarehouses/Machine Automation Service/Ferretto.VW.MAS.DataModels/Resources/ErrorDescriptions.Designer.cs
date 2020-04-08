@@ -466,7 +466,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The height of the loading unit is over the maximum..
+        ///   Looks up a localized string similar to The height of the loading unit is over the maximum or below the minimum.
         /// </summary>
         public static string LoadUnitHeightExceeded {
             get {

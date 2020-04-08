@@ -48,7 +48,7 @@
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="Seleziona cassetto da chiamare" /><Run Text="." />
+                        <Run Text="{x:Static res:InstallationApp.CallUnitDescription}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -67,12 +67,56 @@
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Command="{Binding CallLoadunitToBayCommand}"
+                                    Command="{Binding CallLoadUnitToBayCommand}"
                                     Content="{x:Static res:InstallationApp.CallUnit}"
                                     Style="{StaticResource WizardIntoButton}" />
 
 
                 <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToOpenShutter}"
+                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateOpenShutter">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                    </TextBlock>
+                    <TextBlock Grid.ColumnSpan="2"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
+                        <Run Text="{x:Static res:InstallationApp.OpenShutterCommand}" /><Run Text="." />
+                    </TextBlock>
+                </StackPanel>
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="{x:Static res:InstallationApp.GateOpen}" />
+
+                <controls:PpcButton Grid.Row="2"
                                     Grid.ColumnSpan="2"
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
@@ -103,13 +147,13 @@
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Cicli" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.Cycle}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="Inserisci il numero di cicli che vuoi effetuare" />
+                        <Run Text="{x:Static res:InstallationApp.CycleDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -132,11 +176,12 @@
                                     Content="{x:Static res:InstallationApp.Start}" />
 
                 <Border Grid.Row="2"
+                        Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Width="230"
                         Height="90"
                         Margin="0,15,15,0"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Background="{DynamicResource PpcBackground}">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -169,7 +214,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding PerformedCyclesThisSession, FallbackValue=0}" />
+                                           Text="{Binding CumulativePerformedCycles, FallbackValue=0}" />
                                 <TextBlock Margin="4,0,4,4"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
@@ -179,7 +224,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding InputRequiredCycles, FallbackValue=0}" />
+                                           Text="{Binding RequiredCycles, FallbackValue=0}" />
                             </StackPanel>
 
                             <controls:PpcProgressBar Grid.Row="2"
@@ -200,9 +245,66 @@
                                     Margin="0,0,15,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Command="{Binding MoveToEndTest}"
+                                    Command="{Binding MoveToCloseShutter}"
                                     Content="{x:Static res:InstallationApp.Forwards}" />
 
+
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateCloseShutter">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                    </TextBlock>
+                    <TextBlock Grid.ColumnSpan="2"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
+                        <Run Text="{x:Static res:InstallationApp.CloseShutterCommand}" /><Run Text="." />
+                    </TextBlock>
+                </StackPanel>
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ClosedShutterCommand}"
+                                    Content="{x:Static res:InstallationApp.GateClose}">
+                    <controls:PpcButton.Style>
+                        <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                               TargetType="{x:Type controls:PpcButton}">
+                            <Setter Property="Grid.Column" Value="3" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BayIsShutterThreeSensors}"
+                                             Value="False">
+                                    <Setter Property="Grid.Column" Value="2" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcButton.Style>
+                </controls:PpcButton>
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToEndTest}"
+                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
         </DataTemplate>
@@ -225,7 +327,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDone}" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.TestDone}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -233,16 +335,50 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDoneDescription}" />
+                        <Run Text="{x:Static res:InstallationApp.TestDoneDescription}" />
                     </TextBlock>
                 </StackPanel>
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,15,15,0"
+                                   HorizontalAlignment="Center"
+                                   EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="False"
+                                   LabelText="{x:Static res:InstallationApp.RequiredCycles}"
+                                   MaxValue="999"
+                                   MinValue="1" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,10,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ReturnCalibration}"
+                                    Content="{x:Static res:InstallationApp.RetryProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,10,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ConfirmCalibration}"
+                                    Content="{x:Static res:InstallationApp.ConfirmProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
             </Grid>
         </DataTemplate>
 
         <local1:DepositAndPickUpTestTemplateSelector x:Key="selector"
                                                      EnumCallunit="{StaticResource DataTemplateCallUnit}"
+                                                     EnumCloseShutter="{StaticResource DataTemplateCloseShutter}"
                                                      EnumCycleTest="{StaticResource DataTemplateCycleTest}"
-                                                     EnumEndTest="{StaticResource DataTemplateEndTest}" />
+                                                     EnumEndTest="{StaticResource DataTemplateEndTest}"
+                                                     EnumOpenShutter="{StaticResource DataTemplateOpenShutter}" />
         <!--#endregion-->
     </ctrls:View.Resources>
 
@@ -284,7 +420,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="Descrizione" />
+                   Text="{x:Static res:InstallationApp.DeposiAndPickUpDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -354,6 +490,8 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!--#region Body-->
@@ -393,12 +531,29 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <Border Background="{Binding HasStepCycleTest, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepOpenShutter, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
             </Grid>
             <Grid Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepOpenShutter, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Border Background="{Binding HasStepCycleTest, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="3" />
+            </Grid>
+            <Grid Grid.Row="3"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepCycleTest, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -409,13 +564,30 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="3">
+            <Grid Grid.Row="4">
+                <Border Background="{Binding HasStepCloseShutter, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="4" />
+            </Grid>
+            <Grid Grid.Row="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepCloseShutter, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="5">
                 <Border Background="{Binding HasStepEndTest, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="3" />
+                           Text="5" />
             </Grid>
-            <Grid Grid.Row="3"
+            <Grid Grid.Row="5"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepEndTest, Converter={StaticResource BTVC}, Mode=OneWay}">

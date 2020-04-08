@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels.Bays
 
         public DataTemplate EnumCallunit { get; set; }
 
+        public DataTemplate EnumCloseShutter { get; set; }
+
+        public DataTemplate EnumOpenShutter { get; set; }
+
         public DataTemplate EnumCycleTest { get; set; }
 
         public DataTemplate EnumEndTest { get; set; }
@@ -30,6 +34,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels.Bays
             {
                 case DepositAndPickUpStep.EndTest:
                     return this.EnumEndTest;
+
+                case DepositAndPickUpStep.OpenShutter:
+                    return this.EnumOpenShutter;
+
+                case DepositAndPickUpStep.CloseShutter:
+                    return this.EnumCloseShutter;
 
                 case DepositAndPickUpStep.CycleTest:
                     return this.EnumCycleTest;
