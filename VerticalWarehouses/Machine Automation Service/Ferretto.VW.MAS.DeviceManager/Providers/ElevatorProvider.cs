@@ -1288,20 +1288,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // Retrieve the required cycles from procedure Parameters object
             // TODO Create the GetRepetitiveHorizontalMovementsTest at setupProceduresDataProvider object
             // TODO Get the required cycles from the setupProcedureDataProvider object
-            //var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();   // substitute with GetRepetitiveHorizontalMovementsTest
 
-            // Use this code
-            //var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
+            var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
             //var requiredCycles = procedureParameters.RequiredCycles;
-
-            var requiredCycles = 2;  // procedureParameters.RequiredCycles;
 
             var delayStart = 0;
             var data = new RepetitiveHorizontalMovementsMessageData(
                 bayPositionId,
                 loadingUnitId,
                 requestingBay,
-                /*procedureParameters.RequiredCycles*/ requiredCycles,
+                procedureParameters.RequiredCycles /*requiredCycles*/,
                 delayStart);
 
             this.PublishCommand(

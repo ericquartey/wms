@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
+        private readonly IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineEnduranceTestWebService machineEnduranceTestWebService;
@@ -95,7 +97,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand openShutterCommand;
 
-        private SubscriptionToken positioningMessageReceivedToken;
+        //private SubscriptionToken positioningMessageReceivedToken;
+
+        private SubscriptionToken repetitiveHorizontalMovementsMessageReceivedToken;
 
         private int? requiredCycles;
 
@@ -119,12 +123,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineEnduranceTestWebService machineEnduranceTestWebService,
+            IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineEnduranceTestWebService = machineEnduranceTestWebService ?? throw new ArgumentNullException(nameof(machineEnduranceTestWebService));
+            this.machineDepositAndPickupProcedureWebService = machineDepositAndPickupProcedureWebService ?? throw new ArgumentNullException(nameof(machineDepositAndPickupProcedureWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.CurrentStep = DepositAndPickUpStep.CallUnit;
@@ -433,11 +439,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken = null;
             }
 
-            if (this.positioningMessageReceivedToken != null)
+            //if (this.positioningMessageReceivedToken != null)
+            //{
+            //    //this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
+            //    this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
+            //    this.positioningMessageReceivedToken?.Dispose();
+            //    this.positioningMessageReceivedToken = null;
+            //}
+
+            if (this.repetitiveHorizontalMovementsMessageReceivedToken != null)
             {
-                this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
-                this.positioningMessageReceivedToken?.Dispose();
-                this.positioningMessageReceivedToken = null;
+                this.EventAggregator.GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>().Unsubscribe(this.repetitiveHorizontalMovementsMessageReceivedToken);
+                this.repetitiveHorizontalMovementsMessageReceivedToken?.Dispose();
+                this.repetitiveHorizontalMovementsMessageReceivedToken = null;
             }
 
             if (this.themeChangedToken != null)
@@ -445,6 +459,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
                 this.themeChangedToken?.Dispose();
                 this.themeChangedToken = null;
+            }
+        }
+
+        public async Task GetParameterValuesAsync()
+        {
+            if (this.requiredCycles == null || this.CumulativePerformedCycles == null)
+            {
+                var procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
+                this.requiredCycles = procedureParameters.RequiredCycles;
+                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
             }
         }
 
@@ -498,6 +522,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await base.OnDataRefreshAsync();
 
                 await this.SensorsService.RefreshAsync(true);
+
+                await this.GetParameterValuesAsync();
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
 
@@ -770,7 +796,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnPositioningMessageReceived(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
+        //private void OnPositioningMessageReceived(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
+        private void OnRepetitiveHorizontalMovementsMessageReceived(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
         {
             var data = message.Data as RepetitiveHorizontalMovementsMessageData;
 
@@ -809,6 +836,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;
+
+                this.CurrentStep = DepositAndPickUpStep.CloseShutter;
+                this.RaiseCanExecuteChanged();
             }
         }
 
@@ -904,11 +934,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+            //this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+            //    ?? this.EventAggregator
+            //        .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
+            //        .Subscribe(
+            //            (m) => this.OnPositioningMessageReceived(m),
+            //            ThreadOption.UIThread,
+            //            false);
+
+            this.repetitiveHorizontalMovementsMessageReceivedToken = this.repetitiveHorizontalMovementsMessageReceivedToken
                 ?? this.EventAggregator
                     .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
                     .Subscribe(
-                        (m) => this.OnPositioningMessageReceived(m),
+                        (m) => this.OnRepetitiveHorizontalMovementsMessageReceived(m),
                         ThreadOption.UIThread,
                         false);
 
