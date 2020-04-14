@@ -15,15 +15,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        //private readonly IElevatorProvider elevatorProvider;
+
         #region Constructors
 
         public DepositAndPickupProcedureController(
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            //this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
         }
 
         #endregion
+
+        //public BayNumber BayNumber { get; set; }
 
         #region Methods
 
@@ -45,5 +50,36 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         #endregion
+
+        //[HttpPost("start/repetitive-horizontal")]
+        //[ProducesResponseType(StatusCodes.Status202Accepted)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesDefaultResponseType]
+        //public IActionResult StartHorizontalMovements(int bayPositionId, int loadingUnitId)
+        //{
+        //    this.elevatorProvider.StartRepetitiveHorizontalMovements(bayPositionId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+
+        //    return this.Accepted();
+        //}
+
+        //[HttpPost("stop/repetitive-horizontal")]
+        //[ProducesResponseType(StatusCodes.Status202Accepted)]
+        //[ProducesDefaultResponseType]
+        //public IActionResult Stop()
+        //{
+        //    this.elevatorProvider.Stop(this.BayNumber, MessageActor.WebApi);
+
+        //    return this.Accepted();
+        //}
+
+        //[HttpPost("stop-test/repetitive-horizontal")]
+        //[ProducesResponseType(StatusCodes.Status202Accepted)]
+        //[ProducesDefaultResponseType]
+        //public IActionResult StopTest()
+        //{
+        //    this.elevatorProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
+
+        //    return this.Accepted();
+        //}
     }
 }
