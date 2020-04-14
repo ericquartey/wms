@@ -370,8 +370,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.Code,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
-
-                await this.RefreshItemsAsync();
             }
             catch (Exception ex)
             {
