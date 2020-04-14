@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
                 this.SelectLoadingUnit();
             }
-            else if (this.currentItemIndex < (this.loadingUnits.Count - 1))
+            else if (this.currentItemIndex <= (this.loadingUnits.Count - 1))
             {
                 if (!this.pressMinus)
                 {
@@ -269,6 +269,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.currentItemIndex--;
                 }
+                this.SelectLoadingUnit();
             }
             else
             {

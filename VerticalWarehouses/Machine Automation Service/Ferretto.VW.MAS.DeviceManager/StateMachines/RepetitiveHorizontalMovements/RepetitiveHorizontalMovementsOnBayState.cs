@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         private readonly ISensorsProvider sensorsProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         private readonly IRepetitiveHorizontalMovementsStateData stateData;
 
         private bool isTestStopped;
@@ -49,6 +51,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+            this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
 
             this.isTestStopped = false;
         }
@@ -88,12 +92,11 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 {
                     case MessageStatus.OperationEnd:
                         {
-                            // TODO Use the setupProcedureDataProvider in order to retry the performed cycles
-                            // TODO Update the performed cycles (PerformedCycles++)
-                            //var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
-                            //var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
+                            // Use the setupProcedureDataProvider in order to retry the performed cycles
+                            var procedureSetup = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
+                            var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureSetup).PerformedCycles;
 
-                            var performedCycles = this.machineData.MessageData.ExecutedCycles++;  // 0;
+                            this.machineData.MessageData.ExecutedCycles = performedCycles;
 
                             this.machineData.MessageData.IsTestStopped = this.isTestStopped;
 

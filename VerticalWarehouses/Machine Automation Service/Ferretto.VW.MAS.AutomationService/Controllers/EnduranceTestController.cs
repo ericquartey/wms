@@ -7,6 +7,10 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+//
+// REMOVE this file....
+//
+
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
