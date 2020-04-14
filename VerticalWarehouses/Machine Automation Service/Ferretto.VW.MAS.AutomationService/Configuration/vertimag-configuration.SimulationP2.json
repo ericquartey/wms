@@ -6222,6 +6222,12 @@
       "IsCompleted": false
     },
     "HorizontalChainCalibration": {
+    },
+    "Bay1FullTest": {
+    },
+    "Bay2FullTest": {
+    },
+    "Bay3FullTest": {
     }
   }
 }

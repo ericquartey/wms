@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
+        private bool pressMinus;
+
         private LoadingUnit selectedUnitUnit;
 
         private DelegateCommand upSelectionCommand;
@@ -96,10 +98,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.loadingUnitId;
             set
             {
-                if (this.SetProperty(ref this.loadingUnitId, value))
-                {
-                    this.CheckToSelectLoadingUnit();
-                }
+                this.pressMinus = value < this.loadingUnitId;
+                this.SetProperty(ref this.loadingUnitId, value, this.CheckToSelectLoadingUnit);
             }
         }
 
@@ -257,6 +257,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
+                this.SelectLoadingUnit();
+            }
+            else if (this.currentItemIndex <= (this.loadingUnits.Count - 1))
+            {
+                if (!this.pressMinus)
+                {
+                    this.currentItemIndex++;
+                }
+                else
+                {
+                    this.currentItemIndex--;
+                }
                 this.SelectLoadingUnit();
             }
             else

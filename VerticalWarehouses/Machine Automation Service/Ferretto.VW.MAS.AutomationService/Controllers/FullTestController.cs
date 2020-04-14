@@ -39,13 +39,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-        //[HttpGet("parameters")]
-        //public ActionResult<RepeatedTestProcedure> GetParameters()
-        //{
-        //    return this.Ok(this.setupProceduresDataProvider.GetFullTest());
-        //}
-
         #region Methods
+
+        [HttpGet("parameters")]
+        public ActionResult<RepeatedTestProcedure> GetParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetFullTest(this.BayNumber));
+        }
 
         [HttpPost("start")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+            this.machineModeProvider.StopTest();
             return this.Accepted();
         }
 

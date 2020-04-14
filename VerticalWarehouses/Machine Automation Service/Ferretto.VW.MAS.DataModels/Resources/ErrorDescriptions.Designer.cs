@@ -223,11 +223,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First load unit test failed: Not all cells could be tested!.
+        ///   Looks up a localized string similar to Test not completed.
         /// </summary>
         public static string FirstTestFailed {
             get {
                 return ResourceManager.GetString("FirstTestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test not completed.
+        /// </summary>
+        public static string FullTestFailed {
+            get {
+                return ResourceManager.GetString("FullTestFailed", resourceCulture);
             }
         }
         
@@ -457,7 +466,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The height of the loading unit is over the maximum..
+        ///   Looks up a localized string similar to The height of the loading unit is over the maximum or below the minimum.
         /// </summary>
         public static string LoadUnitHeightExceeded {
             get {

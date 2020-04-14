@@ -127,12 +127,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         if (mission.MissionType != MissionType.Manual
-                            && !this.CheckBayHeight(destinationBay, destination, mission)
+                            && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
                             )
                         {
-                            if (showErrors)
+                            if (showErrors || !canRetry)
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightExceeded, requestingBay);
+                                if (!showErrors)
+                                {
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitHeightExceeded, requestingBay, MessageActor.MachineManager);
+                                }
                             }
                             returnValue = false;
                         }
@@ -452,6 +456,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.FullTestOUT:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FullTest
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
                         );
                     break;
 
@@ -607,7 +612,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             unitToMove = null;
                             if (showErrors)
                             {
-                                this.ErrorsProvider.RecordNew((messageData.InsertLoadUnit) ? MachineErrorCode.LoadUnitNotFound: MachineErrorCode.LoadUnitNotLoaded, requestingBay);
+                                this.ErrorsProvider.RecordNew((messageData.InsertLoadUnit) ? MachineErrorCode.LoadUnitNotFound : MachineErrorCode.LoadUnitNotLoaded, requestingBay);
                             }
                             else
                             {

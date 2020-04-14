@@ -664,6 +664,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select unit to call in bay.
+        /// </summary>
+        public static string CallUnitDescription {
+            get {
+                return ResourceManager.GetString("CallUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
@@ -1132,6 +1141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run the command to close the shutter.
+        /// </summary>
+        public static string CloseShutterCommand {
+            get {
+                return ResourceManager.GetString("CloseShutterCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
         public static string Compact {
@@ -1474,6 +1492,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycles.
+        /// </summary>
+        public static string Cycle {
+            get {
+                return ResourceManager.GetString("Cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the number of cycles you want to perform.
+        /// </summary>
+        public static string CycleDescription {
+            get {
+                return ResourceManager.GetString("CycleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycles Performed.
         /// </summary>
         public static string CyclesPerformed {
@@ -1560,6 +1596,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DeleteUnit {
             get {
                 return ResourceManager.GetString("DeleteUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion..
+        /// </summary>
+        public static string DeposiAndPickUpDescription {
+            get {
+                return ResourceManager.GetString("DeposiAndPickUpDescription", resourceCulture);
             }
         }
         
@@ -4489,6 +4534,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run the command to open the shutter.
+        /// </summary>
+        public static string OpenShutterCommand {
+            get {
+                return ResourceManager.GetString("OpenShutterCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation aborted..
         /// </summary>
         public static string OperationAborted {
@@ -6062,6 +6116,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TestData {
             get {
                 return ResourceManager.GetString("TestData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test done.
+        /// </summary>
+        public static string TestDone {
+            get {
+                return ResourceManager.GetString("TestDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here is the number of cycles performed.
+        /// </summary>
+        public static string TestDoneDescription {
+            get {
+                return ResourceManager.GetString("TestDoneDescription", resourceCulture);
             }
         }
         

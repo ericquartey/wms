@@ -87,9 +87,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="bayLocation"></param>
         /// <param name="mission"></param>
         /// <returns></returns>
-        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission)
+        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry)
         {
             bool returnValue = false;
+            canRetry = false;
 #if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             var bayPosition = locationBay.Positions.First(w => w.Location == bayLocation);
@@ -129,6 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                        canRetry = true;
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
@@ -373,7 +375,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (sourceBay != null
                     && this.Mission.MissionType != MissionType.Manual
-                    && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission)
+                    && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission, out var canRetry)
                         //|| true    // TEST
                         )
                     )

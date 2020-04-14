@@ -8,6 +8,8 @@
 
         public SetupProcedure Bay1FirstLoadingUnit { get; set; }
 
+        public RepeatedTestProcedure Bay1FullTest { get; set; }
+
         public SetupProcedure Bay1HeightCheck { get; set; }
 
         public SetupProcedure Bay1Laser { get; set; }
@@ -20,6 +22,8 @@
 
         public SetupProcedure Bay2FirstLoadingUnit { get; set; }
 
+        public RepeatedTestProcedure Bay2FullTest { get; set; }
+
         public SetupProcedure Bay2HeightCheck { get; set; }
 
         public SetupProcedure Bay2Laser { get; set; }
@@ -31,6 +35,8 @@
         public RepeatedTestProcedure Bay3CarouselCalibration { get; set; }
 
         public SetupProcedure Bay3FirstLoadingUnit { get; set; }
+
+        public RepeatedTestProcedure Bay3FullTest { get; set; }
 
         public SetupProcedure Bay3HeightCheck { get; set; }
 

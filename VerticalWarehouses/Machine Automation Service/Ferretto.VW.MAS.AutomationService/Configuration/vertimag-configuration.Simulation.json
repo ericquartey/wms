@@ -2110,7 +2110,7 @@
     },
     "Bay1CarouselTest": {
     },
-    "Bay1FirstLoadingUnit": {
+    "Bay1FullTest": {
     },
     "Bay1HeightCheck": {
       "InProgress": false,
@@ -2135,7 +2135,7 @@
     },
     "Bay2CarouselTest": {
     },
-    "Bay2FirstLoadingUnit": {
+    "Bay2FullTest": {
     },
     "Bay2HeightCheck": {
       "InProgress": false,
@@ -2160,7 +2160,7 @@
     },
     "Bay3CarouselTest": {
     },
-    "Bay3FirstLoadingUnit": {
+    "Bay3FullTest": {
     },
     "Bay3HeightCheck": {
       "InProgress": false,

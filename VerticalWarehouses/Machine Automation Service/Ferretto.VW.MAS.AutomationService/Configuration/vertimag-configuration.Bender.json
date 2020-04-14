@@ -3155,7 +3155,7 @@
     },
     "Bay1CarouselTest": {
     },
-    "Bay1FirstLoadingUnit": {
+    "Bay1FullTest": {
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1
@@ -3172,7 +3172,7 @@
     },
     "Bay2CarouselTest": {
     },
-    "Bay2FirstLoadingUnit": {
+    "Bay2FullTest": {
     },
     "Bay2HeightCheck": {
       "FeedRate": 0.1
@@ -3189,7 +3189,7 @@
     },
     "Bay3CarouselTest": {
     },
-    "Bay3FirstLoadingUnit": {
+    "Bay3FullTest": {
     },
     "Bay3HeightCheck": {
       "FeedRate": 0.1

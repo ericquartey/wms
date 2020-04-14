@@ -349,7 +349,7 @@
     <value>Homing conditions not met.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>The height of the loading unit is over the maximum.</value>
+    <value>The height of the loading unit is over the maximum or below the minimum</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
@@ -358,7 +358,7 @@
     <value>Destination bay needs calibration</value>
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
-    <value>First load unit test failed: Not all cells could be tested!</value>
+    <value>Test not completed</value>
   </data>
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>Not empty warehouse.</value>
@@ -377,5 +377,8 @@
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
     <value />
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test not completed</value>
   </data>
 </root>

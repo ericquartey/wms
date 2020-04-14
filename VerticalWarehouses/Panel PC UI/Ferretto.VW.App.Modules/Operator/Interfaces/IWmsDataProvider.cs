@@ -14,9 +14,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         Task<string> GetItemImagePathAsync(int itemId);
 
-        Task PickAsync(int itemId, double requestedQuantity);
+        Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null);
 
-        Task PutAsync(int itemId, double requestedQuantity);
+        Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null);
 
         void Start();
 

@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ILogger<ElevatorProvider> logger;
 
-        private readonly IMachineProvider machineProvider;
-
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -43,7 +41,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
+        private readonly IShutterProvider shutterProvider;
 
         #endregion
 
@@ -55,14 +53,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorDataProvider elevatorDataProvider,
             IErrorsProvider errorsProvider,
-            ISetupStatusProvider setupStatusProvider,
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
-            IMachineProvider machineProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
             IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
+            IShutterProvider shutterProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider)
             : base(eventAggregator)
         {
@@ -70,14 +67,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
         }
 
@@ -751,7 +747,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
         {
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
             var bayPositionId = bay.Positions.OrderByDescending(b => b.Height).FirstOrDefault().Id;
@@ -760,6 +756,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
+            var direction = (bay.Side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 2.5;
@@ -790,6 +787,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
+
+            // open other bays
+            var bays = this.baysDataProvider.GetAll();
+            foreach (var otherBay in bays)
+            {
+                if (otherBay.Shutter != null
+                    && otherBay.Number != bay.Number
+                    )
+                {
+                    var shutterInverter = otherBay.Shutter.Inverter.Index;
+                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
+                    if (shutterPosition != ShutterPosition.Opened)
+                    {
+                        this.shutterProvider.MoveTo(ShutterPosition.Opened, otherBay.Number, MessageActor.AutomationService);
+                    }
+                }
+            }
         }
 
         public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender)
@@ -1286,18 +1300,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // Retrieve the required cycles from procedure Parameters object
-            // TODO Create the GetRepetitiveHorizontalMovementsTest at setupProceduresDataProvider object
-            // TODO Get the required cycles from the setupProcedureDataProvider object
-            //var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();   // substitute with GetRepetitiveHorizontalMovementsTest
-
-            var requiredCycles = 2;  // procedureParameters.RequiredCycles;
+            var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
 
             var delayStart = 0;
             var data = new RepetitiveHorizontalMovementsMessageData(
                 bayPositionId,
                 loadingUnitId,
                 requestingBay,
-                /*procedureParameters.RequiredCycles*/ requiredCycles,
+                procedureParameters.RequiredCycles,
                 delayStart);
 
             this.PublishCommand(

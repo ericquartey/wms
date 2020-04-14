@@ -244,7 +244,7 @@
     <value>Condizioni per la calibrazione non soddisfatte.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>L'altezza del cassetto è eccessiva.</value>
+    <value>L'altezza del cassetto supera il valore massimo oppure è inferiore al minimo</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
@@ -256,7 +256,7 @@
     <value>Il pannello laterale sinistro è aperto.</value>
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
-    <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
+    <value>Test non completato</value>
   </data>
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>Magazzino non vuoto.</value>
@@ -377,5 +377,8 @@
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
     <value>Inconsistenza stato sensori</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test non completato</value>
   </data>
 </root>
