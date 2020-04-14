@@ -97,8 +97,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand openShutterCommand;
 
-        //private SubscriptionToken positioningMessageReceivedToken;
-
         private SubscriptionToken repetitiveHorizontalMovementsMessageReceivedToken;
 
         private int? requiredCycles;
@@ -438,14 +436,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken.Dispose();
                 this.stepChangedToken = null;
             }
-
-            //if (this.positioningMessageReceivedToken != null)
-            //{
-            //    //this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
-            //    this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
-            //    this.positioningMessageReceivedToken?.Dispose();
-            //    this.positioningMessageReceivedToken = null;
-            //}
 
             if (this.repetitiveHorizontalMovementsMessageReceivedToken != null)
             {
@@ -796,7 +786,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        //private void OnPositioningMessageReceived(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
         private void OnRepetitiveHorizontalMovementsMessageReceived(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
         {
             var data = message.Data as RepetitiveHorizontalMovementsMessageData;
@@ -933,14 +922,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
-
-            //this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
-            //    ?? this.EventAggregator
-            //        .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
-            //        .Subscribe(
-            //            (m) => this.OnPositioningMessageReceived(m),
-            //            ThreadOption.UIThread,
-            //            false);
 
             this.repetitiveHorizontalMovementsMessageReceivedToken = this.repetitiveHorizontalMovementsMessageReceivedToken
                 ?? this.EventAggregator

@@ -92,18 +92,10 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 {
                     case MessageStatus.OperationEnd:
                         {
-                            // TODO Use the setupProcedureDataProvider in order to retry the performed cycles
-                            // TODO Update the performed cycles (PerformedCycles++)
-                            // Use
-                            //var procedureSetup = this.setupProceduresDataProvider.DepositAndPickUpTest();
-                            //var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureSetup).PerformedCycles;
-
+                            // Use the setupProcedureDataProvider in order to retry the performed cycles
                             var procedureSetup = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
                             var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureSetup).PerformedCycles;
 
-                            //var performedCycles = this.machineData.MessageData.ExecutedCycles++;  // 0;
-
-                            // Use
                             this.machineData.MessageData.ExecutedCycles = performedCycles;
 
                             this.machineData.MessageData.IsTestStopped = this.isTestStopped;
