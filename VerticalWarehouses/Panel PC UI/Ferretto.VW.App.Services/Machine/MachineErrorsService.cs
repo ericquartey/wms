@@ -208,9 +208,17 @@ namespace Ferretto.VW.App.Services
 
                 this.logger.Debug("Received alarm code: " + this.ActiveError.Code.ToString());
 
-                if ((this.ViewErrorActive != null) && (this.ViewErrorActive != viewRequest) && (viewRequest == Utils.Modules.Errors.ERRORDETAILSVIEW))
+                if ((this.ViewErrorActive != null) && (this.ViewErrorActive != viewRequest))
                 {
-                    return;
+                    await Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
+                    {
+                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), this.ViewErrorActive))
+                        {
+                            this.navigationService.GoBack();
+                        }
+                    }));
                 }
 
                 this.ViewErrorActive = viewRequest;

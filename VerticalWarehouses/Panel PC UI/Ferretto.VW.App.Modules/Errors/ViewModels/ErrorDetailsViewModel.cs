@@ -111,7 +111,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
 
-                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
