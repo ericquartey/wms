@@ -108,6 +108,9 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 return;
             }
 
+            this.machineVolatileDataProvider.Mode = MachineMode.Test;
+            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+
             this.MoveToVerticalPosition(
                 MovementMode.Position,
                 bayPosition.Height,
