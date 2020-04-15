@@ -47,9 +47,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 var host = CreateWebHostBuilder(webHostArgs)
                     .ConfigureAppConfiguration((hostingContext, config) =>
                     {
-                        config.AddJsonFile("configuration/inverter-parameters.json",
-                            optional: false,
-                            reloadOnChange: true);
+                        var fileName = hostingContext.HostingEnvironment.IsProduction()
+                            ? "configuration/inverter-parameters.json"
+                            : $"configuration/inverter-parameters.{hostingContext.HostingEnvironment.EnvironmentName}.json";
+
+                        config.AddJsonFile(fileName, optional: false, reloadOnChange: true);
                     })
                     .UseContentRoot(pathToContentRoot)
                     .Build();
