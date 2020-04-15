@@ -10,5 +10,11 @@ namespace Ferretto.VW.MAS.AutomationService
         IEnumerable<InverterDeviceInfo> GetStatuses { get; }
 
         #endregion
+
+        #region Methods
+
+        IEnumerable<InverterParameterSet> GetParameters();
+
+        #endregion
     }
 }
