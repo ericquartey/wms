@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Fields
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
-        
+
         private MachineError error;
 
         private string errorTime;
@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
-                        
+
             new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
 
@@ -110,7 +110,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 //await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-              
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {

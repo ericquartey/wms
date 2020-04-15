@@ -143,7 +143,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-          
+
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
 
@@ -1080,7 +1080,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
-             
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
