@@ -109,6 +109,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private DelegateCommand stopTestCommand;
+
         private SubscriptionToken themeChangedToken;
 
         private int? totalCompletedCycles;
@@ -360,6 +362,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
+        public ICommand StopTestCommand =>
+           this.stopTestCommand
+           ??
+           (this.stopTestCommand = new DelegateCommand(
+               async () => await this.StopTestAsync(),
+               this.CanStop));
+
         protected Carousel ProcedureParameters { get; private set; }
 
         #endregion
@@ -603,6 +612,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.startCycleCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
+            this.stopTestCommand?.RaiseCanExecuteChanged();
 
             this.callLoadUnitToBayCommand?.RaiseCanExecuteChanged();
             this.moveToOpenShutterCommand?.RaiseCanExecuteChanged();
@@ -731,8 +741,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStop()
         {
-            return
-                this.IsMoving;
+            return this.IsMoving;
         }
 
         private async Task ClosedShutterAsync()
@@ -915,7 +924,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.MachineService.StopMovingByAllAsync();
+                if (this.currentStep == DepositAndPickUpStep.CycleTest)
+                {
+                    await this.machineEnduranceTestWebService.StopAsync();
+                }
+                else
+                {
+                    await this.MachineService.StopMovingByAllAsync();
+                }
 
                 this.IsExecutingProcedure = false;
             }
@@ -926,11 +942,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
 
-                if (this.currentStep == DepositAndPickUpStep.CycleTest)
-                {
-                    this.CurrentStep = DepositAndPickUpStep.CallUnit;
-                }
+        private async Task StopTestAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineEnduranceTestWebService.StopTestAsync();
+
+                this.IsExecutingProcedure = false;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

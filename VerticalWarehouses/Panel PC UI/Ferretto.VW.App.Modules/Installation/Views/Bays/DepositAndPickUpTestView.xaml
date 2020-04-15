@@ -235,16 +235,23 @@
                         </Grid>
                     </Border>
                 </Border>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
 
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="0,0,15,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToCloseShutter}"
-                                    Content="{x:Static res:InstallationApp.Forwards}" />
+                    <controls:PpcButton Margin="0,0,15,0"
+                                        Command="{Binding StopTestCommand}"
+                                        Content="{x:Static res:InstallationApp.StopTest}" />
+
+                    <controls:PpcButton Margin="0,0,15,0"
+                                        Command="{Binding MoveToCloseShutter}"
+                                        Content="{x:Static res:InstallationApp.Forwards}" />
 
 
+                </StackPanel>
             </Grid>
         </DataTemplate>
 
