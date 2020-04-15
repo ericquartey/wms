@@ -162,6 +162,23 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        private string GetViewDescription(int activeErrorCode)
+        {
+            string viewDesc = Utils.Modules.Errors.ERRORDETAILSVIEW;
+
+            if ((activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnElevator) ||
+                (activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnBay))
+            {
+                viewDesc = Utils.Modules.Errors.ERRORLOADUNITMISSING;
+            }
+            if (activeErrorCode == (int)MachineErrorCode.InverterFaultStateDetected)
+            {
+                viewDesc = Utils.Modules.Errors.ERRORINVERTERFAULT;
+            }
+
+            return viewDesc;
+        }
+
         private async Task NavigateToErrorPageAsync()
         {
             if (!this.AutoNavigateOnError)
@@ -172,6 +189,24 @@ namespace Ferretto.VW.App.Services
             if (this.ActiveError is null)
             {
                 await Application.Current.Dispatcher.BeginInvoke(
+                   System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                   new Action(() =>
+                   {
+                       if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), this.ViewErrorActive))
+                       {
+                           this.navigationService.GoBack();
+                       }
+                   }));
+
+                this.ViewErrorActive = null;
+            }
+            else
+            {
+                string viewRequest = this.GetViewDescription(this.ActiveError.Code);
+
+                if ((this.ViewErrorActive != null) && (this.ViewErrorActive != viewRequest))
+                {
+                    await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
@@ -180,36 +215,20 @@ namespace Ferretto.VW.App.Services
                             this.navigationService.GoBack();
                         }
                     }));
-
-                this.ViewErrorActive = null;
-            }
-            else
-            {
-                if (this.ViewErrorActive is null)
-                {
-                    this.ViewErrorActive = Utils.Modules.Errors.ERRORDETAILSVIEW;
-
-                    if ((this.ActiveError.Code == (int)MachineErrorCode.LoadUnitMissingOnElevator) ||
-                        (this.ActiveError.Code == (int)MachineErrorCode.LoadUnitMissingOnBay))
-                    {
-                        this.ViewErrorActive = Utils.Modules.Errors.ERRORLOADUNITMISSING;
-                    }
-                    if (this.ActiveError.Code == (int)MachineErrorCode.InverterFaultStateDetected)
-                    {
-                        this.ViewErrorActive = Utils.Modules.Errors.ERRORINVERTERFAULT;
-                    }
-
-                    await Application.Current.Dispatcher.BeginInvoke(
-                        System.Windows.Threading.DispatcherPriority.ApplicationIdle,
-                        new Action(() =>
-                        {
-                            this.navigationService.Appear(
-                                    nameof(Utils.Modules.Errors),
-                                    this.ViewErrorActive,
-                                    data: null,
-                                    trackCurrentView: true);
-                        }));
                 }
+
+                this.ViewErrorActive = viewRequest;
+
+                await Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                    new Action(() =>
+                    {
+                        this.navigationService.Appear(
+                                nameof(Utils.Modules.Errors),
+                                this.ViewErrorActive,
+                                data: null,
+                                trackCurrentView: true);
+                    }));
             }
         }
 

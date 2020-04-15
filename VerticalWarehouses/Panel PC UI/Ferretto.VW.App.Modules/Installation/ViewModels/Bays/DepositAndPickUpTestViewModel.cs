@@ -212,7 +212,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-                    Environment.NewLine,
+                                                                                                    Environment.NewLine,
             this.GetType().GetProperties()
                 .Select(p => this[p.Name])
                 .Distinct()
@@ -343,20 +343,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                                                                                                                                                                                                                                                                                                                                                                                            this.returnCalibration
            ??
            (this.returnCalibration = new DelegateCommand(
-               async () =>
-               {
-                   try
-                   {
-                       this.RequiredCycles = 200;
-                       this.CumulativePerformedCycles = 0;
-                       this.CyclesPercent = 0;
-                       this.CurrentStep = DepositAndPickUpStep.CallUnit;
-                   }
-                   catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                   {
-                       this.ShowNotification(ex);
-                   }
-               }));
+               async () => await this.ResetAsync(),
+                this.CanExecuteResetCommand));
 
         public ICommand StartCycleCommand =>
            this.startCycleCommand
@@ -689,14 +677,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCycleStart()
         {
             return !this.IsMoving &&
+                (this.CumulativePerformedCycles < this.RequiredCycles) &&
                    this.RequiredCycles.HasValue;
+        }
+
+        private bool CanExecuteResetCommand()
+        {
+            return this.CumulativePerformedCycles.HasValue &&
+                   this.CumulativePerformedCycles > 0 &&
+                   !this.MachineService.MachineStatus.IsMoving &&
+                   !this.IsExecutingProcedure;
         }
 
         private bool CanMoveToCloseShutter()
         {
             return this.CanBaseExecute() &&
                    this.SensorsService.IsLoadingUnitInBay &&
-                   (string.IsNullOrEmpty(this.Error) || !this.MachineService.Loadunits.Any());
+                   (this.CumulativePerformedCycles >= this.RequiredCycles);
         }
 
         private bool CanMoveToCycleTest()
@@ -840,6 +837,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Opened);
                 this.IsShutterMoving = true;
                 this.IsExecutingProcedure = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task ResetAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.RequiredCycles = 0;
+                this.CumulativePerformedCycles = 0;
+                this.CyclesPercent = 0;
+
+                //await this.beltBurnishingWebService.ResetAsync();
+
+                this.CurrentStep = DepositAndPickUpStep.CallUnit;
             }
             catch (System.Exception ex)
             {
