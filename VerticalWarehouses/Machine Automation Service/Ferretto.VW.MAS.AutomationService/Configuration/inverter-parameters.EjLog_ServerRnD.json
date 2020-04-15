@@ -1,0 +1,66 @@
+{
+  "inverter-parameters": [
+    {
+      "index": 1,
+      "parameters": [
+        {
+          "id": 5,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        },
+        {
+          "id": 3,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        },
+        {
+          "id": 5,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "parameters": [
+        {
+          "id": 5,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        },
+        {
+          "id": 4,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "parameters": [
+        {
+          "id": 5,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "parameters": [
+        {
+          "id": 5,
+          "value": 6,
+          "type": "uint16",
+          "dataSet": 0
+        }
+      ]
+    }
+  ]
+}
