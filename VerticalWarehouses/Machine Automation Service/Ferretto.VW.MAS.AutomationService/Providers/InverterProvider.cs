@@ -5,6 +5,7 @@ using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -18,15 +19,20 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private const int WordSize = 16;
 
+        private readonly IConfiguration configuration;
+
         private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
 
         #region Constructors
 
-        public InverterProvider(InverterDriver.IInvertersProvider invertersProvider)
+        public InverterProvider(
+            InverterDriver.IInvertersProvider invertersProvider,
+            IConfiguration configuration)
         {
             this.invertersProvider = invertersProvider;
+            this.configuration = configuration;
         }
 
         #endregion
@@ -38,6 +44,14 @@ namespace Ferretto.VW.MAS.AutomationService
         #endregion
 
         #region Methods
+
+        public IEnumerable<InverterParameterSet> GetParameters()
+        {
+            var inverterParameters = new List<InverterParameterSet>();
+            this.configuration.GetSection("inverter-parameters").Bind(inverterParameters);
+
+            return inverterParameters;
+        }
 
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)
         {

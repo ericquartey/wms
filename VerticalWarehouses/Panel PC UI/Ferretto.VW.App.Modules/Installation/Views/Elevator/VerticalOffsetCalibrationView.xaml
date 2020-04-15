@@ -205,17 +205,14 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.CellSide}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding SelectedCell.Side, Converter={StaticResource EWSC}}"
                                            TextWrapping="Wrap" />
 
@@ -398,16 +395,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteOriginCalibration}"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.ExecuteOriginCalibration}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.RepeatOriginCalibration}"
-                               TextWrapping="Wrap" />
+                               Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{x:Static res:InstallationApp.RepeatOriginCalibration}" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"

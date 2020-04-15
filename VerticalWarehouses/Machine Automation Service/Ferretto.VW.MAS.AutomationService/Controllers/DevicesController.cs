@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +43,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
             var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
             return this.Ok(result);
+        }
+
+        [HttpGet("inverters/parameters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public ActionResult<IEnumerable<InverterParameterSet>> GetParameters()
+        {
+            return this.Ok(this.inverterProvider.GetParameters());
+        }
+
+        [HttpPost("inverters/{index}/program")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ProgramInverter(InverterIndex index)
+        {
+            throw new ArgumentNullException();
         }
 
         #endregion

@@ -6,7 +6,7 @@
 
         private double acceleration;
 
-        private double deceleration;    
+        private double deceleration;
 
         private double speed;
 

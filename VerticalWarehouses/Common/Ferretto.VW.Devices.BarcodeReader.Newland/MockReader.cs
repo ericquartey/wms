@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public class MockReader : IBarcodeReader, IDisposable
+    public class MockReader : IBarcodeReaderDriver, IDisposable
     {
         #region Fields
 
