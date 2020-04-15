@@ -85,9 +85,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
@@ -95,8 +93,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayNumber}"
                                            TextWrapping="Wrap" />
 
@@ -124,9 +121,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
@@ -134,8 +129,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding CurrentBayPosition}"
                                            TextWrapping="Wrap" />
 
@@ -163,17 +157,14 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayPositionActive.Height}"
                                            TextWrapping="Wrap" />
 
@@ -198,9 +189,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
@@ -208,8 +197,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding DisplacementUp, StringFormat={}{0:F1}, FallbackValue=0}"
                                            TextWrapping="Wrap" />
 
@@ -340,9 +328,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
@@ -350,8 +336,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayNumber}"
                                            TextWrapping="Wrap" />
 
@@ -379,9 +364,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
@@ -389,8 +372,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding CurrentBayPosition}"
                                            TextWrapping="Wrap" />
 
@@ -418,17 +400,14 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayPositionActive.Height}"
                                            TextWrapping="Wrap" />
 
@@ -453,9 +432,7 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource Text_Foreground}"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
                                            Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
@@ -463,8 +440,7 @@
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding DisplacementDown, StringFormat={}{0:F1}, FallbackValue=0}"
                                            TextWrapping="Wrap" />
 
@@ -577,17 +553,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Margin="8,4"
-                                       FontSize="{StaticResource FontSize_Normal}"
-                                       FontWeight="Normal"
-                                       Foreground="{DynamicResource Text_Foreground}"
+                                       Style="{DynamicResource VWAPP_CardSensor}"
                                        Text="{x:Static res:InstallationApp.BayPositionUpHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="28"
-                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}">
+                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
                                 <Run Text="{Binding NewPositionUp, StringFormat={}{0:0.00}}" />
                                 <Run Text="{Binding DisplacementUp, StringFormat={}({0:+0.0;-#.0})}" />
                             </TextBlock>
@@ -610,17 +583,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Margin="8,4"
-                                       FontSize="{StaticResource FontSize_Normal}"
-                                       FontWeight="Normal"
-                                       Foreground="{DynamicResource Text_Foreground}"
+                                       Style="{DynamicResource VWAPP_CardSensor}"
                                        Text="{x:Static res:InstallationApp.BayPositionDownHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="28"
-                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}">
+                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
                                 <Run Text="{Binding NewPositionDown, StringFormat={}{0:0.00}}" />
                                 <Run Text="{Binding DisplacementDown, StringFormat={}({0:+0.0;-#.0})}" />
                             </TextBlock>

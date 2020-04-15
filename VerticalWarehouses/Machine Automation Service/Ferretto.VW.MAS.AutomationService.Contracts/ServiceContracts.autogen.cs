@@ -349,18 +349,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<InverterParameterSet>> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramAllInvertersAsync();
+        System.Threading.Tasks.Task ProgramInverterAsync(InverterIndex index);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramAllInvertersAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramInverterAsync(byte index);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramInverterAsync(byte index, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ProgramInverterAsync(InverterIndex index, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -3958,7 +3951,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class InverterParameterSet 
     {
         [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
-        public byte Index { get; set; }
+        public int Index { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<InverterParameter> Parameters { get; set; }

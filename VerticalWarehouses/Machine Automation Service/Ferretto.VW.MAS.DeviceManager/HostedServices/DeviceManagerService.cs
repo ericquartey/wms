@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     && this.currentStateMachines.Any(x => x.BayNumber == message.TargetBay)
                     )
                 {
-                    foreach (var messageCurrentStateMachine in this.currentStateMachines.Where(x => x.BayNumber == message.TargetBay).ToList())
+                    foreach (var messageCurrentStateMachine in this.currentStateMachines.Where(x => x.BayNumber == message.TargetBay).Reverse().ToList())
                     {
                         switch (message.Type)
                         {
