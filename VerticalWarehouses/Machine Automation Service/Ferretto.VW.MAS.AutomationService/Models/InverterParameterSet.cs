@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -6,7 +7,7 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Properties
 
-        public int Index { get; set; }
+        public byte Index { get; set; }
 
         public IEnumerable<InverterParameter> Parameters { get; set; }
 
