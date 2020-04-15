@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Menu.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
-using Prism.Commands;
-using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.App.Modules.Menu.Models;
-using System.Windows;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
@@ -226,7 +221,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }));
 
         public ICommand BeltBurnishingTestBypassCommand =>
-                    this.beltBurnishingTestBypassCommand
+            this.beltBurnishingTestBypassCommand
             ??
             (this.beltBurnishingTestBypassCommand = new DelegateCommand(
                 async () =>

@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,12 @@ namespace Ferretto.VW.MAS.AutomationService
                 var webHostArgs = args.Where(arg => arg != ServiceConsoleArgument).ToArray();
 
                 var host = CreateWebHostBuilder(webHostArgs)
+                    .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        config.AddJsonFile("configuration/inverter-parameters.json",
+                            optional: false,
+                            reloadOnChange: true);
+                    })
                     .UseContentRoot(pathToContentRoot)
                     .Build();
 
