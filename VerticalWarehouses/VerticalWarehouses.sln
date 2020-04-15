@@ -114,6 +114,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer.Core", "Installer\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj", "{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.Devices.AlphaNumericBar", "Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj", "{8CFE771A-2001-4128-9521-57FBBDC7349A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (no autogen)|Any CPU = Debug (no autogen)|Any CPU
@@ -883,6 +885,24 @@ Global
 		{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}.Release|x64.Build.0 = Release|Any CPU
 		{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}.Release|x86.Build.0 = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|x64.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Debug|x86.Build.0 = Debug|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x64.ActiveCfg = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x64.Build.0 = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -931,6 +951,7 @@ Global
 		{139FEB03-A085-4A20-AAB4-A519D8A83770} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{61D69668-A410-4498-854C-3869D705EF56} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
 		{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
+		{8CFE771A-2001-4128-9521-57FBBDC7349A} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

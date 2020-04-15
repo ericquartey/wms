@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.Devices.BarcodeReader
 {
-    public interface IBarcodeReader
+    public interface IBarcodeReaderDriver
     {
         #region Events
 

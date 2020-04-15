@@ -18,7 +18,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
 
             containerRegistry.RegisterInstance<IBarcodeConfigurationOptions>(options);
-            containerRegistry.RegisterSingleton<IBarcodeReader, MockReader>();
+            containerRegistry.RegisterSingleton<IBarcodeReaderDriver, MockReader>();
 
             return containerRegistry;
         }
@@ -33,7 +33,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
 
             containerRegistry.RegisterInstance<IBarcodeConfigurationOptions>(options);
-            containerRegistry.RegisterSingleton<IBarcodeReader, BarcodeReader>();
+            containerRegistry.RegisterSingleton<IBarcodeReaderDriver, BarcodeReader>();
 
             return containerRegistry;
         }
