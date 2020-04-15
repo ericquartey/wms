@@ -1372,7 +1372,8 @@ namespace Ferretto.VW.App.Services
                                    (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))) &&
                                  !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
-                                 !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
@@ -1400,7 +1401,8 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Impossibile eseguire la calibrazione della giostra. \r\n La catena della baia non è in posizione di zero.", NotificationSeverity.Warning);
                         }
-                        else if (!this.isBayHoming[this.bay.Number])
+                        else if (!this.isBayHoming[this.bay.Number] &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
                         }
