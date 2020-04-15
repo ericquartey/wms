@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken receiveHomingUpdateToken;
 
+        private SubscriptionToken repetitiveHorizontalMovementsToken;
+
         private SubscriptionToken shutterPositionToken;
 
         #endregion
@@ -485,6 +487,9 @@ namespace Ferretto.VW.App.Services
 
                 this.shutterPositionToken?.Dispose();
                 this.shutterPositionToken = null;
+
+                this.repetitiveHorizontalMovementsToken?.Dispose();
+                this.repetitiveHorizontalMovementsToken = null;
 
                 this.machineModeChangedToken?.Dispose();
                 this.machineModeChangedToken = null;
@@ -1063,6 +1068,40 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        private void OnRepetitiveHorizontalMovementsChanged<TData>(NotificationMessageUI<TData> message)
+                                    where TData : class, IMessageData
+        {
+            try
+            {
+                if (message?.Data is RepetitiveHorizontalMovementsMessageData dataMessage)
+                {
+                    this.logger.Debug($"OnRepetitiveHorizontalMovementsChangedAsync({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
+
+                    switch (message.Status)
+                    {
+                        case MessageStatus.OperationStart:
+                            this.MachineStatus.IsDepositAndPickUpRunning = true;
+                            break;
+
+                        case MessageStatus.OperationError:
+                            this.MachineStatus.IsDepositAndPickUpRunning = false;
+
+                            break;
+
+                        case MessageStatus.OperationEnd:
+                        case MessageStatus.OperationStop:
+                            this.MachineStatus.IsDepositAndPickUpRunning = false;
+
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             this.eventAggregator
@@ -1079,6 +1118,7 @@ namespace Ferretto.VW.App.Services
                 this.MachineStatus.IsMovingElevator = false;
                 this.MachineStatus.IsMovingShutter = false;
                 this.MachineStatus.IsMovingLoadingUnit = false;
+                this.machineStatus.IsDepositAndPickUpRunning = false;
                 this.MachineStatus.ErrorDescription = string.Empty;
             }
 
@@ -1125,6 +1165,15 @@ namespace Ferretto.VW.App.Services
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         async (e) => await this.OnDataChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.repetitiveHorizontalMovementsToken = this.repetitiveHorizontalMovementsToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
+                    .Subscribe(
+                        (e) => this.OnRepetitiveHorizontalMovementsChanged(e),
                         ThreadOption.UIThread,
                         false);
 

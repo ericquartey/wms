@@ -262,7 +262,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
-        public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+        public bool IsMoving => this.MachineService?.MachineStatus?.IsDepositAndPickUpRunning ?? true;
 
         public bool IsNewErrorValueVisible
         {
@@ -832,7 +832,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;
 
-                this.CurrentStep = DepositAndPickUpStep.CloseShutter;
+                this.CurrentStep = DepositAndPickUpStep.CycleTest;
                 this.RaiseCanExecuteChanged();
             }
         }
