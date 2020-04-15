@@ -2171,6 +2171,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         VerticalPositionChanged = 71,
     
+        InvalidBay = 72,
+    
+        InvalidPositionBay = 73,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
