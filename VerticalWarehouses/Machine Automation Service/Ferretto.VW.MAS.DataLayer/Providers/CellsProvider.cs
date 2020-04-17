@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (machine.LoadUnitMaxHeight == 0)
                 {
-                    throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
+                    throw new InvalidOperationException(Resources.Bays.TheBayLoadingMaxHeightNotValid);
                 }
                 loadUnitHeight = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
                 this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; height is {loadUnitHeight} (as configured for {(isCellTest ? "min" : "max")});");

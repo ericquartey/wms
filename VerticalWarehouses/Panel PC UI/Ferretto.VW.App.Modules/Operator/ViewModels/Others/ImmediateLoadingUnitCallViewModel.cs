@@ -249,7 +249,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void CheckToSelectLoadingUnit()
         {
-            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
+            if ((this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound) && this.selectedUnitUnit != null)
             {
                 if (loadingUnitfound.Id == this.selectedUnitUnit.Id)
                 {
@@ -269,6 +269,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.currentItemIndex--;
                 }
+
                 this.SelectLoadingUnit();
             }
             else

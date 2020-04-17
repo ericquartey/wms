@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
-    <value>The bay height ({0}) must be in range [{1},{2}].</value>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>An active mission for load unit {0} on bay {1} already exists.</value>
   </data>
-  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
-    <value>The specified bay position is not valid.</value>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>An active mission for WMS mission {0} already exists.</value>
   </data>
-  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
-    <value>The specified bay has no carousel.</value>
-  </data>
-  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
-    <value>The bay contains at least one loading unit.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>The bay contains a loading unit in its upper position.</value>
-  </data>
-  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
-    <value>The bay chain is not in zero position.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
-    <value>TheBayContainsALoadingUnitInItsLowerPosition</value>
-  </data>
-  <data name="TheBayNotContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
-    <value>TheBayNotContainsALoadingUnitInItsLowerPosition</value>
-  </data>
-  <data name="TheBayNotContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>TheBayNotContainsALoadingUnitInItsUpperPosition</value>
-  </data>
-  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
-    <value>Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method</value>
-  </data>
-  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
-    <value>The maximum height of the loading unit is not valid.</value>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>A recall mission for load unit {0} already exists.</value>
   </data>
 </root>
