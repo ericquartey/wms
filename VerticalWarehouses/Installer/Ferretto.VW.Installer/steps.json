@@ -139,7 +139,7 @@
       "number": 14,
       "title": "Copia nuova versione",
       "description": "Copia la nuova versione nella cartella di destinazione dell'installazione.",
-      "script": "Copy-Item $(Update:Temp:Path)\\$(Install:MAS:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:PPC:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:Installer:Path) $(Install:Root:Path) -recurse",
+      "script": "Copy-Item $(Update:Temp:Path)\\$(Install:MAS:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:PPC:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:Installer:Path) $(Install:Root:Path) -recurse -Exclude \"steps-snapshot.json\"",
       "rollbackScript": "Remove-Item $(Install:Root:Path)\\$(Install:MAS:Path) -recurse;Remove-Item $(Install:Root:Path)\\$(Install:PPC:Path) -recurse;Remove-Item $(Install:Root:Path)\\$(Install:Installer:Path) -recurse;"
     },
     /*{

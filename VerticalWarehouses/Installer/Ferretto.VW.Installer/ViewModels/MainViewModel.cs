@@ -10,6 +10,7 @@ namespace Ferretto.VW.Installer.ViewModels
     public class MainViewModel : BindableBase
     {
         #region Fields
+
         private const string INSTALLER = "installer";
 
         private IOperationResult currentMode;
@@ -47,36 +48,41 @@ namespace Ferretto.VW.Installer.ViewModels
 
             Directory.SetCurrentDirectory(installerLocation);
 
+            var stepsFileFound = false;
             if (File.Exists("steps-snapshot.json"))
             {
                 this.installationService = InstallationService.GetInstance("steps-snapshot.json");
                 this.installationService.GetInfoFromSnapShot();
+                stepsFileFound = true;
             }
             else if (File.Exists("steps.json"))
             {
                 this.installationService = InstallationService.GetInstance("steps.json");
+                stepsFileFound = true;
+            }
+
+            if (stepsFileFound)
+            {
+                this.installationService.SetArgsStartup();
+
+                this.installationService.GetInstallerParameters();
+
+                this.installationService.UpdateMachineRole();
+
+                this.installationService.LoadSteps();
+
+                this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
+
+                if (!this.installationService.CanStart())
+                {
+                    this.Close();
+                }
+
+                this.installationService.Start();
             }
             else
             {
-                // no configuration file found
             }
-
-            this.installationService.SetArgsStartup();
-
-            this.installationService.GetInstallerParameters();
-
-            this.installationService.UpdateMachineRole();
-
-            this.installationService.LoadSteps();
-
-            this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-
-            if (!this.installationService.CanStart())
-            {
-                this.Close();
-            }
-
-            this.installationService.Start();
         }
 
         private void Close()
