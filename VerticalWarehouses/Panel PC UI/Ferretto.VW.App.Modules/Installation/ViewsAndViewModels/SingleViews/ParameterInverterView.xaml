@@ -58,11 +58,11 @@
                     <DataTemplate>
                         <controls:PpcButton
                                         Title="{x:Static res:InstallationApp.Inverter}"                                                                                
-                                        Margin="0,0,30,0"                                        
+                                        Margin="0,30,30,0"                                        
                                         Abbrevation="{Binding Index}"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding ParametersCommand}"
-                                        Content="{x:Static res:InstallationApp.InverterParameters}"
+                                        Content="{x:Static res:General.Description}"
                                         Kind="AlertOctagon"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
                     </DataTemplate>
