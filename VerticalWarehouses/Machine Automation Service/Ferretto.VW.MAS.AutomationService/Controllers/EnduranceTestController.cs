@@ -41,6 +41,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("reset")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Reset()
+        {
+            this.elevatorProvider.ResetEnduranceTest();
+
+            return this.Accepted();
+        }
+
         [HttpPost("start/repetitive-horizontal")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

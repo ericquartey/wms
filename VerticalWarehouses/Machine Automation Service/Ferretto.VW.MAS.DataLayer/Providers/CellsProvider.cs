@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
@@ -355,7 +356,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var totalCells = this.dataContext.Cells.Count();
 
-                var cellsWithSide = this.dataContext.Cells.Include(c => c.Panel);
+                var cellsWithSide = this.dataContext.Cells.Include(c => c.Panel).ToArray();
 
                 var cellStatusStatistics = cellsWithSide
                     .GroupBy(c => c.IsFree)
@@ -379,6 +380,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
+                    FragmentFrontPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Front),
+                    FragmentBackPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Back)
                 };
 
                 return cellStatistics;
@@ -461,16 +464,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return count;
             }
         }
-
-        /*
-        public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
-        {
-            return this.dataContext.Cells
-                .Include(c => c.LoadingUnit)
-                .Include(c => c.Panel)
-                .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
-        }
-        */
 
         /// <summary>
         /// it frees or occupies the cells starting from cellId depending on loadingUnitId is null or not
@@ -701,6 +694,38 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        private double FreeBlocksPercent(Cell[] cellsWithSide, WarehouseSide side)
+        {
+            double count = 0;
+            var cellsBySide = cellsWithSide.Where(c => c.Side == side)
+                .OrderBy(o => o.Position)
+                .ToArray();
+
+            for (int i = 0; i < cellsBySide.Length; i++)
+            {
+                if (cellsBySide[i].IsFree
+                    && (
+                        (i == 0)
+                        || !cellsBySide[i - 1].IsFree
+                        )
+                    )
+                {
+                    count++;
+                }
+            }
+            return (count / cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None)) * 100;
+        }
+
         #endregion
+
+        /*
+        public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
+        }
+        */
     }
 }
