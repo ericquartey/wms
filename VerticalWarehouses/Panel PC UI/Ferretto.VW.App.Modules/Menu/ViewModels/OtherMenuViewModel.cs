@@ -82,8 +82,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ParameterInverter),
-                () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual));
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuParametersCommand =>
             this.menuParametersCommand
