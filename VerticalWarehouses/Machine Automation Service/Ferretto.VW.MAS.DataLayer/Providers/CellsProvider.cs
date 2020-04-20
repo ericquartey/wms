@@ -380,9 +380,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
+                    FragmentFrontPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Front),
+                    FragmentBackPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Back)
                 };
-                double FragmentFrontPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Front);
-                double FragmentBackPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Back);
 
                 return cellStatistics;
             }
