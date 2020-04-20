@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void FindZero(BayNumber bayNumber);
 
+        BayAccessories GetAccessories(BayNumber bayNumber);
+
         IEnumerable<Bay> GetAll();
 
         int GetAllCount();

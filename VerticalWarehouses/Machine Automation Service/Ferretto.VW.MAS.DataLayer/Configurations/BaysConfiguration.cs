@@ -22,10 +22,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder
                 .Ignore(b => b.Status)
                 .Ignore(b => b.IsDouble);
-
-            builder.HasOne(a => a.Laser)
-                   .WithOne(b => b.Bay)
-                   .HasForeignKey<Laser>(b => b.BayId);
         }
 
         #endregion

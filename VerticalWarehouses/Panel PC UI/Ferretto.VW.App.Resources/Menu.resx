@@ -117,14 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessoriesMenuDescription" xml:space="preserve">
-    <value>Configuration management and Laser functionality test</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the alphanumeric bar</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alphanumeric Bar</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the barcode reader</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Barcode Reader</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the card reader</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Card Reader</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the label printer</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Label Printer</value>
+  </data>
+  <data name="AccessoriesLaserMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the laser printer</value>
+  </data>
+  <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
+    <value>Laser Pointer</value>
   </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Accessories Menu</value>
   </data>
-  <data name="AccessoriesMenuTitle" xml:space="preserve">
-    <value>Laser Pointer</value>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the token reader</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Token Reader</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Configuration and test of the wheighting scale</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Weighting Scale</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Bay</value>

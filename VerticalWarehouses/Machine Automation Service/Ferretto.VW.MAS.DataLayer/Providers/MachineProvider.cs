@@ -58,8 +58,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.FullLoadMovement)
                     .Include(m => m.Bays)
-                        .ThenInclude(b => b.Laser)
-                    .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)

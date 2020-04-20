@@ -89,25 +89,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public IEnumerable<Laser> GetAllLasers()
-        {
-            lock (this.dataContext)
-            {
-                var lasers = this.dataContext.Lasers.Include(x => x.Bay).ToArray();
-                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
-                {
-                    int laserId = 0;
-                    foreach (var laser in lasers)
-                    {
-                        laser.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
-                        laser.TcpPort += laserId;
-                        laserId++;
-                    }
-                }
-                return lasers;
-            }
-        }
-
         public Inverter GetInverterByIndex(InverterIndex index)
         {
             lock (this.dataContext)

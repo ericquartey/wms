@@ -1,5 +1,26 @@
 ﻿namespace Ferretto.VW.Utils.Modules
 {
+    public static class Accessories
+    {
+        #region Fields
+
+        public const string AlphaNumericBar = "AlphaNumericBarSettingsViewModel";
+
+        public const string BarcodeReader = "BarcodeReaderSettingsViewModel";
+
+        public const string CardReader = "CardReaderSettingsViewModel";
+
+        public const string LabelPrinter = "LabelPrinterSettingsViewModel";
+
+        public const string LaserPointer = "LaserPointerSettingsViewModel";
+
+        public const string TokenReader = "TokenReaderSettingsViewModel";
+
+        public const string WeightingScale = "WeightingScaleSettingsViewModel";
+
+        #endregion
+    }
+
     public static class Installation
     {
         #region Fields
