@@ -1645,4 +1645,13 @@ Please put back any moved pieces in their original position.</value>
     <value>Serial</value>
     <comment>Header text</comment>
   </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Fragment back</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Fragment front</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Fragment total</value>
+  </data>
 </root>

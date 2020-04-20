@@ -112,7 +112,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="TBD" />
+                                   Text="{Binding TotalDrawers}" />
                         <!--  Text="{Binding LowerBound}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -140,15 +140,16 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}"
+                                   Text="{x:Static res:OperatorApp.FragmentFront}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="TBD" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                            <Run Text="{Binding FragmentFrontPercent}" /><Run Text="%" />
+                        </TextBlock>
                         <!--  Text="{Binding UpperBound}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -176,14 +177,16 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:OperatorApp.DrawerCompactingRearFreeSpace}" />
+                                   Text="{x:Static res:OperatorApp.FragmentBack}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="TBD" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                            <Run Text="{Binding FragmentBackPercent}" /><Run Text="%" />
+                        </TextBlock>
+
                         <!--  Text="{Binding Offset, StringFormat={}{0:F2}}"  -->
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -207,15 +210,16 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:OperatorApp.DrawerCompactingFrontFreeSpace}"
+                                   Text="{x:Static res:OperatorApp.FragmentTotal}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="TBD" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                            <Run Text="{Binding FragmentTotalPercent}" /><Run Text="%" />
+                        </TextBlock>
                         <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
                     </Grid>
 

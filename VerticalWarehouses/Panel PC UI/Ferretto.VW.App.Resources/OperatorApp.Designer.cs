@@ -1430,6 +1430,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fragment back.
+        /// </summary>
+        public static string FragmentBack {
+            get {
+                return ResourceManager.GetString("FragmentBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fragment front.
+        /// </summary>
+        public static string FragmentFront {
+            get {
+                return ResourceManager.GetString("FragmentFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fragment total.
+        /// </summary>
+        public static string FragmentTotal {
+            get {
+                return ResourceManager.GetString("FragmentTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full.
         /// </summary>
         public static string Full {

@@ -87,6 +87,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void ResetBeltBurnishing();
 
+        void ResetEnduranceTest();
+
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit);
