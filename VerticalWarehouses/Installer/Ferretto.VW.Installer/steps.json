@@ -1,5 +1,5 @@
 ﻿{
-  "steps": [  
+  "steps": [
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 1,
