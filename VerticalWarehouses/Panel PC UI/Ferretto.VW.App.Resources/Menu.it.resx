@@ -117,14 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessoriesMenuDescription" xml:space="preserve">
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della barra alfanumerica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Barra Alfanumerica</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore di codici a barre</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Lettore Codici a Barre</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore badge</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Lettore Badge</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della stampante etichette</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Stampante Etichette</value>
+  </data>
+  <data name="AccessoriesLaserMenuDescription" xml:space="preserve">
     <value>Gestione della configurazione e test funzionalità del Laser</value>
+  </data>
+  <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
+    <value>Puntatore Laser</value>
   </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Menu Accessori</value>
   </data>
-  <data name="AccessoriesMenuTitle" xml:space="preserve">
-    <value>Puntatore Laser</value>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore token</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Lettore di Token</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della bilancia contapezzi</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Bilancia Contapezzi</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia</value>
