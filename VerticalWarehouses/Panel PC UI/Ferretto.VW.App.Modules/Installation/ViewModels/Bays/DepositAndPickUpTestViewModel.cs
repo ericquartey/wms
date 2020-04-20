@@ -688,7 +688,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanCycleStart()
         {
-            return !this.IsMoving &&
+            return !this.IsMovingTest &&
                 (this.CumulativePerformedCycles < this.RequiredCycles) &&
                    this.RequiredCycles.HasValue;
         }
@@ -697,8 +697,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CumulativePerformedCycles.HasValue &&
                    this.CumulativePerformedCycles > 0 &&
-                   !this.MachineService.MachineStatus.IsMoving &&
-                   !this.IsExecutingProcedure;
+                   !this.IsMoving;
         }
 
         private bool CanMoveToCloseShutter()
