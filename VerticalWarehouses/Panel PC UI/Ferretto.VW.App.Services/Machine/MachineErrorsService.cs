@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
         private readonly SubscriptionToken machineModeChangedToken;
@@ -203,6 +205,8 @@ namespace Ferretto.VW.App.Services
             else
             {
                 string viewRequest = this.GetViewDescription(this.ActiveError.Code);
+
+                this.logger.Debug("Received alarm code: " + this.ActiveError.Code.ToString());
 
                 if ((this.ViewErrorActive != null) && (this.ViewErrorActive != viewRequest))
                 {

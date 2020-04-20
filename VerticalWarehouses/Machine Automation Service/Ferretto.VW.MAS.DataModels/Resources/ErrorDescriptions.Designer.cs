@@ -259,6 +259,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Baia non valida.
+        /// </summary>
+        public static string InvalidBay {
+            get {
+                return ResourceManager.GetString("InvalidBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posizione baia non valida.
+        /// </summary>
+        public static string InvalidPositionBay {
+            get {
+                return ResourceManager.GetString("InvalidPositionBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string InvalidPresenceSensors {

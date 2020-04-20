@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    internal sealed class BarcodeReader : IBarcodeReader, IDisposable
+    internal sealed class BarcodeReader : IBarcodeReaderDriver, IDisposable
     {
         #region Fields
 

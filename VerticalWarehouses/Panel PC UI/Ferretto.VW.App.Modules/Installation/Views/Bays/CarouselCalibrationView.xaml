@@ -111,14 +111,11 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
 
-                    <TextBlock FontSize="30"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewProcedureTextBlockStyle}"
                                Text="{x:Static res:InstallationApp.CalibrationInProgress}"
-                               TextWrapping="Wrap"
                                Visibility="{Binding IsExecutingProcedure, Converter={StaticResource BTVC}}" />
 
-                    <TextBlock FontSize="30"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewProcedureTextBlockStyle}"
                                Text="{x:Static res:InstallationApp.StopInProgress}"
                                TextWrapping="Wrap"
                                Visibility="{Binding IsExecutingStopInPhase, Converter={StaticResource BTVC}}" />
@@ -233,11 +230,7 @@
                              IsEnabled="true"
                              Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <RadioButton.Content>
-                        <TextBlock Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   FontSize="40"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                        <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
                                    Text="-" />
                     </RadioButton.Content>
                 </RadioButton>
@@ -251,11 +244,7 @@
                              IsEnabled="true"
                              Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <RadioButton.Content>
-                        <TextBlock Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   FontSize="40"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                        <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
                                    Text="+" />
                     </RadioButton.Content>
                 </RadioButton>
@@ -371,17 +360,14 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{StaticResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.CurrentResolution}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
+                               Style="{StaticResource VWAPP_CardSensor}"
                                Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
                                TextWrapping="Wrap" />
 
@@ -413,17 +399,14 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource Text_Foreground}"
+                               Style="{StaticResource VWAPP_CardSensor}"
                                Text="{x:Static res:InstallationApp.Interaxle}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
+                               Style="{StaticResource VWAPP_CardSensor_Data}"
                                Text="{Binding CurrentDistance, Mode=OneWay, StringFormat={}{0:F6}}"
                                TextWrapping="Wrap" />
 

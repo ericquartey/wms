@@ -45,12 +45,19 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #region Methods
 
-        public IEnumerable<InverterParameterSet> GetParameters()
+        public IEnumerable<InverterParameterSet> GetAllParameters()
         {
             var inverterParameters = new List<InverterParameterSet>();
             this.configuration.GetSection("inverter-parameters").Bind(inverterParameters);
 
             return inverterParameters;
+        }
+
+        public InverterParameterSet GetParameters(InverterIndex index)
+        {
+            var inverterParameters = this.GetAllParameters();
+
+            return inverterParameters.SingleOrDefault(set => set.Index == (byte)index);
         }
 
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)

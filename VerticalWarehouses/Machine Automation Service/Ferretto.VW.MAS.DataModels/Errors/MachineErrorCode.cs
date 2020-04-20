@@ -224,6 +224,12 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(VerticalPositionChanged), 1)]
         VerticalPositionChanged,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidBay), 1)]
+        InvalidBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPositionBay), 1)]
+        InvalidPositionBay,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 1000,
 

@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken receiveHomingUpdateToken;
 
+        private SubscriptionToken repetitiveHorizontalMovementsToken;
+
         private SubscriptionToken shutterPositionToken;
 
         #endregion
@@ -485,6 +487,9 @@ namespace Ferretto.VW.App.Services
 
                 this.shutterPositionToken?.Dispose();
                 this.shutterPositionToken = null;
+
+                this.repetitiveHorizontalMovementsToken?.Dispose();
+                this.repetitiveHorizontalMovementsToken = null;
 
                 this.machineModeChangedToken?.Dispose();
                 this.machineModeChangedToken = null;
@@ -1063,6 +1068,40 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        private void OnRepetitiveHorizontalMovementsChanged<TData>(NotificationMessageUI<TData> message)
+                                    where TData : class, IMessageData
+        {
+            try
+            {
+                if (message?.Data is RepetitiveHorizontalMovementsMessageData dataMessage)
+                {
+                    this.logger.Debug($"OnRepetitiveHorizontalMovementsChangedAsync({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
+
+                    switch (message.Status)
+                    {
+                        case MessageStatus.OperationStart:
+                            this.MachineStatus.IsDepositAndPickUpRunning = true;
+                            break;
+
+                        case MessageStatus.OperationError:
+                            this.MachineStatus.IsDepositAndPickUpRunning = false;
+
+                            break;
+
+                        case MessageStatus.OperationEnd:
+                        case MessageStatus.OperationStop:
+                            this.MachineStatus.IsDepositAndPickUpRunning = false;
+
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             this.eventAggregator
@@ -1079,6 +1118,7 @@ namespace Ferretto.VW.App.Services
                 this.MachineStatus.IsMovingElevator = false;
                 this.MachineStatus.IsMovingShutter = false;
                 this.MachineStatus.IsMovingLoadingUnit = false;
+                this.machineStatus.IsDepositAndPickUpRunning = false;
                 this.MachineStatus.ErrorDescription = string.Empty;
             }
 
@@ -1125,6 +1165,15 @@ namespace Ferretto.VW.App.Services
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         async (e) => await this.OnDataChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.repetitiveHorizontalMovementsToken = this.repetitiveHorizontalMovementsToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
+                    .Subscribe(
+                        (e) => this.OnRepetitiveHorizontalMovementsChanged(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -1339,11 +1388,11 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
-                        else if (this.sensorsService.IsHorizontalInconsistentBothLow)
+                        else if (this.sensorsService.IsHorizontalInconsistentBothLow && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("Manca sensore nottolino a zero o presenza cassetto.", NotificationSeverity.Error);
                         }
-                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh)
+                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
                         }
@@ -1354,8 +1403,11 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
                         }
-                        else if ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
-                                 (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator)))
+                        else if (
+                            ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
+                                 (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator))
+                                 )
+                                 && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("Inconsistenza stato di carico e sensori.", NotificationSeverity.Error);
                         }
@@ -1369,7 +1421,8 @@ namespace Ferretto.VW.App.Services
                                    (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))) &&
                                  !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
-                                 !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
@@ -1383,7 +1436,8 @@ namespace Ferretto.VW.App.Services
                         // tranne per la macchina con la baia esterna l'elevatore non si può muovere se c'è la serranda aperta
                         else if (!this.bay.IsExternal &&
                                  !this.sensorsService.ShutterSensors.Closed && !this.sensorsService.ShutterSensors.MidWay &&
-                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("Serranda aperta o in posizione sconosciuta.", NotificationSeverity.Warning);
                         }
@@ -1396,7 +1450,8 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Impossibile eseguire la calibrazione della giostra. \r\n La catena della baia non è in posizione di zero.", NotificationSeverity.Warning);
                         }
-                        else if (!this.isBayHoming[this.bay.Number])
+                        else if (!this.isBayHoming[this.bay.Number] &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Taratura baia non eseguita.", NotificationSeverity.Warning);
                         }

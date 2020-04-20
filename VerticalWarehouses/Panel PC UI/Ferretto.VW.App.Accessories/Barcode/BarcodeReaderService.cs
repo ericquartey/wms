@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IBarcodeConfigurationOptions options;
 
-        private readonly IBarcodeReader reader;
+        private readonly IBarcodeReaderDriver reader;
 
         private IEnumerable<BarcodeRule> ruleSet;
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Accessories
 
         public BarcodeReaderService(
             IEventAggregator eventAggregator,
-            IBarcodeReader reader,
+            IBarcodeReaderDriver reader,
             INavigationService navigationService,
             IMachineBarcodesWebService barcodesWebService,
             IBarcodeConfigurationOptions options)

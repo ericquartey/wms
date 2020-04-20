@@ -381,4 +381,10 @@
   <data name="FullTestFailed" xml:space="preserve">
     <value>Il test completo è fallito: non tutti i cicli previsti sono stati eseguiti.</value>
   </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>La baia selezionata non è valida</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>La posizione selezionata della baia non è valida</value>
+  </data>
 </root>

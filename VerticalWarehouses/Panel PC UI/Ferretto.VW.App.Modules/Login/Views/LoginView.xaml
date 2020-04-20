@@ -36,10 +36,7 @@
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
             <TextBlock x:Name="txtTime"
-                       Margin="0"
-                       HorizontalAlignment="Center"
-                       FontSize="24"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewDateTextBlockStyle}"
                        Text="10:10" />
         </StackPanel>
         <Grid Grid.Row="1">

@@ -144,15 +144,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                    <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.Cycle}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
+                               Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
                         <Run Text="{x:Static res:InstallationApp.CycleDescription}" />
                     </TextBlock>
                 </StackPanel>
@@ -239,16 +235,23 @@
                         </Grid>
                     </Border>
                 </Border>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
 
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="0,0,15,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToCloseShutter}"
-                                    Content="{x:Static res:InstallationApp.Forwards}" />
+                    <controls:PpcButton Margin="0,0,15,0"
+                                        Command="{Binding StopTestCommand}"
+                                        Content="{x:Static res:InstallationApp.StopTest}" />
+
+                    <controls:PpcButton Margin="0,0,15,0"
+                                        Command="{Binding MoveToCloseShutter}"
+                                        Content="{x:Static res:InstallationApp.Forwards}" />
 
 
+                </StackPanel>
             </Grid>
         </DataTemplate>
 

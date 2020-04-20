@@ -99,8 +99,7 @@
                      Height="60"
                      VerticalAlignment="Top"
                      VerticalContentAlignment="Center"
-                     FontSize="26"
-                     Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                     Style="{StaticResource VWAPP_PpcTextBox_WmsStyle}"
                      Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="1"
@@ -117,7 +116,7 @@
                 <TextBlock Margin="10,5"
                            HorizontalAlignment="Left"
                            FontSize="{DynamicResource FontSize_Small}"
-                           Style="{DynamicResource VWAPP_ViewTitleSmallTextWhiteOrDarkBlockStyle}"
+                           Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
                            Text="{x:Static res:OperatorApp.GeneralInfoWmsStatus}"
                            TextAlignment="Right" />
 
@@ -130,8 +129,7 @@
                              Fill="{Binding WmsServicesStatusBrush}" />
                     <TextBlock Margin="5,5,20,5"
                                VerticalAlignment="Center"
-                               FontSize="16"
-                               Style="{DynamicResource VWAPP_ViewTitleTextWhiteOrBlackBlockStyle}"
+                               Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
                                Text="{Binding WmsServicesStatusDescription}"
                                TextWrapping="Wrap" />
                 </StackPanel>

@@ -165,8 +165,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             if (currentBay.IsExternal)
             {
                 // TODO: Add these codes in the DataModels.Errors
-                // errorText = ErrorDescriptions.InvalidBay;
-                // errorCode = DataModels.MachineErrorCode.InvalidBay;
+                errorText = ErrorDescriptions.InvalidBay;
+                errorCode = DataModels.MachineErrorCode.InvalidBay;
                 return false;
             }
 
@@ -177,8 +177,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 if (!bayPosition.IsUpper)
                 {
                     // TODO: Add these codes in the DataModels.Errors
-                    // errorText = ErrorDescriptions.InvalidPositionBay;
-                    // errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
+                    errorText = ErrorDescriptions.InvalidPositionBay;
+                    errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
                     return false;
                 }
                 // Check if drawer is located in the top location
@@ -194,8 +194,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             if (currentBay.IsDouble && !bayPosition.IsUpper)
             {
                 // TODO: Add these codes in the DataModels.Errors
-                // errorText = ErrorDescriptions.InvalidPositionBay;
-                // errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
+                errorText = ErrorDescriptions.InvalidPositionBay;
+                errorCode = DataModels.MachineErrorCode.InvalidPositionBay;
                 return false;
             }
             // Check if drawer is located in the top location

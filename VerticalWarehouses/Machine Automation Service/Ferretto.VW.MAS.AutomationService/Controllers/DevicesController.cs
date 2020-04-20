@@ -51,13 +51,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<IEnumerable<InverterParameterSet>> GetParameters()
         {
-            return this.Ok(this.inverterProvider.GetParameters());
+            return this.Ok(this.inverterProvider.GetAllParameters());
+        }
+
+        [HttpPost("inverters/program")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ProgramAllInverters()
+        {
+            throw new ArgumentNullException();
         }
 
         [HttpPost("inverters/{index}/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramInverter(InverterIndex index)
+        public IActionResult ProgramInverter(byte index)
         {
             throw new ArgumentNullException();
         }
