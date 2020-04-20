@@ -180,9 +180,9 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
                 var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
-                var direction = bay.Side is WarehouseSide.Front
-                    ? HorizontalMovementDirection.Forwards
-                    : HorizontalMovementDirection.Backwards;
+                var direction = bay.Side == WarehouseSide.Front
+                    ? HorizontalMovementDirection.Backwards
+                    : HorizontalMovementDirection.Forwards;
 
                 var loadingUnitGrossWeight = (this.machineData.AcquiredWeight) ?
                     loadingUnit.GrossWeight :
@@ -212,8 +212,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 }
 
                 var direction = bay.Side is WarehouseSide.Front
-                    ? HorizontalMovementDirection.Backwards
-                    : HorizontalMovementDirection.Forwards;
+                    ? HorizontalMovementDirection.Forwards
+                    : HorizontalMovementDirection.Backwards;
 
                 var loadingUnitGrossWeight = (!this.machineData.AcquiredWeight) ?
                     bayPosition.LoadingUnit.MaxNetWeight + bayPosition.LoadingUnit.Tare :
