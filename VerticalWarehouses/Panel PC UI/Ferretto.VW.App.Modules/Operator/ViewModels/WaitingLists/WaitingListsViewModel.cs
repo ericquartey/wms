@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.OperatorApp.CannotExecuteList, Services.Models.NotificationSeverity.Warning);
             }
         }
 

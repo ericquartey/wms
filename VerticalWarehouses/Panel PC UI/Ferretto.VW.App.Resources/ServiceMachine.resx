@@ -150,6 +150,9 @@
   <data name="LoadingUnitReady" xml:space="preserve">
     <value>Load unit ready for operation.</value>
   </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Successfully requested loading unit {0}.</value>
+  </data>
   <data name="MachineNotManual" xml:space="preserve">
     <value>The machine is not in manual...</value>
   </data>

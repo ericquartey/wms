@@ -150,6 +150,9 @@
   <data name="LoadingUnitReady" xml:space="preserve">
     <value>Cassetto pronto all'operazione.</value>
   </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Richiesta cassetto {0} completata correttamente.</value>
+  </data>
   <data name="MachineNotManual" xml:space="preserve">
     <value>La macchina non è in manuale...</value>
   </data>

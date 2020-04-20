@@ -160,6 +160,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully requested loading unit {0}..
+        /// </summary>
+        public static string LoadingUnitSuccessfullyRequested {
+            get {
+                return ResourceManager.GetString("LoadingUnitSuccessfullyRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The machine is not in manual....
         /// </summary>
         public static string MachineNotManual {
