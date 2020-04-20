@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-                                                                                                    Environment.NewLine,
+             Environment.NewLine,
             this.GetType().GetProperties()
                 .Select(p => this[p.Name])
                 .Distinct()
@@ -262,7 +262,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
-        public bool IsMoving => this.MachineService?.MachineStatus?.IsDepositAndPickUpRunning ?? true;
+        public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+
+        public bool IsMovingTest => this.MachineService?.MachineStatus?.IsDepositAndPickUpRunning ?? true;
 
         public bool IsNewErrorValueVisible
         {
@@ -342,7 +344,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand ReturnCalibration =>
-                                                                                                                                                                                                                                                                                                                                                                                                           this.returnCalibration
+           this.returnCalibration
            ??
            (this.returnCalibration = new DelegateCommand(
                async () => await this.ResetAsync(),
@@ -367,7 +369,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
            ??
            (this.stopTestCommand = new DelegateCommand(
                async () => await this.StopTestAsync(),
-               this.CanStop));
+               this.CanStopTest));
 
         protected Carousel ProcedureParameters { get; private set; }
 
@@ -741,7 +743,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStop()
         {
-            return this.IsMoving;
+            if (this.CurrentStep == DepositAndPickUpStep.CycleTest)
+            {
+                return this.IsMovingTest;
+            }
+            else
+            {
+                return this.IsMoving;
+            }
+        }
+
+        private bool CanStopTest()
+        {
+            return this.IsMovingTest;
         }
 
         private async Task ClosedShutterAsync()
