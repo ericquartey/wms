@@ -1052,7 +1052,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     if (this.InverterType == InverterType.Ang)
                     {
-                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                        //this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
                     }
                     else
                     {
@@ -1220,7 +1220,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value = false;
                             if (this.InverterType == InverterType.Ang)
                             {
-                                this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                                //this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
                             }
                             else
                             {
