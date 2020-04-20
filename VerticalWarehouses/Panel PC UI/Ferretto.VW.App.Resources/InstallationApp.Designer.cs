@@ -3373,6 +3373,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter.
+        /// </summary>
+        public static string Inverter {
+            get {
+                return ResourceManager.GetString("Inverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading the inverter parameterization with standard parameters.
         /// </summary>
         public static string InverterParameterizationMenuDescription {

@@ -2491,4 +2491,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CycleDescription" xml:space="preserve">
     <value>Enter the number of cycles you want to perform</value>
   </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
 </root>

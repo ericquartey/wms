@@ -87,8 +87,7 @@
                                     Abbrevation="4.7.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParameterInverterCommand}"
-                                    Content="{x:Static res:InstallationApp.InverterParameterizationMenuDescription}"
-                                    IsEnabled="False"
+                                    Content="{x:Static res:InstallationApp.InverterParameterizationMenuDescription}"                                    
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
