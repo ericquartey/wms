@@ -313,7 +313,7 @@
                   "Position": 1215.0,
                   "Acceleration": 3000.0,
                   "Deceleration": 0.0,
-                  "Speed": 830.0
+                  "Speed": 650.0
                 }
               ],
               "TotalDistance": 1215.0
@@ -405,7 +405,7 @@
                   "Position": 1215.0,
                   "Acceleration": 3000.0,
                   "Deceleration": 0.0,
-                  "Speed": 830.0
+                  "Speed": 650.0
                 }
               ],
               "TotalDistance": 1215.0
@@ -4294,7 +4294,7 @@
     ],
 
     "SerialNumber": "MV20-0003",
-    "Simulation": true
+    "Simulation": false
   },
   "MachineStatistics": {
     "AutomaticTimePercentage": 0.0,

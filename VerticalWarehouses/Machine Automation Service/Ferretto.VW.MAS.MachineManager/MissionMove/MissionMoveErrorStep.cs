@@ -417,8 +417,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
             }
             if (shutterInverter != InverterIndex.None
-                && shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.Closed)
+                && shutterPosition != this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination))
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
