@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramInverterAsync(InverterIndex.All);
+                await this.machineDevicesWebService.ProgramAllInvertersAsync();
 
                 this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
 
