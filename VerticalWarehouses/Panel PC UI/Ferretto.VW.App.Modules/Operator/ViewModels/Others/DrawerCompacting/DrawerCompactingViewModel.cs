@@ -134,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FragmentTotalPercent = this.FragmentBackPercent + this.FragmentFrontPercent;
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
-                +this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
 
                 await base.OnDataRefreshAsync();
             }
