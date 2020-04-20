@@ -381,4 +381,10 @@
   <data name="FullTestFailed" xml:space="preserve">
     <value>Full load unit  test failed: Not all requested loops could be performed!</value>
   </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>The selected bay is invalid</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>The selected bay position is invalid</value>
+  </data>
 </root>

@@ -3,37 +3,79 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             d:DataContext="{d:DesignInstance Type=viewmodels:ParameterInverterViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ctrls:View.Resources>
+        <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
+        <Style TargetType="{x:Type dxprg:RowControl}">
+            <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+            <Setter Property="ctrls:PropertyGridRowControlAttachedProperties.IsEnabled" Value="True" />
+        </Style>
+    </ctrls:View.Resources>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.InverterParameters}" />
+        <Grid Grid.Column="1"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1"
-              Grid.Column="1" />
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+                <TextBlock Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="4.7.4" />
+                <TextBlock Grid.ColumnSpan="2"
+                           Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.InverterParameterizationMenuTitle}" />
+            </StackPanel>
+
+            <ItemsControl Grid.Row="1"
+                          ItemsSource="{Binding Configuration}"
+                          HorizontalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:PpcButton
+                                        Title="{x:Static res:InstallationApp.Inverter}"                                                                                
+                                        Margin="0,0,30,0"                                        
+                                        Abbrevation="{Binding Index}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding ParametersCommand}"
+                                        Content="{x:Static res:InstallationApp.InverterParameters}"
+                                        Kind="AlertOctagon"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        <controls:PpcButton Grid.Row="2"                            
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SetInvertersParamertersCommand}"
+                            Content="{x:Static res:InstallationApp.SaveParameters}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
 
     </Grid>
+
 </ctrls:View>

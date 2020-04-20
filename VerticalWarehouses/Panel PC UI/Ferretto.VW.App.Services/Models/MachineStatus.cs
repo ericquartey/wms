@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private double? horizontalTargetPosition;
 
+        private bool isDepositAndPickUpRunning;
+
         private bool isError;
 
         private bool isMoving;
@@ -178,6 +180,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.horizontalTargetPosition;
             set => this.SetProperty(ref this.horizontalTargetPosition, value);
+        }
+
+        public bool IsDepositAndPickUpRunning
+        {
+            get => this.isDepositAndPickUpRunning;
+            set => this.SetProperty(ref this.isDepositAndPickUpRunning, value);
         }
 
         public bool IsError

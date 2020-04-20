@@ -381,4 +381,10 @@
   <data name="FullTestFailed" xml:space="preserve">
     <value>Test not completed</value>
   </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Baia non valida</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Posizione baia non valida</value>
+  </data>
 </root>

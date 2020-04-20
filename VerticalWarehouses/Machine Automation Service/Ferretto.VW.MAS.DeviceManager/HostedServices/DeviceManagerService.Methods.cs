@@ -577,7 +577,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 foreach (var fsm in stateMachines)
                 {
-                    var stateMachine = fsm as RepetitiveHorizontalMovementsStartState;
+                    var stateMachine = fsm as RepetitiveHorizontalMovementsStateMachine;
                     stateMachine.ProcessCommandMessage(receivedMessage);
                 }
 

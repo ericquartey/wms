@@ -1181,7 +1181,7 @@
                   "Id": 7,
                   "Number": 0,
                   "Position": 115.0,
-                  "Speed": 830.0
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 6000.0,
@@ -1233,7 +1233,7 @@
                   "Id": 23,
                   "Number": 0,
                   "Position": 115.0,
-                  "Speed": 830.0
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 6000.0,
@@ -1321,7 +1321,7 @@
                   "Id": 15,
                   "Number": 4,
                   "Position": 1411.5,
-                  "Speed": 830.0
+                  "Speed": 600.0
                 }
               ],
               "TotalDistance": 1411.5
@@ -1373,7 +1373,7 @@
                   "Id": 26,
                   "Number": 4,
                   "Position": 1411.5,
-                  "Speed": 830.0
+                  "Speed": 600.0
                 }
               ],
               "TotalDistance": 1411.5
