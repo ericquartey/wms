@@ -876,11 +876,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.RequiredCycles = 0;
                 this.CumulativePerformedCycles = 0;
                 this.CyclesPercent = 0;
 
-                //await this.beltBurnishingWebService.ResetAsync();
+                await this.machineEnduranceTestWebService.ResetAsync();
 
                 this.CurrentStep = DepositAndPickUpStep.CallUnit;
             }

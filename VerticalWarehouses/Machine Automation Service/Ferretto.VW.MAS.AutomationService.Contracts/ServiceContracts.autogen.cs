@@ -646,6 +646,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineEnduranceTestWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResetAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartHorizontalMovementsAsync(int bayPositionId, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3095,6 +3102,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("CellStatusStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<CellStatusStatistics> CellStatusStatistics { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FragmentBackPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentBackPercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FragmentFrontPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentFrontPercent { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TotalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
