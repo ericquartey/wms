@@ -140,15 +140,15 @@ namespace Ferretto.VW.MAS.DataModels
             }
             if (this.EmptyLoadMovement.Speed < this.FullLoadMovement.Speed)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Speed configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementSpeedConfigurationInvalid, this.Orientation));
             }
             if (this.EmptyLoadMovement.Acceleration < this.FullLoadMovement.Acceleration)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Acceleration configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementAccelerationConfigurationInvalid, this.Orientation));
             }
             if (this.EmptyLoadMovement.Deceleration < this.FullLoadMovement.Deceleration)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Deceleration configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementDecelerationConfigurationInvalid, this.Orientation));
             }
 
             var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;

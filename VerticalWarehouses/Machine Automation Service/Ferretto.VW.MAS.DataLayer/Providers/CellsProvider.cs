@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (machine.LoadUnitMaxHeight == 0)
                 {
-                    throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
+                    throw new InvalidOperationException(Resources.Bays.TheBayLoadingMaxHeightNotValid);
                 }
                 loadUnitHeight = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
                 this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; height is {loadUnitHeight} (as configured for {(isCellTest ? "min" : "max")});");
@@ -379,10 +379,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalCells = totalCells,
                     TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
-                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
-                    FragmentFrontPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Front),
-                    FragmentBackPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Back)
+                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells
                 };
+                var freeBlocksFront = this.FreeBlocks(cellsWithSide, WarehouseSide.Front, out var freeCellsFront);
+                var freeBlocksBack = this.FreeBlocks(cellsWithSide, WarehouseSide.Back, out var freeCellsBack);
+                cellStatistics.FragmentFrontPercent = (freeBlocksFront > 0) ? ((double)freeBlocksFront / freeCellsFront) * 100 : 100;
+                cellStatistics.FragmentBackPercent = (freeBlocksBack > 0) ? ((double)freeBlocksBack / freeCellsBack) * 100 : 100;
+                cellStatistics.FragmentTotalPercent = (freeBlocksFront + freeBlocksBack > 0) ? ((double)(freeBlocksFront + freeBlocksBack) / (freeCellsFront + freeCellsBack)) * 100 : 100;
 
                 return cellStatistics;
             }
@@ -694,9 +697,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private double FreeBlocksPercent(Cell[] cellsWithSide, WarehouseSide side)
+        private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out int freeCells)
         {
-            double count = 0;
+            int count = 0;
+            freeCells = 0;
             var cellsBySide = cellsWithSide.Where(c => c.Side == side)
                 .OrderBy(o => o.Position)
                 .ToArray();
@@ -704,16 +708,27 @@ namespace Ferretto.VW.MAS.DataLayer
             for (int i = 0; i < cellsBySide.Length; i++)
             {
                 if (cellsBySide[i].IsFree
+                    && cellsBySide[i].BlockLevel == BlockLevel.None
                     && (
                         (i == 0)
                         || !cellsBySide[i - 1].IsFree
+                        || cellsBySide[i - 1].BlockLevel != BlockLevel.None
                         )
                     )
                 {
                     count++;
                 }
             }
-            return (count / cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None)) * 100;
+            if (count <= 1)
+            {
+                return 0;
+            }
+            freeCells = cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None);
+            if (freeCells == 0)
+            {
+                return 0;
+            }
+            return count - 1;
         }
 
         #endregion

@@ -138,7 +138,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (!this.loadingUnitId.HasValue)
             {
-                this.ShowNotification("Id loading unit does not exists.", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Errors.IdLoadingUnitNotExists, Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnitId.Value);
 
-                this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(string.Format(Resources.ServiceMachine.LoadingUnitSuccessfullyRequested, this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -249,7 +249,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void CheckToSelectLoadingUnit()
         {
-            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
+            if ((this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound) && this.selectedUnitUnit != null)
             {
                 if (loadingUnitfound.Id == this.selectedUnitUnit.Id)
                 {
@@ -269,6 +269,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.currentItemIndex--;
                 }
+
                 this.SelectLoadingUnit();
             }
             else

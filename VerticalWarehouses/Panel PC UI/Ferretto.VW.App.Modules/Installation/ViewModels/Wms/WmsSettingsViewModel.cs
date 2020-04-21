@@ -268,29 +268,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.isCheckingEndpoint)
             {
-                this.WmsServicesStatusDescription = "Verifica in corso";
+                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusCheckInProgress;
                 this.WmsServicesStatusBrush = Brushes.Gray;
             }
             else if (this.healthStatus is HealthStatus.Healthy)
             {
-                this.WmsServicesStatusDescription = "Online";
+                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOnline;
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else if (this.healthStatus is HealthStatus.Degraded)
             {
-                this.WmsServicesStatusDescription = "Online";
+                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOnline;
                 this.WmsServicesStatusBrush = Brushes.Gold;
             }
             else if (this.healthStatus is HealthStatus.Unhealthy)
             {
-                this.WmsServicesStatusDescription = "Offline";
+                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOffline;
                 this.WmsServicesStatusBrush = Brushes.Red;
 
-                this.ShowNotification("Il WMS è offline", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.InstallationApp.WmsOffline, Services.Models.NotificationSeverity.Warning);
             }
             else
             {
-                this.WmsServicesStatusDescription = "Sconosciuto";
+                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.Unknown;
                 this.WmsServicesStatusBrush = Brushes.Gray;
             }
         }

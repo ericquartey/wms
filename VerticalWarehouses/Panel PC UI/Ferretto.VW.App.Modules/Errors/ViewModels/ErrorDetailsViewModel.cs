@@ -107,10 +107,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-                //await this.machineErrorsWebService.ResolveAllAsync();
 
+                // await this.machineErrorsWebService.ResolveAllAsync();
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {

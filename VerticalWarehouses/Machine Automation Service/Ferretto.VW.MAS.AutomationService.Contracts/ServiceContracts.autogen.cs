@@ -3323,6 +3323,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FragmentFrontPercent", Required = Newtonsoft.Json.Required.Always)]
         public double FragmentFrontPercent { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FragmentTotalPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentTotalPercent { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("TotalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
     

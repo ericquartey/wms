@@ -61,11 +61,254 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic missing.
+        /// </summary>
+        public static string AutomaticMissing {
+            get {
+                return ResourceManager.GetString("AutomaticMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay calibration not performed..
+        /// </summary>
+        public static string BayCalibrationNotPerformed {
+            get {
+                return ResourceManager.GetString("BayCalibrationNotPerformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel calibration failed. \r\n The bay chain is not in the zero position..
+        /// </summary>
+        public static string CalibrationCarouselFailedChainNotZeroPosition {
+            get {
+                return ResourceManager.GetString("CalibrationCarouselFailedChainNotZeroPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Busy.
+        /// </summary>
+        public static string CellBusy {
+            get {
+                return ResourceManager.GetString("CellBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free.
+        /// </summary>
+        public static string CellFree {
+            get {
+                return ResourceManager.GetString("CellFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing not performed..
+        /// </summary>
+        public static string HomingNotPerformed {
+            get {
+                return ResourceManager.GetString("HomingNotPerformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistency of shutter presence sensors in the bay..
+        /// </summary>
+        public static string InconsistencyShutterPresenceSensor {
+            get {
+                return ResourceManager.GetString("InconsistencyShutterPresenceSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load state and sensors inconsistency..
+        /// </summary>
+        public static string InconsistencyStateAndSensors {
+            get {
+                return ResourceManager.GetString("InconsistencyStateAndSensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero pawl sensor inconsistency and loading unit presence..
+        /// </summary>
+        public static string InconsistencyZeroPawlSensor {
+            get {
+                return ResourceManager.GetString("InconsistencyZeroPawlSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit presence on the elevator..
+        /// </summary>
+        public static string LoadingUnitOnElevator {
+            get {
+                return ResourceManager.GetString("LoadingUnitOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load unit ready for operation..
+        /// </summary>
+        public static string LoadingUnitReady {
+            get {
+                return ResourceManager.GetString("LoadingUnitReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully requested loading unit {0}..
+        /// </summary>
+        public static string LoadingUnitSuccessfullyRequested {
+            get {
+                return ResourceManager.GetString("LoadingUnitSuccessfullyRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The machine is not in manual....
+        /// </summary>
+        public static string MachineNotManual {
+            get {
+                return ResourceManager.GetString("MachineNotManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions in error....
+        /// </summary>
+        public static string MissionInError {
+            get {
+                return ResourceManager.GetString("MissionInError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay chain movement in progress....
+        /// </summary>
+        public static string MovementBayChainInProgress {
+            get {
+                return ResourceManager.GetString("MovementBayChainInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator movement in progress....
+        /// </summary>
+        public static string MovementElevatorInProgress {
+            get {
+                return ResourceManager.GetString("MovementElevatorInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal movement in progress....
+        /// </summary>
+        public static string MovementHorizontalInProgress {
+            get {
+                return ResourceManager.GetString("MovementHorizontalInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movement in progress... {0}.
         /// </summary>
         public static string MovementInProgress {
             get {
                 return ResourceManager.GetString("MovementInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movement in progress... Mission: {0}, Loading unit: {1}, Status: {2}, Movement: from {3} {4}, to {5} {6}).
+        /// </summary>
+        public static string MovementInProgressExtended {
+            get {
+                return ResourceManager.GetString("MovementInProgressExtended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load unit movement in progress....
+        /// </summary>
+        public static string MovementLoadingUnitInProgress {
+            get {
+                return ResourceManager.GetString("MovementLoadingUnitInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter movement in progress ....
+        /// </summary>
+        public static string MovementShutterInProgress {
+            get {
+                return ResourceManager.GetString("MovementShutterInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical movement in progress....
+        /// </summary>
+        public static string MovementVerticalInProgress {
+            get {
+                return ResourceManager.GetString("MovementVerticalInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No gear.
+        /// </summary>
+        public static string NoGear {
+            get {
+                return ResourceManager.GetString("NoGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loading unit present in the bay..
+        /// </summary>
+        public static string NoLoadingUnitInBay {
+            get {
+                return ResourceManager.GetString("NoLoadingUnitInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No zero pawl sensor or loading unit presence..
+        /// </summary>
+        public static string NoZeroPawlSensor {
+            get {
+                return ResourceManager.GetString("NoZeroPawlSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position {0}.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter open or in unknown position..
+        /// </summary>
+        public static string ShutterOpenOrUnknowPosition {
+            get {
+                return ResourceManager.GetString("ShutterOpenOrUnknowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test in progress....
+        /// </summary>
+        public static string TestInProgress {
+            get {
+                return ResourceManager.GetString("TestInProgress", resourceCulture);
             }
         }
     }

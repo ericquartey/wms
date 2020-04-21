@@ -1492,10 +1492,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Cancella la cartella temporanea '{0}'.</value>
   </data>
   <data name="DestinationPositionMustBePositive" xml:space="preserve">
-    <value>Destination position  deve essere strettamente positivo.</value>
+    <value>La posizione di destinazione deve essere strettamente positiva.</value>
   </data>
   <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
-    <value>Destination position fuori dal range degli assi ({0}).</value>
+    <value>La posizione di destinazione è fuori dal range degli assi ({0}).</value>
   </data>
   <data name="DestinationPositionRequired" xml:space="preserve">
     <value>DestinationPosition necessario.</value>
@@ -2423,6 +2423,18 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>Il WMS è offline</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Verifica in corso</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Disconnesso</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Connesso</value>
   </data>
   <data name="CompleteTest" xml:space="preserve">
     <value>Completa il test</value>
