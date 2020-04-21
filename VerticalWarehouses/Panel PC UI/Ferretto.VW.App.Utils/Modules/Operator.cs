@@ -26,6 +26,8 @@
 
             public const string GENERAL = "GeneralViewModel";
 
+            public const string LOGSEXPORT = "LogsExportViewModel";
+
             public const string NAVIGATION = "AboutMenuNavigationViewModel";
 
             public const string STATISTICS = "StatisticsViewModel";

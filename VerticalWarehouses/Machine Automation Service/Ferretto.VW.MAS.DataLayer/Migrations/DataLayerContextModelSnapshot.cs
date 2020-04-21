@@ -751,6 +751,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 72,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 73,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -891,7 +901,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("BayId");
 
-                    b.ToTable("Laser");
+                    b.ToTable("Lasers");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
