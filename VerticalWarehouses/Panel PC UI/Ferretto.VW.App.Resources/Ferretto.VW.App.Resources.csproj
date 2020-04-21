@@ -23,6 +23,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ErrorsApp.resx</DependentUpon>
     </Compile>
+    <Compile Update="EventArgsMissionChanged.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EventArgsMissionChanged.resx</DependentUpon>
+    </Compile>
     <Compile Update="General.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,11 @@
       <DependentUpon>MaintenanceMenu.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ServiceHealthProbe.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceHealthProbe.resx</DependentUpon>
     </Compile>
     <Compile Update="Menu.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -89,6 +99,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorsApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="EventArgsMissionChanged.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EventArgsMissionChanged.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventArgsMissionChanged.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
@@ -116,6 +133,13 @@
     <EmbeddedResource Update="MaintenanceMenu.resx">
       <LastGenOutput>MaintenanceMenu.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ServiceHealthProbe.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ServiceHealthProbe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceHealthProbe.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="ServiceMachine.resx">
       <LastGenOutput>ServiceMachine.Designer.cs</LastGenOutput>

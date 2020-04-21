@@ -23,10 +23,12 @@ namespace Ferretto.VW.App.Modules.Installation.Converters
                     {
                         overwrite = over;
                     }
+
                     if (values.Length > 3 && values[3] is bool isActive && !isActive)
                     {
                         overwrite = true;
                     }
+
                     if (values[1] is VertimagConfiguration vertimag)
                     {
                         filename = vertimag.Filename(drive, !overwrite);

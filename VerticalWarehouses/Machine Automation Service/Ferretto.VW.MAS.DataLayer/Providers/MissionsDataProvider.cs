@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     this.logger.LogError($"Another mission is active for load unit {loadingUnitId} on bay {bayNumber}");
-                    throw new InvalidOperationException($"An active mission for load unit {loadingUnitId} on bay {bayNumber} already exists.");
+                    throw new InvalidOperationException(string.Format(Resources.Missions.ActiveMissionForLoadingUnit, loadingUnitId, (int)bayNumber));
                 }
                 var entry = this.dataContext.Missions
                     .Add(
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     transaction.Rollback();
-                    throw new InvalidOperationException($"An active mission for WMS mission {wmsId} already exists.");
+                    throw new InvalidOperationException(string.Format(Resources.Missions.ActiveMissionForWMS, wmsId));
                 }
 
                 var entry = this.dataContext.Missions.Add(
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     && m.Status == MissionStatus.New)
                     )
                 {
-                    throw new InvalidOperationException($"A recall mission for load unit {loadingUnitId} already exists.");
+                    throw new InvalidOperationException(string.Format(Resources.Missions.RecallMissionForLoadingUnit, loadingUnitId));
                 }
                 var entry = this.dataContext.Missions.Add(
                     new Mission

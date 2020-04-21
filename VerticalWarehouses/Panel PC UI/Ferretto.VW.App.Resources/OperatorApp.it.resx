@@ -1330,4 +1330,19 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="SerialNumber" xml:space="preserve">
     <value>Matricola</value>
   </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Frammentazione retro</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Frammentazione fronte</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Frammentazione totale</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Non posso eseguire l'elenco.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Operazione {0} non valida </value>
+  </data>
 </root>

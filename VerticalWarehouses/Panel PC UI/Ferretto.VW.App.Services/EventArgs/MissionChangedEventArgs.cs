@@ -10,12 +10,12 @@ namespace Ferretto.VW.App.Services
         {
             if (wmsMission != null && machineMission is null)
             {
-                throw new System.ArgumentException("Cannot have a wms mission without a machine mission.");
+                throw new System.ArgumentException(Resources.EventArgsMissionChanged.WmsMissionWithoutMachineMission);
             }
 
             if (wmsMission is null && wmsOperation != null)
             {
-                throw new System.ArgumentException("Cannot have a wms operation without a wms mission.");
+                throw new System.ArgumentException(Resources.EventArgsMissionChanged.WmsOperationWithoutWmsMission);
             }
 
             this.MachineMission = machineMission;

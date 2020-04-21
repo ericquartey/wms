@@ -2494,4 +2494,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
   </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS offline</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Check in progress</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Online</value>
+  </data>
 </root>

@@ -464,8 +464,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 },
                 () => this.CanBaseExecute() &&
                       this.MachineService.MachineMode != MachineMode.Automatic &&
-                      this.MachineService.MachinePower == MachinePowerState.Powered
-                ));
+                      this.MachineService.MachinePower == MachinePowerState.Powered));
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -582,7 +581,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
                 {
-                    //this.ClearNotifications();
+                    // this.ClearNotifications();
                 }
 
                 return null;
@@ -1080,7 +1079,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
-
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

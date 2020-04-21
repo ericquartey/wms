@@ -233,8 +233,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else if (this.SelectedItemCompartment is null || this.SelectedItemCompartment.Id != this.selectedCompartment.Id)
                     {
                         var newSelectedItemCompartment = this.itemsCompartments?.FirstOrDefault(c => c.Id == this.selectedCompartment.Id);
-                        this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);                        
-                        this.SelectedItemCompartment = newSelectedItemCompartment;   
+                        this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
+                        this.SelectedItemCompartment = newSelectedItemCompartment;
                     }
                 }
             }
@@ -340,7 +340,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             else
             {
-                throw new Exception($"The '{nameof(this.Data)}' property of the '{this.GetType().Name}' view model shall contain a valid loading unit identifier.");
+                throw new Exception(string.Format(Resources.Errors.LoadingUnitViewModelPropertyIdentifier, nameof(this.Data), this.GetType().Name));
             }
 
             this.missionOperationToken = this.eventAggregator
