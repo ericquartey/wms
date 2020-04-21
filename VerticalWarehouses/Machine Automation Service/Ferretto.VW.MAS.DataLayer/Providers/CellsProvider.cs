@@ -704,6 +704,7 @@ namespace Ferretto.VW.MAS.DataLayer
             for (int i = 0; i < cellsBySide.Length; i++)
             {
                 if (cellsBySide[i].IsFree
+                    && cellsBySide[i].BlockLevel == BlockLevel.None
                     && (
                         (i == 0)
                         || !cellsBySide[i - 1].IsFree
@@ -713,7 +714,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     count++;
                 }
             }
-            return (count / cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None)) * 100;
+            if (count <= 1)
+            {
+                return 0;
+            }
+            var freeCells = cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None);
+            if (freeCells == 0)
+            {
+                return 100;
+            }
+            return ((count - 1) / freeCells) * 100;
         }
 
         #endregion
