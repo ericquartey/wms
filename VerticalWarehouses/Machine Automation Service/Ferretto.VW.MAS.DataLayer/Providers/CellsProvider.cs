@@ -381,11 +381,22 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells
                 };
+                var machine = this.machineProvider.Get();
+                var minSpace = machine.LoadUnitMinHeight / 25;
                 var freeBlocksFront = this.FreeBlocks(cellsWithSide, WarehouseSide.Front, out var freeCellsFront);
+                freeCellsFront /= minSpace;
                 var freeBlocksBack = this.FreeBlocks(cellsWithSide, WarehouseSide.Back, out var freeCellsBack);
-                cellStatistics.FragmentFrontPercent = (freeBlocksFront > 0) ? ((double)freeBlocksFront / freeCellsFront) * 100 : 100;
-                cellStatistics.FragmentBackPercent = (freeBlocksBack > 0) ? ((double)freeBlocksBack / freeCellsBack) * 100 : 100;
-                cellStatistics.FragmentTotalPercent = (freeBlocksFront + freeBlocksBack > 0) ? ((double)(freeBlocksFront + freeBlocksBack) / (freeCellsFront + freeCellsBack)) * 100 : 100;
+                freeCellsBack /= minSpace;
+                cellStatistics.FragmentFrontPercent = (freeBlocksFront > 0 && freeBlocksFront <= freeCellsFront) ? (freeBlocksFront / freeCellsFront) * 100 : 100;
+                cellStatistics.FragmentBackPercent = (freeBlocksBack > 0 && freeBlocksBack <= freeCellsBack) ? (freeBlocksBack / freeCellsBack) * 100 : 100;
+                if (cellStatistics.FragmentFrontPercent == 100 || cellStatistics.FragmentBackPercent == 100)
+                {
+                    cellStatistics.FragmentTotalPercent = (cellStatistics.FragmentFrontPercent + cellStatistics.FragmentBackPercent) / 2;
+                }
+                else
+                {
+                    cellStatistics.FragmentTotalPercent = (freeBlocksFront + freeBlocksBack > 0 && freeBlocksFront + freeBlocksBack <= freeCellsFront + freeCellsBack) ? ((freeBlocksFront + freeBlocksBack) / (freeCellsFront + freeCellsBack)) * 100 : 100;
+                }
 
                 return cellStatistics;
             }
@@ -697,7 +708,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out int freeCells)
+        private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out double freeCells)
         {
             int count = 0;
             freeCells = 0;
@@ -719,16 +730,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     count++;
                 }
             }
-            if (count <= 1)
+            if (count < 1)
             {
                 return 0;
             }
-            freeCells = cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None);
+            freeCells = cellsBySide.Count(c => c.IsFree && (c.BlockLevel == BlockLevel.None || c.BlockLevel == BlockLevel.SpaceOnly));
             if (freeCells == 0)
             {
                 return 0;
             }
-            return count - 1;
+            return count;
         }
 
         #endregion

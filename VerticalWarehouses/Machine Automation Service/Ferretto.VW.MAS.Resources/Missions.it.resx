@@ -124,6 +124,6 @@
     <value>Esiste già una missione attiva per una missione WMS {0}.</value>
   </data>
   <data name="RecallMissionForLoadingUnit" xml:space="preserve">
-    <value>Esiste già una missione di richiamo per il carrello {0}.</value>
+    <value>Esiste già una missione di richiamo per il cassetto {0}.</value>
   </data>
 </root>
