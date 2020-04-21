@@ -123,6 +123,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineEnduranceTestWebService machineEnduranceTestWebService,
+            IMachineCarouselWebService machineCarouselWebService,
             IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
@@ -130,6 +131,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineEnduranceTestWebService = machineEnduranceTestWebService ?? throw new ArgumentNullException(nameof(machineEnduranceTestWebService));
+            this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineDepositAndPickupProcedureWebService = machineDepositAndPickupProcedureWebService ?? throw new ArgumentNullException(nameof(machineDepositAndPickupProcedureWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
@@ -516,11 +518,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
 
-                if (this.RequiredCycles == null || this.CumulativePerformedCycles == null)
-                {
-                    this.RequiredCycles = 200;
-                    this.CumulativePerformedCycles = 0;
-                }
+                //if (this.RequiredCycles == null || this.CumulativePerformedCycles == null)
+                //{
+                //    this.RequiredCycles = 200;
+                //    this.CumulativePerformedCycles = 0;
+                //}
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -782,10 +784,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCalibrationProcedure, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCalibrationProcedure, InstallationApp.EmbarkDisembarkMenuTitle, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineCarouselWebService.SetCalibrationCompletedAsync();
+                    await this.machineElevatorWebService.SetDepositAndPickUpTestCompletedAsync();
 
                     this.ShowNotification(
                             VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,

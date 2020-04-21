@@ -129,6 +129,7 @@
                                         Abbrevation="4.2.6"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestDepositAndPickUpCommand}"
+                                        IsCompleted="{Binding IsTestDepositAndPickUpCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
                 </WrapPanel>

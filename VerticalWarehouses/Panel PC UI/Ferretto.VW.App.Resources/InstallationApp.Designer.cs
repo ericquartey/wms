@@ -1195,6 +1195,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete the test.
+        /// </summary>
+        public static string CompleteTest {
+            get {
+                return ResourceManager.GetString("CompleteTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete Test.
         /// </summary>
         public static string CompleteTestMenuTitle {

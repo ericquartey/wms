@@ -350,6 +350,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("deposit/and/pickup/set-completed")]
+        public IActionResult SetDepositAndPickUpTestCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetDepositAndPickUpTest(), false);
+            return this.Ok();
+        }
+
         [HttpPost("horizontal/calibration/update-distance")]
         public IActionResult SetHorizontalChainCalibrationDistance(double distance)
         {

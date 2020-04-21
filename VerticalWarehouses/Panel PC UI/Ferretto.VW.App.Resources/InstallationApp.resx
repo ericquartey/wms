@@ -2494,4 +2494,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
   </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Complete the test</value>
+  </data>
 </root>

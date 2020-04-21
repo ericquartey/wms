@@ -2410,18 +2410,21 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>La funzione di imbarco/sbarco cassetti permette di testare il corretto funzionamento dei movimenti dei cassetti tramite una serie di cicli. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="TestDone" xml:space="preserve">
-    <value>Test effetuato</value>
+    <value>Test effettuato</value>
   </data>
   <data name="TestDoneDescription" xml:space="preserve">
-    <value>Ecco il numero di cicli effetuati</value>
+    <value>Ecco il numero di cicli effettuati</value>
   </data>
   <data name="Cycle" xml:space="preserve">
     <value>Cicli</value>
   </data>
   <data name="CycleDescription" xml:space="preserve">
-    <value>Inserisci il numero di cicli che vuoi effetuare</value>
+    <value>Inserisci il numero di cicli che vuoi effettuare</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Completa il test</value>
   </data>
 </root>
