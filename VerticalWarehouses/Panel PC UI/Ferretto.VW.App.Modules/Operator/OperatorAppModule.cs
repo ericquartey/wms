@@ -94,6 +94,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
 
             containerRegistry.RegisterForNavigation<AlarmView>();
+            containerRegistry.RegisterForNavigation<AlarmsExportView>();
             containerRegistry.RegisterForNavigation<CountersView>();
             containerRegistry.RegisterForNavigation<GeneralView>();
             containerRegistry.RegisterForNavigation<StatisticsView>();
