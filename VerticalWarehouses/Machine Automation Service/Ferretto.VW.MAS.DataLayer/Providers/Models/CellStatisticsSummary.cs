@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double FragmentFrontPercent { get; set; }
 
+        public double FragmentTotalPercent { get; set; }
+
         public int TotalBackCells { get; set; }
 
         public int TotalCells { get; set; }

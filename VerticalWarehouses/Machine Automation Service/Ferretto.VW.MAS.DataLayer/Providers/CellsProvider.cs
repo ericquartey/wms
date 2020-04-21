@@ -379,10 +379,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalCells = totalCells,
                     TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
-                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
-                    FragmentFrontPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Front),
-                    FragmentBackPercent = this.FreeBlocksPercent(cellsWithSide, WarehouseSide.Back)
+                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells
                 };
+                var freeBlocksFront = this.FreeBlocks(cellsWithSide, WarehouseSide.Front, out var freeCellsFront);
+                var freeBlocksBack = this.FreeBlocks(cellsWithSide, WarehouseSide.Back, out var freeCellsBack);
+                cellStatistics.FragmentFrontPercent = (freeBlocksFront > 0) ? ((double)freeBlocksFront / freeCellsFront) * 100 : 100;
+                cellStatistics.FragmentBackPercent = (freeBlocksBack > 0) ? ((double)freeBlocksBack / freeCellsBack) * 100 : 100;
+                cellStatistics.FragmentTotalPercent = (freeBlocksFront + freeBlocksBack > 0) ? ((double)(freeBlocksFront + freeBlocksBack) / (freeCellsFront + freeCellsBack)) * 100 : 100;
 
                 return cellStatistics;
             }
@@ -694,9 +697,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private double FreeBlocksPercent(Cell[] cellsWithSide, WarehouseSide side)
+        private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out int freeCells)
         {
-            double count = 0;
+            int count = 0;
+            freeCells = 0;
             var cellsBySide = cellsWithSide.Where(c => c.Side == side)
                 .OrderBy(o => o.Position)
                 .ToArray();
@@ -708,6 +712,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     && (
                         (i == 0)
                         || !cellsBySide[i - 1].IsFree
+                        || cellsBySide[i - 1].BlockLevel != BlockLevel.None
                         )
                     )
                 {
@@ -718,12 +723,12 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return 0;
             }
-            var freeCells = cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None);
+            freeCells = cellsBySide.Count(c => c.IsFree && c.BlockLevel == BlockLevel.None);
             if (freeCells == 0)
             {
-                return 100;
+                return 0;
             }
-            return ((count - 1) / freeCells) * 100;
+            return count - 1;
         }
 
         #endregion
