@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<IoDevice> GetAllIoDevices();
 
-        IEnumerable<Laser> GetAllLasers();
-
         Inverter GetInverterByIndex(InverterIndex mainInverter);
 
         #endregion

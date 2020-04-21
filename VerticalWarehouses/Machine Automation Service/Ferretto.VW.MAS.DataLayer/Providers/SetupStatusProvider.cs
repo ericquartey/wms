@@ -55,20 +55,21 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var setup = this.setupProceduresDataProvider.GetAll();
 
-            DataModels.Bay bay1 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayOne)?.First() ?? new DataModels.Bay();
-            DataModels.Bay bay2 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayTwo)?.FirstOrDefault() ?? new DataModels.Bay();
-            DataModels.Bay bay3 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayThree)?.FirstOrDefault() ?? new DataModels.Bay();
+            var bays = this.baysDataProvider.GetAll();
+            var bay1 = bays.Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayOne).First();
+            var bay2 = bays.Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayTwo).FirstOrDefault() ?? new DataModels.Bay();
+            var bay3 = bays.Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayThree).FirstOrDefault() ?? new DataModels.Bay();
 
-            bool bay1AllTestCompleted = false;
-            bool bay2AllTestCompleted = false;
-            bool bay3AllTestCompleted = false;
+            var bay1AllTestCompleted = false;
+            var bay2AllTestCompleted = false;
+            var bay3AllTestCompleted = false;
 
             if (!(bay1 is null))
             {
                 bay1AllTestCompleted = (setup.Bay1CarouselCalibration.IsCompleted || bay1.Carousel is null) &&
                                (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null) &&
                                 setup.Bay1HeightCheck.IsCompleted &&
-                               (setup.Bay1Laser.IsCompleted || bay1.Laser is null) &&
+                               (setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
                                 setup.Bay1ProfileCheck.IsCompleted;
             }
 
@@ -77,7 +78,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
                                (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
                                 setup.Bay2HeightCheck.IsCompleted &&
-                               (setup.Bay2Laser.IsCompleted || bay2.Laser is null) &&
+                               (setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
                                 setup.Bay2ProfileCheck.IsCompleted;
             }
 
@@ -86,7 +87,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay3AllTestCompleted = (setup.Bay3CarouselCalibration.IsCompleted || bay3.Carousel is null) &&
                                (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null) &&
                                 setup.Bay3HeightCheck.IsCompleted &&
-                               (setup.Bay3Laser.IsCompleted || bay3.Laser is null) &&
+                               (setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
                                 setup.Bay3ProfileCheck.IsCompleted;
             }
 

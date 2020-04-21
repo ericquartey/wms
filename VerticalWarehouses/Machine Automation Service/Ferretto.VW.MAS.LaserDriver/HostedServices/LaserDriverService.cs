@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly IConfiguration configuration;
 
-        private IDictionary<BayNumber, LaserDevice> lasers;
+        private readonly IDictionary<BayNumber, LaserDevice> lasers;
 
         #endregion
 
@@ -101,7 +101,6 @@ namespace Ferretto.VW.MAS.LaserDriver
             {
                 case FieldMessageType.DataLayerReady:
 
-                    this.InitializeLaserDevices();
                     await this.StartHardwareCommunicationsAsync();
                     break;
             }
@@ -127,32 +126,12 @@ namespace Ferretto.VW.MAS.LaserDriver
             }
         }
 
-        private void InitializeLaserDevices()
-        {
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var digitalDevicesDataProvider = scope.ServiceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
-                var lasersDto = digitalDevicesDataProvider.GetAllLasers();
-                var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:LaserDriver:ReadTimeoutMilliseconds", -1);
-
-                this.lasers = lasersDto.ToDictionary(
-                    x => x.Bay.Number,
-                    y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
-                         new SocketTransport(readTimeoutMilliseconds),
-                         this.EventAggregator,
-                         this.ServiceScopeFactory,
-                         this.Logger,
-                         this.CancellationToken)
-                    );
-            }
-        }
-
         private async Task StartHardwareCommunicationsAsync()
         {
-            foreach (var device in this.lasers.Values)
-            {
-                await device.StartHardwareCommunicationsAsync();
-            }
+            /* foreach (var device in this.lasers.Values)
+             {
+                 await device.StartHardwareCommunicationsAsync();
+             }*/
         }
 
         #endregion

@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-             Environment.NewLine,
+            Environment.NewLine,
             this.GetType().GetProperties()
                 .Select(p => this[p.Name])
                 .Distinct()
@@ -348,7 +348,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
            ??
            (this.returnCalibration = new DelegateCommand(
                async () => await this.ResetAsync(),
-                this.CanExecuteResetCommand));
+               this.CanExecuteResetCommand));
 
         public ICommand StartCycleCommand =>
            this.startCycleCommand
@@ -675,7 +675,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
-                //!this.IsShutterMoving &&
+                // !this.IsShutterMoving &&
                 ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
@@ -710,22 +710,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCycleTest()
         {
             return this.CanBaseExecute() &&
-                //!this.IsShutterMoving &&
+                // !this.IsShutterMoving &&
                 this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMoveToEndTest()
         {
             return this.CanBaseExecute() &&
-                //!this.IsShutterMoving &&
+                // !this.IsShutterMoving &&
                 this.SensorsService.ShutterSensors.Closed;
         }
 
         private bool CanMoveToOpenShutter()
         {
-            //return true;
+            // return true;
 
-            //return this.CanBaseExecute() &&
+            // return this.CanBaseExecute() &&
             //       this.SensorsService.IsLoadingUnitInBay &&
             //       (string.IsNullOrEmpty(this.Error) || !this.MachineService.Loadunits.Any());
 
@@ -876,11 +876,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.RequiredCycles = 0;
                 this.CumulativePerformedCycles = 0;
                 this.CyclesPercent = 0;
 
-                //await this.beltBurnishingWebService.ResetAsync();
+                await this.machineEnduranceTestWebService.ResetAsync();
 
                 this.CurrentStep = DepositAndPickUpStep.CallUnit;
             }

@@ -187,6 +187,30 @@
   "Machine": {
     "Bays": [
       {
+        "Accessories": {
+          "AlphaNumericBar": {
+            "IsEnabled": true,
+            "IpAddress": "127.0.0.1",
+            "TcpPort": 1234,
+            "Size": "Medium"
+          },
+          "LabelPrinter": {
+            "IsEnabled": true,
+            "Name": "Microsoft Print to PDF"
+          },
+          "LaserPointer": {
+            "IsEnabled": true,
+            "IpAddress": "127.0.0.1",
+            "TcpPort": 12020
+          },
+          "BarcodeReader": {
+            "IsEnabled": true,
+            "PortName": "COM4"
+          },
+          "WeightingScale": {
+            "IsEnabled": true,
+          }
+        },
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
@@ -232,12 +256,6 @@
         "IsActive": false,
         "IsDouble": true,
         "IsExternal": false,
-        "Laser": {
-          "BayId": 1,
-          "IpAddress": "127.0.0.1",
-          "TcpPort": 12020,
-          "Id": 1
-        },
         "Number": 1,
         "Operation": 0,
         "Positions": [

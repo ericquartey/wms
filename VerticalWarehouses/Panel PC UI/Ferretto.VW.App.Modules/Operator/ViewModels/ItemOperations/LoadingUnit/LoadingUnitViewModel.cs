@@ -535,7 +535,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.ShowNotification($"Invalid operation {operationType}");
+                    this.ShowNotification(string.Format(OperatorApp.InvalidOperation, operationType));
                     return;
                 }
 

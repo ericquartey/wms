@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -15,7 +16,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineCellsWebService machineCellsWebService;
+
         private readonly IMachineCompactingWebService machineCompactingWebService;
+
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private DelegateCommand compactingStartCommand;
 
@@ -23,17 +28,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand detailButtonCommand;
 
+        private double fragmentBackPercent;
+
+        private double fragmentFrontPercent;
+
+        private double fragmentTotalPercent;
+
         private bool isStopPressed;
+
+        private int totalDrawers;
 
         #endregion
 
         #region Constructors
 
         public DrawerCompactingViewModel(
-            IMachineCompactingWebService machineCompactingWebService)
+            IMachineCompactingWebService machineCompactingWebService,
+            IMachineCellsWebService machineCellsWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base(PresentationMode.Operator)
         {
             this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
+            this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
         }
 
         #endregion
@@ -66,10 +83,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public double FragmentBackPercent
+        {
+            get => this.fragmentBackPercent;
+            set => this.SetProperty(ref this.fragmentBackPercent, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double FragmentFrontPercent
+        {
+            get => this.fragmentFrontPercent;
+            set => this.SetProperty(ref this.fragmentFrontPercent, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double FragmentTotalPercent
+        {
+            get => this.fragmentTotalPercent;
+            set => this.SetProperty(ref this.fragmentTotalPercent, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsStopPressed
         {
             get => this.isStopPressed;
             protected set => this.SetProperty(ref this.isStopPressed, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int TotalDrawers
+        {
+            get => this.totalDrawers;
+            protected set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -81,6 +122,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            try
+            {
+                var cells = await this.machineCellsWebService.GetStatisticsAsync();
+                this.FragmentBackPercent = cells.FragmentBackPercent;
+                this.FragmentFrontPercent = cells.FragmentFrontPercent;
+                this.FragmentTotalPercent = this.FragmentBackPercent + this.FragmentFrontPercent;
+
+                var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+
+                await base.OnDataRefreshAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)

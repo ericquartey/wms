@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly int bayNumber;
+        // private readonly int bayNumber;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 

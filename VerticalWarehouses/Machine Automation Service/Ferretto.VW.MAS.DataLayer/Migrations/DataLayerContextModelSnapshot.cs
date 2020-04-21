@@ -16,10 +16,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Accessory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("IsConfigured");
+
+                    b.Property<string>("IsEnabled");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accessories");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Accessory");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AccessoriesId");
 
                     b.Property<int?>("CarouselId");
 
@@ -53,6 +74,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccessoriesId");
+
                     b.HasIndex("CarouselId");
 
                     b.HasIndex("CurrentMissionId");
@@ -73,6 +96,44 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("ShutterId");
 
                     b.ToTable("Bays");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayAccessories", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AlphaNumericBarId");
+
+                    b.Property<int?>("BarcodeReaderId");
+
+                    b.Property<int?>("CardReaderId");
+
+                    b.Property<int?>("LabelPrinterId");
+
+                    b.Property<int?>("LaserPointerId");
+
+                    b.Property<int?>("TokenReaderId");
+
+                    b.Property<int?>("WeightingScaleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlphaNumericBarId");
+
+                    b.HasIndex("BarcodeReaderId");
+
+                    b.HasIndex("CardReaderId");
+
+                    b.HasIndex("LabelPrinterId");
+
+                    b.HasIndex("LaserPointerId");
+
+                    b.HasIndex("TokenReaderId");
+
+                    b.HasIndex("WeightingScaleId");
+
+                    b.ToTable("BayAccessories");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
@@ -828,10 +889,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BayId")
-                        .IsUnique();
+                    b.HasIndex("BayId");
 
-                    b.ToTable("Lasers");
+                    b.ToTable("Laser");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
@@ -1469,6 +1529,53 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BarcodeReader", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("PortName");
+
+                    b.HasDiscriminator().HasValue("BarcodeReader");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CardReader", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.HasDiscriminator().HasValue("CardReader");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LabelPrinter", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("Name");
+
+                    b.HasDiscriminator().HasValue("LabelPrinter");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TcpIpAccessory", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TcpPort");
+
+                    b.HasDiscriminator().HasValue("TcpIpAccessory");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TokenReader", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("PortName")
+                        .HasColumnName("TokenReader_PortName");
+
+                    b.HasDiscriminator().HasValue("TokenReader");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1537,6 +1644,35 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("VerticalResolutionCalibrationProcedure");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AlphaNumericBar", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.Property<int>("Size");
+
+                    b.HasDiscriminator().HasValue("AlphaNumericBar");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LaserPointer", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.Property<double>("YOffset");
+
+                    b.Property<double>("ZOffsetLowerPosition");
+
+                    b.Property<double>("ZOffsetUpperPosition");
+
+                    b.HasDiscriminator().HasValue("LaserPointer");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightingScale", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.HasDiscriminator().HasValue("WeightingScale");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.PositioningProcedure");
@@ -1548,6 +1684,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayAccessories", "Accessories")
+                        .WithMany()
+                        .HasForeignKey("AccessoriesId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
                         .WithMany()
                         .HasForeignKey("CarouselId");
@@ -1579,6 +1719,37 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Shutter", "Shutter")
                         .WithMany()
                         .HasForeignKey("ShutterId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayAccessories", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.AlphaNumericBar", "AlphaNumericBar")
+                        .WithMany()
+                        .HasForeignKey("AlphaNumericBarId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BarcodeReader", "BarcodeReader")
+                        .WithMany()
+                        .HasForeignKey("BarcodeReaderId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.CardReader", "CardReader")
+                        .WithMany()
+                        .HasForeignKey("CardReaderId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LabelPrinter", "LabelPrinter")
+                        .WithMany()
+                        .HasForeignKey("LabelPrinterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LaserPointer", "LaserPointer")
+                        .WithMany()
+                        .HasForeignKey("LaserPointerId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.TokenReader", "TokenReader")
+                        .WithMany()
+                        .HasForeignKey("TokenReaderId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.WeightingScale", "WeightingScale")
+                        .WithMany()
+                        .HasForeignKey("WeightingScaleId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
@@ -1671,8 +1842,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
-                        .WithOne("Laser")
-                        .HasForeignKey("Ferretto.VW.MAS.DataModels.Laser", "BayId")
+                        .WithMany()
+                        .HasForeignKey("BayId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

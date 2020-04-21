@@ -1120,6 +1120,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }
 
+        public void ResetEnduranceTest()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
+
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+        }
+
         public void RunTorqueCurrentSampling(
             double displacement,
             double netWeight,
