@@ -1508,6 +1508,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
                         }
+                        else if (this.IsMissionInError)
+                        {
+                            this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                        }
                         break;
 
                     case WarningsArea.Information:
