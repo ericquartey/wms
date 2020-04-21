@@ -148,7 +148,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentFrontPercent}" /><Run Text="%" />
+                            <Run Text="{Binding FragmentFrontPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
                         </TextBlock>
                         <!--  Text="{Binding UpperBound}"  -->
                         <Border Grid.RowSpan="2"
@@ -184,7 +184,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentBackPercent}" /><Run Text="%" />
+                            <Run Text="{Binding FragmentBackPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
                         </TextBlock>
 
                         <!--  Text="{Binding Offset, StringFormat={}{0:F2}}"  -->
@@ -218,7 +218,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentTotalPercent}" /><Run Text="%" />
+                            <Run Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
                         </TextBlock>
                         <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
                     </Grid>

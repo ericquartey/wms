@@ -1339,4 +1339,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="FragmentTotal" xml:space="preserve">
     <value>Frammentazione totale</value>
   </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Non posso eseguire l'elenco.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Operazione {0} non valida </value>
+  </data>
 </root>

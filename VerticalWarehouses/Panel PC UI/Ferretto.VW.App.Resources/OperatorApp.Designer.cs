@@ -286,6 +286,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot execute List..
+        /// </summary>
+        public static string CannotExecuteList {
+            get {
+                return ResourceManager.GetString("CannotExecuteList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsCellsTotal.
         /// </summary>
         public static string CellsStatisticsCellsTotal {
@@ -1624,6 +1633,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InstantArticle {
             get {
                 return ResourceManager.GetString("InstantArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid operation {0}.
+        /// </summary>
+        public static string InvalidOperation {
+            get {
+                return ResourceManager.GetString("InvalidOperation", resourceCulture);
             }
         }
         

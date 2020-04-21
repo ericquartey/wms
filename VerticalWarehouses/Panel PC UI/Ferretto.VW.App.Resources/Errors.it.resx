@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>L'area della macchina è sconosciuta.</value>
+  </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>L'identificativo del cassetto non esiste.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>La proprietà '{0}' del modello di vista '{1}' deve contenere un identificativo cassetto valido.</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
     <value>Il parametro non può essere nullo o vuoto.</value>

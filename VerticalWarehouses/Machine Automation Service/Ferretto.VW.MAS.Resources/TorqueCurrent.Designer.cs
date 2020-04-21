@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.App.Resources {
+namespace Ferretto.VW.MAS.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.VW.App.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Errors {
+    public class TorqueCurrent {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors() {
+        internal TorqueCurrent() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.Errors", typeof(Errors).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.Resources.TorqueCurrent", typeof(TorqueCurrent).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The area of the machine is unknown.
+        ///   Looks up a localized string similar to Cannot specify a loaded net weight when no loading unit is specified..
         /// </summary>
-        public static string AreaMachineUnknow {
+        public static string CannotSpecifyLoadedNet {
             get {
-                return ResourceManager.GetString("AreaMachineUnknow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
-        /// </summary>
-        public static string ConverterCanConvertOnlyToVisibilityType {
-            get {
-                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Id loading unit does not exists..
-        /// </summary>
-        public static string IdLoadingUnitNotExists {
-            get {
-                return ResourceManager.GetString("IdLoadingUnitNotExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The &apos;{0}&apos; property of the &apos;{1}&apos; view model shall contain a valid loading unit identifier..
-        /// </summary>
-        public static string LoadingUnitViewModelPropertyIdentifier {
-            get {
-                return ResourceManager.GetString("LoadingUnitViewModelPropertyIdentifier", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
-        /// </summary>
-        public static string MarkupNameOfSyntax {
-            get {
-                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameter cannot be null or empty..
-        /// </summary>
-        public static string ParameterCannotBeNullOrEmpty {
-            get {
-                return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("CannotSpecifyLoadedNet", resourceCulture);
             }
         }
     }

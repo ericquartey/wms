@@ -592,7 +592,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
+                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
                             }
 
                             break;

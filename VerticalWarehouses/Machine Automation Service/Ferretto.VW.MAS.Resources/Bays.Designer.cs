@@ -106,6 +106,24 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method.
+        /// </summary>
+        public static string TheBayHorizontalAndVerticalNotValid {
+            get {
+                return ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum height of the loading unit is not valid..
+        /// </summary>
+        public static string TheBayLoadingMaxHeightNotValid {
+            get {
+                return ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TheBayNotContainsALoadingUnitInItsLowerPosition.
         /// </summary>
         public static string TheBayNotContainsALoadingUnitInItsLowerPosition {
