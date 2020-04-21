@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ViewModels\About\ParametersExportView.xaml" />
     <None Remove="Views\AboutMenuView.xaml" />
     <None Remove="Views\About\AlarmView.xaml" />
     <None Remove="Views\About\CountersView.xaml" />
@@ -66,6 +67,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Update="Views\About\AlarmsExportView.xaml.cs">
+      <DependentUpon>AlarmsExportView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\About\CountersView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

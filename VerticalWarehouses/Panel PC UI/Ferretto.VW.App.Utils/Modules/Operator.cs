@@ -18,6 +18,8 @@
 
             public const string ALARM = "AlarmViewModel";
 
+            public const string ALARMSEXPORT = "AlarmsExportViewModel";
+
             public const string COUNTERS = "CountersViewModel";
 
             public const string DIAGNOSTICS = "DiagnosticsViewModel";
