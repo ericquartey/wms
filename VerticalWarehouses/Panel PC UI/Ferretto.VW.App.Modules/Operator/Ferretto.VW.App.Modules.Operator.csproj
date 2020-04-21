@@ -55,6 +55,7 @@
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
     <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
+    <None Remove="Views\LogsExportView.xaml" />
     <None Remove="Views\Others\LoadingUnitMissionDataGridView.xaml" />
     <None Remove="Views\Others\LoadingUnitsMissionsView.xaml" />
   </ItemGroup>

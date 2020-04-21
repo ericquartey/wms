@@ -16,13 +16,9 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class AlarmsExportViewModel : BaseMainViewModel
+    public class LogsExportViewModel : BaseMainViewModel
     {
         #region Fields
-
-        private readonly IMachineErrorsWebService machineErrorsWebService;
-
-        private List<MachineError> machineErrors;
 
         private readonly UsbWatcherService usbWatcherService;
 
@@ -38,32 +34,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool overwrite = false;
 
-        private readonly string separator = ";";
-
-        private bool includeID = true;
-
-        private bool includeBayNumber = true;
-
-        private bool includeCode = true;
-
-        private bool includeDescription = true;
-
-        private bool includeDetailCode = true;
-
-        private bool includeInverterIndex = true;
-
-        private bool includeOccurenceDate = true;
-
-        private bool includeResolutionDate = true;
-
         #endregion
+
+        //private bool includeAll = true;
+
+        //private bool includeErrors = true;
+
+        //private bool includeEventAggregator = true;
+
+        //private bool includeMission = true;
+
+        //private bool includeSqlCommand = true;
 
         #region Constructors
 
-        public AlarmsExportViewModel(IMachineErrorsWebService machineErrorsWebService, UsbWatcherService usb)
+        public LogsExportViewModel(IMachineErrorsWebService machineErrorsWebService, UsbWatcherService usb)
                 : base(PresentationMode.Operator)
         {
-            this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
         }
 
@@ -80,18 +67,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.exportCommand = new DelegateCommand(
             async () => await this.ExportAsync(), this.CanExport));
 
-        public List<MachineError> MachineErrors
-        {
-            get => this.machineErrors;
-            set
-            {
-                if (this.SetProperty(ref this.machineErrors, value))
-                {
-                    this.exportCommand?.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public bool HasFilenameConflict => this.hasNameConflict;
 
         public bool IsBusy
@@ -107,53 +82,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public bool IncludeID
-        {
-            get => this.includeID;
-            set => this.SetProperty(ref this.includeID, value);
-        }
+        //public bool IncludeAll
+        //{
+        //    get => this.includeAll;
+        //    set => this.SetProperty(ref this.includeAll, value);
+        //}
 
-        public bool IncludeBayNumber
-        {
-            get => this.includeBayNumber;
-            set => this.SetProperty(ref this.includeBayNumber, value);
-        }
+        //public bool IncludeErrors
+        //{
+        //    get => this.includeErrors;
+        //    set => this.SetProperty(ref this.includeErrors, value);
+        //}
 
-        public bool IncludeCode
-        {
-            get => this.includeCode;
-            set => this.SetProperty(ref this.includeCode, value);
-        }
+        //public bool IncludeEventAggregator
+        //{
+        //    get => this.includeEventAggregator;
+        //    set => this.SetProperty(ref this.includeEventAggregator, value);
+        //}
 
-        public bool IncludeDescription
-        {
-            get => this.includeDescription;
-            set => this.SetProperty(ref this.includeDescription, value);
-        }
+        //public bool IncludeMission
+        //{
+        //    get => this.includeMission;
+        //    set => this.SetProperty(ref this.includeMission, value);
+        //}
 
-        public bool IncludeDetailCode
-        {
-            get => this.includeDetailCode;
-            set => this.SetProperty(ref this.includeDetailCode, value);
-        }
-
-        public bool IncludeInverterIndex
-        {
-            get => this.includeInverterIndex;
-            set => this.SetProperty(ref this.includeInverterIndex, value);
-        }
-
-        public bool IncludeOccurenceDate
-        {
-            get => this.includeOccurenceDate;
-            set => this.SetProperty(ref this.includeOccurenceDate, value);
-        }
-
-        public bool IncludeResolutionDate
-        {
-            get => this.includeResolutionDate;
-            set => this.SetProperty(ref this.includeResolutionDate, value);
-        }
+        //public bool IncludeSqlCommand
+        //{
+        //    get => this.includeSqlCommand;
+        //    set => this.SetProperty(ref this.includeSqlCommand, value);
+        //}
 
         public bool OverwriteTargetFile
         {
@@ -191,11 +148,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Start();
-
-#if DEBUG
-            //this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-            //this.RaisePropertyChanged(nameof(this.AvailableDrives));
-#endif
 
             this.RaisePropertyChanged(nameof(this.Data));
 
@@ -237,44 +189,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged();
 
-                // Data has been passed to this ViewModel from previous view model (AlarmViewModel).
-                var lst = this.Data as List<MachineError>;
-                this.MachineErrors = lst.OrderBy(o => o.OccurrenceDate).ToList();
+                // get actual executing location
+                string filepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                filepath += "\\" + "Logs";
 
-                // Create filename and full path
-                string filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
-                string fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
+                // Create path to export log
+                string logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + "\\";
+                string folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
-                //create intestation
-                string intestation = "";
-                intestation += this.IncludeID ? OperatorApp.Id + this.separator : string.Empty;
-                intestation += this.IncludeBayNumber ? OperatorApp.BayNumber + this.separator : string.Empty;
-                intestation += this.IncludeCode ? OperatorApp.Code + this.separator : string.Empty;
-                intestation += this.IncludeDescription ? OperatorApp.Description + this.separator : string.Empty;
-                intestation += this.IncludeDetailCode ? OperatorApp.DetailCode + this.separator : string.Empty;
-                intestation += this.IncludeInverterIndex ? OperatorApp.InverterIndex + this.separator : string.Empty;
-                intestation += this.IncludeOccurenceDate ? OperatorApp.OccurrenceDate + this.separator : string.Empty;
-                intestation += this.IncludeResolutionDate ? OperatorApp.ResolutionDate + this.separator : string.Empty;
+                //
+                System.IO.Directory.CreateDirectory(folderPath);
 
-                File.WriteAllText(fullPath, intestation + "\n");
+                DirectoryInfo d = new DirectoryInfo(filepath);
+                foreach (var file in d.GetFiles("*.log"))
+                {
+                    File.Copy(file.FullName, folderPath + file.Name, true);
+                }
 
-                File.AppendAllLines(fullPath, this.MachineErrors.Select(e =>
-                   {
-                       string line = "";
-
-                       line += this.IncludeID ? e.Id + this.separator : string.Empty;
-                       line += this.IncludeBayNumber ? e.BayNumber + this.separator : string.Empty;
-                       line += this.IncludeCode ? e.Code + this.separator : string.Empty;
-                       line += this.IncludeDescription ? e.Description + this.separator : string.Empty;
-                       line += this.IncludeDetailCode ? e.DetailCode + this.separator : string.Empty;
-                       line += this.IncludeInverterIndex ? e.InverterIndex + this.separator : string.Empty;
-                       line += this.IncludeOccurenceDate ? e.OccurrenceDate + this.separator : string.Empty;
-                       line += this.IncludeResolutionDate ? e.ResolutionDate + this.separator : string.Empty;
-
-                       return line;
-                   }
-
-                 ));
+                //if (this.includeAll)            { File.Copy(filepath + "\\" + "All.log", folderPath); }
+                //if (this.includeErrors)         { File.Copy(filepath + "\\" + "Errors.log", folderPath); }
+                //if (this.includeEventAggregator){ File.Copy(filepath + "\\" + "Event-Aggregator.log", folderPath); }
+                //if (this.includeMission)        { File.Copy(filepath + "\\" + "Mission.log", folderPath); }
+                //if (this.includeSqlCommand)     { File.Copy(filepath + "\\" + "Sql-Commands.log", folderPath); }
 
                 this.SelectedDrive = null;
                 this.ShowNotification(InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
@@ -301,11 +237,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 try
                 {
-                    // Create filename and full path
-                    string filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
-                    string fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
+                    // Create path
+                    string logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day;
+                    string folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
-                    hasConflict = File.Exists(fullPath);
+                    hasConflict = Directory.Exists(folderPath);
                 }
                 catch (Exception exc)
                 {
