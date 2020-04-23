@@ -53,6 +53,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<BayAccessories> GetAccessoriesAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<BayAccessories> GetAccessoriesAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -645,6 +652,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineEnduranceTestWebService
     {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResetAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResetAsync(System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartHorizontalMovementsAsync(int bayPositionId, int loadingUnitId);
     
@@ -1686,6 +1700,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Bay : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("Accessories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public BayAccessories Accessories { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Carousel Carousel { get; set; }
     
@@ -1715,9 +1732,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Laser Laser { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
@@ -1750,6 +1764,322 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static Bay FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Bay>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BayAccessories : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("AlphaNumericBar", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AlphaNumericBar AlphaNumericBar { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("BarcodeReader", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public BarcodeReader BarcodeReader { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CardReader", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CardReader CardReader { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LabelPrinter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LabelPrinter LabelPrinter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LaserPointer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LaserPointer LaserPointer { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TokenReader", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TokenReader TokenReader { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("WeightingScale", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public WeightingScale WeightingScale { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static BayAccessories FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayAccessories>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AlphaNumericBar : TcpIpAccessory
+    {
+        [Newtonsoft.Json.JsonProperty("Size", Required = Newtonsoft.Json.Required.Always)]
+        public AlphaNumericBarSize Size { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static AlphaNumericBar FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AlphaNumericBar>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum AlphaNumericBarSize
+    {
+        ExtraSmall = 0,
+    
+        Small = 1,
+    
+        Medium = 2,
+    
+        Large = 3,
+    
+        ExtraLarge = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TcpIpAccessory : Accessory
+    {
+        [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPAddress IpAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
+        public int TcpPort { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static TcpIpAccessory FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TcpIpAccessory>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum AddressFamily
+    {
+        Unspecified = 0,
+    
+        Unix = 1,
+    
+        InterNetwork = 2,
+    
+        ImpLink = 3,
+    
+        Pup = 4,
+    
+        Chaos = 5,
+    
+        Ipx = 6,
+    
+        NS = 6,
+    
+        Iso = 7,
+    
+        Osi = 7,
+    
+        Ecma = 8,
+    
+        DataKit = 9,
+    
+        Ccitt = 10,
+    
+        Sna = 11,
+    
+        DecNet = 12,
+    
+        DataLink = 13,
+    
+        Lat = 14,
+    
+        HyperChannel = 15,
+    
+        AppleTalk = 16,
+    
+        NetBios = 17,
+    
+        VoiceView = 18,
+    
+        FireFox = 19,
+    
+        Banyan = 21,
+    
+        Atm = 22,
+    
+        InterNetworkV6 = 23,
+    
+        Cluster = 24,
+    
+        Ieee12844 = 25,
+    
+        Irda = 26,
+    
+        NetworkDesigners = 28,
+    
+        Max = 29,
+    
+        Unknown = -1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Accessory : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("IsConfigured", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IsConfigured { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEnabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IsEnabled { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static Accessory FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Accessory>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class DataModel 
+    {
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static DataModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BarcodeReader : SerialPortAccessory
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static BarcodeReader FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BarcodeReader>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SerialPortAccessory : Accessory
+    {
+        [Newtonsoft.Json.JsonProperty("PortName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PortName { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static SerialPortAccessory FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SerialPortAccessory>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CardReader : Accessory
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static CardReader FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CardReader>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LabelPrinter : Accessory
+    {
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static LabelPrinter FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LabelPrinter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LaserPointer : TcpIpAccessory
+    {
+        [Newtonsoft.Json.JsonProperty("YOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double YOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ZOffsetLowerPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double ZOffsetLowerPosition { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ZOffsetUpperPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double ZOffsetUpperPosition { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static LaserPointer FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LaserPointer>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class TokenReader : SerialPortAccessory
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static TokenReader FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TokenReader>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WeightingScale : TcpIpAccessory
+    {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static WeightingScale FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WeightingScale>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -1801,24 +2131,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static CarouselManualParameters FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CarouselManualParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class DataModel 
-    {
-        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static DataModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2482,73 +2794,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum AddressFamily
-    {
-        Unspecified = 0,
-    
-        Unix = 1,
-    
-        InterNetwork = 2,
-    
-        ImpLink = 3,
-    
-        Pup = 4,
-    
-        Chaos = 5,
-    
-        Ipx = 6,
-    
-        NS = 6,
-    
-        Iso = 7,
-    
-        Osi = 7,
-    
-        Ecma = 8,
-    
-        DataKit = 9,
-    
-        Ccitt = 10,
-    
-        Sna = 11,
-    
-        DecNet = 12,
-    
-        DataLink = 13,
-    
-        Lat = 14,
-    
-        HyperChannel = 15,
-    
-        AppleTalk = 16,
-    
-        NetBios = 17,
-    
-        VoiceView = 18,
-    
-        FireFox = 19,
-    
-        Banyan = 21,
-    
-        Atm = 22,
-    
-        InterNetworkV6 = 23,
-    
-        Cluster = 24,
-    
-        Ieee12844 = 25,
-    
-        Irda = 26,
-    
-        NetworkDesigners = 28,
-    
-        Max = 29,
-    
-        Unknown = -1,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterType
     {
         Undefined = 0,
@@ -2597,30 +2842,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         All = 16,
     
         None = 255,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Laser : DataModel
-    {
-        [Newtonsoft.Json.JsonProperty("BayId", Required = Newtonsoft.Json.Required.Always)]
-        public int BayId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IPAddress IpAddress { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
-        public int TcpPort { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static Laser FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Laser>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
     
     }
     
@@ -3095,6 +3316,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("CellStatusStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<CellStatusStatistics> CellStatusStatistics { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FragmentBackPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentBackPercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FragmentFrontPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentFrontPercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FragmentTotalPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double FragmentTotalPercent { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TotalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }

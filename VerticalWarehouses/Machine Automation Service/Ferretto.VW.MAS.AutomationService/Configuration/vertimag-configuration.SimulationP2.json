@@ -109,12 +109,6 @@
         "IsActive": true,
         "IsDouble": true,
         "IsExternal": false,
-        "Laser": {
-          "BayId": 1,
-          "Id": 1,
-          "IpAddress": "127.0.0.1",
-          "TcpPort": 12020
-        },
         "Number": "BayOne",
         "Operation": "Idle",
         "Positions": [

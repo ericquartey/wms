@@ -228,9 +228,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(OperatorApp.OperationCancelledConfirmed);
 
                 // ?????????????? this.NavigationService.GoBack();
-                //this.MissionOperation = null;
-                //this.Mission = null;
-
+                // this.MissionOperation = null;
+                // this.Mission = null;
                 await this.MissionOperationsService.RefreshAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

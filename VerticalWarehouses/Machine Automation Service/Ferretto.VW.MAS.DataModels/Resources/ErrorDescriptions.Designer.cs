@@ -97,6 +97,33 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} Axis movement Acceleration configuration.
+        /// </summary>
+        public static string AxisMovementAccelerationConfigurationInvalid {
+            get {
+                return ResourceManager.GetString("AxisMovementAccelerationConfigurationInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} Axis movement Deceleration configuration.
+        /// </summary>
+        public static string AxisMovementDecelerationConfigurationInvalid {
+            get {
+                return ResourceManager.GetString("AxisMovementDecelerationConfigurationInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} Axis movement Speed configuration.
+        /// </summary>
+        public static string AxisMovementSpeedConfigurationInvalid {
+            get {
+                return ResourceManager.GetString("AxisMovementSpeedConfigurationInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errore esecuzione comando.
         /// </summary>
         public static string BayInvertersBusy {

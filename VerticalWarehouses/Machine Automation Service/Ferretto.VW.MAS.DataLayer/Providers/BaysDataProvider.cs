@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DataLayer
             context.Bays
                     .AsNoTracking()
                     .Include(b => b.Inverter)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
@@ -279,6 +281,32 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageType.Homing,
                 bayNumber,
                 bayNumber);
+        }
+
+        public BayAccessories GetAccessories(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.BarcodeReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.CardReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LabelPrinter)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.TokenReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.WeightingScale)
+                    .AsNoTracking()
+                    .Single(b => b.Number == bayNumber);
+
+                return bay.Accessories;
+            }
         }
 
         public IEnumerable<Bay> GetAll()
@@ -564,7 +592,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
+                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
                             }
 
                             break;

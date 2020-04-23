@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
+        public DbSet<Accessory> Accessories { get; set; }
+
         public DbSet<BayPosition> BayPositions { get; set; }
 
         public DbSet<Bay> Bays { get; set; }

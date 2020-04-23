@@ -163,13 +163,28 @@
                                    MaxValue="999"
                                    MinValue="1" />
 
-                <controls:PpcButton Grid.Row="1"
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+
+                    <controls:PpcButton Margin="0,20,15,0"
+                                        Command="{Binding StartCycleCommand}"
+                                        Content="{x:Static res:InstallationApp.Start}" />
+
+                    <controls:PpcButton Margin="0,15,15,0"
+                                        Command="{Binding StopTestCommand}"
+                                        Content="{x:Static res:InstallationApp.StopTest}" />
+                </StackPanel>
+
+                <!--<controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,15,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding StartCycleCommand}"
-                                    Content="{x:Static res:InstallationApp.Start}" />
+                                    Content="{x:Static res:InstallationApp.Start}" />-->
 
                 <Border Grid.Row="2"
                         Grid.Column="0"
@@ -242,9 +257,9 @@
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
 
-                    <controls:PpcButton Margin="0,0,15,0"
+                    <!--<controls:PpcButton Margin="0,0,15,0"
                                         Command="{Binding StopTestCommand}"
-                                        Content="{x:Static res:InstallationApp.StopTest}" />
+                                        Content="{x:Static res:InstallationApp.StopTest}" />-->
 
                     <controls:PpcButton Margin="0,0,15,0"
                                         Command="{Binding MoveToCloseShutter}"
@@ -271,7 +286,7 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                        <Run Text="{x:Static res:InstallationApp.CompleteTest}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">

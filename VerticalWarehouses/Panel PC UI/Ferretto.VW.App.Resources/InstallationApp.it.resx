@@ -1492,10 +1492,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Cancella la cartella temporanea '{0}'.</value>
   </data>
   <data name="DestinationPositionMustBePositive" xml:space="preserve">
-    <value>Destination position  deve essere strettamente positivo.</value>
+    <value>La posizione di destinazione deve essere strettamente positiva.</value>
   </data>
   <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
-    <value>Destination position fuori dal range degli assi ({0}).</value>
+    <value>La posizione di destinazione è fuori dal range degli assi ({0}).</value>
   </data>
   <data name="DestinationPositionRequired" xml:space="preserve">
     <value>DestinationPosition necessario.</value>
@@ -2410,19 +2410,34 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>La funzione di imbarco/sbarco cassetti permette di testare il corretto funzionamento dei movimenti dei cassetti tramite una serie di cicli. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="TestDone" xml:space="preserve">
-    <value>Test effetuato</value>
+    <value>Test effettuato</value>
   </data>
   <data name="TestDoneDescription" xml:space="preserve">
-    <value>Ecco il numero di cicli effetuati</value>
+    <value>Ecco il numero di cicli effettuati</value>
   </data>
   <data name="Cycle" xml:space="preserve">
     <value>Cicli</value>
   </data>
   <data name="CycleDescription" xml:space="preserve">
-    <value>Inserisci il numero di cicli che vuoi effetuare</value>
+    <value>Inserisci il numero di cicli che vuoi effettuare</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>Il WMS è offline</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Verifica in corso</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Disconnesso</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Connesso</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Completa il test</value>
   </data>
   <data name="InverterParametersId" xml:space="preserve">
     <value>Id</value>

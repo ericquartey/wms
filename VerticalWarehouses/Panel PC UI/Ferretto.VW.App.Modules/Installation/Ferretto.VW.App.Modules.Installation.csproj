@@ -66,6 +66,7 @@
     <None Remove="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
+    <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
@@ -102,6 +103,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\UpdateView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\AlphanumericBarSettingsView.xaml.cs">
+      <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Bays\BayCheckView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

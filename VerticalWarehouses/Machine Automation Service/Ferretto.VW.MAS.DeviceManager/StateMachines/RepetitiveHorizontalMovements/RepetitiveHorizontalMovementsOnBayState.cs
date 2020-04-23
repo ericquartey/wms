@@ -92,15 +92,9 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 {
                     case MessageStatus.OperationEnd:
                         {
-                            // Use the setupProcedureDataProvider in order to retry the performed cycles
-                            var procedureSetup = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
-                            var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureSetup).PerformedCycles;
-
-                            this.machineData.MessageData.ExecutedCycles = performedCycles;
-
                             this.machineData.MessageData.IsTestStopped = this.isTestStopped;
 
-                            if (performedCycles >= this.machineData.MessageData.RequiredCycles ||
+                            if (this.machineData.MessageData.ExecutedCycles >= this.machineData.MessageData.RequiredCycles ||
                                 this.isTestStopped)
                             {
                                 // Change to End state
@@ -154,6 +148,12 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 bayPosition.Id,
                 targetCellId: null,
                 waitContinue: false);
+
+            // Use the setupProcedureDataProvider in order to retry the performed cycles and update it
+            var procedureSetup = this.setupProceduresDataProvider.GetDepositAndPickUpTest();
+            var performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedureSetup).PerformedCycles;
+
+            this.machineData.MessageData.ExecutedCycles = performedCycles;
 
             // Publish a notification message
             var notificationMessage = new NotificationMessage(

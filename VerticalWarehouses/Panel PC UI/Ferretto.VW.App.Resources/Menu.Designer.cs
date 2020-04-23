@@ -61,11 +61,92 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration management and Laser functionality test.
+        ///   Looks up a localized string similar to Configuration and test of the alphanumeric bar.
         /// </summary>
-        public static string AccessoriesMenuDescription {
+        public static string AccessoriesAlphaNumBarMenuDescription {
             get {
-                return ResourceManager.GetString("AccessoriesMenuDescription", resourceCulture);
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alphanumeric Bar.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the barcode reader.
+        /// </summary>
+        public static string AccessoriesBarcodeReaderMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode Reader.
+        /// </summary>
+        public static string AccessoriesBarcodeReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the card reader.
+        /// </summary>
+        public static string AccessoriesCardReaderMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card Reader.
+        /// </summary>
+        public static string AccessoriesCardReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the label printer.
+        /// </summary>
+        public static string AccessoriesLabelPrinterMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesLabelPrinterMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Label Printer.
+        /// </summary>
+        public static string AccessoriesLabelPrinterMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesLabelPrinterMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the laser printer.
+        /// </summary>
+        public static string AccessoriesLaserMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser Pointer.
+        /// </summary>
+        public static string AccessoriesLaserMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserMenuTitle", resourceCulture);
             }
         }
         
@@ -79,11 +160,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Laser Pointer.
+        ///   Looks up a localized string similar to Configuration and test of the token reader.
         /// </summary>
-        public static string AccessoriesMenuTitle {
+        public static string AccessoriesTokenReaderMenuDescription {
             get {
-                return ResourceManager.GetString("AccessoriesMenuTitle", resourceCulture);
+                return ResourceManager.GetString("AccessoriesTokenReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token Reader.
+        /// </summary>
+        public static string AccessoriesTokenReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesTokenReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the wheighting scale.
+        /// </summary>
+        public static string AccessoriesWeightingScaleMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesWeightingScaleMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weighting Scale.
+        /// </summary>
+        public static string AccessoriesWeightingScaleMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesWeightingScaleMenuTitle", resourceCulture);
             }
         }
         

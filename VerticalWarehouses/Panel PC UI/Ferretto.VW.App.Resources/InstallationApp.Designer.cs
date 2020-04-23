@@ -1195,6 +1195,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete the test.
+        /// </summary>
+        public static string CompleteTest {
+            get {
+                return ResourceManager.GetString("CompleteTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete Test.
         /// </summary>
         public static string CompleteTestMenuTitle {
@@ -6885,6 +6894,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS offline.
+        /// </summary>
+        public static string WmsOffline {
+            get {
+                return ResourceManager.GetString("WmsOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On.
         /// </summary>
         public static string WmsOn {
@@ -6917,6 +6935,33 @@ namespace Ferretto.VW.App.Resources {
         public static string WmsState {
             get {
                 return ResourceManager.GetString("WmsState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check in progress.
+        /// </summary>
+        public static string WmsStatusCheckInProgress {
+            get {
+                return ResourceManager.GetString("WmsStatusCheckInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string WmsStatusOffline {
+            get {
+                return ResourceManager.GetString("WmsStatusOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online.
+        /// </summary>
+        public static string WmsStatusOnline {
+            get {
+                return ResourceManager.GetString("WmsStatusOnline", resourceCulture);
             }
         }
         

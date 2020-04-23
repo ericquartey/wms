@@ -76,6 +76,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("accessories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<BayAccessories> GetAccessories()
+        {
+            var accessories = this.baysDataProvider.GetAccessories(this.BayNumber);
+
+            return this.Ok(accessories);
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]

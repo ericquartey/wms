@@ -111,11 +111,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsHorizontalChainBypassed => this.HorizontalChain.IsBypassed;
 
+        public bool IsTestDepositAndPickUpCompleted => this.TestDepositAndPickUp.IsCompleted;
+
         public bool IsVerticalOffsetProcedure => this.VerticalOffsetCalibration.IsCompleted;
 
         public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibration.IsCompleted;
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
+        private SetupStepStatus TestDepositAndPickUp => this.SetupStatusCapabilities?.DepositAndPickUpTest ?? new SetupStepStatus();
 
         public ICommand TestDepositAndPickUpCommand =>
             this.testDepositAndPickUpCommand
@@ -197,6 +201,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsVerticalResolutionCalibration));
             this.RaisePropertyChanged(nameof(this.IsBeltBurnishing));
             this.RaisePropertyChanged(nameof(this.IsBeltBurnishingBypassed));
+            this.RaisePropertyChanged(nameof(this.IsTestDepositAndPickUpCompleted));
 
             this.RaisePropertyChanged(nameof(this.IsHorizChainCompleted));
             this.RaisePropertyChanged(nameof(this.IsHorizontalChainBypassed));
