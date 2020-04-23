@@ -3418,6 +3418,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dataset.
+        /// </summary>
+        public static string InverterParametersDataset {
+            get {
+                return ResourceManager.GetString("InverterParametersDataset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string InverterParametersId {
+            get {
+                return ResourceManager.GetString("InverterParametersId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string InverterParametersType {
+            get {
+                return ResourceManager.GetString("InverterParametersType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string InverterParametersValue {
+            get {
+                return ResourceManager.GetString("InverterParametersValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IP automation service.
         /// </summary>
         public static string IpAutomationService {
