@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     IsCompleted = setup.DepositAndPickUpTest.IsCompleted,
                     CanBePerformed = setup.DepositAndPickUpTest.IsCompleted, // todo define conditions
-                },
+                }
             };
 
             return statusCapabilities;
