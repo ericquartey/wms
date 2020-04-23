@@ -24,8 +24,6 @@
 
         public const string MOVEMENTS = "MovementsViewModel";
 
-        public const string PARAMETERINVERTER = "ParameterInverterViewModel";
-
         public const string PROFILEHEIGHTCHECKVIEW = "ProfileHeightCheckViewModel";
 
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
@@ -101,6 +99,17 @@
 
                 #endregion
             }
+
+            #endregion
+        }
+
+        public static class Inverters
+        {
+            #region Fields
+
+            public const string PARAMETERINVERTER = "ParameterInverterViewModel";
+
+            public const string PARAMETERSINVERTERDETAILS = "ParametersInverterDetailsViewModel";
 
             #endregion
         }

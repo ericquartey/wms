@@ -2424,4 +2424,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
   </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Valore</value>
+  </data>
 </root>

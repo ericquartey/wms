@@ -74,6 +74,7 @@
     <None Remove="Views\Cells\CellsHeightCheckView.xaml" />
     <None Remove="Views\DateTime\DateTimeView.xaml" />
     <None Remove="Views\Elevator\VerticalOffsetCalibrationView.xaml" />
+    <None Remove="Views\Inverters\ParametersInverterDetailsView.xaml" />
     <None Remove="Views\LoadingUnits\FullTestView.xaml" />
     <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
@@ -90,7 +91,10 @@
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml.cs">
+    <Compile Update="Views\Inverters\ParametersInverterDetailsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Inverters\ParameterInverterView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\UsersView.xaml.cs">
