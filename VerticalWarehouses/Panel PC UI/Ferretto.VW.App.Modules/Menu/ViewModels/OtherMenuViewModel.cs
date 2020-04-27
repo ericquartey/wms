@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case MenuOther.ParameterInverter:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.PARAMETERINVERTER,
+                            Utils.Modules.Installation.Inverters.PARAMETERINVERTER,
                             data: null,
                             trackCurrentView: true);
                         break;

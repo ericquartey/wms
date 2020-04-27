@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="160" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -52,19 +53,19 @@
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
                                          Height="90"
-                                         Margin="0,30,15,0" />
+                                         Margin="0,20,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="2"
                                            Grid.Column="1"
                                            Height="90"
-                                           Margin="0,30,15,0" />
+                                           Margin="0,20,15,0" />
         <controls:CardSensorPosition Grid.Row="2"
                                      Grid.Column="2"
                                      Height="90"
-                                     Margin="0,30,15,0" />
+                                     Margin="0,20,15,0" />
         <controls:CardSensorDrawer Grid.Row="2"
                                    Grid.Column="3"
                                    Height="90"
-                                   Margin="0,30,15,0" />
+                                   Margin="0,20,15,0" />
 
         <controls:CardSensorBay Grid.Row="3"
                                 Grid.Column="0"
@@ -151,12 +152,58 @@
         </Border>
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                    Grid.Column="0"
                                                     Grid.ColumnSpan="2"
-                                                    Margin="0,30,15,0"
+                                                    Margin="0,15,15,0"
                                                     ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Visibility="Collapsed" />
+                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                    Grid.Column="2"
+                                                    Grid.ColumnSpan="2"
+                                                    Margin="0,15,15,0"
+                                                    ItemsSource="{Binding TestUnits}"
+                                                    SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         <StackPanel Grid.Row="5"
+                            Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                     Margin="0,0,15,0"
+                            VerticalAlignment="Center" >
+
+            <controls:PpcButton
+                            Margin="0,10,15,10"
+                            Command="{Binding RemoveAllUnitCommand}"
+                            Content="Rimuovi tutti i cassetti da test" />
+
+            <controls:PpcButton 
+                            Margin="0,10,0,10"
+                            
+                            Command="{Binding RemoveUnitCommand}"
+                            Content="Rimuovi cassetto da test" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="5"
+                            Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                     HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                            VerticalAlignment="Center">
+            <controls:PpcButton 
+                            Margin="0,10,15,10"
+                            Command="{Binding AddUnitCommand}"
+                            Content="Aggiungi cassetto a test" />
+
+            <controls:PpcButton 
+                            Margin="0,10,15,10"
+                            Command="{Binding AddAllUnitCommand}"
+                            Content="Aggiungi tutti i cassetti a test" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="6"
                     Grid.ColumnSpan="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"

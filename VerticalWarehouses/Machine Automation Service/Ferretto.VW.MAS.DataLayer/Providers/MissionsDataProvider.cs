@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 // no duplicate of LU
                 returnValue = !this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
-                    && m.Status == MissionStatus.Executing
+                    && (m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
                     );
                 if (!returnValue)
                 {

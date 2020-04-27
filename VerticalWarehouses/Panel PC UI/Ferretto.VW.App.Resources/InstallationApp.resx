@@ -2506,4 +2506,23 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsStatusOnline" xml:space="preserve">
     <value>Online</value>
   </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Complete the test</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Type</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Value</value>
+    <comment>Column header text</comment>
+  </data>
 </root>

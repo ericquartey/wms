@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
@@ -28,15 +29,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineFullTestWebService machineFullTestWebService;
 
+        private DelegateCommand addAllUnitCommand;
+
+        private DelegateCommand addUnitCommand;
+
         private SubscriptionToken cycleMessageReceivedToken;
 
         private double? cyclesPercent;
 
         private bool isExecutingProcedure;
 
+        private ObservableCollection<LoadingUnit> loadingUnits;
+
         private SubscriptionToken loadUnitsChangedToken;
 
         private int? performedCyclesThisSession;
+
+        private DelegateCommand removeAllUnitCommand;
+
+        private DelegateCommand removeUnitCommand;
 
         private int? requiredCycles;
 
@@ -44,11 +55,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand resetTotalCommand;
 
+        private LoadingUnit selectedLU;
+
+        private LoadingUnit selectedTU;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
 
         private DelegateCommand stopTestCommand;
+
+        private ObservableCollection<LoadingUnit> testUnits;
 
         private int? totalCycles;
 
@@ -62,11 +79,29 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineFullTestWebService = machineFullTestWebService ?? throw new ArgumentNullException(nameof(machineFullTestWebService));
+
+            this.TestUnits = new ObservableCollection<LoadingUnit>();
+
+            this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
         }
 
         #endregion
 
         #region Properties
+
+        public ICommand AddAllUnitCommand =>
+            this.addAllUnitCommand
+            ??
+            (this.addAllUnitCommand = new DelegateCommand(
+                async () => await this.AddAllUnitAsync(),
+                this.CanAddAllUnit));
+
+        public ICommand AddUnitCommand =>
+                    this.addUnitCommand
+            ??
+            (this.addUnitCommand = new DelegateCommand(
+                async () => await this.AddUnitAsync(),
+                this.CanAddUnit));
 
         public double? CyclesPercent
         {
@@ -82,13 +117,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
-        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+        public ObservableCollection<LoadingUnit> LoadingUnits
+        {
+            get => this.loadingUnits;
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnits, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public int? PerformedCyclesThisSession
         {
             get => this.performedCyclesThisSession;
             set => this.SetProperty(ref this.performedCyclesThisSession, value);
         }
+
+        public ICommand RemoveAllUnitCommand =>
+            this.removeAllUnitCommand
+            ??
+            (this.removeAllUnitCommand = new DelegateCommand(
+                async () => await this.RemoveAllUnitAsync(),
+                this.CanRemoveAllUnit));
+
+        public ICommand RemoveUnitCommand =>
+                    this.removeUnitCommand
+            ??
+            (this.removeUnitCommand = new DelegateCommand(
+                async () => await this.RemoveUnitAsync(),
+                this.CanRemoveUnit));
 
         public int? RequiredCycles
         {
@@ -110,6 +169,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 async () => await this.ResetTotalAsync(),
                 this.CanResetTotal));
 
+        public LoadingUnit SelectedLU
+        {
+            get => this.selectedLU;
+            set => this.SetProperty(ref this.selectedLU, value, this.RaiseCanExecuteChanged);
+        }
+
+        public LoadingUnit SelectedTU
+        {
+            get => this.selectedTU;
+            set => this.SetProperty(ref this.selectedTU, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand StartCommand =>
             this.startCommand
             ??
@@ -130,6 +201,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.stopTestCommand = new DelegateCommand(
                 async () => await this.StopTestAsync(),
                 this.CanStop));
+
+        public ObservableCollection<LoadingUnit> TestUnits
+        {
+            get => this.testUnits;
+            set
+            {
+                if (this.SetProperty(ref this.testUnits, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public int? TotalCycles
         {
@@ -157,9 +240,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public ObservableCollection<T> Convert<T>(IEnumerable<T> original)
+        {
+            return new ObservableCollection<T>(original);
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
+
+            this.TestUnits = new ObservableCollection<LoadingUnit>();
+
+            this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
 
             await base.OnAppearedAsync();
         }
@@ -197,6 +289,78 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.stopTestCommand?.RaiseCanExecuteChanged();
             this.resetSessionCommand?.RaiseCanExecuteChanged();
             this.resetTotalCommand?.RaiseCanExecuteChanged();
+            this.addUnitCommand?.RaiseCanExecuteChanged();
+            this.removeUnitCommand?.RaiseCanExecuteChanged();
+            this.addAllUnitCommand?.RaiseCanExecuteChanged();
+            this.removeAllUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task AddAllUnitAsync()
+        {
+            try
+            {
+                this.TestUnits = this.Convert(this.MachineService.Loadunits);
+
+                this.LoadingUnits.Clear();
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private async Task AddUnitAsync()
+        {
+            try
+            {
+                this.TestUnits.Add(this.SelectedLU);
+
+                this.LoadingUnits.Remove(this.selectedLU);
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                //
+            }
+        }
+
+        private bool CanAddAllUnit()
+        {
+            return this.LoadingUnits.Count > 0 && !this.IsMoving && (this.TestUnits != this.LoadingUnits);
+        }
+
+        private bool CanAddUnit()
+        {
+            return this.SelectedLU != null && !this.TestUnits.Contains(this.SelectedLU) && !this.IsMoving;
+        }
+
+        private bool CanRemoveAllUnit()
+        {
+            return this.TestUnits.Count > 0 && !this.IsMoving;
+        }
+
+        private bool CanRemoveUnit()
+        {
+            return this.SelectedTU != null && this.TestUnits.Contains(this.SelectedTU) && !this.IsMoving;
         }
 
         private bool CanResetSession()
@@ -214,7 +378,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private bool CanStart()
         {
             return !this.IsMoving &&
-                   this.LoadingUnits.Any() &&
+                   this.TestUnits.Any() &&
                    this.RequiredCycles.HasValue;
         }
 
@@ -257,6 +421,54 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private async Task RemoveAllUnitAsync()
+        {
+            try
+            {
+                this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
+
+                this.TestUnits.Clear();
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private async Task RemoveUnitAsync()
+        {
+            try
+            {
+                this.LoadingUnits.Add(this.SelectedTU);
+
+                this.TestUnits.Remove(this.SelectedTU);
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                //
+            }
+        }
+
         private async Task ResetSessionAsync()
         {
             this.PerformedCyclesThisSession = 0;
@@ -274,7 +486,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                var lst = this.LoadingUnits.Where(w => w.Status == LoadingUnitStatus.InLocation).Select(s => s.Id).ToList();
+                var lst = this.TestUnits.Where(w => w.Status == LoadingUnitStatus.InLocation).Select(s => s.Id).ToList();
                 await this.machineFullTestWebService.StartAsync(lst, this.RequiredCycles.Value);
 
                 this.IsExecutingProcedure = true;

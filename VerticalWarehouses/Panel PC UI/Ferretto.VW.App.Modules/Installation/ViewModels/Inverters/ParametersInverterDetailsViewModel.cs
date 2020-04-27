@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -14,23 +12,23 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class ParameterInverterViewModel : BaseMainViewModel
+    internal sealed class ParametersInverterDetailsViewModel : BaseMainViewModel
     {
         #region Fields
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private IEnumerable<InverterParameterSet> configuration;
+        private InverterParameterSet inverterParameters;
 
         private bool isBusy;
 
-        private DelegateCommand setInvertersParamertersCommand;
+        private DelegateCommand setInverterParamertersCommand;
 
         #endregion
 
         #region Constructors
 
-        public ParameterInverterViewModel(IMachineDevicesWebService machineDevicesWebService)
+        public ParametersInverterDetailsViewModel(IMachineDevicesWebService machineDevicesWebService)
             : base(PresentationMode.Installer)
         {
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
@@ -40,9 +38,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public List<InverterParameterSet> Configuration => this.configuration?.ToList();
-
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public InverterParameterSet InverterParameters
+        {
+            get => this.inverterParameters;
+            set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsBusy
         {
@@ -51,17 +53,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
-                    this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
+                    this.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
         }
 
         public ICommand SetInvertersParamertersCommand =>
-                   this.setInvertersParamertersCommand
+                   this.setInverterParamertersCommand
                ??
-               (this.setInvertersParamertersCommand = new DelegateCommand(
-                async () => await this.SaveAllParametersAsync(), this.CanSave));
+               (this.setInverterParamertersCommand = new DelegateCommand(
+                async () => await this.SaveParametersAsync(), this.CanSave));
 
         #endregion
 
@@ -69,6 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
+            this.InverterParameters = null;
             base.Disappear();
         }
 
@@ -78,50 +81,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
+            if (this.Data is InverterParameterSet inverterParameterSet)
+            {
+                this.InverterParameters = inverterParameterSet;
+            }
+
             this.IsBackNavigationAllowed = true;
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            try
-            {
-                this.IsBusy = true;
-
-                this.configuration = await this.machineDevicesWebService.GetParametersAsync();
-                this.RaisePropertyChanged(nameof(this.Configuration));
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsBusy = false;
-            }
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanSave()
         {
             return !this.isBusy;
         }
-
-        private async Task SaveAllParametersAsync()
+        
+        private async Task SaveParametersAsync()
         {
             try
             {
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramAllInvertersAsync();
+                await this.machineDevicesWebService.ProgramInverterAsync(this.inverterParameters.Index);
 
                 this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
-
-                this.RaisePropertyChanged(nameof(this.Configuration));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
