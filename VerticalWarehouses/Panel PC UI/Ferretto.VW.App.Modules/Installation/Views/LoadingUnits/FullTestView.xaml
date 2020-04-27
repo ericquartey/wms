@@ -176,13 +176,13 @@
             <controls:PpcButton
                             Margin="0,10,15,10"
                             Command="{Binding RemoveAllUnitCommand}"
-                            Content="Rimuovi tutti i cassetti da test" />
+                            Content="{x:Static res:InstallationApp.RemoveTestAllUnits}" />
 
             <controls:PpcButton 
                             Margin="0,10,0,10"
                             
                             Command="{Binding RemoveUnitCommand}"
-                            Content="Rimuovi cassetto da test" />
+                            Content="{x:Static res:InstallationApp.RemoveTestUnit}" />
         </StackPanel>
 
         <StackPanel Grid.Row="5"
@@ -194,12 +194,12 @@
             <controls:PpcButton 
                             Margin="0,10,15,10"
                             Command="{Binding AddUnitCommand}"
-                            Content="Aggiungi cassetto a test" />
+                            Content="{x:Static res:InstallationApp.AddTestUnit}" />
 
             <controls:PpcButton 
                             Margin="0,10,15,10"
                             Command="{Binding AddAllUnitCommand}"
-                            Content="Aggiungi tutti i cassetti a test" />
+                            Content="{x:Static res:InstallationApp.AddTestAllUnit}" />
 
         </StackPanel>
 

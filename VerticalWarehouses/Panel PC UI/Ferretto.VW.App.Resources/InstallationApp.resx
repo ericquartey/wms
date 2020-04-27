@@ -2525,4 +2525,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Value</value>
     <comment>Column header text</comment>
   </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Add all unit to test</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Add unit to test</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Remove all test unit</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Remove test unit</value>
+  </data>
 </root>
