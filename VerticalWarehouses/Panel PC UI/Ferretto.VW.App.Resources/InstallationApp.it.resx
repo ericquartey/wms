@@ -2451,4 +2451,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InverterParametersValue" xml:space="preserve">
     <value>Valore</value>
   </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Aggiungi tutti i cassetti a test</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Aggiungi cassetto a test</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Rimuovi tutti i cassetti da test</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Rimuovi cassetto da test</value>
+  </data>
 </root>

@@ -69,6 +69,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("add-test-unit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult AddTestUnit(DataModels.LoadingUnit loadingUnitId)
+        {
+            this.loadingUnitsDataProvider.AddTestUnit(loadingUnitId);
+            return this.Accepted();
+        }
+
         [HttpPost("eject-loading-unit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,6 +100,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
             return this.Ok(this.loadingUnitsDataProvider.GetAll());
+        }
+
+        [HttpGet("get-all-test-units")]
+        public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllTestUnits()
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetAllTestUnits());
+        }
+
+        [HttpGet("get-all-not-test-units")]
+        public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllNotTestUnits()
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetAllNotTestUnits());
         }
 
         [HttpGet("{id}/compartments")]
@@ -285,6 +307,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RemoveLoadUnit(int loadingUnitId)
         {
             this.loadingUnitsDataProvider.Remove(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("remove-test-unit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult RemoveTestUnit(DataModels.LoadingUnit loadingUnitId)
+        {
+            this.loadingUnitsDataProvider.RemoveTestUnit(loadingUnitId);
             return this.Accepted();
         }
 
