@@ -482,7 +482,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 (byte)this.machineData.CurrentInverterIndex);
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}, target {targetPosition}");
         }
 
         private bool IsBracketSensorError()
@@ -652,7 +652,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.findZeroPosition[(int)this.findZeroStep] = chainPosition.Value;
                                             this.findZeroStep++;
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
-                                            this.FindZeroNextPosition(-Math.Abs(axis.ChainOffset) * 8);
+                                            var invertDirection = (this.machineData.MessageData.TargetPosition > 0) ? -1 : 1;
+                                            this.FindZeroNextPosition(Math.Abs(axis.ChainOffset) * 20 * invertDirection);
                                         }
                                         break;
 
@@ -989,7 +990,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         double? measured = null;
                         if (this.findZeroStep == HorizontalCalibrationStep.FindCenter && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                         {
-                            profileCalibrateDistance = this.elevatorProvider.HorizontalPosition;
+                            profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);
                             measured = profileCalibrateDistance / 2;
                         }
                         this.Logger.LogDebug($"Send Horizontal calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}, measured {measured:0.0000}");
