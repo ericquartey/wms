@@ -61,6 +61,8 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public bool IsInFullTest { get; set; }
+
         public bool IsIntoMachine { get; set; }
 
         /// <summary>
