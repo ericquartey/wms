@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineFullTestWebService machineFullTestWebService;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private DelegateCommand addAllUnitCommand;
 
         private DelegateCommand addUnitCommand;
@@ -74,15 +76,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public FullTestViewModel(IMachineFullTestWebService machineFullTestWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineFullTestWebService = machineFullTestWebService ?? throw new ArgumentNullException(nameof(machineFullTestWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
 
             this.TestUnits = new ObservableCollection<LoadingUnit>();
 
-            this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
+            this.LoadingUnits = new ObservableCollection<LoadingUnit>();
         }
 
         #endregion
@@ -249,9 +253,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.SubscribeToEvents();
 
-            this.TestUnits = new ObservableCollection<LoadingUnit>();
+            var iTestUnits = await this.machineLoadingUnitsWebService.GetAllTestUnitsAsync();
 
-            this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
+            this.TestUnits = this.Convert(iTestUnits);
+
+            var iLoadingUnits = await this.machineLoadingUnitsWebService.GetAllNotTestUnitsAsync();
+
+            this.LoadingUnits = this.Convert(iLoadingUnits);
 
             await base.OnAppearedAsync();
         }
@@ -299,6 +307,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                foreach (var unit in this.LoadingUnits)
+                {
+                    await this.machineLoadingUnitsWebService.AddTestUnitAsync(unit);
+                }
+
                 this.TestUnits = this.Convert(this.MachineService.Loadunits);
 
                 this.LoadingUnits.Clear();
@@ -321,6 +334,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                await this.machineLoadingUnitsWebService.AddTestUnitAsync(this.SelectedLU);
+
                 this.TestUnits.Add(this.SelectedLU);
 
                 this.LoadingUnits.Remove(this.selectedLU);
@@ -425,6 +440,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                foreach (var unit in this.LoadingUnits)
+                {
+                    await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(unit);
+                }
+
                 this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
 
                 this.TestUnits.Clear();
@@ -447,6 +467,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(this.SelectedTU);
+
                 this.LoadingUnits.Add(this.SelectedTU);
 
                 this.TestUnits.Remove(this.SelectedTU);

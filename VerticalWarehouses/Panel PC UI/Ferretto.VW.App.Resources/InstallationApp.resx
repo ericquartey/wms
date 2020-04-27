@@ -2171,7 +2171,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>System error</value>
   </data>
   <data name="TemplateMeasurement" xml:space="preserve">
-    <value>Once the template has been positioned, press the MEASUREMENT key which will start the procedure.</value>
+    <value>Once the template has been positioned, open shutter and press the MEASUREMENT key which will start the procedure.</value>
   </data>
   <data name="TestData" xml:space="preserve">
     <value>Test data</value>
@@ -2524,5 +2524,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InverterParametersValue" xml:space="preserve">
     <value>Value</value>
     <comment>Column header text</comment>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Add all unit to test</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Add unit to test</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Remove all test unit</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Remove test unit</value>
   </data>
 </root>
