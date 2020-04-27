@@ -248,15 +248,6 @@
                                         Content="{x:Static res:InstallationApp.GateOpen}"
                                         Style="{StaticResource WizardIntoButton}" />
 
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="15,15,0,0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding CloseShutterCommand}"
-                                        Content="{x:Static res:InstallationApp.GateClose}"
-                                        Style="{StaticResource WizardIntoButton}" />
-
                     <controls:PpcButton Margin="15,15,0,0"
                                         Command="{Binding MensurationDxCommand}"
                                         Content="{x:Static res:InstallationApp.RightSideMeasurement}"
@@ -512,6 +503,14 @@
                        VerticalAlignment="Stretch"
                        Source="{DynamicResource PHCSagoma1}"
                        Stretch="Uniform" />
+
+                <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="15,15,0,0"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding OpenShutterCommand}"
+                                        Content="{x:Static res:InstallationApp.GateOpen}"
+                                        Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"

@@ -2101,7 +2101,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Errore di sistema</value>
   </data>
   <data name="TemplateMeasurement" xml:space="preserve">
-    <value>Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura.</value>
+    <value>Una volta posizionata la sagoma, aprire la serranda e premere il tasto MISURAZIONE che avvierà la procedura.</value>
   </data>
   <data name="TestData" xml:space="preserve">
     <value>Dati collaudo</value>
