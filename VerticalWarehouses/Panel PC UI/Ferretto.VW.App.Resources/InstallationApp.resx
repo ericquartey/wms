@@ -2171,7 +2171,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>System error</value>
   </data>
   <data name="TemplateMeasurement" xml:space="preserve">
-    <value>Once the template has been positioned, press the MEASUREMENT key which will start the procedure.</value>
+    <value>Once the template has been positioned, open shutter and press the MEASUREMENT key which will start the procedure.</value>
   </data>
   <data name="TestData" xml:space="preserve">
     <value>Test data</value>

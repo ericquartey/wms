@@ -725,6 +725,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineProfileProcedureWeb.CalibrationAsync(this.BayPosition.Id);
 
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
+
                 this.CurrentStep = ProfileCheckStep.TuningChainDx;
             }
             catch (Exception ex)
@@ -744,6 +746,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineProfileProcedureWeb.CalibrationAsync(this.BayPosition.Id);
+
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
 
                 this.CurrentStep = ProfileCheckStep.TuningChainSx;
             }

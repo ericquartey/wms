@@ -6183,7 +6183,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once the template has been positioned, press the MEASUREMENT key which will start the procedure..
+        ///   Looks up a localized string similar to Once the template has been positioned, open shutter and press the MEASUREMENT key which will start the procedure..
         /// </summary>
         public static string TemplateMeasurement {
             get {
