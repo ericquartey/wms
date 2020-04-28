@@ -2074,7 +2074,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia.</value>
   </data>
   <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
-    <value>Aprire la serranda, posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
+    <value>Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto. Infine aprire la serranda.</value>
   </data>
   <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
     <value>Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
