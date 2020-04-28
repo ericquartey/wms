@@ -84,7 +84,7 @@
                            EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.RequiredCycles}"
-                           MaxValue="999"
+                           MaxValue="99999"
                            MinValue="1" />
 
         <Border Grid.Row="3"
