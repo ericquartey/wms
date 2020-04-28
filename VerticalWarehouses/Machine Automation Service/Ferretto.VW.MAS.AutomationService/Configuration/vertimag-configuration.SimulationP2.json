@@ -17,6 +17,7 @@
       "Height": 186.028125,
       "Id": 1,
       "IsIntoMachine": true,
+      "IsInFullTest": false,
       "MaxNetWeight": 930.0,
       "MissionsCount": 1,
       "NetWeight": 202.08480000000009,
