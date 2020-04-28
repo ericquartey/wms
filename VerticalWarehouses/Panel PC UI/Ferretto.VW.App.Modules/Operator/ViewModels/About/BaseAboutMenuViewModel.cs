@@ -14,11 +14,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand diagnosticsCommand;
 
+        private DelegateCommand userCommand;
+
         private DelegateCommand generalCommand;
 
         private bool isAlarmActive;
 
         private bool isDiagnosticsActive;
+
+        private bool isUserActive;
 
         private bool isGeneralActive;
 
@@ -48,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             Statistics,
 
             Diagnostics,
+
+            User,
         }
 
         #endregion
@@ -69,6 +75,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 () => this.ExecuteCommand(Menu.Diagnostics),
                 this.CanExecuteCommand));
 
+        public ICommand UserCommand =>
+            this.userCommand
+            ??
+            (this.userCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.User),
+                this.CanExecuteCommand));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand GeneralCommand =>
@@ -87,6 +100,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isDiagnosticsActive;
             set => this.SetProperty(ref this.isDiagnosticsActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsUserActive
+        {
+            get => this.isUserActive;
+            set => this.SetProperty(ref this.isUserActive, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsGeneralActive
@@ -123,6 +142,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAlarmActive = false;
             this.IsDiagnosticsActive = false;
+            this.isUserActive = false;
             this.IsGeneralActive = false;
             this.IsStatisticsActive = false;
 
@@ -143,6 +163,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case Menu.Diagnostics:
                     this.IsDiagnosticsActive = true;
                     break;
+
+                case Menu.User:
+                    this.IsUserActive = true;
+                    break;
             }
 
             await base.OnAppearedAsync();
@@ -154,6 +178,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.alarm?.RaiseCanExecuteChanged();
             this.diagnosticsCommand?.RaiseCanExecuteChanged();
+            this.userCommand?.RaiseCanExecuteChanged();
             this.generalCommand?.RaiseCanExecuteChanged();
             this.statisticsCommand?.RaiseCanExecuteChanged();
         }
@@ -195,6 +220,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.About.DIAGNOSTICS,
+                        data: menu,
+                        trackCurrentView: false);
+                    break;
+
+                case Menu.User:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.About.USER,
                         data: menu,
                         trackCurrentView: false);
                     break;
