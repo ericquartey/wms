@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool dataLayerIsReady;
 
+        private LoadingUnitLocation loadUnitSource;
+
         #endregion
 
         #region Constructors
@@ -119,10 +121,10 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 // first cycle: init RequiredCycles and cells to test
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
-                if (loadUnitSource != LoadingUnitLocation.NoLocation)
+                this.loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
+                if (this.loadUnitSource != LoadingUnitLocation.NoLocation)
                 {
-                    var bayNumber = baysDataProvider.GetByLoadingUnitLocation(loadUnitSource)?.Number ?? BayNumber.None;
+                    var bayNumber = baysDataProvider.GetByLoadingUnitLocation(this.loadUnitSource)?.Number ?? BayNumber.None;
                     if (bayNumber != machineProvider.BayTestNumber)
                     {
                         this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
@@ -163,7 +165,35 @@ namespace Ferretto.VW.MAS.MissionManager
             var messageStatus = MessageStatus.OperationExecuting;
             if (!returnValue)
             {
-                // testing is finished! Exit from FirstTest mode
+                // testing is finished!
+                var loadingUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting)
+                    && loadingUnitsDataProvider.CountIntoMachine() > 0
+                    )
+                {
+                    // move the LU in bay
+                    try
+                    {
+                        this.Logger.LogInformation($"Move to bay {machineProvider.BayTestNumber} First test");
+                        var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                        moveLoadingUnitProvider.EjectFromCell(MissionType.FirstTest, this.loadUnitSource, loadUnitId.Value, machineProvider.BayTestNumber, MessageActor.MissionManager);
+                        returnValue = true;
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        // no more testing is possible. Exit from test mode
+                        //this.logger.LogError(e, e.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.LogError(ex, ex.Message);
+                    }
+                }
+            }
+
+            if (!returnValue)
+            {
+                // Exit from FirstTest mode
                 if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
                 {
                     this.Logger.LogError($"First Test error for Load Unit {loadUnitId} on Bay {machineProvider.BayTestNumber}: Not all cells are tested!");
@@ -177,7 +207,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
             }
-            else
+            else if (machineProvider.ExecutedCycles < machineProvider.RequiredCycles.Value)
             {
                 machineProvider.ExecutedCycles++;
                 setupProceduresDataProvider.InProgressProcedure(setupRecord);
