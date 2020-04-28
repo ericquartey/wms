@@ -158,7 +158,7 @@
                                    Height="90"
                                    Margin="0,15,15,0"
                                    EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                                   IsEnabled="False"
                                    LabelText="{x:Static res:InstallationApp.RequiredCycles}"
                                    MaxValue="999"
                                    MinValue="1" />
@@ -257,9 +257,9 @@
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
 
-                    <!--<controls:PpcButton Margin="0,0,15,0"
-                                        Command="{Binding StopTestCommand}"
-                                        Content="{x:Static res:InstallationApp.StopTest}" />-->
+                    <controls:PpcButton Margin="0,0,15,0"
+                                        Command="{Binding ResetCommand}"
+                                        Content="{x:Static res:InstallationApp.ResetSession}" />
 
                     <controls:PpcButton Margin="0,0,15,0"
                                         Command="{Binding MoveToCloseShutter}"
