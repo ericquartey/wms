@@ -164,13 +164,13 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                     if (machineProvider.ElevatorVerticalPositionOld != -10000 &&
                         Math.Abs(machineProvider.ElevatorVerticalPosition - machineProvider.ElevatorVerticalPositionOld) > 10)
                     {
-                        this.Logger.LogError($"Vertical position changed after machine start: old value {machineProvider.ElevatorVerticalPositionOld}, new value {machineProvider.ElevatorVerticalPosition}");
-                        machineProvider.IsHomingExecuted = false;
-                        this.stateData.FieldMessage = message;
-                        this.errorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.machineData.RequestingBay);
-                        this.ParentStateMachine.ChangeState(new InverterPowerEnableErrorState(this.stateData));
+                        this.Logger.LogWarning($"Vertical position changed after machine start: old value {machineProvider.ElevatorVerticalPositionOld}, new value {machineProvider.ElevatorVerticalPosition}");
+                        //machineProvider.IsHomingExecuted = false;
+                        //this.stateData.FieldMessage = message;
+                        //this.errorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.machineData.RequestingBay);
+                        //this.ParentStateMachine.ChangeState(new InverterPowerEnableErrorState(this.stateData));
                     }
-                    else
+                    //else
                     {
                         this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
                     }
