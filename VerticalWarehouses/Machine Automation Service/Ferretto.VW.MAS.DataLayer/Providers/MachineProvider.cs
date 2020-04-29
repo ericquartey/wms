@@ -296,6 +296,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.EmptyLoadMovement, (e) => e.Id);
+                dataContext.AddOrUpdate(b.FullLoadMovement, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
                 dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
