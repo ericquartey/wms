@@ -6,6 +6,9 @@
         xmlns:installer="clr-namespace:Ferretto.VW.Installer"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
         mc:Ignorable="d">
+    <UserControl.Cursor>
+        <Binding Path="IsFinished" Converter="{StaticResource BTCIC}"/>
+    </UserControl.Cursor>
     <Grid Margin="10">
         <Grid.Resources>
             <installer:StatusToIconNameConverter x:Key="STIC" />
