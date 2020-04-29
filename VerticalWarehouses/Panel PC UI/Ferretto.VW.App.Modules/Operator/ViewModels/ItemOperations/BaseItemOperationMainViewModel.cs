@@ -7,6 +7,7 @@ using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private AlphaNumericBarDriver alphaNumericBarDriver;
 
         private MAS.AutomationService.Contracts.Bay bay;
 
@@ -63,6 +66,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.eventAggregator = eventAggregator;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
+
+            _ = this.AlphaNumericBarConfigureAsync();
         }
 
         #endregion
@@ -277,6 +282,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
 
             this.GetLoadingUnitDetails();
+
+            await this.AlphaNumericBarSendMessageAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -329,6 +336,83 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex)
             {
                 return Array.Empty<TrayControlCompartment>();
+            }
+        }
+
+        private async Task AlphaNumericBarConfigureAsync()
+        {
+            if (this.alphaNumericBarDriver is null)
+            {
+                this.alphaNumericBarDriver = new AlphaNumericBarDriver();
+
+                // var accesories = this.bay.Accessories;
+                //var accesories = (await this.BayManager.GetBayAsync()).Accessories;
+
+                var accesories = await this.BayManager.GetBayAccessoriesAsync();
+
+                if (accesories != null)
+                {
+                    var alphaNumericBar = accesories.AlphaNumericBar;
+                    if (alphaNumericBar.IsEnabled == "true")
+                    {
+                        var ipAddress = alphaNumericBar.IpAddress;
+                        var port = alphaNumericBar.TcpPort;
+                        var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
+
+                        this.alphaNumericBarDriver.Configure(ipAddress, port, size);
+                    }
+                }
+                else
+                {
+                    this.alphaNumericBarDriver.Configure(System.Net.IPAddress.Parse("127.0.0.1"), 2020, Ferretto.VW.MAS.DataModels.AlphaNumericBarSize.Medium);
+                }
+            }
+        }
+
+        private async Task AlphaNumericBarSendMessageAsync()
+        {
+            if (this.alphaNumericBarDriver is null)
+            {
+                return;
+            }
+
+            if (this.MissionOperation is null)
+            {
+                await this.alphaNumericBarDriver.SetEnabledAsync(false); // no mission, then switch off the alpha numeric bar
+            }
+            else
+            {
+                var message = "?";
+                var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.loadingUnitWidth, this.selectedCompartment is null ? 0 : this.selectedCompartment.XPosition.Value);
+                await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
+
+                switch (this.MissionOperation.Type)
+                {
+                    case MissionOperationType.Pick:
+                        message = "-";
+                        break;
+
+                    case MissionOperationType.Put:
+                        message = "+";
+                        break;
+                }
+
+                message += this.MissionOperation.RequestedQuantity + " " + this.MissionOperation.ItemCode + " " + this.MissionOperation.ItemDescription;
+
+                var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
+                if (offset > 0)
+                {
+                    await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
+                }
+                else if (offset == -1)
+                {
+                    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                }
+                else
+                {
+                    var start = arrowPosition + 6;
+                    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                }
             }
         }
 
@@ -402,6 +486,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.GetLoadingUnitDetails();
             }
 
+            _ = this.AlphaNumericBarSendMessageAsync();
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
         }

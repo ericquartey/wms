@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Services
 
         Task<LoadingUnit> GetAccessibleLoadingUnitAsync();
 
+        Task<BayAccessories> GetBayAccessoriesAsync();
+
         /// <exception cref="MasWebApiException"></exception>
         Task<Bay> GetBayAsync();
 

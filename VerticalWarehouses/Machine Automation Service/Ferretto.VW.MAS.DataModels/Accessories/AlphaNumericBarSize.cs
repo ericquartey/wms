@@ -2,14 +2,14 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public enum AlphaNumericBarSize
     {
-        ExtraSmall,
+        ExtraSmall = 51,
 
-        Small,
+        Small = 64,
 
-        Medium,
+        Medium = 80,
 
-        Large,
+        Large = 96,
 
-        ExtraLarge
+        ExtraLarge = 112
     }
 }

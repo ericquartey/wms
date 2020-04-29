@@ -1,9 +1,14 @@
 ﻿using System.Configuration;
+using System.Net;
+using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Views;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.BarcodeReader.Newland;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -52,6 +57,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IMachineService, MachineService>();
+
+            ConfigureAlphaNumericBar(containerRegistry);
             ConfigureBarcodeReader(containerRegistry);
 
             // Operator
@@ -106,6 +114,28 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
+        }
+
+        private static void ConfigureAlphaNumericBar(IContainerRegistry containerRegistry)
+        {
+            //var baysWebService = containerRegistry.GetService<IMachineBaysWebService>();
+            //var accessories = baysWebService.GetAccessoriesAsync();
+
+            //var ipAddress = accessories.AlphaNumericBar.IpAddress;
+            //var port = accessories.AlphaNumericBar.TcpPort;
+            //var size = accessories.AlphaNumericBar.Size;
+
+            //IMachineBaysWebService machineBaysWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineBaysWebService>();
+            //IMachineService machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+
+            //AlphaNumericBar alphaNumericBar = machineService.Bay.Accessories.AlphaNumericBar;
+            //var listOfBays = machineService.Bays;
+
+            var ipAddress = IPAddress.Parse("127.0.0.1");
+            var port = 2020;
+            var size = Ferretto.VW.MAS.DataModels.AlphaNumericBarSize.Large;
+
+            containerRegistry.ConfigureAlphaNumericBarUiServices();
         }
 
         private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)

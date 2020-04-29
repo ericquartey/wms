@@ -72,6 +72,11 @@ namespace Ferretto.VW.App.Services
                 .FirstOrDefault();
         }
 
+        public async Task<BayAccessories> GetBayAccessoriesAsync()
+        {
+            return await this.machineBaysWebService.GetAccessoriesAsync();
+        }
+
         public async Task<Bay> GetBayAsync()
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
