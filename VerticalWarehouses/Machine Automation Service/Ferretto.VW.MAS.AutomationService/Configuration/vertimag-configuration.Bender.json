@@ -4,17 +4,23 @@
     {
       "Id": 1,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     },
     {
       "Id": 2,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     },
     {
       "Id": 3,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     }
   ],
   "Machine": {

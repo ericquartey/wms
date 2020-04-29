@@ -280,6 +280,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         measure = false;
                     }
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                     if (this.Mission.OpenShutterPosition == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)

@@ -757,7 +757,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnProfileCalibrationMessage(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        private async void OnProfileCalibrationMessageAsync(NotificationMessageUI<ProfileCalibrationMessageData> message)
         {
             var data = message.Data as ProfileCalibrationMessageData;
             if (this.CurrentStep == ProfileCheckStep.TuningChainDx)
@@ -768,6 +768,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MeasuredDx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ShapePositionSx;
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
             }
             else
             {
@@ -777,6 +778,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MeasuredSx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ResultCheck;
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
             }
         }
 
@@ -830,7 +832,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 ?? this.EventAggregator
                     .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
                     .Subscribe(
-                        (m) => this.OnProfileCalibrationMessage(m),
+                        (m) => this.OnProfileCalibrationMessageAsync(m),
                         ThreadOption.UIThread,
                         false);
 

@@ -786,6 +786,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   this.SensorsService.ShutterSensors.Open &&
                    this.SensorsService.BayZeroChain;
         }
 

@@ -1660,4 +1660,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="InvalidOperation" xml:space="preserve">
     <value>Invalid operation {0}</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Utenti</value>
+  </data>
 </root>

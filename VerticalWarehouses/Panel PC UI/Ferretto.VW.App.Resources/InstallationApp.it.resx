@@ -2074,7 +2074,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia.</value>
   </data>
   <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
-    <value>Aprire la serranda, posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
+    <value>Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto. Infine aprire la serranda.</value>
   </data>
   <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
     <value>Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto.</value>
@@ -2101,7 +2101,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Errore di sistema</value>
   </data>
   <data name="TemplateMeasurement" xml:space="preserve">
-    <value>Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura.</value>
+    <value>Una volta posizionata la sagoma, aprire la serranda e premere il tasto MISURAZIONE che avvierà la procedura.</value>
   </data>
   <data name="TestData" xml:space="preserve">
     <value>Dati collaudo</value>
@@ -2450,5 +2450,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="InverterParametersValue" xml:space="preserve">
     <value>Valore</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Aggiungi tutti i cassetti a test</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Aggiungi cassetto a test</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Rimuovi tutti i cassetti da test</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Rimuovi cassetto da test</value>
   </data>
 </root>

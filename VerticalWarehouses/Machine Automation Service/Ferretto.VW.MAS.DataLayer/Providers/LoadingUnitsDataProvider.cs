@@ -54,6 +54,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void AddTestUnit(LoadingUnit testUnit)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == testUnit.Id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(testUnit.Id);
+                }
+                loadingUnit.IsInFullTest = true;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public MachineErrorCode CheckWeight(int id)
         {
             var check = MachineErrorCode.NoError;
@@ -108,6 +126,32 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.LoadingUnits
                     .AsNoTracking()
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<LoadingUnit> GetAllTestUnits()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Where(u => u.IsInFullTest)
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<LoadingUnit> GetAllNotTestUnits()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Where(u => u.IsInFullTest == false)
                     .Include(l => l.Cell)
                     .ThenInclude(c => c.Panel)
                     .ToArray();
@@ -242,6 +286,24 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.LoadingUnits.Remove(lu);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void RemoveTestUnit(LoadingUnit testUnit)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == testUnit.Id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(testUnit.Id);
+                }
+                loadingUnit.IsInFullTest = false;
+
                 this.dataContext.SaveChanges();
             }
         }

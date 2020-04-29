@@ -32,6 +32,8 @@
 
             public const string STATISTICS = "StatisticsViewModel";
 
+            public const string USER = "UserViewModel";
+
             #endregion
         }
 

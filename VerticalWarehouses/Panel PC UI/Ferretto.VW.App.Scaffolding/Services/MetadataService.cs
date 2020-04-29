@@ -93,6 +93,11 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 foreach (var prop in GetMemberInfos(modelType).Where(x => !branch.ExclusionList?.Contains(x.Name) ?? true))
                 {
                     PropertyInfo actualProp = type.GetProperty(prop.Name);
+                    if (actualProp is null)
+                    {
+                        // configuration error
+                        continue;
+                    }
                     Type propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
                     ScaffoldedStructureInternal target = branch;
 

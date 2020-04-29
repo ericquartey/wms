@@ -1,160 +1,167 @@
 {
     "$schema": "./schemas/vertimag-configuration-schema.json",
     "LoadingUnits": [
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 17,
-                "Position": 2837,
-                "Priority": 80,
-                "Side": "Back",
-                "Id": 80
-            },
-            "CellId": 80,
-            "Code": "001",
-            "GrossWeight": 129.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 9.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 1
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 17,
+          "Position": 2837,
+          "Priority": 80,
+          "Side": "Back",
+          "Id": 80
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 16,
-                "Position": 1914.0,
-                "Priority": 6,
-                "Side": "Back",
-                "Id": 6
-            },
-            "CellId": 6,
-            "Code": "002",
-            "GrossWeight": 436.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 316.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 2
+        "CellId": 80,
+        "Code": "001",
+        "GrossWeight": 129.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 9.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 1
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 16,
+          "Position": 1914.0,
+          "Priority": 6,
+          "Side": "Back",
+          "Id": 6
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 1,
-                "Position": 2341.0,
-                "Priority": 39,
-                "Side": "Front",
-                "Id": 39
-            },
-            "CellId": 39,
-            "Code": "003",
-            "GrossWeight": 620.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 500.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 3
+        "CellId": 6,
+        "Code": "002",
+        "GrossWeight": 436.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 316.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 2
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 1,
+          "Position": 2341.0,
+          "Priority": 39,
+          "Side": "Front",
+          "Id": 39
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 16,
-                "Position": 2339.0,
-                "Priority": 40,
-                "Side": "Back",
-                "Id": 40
-            },
-            "CellId": 40,
-            "Code": "004",
-            "GrossWeight": 1000.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 880.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 4
+        "CellId": 39,
+        "Code": "003",
+        "GrossWeight": 620.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 500.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 3
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 16,
+          "Position": 2339.0,
+          "Priority": 40,
+          "Side": "Back",
+          "Id": 40
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 2,
-                "Position": 2614.5,
-                "Priority": 61,
-                "Side": "Front",
-                "Id": 61
-            },
-            "CellId": 61,
-            "Code": "005",
-            "GrossWeight": 780.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 660.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 5
+        "CellId": 40,
+        "Code": "004",
+        "GrossWeight": 1000.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 880.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 4
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 2,
+          "Position": 2614.5,
+          "Priority": 61,
+          "Side": "Front",
+          "Id": 61
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 17,
-                "Position": 2637.0,
-                "Priority": 64,
-                "Side": "Back",
-                "Id": 64
-            },
-            "CellId": 64,
-            "Code": "006",
-            "GrossWeight": 1000.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 880.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 6
+        "CellId": 61,
+        "Code": "005",
+        "GrossWeight": 780.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 660.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 5
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 17,
+          "Position": 2637.0,
+          "Priority": 64,
+          "Side": "Back",
+          "Id": 64
         },
-        {
-            "Cell": {
-                "BlockLevel": "None",
-                "IsFree": false,
-                "PanelId": 3,
-                "Position": 2915.5,
-                "Priority": 85,
-                "Side": "Front",
-                "Id": 85
-            },
-            "CellId": 85,
-            "Code": "007",
-            "GrossWeight": 1000.0,
-            "Height": 150.0,
-            "IsIntoMachine": true,
-            "MaxNetWeight": 930.0,
-            "MissionsCount": 0,
-            "NetWeight": 880.0,
-            "Status": "InLocation",
-            "Tare": 120.0,
-            "Id": 7
-        }
+        "CellId": 64,
+        "Code": "006",
+        "GrossWeight": 1000.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 880.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 6
+      },
+      {
+        "Cell": {
+          "BlockLevel": "None",
+          "IsFree": false,
+          "PanelId": 3,
+          "Position": 2915.5,
+          "Priority": 85,
+          "Side": "Front",
+          "Id": 85
+        },
+        "CellId": 85,
+        "Code": "007",
+        "GrossWeight": 1000.0,
+        "Height": 150.0,
+        "IsIntoMachine": true,
+        "IsInFullTest": false,
+        "MaxNetWeight": 930.0,
+        "MissionsCount": 0,
+        "NetWeight": 880.0,
+        "Status": "InLocation",
+        "Tare": 120.0,
+        "Id": 7
+      }
     ],
     "Machine": {
         "Bays": [

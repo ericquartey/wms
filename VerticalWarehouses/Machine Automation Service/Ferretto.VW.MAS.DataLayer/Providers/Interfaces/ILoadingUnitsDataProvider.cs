@@ -9,11 +9,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Add(IEnumerable<LoadingUnit> loadingUnits);
 
+        void AddTestUnit(LoadingUnit loadingUnit);
+
         MachineErrorCode CheckWeight(int id);
 
         int CountIntoMachine();
 
         IEnumerable<LoadingUnit> GetAll();
+
+        IEnumerable<LoadingUnit> GetAllTestUnits();
+
+        IEnumerable<LoadingUnit> GetAllNotTestUnits();
 
         /// <summary>
         /// Gets the specified loading unit from the database.
@@ -32,6 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void Insert(int loadingUnitsId);
 
         void Remove(int loadingUnitsId);
+
+        void RemoveTestUnit(LoadingUnit loadingUnit);
 
         void Save(LoadingUnit loadingUnit);
 

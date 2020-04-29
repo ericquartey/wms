@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private const string DEFAULTDEVICENAME = "F";
+        private const string DEFAULTDEVICENAME = "G";
 
         private const string DEFAULTEXTENSION = "*.exe";
 
@@ -172,10 +172,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsBusy = true;
-
             try
             {
+                this.IsBusy = true;
+
+                this.DevicePath = null;
+                this.IsInstallationReady = false;
+                this.IsDeviceReady = false;               
+
                 this.ClearNotifications();
 
                 await base.OnAppearedAsync();

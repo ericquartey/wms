@@ -101,6 +101,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? requiredCycles;
 
+        private DelegateCommand resetCommand;
+
+        private bool resetCommandActive = false;
+
         private DelegateCommand returnCalibration;
 
         private DelegateCommand startCycleCommand;
@@ -345,12 +349,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.requiredCycles, value, () => this.startCycleCommand?.RaiseCanExecuteChanged());
         }
 
+        public ICommand ResetCommand =>
+           this.resetCommand
+           ??
+           (this.resetCommand = new DelegateCommand(
+               async () => await this.ResetCommandAsync(),
+               this.CanExecuteResetCommand));
+
         public ICommand ReturnCalibration =>
-           this.returnCalibration
+                   this.returnCalibration
            ??
            (this.returnCalibration = new DelegateCommand(
-               async () => await this.ResetAsync(),
-               this.CanExecuteResetCommand));
+               async () => await this.ReturnCalibrationAsync(),
+               this.CanExecuteReturnCalibration));
 
         public ICommand StartCycleCommand =>
            this.startCycleCommand
@@ -623,6 +634,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToEndTestCommand?.RaiseCanExecuteChanged();
             this.moveToCycleTestCommand?.RaiseCanExecuteChanged();
             this.moveToCloseShutterCommand?.RaiseCanExecuteChanged();
+            this.resetCommand?.RaiseCanExecuteChanged();
+            this.returnCalibration?.RaiseCanExecuteChanged();
 
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
@@ -691,11 +704,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCycleStart()
         {
             return !this.IsMovingTest &&
+                !(this.resetCommandActive && this.CanExecuteResetCommand()) &&
                 (this.CumulativePerformedCycles < this.RequiredCycles) &&
                    this.RequiredCycles.HasValue;
         }
 
         private bool CanExecuteResetCommand()
+        {
+            return this.CumulativePerformedCycles.HasValue &&
+                   this.CumulativePerformedCycles > 0 &&
+                   !this.IsMovingTest;
+        }
+
+        private bool CanExecuteReturnCalibration()
         {
             return this.CumulativePerformedCycles.HasValue &&
                    this.CumulativePerformedCycles > 0 &&
@@ -872,7 +893,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task ResetAsync()
+        private async Task ResetCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.CumulativePerformedCycles = 0;
+                this.CyclesPercent = 0;
+
+                await this.machineEnduranceTestWebService.ResetAsync();
+
+                this.resetCommandActive = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+
+                this.resetCommandActive = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task ReturnCalibrationAsync()
         {
             try
             {

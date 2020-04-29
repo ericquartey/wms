@@ -97,6 +97,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add all unit to test.
+        /// </summary>
+        public static string AddTestAllUnit {
+            get {
+                return ResourceManager.GetString("AddTestAllUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add unit to test.
+        /// </summary>
+        public static string AddTestUnit {
+            get {
+                return ResourceManager.GetString("AddTestUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samples the current values ​​for weight acquisition.
         /// </summary>
         public static string AnalysisWeightProfileMenuDescription {
@@ -4986,7 +5004,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open the damper, place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer..
+        ///   Looks up a localized string similar to Place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer. Then open the shutter..
         /// </summary>
         public static string ProfileHeighCheckProcedureDescription {
             get {
@@ -5081,6 +5099,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveMenuTitle {
             get {
                 return ResourceManager.GetString("RemoveMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove all test unit.
+        /// </summary>
+        public static string RemoveTestAllUnits {
+            get {
+                return ResourceManager.GetString("RemoveTestAllUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove test unit.
+        /// </summary>
+        public static string RemoveTestUnit {
+            get {
+                return ResourceManager.GetString("RemoveTestUnit", resourceCulture);
             }
         }
         
@@ -6147,7 +6183,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once the template has been positioned, press the MEASUREMENT key which will start the procedure..
+        ///   Looks up a localized string similar to Once the template has been positioned, open shutter and press the MEASUREMENT key which will start the procedure..
         /// </summary>
         public static string TemplateMeasurement {
             get {

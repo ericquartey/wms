@@ -1,11 +1,13 @@
 using System;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Services;
@@ -93,7 +95,7 @@ namespace Ferretto.VW.App
 
             SplashScreenService.Show();
 
-            this.HACK_ForceItalianLanguage();
+            this.SetLanguage();
 
             this.ClearTempFolder();
 
@@ -180,10 +182,22 @@ namespace Ferretto.VW.App
             }
         }
 
-        private void HACK_ForceItalianLanguage()
+        private void SetLanguage()
         {
-            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
-            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+            try
+            {
+                string language = System.Configuration.ConfigurationManager.AppSettings["Language"];
+
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(language);
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(language);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex.ToString());
+
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
+            }
         }
 
         #endregion

@@ -29,6 +29,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineFullTestWebService machineFullTestWebService;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private DelegateCommand addAllUnitCommand;
+
         private DelegateCommand addUnitCommand;
 
         private SubscriptionToken cycleMessageReceivedToken;
@@ -37,9 +41,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private ObservableCollection<LoadingUnit> loadingUnits;
+
         private SubscriptionToken loadUnitsChangedToken;
 
         private int? performedCyclesThisSession;
+
+        private DelegateCommand removeAllUnitCommand;
 
         private DelegateCommand removeUnitCommand;
 
@@ -68,19 +76,32 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public FullTestViewModel(IMachineFullTestWebService machineFullTestWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineFullTestWebService = machineFullTestWebService ?? throw new ArgumentNullException(nameof(machineFullTestWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+
+            this.TestUnits = new ObservableCollection<LoadingUnit>();
+
+            this.LoadingUnits = new ObservableCollection<LoadingUnit>();
         }
 
         #endregion
 
         #region Properties
 
+        public ICommand AddAllUnitCommand =>
+            this.addAllUnitCommand
+            ??
+            (this.addAllUnitCommand = new DelegateCommand(
+                async () => await this.AddAllUnitAsync(),
+                this.CanAddAllUnit));
+
         public ICommand AddUnitCommand =>
-            this.addUnitCommand
+                    this.addUnitCommand
             ??
             (this.addUnitCommand = new DelegateCommand(
                 async () => await this.AddUnitAsync(),
@@ -100,7 +121,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
-        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+        public ObservableCollection<LoadingUnit> LoadingUnits
+        {
+            get => this.loadingUnits;
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnits, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public int? PerformedCyclesThisSession
         {
@@ -108,8 +139,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.performedCyclesThisSession, value);
         }
 
+        public ICommand RemoveAllUnitCommand =>
+            this.removeAllUnitCommand
+            ??
+            (this.removeAllUnitCommand = new DelegateCommand(
+                async () => await this.RemoveAllUnitAsync(),
+                this.CanRemoveAllUnit));
+
         public ICommand RemoveUnitCommand =>
-            this.removeUnitCommand
+                    this.removeUnitCommand
             ??
             (this.removeUnitCommand = new DelegateCommand(
                 async () => await this.RemoveUnitAsync(),
@@ -206,11 +244,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public ObservableCollection<T> Convert<T>(IEnumerable<T> original)
+        {
+            return new ObservableCollection<T>(original);
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
 
-            this.TestUnits = new ObservableCollection<LoadingUnit>();
+            var iTestUnits = await this.machineLoadingUnitsWebService.GetAllTestUnitsAsync();
+
+            this.TestUnits = this.Convert(iTestUnits);
+
+            var iLoadingUnits = await this.machineLoadingUnitsWebService.GetAllNotTestUnitsAsync();
+
+            this.LoadingUnits = this.Convert(iLoadingUnits);
 
             await base.OnAppearedAsync();
         }
@@ -250,13 +299,46 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.resetTotalCommand?.RaiseCanExecuteChanged();
             this.addUnitCommand?.RaiseCanExecuteChanged();
             this.removeUnitCommand?.RaiseCanExecuteChanged();
+            this.addAllUnitCommand?.RaiseCanExecuteChanged();
+            this.removeAllUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task AddAllUnitAsync()
+        {
+            try
+            {
+                foreach (var unit in this.LoadingUnits)
+                {
+                    await this.machineLoadingUnitsWebService.AddTestUnitAsync(unit);
+                }
+
+                this.TestUnits = this.Convert(this.MachineService.Loadunits);
+
+                this.LoadingUnits.Clear();
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private async Task AddUnitAsync()
         {
             try
             {
+                await this.machineLoadingUnitsWebService.AddTestUnitAsync(this.SelectedLU);
+
                 this.TestUnits.Add(this.SelectedLU);
+
+                this.LoadingUnits.Remove(this.selectedLU);
 
                 this.RaiseCanExecuteChanged();
 
@@ -276,9 +358,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private bool CanAddAllUnit()
+        {
+            return this.LoadingUnits.Count > 0 && !this.IsMoving && (this.TestUnits != this.LoadingUnits);
+        }
+
         private bool CanAddUnit()
         {
             return this.SelectedLU != null && !this.TestUnits.Contains(this.SelectedLU) && !this.IsMoving;
+        }
+
+        private bool CanRemoveAllUnit()
+        {
+            return this.TestUnits.Count > 0 && !this.IsMoving;
         }
 
         private bool CanRemoveUnit()
@@ -301,7 +393,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private bool CanStart()
         {
             return !this.IsMoving &&
-                   this.LoadingUnits.Any() &&
+                   this.TestUnits.Any() &&
                    this.RequiredCycles.HasValue;
         }
 
@@ -344,10 +436,41 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private async Task RemoveAllUnitAsync()
+        {
+            try
+            {
+                foreach (var unit in this.LoadingUnits)
+                {
+                    await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(unit);
+                }
+
+                this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
+
+                this.TestUnits.Clear();
+
+                this.RaiseCanExecuteChanged();
+
+                this.RaisePropertyChanged(nameof(this.TestUnits));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private async Task RemoveUnitAsync()
         {
             try
             {
+                await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(this.SelectedTU);
+
+                this.LoadingUnits.Add(this.SelectedTU);
+
                 this.TestUnits.Remove(this.SelectedTU);
 
                 this.RaiseCanExecuteChanged();
