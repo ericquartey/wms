@@ -2646,6 +2646,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         InvalidPositionBay = 73,
     
+        OverrunElevatorDetected = 74,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

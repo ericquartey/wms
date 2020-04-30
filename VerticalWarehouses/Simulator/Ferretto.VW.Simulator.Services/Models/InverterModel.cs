@@ -481,6 +481,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public bool IsOverrunElevator
+        {
+            get => !this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value;
+        }
+
         public bool IsQuickStopTrue
         {
             get => (this.StatusWord & 0x0020) > 0;

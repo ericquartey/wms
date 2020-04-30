@@ -727,6 +727,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
+        /// </summary>
+        public static string OverrunElevatorDetected {
+            get {
+                return ResourceManager.GetString("OverrunElevatorDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The picking confirmation command is not valid.
         /// </summary>
         public static string ResumeCommandNotValid {

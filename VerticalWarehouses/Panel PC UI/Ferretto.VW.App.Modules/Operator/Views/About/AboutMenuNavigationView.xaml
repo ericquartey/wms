@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -62,6 +63,17 @@
                             Command="{Binding DiagnosticsCommand}"
                             Content="{x:Static resources:OperatorApp.Diagnostics}"
                             IsActive="{Binding IsDiagnosticsActive}"
+                            Kind="Account"
+                            Style="{DynamicResource PpcButtonMenuStyle}" />
+
+        <controls:PpcButton Grid.Row="5"
+                            Margin="0,0,15,15"
+                            Padding="-1,1,0,0"
+                            Abbrevation="3.5"
+                            BorderBrush="{DynamicResource FerrettoGreen}"
+                            Command="{Binding UserCommand}"
+                            Content="{x:Static resources:OperatorApp.Users}"
+                            IsActive="{Binding IsUserActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 

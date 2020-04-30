@@ -1345,4 +1345,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="InvalidOperation" xml:space="preserve">
     <value>Operazione {0} non valida </value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Utenti</value>
+  </data>
 </root>
