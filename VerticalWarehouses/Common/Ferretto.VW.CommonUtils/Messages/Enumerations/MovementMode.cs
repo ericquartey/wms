@@ -29,5 +29,9 @@
         BayTest,
 
         HorizontalForwardBackward,
+
+        ExtBayChain,
+
+        ExtBayChainManual
     }
 }
