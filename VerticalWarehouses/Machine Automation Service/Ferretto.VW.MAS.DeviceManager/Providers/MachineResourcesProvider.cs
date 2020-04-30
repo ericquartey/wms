@@ -3,6 +3,7 @@ using System.Text;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -107,6 +108,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool IsMushroomEmergencyButtonBay2 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2];
 
         public bool IsMushroomEmergencyButtonBay3 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3];
+
+        public bool IsOverrunElevator => this.sensorStatus[(int)IOMachineSensors.OverrunElevator];
 
         public bool IsProfileCalibratedBay1 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay1];
 
@@ -405,6 +408,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
                                         this.OnFaultStateChanged(args);
                                     }
+
                                 }
 
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
@@ -427,6 +431,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
+                                if (this.sensorStatus[(int)IOMachineSensors.OverrunElevator] != newSensorStatus[(int)InverterSensors.ANG_OverrunElevatorSensor]
+                                    && newSensorStatus[(int)InverterSensors.ANG_OverrunElevatorSensor]
+                                    )
+                                {
+                                    var errorCode = MachineErrorCode.OverrunElevatorDetected;
+                                    using (var scope = this.serviceScopeFactory.CreateScope())
+                                    {
+                                        scope.ServiceProvider
+                                            .GetRequiredService<IErrorsProvider>()
+                                            .RecordNew(errorCode);
+                                    }
+                                }
+
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
                                 updateDone = true;
                             }

@@ -60,6 +60,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsMushroomEmergencyButtonBay3 { get; }
 
+        bool IsOverrunElevator { get; }
+
         bool IsSensorZeroOnBay1 { get; }
 
         bool IsSensorZeroOnBay2 { get; }

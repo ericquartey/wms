@@ -116,6 +116,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityLeftSensorWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityRightSensorWasTriggered
+                || error.Code == (int)MachineErrorCode.OverrunElevatorDetected
                 || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
         }
 
@@ -146,7 +147,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
 
-                if (existingUnresolvedError.Any())
+                if (existingUnresolvedError.Any()
+                    && newError.Severity < 2
+                    )
                 {
                     // TODO enable this call to discard only the same error
                     //if (existingUnresolvedError.Any(e => e.Code == (int)code))
