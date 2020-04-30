@@ -1,28 +1,28 @@
 {
     "$schema": "./schemas/vertimag-configuration-schema.json",
-  "LoadingUnits": [
-    {
-      "Id": 1,
-      "IsIntoMachine": false,
-      "IsInFullTest": false,
-      "Tare": 120,
-      "MaxNetWeight": 800
-    },
-    {
-      "Id": 2,
-      "IsIntoMachine": false,
-      "IsInFullTest": false,
-      "Tare": 120,
-      "MaxNetWeight": 800
-    },
-    {
-      "Id": 3,
-      "IsIntoMachine": false,
-      "IsInFullTest": false,
-      "Tare": 120,
-      "MaxNetWeight": 800
-    }
-  ],
+    "LoadingUnits": [
+        {
+            "Id": 1,
+            "IsIntoMachine": false,
+            "IsInFullTest": false,
+            "Tare": 120,
+            "MaxNetWeight": 800
+        },
+        {
+            "Id": 2,
+            "IsIntoMachine": false,
+            "IsInFullTest": false,
+            "Tare": 120,
+            "MaxNetWeight": 800
+        },
+        {
+            "Id": 3,
+            "IsIntoMachine": false,
+            "IsInFullTest": false,
+            "Tare": 120,
+            "MaxNetWeight": 800
+        }
+    ],
     "Machine": {
         "Bays": [
             {
