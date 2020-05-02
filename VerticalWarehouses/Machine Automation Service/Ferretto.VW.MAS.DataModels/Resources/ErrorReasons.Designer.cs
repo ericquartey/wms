@@ -223,6 +223,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The external bay is empty.
+        /// </summary>
+        public static string ExternalBayEmpty {
+            get {
+                return ResourceManager.GetString("ExternalBayEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The external bay is occupied.
+        /// </summary>
+        public static string ExternalBayOccupied {
+            get {
+                return ResourceManager.GetString("ExternalBayOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First load unit  test failed: Not all cells could be tested!.
         /// </summary>
         public static string FirstTestFailed {

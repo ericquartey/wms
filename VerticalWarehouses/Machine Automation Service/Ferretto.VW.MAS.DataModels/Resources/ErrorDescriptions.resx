@@ -399,4 +399,10 @@
   <data name="OverrunElevatorDetected" xml:space="preserve">
     <value>Positioning error at top or bottom side</value>
   </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>External bay is occupied</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>External bay empty</value>
+  </data>
 </root>

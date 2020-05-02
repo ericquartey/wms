@@ -390,4 +390,10 @@
   <data name="OverrunElevatorDetected" xml:space="preserve">
     <value>The elevator is positioned on the overrun sensor.</value>
   </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>The external bay is occupied</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>The external bay is empty</value>
+  </data>
 </root>

@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber) ||
                         this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber))
                     {
-                        returnValue = MachineErrorCode.TopLevelBayOccupied;  // ADD  MachineErrorCode.ExternalBayOccupied
+                        returnValue = MachineErrorCode.ExternalBayOccupied;
                     }
                 }
             }
@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber))
                     {
-                        returnValue = MachineErrorCode.TopLevelBayEmpty;  // ADD  MachineErrorCode.ExternalBayEmpty
+                        returnValue = MachineErrorCode.ExternalBayEmpty;
                     }
                 }
             }
@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null          // .FirstOrDefault(p => p.IsExternal).LoadingUnit
                         )
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };  // ADD   Resources.Bay.TheBayContainsALoadingUnitInItsExternalPosition
+                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsExternalPosition };
                     }
 
                     break;

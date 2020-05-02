@@ -70,6 +70,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The bay contains a Loading Unit in its external position.
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsExternalPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TheBayContainsALoadingUnitInItsLowerPosition.
         /// </summary>
         public static string TheBayContainsALoadingUnitInItsLowerPosition {
