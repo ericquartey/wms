@@ -54,9 +54,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
-        public MachineErrorCode CanElevatorDeposit(BayPosition bayPosition)
+        public MachineErrorCode CanElevatorDeposit(BayNumber bayNumber)    /*BayPosition bayPosition*/
         {
-            var bayNumber = bayPosition.Bay.Number;
+            /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
             // Check the zero sensor
             if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
@@ -66,22 +66,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 // Check if bay is fully
-                if (bayPosition.IsUpper)  // ADD   bayPosition.IsExternal
+                if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber) ||
+                    this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber))
                 {
-                    if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber) ||
-                        this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber))
-                    {
-                        returnValue = MachineErrorCode.ExternalBayOccupied;
-                    }
+                    returnValue = MachineErrorCode.ExternalBayOccupied;
                 }
             }
 
             return returnValue;
         }
 
-        public MachineErrorCode CanElevatorPickup(BayPosition bayPosition)
+        public MachineErrorCode CanElevatorPickup(BayNumber bayNumber)   /*BayPosition bayPosition*/
         {
-            var bayNumber = bayPosition.Bay.Number;
+            /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
             // Check the zero sensor
             if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
@@ -91,12 +88,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 // Check if bay is emptied
-                if (bayPosition.IsUpper)  // ADD   bayPosition.IsExternal
+                if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber))
                 {
-                    if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber))
-                    {
-                        returnValue = MachineErrorCode.ExternalBayEmpty;
-                    }
+                    returnValue = MachineErrorCode.ExternalBayEmpty;
                 }
             }
 
@@ -129,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 #if CHECK_BAY_SENSOR
                         (isLoadingUnitInExternalPosition && movementCategory != MovementCategory.Manual) ||
 #endif
-                        bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null          // .FirstOrDefault(p => p.IsExternal).LoadingUnit
+                        bay.Positions.FirstOrDefault().LoadingUnit != null          // .FirstOrDefault(p => p.IsExternal).LoadingUnit
                         )
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsExternalPosition };

@@ -8,9 +8,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
-        MachineErrorCode CanElevatorDeposit(BayPosition bayPosition);
+        MachineErrorCode CanElevatorDeposit(BayNumber bayNumber);
 
-        MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
+        MachineErrorCode CanElevatorPickup(BayNumber bayNumber);
 
         ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);
 
