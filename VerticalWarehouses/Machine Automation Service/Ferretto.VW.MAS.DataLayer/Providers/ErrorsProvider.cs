@@ -116,6 +116,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityLeftSensorWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityRightSensorWasTriggered
+                || error.Code == (int)MachineErrorCode.OverrunElevatorDetected
                 || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
         }
 
@@ -148,12 +149,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (existingUnresolvedError.Any())
                 {
-                    // TODO enable this call to discard only the same error
-                    //if (existingUnresolvedError.Any(e => e.Code == (int)code))
-                    //{
-                    //    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
-                    //    return existingUnresolvedError.First(e => e.Code == (int)code);
-                    //}
+                    // discard only the same error
+                    if (newError.Severity >= 2 && existingUnresolvedError.Any(e => e.Code == (int)code))
+                    {
+                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                        return existingUnresolvedError.First(e => e.Code == (int)code);
+                    }
 
                     // there are active errors different from code
 

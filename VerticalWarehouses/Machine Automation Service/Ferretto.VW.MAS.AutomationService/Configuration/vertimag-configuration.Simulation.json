@@ -47,7 +47,27 @@
         "ChainOffset": 0.0,
         "Inverter": {
           "Index": "Slave3",
-          "Type": "Acu"
+          "Type": "Acu",
+          "Parameters": [
+            {
+              "code": 4,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0
+            },
+            {
+              "code": 5,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0
+            },
+            {
+              "code": 6,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0
+            }
+          ]
         },
         "IoDevice": {
           "Index": "IoDevice1",
@@ -167,7 +187,27 @@
             "Index": "MainInverter",
             "IpAddress": "127.0.0.1",
             "TcpPort": 17221,
-            "Type": "Ang"
+            "Type": "Ang",
+            "Parameters": [
+              {
+                "code": 1,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0
+              },
+              {
+                "code": 2,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0
+              },
+              {
+                "code": 3,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0
+              }
+            ]
           },
           "LastIdealPosition": 1970.0,
           "LowerBound": 350.0,

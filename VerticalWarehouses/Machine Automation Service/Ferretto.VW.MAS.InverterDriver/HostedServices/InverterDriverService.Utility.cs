@@ -9,11 +9,11 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
@@ -557,6 +557,60 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return result;
+        }
+
+        private void ProcessInverterProgrammingMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
+        {
+            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+
+            if (receivedMessage.Data is IInverterProgrammingFieldMessageData shutterPositioningData)
+            {
+                this.Logger.LogTrace("1:Parse Message Data");
+
+                if (inverter.IsStarted)
+                {
+                    this.Logger.LogTrace("4:Starting InverterProgramming FSM");
+
+                    this.Logger.LogTrace("Start the timer for update status word");
+                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+
+                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(shutterPositioningData);
+                    var currentStateMachine = new InverterProgrammigState(
+                        inverter,
+                        inverterProgrammingFieldMessageData,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.ServiceScopeFactory,
+                        this.Logger);
+
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+                else
+                {
+                    this.Logger.LogDebug("5:Inverter is not ready. Powering up the inverter");
+
+                    this.Logger.LogTrace("Start the timer for update status word");
+                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+
+                    var currentStateMachine = new PowerOnStateMachine(
+                        inverter,
+                        this.Logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.ServiceScopeFactory,
+                        receivedMessage);
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+            }
+            else
+            {
+                this.Logger.LogError("5:Wrong message Data data type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.ShutterPositioning);
+            }
         }
 
         private void ProcessInverterSetTimerMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
