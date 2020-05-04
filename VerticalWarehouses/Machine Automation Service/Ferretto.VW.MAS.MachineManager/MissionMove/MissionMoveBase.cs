@@ -418,7 +418,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public void OnHomingNotification(HomingMessageData messageData)
         {
             if ((messageData.AxisToCalibrate == Axis.Horizontal || messageData.AxisToCalibrate == Axis.HorizontalAndVertical)
-                && this.Mission.NeedHomingAxis == Axis.Horizontal
+                && this.Mission.NeedHomingAxis == messageData.AxisToCalibrate
                 && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
                 )
             {

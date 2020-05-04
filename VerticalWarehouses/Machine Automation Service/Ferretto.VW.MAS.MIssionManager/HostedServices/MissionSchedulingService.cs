@@ -567,18 +567,18 @@ namespace Ferretto.VW.MAS.MissionManager
                     else if (mission.RestoreStep == MissionStep.LoadElevator)
                     {
                         mission.NeedMovingBackward = true;
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
                     }
                     else if (mission.RestoreStep == MissionStep.DepositUnit)
                     {
                         mission.NeedMovingBackward = true;
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                     }
                     else
                     {
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                     }
                     newStep.OnEnter(null);
