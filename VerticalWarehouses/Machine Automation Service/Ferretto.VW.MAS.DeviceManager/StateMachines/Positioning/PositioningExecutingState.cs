@@ -754,12 +754,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.countProfileCalibrated = 1;
                             }
                             else if (chainPosition.HasValue
-                                && this.countProfileCalibrated < 2
+                                && this.countProfileCalibrated <= 2
                                 && Math.Abs(chainPosition.Value - this.horizontalStartingPosition) >= this.targetPosition
                                 )
                             {
+                                if(this.countProfileCalibrated < 2)
+                                {
+                                    this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
+                                }
                                 this.countProfileCalibrated = 2;
-                                this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
                                 this.ReturnToStartPosition();
                             }
                         }
