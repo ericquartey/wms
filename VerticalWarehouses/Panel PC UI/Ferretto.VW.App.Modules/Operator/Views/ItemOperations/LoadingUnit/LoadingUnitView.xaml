@@ -56,12 +56,22 @@
                         BorderThickness="{StaticResource PpcBorderThickness}"
                         CornerRadius="2,0,0,2"
                         Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
-                    <TextBlock Margin="20"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
+                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                            <TextBlock Margin="20"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
-                </Border>
+                            <TextBlock Margin="20,0"
+                                       HorizontalAlignment="Center"
+                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
+                                <Run Text="("/><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}"/><Run Text=":"/>
+                                <Run Text="{Binding LoadingUnit.Height}"/><Run Text=","/>
+                                <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}"/><Run Text=":"/>
+                                <Run Text="{Binding LoadingUnit.GrossWeight}"/><Run Text=")"/>
+                            </TextBlock>
+                        </StackPanel>
+                        
+                    </Border>
 
                 <localControls:LoadingUnitControlView Grid.Row="1"
                                                       Margin="0"
