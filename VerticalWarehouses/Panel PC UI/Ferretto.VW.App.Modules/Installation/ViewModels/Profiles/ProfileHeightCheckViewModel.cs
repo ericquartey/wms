@@ -684,7 +684,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
+                var bay = this.MachineService.Bay;
+                var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
+                await this.shuttersWebService.MoveToAsync(closePosition);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -768,7 +770,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MeasuredDx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ShapePositionSx;
-                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
+                var bay = this.MachineService.Bay;
+                var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
+                await this.shuttersWebService.MoveToAsync(closePosition);
             }
             else
             {
@@ -778,7 +782,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MeasuredSx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ResultCheck;
-                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
+                var bay = this.MachineService.Bay;
+                var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
+                await this.shuttersWebService.MoveToAsync(closePosition);
             }
         }
 
