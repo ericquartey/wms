@@ -213,6 +213,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 m.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationStop)
                             {
                                 this.IsExecutingProcedure = false;
+                                if (m.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+                                {
+                                    this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                                }
                             }
                             else
                             {
