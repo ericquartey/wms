@@ -665,9 +665,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineCarouselWebService.SetCalibrationCompletedAsync();
 
+                    //this.ShowNotification(
+                    //        VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    //        Services.Models.NotificationSeverity.Success);
                     this.ShowNotification(
-                            VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
-                            Services.Models.NotificationSeverity.Success);
+                        VW.App.Resources.InstallationApp.CompletedTest,
+                        Services.Models.NotificationSeverity.Success);
                 }
 
                 this.NavigationService.GoBack();
