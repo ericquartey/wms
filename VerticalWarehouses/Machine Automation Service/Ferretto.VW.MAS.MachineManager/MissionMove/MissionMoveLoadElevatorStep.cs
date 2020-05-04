@@ -92,6 +92,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // in lower carousel position there is no profile check barrier
                             measure = false;
                         }
+                        else
+                        {
+                            this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
+                        }
 
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
