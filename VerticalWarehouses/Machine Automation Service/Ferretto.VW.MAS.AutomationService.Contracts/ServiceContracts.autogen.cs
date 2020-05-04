@@ -349,25 +349,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<InverterParameterSet>> GetParametersAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Inverter>> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<InverterParameterSet>> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Inverter>> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramAllInvertersAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramAllInvertersAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramInverterAsync(byte index);
+        System.Threading.Tasks.Task ProgramAllInvertersAsync(VertimagConfiguration vertimagConfiguration);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ProgramInverterAsync(byte index, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ProgramAllInvertersAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ProgramInverterAsync(byte index, VertimagConfiguration vertimagConfiguration);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ProgramInverterAsync(byte index, VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2787,6 +2787,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IPAddress IpAddress { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<InverterParameter> Parameters { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
         public int TcpPort { get; set; }
     
@@ -2827,6 +2830,36 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         All = 16,
     
         None = 255,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class InverterParameter : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Always)]
+        public int Code { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DataSet", Required = Newtonsoft.Json.Required.Always)]
+        public int DataSet { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsReadOnly { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
+        public int Value { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static InverterParameter FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterParameter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
     
     }
     
@@ -4225,129 +4258,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<IoDeviceInfo>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class InverterParameterSet 
-    {
-        [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
-        public byte Index { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<InverterParameter> Parameters { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static InverterParameterSet FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterParameterSet>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class InverterParameter 
-    {
-        [Newtonsoft.Json.JsonProperty("DataSet", Required = Newtonsoft.Json.Required.Always)]
-        public int DataSet { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
-        public InverterParameterId Id { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
-        public int Value { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static InverterParameter FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterParameter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum InverterParameterId
-    {
-        BlockDefinition = 17,
-    
-        BlockWrite = 18,
-    
-        BlockRead = 19,
-    
-        TorqueCurrent = 211,
-    
-        StatusDigitalSignals = 250,
-    
-        ProfileInput = 251,
-    
-        CurrentError = 260,
-    
-        ControlWord = 410,
-    
-        StatusWord = 411,
-    
-        ShutterTargetPosition = 414,
-    
-        ShutterTargetVelocity = 480,
-    
-        ShutterLowVelocity = 481,
-    
-        ShutterHighVelocityDuration = 583,
-    
-        BrakeReleaseTime = 625,
-    
-        BrakeActivatePercent = 637,
-    
-        ActualPositionShaft = 1108,
-    
-        HomingCalibration = 1130,
-    
-        HomingFastSpeed = 1132,
-    
-        HomingCreepSpeed = 1133,
-    
-        HomingAcceleration = 1134,
-    
-        HomingSensor = 1139,
-    
-        HomingOffset = 1185,
-    
-        TableTravelTableIndex = 1200,
-    
-        TableTravelTargetPosition = 1202,
-    
-        TableTravelTargetSpeeds = 1203,
-    
-        TableTravelTargetAccelerations = 1204,
-    
-        TableTravelTargetDecelerations = 1206,
-    
-        TableTravelDirection = 1261,
-    
-        HeartBeatTimer1 = 1390,
-    
-        DigitalInputsOutputs = 1411,
-    
-        SetOperatingMode = 1454,
-    
-        PositionTargetPosition = 1455,
-    
-        PositionTargetSpeed = 1456,
-    
-        PositionAcceleration = 1457,
-    
-        PositionDeceleration = 1458,
     
     }
     

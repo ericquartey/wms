@@ -231,6 +231,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.RepetitiveHorizontalMovements:
                         this.ProcessRepetitiveHorizontalMovements(command, serviceProvider);
                         break;
+
+                    case MessageType.InverterProgramming:
+                        this.ProcessInvertersProgramming(command, serviceProvider);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(

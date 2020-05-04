@@ -127,6 +127,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     case FieldMessageType.InverterCurrentError:
                         this.ProcessReadCurrentError(inverter);
                         break;
+
+                    case FieldMessageType.InverterProgramming:
+                        this.ProcessInverterProgrammingMessage(receivedMessage, inverter);
+                        break;
                 }
             }
             catch (Exception ex)

@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200504105320_Add_Parameters_To_Inverters")]
+    partial class Add_Parameters_To_Inverters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

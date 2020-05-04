@@ -5,12 +5,11 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing;
+using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
@@ -213,6 +212,31 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ServiceScopeFactory);
 
                 this.Logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
+            }
+        }
+
+        private void ProcessInvertersProgramming(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            System.Diagnostics.Debug.Assert(
+                message.Data is IInverterProgrammingMessageData,
+                "Message data should be consistent with message.Type");
+
+            if (this.currentStateMachines.Any(x => (x is InverterProgrammingStateMachine)))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Inverters programming state machine. Operation already in progress", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var currentStateMachine = new InverterProgrammingStateMachine(
+                    message,
+                    this.EventAggregator,
+                    this.Logger,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
                 this.currentStateMachines.Add(currentStateMachine);
 
                 this.StartStateMachine(currentStateMachine);

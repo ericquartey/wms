@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.DataModels
         public InverterIndex Index { get; set; }
 
         public System.Net.IPAddress IpAddress { get; set; }
+
+        public IEnumerable<InverterParameter> Parameters { get; set; }
 
         public int TcpPort
         {

@@ -84,6 +84,8 @@
 
         InverterFaultReset,
 
+        InverterProgramming,
+
         ResetSecurity,
 
         WeightAcquisitionCommand,
@@ -113,6 +115,7 @@
         StopTest,
 
         WmsEnableChanged,
+
         /// Repetitive horizontal movements on a specified bay.
         /// </summary>
         RepetitiveHorizontalMovements
