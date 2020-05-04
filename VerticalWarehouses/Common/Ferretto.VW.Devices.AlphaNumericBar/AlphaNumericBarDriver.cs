@@ -35,6 +35,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.StepLedBar = 4.75;
             this.messagesToBeSendQueue = new Queue();
+            this.messagesReceivedQueue = new Queue();
         }
 
         #endregion
@@ -200,6 +201,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        public async Task<bool> SetDimAsync(int dimension)
+        {
+            this.messagesToBeSendQueue.Clear();
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
         public async Task<bool> SetEnabledAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -336,55 +344,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return strCommand;
         }
 
-        /// <summary>
-        /// Send all commands in the queue to alpanumeric bar
-        /// </summary>
-        /// <returns>True if all commands are send and the response is OK, else false</returns>
-        private bool ExecuteCommands()
-        {
-            var result = false;
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    this.messagesReceivedQueue.Clear();
-                    client.SendTimeout = this.tcpTimeout;
-                    client.Connect(this.IpAddress, this.Port);
-                    var stream = client.GetStream();
-
-                    foreach (string sendMessage in this.messagesToBeSendQueue)
-                    {
-                        var data = Encoding.ASCII.GetBytes(sendMessage);
-                        stream = client.GetStream();
-                        stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine("ExecuteCommands();Sent: {0}", sendMessage);
-
-                        data = new byte[256];
-                        var bytes = stream.Read(data, 0, data.Length);
-                        var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-                        this.messagesReceivedQueue.Enqueue(responseMessage);
-                        if (!this.IsResponseOk(sendMessage, responseMessage))
-                        {
-                            throw new System.ArgumentException($"AplhaNumericBar;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
-                        }
-
-                        System.Diagnostics.Debug.WriteLine("ExecuteCommands();Received: {0}", responseMessage);
-                    }
-
-                    stream.Close();
-                    client.Close();
-                }
-
-                result = true;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-            }
-
-            return result;
-        }
-
         private async Task<bool> ExecuteCommandsAsync()
         {
             var result = false;
@@ -392,6 +351,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 using (var client = new TcpClient())
                 {
+                    this.messagesReceivedQueue.Clear();
                     client.SendTimeout = this.tcpTimeout;
                     await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                     var stream = client.GetStream();
@@ -401,18 +361,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                         var data = Encoding.ASCII.GetBytes(sendMessage);
                         stream = client.GetStream();
                         stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine("ExecuteCommands();Sent: {0}", sendMessage);
+                        System.Diagnostics.Debug.WriteLine($"ExecuteCommands();Sent: {0}", sendMessage);
 
                         data = new byte[256];
                         var bytes = stream.Read(data, 0, data.Length);
                         var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
+                        this.messagesReceivedQueue.Enqueue(responseMessage);
                         if (!this.IsResponseOk(sendMessage, responseMessage))
                         {
                             throw new System.ArgumentException($"AplhaNumericBar;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                         }
 
-                        System.Diagnostics.Debug.WriteLine("ExecuteCommands();Received: {0}", responseMessage);
+                        System.Diagnostics.Debug.WriteLine($"ExecuteCommands();Received: {0}", responseMessage);
                     }
 
                     stream.Close();

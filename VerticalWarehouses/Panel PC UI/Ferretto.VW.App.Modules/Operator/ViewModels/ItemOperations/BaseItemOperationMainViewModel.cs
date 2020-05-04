@@ -341,31 +341,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task AlphaNumericBarConfigureAsync()
         {
-            if (this.alphaNumericBarDriver is null)
+            var accessories = await this.BayManager.GetBayAccessoriesAsync();
+
+            if (accessories is null)
+            {
+                return;
+            }
+
+            var alphaNumericBar = accessories.AlphaNumericBar;
+            if (alphaNumericBar.IsEnabled == "true")
             {
                 this.alphaNumericBarDriver = new AlphaNumericBarDriver();
 
-                // var accesories = this.bay.Accessories;
-                //var accesories = (await this.BayManager.GetBayAsync()).Accessories;
+                var ipAddress = alphaNumericBar.IpAddress;
+                var port = alphaNumericBar.TcpPort;
+                var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
 
-                var accesories = await this.BayManager.GetBayAccessoriesAsync();
-
-                if (accesories != null)
-                {
-                    var alphaNumericBar = accesories.AlphaNumericBar;
-                    if (alphaNumericBar.IsEnabled == "true")
-                    {
-                        var ipAddress = alphaNumericBar.IpAddress;
-                        var port = alphaNumericBar.TcpPort;
-                        var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
-
-                        this.alphaNumericBarDriver.Configure(ipAddress, port, size);
-                    }
-                }
-                else
-                {
-                    this.alphaNumericBarDriver.Configure(System.Net.IPAddress.Parse("127.0.0.1"), 2020, Ferretto.VW.MAS.DataModels.AlphaNumericBarSize.Medium);
-                }
+                this.alphaNumericBarDriver.Configure(ipAddress, port, size);
             }
         }
 
