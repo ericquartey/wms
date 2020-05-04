@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Devices.BarcodeReader.Newland
+﻿namespace Ferretto.VW.Devices.BarcodeReader
 {
     public static class FactorySettings
     {

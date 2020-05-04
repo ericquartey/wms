@@ -194,19 +194,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-                    // we set LoadUnit height to zero, but not in lower carousel position, because there is not a profile check barrier
-                    if (
-                        (bayPosition.Bay.Carousel != null
-                            && !bayPosition.IsUpper)
-                        || this.Mission.ErrorCode != MachineErrorCode.NoError
-                        )
-                    {
-                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
-                    }
-                    else
-                    {
-                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId, 0);
-                    }
+                    // we never set LoadUnit height to zero
+                    this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                 }
 
                 transaction.Commit();
