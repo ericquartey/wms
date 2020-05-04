@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DevicesController : ControllerBase
+    public class DevicesController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -41,6 +42,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpGet]
@@ -67,14 +74,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("inverters/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramAllInverters(VertimagConfiguration vertimagConfiguration)
+        public IActionResult ProgramAllInverters(VertimagConfiguration vertimagConfiguration = null)
         {
             if (vertimagConfiguration?.Machine is null)
             {
                 vertimagConfiguration = this.configurationProvider.ConfigurationGet();
             }
 
-            this.inverterStateProvider.Start(vertimagConfiguration, BayNumber.None, MessageActor.AutomationService);
+            this.inverterStateProvider.Start(vertimagConfiguration, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -88,7 +95,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 vertimagConfiguration = this.configurationProvider.ConfigurationGet();
             }
 
-            this.inverterStateProvider.Start(vertimagConfiguration, index, BayNumber.None, MessageActor.AutomationService);
+            this.inverterStateProvider.Start(vertimagConfiguration, index, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
