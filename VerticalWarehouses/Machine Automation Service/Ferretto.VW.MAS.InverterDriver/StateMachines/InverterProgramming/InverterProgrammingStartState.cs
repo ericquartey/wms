@@ -46,6 +46,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             this.Logger.LogDebug("1:Inverter Programming Start state");
 
             var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+            var message = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
+            this.Logger.LogTrace($"5:inverterMessage={message}");
+            this.ParentStateMachine.EnqueueCommandMessage(message);
 
             var notificationMessage = new FieldNotificationMessage(
                 this.inverterProgrammingFieldMessageData,
@@ -56,13 +59,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 MessageStatus.OperationStart,
                 (byte)this.InverterStatus.SystemIndex);
 
-            this.Logger.LogDebug("Inverter Programming Start State Start");
-
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
-            var message = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
-            this.Logger.LogTrace($"5:inverterMessage={message}");
-            this.ParentStateMachine.EnqueueCommandMessage(message);
+            this.Logger.LogDebug("Inverter Programming Start State Start");
         }
 
         public override void Stop()
@@ -86,21 +85,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 this.ParentStateMachine.ChangeState(
                     new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
             }
-            else
-            {
-                if (this.currentParametersPosition == this.inverterProgrammingFieldMessageData.Parameters.Count())
-                {
-                    return false;
-                }
-
-                this.currentParametersPosition++;
-                var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-
-                var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
-                _ = data.ToBytes();
-
-                this.ParentStateMachine.EnqueueCommandMessage(data);
-            }
 
             return !message.IsError;
         }
@@ -115,12 +99,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
             else
             {
-                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1))
                 {
-                    this.Logger.LogError($"2:InverterProgrammingStartState timeout, inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(
-                         new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
+                         new InverterProgrammingEndState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
+                    return false;
                 }
+
+                this.currentParametersPosition++;
+                var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+
+                var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
+                _ = data.ToBytes();
+
+                this.ParentStateMachine.EnqueueCommandMessage(data);
             }
 
             return !message.IsError;

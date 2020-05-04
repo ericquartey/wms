@@ -10,16 +10,16 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Constructors
 
         public InverterProgrammingFieldMessageData(
-            IInverterProgrammingFieldMessageData inverterProgrammingFieldMessageData,
+            IEnumerable<object> parameters,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
-            if (inverterProgrammingFieldMessageData is null)
+            if (parameters is null)
             {
-                throw new System.ArgumentNullException(nameof(inverterProgrammingFieldMessageData));
+                throw new System.ArgumentNullException(nameof(parameters));
             }
 
-            this.Parameters = inverterProgrammingFieldMessageData.Parameters;
+            this.Parameters = parameters;
         }
 
         #endregion

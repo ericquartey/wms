@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
+namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
     public interface IInverterProgrammingProvider
     {

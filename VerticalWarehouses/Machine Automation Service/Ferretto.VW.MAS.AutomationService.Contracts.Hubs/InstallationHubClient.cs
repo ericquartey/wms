@@ -106,6 +106,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<RepetitiveHorizontalMovementsMessageData>>(
                 nameof(IInstallationHub.RepetitiveHorizontalMovementsNotify), this.OnRepetitiveHorizontalMovementsNotify);
+
+            connection.On<NotificationMessageUI<InverterProgrammingMessageData>>(
+                nameof(IInstallationHub.InverterProgrammingChanged), this.OnInverterProgramming);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -141,6 +144,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnInverterProgramming(NotificationMessageUI<InverterProgrammingMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

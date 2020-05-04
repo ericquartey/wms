@@ -1,8 +1,8 @@
 ﻿using System.IO.Ports;
 
-namespace Ferretto.VW.Devices.BarcodeReader.Newland
+namespace Ferretto.VW.Devices.BarcodeReader
 {
-    public class ConfigurationOptions : IBarcodeConfigurationOptions
+    public class ConfigurationOptions
     {
         #region Properties
 

@@ -330,7 +330,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         break;
 
                     case UserAction.PickItem:
-                        // TODO da definire con Danilo
+                        // TODO da implementare
+                        throw new NotImplementedException();
 
                         break;
                 }
