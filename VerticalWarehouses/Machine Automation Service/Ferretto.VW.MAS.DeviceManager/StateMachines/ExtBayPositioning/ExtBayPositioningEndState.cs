@@ -274,6 +274,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
                 var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
 
+                //
+                // NOT Update the loading unit position:
+                //   LU is always in the bay
+                //   the position can changed: internal position or external position (notify by the sensors)
+                //
+
+                // USELESS ===>
                 // 1. check if elevator is opposite a bay or a cell
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
