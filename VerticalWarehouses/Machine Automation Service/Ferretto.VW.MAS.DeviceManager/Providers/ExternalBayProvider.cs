@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             switch (direction)
             {
-                case ExternalBayMovementDirection.Backward:
+                case ExternalBayMovementDirection.TowardMachine:
                     if (isLoadingUnitInInternalPosition)
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                     break;
 
-                case ExternalBayMovementDirection.Forward:
+                case ExternalBayMovementDirection.TowardOperator:
                     if (
 #if CHECK_BAY_SENSOR
                         (isLoadingUnitInExternalPosition && movementCategory != MovementCategory.Manual) ||
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
                 movementCategory != MovementCategory.Manual &&
-                direction == ExternalBayMovementDirection.Forward)
+                direction == ExternalBayMovementDirection.TowardOperator)
             {
                 return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
             }
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var targetPosition = (direction == ExternalBayMovementDirection.Forward) ? bay.Carousel.ElevatorDistance : 0;   // ADD   bay.External.Race
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.Carousel.ElevatorDistance : 0;   // ADD   bay.External.Race
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.Forward ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             if (loadUnitId.HasValue)
             {
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var targetPosition = (direction == ExternalBayMovementDirection.Forward) ? bay.Carousel.ElevatorDistance : 0;   // bay.External.Race
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.Carousel.ElevatorDistance : 0;   // bay.External.Race
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);   // .GetAssistedMovementsExternalBay(bayNumber)
 
@@ -269,7 +269,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.Forward ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             this.logger.LogDebug(
                 $"Move External Bay Assisted " +
@@ -312,7 +312,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 targetPosition = distance;
             }
 
-            targetPosition *= direction is ExternalBayMovementDirection.Forward ? 1 : -1;
+            targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
 
             var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(bayNumber);   // ADD  .GetManualMovementsExternalBay(bayNumber)
 
@@ -330,7 +330,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.Forward ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             if (loadUnitId.HasValue)
             {

@@ -4626,9 +4626,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ExternalBayMovementDirection
     {
-        Forward = 0,
+        TowardOperator = 0,
     
-        Backward = 1,
+        TowardMachine = 1,
     
     }
     

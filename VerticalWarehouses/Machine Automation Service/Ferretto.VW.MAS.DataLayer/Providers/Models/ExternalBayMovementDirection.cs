@@ -2,8 +2,14 @@
 {
     public enum ExternalBayMovementDirection
     {
-        Forward,
+        /// <summary>
+        /// Movement is directed toward operator (Forward)
+        /// </summary>
+        TowardOperator,
 
-        Backward
+        /// <summary>
+        /// Movement is directed toward machine (Backward)
+        /// </summary>
+        TowardMachine
     }
 }
