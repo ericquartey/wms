@@ -1,5 +1,8 @@
-﻿using Ferretto.VW.App.Modules.Login.Views;
+﻿using System.Configuration;
+using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Modules.Login.Views;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -32,9 +35,20 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+         //   ConfigureBarcodeReader(containerRegistry); // TODO: restore
+
             containerRegistry.RegisterForNavigation<LoginView>();
 
             containerRegistry.RegisterForNavigation<LoaderView>(Utils.Modules.Login.LOADER);
+        }
+
+        private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.ConfigureBarcodeReaderUiServices();
+            containerRegistry.ConfigureNewlandBarcodeReader();
+
+            var barcodes = new[] { "1234", "5678" };
+            containerRegistry.ConfigureMockBarcodeReader(barcodes, 10000);
         }
 
         #endregion

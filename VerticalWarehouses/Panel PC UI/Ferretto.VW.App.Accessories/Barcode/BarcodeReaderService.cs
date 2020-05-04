@@ -19,9 +19,9 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INavigationService navigationService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IBarcodeConfigurationOptions options;
+        private readonly INavigationService navigationService;
 
         private readonly IBarcodeReaderDriver reader;
 
@@ -33,20 +33,18 @@ namespace Ferretto.VW.App.Accessories
 
         public BarcodeReaderService(
             IEventAggregator eventAggregator,
+            IMachineBaysWebService machineBaysWebService,
             IBarcodeReaderDriver reader,
             INavigationService navigationService,
-            IMachineBarcodesWebService barcodesWebService,
-            IBarcodeConfigurationOptions options)
+            IMachineBarcodesWebService barcodesWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.options = options ?? throw new ArgumentNullException(nameof(options));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.barcodesWebService = barcodesWebService ?? throw new ArgumentNullException(nameof(barcodesWebService));
 
             this.reader.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(sender, e);
-
-            this.Enable();
         }
 
         #endregion
@@ -65,11 +63,19 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        public void Enable()
+        public async Task StartAsync()
         {
             try
             {
-                this.reader.Connect(this.options);
+                var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
+
+                // if(accessories.BarcodeReader.IsEnabled) // TODO restore this
+                {
+                    this.reader.Connect(new ConfigurationOptions
+                    {
+                        PortName = accessories.BarcodeReader.PortName
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -92,23 +98,16 @@ namespace Ferretto.VW.App.Accessories
         {
             System.Diagnostics.Debug.Assert(this.ruleSet != null);
 
-            var validRuleSet = new List<BarcodeRule>();
-            foreach (var rule in this.ruleSet)
-            {
-                if (Enum.TryParse<ContextAction>(rule.ContextName, out var contextAction))
-                {
-                    validRuleSet.Add(rule);
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"No valid context found for {rule.ContextName}");
-                }
-            }
-
-            return validRuleSet.FirstOrDefault(r =>
+            var matchedRule = this.ruleSet.FirstOrDefault(r =>
                  r.ContextName == activeContextName
                  &&
                  Regex.IsMatch(barcode, r.Pattern));
+
+            System.Diagnostics.Debug.WriteLineIf(
+                matchedRule is null,
+                $"No valid context found for {activeContextName}");
+
+            return matchedRule;
         }
 
         private async Task LoadRuleSetAsync()
@@ -178,7 +177,17 @@ namespace Ferretto.VW.App.Accessories
                     eventArgs.Parameters.Add(group.Name, group.Value);
                 }
 
-                await Application.Current.Dispatcher.Invoke(async () => await activeContext.CommandUserActionAsync(eventArgs));
+                await Application.Current.Dispatcher.Invoke(async () =>
+                {
+                    try
+                    {
+                        await activeContext.CommandUserActionAsync(eventArgs);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Barcode {eventArgs.Code} caused an exception on {activeContext.GetType()}: {ex.Message}");
+                    }
+                });
             }
         }
 

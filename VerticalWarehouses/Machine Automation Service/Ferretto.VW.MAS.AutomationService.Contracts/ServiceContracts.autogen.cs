@@ -1476,6 +1476,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineUsersWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<UserClaims> AuthenticateWithBearerTokenAsync(string bearerToken);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<UserClaims> AuthenticateWithBearerTokenAsync(string bearerToken, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, string supportToken);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6004,8 +6011,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("contextName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContextName { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("nextRuleId", Required = Newtonsoft.Json.Required.Always)]
+        public int NextRuleId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Pattern { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("restartOnMismatch", Required = Newtonsoft.Json.Required.Always)]
+        public bool RestartOnMismatch { get; set; }
     
         public string ToJson() 
         {

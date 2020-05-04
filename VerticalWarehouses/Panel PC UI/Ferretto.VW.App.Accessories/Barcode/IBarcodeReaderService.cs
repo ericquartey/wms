@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App.Accessories
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.App.Accessories
 {
     public interface IBarcodeReaderService
     {
@@ -6,7 +8,7 @@
 
         void Disable();
 
-        void Enable();
+        Task StartAsync();
 
         #endregion
     }
