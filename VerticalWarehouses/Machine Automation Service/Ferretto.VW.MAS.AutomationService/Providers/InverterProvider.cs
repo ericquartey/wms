@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IConfiguration configuration;
 
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
         private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
@@ -29,9 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public InverterProvider(
             InverterDriver.IInvertersProvider invertersProvider,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IConfiguration configuration)
         {
             this.invertersProvider = invertersProvider;
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.configuration = configuration;
         }
 
@@ -45,19 +51,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #region Methods
 
-        public IEnumerable<InverterParameterSet> GetAllParameters()
+        public IEnumerable<Inverter> GetAllParameters()
         {
-            var inverterParameters = new List<InverterParameterSet>();
-            this.configuration.GetSection("inverter-parameters").Bind(inverterParameters);
-
-            return inverterParameters;
-        }
-
-        public InverterParameterSet GetParameters(InverterIndex index)
-        {
-            var inverterParameters = this.GetAllParameters();
-
-            return inverterParameters.SingleOrDefault(set => set.Index == (byte)index);
+            return this.digitalDevicesDataProvider.GetAllParameters();
         }
 
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)

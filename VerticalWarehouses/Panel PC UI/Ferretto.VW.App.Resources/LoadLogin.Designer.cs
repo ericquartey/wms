@@ -169,6 +169,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to authenticate user with the barcode..
+        /// </summary>
+        public static string UnableToAuthenticateWithTheBarcode {
+            get {
+                return ResourceManager.GetString("UnableToAuthenticateWithTheBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User name.
         /// </summary>
         public static string UserLogin {

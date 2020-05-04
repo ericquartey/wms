@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private InverterParameterSet inverterParameters;
+        private Inverter inverterParameters;
 
         private bool isBusy;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public InverterParameterSet InverterParameters
+        public Inverter InverterParameters
         {
             get => this.inverterParameters;
             set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
@@ -81,7 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
-            if (this.Data is InverterParameterSet inverterParameterSet)
+            if (this.Data is Inverter inverterParameterSet)
             {
                 this.InverterParameters = inverterParameterSet;
             }
@@ -100,7 +100,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return !this.isBusy;
         }
-        
+
         private async Task SaveParametersAsync()
         {
             try
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramInverterAsync(this.inverterParameters.Index);
+                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.Index, new VertimagConfiguration());
 
                 this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }

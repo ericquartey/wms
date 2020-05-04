@@ -174,6 +174,13 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private async Task OnInverterProgrammingChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+
+            await this.installationHub.Clients.All.InverterProgrammingChanged(message);
+        }
+
         private async Task OnInverterStatusWordChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);

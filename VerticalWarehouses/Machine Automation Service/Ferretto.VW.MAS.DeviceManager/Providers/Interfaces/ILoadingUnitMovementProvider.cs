@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         BayNumber GetBayByCell(int cellId);
 
+        double GetCurrentHorizontalPosition();
+
         double GetCurrentVerticalPosition();
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);

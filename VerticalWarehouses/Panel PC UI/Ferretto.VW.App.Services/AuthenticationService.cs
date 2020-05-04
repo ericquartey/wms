@@ -54,9 +54,21 @@ namespace Ferretto.VW.App.Services
                     password,
                     supportToken);
 
-            this.UserName = userName;
+            this.UserName = userClaims.Name;
             this.AccessLevel = userClaims.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
+
+            return userClaims;
+        }
+
+        public async Task<UserClaims> LogInAsync(string bearerToken)
+        {
+            var userClaims = await this.usersService
+              .AuthenticateWithBearerTokenAsync(bearerToken);
+
+            this.UserName = userClaims.Name;
+            this.AccessLevel = userClaims.AccessLevel;
+            this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
             return userClaims;
         }

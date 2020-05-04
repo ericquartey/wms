@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +12,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DevicesController : ControllerBase
+    public class DevicesController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
+        private readonly IConfigurationProvider configurationProvider;
+
         private readonly IInverterProvider inverterProvider;
+
+        private readonly IInverterProgrammingProvider inverterStateProvider;
 
         private readonly IIoDeviceProvider ioDeviceProvider;
 
@@ -22,12 +29,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public DevicesController(
+            IConfigurationProvider configurationProvider,
             IInverterProvider inverterProvider,
-            IIoDeviceProvider ioDeviceProvider)
+            IIoDeviceProvider ioDeviceProvider,
+            IInverterProgrammingProvider inverterStateProvider)
         {
+            this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
             this.inverterProvider = inverterProvider;
             this.ioDeviceProvider = ioDeviceProvider;
+            this.inverterStateProvider = inverterStateProvider;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -49,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public ActionResult<IEnumerable<InverterParameterSet>> GetParameters()
+        public ActionResult<IEnumerable<Inverter>> GetParameters()
         {
             return this.Ok(this.inverterProvider.GetAllParameters());
         }
@@ -57,17 +74,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("inverters/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramAllInverters()
+        public IActionResult ProgramAllInverters(VertimagConfiguration vertimagConfiguration = null)
         {
-            throw new ArgumentNullException();
+            if (vertimagConfiguration?.Machine is null)
+            {
+                vertimagConfiguration = this.configurationProvider.ConfigurationGet();
+            }
+
+            this.inverterStateProvider.Start(vertimagConfiguration, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
         }
 
         [HttpPost("inverters/{index}/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramInverter(byte index)
+        public IActionResult ProgramInverter(byte index, VertimagConfiguration vertimagConfiguration)
         {
-            throw new ArgumentNullException();
+            if (vertimagConfiguration?.Machine is null)
+            {
+                vertimagConfiguration = this.configurationProvider.ConfigurationGet();
+            }
+
+            this.inverterStateProvider.Start(vertimagConfiguration, index, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
         }
 
         #endregion

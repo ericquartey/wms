@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -99,9 +100,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         currentPosition = acuInverter.CurrentPosition;
                     }
 
-                    this.data.TargetPosition = this.data.StartPosition - currentPosition;
+                    this.data.TargetPosition = this.data.StartPosition;
 
-                    this.Logger.LogDebug($"Relative Target changed from current position {currentPosition} to {this.data.TargetPosition}");
+                    this.data.MovementType = MovementType.Absolute;
+                    this.Logger.LogDebug($"Absolute Target changed from current position {currentPosition} to {this.data.TargetPosition}");
                     this.data.IsProfileCalibrateDone = true;
 
                     this.ParentStateMachine.ChangeState(

@@ -36,6 +36,8 @@
 
         InverterDisable,
 
+        InverterProgramming,
+
         AxisPosition,
 
         Positioning,

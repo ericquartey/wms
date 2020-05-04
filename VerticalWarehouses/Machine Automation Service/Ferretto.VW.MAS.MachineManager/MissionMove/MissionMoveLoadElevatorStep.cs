@@ -92,6 +92,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // in lower carousel position there is no profile check barrier
                             measure = false;
                         }
+                        else
+                        {
+                            this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
+                        }
 
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
@@ -126,10 +130,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
-            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else if (this.Mission.NeedHomingAxis == Axis.BayChain
                 && this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified
@@ -162,12 +166,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     int? positionId = null;
                     if (notification.Type == MessageType.Homing)
                     {
-                        if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                        if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                         {
                             if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
+                                if (this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                                {
+                                    this.MachineVolatileDataProvider.IsHomingExecuted = true;
+                                }
                                 this.Mission.NeedHomingAxis = Axis.None;
-                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 this.MissionsDataProvider.Update(this.Mission);
                             }
                             // restart movement from the beginning!

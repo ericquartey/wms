@@ -761,6 +761,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 74,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -863,6 +868,30 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Inverters");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<short>("Code");
+
+                    b.Property<int>("DataSet");
+
+                    b.Property<int?>("InverterId");
+
+                    b.Property<bool>("IsReadOnly");
+
+                    b.Property<string>("Type");
+
+                    b.Property<int>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InverterId");
+
+                    b.ToTable("InverterParameter");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.IoDevice", b =>
@@ -1849,6 +1878,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement", "WeightMeasurement")
                         .WithMany()
                         .HasForeignKey("WeightMeasurementId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter")
+                        .WithMany("Parameters")
+                        .HasForeignKey("InverterId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>

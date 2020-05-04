@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Services
         /// <returns>The user claims if the user was successfully logged in, <c>null</c> otherwise.</returns>
         Task<UserClaims> LogInAsync(string userName, string password, string supportToken);
 
+        Task<UserClaims> LogInAsync(string bearerToken);
+
         /// <summary>
         /// Logs out the user.
         /// </summary>

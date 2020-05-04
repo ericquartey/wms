@@ -89,6 +89,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Inverter> GetAllParameters()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Inverters.Include(i => i.Parameters).ToArray();
+            }
+        }
+
         public Inverter GetInverterByIndex(InverterIndex index)
         {
             lock (this.dataContext)
