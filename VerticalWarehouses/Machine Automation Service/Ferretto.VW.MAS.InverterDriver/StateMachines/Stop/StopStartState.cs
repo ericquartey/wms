@@ -7,14 +7,13 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
     internal class StopStartState : InverterStateBase
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -26,7 +25,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -36,6 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         public override void Start()
         {
             this.Logger.LogDebug($"Stop Inverter Start state {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.SwitchOn = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);

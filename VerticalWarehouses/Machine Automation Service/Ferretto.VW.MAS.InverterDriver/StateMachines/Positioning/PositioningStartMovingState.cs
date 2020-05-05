@@ -35,7 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.data = data;
             this.Inverter = inverterStatus;
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
-            this.startTime = DateTime.UtcNow;
             this.oldPosition = null;
         }
 
@@ -61,6 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
 
+            this.startTime = DateTime.UtcNow;
             this.Inverter.PositionControlWord.NewSetPoint = true;
 
             this.Logger.LogDebug("Set New Setpoint");

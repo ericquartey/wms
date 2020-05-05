@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -26,7 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -36,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.SwitchOn = false;
+            this.startTime = DateTime.UtcNow;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 

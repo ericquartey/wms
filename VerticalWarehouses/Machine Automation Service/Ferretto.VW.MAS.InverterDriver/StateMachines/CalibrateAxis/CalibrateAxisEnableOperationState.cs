@@ -16,9 +16,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
-        private readonly DateTime startTime;
-
         private DateTime enableTime;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
-            this.startTime = DateTime.UtcNow;
-            this.enableTime = DateTime.MinValue;
         }
 
         #endregion
@@ -45,6 +43,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.Logger.LogDebug($"1:Axis to calibrate={this.axisToCalibrate}");
+
+            this.startTime = DateTime.UtcNow;
+            this.enableTime = DateTime.MinValue;
 
             this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal);
 
