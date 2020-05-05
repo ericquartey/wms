@@ -567,7 +567,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.Logger.LogTrace("1:Parse Message Data");
 
-                if (inverter.IsStarted)
+                if (!inverter.IsStarted)
                 {
                     this.Logger.LogTrace("4:Starting InverterProgramming FSM");
 
@@ -583,23 +583,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ServiceScopeFactory,
                         this.Logger);
 
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                    currentStateMachine.Start();
-                }
-                else
-                {
-                    this.Logger.LogDebug("5:Inverter is not ready. Powering up the inverter");
-
-                    this.Logger.LogTrace("Start the timer for update status word");
-                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
-
-                    var currentStateMachine = new PowerOnStateMachine(
-                        inverter,
-                        this.Logger,
-                        this.eventAggregator,
-                        this.inverterCommandQueue,
-                        this.ServiceScopeFactory,
-                        receivedMessage);
                     this.currentStateMachines.Add(currentInverter, currentStateMachine);
                     currentStateMachine.Start();
                 }

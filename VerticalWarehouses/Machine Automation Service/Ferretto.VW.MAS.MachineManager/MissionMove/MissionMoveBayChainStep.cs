@@ -94,7 +94,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.Status = MissionStatus.Waiting;
             }
 
-            this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay,

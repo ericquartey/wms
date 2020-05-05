@@ -103,19 +103,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 {
                     this.ParentStateMachine.ChangeState(
                          new InverterProgrammingEndState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
-                    return false;
                 }
+                else
+                {
+                    this.currentParametersPosition++;
+                    var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
 
-                this.currentParametersPosition++;
-                var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+                    var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
+                    _ = data.ToBytes();
 
-                var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
-                _ = data.ToBytes();
-
-                this.ParentStateMachine.EnqueueCommandMessage(data);
+                    this.ParentStateMachine.EnqueueCommandMessage(data);
+                }
             }
 
-            return !message.IsError;
+            return true;
         }
 
         #endregion

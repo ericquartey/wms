@@ -90,6 +90,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
