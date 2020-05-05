@@ -69,12 +69,13 @@ namespace Ferretto.VW.App.Accessories
             {
                 var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
 
-                // if(accessories.BarcodeReader.IsEnabled) // TODO restore this
+                if (accessories.BarcodeReader?.IsEnabled?.Equals(true.ToString(), StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    this.reader.Connect(new ConfigurationOptions
-                    {
-                        PortName = accessories.BarcodeReader.PortName
-                    });
+                    this.reader.Connect(
+                        new ConfigurationOptions
+                        {
+                            PortName = accessories.BarcodeReader.PortName
+                        });
                 }
             }
             catch (Exception ex)
