@@ -390,4 +390,10 @@
   <data name="OverrunElevatorDetected" xml:space="preserve">
     <value>L'elevatore ha raggiunto il sensore di oltrecorsa</value>
   </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>La baia esterna è occupata</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>La baia esterna è vuota</value>
+  </data>
 </root>

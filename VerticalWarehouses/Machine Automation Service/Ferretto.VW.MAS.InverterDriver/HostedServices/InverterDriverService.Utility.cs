@@ -563,7 +563,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
-            if (receivedMessage.Data is IInverterProgrammingFieldMessageData shutterPositioningData)
+            if (receivedMessage.Data is IInverterProgrammingFieldMessageData inverterProgrammingData)
             {
                 this.Logger.LogTrace("1:Parse Message Data");
 
@@ -574,7 +574,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger.LogTrace("Start the timer for update status word");
                     this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
 
-                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(shutterPositioningData);
+                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.Parameters);
                     var currentStateMachine = new InverterProgrammigState(
                         inverter,
                         inverterProgrammingFieldMessageData,

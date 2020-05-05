@@ -141,4 +141,7 @@
   <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
     <value>L'altezza massima del carrello non è valida.</value>
   </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>La baia contiene un cassetto nella sua posizione esterna</value>
+  </data>
 </root>
