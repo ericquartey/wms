@@ -40,46 +40,47 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Row="0"
-                Margin="0,0,0,0"
-                Background="{DynamicResource PpcBackground}"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="0">
-            <Grid Margin="20">
+                    Margin="0,0,0,0"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="0">
+                <Grid Margin="20">
 
-                <Border Grid.Row="1"
-                        Margin="50"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{StaticResource PpcBackground}"
-                        BorderBrush="{StaticResource PpcBorderBrush}"
-                        BorderThickness="{StaticResource PpcBorderThickness}"
-                        CornerRadius="2,0,0,2"
-                        Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
-                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Center"
-                               VerticalAlignment="Center">
+                    <Border Grid.Row="1"
+                            Margin="50"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{StaticResource PpcBackground}"
+                            BorderBrush="{StaticResource PpcBorderBrush}"
+                            BorderThickness="{StaticResource PpcBorderThickness}"
+                            CornerRadius="2,0,0,2"
+                            Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Vertical">
                             <TextBlock Margin="20"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
+                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
                             <TextBlock Margin="20,0"
                                        HorizontalAlignment="Center"
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
-                                <Run Text="("/><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}"/><Run Text=":"/>
-                                <Run Text="{Binding LoadingUnit.Height}"/><Run Text=","/>
-                                <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}"/><Run Text=":"/>
-                                <Run Text="{Binding LoadingUnit.GrossWeight}"/><Run Text=")"/>
+                                       Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
+                                <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
+                                <Run Text="{Binding LoadingUnit.Height}" /><Run Text="," />
+                                <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
+                                <Run Text="{Binding LoadingUnit.GrossWeight}" /><Run Text=")" />
                             </TextBlock>
                         </StackPanel>
-                        
+
                     </Border>
 
-                <localControls:LoadingUnitControlView Grid.Row="1"
-                                                      Margin="0"
-                                                      Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
+                    <localControls:LoadingUnitControlView Grid.Row="1"
+                                                          Margin="0"
+                                                          Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
 
-            </Grid>
+                </Grid>
 
-        </Border>
+            </Border>
 
             <Grid Grid.Row="0"
                   Grid.Column="1">
@@ -161,6 +162,6 @@
 
         <localControls:ReasonsView Grid.Row="1"
                                    Visibility="{Binding Reasons, Converter={StaticResource RTVC}}" />
-     
+
     </Grid>
 </ctrls:View>
