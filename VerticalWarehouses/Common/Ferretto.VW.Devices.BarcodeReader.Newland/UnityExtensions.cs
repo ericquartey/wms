@@ -20,7 +20,11 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterInstance<IBarcodeReaderDriver>(new MockReader(barcodes, intervalMilliseconds));
+            containerRegistry.RegisterInstance<IBarcodeReaderDriver>(
+#pragma warning disable CA2000 // Dispose objects before losing scope
+                // Justification: here we are registering a singleton instance in the container
+                new MockReader(barcodes, intervalMilliseconds));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
             return containerRegistry;
         }

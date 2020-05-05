@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-         //   ConfigureBarcodeReader(containerRegistry); // TODO: restore
+            ConfigureBarcodeReader(containerRegistry);
 
             containerRegistry.RegisterForNavigation<LoginView>();
 
@@ -47,8 +47,8 @@ namespace Ferretto.VW.App.Modules.Login
             containerRegistry.ConfigureBarcodeReaderUiServices();
             containerRegistry.ConfigureNewlandBarcodeReader();
 
-            var barcodes = new[] { "1234", "5678" };
-            containerRegistry.ConfigureMockBarcodeReader(barcodes, 10000);
+            // var barcodes = new[] { "1234", "5678" };
+            // containerRegistry.ConfigureMockBarcodeReader(barcodes, 10000);
         }
 
         #endregion
