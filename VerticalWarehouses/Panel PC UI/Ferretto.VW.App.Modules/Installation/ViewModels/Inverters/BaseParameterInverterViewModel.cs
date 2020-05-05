@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
@@ -58,6 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             this.EventAggregator.GetEvent<NotificationEventUI<InverterProgrammingMessageData>>().Unsubscribe(this.inverterProgrammingMessageReceivedToken);
+            this.inverterProgrammingMessageReceivedToken = null;
 
             base.Disappear();
         }
