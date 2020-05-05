@@ -147,16 +147,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
 
-                if (existingUnresolvedError.Any()
-                    && newError.Severity < 2
-                    )
+                if (existingUnresolvedError.Any())
                 {
-                    // TODO enable this call to discard only the same error
-                    //if (existingUnresolvedError.Any(e => e.Code == (int)code))
-                    //{
-                    //    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
-                    //    return existingUnresolvedError.First(e => e.Code == (int)code);
-                    //}
+                    // discard only the same error
+                    if (newError.Severity >= 2 && existingUnresolvedError.Any(e => e.Code == (int)code))
+                    {
+                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                        return existingUnresolvedError.First(e => e.Code == (int)code);
+                    }
 
                     // there are active errors different from code
 

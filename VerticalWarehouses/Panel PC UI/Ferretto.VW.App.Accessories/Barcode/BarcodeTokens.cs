@@ -9,5 +9,7 @@
         ItemQuantity,
 
         ItemBarcode,
+
+        BearerToken,
     }
 }

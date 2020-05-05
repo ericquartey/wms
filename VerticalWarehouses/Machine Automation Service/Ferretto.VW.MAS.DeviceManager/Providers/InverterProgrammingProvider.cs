@@ -5,10 +5,10 @@ using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.MachineManager.Providers
+namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal sealed class InverterProgrammingProvider : BaseProvider, IInverterProgrammingProvider
     {
@@ -30,11 +30,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
             var inverters = inverterParametersData.OrderBy(i => i.InverterIndex);
 
-            this.SendCommandToMachineManager(
+            this.PublishCommand(
                 new InverterProgrammingMessageData(inverters, CommonUtils.CommandAction.Start),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.InverterProgramming,
+                requestingBay,
                 requestingBay);
         }
 
@@ -46,11 +48,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 &&
                 inverterParameters.Parameters?.Count() > 0)
             {
-                this.SendCommandToMachineManager(
+                this.PublishCommand(
                 new InverterProgrammingMessageData(new List<InverterParametersData> { inverterParameters }, CommonUtils.CommandAction.Start),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.InverterProgramming,
+                requestingBay,
                 requestingBay);
             }
             else
@@ -61,11 +65,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void Stop(BayNumber requestingBay, MessageActor sender)
         {
-            this.SendCommandToMachineManager(
+            this.PublishCommand(
                 new InverterProgrammingMessageData(null, CommonUtils.CommandAction.Stop),
                 $"Bay {requestingBay} requested to stop Inverter programming Running State",
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.InverterProgramming,
+                requestingBay,
                 requestingBay);
         }
 
@@ -99,7 +105,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
         {
-            return $"{type.ToString()} {ipAddress.ToString()}:{tcpPort.ToString()}";
+            return $"{type.ToString()} {ipAddress?.ToString()}:{tcpPort.ToString()}";
         }
 
         #endregion

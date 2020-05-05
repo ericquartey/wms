@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         public override void Start()
         {
             this.Logger.LogError($"Inverter Programming Error state. Inverter {this.InverterStatus.SystemIndex}");
-            var notificationMessageData = new InverterProgrammingFieldMessageData(this.inverterProgrammingFieldMessageData);
+            var notificationMessageData = new InverterProgrammingFieldMessageData(this.inverterProgrammingFieldMessageData.Parameters);
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter programming Start error",

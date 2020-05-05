@@ -45,7 +45,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("authenticate")]
+        [HttpPost("authenticate-bearer-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<UserClaims>> AuthenticateWithBearerToken(
+           string bearerToken,
+           [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+           [FromServices] IUsersWmsWebService usersWmsWebService)
+        {
+            this.logger.LogDebug($"Login requested for token '{bearerToken}' by '{this.BayNumber}'.");
+
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var claims = await usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
+
+                this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
+
+                return this.Ok(claims);
+            }
+
+            return this.BadRequest("The Wms is not enabled.");
+        }
+
+        [HttpPost("authenticate-resource-owner")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType]

@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.NeedHomingAxis == Axis.None)
             {
                 this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
-                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
+                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.HorizontalAndVertical);
             }
             this.Mission.Status = MissionStatus.Executing;
             this.MissionsDataProvider.Update(this.Mission);
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                 {
                     if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                     {
@@ -180,14 +180,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.CloseShutterBayNumber = bay.Number;
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, bayPosition.Location);
                     }
+                    else if (this.Mission.NeedHomingAxis == Axis.None
+                        && this.Mission.MissionType == MissionType.LoadUnitOperation
+                        && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
                 }
 
-                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                 {
                     if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                     {
                         this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     else
                     {
@@ -272,12 +279,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             if (notification.Type == MessageType.ShutterPositioning
-                                && this.Mission.NeedHomingAxis == Axis.Horizontal
+                                && (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                                 )
                             {
                                 this.Mission.CloseShutterBayNumber = BayNumber.None;
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             this.MissionsDataProvider.Update(this.Mission);
                         }

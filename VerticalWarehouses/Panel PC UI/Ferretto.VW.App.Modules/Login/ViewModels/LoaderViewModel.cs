@@ -102,6 +102,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await base.OnAppearedAsync();
         }
 
+        protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+           // await base.OnHealthStatusChangedAsync(e);
+
+            await this.RetrieveMachineInfoAsync();
+        }
+
         private async Task CheckFirewallStatusAsync()
         {
             await Task.Delay(FirewallCheckDelay);
@@ -137,11 +144,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 Utils.Modules.Login.LOGIN,
                 machineIdentity,
                 trackCurrentView: false);
-        }
-
-        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
-        {
-            await this.RetrieveMachineInfoAsync();
         }
 
         private async Task RetrieveMachineInfoAsync()

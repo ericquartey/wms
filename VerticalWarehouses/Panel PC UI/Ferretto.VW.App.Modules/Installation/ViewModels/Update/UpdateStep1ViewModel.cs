@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -95,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = true;
 
-                if (this.Installations.Count == 0)
+                if (!this.Installations.Any())
                 {
                     this.ShowNotification(InstallationApp.FileReadError, Services.Models.NotificationSeverity.Error);
                     this.IsBusy = false;

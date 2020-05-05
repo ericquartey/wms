@@ -153,6 +153,9 @@
   <data name="TempKey" xml:space="preserve">
     <value>Temporary Key: {0}</value>
   </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Unable to authenticate user with the barcode.</value>
+  </data>
   <data name="UserLogin" xml:space="preserve">
     <value>User name</value>
   </data>
