@@ -82,6 +82,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 
+        bool IsDrawerInBayExternalPosition(BayNumber bayNumber);
+
+        bool IsDrawerInBayInternalPosition(BayNumber bayNumber);
+
         bool IsDrawerInBayTop(BayNumber bayNumber);
 
         bool IsProfileCalibratedBay(BayNumber bayNumber);

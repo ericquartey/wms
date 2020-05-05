@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     try
                     {
                         this.ClearNotifications();
-                        var bearerToken = e.Parameters["bearerToken"];
+                        var bearerToken = e.GetBearerToken();
                         var claims = await this.authenticationService.LogInAsync(bearerToken);
 
                         await this.NavigateToMainMenuAsync(claims);

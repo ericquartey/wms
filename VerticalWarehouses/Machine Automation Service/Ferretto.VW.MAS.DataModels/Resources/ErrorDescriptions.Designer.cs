@@ -250,6 +250,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External bay empty.
+        /// </summary>
+        public static string ExternalBayEmpty {
+            get {
+                return ResourceManager.GetString("ExternalBayEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External bay is occupied.
+        /// </summary>
+        public static string ExternalBayOccupied {
+            get {
+                return ResourceManager.GetString("ExternalBayOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test not completed.
         /// </summary>
         public static string FirstTestFailed {
