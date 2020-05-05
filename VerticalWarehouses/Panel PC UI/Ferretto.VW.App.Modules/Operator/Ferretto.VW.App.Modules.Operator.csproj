@@ -89,6 +89,12 @@
     <Compile Update="Views\ItemOperations\LoadingUnitView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Others\LoadingUnitMissionDataGridView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
