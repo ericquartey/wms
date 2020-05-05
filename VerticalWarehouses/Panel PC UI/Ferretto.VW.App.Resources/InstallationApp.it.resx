@@ -2463,4 +2463,25 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RemoveTestUnit" xml:space="preserve">
     <value>Rimuovi cassetto da test</value>
   </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Programmazione inverter in esecuzione</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Programmazione inverter terminata con successo</value>
+  </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value>Programmazione inverters in esecuzione</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Programmazione inverter fermata</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Programmazione inverter terminata con errori</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Inizio programmazione inverter successivo</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Sola lettura</value>
+  </data>
 </root>

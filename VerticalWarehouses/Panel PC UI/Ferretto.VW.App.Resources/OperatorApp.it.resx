@@ -1348,4 +1348,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Users" xml:space="preserve">
     <value>Utenti</value>
   </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>Cassetto {0} in uscita da baia</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Cassetto {0}</value>
+  </data>
 </root>

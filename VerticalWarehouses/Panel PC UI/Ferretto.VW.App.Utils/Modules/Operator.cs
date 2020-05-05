@@ -47,6 +47,8 @@
 
             public const string LOADING_UNIT = "LoadingUnitViewModel";
 
+            public const string LOADING_UNIT_INFO = "LoadingUnitInfoViewModel";
+
             public const string PICK = "ItemPickViewModel";
 
             public const string PICK_DETAILS = "ItemPickDetailsViewModel";

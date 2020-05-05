@@ -2537,4 +2537,32 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RemoveTestUnit" xml:space="preserve">
     <value>Remove test unit</value>
   </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Inverter programming started</value>
+    <comment>description</comment>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter programming ended successfully</value>
+    <comment>description</comment>
+  </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value>Inverters programming started</value>
+    <comment>description</comment>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Inverters programming stopped</value>
+    <comment>description</comment>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Inverter programming ended with errors</value>
+    <comment>description</comment>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Start programming next inverter</value>
+    <comment>description</comment>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Read only</value>
+    <comment>Header text</comment>
+  </data>
 </root>

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -14,15 +12,13 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class ParameterInverterViewModel : BaseMainViewModel
+    internal sealed class ParameterInverterViewModel : BaseParameterInverterViewModel
     {
         #region Fields
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private IEnumerable<Inverter> configuration;
-
-        private bool isBusy;
 
         private Inverter selectedInverter;
 
@@ -35,7 +31,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ParameterInverterViewModel(IMachineDevicesWebService machineDevicesWebService)
-            : base(PresentationMode.Installer)
+            : base()
         {
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
         }
@@ -45,21 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public List<Inverter> Configuration => this.configuration?.ToList();
-
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
-                    this.IsBackNavigationAllowed = !this.isBusy;
-                }
-            }
-        }
 
         public Inverter SelectedInverter
         {
@@ -93,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
+            this.IsWaitingForResponse = false;
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -109,20 +90,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-            finally
-            {
-                this.IsBusy = false;
-            }
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+            this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanSave()
         {
-            return !this.isBusy;
+            return !this.IsBusy;
         }
 
         private async Task SaveAllParametersAsync()
@@ -130,11 +108,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.ClearNotifications();
+
                 this.IsBusy = true;
 
                 await this.machineDevicesWebService.ProgramAllInvertersAsync(new VertimagConfiguration());
 
-                this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(InstallationApp.InvertersProgrammingStarted, Services.Models.NotificationSeverity.Info);
 
                 this.RaisePropertyChanged(nameof(this.Configuration));
             }
@@ -154,7 +133,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Inverters.PARAMETERSINVERTERDETAILS,
                 data: paramerter,
-                trackCurrentView: true); ;
+                trackCurrentView: true);
         }
 
         #endregion

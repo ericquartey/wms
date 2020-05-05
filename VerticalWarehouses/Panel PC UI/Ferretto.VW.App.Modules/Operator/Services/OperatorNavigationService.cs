@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private int? lastActiveMissionId;
 
+        private int? lastActiveUnitId;
+
         private string previousModuleName;
 
         #endregion
@@ -86,6 +88,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.loadingUnitToken.Dispose();
             this.missionToken.Dispose();
             this.navigationToken.Dispose();
+        }
+
+        public void NavigateToDrawerInfoView()
+        {
+            this.NavigateToDrawerInfoView(goToWaitViewIfBayIsEmpty: true);
         }
 
         public void NavigateToDrawerView()
@@ -136,6 +143,32 @@ namespace Ferretto.VW.App.Modules.Operator
                 activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY;
         }
 
+        private void NavigateToDrawerInfoView(bool goToWaitViewIfBayIsEmpty)
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
+            if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PICK
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.PUT
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY)
+            {
+                return;
+            }
+            this.logger.Trace("Unit move out, navigation to unit info view.");
+
+            this.navigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO,
+                this.lastActiveUnitId,
+                trackCurrentView: this.IsViewTrackable());
+        }
+
         private void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
         {
             var activeViewModelName = this.GetActiveViewModelName();
@@ -162,6 +195,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {
+                    this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
                 else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT && goToWaitViewIfBayIsEmpty)
