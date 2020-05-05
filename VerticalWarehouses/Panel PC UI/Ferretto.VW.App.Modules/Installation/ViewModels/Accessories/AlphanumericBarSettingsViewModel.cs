@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IPAddress ipAddress;
 
-        private bool isEnabled;
+        private bool isAccessoryEnabled;
 
         private int luminosity = 7;
 
@@ -84,12 +84,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsEnabled
+        public bool IsAccessoryEnabled
         {
-            get => this.isEnabled;
+            get => this.isAccessoryEnabled;
             set
             {
-                if (this.SetProperty(ref this.isEnabled, value))
+                if (this.SetProperty(ref this.isAccessoryEnabled, value))
                 {
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
@@ -143,8 +143,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public IEnumerable<AlphaNumericBarSize> Sizes => (AlphaNumericBarSize[])Enum.GetValues(typeof(AlphaNumericBarSize));
-
         public bool SwitchOnIsChecked
         {
             get => this.switchOnIsChecked;
@@ -177,11 +175,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsWaitingForResponse = true;
                 var accessories = await this.bayManager.GetBayAccessoriesAsync();
 
                 if (accessories is null)
                 {
-                    this.IsEnabled = false;
+                    this.IsAccessoryEnabled = false;
                     return;
                 }
 
@@ -190,17 +189,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.alphaNumericBarDriver = new AlphaNumericBarDriver();
                 }
 
-                this.alphaNumericBarDriver.Configure(accessories.AlphaNumericBar.IpAddress, accessories.AlphaNumericBar.TcpPort, (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size);
-
-                this.IsEnabled = accessories.AlphaNumericBar.IsEnabled == "true";
-                this.IpAddress = this.alphaNumericBarDriver.IpAddress;
-                this.Port = this.alphaNumericBarDriver.Port;
-                this.Size = this.alphaNumericBarDriver.Size;
+                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabled == "true";
+                this.IpAddress = accessories.AlphaNumericBar.IpAddress;
+                this.Port = accessories.AlphaNumericBar.TcpPort;
+                this.Size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size;
                 this.AreSettingsChanged = false;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
 
             await base.OnDataRefreshAsync();
@@ -209,32 +210,89 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             this.saveCommand?.RaiseCanExecuteChanged();
-
-            //base.RaiseCanExecuteChanged();
+            base.RaiseCanExecuteChanged();
         }
 
         private bool CanSave()
         {
-            return true;
+            return !this.IsWaitingForResponse;
         }
 
         private async Task<bool> DoLuminosityAsync(int luminosity)
         {
-            return await this.alphaNumericBarDriver.SetLuminosityAsync(luminosity);
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
+                return await this.alphaNumericBarDriver.SetLuminosityAsync(luminosity);
+            }
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            return false;
         }
 
         private async Task<bool> DoSwitchOnAsync(bool switchOn)
         {
-            return await this.alphaNumericBarDriver.SetEnabledAsync(switchOn);
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
+                return await this.alphaNumericBarDriver.SetEnabledAsync(switchOn);
+            }
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            return false;
         }
 
         private async Task<bool> DoTestAsync(bool enable)
         {
-            return await this.alphaNumericBarDriver.SetTestAsync(enable);
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
+                return await this.alphaNumericBarDriver.SetTestAsync(enable);
+            }
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            return false;
         }
 
         private async Task SaveAsync()
         {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port);
+            }
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

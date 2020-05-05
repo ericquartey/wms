@@ -2436,4 +2436,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WmsStatusOnline" xml:space="preserve">
     <value>Connesso</value>
   </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Grande</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Piccola</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Molto grande</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Molto piccola</value>
+  </data>
 </root>
