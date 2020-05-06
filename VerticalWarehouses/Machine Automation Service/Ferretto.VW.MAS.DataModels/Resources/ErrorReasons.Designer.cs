@@ -268,11 +268,29 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is lower than full load acceleration or higher than Empty load acceleration.
+        /// </summary>
+        public static string InvalidAxisAccelerationRange {
+            get {
+                return ResourceManager.GetString("InvalidAxisAccelerationRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed.
         /// </summary>
         public static string InvalidAxisSpeedConfiguration {
             get {
                 return ResourceManager.GetString("InvalidAxisSpeedConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is lower than full load speed or higher than empty load speed.
+        /// </summary>
+        public static string InvalidAxisSpeedRange {
+            get {
+                return ResourceManager.GetString("InvalidAxisSpeedRange", resourceCulture);
             }
         }
         

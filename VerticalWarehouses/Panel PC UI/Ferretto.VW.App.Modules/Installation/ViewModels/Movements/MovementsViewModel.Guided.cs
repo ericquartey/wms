@@ -473,6 +473,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromCell()
         {
+            if (this.Cells is null)
+            {
+                return false;
+            }
             var cellPosition = this.Cells.FirstOrDefault(f => f.Id == this.MachineStatus?.LogicalPositionId);
             var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell &&
