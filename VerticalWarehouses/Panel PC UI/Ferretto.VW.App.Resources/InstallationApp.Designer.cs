@@ -140,7 +140,26 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
             }
         }
-        
+
+        public static string AddTestAllUnit
+        {
+            get
+            {
+                return ResourceManager.GetString("AddTestAllUnit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add unit to test.
+        /// </summary>
+        public static string AddTestUnit
+        {
+            get
+            {
+                return ResourceManager.GetString("AddTestUnit", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Samples the current values ​​for weight acquisition.
         /// </summary>
