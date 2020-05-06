@@ -52,9 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IMachineService, MachineService>();
-
-            ConfigureAlphaNumericBar(containerRegistry);
+            containerRegistry.ConfigureAlphaNumericBarUiServices();
 
             // Operator
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
@@ -111,11 +109,6 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
-        }
-
-        private static void ConfigureAlphaNumericBar(IContainerRegistry containerRegistry)
-        {
-            containerRegistry.ConfigureAlphaNumericBarUiServices();
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TDO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
+            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TODO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
 
             return containerRegistry;
         }
