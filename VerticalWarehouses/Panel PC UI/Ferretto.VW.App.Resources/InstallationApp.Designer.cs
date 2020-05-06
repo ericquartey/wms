@@ -97,6 +97,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add all unit to test.
+        /// </summary>
+        public static string AddTestAllUnit {
+            get {
+                return ResourceManager.GetString("AddTestAllUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add unit to test.
+        /// </summary>
+        public static string AddTestUnit {
+            get {
+                return ResourceManager.GetString("AddTestUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large.
         /// </summary>
         public static string AlphaNumericBarSizeL {
@@ -124,7 +142,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra Large.
+        ///   Looks up a localized string similar to Extra large.
         /// </summary>
         public static string AlphaNumericBarSizeXL {
             get {
@@ -133,33 +151,14 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra Small.
+        ///   Looks up a localized string similar to Extra small.
         /// </summary>
         public static string AlphaNumericBarSizeXS {
             get {
                 return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
             }
         }
-
-        public static string AddTestAllUnit
-        {
-            get
-            {
-                return ResourceManager.GetString("AddTestAllUnit", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Add unit to test.
-        /// </summary>
-        public static string AddTestUnit
-        {
-            get
-            {
-                return ResourceManager.GetString("AddTestUnit", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Samples the current values ​​for weight acquisition.
         /// </summary>
