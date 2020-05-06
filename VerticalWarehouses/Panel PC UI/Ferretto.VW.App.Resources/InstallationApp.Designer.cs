@@ -97,20 +97,47 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add all unit to test.
+        ///   Looks up a localized string similar to Large.
         /// </summary>
-        public static string AddTestAllUnit {
+        public static string AlphaNumericBarSizeL {
             get {
-                return ResourceManager.GetString("AddTestAllUnit", resourceCulture);
+                return ResourceManager.GetString("AlphaNumericBarSizeL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add unit to test.
+        ///   Looks up a localized string similar to Medium.
         /// </summary>
-        public static string AddTestUnit {
+        public static string AlphaNumericBarSizeM {
             get {
-                return ResourceManager.GetString("AddTestUnit", resourceCulture);
+                return ResourceManager.GetString("AlphaNumericBarSizeM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        public static string AlphaNumericBarSizeS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra Large.
+        /// </summary>
+        public static string AlphaNumericBarSizeXL {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra Small.
+        /// </summary>
+        public static string AlphaNumericBarSizeXS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
             }
         }
         
