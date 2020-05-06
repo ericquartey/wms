@@ -200,8 +200,8 @@ namespace Ferretto.VW.App
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
             }
 
-            LocRes.Setup();
-            LocRes.CurrentCulture = CultureInfo.CurrentCulture;
+            //LocRes.Setup();
+            //LocRes.CurrentCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion

@@ -340,7 +340,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             else
             {
-                throw new Exception(string.Format(Resources.LocRes.Get("Errors.LoadingUnitViewModelPropertyIdentifier"), nameof(this.Data), this.GetType().Name));
+                throw new Exception(string.Format(Resources.Errors.LoadingUnitViewModelPropertyIdentifier, nameof(this.Data), this.GetType().Name));
             }
 
             this.missionOperationToken = this.eventAggregator
