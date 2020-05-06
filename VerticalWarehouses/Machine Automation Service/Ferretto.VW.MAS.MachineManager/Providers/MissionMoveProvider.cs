@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -98,7 +99,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         catch (StateMachineException ex)
                         {
                             this.Logger.LogError(ex.NotificationMessage.Description, "State notification error.");
-                            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                             state.OnStop(StopRequestReason.Error);
                         }

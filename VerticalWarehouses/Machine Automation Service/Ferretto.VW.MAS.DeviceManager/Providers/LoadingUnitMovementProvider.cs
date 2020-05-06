@@ -402,7 +402,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+            try
+            {
+                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, requestingBay);
+                throw new StateMachineException(ex.Message, requestingBay, sender);
+            }
             if (moveShutter != ShutterPosition.NotSpecified)
             {
                 try
