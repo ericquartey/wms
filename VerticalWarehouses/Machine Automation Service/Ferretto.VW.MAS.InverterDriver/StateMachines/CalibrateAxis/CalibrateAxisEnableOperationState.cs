@@ -10,11 +10,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const int CheckDelayTime = 300;
-
         private readonly Axis axisToCalibrate;
 
         private readonly Calibration calibration;
+
+        private int CheckDelayTime = 300;
 
         private DateTime enableTime;
 
@@ -46,6 +46,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
             this.startTime = DateTime.UtcNow;
             this.enableTime = DateTime.MinValue;
+            if (this.axisToCalibrate == Axis.Vertical)
+            {
+                this.CheckDelayTime *= 3;
+            }
 
             this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal);
 
