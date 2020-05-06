@@ -26,19 +26,6 @@ namespace Ferretto.VW.App.Accessories
             return containerRegistry;
         }
 
-        public static IContainerProvider UseBarcodeReader(
-            this IContainerProvider containerProvider)
-        {
-            if (containerProvider is null)
-            {
-                throw new ArgumentNullException(nameof(containerProvider));
-            }
-
-            _ = containerProvider.Resolve<IBarcodeReaderService>();
-
-            return containerProvider;
-        }
-
         #endregion
     }
 }

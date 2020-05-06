@@ -94,7 +94,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.Status = MissionStatus.Waiting;
             }
 
-            this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay,
@@ -140,7 +139,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
                                 {
                                     this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
-                                    this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId, 0);
+                                    this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                                     transaction.Commit();
                                 }
                                 this.Mission.LoadUnitDestination = destination.Location;

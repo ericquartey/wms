@@ -567,18 +567,18 @@ namespace Ferretto.VW.MAS.MissionManager
                     else if (mission.RestoreStep == MissionStep.LoadElevator)
                     {
                         mission.NeedMovingBackward = true;
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
                     }
                     else if (mission.RestoreStep == MissionStep.DepositUnit)
                     {
                         mission.NeedMovingBackward = true;
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                     }
                     else
                     {
-                        mission.NeedHomingAxis = Axis.Horizontal;
+                        mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                     }
                     newStep.OnEnter(null);
@@ -608,7 +608,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 if (bayNumber != BayNumber.None)
                 {
-                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
+                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
+                        Calibration.FindSensor,
+                        loadingUnitId: null,
+                        showErrors: false);
 
                     this.EventAggregator
                         .GetEvent<CommandEvent>()
@@ -627,7 +630,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!generated && !this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
             {
-                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
+                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
+                    Calibration.FindSensor,
+                    loadingUnitId: null,
+                    showErrors: true);
 
                 this.EventAggregator
                     .GetEvent<CommandEvent>()
@@ -967,14 +973,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (message.Status == MessageStatus.OperationError)
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
+
                     if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                     {
-                        this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; //MachineMode.Automatic;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                     else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                     {
-                        this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; // MachineMode.LoadUnitOperations;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                 }

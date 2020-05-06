@@ -315,6 +315,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.NavigationService.GoBack();
                 this.Reset();
 
+                //this.operatorNavigationService.NavigateToDrawerInfoView(); 
+
                 if (this.IsNewOperationAvailable)
                 {
                     this.operatorNavigationService.NavigateToDrawerView();

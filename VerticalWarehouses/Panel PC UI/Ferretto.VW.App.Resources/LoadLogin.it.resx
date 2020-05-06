@@ -153,6 +153,9 @@
   <data name="TempKey" xml:space="preserve">
     <value>Chiave temporanea: {0}</value>
   </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Il codice a barre non corrisponde ad un utente registrato</value>
+  </data>
   <data name="UserLogin" xml:space="preserve">
     <value>Nome utente</value>
   </data>

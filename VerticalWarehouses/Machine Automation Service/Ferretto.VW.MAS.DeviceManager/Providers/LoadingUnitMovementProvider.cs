@@ -180,6 +180,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return bayNumber;
         }
 
+        public double GetCurrentHorizontalPosition()
+        {
+            return this.elevatorProvider.HorizontalPosition;
+        }
+
         public double GetCurrentVerticalPosition()
         {
             return this.elevatorProvider.VerticalPosition;

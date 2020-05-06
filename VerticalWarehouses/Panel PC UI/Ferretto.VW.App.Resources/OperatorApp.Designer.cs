@@ -2033,11 +2033,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit {0}.
+        /// </summary>
+        public static string LoadingUnitIdInfo {
+            get {
+                return ResourceManager.GetString("LoadingUnitIdInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading unit {0} in bay.
         /// </summary>
         public static string LoadingUnitInBay {
             get {
                 return ResourceManager.GetString("LoadingUnitInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit {0} out of the bay.
+        /// </summary>
+        public static string LoadingUnitOutBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitOutBay", resourceCulture);
             }
         }
         

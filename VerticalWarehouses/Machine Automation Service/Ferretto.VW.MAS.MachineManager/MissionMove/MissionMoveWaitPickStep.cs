@@ -58,10 +58,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);
             }
 
-            if (this.Mission.LoadUnitId > 0)
-            {
-                this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
-            }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 

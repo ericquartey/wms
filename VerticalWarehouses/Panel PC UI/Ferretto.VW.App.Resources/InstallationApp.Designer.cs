@@ -3472,11 +3472,74 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter programming ended with errors.
+        /// </summary>
+        public static string InverterProgrammingEndedErrors {
+            get {
+                return ResourceManager.GetString("InverterProgrammingEndedErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start programming next inverter.
+        /// </summary>
+        public static string InverterProgrammingNext {
+            get {
+                return ResourceManager.GetString("InverterProgrammingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter programming started.
+        /// </summary>
+        public static string InverterProgrammingStarted {
+            get {
+                return ResourceManager.GetString("InverterProgrammingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter programming ended successfully.
+        /// </summary>
+        public static string InverterProgrammingSuccessfullyEnded {
+            get {
+                return ResourceManager.GetString("InverterProgrammingSuccessfullyEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverters programming started.
+        /// </summary>
+        public static string InvertersProgrammingStarted {
+            get {
+                return ResourceManager.GetString("InvertersProgrammingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverters programming stopped.
+        /// </summary>
+        public static string InvertersProgrammingStopped {
+            get {
+                return ResourceManager.GetString("InvertersProgrammingStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IP automation service.
         /// </summary>
         public static string IpAutomationService {
             get {
                 return ResourceManager.GetString("IpAutomationService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read only.
+        /// </summary>
+        public static string IsReadOnly {
+            get {
+                return ResourceManager.GetString("IsReadOnly", resourceCulture);
             }
         }
         

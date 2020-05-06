@@ -137,9 +137,13 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.WmsEnableChanged:
                     await this.OnWmsEnableChanged(serviceProvider);
                     break;
-                    
+
                 case MessageType.RepetitiveHorizontalMovements:
                     await this.OnRepetitiveHorizontalMovementsChanged(message);
+                    break;
+
+                case MessageType.InverterProgramming:
+                    await this.OnInverterProgrammingChanged(message);
                     break;
             }
         }

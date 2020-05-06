@@ -76,13 +76,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay1Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
 
+        public bool IsDrawerInBay1ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerInBay1InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+
         public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
 
         public bool IsDrawerInBay2Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
 
+        public bool IsDrawerInBay2ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+
+        public bool IsDrawerInBay2InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+
         public bool IsDrawerInBay2Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
 
         public bool IsDrawerInBay3Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+
+        public bool IsDrawerInBay3ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
+
+        public bool IsDrawerInBay3InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
 
         public bool IsDrawerInBay3Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
@@ -174,6 +186,38 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case BayNumber.BayThree:
                     return this.IsDrawerInBay3Bottom;
+            }
+        }
+
+        public bool IsDrawerInBayExternalPosition(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1ExternalPosition;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2ExternalPosition;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3ExternalPosition;
+            }
+        }
+
+        public bool IsDrawerInBayInternalPosition(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1InternalPosition;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2InternalPosition;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3InternalPosition;
             }
         }
 
@@ -408,7 +452,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
                                         this.OnFaultStateChanged(args);
                                     }
-
                                 }
 
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);

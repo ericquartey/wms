@@ -28,7 +28,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
-            this.startTime = DateTime.UtcNow;
             this.oldPosition = null;
         }
 
@@ -46,6 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug("Set Sequence Mode");
+            this.startTime = DateTime.UtcNow;
             if (this.InverterStatus is IPositioningInverterStatus currentStatus)
             {
                 currentStatus.TableTravelControlWord.SequenceMode = true;

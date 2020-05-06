@@ -3,14 +3,13 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningDisableOperationState : InverterStateBase
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         private bool stopRequested;
 
@@ -27,7 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Inverter = inverterStatus;
             this.stopRequested = stopRequested;
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -44,6 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug($"Positioning Disable Operation. StopRequested = {this.stopRequested}");
+            this.startTime = DateTime.UtcNow;
             this.Inverter.PositionControlWord.NewSetPoint = false;
             this.Inverter.PositionControlWord.ImmediateChangeSet = false;
             this.Inverter.PositionControlWord.RelativeMovement = false;
