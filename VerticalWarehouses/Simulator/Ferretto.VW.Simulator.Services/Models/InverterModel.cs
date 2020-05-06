@@ -284,6 +284,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterType inverterType;
 
+        private bool isExternal = false;
+
         private MAS.DataModels.Machine machine;
 
         private InverterOperationMode operationMode;
@@ -442,6 +444,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.inverterType;
             set => this.inverterType = value;
+        }
+
+        public bool IsExternal
+        {
+            get => this.isExternal;
+            set => this.isExternal = value;
         }
 
         public bool IsFault
@@ -625,16 +633,19 @@ namespace Ferretto.VW.Simulator.Services.Models
                         case InverterRole.Bay1:
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null);
+                            this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null && x.IsExternal);
                             break;
 
                         case InverterRole.Bay2:
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null);
+                            this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null && x.IsExternal);
                             break;
 
                         case InverterRole.Bay3:
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null);
+                            this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null && x.IsExternal);
                             break;
                     }
                 }
@@ -1238,16 +1249,34 @@ namespace Ferretto.VW.Simulator.Services.Models
                     && this.OperationMode == InverterOperationMode.Position
                     && this.Id > 1)
                 {
-                    // bay chain. simulate the lift process
-                    if (target - this.AxisPosition < 20)
+                    if (!this.isExternal)
                     {
-                        this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                        // bay chain. simulate the lift process
+                        if (target - this.AxisPosition < 20)
+                        {
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                        }
+                        else if (target - this.AxisPosition > 20
+                            && this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value
+                            )
+                        {
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                        }
                     }
-                    else if (target - this.AxisPosition > 20
-                        && this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value
-                        )
+                    else
                     {
-                        this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                        // external bay, simulate the Forward (TowardOperator) direction
+                        if (target - this.AxisPosition < 20)
+                        {
+                            // turn on the external presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                        }
+                        else if (target - this.AxisPosition > 20 &&
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                        {
+                            // turn off the internal presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                        }
                     }
                 }
             }
@@ -1310,6 +1339,26 @@ namespace Ferretto.VW.Simulator.Services.Models
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                             }
+                        }
+                    }
+                }
+                else if (this.InverterType == InverterType.Acu
+                    && this.OperationMode == InverterOperationMode.Position
+                    && this.Id > 1)
+                {
+                    if (this.isExternal)
+                    {
+                        // external bay, simulate the Backward (TowardMachine) direction
+                        if (Math.Abs(target - this.AxisPosition) < 20)
+                        {
+                            // turn on the internal presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                        }
+                        else if (Math.Abs(target - this.AxisPosition) > 20 &&
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value)
+                        {
+                            // turn off the external presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
                         }
                     }
                 }

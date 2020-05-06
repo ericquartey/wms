@@ -425,6 +425,7 @@ namespace Ferretto.VW.Simulator.Services
                         continue;
                     }
                     bool isCarousel = bay.Carousel != null;
+                    bool isExternal = bay.IsExternal;
 
                     // Retrieve bay position (upper/lower position)
                     var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
@@ -436,7 +437,20 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayOne:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        // check state of external sensor for the ext bay
+                                        if (this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -447,7 +461,19 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayTwo:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        if (this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -458,7 +484,19 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayThree:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        if (this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
