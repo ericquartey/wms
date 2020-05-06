@@ -73,6 +73,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Scaffolding
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Keyboards", "Panel PC UI\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj", "{7B660156-F60E-439F-8973-B84D33A7349D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.AlphaNumericBar", "Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj", "{D6780E1C-C22B-4C16-9784-18672B1DC7B7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B2E0727-2FBE-4F9D-85A0-F585786487C4} = {2B2E0727-2FBE-4F9D-85A0-F585786487C4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -371,6 +376,18 @@ Global
 		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x64.Build.0 = Release|Any CPU
 		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x86.ActiveCfg = Release|Any CPU
 		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x86.Build.0 = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|x64.Build.0 = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -401,6 +418,7 @@ Global
 		{8C82EE92-0A67-45F7-B95B-E342A30147FF} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{6533758A-46FC-4058-A4BF-693B7966AF8A} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{7B660156-F60E-439F-8973-B84D33A7349D} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{D6780E1C-C22B-4C16-9784-18672B1DC7B7} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

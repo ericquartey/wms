@@ -52,8 +52,7 @@
                     Background="{DynamicResource PpcBackground}"
                     BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}"
-                    Visibility="Collapsed" >
-                <!--Visibility="{Binding IsGridVisible, Converter={StaticResource BTVC}}"-->
+                    Visibility="{Binding IsGridVisible, Converter={StaticResource BTVC}}" >
                 <DataGrid Name="DataGrid"
                           Width="auto"
                           Height="auto"
