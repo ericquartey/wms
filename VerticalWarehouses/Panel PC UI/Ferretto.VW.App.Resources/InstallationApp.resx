@@ -2565,4 +2565,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Read only</value>
     <comment>Header text</comment>
   </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Extra large</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Extra small</value>
+  </data>
 </root>
