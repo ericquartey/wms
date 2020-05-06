@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Controls
         {
             if (this.Type == null)
             {
-                throw new ArgumentException(Errors.MarkupNameOfSyntax);
+                throw new ArgumentException(LocRes.Get("Errors.MarkupNameOfSyntax"));
             }
 
             return this.Type.Name;

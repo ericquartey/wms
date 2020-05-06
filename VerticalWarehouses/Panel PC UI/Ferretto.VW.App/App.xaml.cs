@@ -10,6 +10,7 @@ using System.Windows;
 using System.Xml.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -198,6 +199,9 @@ namespace Ferretto.VW.App
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
             }
+
+            LocRes.Setup();
+            LocRes.CurrentCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion
