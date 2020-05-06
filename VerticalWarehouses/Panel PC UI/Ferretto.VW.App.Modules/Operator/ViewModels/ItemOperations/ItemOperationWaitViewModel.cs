@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int loadingUnitsMovements;
 
-        private List<int> moveUnitId = new List<int>();
+        private IEnumerable<int> moveUnitId = new List<int>();
 
         private int pendingMissionOperationsCount;
 
@@ -91,7 +91,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.loadingUnits.Clear();
-                this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Status == LoadingUnitStatus.OnMovementToBay));
+                this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+
+                if (this.moveUnitId != null)
+                {
+                    foreach (var unit in this.moveUnitId)
+                    {
+                        this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -133,13 +141,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnDataRefreshAsync();
 
+            await this.GetLoadingUnitsAsync();
+
             await this.CheckForNewOperationCount();
         }
 
         private async Task CheckForNewOperationCount()
         {
             var missions = await this.machineMissionsWebService.GetAllAsync();
-            var u = missions.Where(i => i.LoadUnitDestination == LoadingUnitLocation.Up || i.LoadUnitDestination == LoadingUnitLocation.Down);
             this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
             this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
         }

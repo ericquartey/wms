@@ -54,8 +54,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("active/unit")]
         public ActionResult<List<int>> GetAllUnitGoBay()
         {
-            //var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
-            return this.Ok(/*missions*/);
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
+            return this.Ok(missions);
         }
 
         [HttpGet("{id}/wms")]
