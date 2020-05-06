@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.CodeParser;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
@@ -341,70 +342,90 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task AlphaNumericBarConfigureAsync()
         {
-            var accessories = await this.BayManager.GetBayAccessoriesAsync();
-
-            if (accessories is null)
+            try
             {
-                return;
+                var accessories = await this.BayManager.GetBayAccessoriesAsync();
+
+                if (accessories is null)
+                {
+                    return;
+                }
+
+                var alphaNumericBar = accessories.AlphaNumericBar;
+                if (alphaNumericBar.IsEnabled == "true")
+                {
+                    this.alphaNumericBarDriver = new AlphaNumericBarDriver();
+
+                    var ipAddress = alphaNumericBar.IpAddress;
+                    var port = alphaNumericBar.TcpPort;
+                    var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
+
+                    this.alphaNumericBarDriver.Configure(ipAddress, port, size);
+                }
             }
-
-            var alphaNumericBar = accessories.AlphaNumericBar;
-            if (alphaNumericBar.IsEnabled == "true")
+            catch (Exception ex)
             {
-                this.alphaNumericBarDriver = new AlphaNumericBarDriver();
-
-                var ipAddress = alphaNumericBar.IpAddress;
-                var port = alphaNumericBar.TcpPort;
-                var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
-
-                this.alphaNumericBarDriver.Configure(ipAddress, port, size);
+                this.ShowNotification(ex);
             }
         }
 
         private async Task AlphaNumericBarSendMessageAsync()
         {
-            if (this.alphaNumericBarDriver is null)
+            try
             {
-                return;
-            }
+                this.IsWaitingForResponse = true;
 
-            if (this.MissionOperation is null)
-            {
-                await this.alphaNumericBarDriver.SetEnabledAsync(false); // no mission, then switch off the alpha numeric bar
-            }
-            else
-            {
-                var message = "?";
-                var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.loadingUnitWidth, this.selectedCompartment is null ? 0 : this.selectedCompartment.XPosition.Value);
-                await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
-
-                switch (this.MissionOperation.Type)
+                if (this.alphaNumericBarDriver is null)
                 {
-                    case MissionOperationType.Pick:
-                        message = "-";
-                        break;
-
-                    case MissionOperationType.Put:
-                        message = "+";
-                        break;
+                    return;
                 }
 
-                message += this.MissionOperation.RequestedQuantity + " " + this.MissionOperation.ItemCode + " " + this.MissionOperation.ItemDescription;
-
-                var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
-                if (offset > 0)
+                if (this.MissionOperation is null)
                 {
-                    await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
-                }
-                else if (offset == -1)
-                {
-                    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                    await this.alphaNumericBarDriver.SetEnabledAsync(false); // no mission, then switch off the alpha numeric bar
                 }
                 else
                 {
-                    var start = arrowPosition + 6;
-                    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                    var message = "?";
+                    var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.loadingUnitWidth, this.selectedCompartment is null ? 0 : this.selectedCompartment.XPosition.Value);
+                    await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
+
+                    switch (this.MissionOperation.Type)
+                    {
+                        case MissionOperationType.Pick:
+                            message = "-";
+                            break;
+
+                        case MissionOperationType.Put:
+                            message = "+";
+                            break;
+                    }
+
+                    message += this.MissionOperation.RequestedQuantity + " " + this.MissionOperation.ItemCode + " " + this.MissionOperation.ItemDescription;
+
+                    var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
+                    if (offset > 0)
+                    {
+                        await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
+                    }
+                    else if (offset == -1)
+                    {
+                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                    }
+                    else
+                    {
+                        var start = arrowPosition + 6;
+                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                    }
                 }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

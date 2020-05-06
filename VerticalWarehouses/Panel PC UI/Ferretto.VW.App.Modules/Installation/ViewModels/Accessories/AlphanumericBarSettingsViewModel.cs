@@ -116,6 +116,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.port;
             set
             {
+                if (value < 1 || value > 65535)
+                {
+                    value = AlphaNumericBarDriver.PORT_DEFAULT;
+                }
+
                 if (this.SetProperty(ref this.port, value))
                 {
                     this.AreSettingsChanged = true;

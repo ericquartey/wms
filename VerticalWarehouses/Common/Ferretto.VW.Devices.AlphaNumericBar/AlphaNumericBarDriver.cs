@@ -13,6 +13,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
     {
         #region Fields
 
+        public const int PORT_DEFAULT = 2020;
+
         private readonly Queue messagesReceivedQueue;
 
         private readonly Queue messagesToBeSendQueue;
@@ -23,7 +25,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private IPAddress ipAddress;
 
-        private int port = 2020;
+        private int port = PORT_DEFAULT;
 
         private AlphaNumericBarSize size = AlphaNumericBarSize.Medium;
 
