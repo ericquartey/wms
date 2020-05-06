@@ -2484,4 +2484,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Carica file</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Importazione  avvenuta con successo</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Importa file di configurazione</value>
+  </data>
 </root>

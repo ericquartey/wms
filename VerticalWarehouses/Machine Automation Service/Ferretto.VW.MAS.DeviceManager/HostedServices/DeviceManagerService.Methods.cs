@@ -230,6 +230,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
             else
             {
+                message.TargetBay = BayNumber.ElevatorBay;
                 var currentStateMachine = new InverterProgrammingStateMachine(
                     message,
                     this.EventAggregator,
