@@ -41,7 +41,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.CheckUnit}"
+                               Text="{x:Static res:ErrorsApp.CheckUnit}"
                                TextWrapping="Wrap" />
 
                     <StackPanel Grid.Column="1"
@@ -50,7 +50,7 @@
                                 Orientation="Vertical">
                         <TextBlock Margin="0"
                                    Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="{res:Loc ErrorsApp.ErrorCode}" />
+                                   Text="{x:Static res:ErrorsApp.ErrorCode}" />
                         <TextBlock Height="26"
                                    Background="{DynamicResource FerrettoRed}"
                                    Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
@@ -76,24 +76,24 @@
                                              Margin="0,0,15,0"
                                              HorizontalAlignment="Left"
                                              ContentText="{Binding MachineError.Id}"
-                                             LabelText="{res:Loc ErrorsApp.Id}" />
+                                             LabelText="{x:Static res:ErrorsApp.Id}" />
 
                     <controls:PpcLabeledText Grid.Column="1"
                                              Margin="0,0,15,0"
                                              ContentText="{Binding MachineError.Description}"
-                                             LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
+                                             LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
 
                     <controls:PpcLabeledText Grid.Column="2"
                                              HorizontalAlignment="Right"
                                              ContentText="{Binding ErrorTime}"
-                                             LabelText="{res:Loc ErrorsApp.FirstSeen}" />
+                                             LabelText="{x:Static res:ErrorsApp.FirstSeen}" />
 
                     <controls:PpcLabeledText Grid.Row="1"
                                              Grid.ColumnSpan="3"
                                              Margin="0,15,0,0"
                                              HorizontalAlignment="Left"
                                              ContentText="{Binding MachineError.Reason}"
-                                             LabelText="{res:Loc ErrorsApp.ErrorReason}" />
+                                             LabelText="{x:Static res:ErrorsApp.ErrorReason}" />
                 </Grid>
 
                 <Image Grid.Row="2"
@@ -124,10 +124,10 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="{res:Loc ErrorsApp.DrawerSelection}" /><Run Text=":" />
+                        <Run Text="{x:Static res:ErrorsApp.DrawerSelection}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.SelectUnitOnElevator}"
+                               Text="{x:Static res:ErrorsApp.SelectUnitOnElevator}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -141,7 +141,7 @@
                                    IsEnabled="{Binding CanLuIdOnElevator}"
                                    KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                    KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                   LabelText="{res:Loc ErrorsApp.UnitOnElevator}"
+                                   LabelText="{x:Static res:ErrorsApp.UnitOnElevator}"
                                    Mask="#0"
                                    MaxValue="999"
                                    MinValue="1" />
@@ -151,7 +151,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -168,11 +168,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay1}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay1}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -193,7 +193,7 @@
                                        EditValue="{Binding LuIdOnBay1Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -208,7 +208,7 @@
                                        EditValue="{Binding LuIdOnBay1Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -220,7 +220,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -237,11 +237,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay2}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay2}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -262,7 +262,7 @@
                                        EditValue="{Binding LuIdOnBay2Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -277,7 +277,7 @@
                                        EditValue="{Binding LuIdOnBay2Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -289,7 +289,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
+                                    Content="{x:Static res:ErrorsApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -306,11 +306,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay3}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectBay3}"
                                TextWrapping="Wrap" />
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                               Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -331,7 +331,7 @@
                                        EditValue="{Binding LuIdOnBay3Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.HighPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -346,7 +346,7 @@
                                        EditValue="{Binding LuIdOnBay3Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
+                                       LabelText="{x:Static res:ErrorsApp.LowPosition}"
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
@@ -380,7 +380,7 @@
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.DrawerIdentificationCompleted}"
+                               Text="{x:Static res:ErrorsApp.DrawerIdentificationCompleted}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -388,7 +388,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MarkAsResolvedCommand}"
-                                    Content="{res:Loc ErrorsApp.MarkAsResolved}" />-->
+                                    Content="{x:Static res:ErrorsApp.MarkAsResolved}" />-->
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"

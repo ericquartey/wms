@@ -168,4 +168,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TranslationManager\" />
+  </ItemGroup>
+
 </Project>

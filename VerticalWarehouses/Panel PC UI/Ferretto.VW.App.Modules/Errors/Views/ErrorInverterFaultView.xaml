@@ -43,7 +43,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc ErrorsApp.InverterFaultErrorRestore}" />
+                       Text="{x:Static res:ErrorsApp.InverterFaultErrorRestore}" />
 
             <StackPanel Grid.Row="1"
                         MinHeight="100"
@@ -51,7 +51,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{res:Loc ErrorsApp.ErrorCode}" />
+                           Text="{x:Static res:ErrorsApp.ErrorCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -70,7 +70,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{res:Loc ErrorsApp.Inverter}" />
+                           Text="{x:Static res:ErrorsApp.Inverter}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -86,7 +86,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{res:Loc ErrorsApp.DetailCode}" />
+                           Text="{x:Static res:ErrorsApp.DetailCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -101,7 +101,7 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Description}"
-                                  LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
+                                  LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
 
 
             <local:PpcLabeledText Grid.Row="2"
@@ -109,7 +109,7 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Reason}"
-                                  LabelText="{res:Loc ErrorsApp.ErrorReason}" />
+                                  LabelText="{x:Static res:ErrorsApp.ErrorReason}" />
 
 
 
@@ -117,7 +117,7 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding ErrorTime}"
-                                  LabelText="{res:Loc ErrorsApp.FirstSeen}" />
+                                  LabelText="{x:Static res:ErrorsApp.FirstSeen}" />
 
 
             <local:PpcLabeledText Grid.Row="3"
@@ -125,14 +125,14 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Id}"
-                                  LabelText="{res:Loc ErrorsApp.Id}" />
+                                  LabelText="{x:Static res:ErrorsApp.Id}" />
 
             <local:PpcButton Grid.Row="4"
                              Grid.ColumnSpan="2"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"
-                             Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+                             Content="{x:Static res:ErrorsApp.MarkAsResolved}" />
 
         </Grid>
     </Grid>

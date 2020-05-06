@@ -6,9 +6,9 @@
 
         public NavigationHistoryRecord(string moduleName, string viewName, string viewModelName, NotificationMessage notificationMessage = null)
         {
-            this.ModuleName = moduleName ?? throw new System.ArgumentException(Resources.LocRes.Get("Errors.ParameterCannotBeNullOrEmpty"), nameof(moduleName));
-            this.ViewName = viewName ?? throw new System.ArgumentException(Resources.LocRes.Get("Errors.ParameterCannotBeNullOrEmpty"), nameof(viewName));
-            this.ViewModelName = viewModelName ?? throw new System.ArgumentException(Resources.LocRes.Get("Errors.ParameterCannotBeNullOrEmpty"), nameof(viewModelName));
+            this.ModuleName = moduleName ?? throw new System.ArgumentException(Resources.Errors.ParameterCannotBeNullOrEmpty, nameof(moduleName));
+            this.ViewName = viewName ?? throw new System.ArgumentException(Resources.Errors.ParameterCannotBeNullOrEmpty, nameof(viewName));
+            this.ViewModelName = viewModelName ?? throw new System.ArgumentException(Resources.Errors.ParameterCannotBeNullOrEmpty, nameof(viewModelName));
             this.NotificationMessage = notificationMessage;
         }
 
