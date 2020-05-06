@@ -4,6 +4,8 @@
                     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <!--  converters  -->
+    <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
+
     <conv:BoolToThicknessConverter x:Key="BTTC" />
     <conv:BoolToVisibilityConverter x:Key="BTVC" />
     <conv:BoolToVisibilityConverter x:Key="BTVIC"
@@ -23,7 +25,7 @@
 
     <conv:ReferenceToBoolConverter x:Key="RTBC" />
     <conv:ReferenceToBoolConverter x:Key="RTBIC"
-                                         Invert="True" />
+                                   Invert="True" />
 
     <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />

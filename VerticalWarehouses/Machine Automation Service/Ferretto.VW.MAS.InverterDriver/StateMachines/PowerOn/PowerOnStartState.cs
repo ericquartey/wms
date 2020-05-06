@@ -8,14 +8,13 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     internal class PowerOnStartState : InverterStateBase
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -28,7 +27,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Logger.LogTrace("1:Method Start");
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -38,6 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         public override void Start()
         {
             this.Logger.LogDebug($"Power On Start Inverter {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.EnableVoltage = true;
             this.InverterStatus.CommonControlWord.QuickStop = true;
 

@@ -51,6 +51,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(missions);
         }
 
+        [HttpGet("active/unit")]
+        public ActionResult<List<int>> GetAllUnitGoBay()
+        {
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
+            return this.Ok(missions);
+        }
+
         [HttpGet("{id}/wms")]
         public async Task<ActionResult<WMS.Data.WebAPI.Contracts.MissionInfo>> GetByWmsIdAsync(int id, [FromServices] WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService)
         {

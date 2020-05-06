@@ -2484,6 +2484,21 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Lunga</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Corta</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Molto lunga</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Molto corta</value>
+  </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Carica file</value>
   </data>

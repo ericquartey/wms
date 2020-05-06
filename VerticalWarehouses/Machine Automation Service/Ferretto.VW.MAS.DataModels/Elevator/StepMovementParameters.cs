@@ -43,12 +43,20 @@ namespace Ferretto.VW.MAS.DataModels
                     var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
                     this.Speed = Math.Max(this.Speed - deltaSpeed, axis.FullLoadMovement.Speed);
                 }
+                //else
+                //{
+                //    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedRange, axis.Orientation));
+                //}
 
                 if (this.Acceleration >= axis.FullLoadMovement.Acceleration && this.Acceleration <= axis.EmptyLoadMovement.Acceleration)
                 {
                     var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;
                     this.Acceleration = Math.Max(this.Acceleration - deltaAcceleration, axis.FullLoadMovement.Acceleration);
                 }
+                //else
+                //{
+                //    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationRange, axis.Orientation));
+                //}
             }
         }
 

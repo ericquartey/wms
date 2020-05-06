@@ -40,8 +40,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.CheckUnit}"
                                TextWrapping="Wrap" />
 
@@ -123,13 +122,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
                         <Run Text="{x:Static res:ErrorsApp.DrawerSelection}" /><Run Text=":" />
                     </TextBlock>
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.SelectUnitOnElevator}"
                                TextWrapping="Wrap" />
                 </StackPanel>
@@ -170,13 +167,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectBay1}"
                                TextWrapping="Wrap" />
 
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
@@ -241,13 +236,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectBay2}"
                                TextWrapping="Wrap" />
 
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
@@ -312,13 +305,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectBay3}"
                                TextWrapping="Wrap" />
 
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.UnitSelectIdBay}"
                                TextWrapping="Wrap" />
                 </StackPanel>
@@ -383,14 +374,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
                         <Run Text="{x:Static res:General.SwitchToAutomatic}" /><Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock 
-                               Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                                Text="{x:Static res:ErrorsApp.DrawerIdentificationCompleted}"
                                TextWrapping="Wrap" />
                 </StackPanel>

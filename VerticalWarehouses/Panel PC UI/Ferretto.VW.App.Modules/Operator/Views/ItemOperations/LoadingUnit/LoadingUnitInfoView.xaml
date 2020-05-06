@@ -68,9 +68,9 @@
                                        HorizontalAlignment="Center"
                                        Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
                                 <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.Height}" /><Run Text="," />
+                                <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
                                 <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.GrossWeight}" /><Run Text=")" />
+                                <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
                             </TextBlock>
                         </StackPanel>
 
@@ -84,7 +84,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding MoveToLoadingUnitCommand}"
-                                Content="Vai a movimenti cassetti" />
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}" />
         </Grid>
     </Grid>
 </ctrls:View>

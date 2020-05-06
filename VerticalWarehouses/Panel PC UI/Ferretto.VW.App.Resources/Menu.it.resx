@@ -120,6 +120,12 @@
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Configurazione e verifica della barra alfanumerica</value>
   </data>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Parametri di configurazione</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Comandi</value>
+  </data>
   <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
     <value>Barra Alfanumerica</value>
   </data>
@@ -135,6 +141,12 @@
   <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
     <value>Lettore Badge</value>
   </data>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Abilitazione</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Indirizzo IP</value>
+  </data>
   <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
     <value>Configurazione e verifica della stampante etichette</value>
   </data>
@@ -147,8 +159,29 @@
   <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
     <value>Puntatore Laser</value>
   </data>
+  <data name="AccessoriesLuminosity" xml:space="preserve">
+    <value>Luminosità</value>
+  </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Menu Accessori</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Spento</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Acceso</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Porta</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Dimensione</value>
+  </data>
+  <data name="AccessoriesSwitchOn" xml:space="preserve">
+    <value>Accensione</value>
+  </data>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
   </data>
   <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
     <value>Configurazione e verifica del lettore token</value>

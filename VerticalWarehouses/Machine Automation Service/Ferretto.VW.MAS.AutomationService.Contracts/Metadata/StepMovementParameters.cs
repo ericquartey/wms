@@ -19,7 +19,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double Acceleration { get; set; }
 
             [Id(5)]
-            [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.StepMovementParameters_AdjustByWeight))]
             public bool AdjustByWeight { get; set; }
 

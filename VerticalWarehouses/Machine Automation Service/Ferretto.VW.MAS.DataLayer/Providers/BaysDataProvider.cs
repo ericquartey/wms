@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -871,6 +872,23 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.CurrentMission = null;
                     this.Update(bay);
                 }
+            }
+        }
+
+        public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
+        {
+            lock (this.dataContext)
+            {
+                var barBay = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                        .Single(b => b.Number == bayNumber);
+
+                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled ? "true" : "false";
+                barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
+                barBay.Accessories.AlphaNumericBar.TcpPort = port;
+
+                this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
+                this.dataContext.SaveChanges();
             }
         }
 

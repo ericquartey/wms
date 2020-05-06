@@ -396,4 +396,10 @@
   <data name="ExternalBayEmpty" xml:space="preserve">
     <value>The external bay is empty</value>
   </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration configuration is lower than full load acceleration or higher than Empty load acceleration</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>The {0} Axis movement Speed configuration is lower than full load speed or higher than empty load speed</value>
+  </data>
 </root>

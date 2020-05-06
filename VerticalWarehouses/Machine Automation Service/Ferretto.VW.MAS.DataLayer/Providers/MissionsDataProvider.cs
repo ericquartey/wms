@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Resources;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.EntityFrameworkCore;
@@ -291,6 +292,30 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenBy(o => o.CreationDate)
                     .ToList();
             }
+        }
+
+        public List<int> GetAllActiveUnitGoBay()
+        {
+            List<int> UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted
+                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
         }
 
         public IEnumerable<Mission> GetAllExecutingMissions()

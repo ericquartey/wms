@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -17,11 +18,15 @@ namespace Ferretto.VW.App.Services
 
         Task<LoadingUnit> GetAccessibleLoadingUnitAsync();
 
+        Task<BayAccessories> GetBayAccessoriesAsync();
+
         /// <exception cref="MasWebApiException"></exception>
         Task<Bay> GetBayAsync();
 
         /// <exception cref="MasWebApiException"></exception>
         Task InitializeAsync();
+
+        Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port);
 
         #endregion
     }

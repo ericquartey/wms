@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -72,6 +73,11 @@ namespace Ferretto.VW.App.Services
                 .FirstOrDefault();
         }
 
+        public async Task<BayAccessories> GetBayAccessoriesAsync()
+        {
+            return await this.machineBaysWebService.GetAccessoriesAsync();
+        }
+
         public async Task<Bay> GetBayAsync()
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
@@ -89,6 +95,11 @@ namespace Ferretto.VW.App.Services
             {
                 // do nothing
             }
+        }
+
+        public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port)
+        {
+            await this.machineBaysWebService.SetAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
