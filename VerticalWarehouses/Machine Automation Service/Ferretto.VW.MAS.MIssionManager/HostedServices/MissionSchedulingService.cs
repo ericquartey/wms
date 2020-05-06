@@ -611,7 +611,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
                         Calibration.FindSensor,
                         loadingUnitId: null,
-                        showErrors: false);
+                        showErrors: true);
 
                     this.EventAggregator
                         .GetEvent<CommandEvent>()
