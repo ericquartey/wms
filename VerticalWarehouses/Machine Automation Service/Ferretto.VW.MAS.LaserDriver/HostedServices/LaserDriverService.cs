@@ -64,6 +64,12 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.Logger.LogTrace($"1:Command received: {command.Type}, destination: {command.Destination}, source: {command.Source}");
 
             var laserKey = Enum.Parse<BayNumber>(command.DeviceIndex.ToString());
+
+            if (this.lasers is null)
+            {
+                return;
+            }
+
             if (!this.lasers.ContainsKey(laserKey))
             {
                 this.Logger.LogError($"Laser Driver received a command for unknown device: {laserKey}");
