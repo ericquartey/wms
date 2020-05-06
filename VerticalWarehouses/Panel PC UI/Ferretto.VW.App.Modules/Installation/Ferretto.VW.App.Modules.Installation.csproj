@@ -67,6 +67,7 @@
     <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
     <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
+    <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
@@ -91,6 +92,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
+      <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Inverters\ParametersInverterDetailsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
