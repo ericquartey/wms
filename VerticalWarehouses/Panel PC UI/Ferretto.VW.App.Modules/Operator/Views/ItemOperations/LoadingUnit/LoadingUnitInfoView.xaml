@@ -84,7 +84,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding MoveToLoadingUnitCommand}"
-                                Content="Vai a movimenti cassetti" />
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}" />
         </Grid>
     </Grid>
 </ctrls:View>

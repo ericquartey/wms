@@ -2914,6 +2914,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import configuration file .
+        /// </summary>
+        public static string ImportConfigurationFile {
+            get {
+                return ResourceManager.GetString("ImportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import successful.
+        /// </summary>
+        public static string ImportSuccessful {
+            get {
+                return ResourceManager.GetString("ImportSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to in Bay.
         /// </summary>
         public static string InBay {
@@ -3648,6 +3666,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadedTray {
             get {
                 return ResourceManager.GetString("LoadedTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load file.
+        /// </summary>
+        public static string LoadFile {
+            get {
+                return ResourceManager.GetString("LoadFile", resourceCulture);
             }
         }
         

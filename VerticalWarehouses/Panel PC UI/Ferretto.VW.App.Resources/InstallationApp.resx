@@ -2580,4 +2580,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AlphaNumericBarSizeXS" xml:space="preserve">
     <value>Extra small</value>
   </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Load file</value>
+    <comment>text</comment>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Import successful</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Import configuration file </value>
+  </data>
 </root>
