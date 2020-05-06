@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Errors.Designer.cs">
       <DependentUpon>Errors.resx</DependentUpon>
       <DesignTime>True</DesignTime>

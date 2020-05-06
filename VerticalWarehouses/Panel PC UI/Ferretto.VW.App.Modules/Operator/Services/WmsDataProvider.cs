@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
-                throw new InvalidOperationException(Resources.Errors.AreaMachineUnknow);
+                throw new InvalidOperationException(Resources.LocRes.Get("Errors.AreaMachineUnknow"));
             }
 
             var bay = await this.bayManager.GetBayAsync();
