@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Ferretto.VW.MAS.DataModels;
+using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -15,11 +16,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public const int PORT_DEFAULT = 2020;
 
+        public const int TCP_RECEIVE_MESSAGE_BUFFER = 2;
+
         private readonly Queue messagesReceivedQueue;
 
         private readonly Queue messagesToBeSendQueue;
 
-        private readonly int tcpTimeout = 3000;
+        private readonly int tcpTimeout = 1000;
 
         private bool barEnabled = false;
 
@@ -242,6 +245,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        public async Task<bool> SetScrollDirAsync(ScrollDirection direction)
+        {
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_DIR, null, (int)direction);
+
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
         public async Task<bool> SetScrollEnabledAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -258,6 +268,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        public async Task<bool> SetScrollSpeedAsync(int speed)
+        {
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_SPEED, null, speed);
+
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
         public async Task<bool> SetTestAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -269,6 +286,22 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             else
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_OFF);
+            }
+
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        public async Task<bool> SetTestScrollAsync(bool enable)
+        {
+            this.messagesToBeSendQueue.Clear();
+
+            if (enable)
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_SCROLL_ON);
+            }
+            else
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_SCROLL_OFF);
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
@@ -298,6 +331,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     strCommand = "TEST OFF";
                     break;
 
+                case AlphaNumericBarCommands.Command.TEST_SCROLL_ON:
+                    strCommand = "TESTSCROLL ON";
+                    break;
+
+                case AlphaNumericBarCommands.Command.TEST_SCROLL_OFF:
+                    strCommand = "TESTSCROLL OFF";
+                    break;
+
                 case AlphaNumericBarCommands.Command.DIM:                     // DIM <valueX>
                 case AlphaNumericBarCommands.Command.OFFSET:                  // OFFSET <value>
                     strCommand += " " + offset;
@@ -307,14 +348,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     strCommand += " " + offset;
                     if (message != null)
                     {
-                        strCommand += " " + message;
+                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
                     }
                     break;
 
                 case AlphaNumericBarCommands.Command.CUSTOM:                    // CUSTOM <index> <hexval>
                     if (message != null)
                     {
-                        strCommand += " " + message;
+                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
                     }
                     break;
 
@@ -326,12 +367,20 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     strCommand = "SCROLL ON " + offset + " " + scrollEnd;
                     if (message != null)
                     {
-                        strCommand += " " + message;
+                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
                     }
                     break;
 
                 case AlphaNumericBarCommands.Command.SCROLL_OFF:
                     strCommand = "SCROLL OFF";
+                    break;
+
+                case AlphaNumericBarCommands.Command.SET_SCROLL_SPEED:
+                    strCommand = "SETSCROLLSPEED " + offset;
+                    break;
+
+                case AlphaNumericBarCommands.Command.SET_SCROLL_DIR:
+                    strCommand = "SETSCROLLDIR " + offset;
                     break;
 
                 case AlphaNumericBarCommands.Command.SET_LUM:
@@ -362,20 +411,27 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     {
                         var data = Encoding.ASCII.GetBytes(sendMessage);
                         stream = client.GetStream();
+                        stream.ReadTimeout = this.tcpTimeout;
                         stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine($"ExecuteCommands();Sent: {0}", sendMessage);
+                        System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Sent: {0}", sendMessage);
 
-                        data = new byte[256];
-                        var bytes = stream.Read(data, 0, data.Length);
-                        var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-
-                        this.messagesReceivedQueue.Enqueue(responseMessage);
-                        if (!this.IsResponseOk(sendMessage, responseMessage))
+                        if (this.IsWaitResponse(sendMessage))
                         {
-                            throw new System.ArgumentException($"AplhaNumericBar;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
-                        }
+                            data = new byte[client.ReceiveBufferSize];
+                            var bytes = stream.Read(data, 0, data.Length);
+                            var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
-                        System.Diagnostics.Debug.WriteLine($"ExecuteCommands();Received: {0}", responseMessage);
+                            this.messagesReceivedQueue.Enqueue(responseMessage);
+                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Received: {0}", responseMessage);
+                            if (!this.IsResponseOk(sendMessage, responseMessage))
+                            {
+                                throw new System.ArgumentException($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                            }
+                        }
+                        else
+                        {
+                            this.messagesReceivedQueue.Enqueue("");
+                        }
                     }
 
                     stream.Close();
@@ -432,6 +488,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     result = true;
                 }
             }
+            return result;
+        }
+
+        private bool IsWaitResponse(string message)
+        {
+            bool result = true;
+
+            if (message.StartsWith("CLEAN", StringComparison.Ordinal) || message.StartsWith("ENABLE OFF", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
+            {
+                result = false;
+            }
+
             return result;
         }
 
