@@ -66,6 +66,7 @@
               Name="layoutroot">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -82,9 +83,16 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.InverterParameterizationMenuTitle}" />
             </StackPanel>
-            <!--SelectedItem="{Binding SelectedInverter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+            
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <TextBlock Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding SelectedFileConfigurationName}"/>
+            </StackPanel>
 
-            <ListView Grid.Row="1"
+            <ListView Grid.Row="2"
                           ItemsSource="{Binding InvertersParameters}"
                           SelectedItem="{Binding SelectedInverter, Mode=TwoWay}"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -112,15 +120,14 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <!--Command="{Binding Source={StaticResource proxy},Path=ShowInverterParamertersCommand}"-->
                         <controls:PpcButton
-                                        Title="{x:Static res:InstallationApp.Inverter}"                                                                                
+                                        Title="{Binding Description}"                                                                                
                                         Margin="0,30,30,0"                                        
-                                        Abbrevation="{Binding Index}"
+                                        Abbrevation="{Binding InverterIndex}"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding ElementName=layoutroot, Path=DataContext.ShowInverterParamertersCommand}"
                                         CommandParameter="{Binding}"
-                                        Content="{Binding Description}"
+                                        Content=""
                                         Kind="Check"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
                     </DataTemplate>

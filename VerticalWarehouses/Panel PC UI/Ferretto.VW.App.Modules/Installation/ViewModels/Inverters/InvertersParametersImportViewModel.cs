@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isBusy = false;
 
+        private ISetVertimagConfiguration parentConfiguration;
+
         private VertimagConfiguration selectedConfiguration = null;
 
         private FileInfo selectedFile = null;
@@ -102,14 +104,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override void Disappear()
         {
             this._usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
+
             this._usbWatcher.Dispose();
             base.Disappear();
         }
 
         public override Task OnAppearedAsync()
         {
-            // reset selected file to null, just in case
             this.SelectedFile = null;
+
+            if (this.Data is ISetVertimagConfiguration)
+            {
+                this.parentConfiguration = (ISetVertimagConfiguration)this.Data;
+            }
 
             this._usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
             this._usbWatcher.Start();
@@ -151,14 +158,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 // merge and save
                 var result = source.ExtendWith(this.selectedConfiguration);
                 var vertimagConfiguration = VertimagConfiguration.FromJson(result.ToString());
-                
-                if (CommonServiceLocator.ServiceLocator.Current.GetInstance(typeof(Ferretto.VW.App.Installation.ViewModels.ParameterInverterViewModel)) is INavigableViewModel mainConfiguration)
-                {
-                    ((ISetVertimagConfiguration)mainConfiguration).SelectedFileConfigurationName = this.selectedFile.FullName;
-                    ((ISetVertimagConfiguration)mainConfiguration).VertimagConfiguration = vertimagConfiguration;
-                    this.ShowNotification(Resources.InstallationApp.ImportSuccessful, Services.Models.NotificationSeverity.Success);
-                    this.NavigationService.GoBack();
-                }
+
+                this.parentConfiguration.SelectedFileConfigurationName = this.selectedFile.FullName;
+                this.parentConfiguration.VertimagConfiguration = vertimagConfiguration;
+                this.ShowNotification(Resources.InstallationApp.ImportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.NavigationService.GoBack();
             }
             catch (Exception exc)
             {
