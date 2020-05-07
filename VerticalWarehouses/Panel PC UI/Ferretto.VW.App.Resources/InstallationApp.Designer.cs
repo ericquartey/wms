@@ -1645,6 +1645,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default configuration loaded.
+        /// </summary>
+        public static string DefaultConfigurationLoaded {
+            get {
+                return ResourceManager.GetString("DefaultConfigurationLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delay between cycles [s].
         /// </summary>
         public static string DelayBetweenCycles {

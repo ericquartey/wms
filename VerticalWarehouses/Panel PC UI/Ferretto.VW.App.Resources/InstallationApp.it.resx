@@ -2508,4 +2508,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ImportConfigurationFile" xml:space="preserve">
     <value>Importa file di configurazione</value>
   </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Configurazione di default caricata</value>
+  </data>
 </root>
