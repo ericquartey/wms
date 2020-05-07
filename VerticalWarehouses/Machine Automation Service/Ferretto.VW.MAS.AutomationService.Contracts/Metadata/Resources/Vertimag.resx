@@ -447,8 +447,11 @@
   <data name="Speed" xml:space="preserve">
     <value>Velocità</value>
   </data>
-  <data name="StepMovementParameters_AdjustByWeight" xml:space="preserve">
-    <value>Usa correzione peso</value>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Correggi accelerazone con peso</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Correggi velocità con peso</value>
   </data>
   <data name="StepMovementParameters_Number" xml:space="preserve">
     <value>Numero</value>
