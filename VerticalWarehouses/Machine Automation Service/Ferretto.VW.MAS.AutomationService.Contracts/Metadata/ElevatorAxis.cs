@@ -11,12 +11,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private class Metadata
         {
-            #region Properties
-
             //[Id(30)]
             //[Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
             //[HideProperties(nameof(ElevatorAxisManualParameters.TargetDistance), nameof(ElevatorAxisManualParameters.TargetDistanceAfterZero))]
             //public ElevatorAxisManualParameters AssistedMovements { get; set; }
+
+            #region Properties
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
             [Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]

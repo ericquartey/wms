@@ -6,7 +6,9 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public bool AdjustByWeight { get; set; }
+        public bool AdjustAccelerationByWeight { get; set; }
+
+        public bool AdjustSpeedByWeight { get; set; }
 
         public int Number { get; set; }
 
@@ -17,7 +19,7 @@ namespace Ferretto.VW.MAS.DataModels
         #region Methods
 
         /// <summary>
-        /// In horizontal movements some steps can be scaled by weight, depending on AdjustByWeight parameter.
+        /// In horizontal movements some steps can be scaled by weight, depending on Adjust___ByWeight parameters.
         /// </summary>
         /// <param name="scalingFactor">min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration </param>
         /// <param name="axis"></param>
@@ -36,7 +38,7 @@ namespace Ferretto.VW.MAS.DataModels
                 throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation));
             }
 
-            if (this.AdjustByWeight)
+            if (this.AdjustSpeedByWeight)
             {
                 if (this.Speed >= axis.FullLoadMovement.Speed && this.Speed <= axis.EmptyLoadMovement.Speed)
                 {
@@ -47,7 +49,9 @@ namespace Ferretto.VW.MAS.DataModels
                 {
                     throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedRange, axis.Orientation));
                 }
-
+            }
+            if (this.AdjustAccelerationByWeight)
+            {
                 if (this.Acceleration >= axis.FullLoadMovement.Acceleration && this.Acceleration <= axis.EmptyLoadMovement.Acceleration)
                 {
                     var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;

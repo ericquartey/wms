@@ -3873,8 +3873,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class StepMovementParameters : MovementParameters
     {
-        [Newtonsoft.Json.JsonProperty("AdjustByWeight", Required = Newtonsoft.Json.Required.Always)]
-        public bool AdjustByWeight { get; set; }
+        [Newtonsoft.Json.JsonProperty("AdjustAccelerationByWeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool AdjustAccelerationByWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("AdjustSpeedByWeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool AdjustSpeedByWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public int Number { get; set; }

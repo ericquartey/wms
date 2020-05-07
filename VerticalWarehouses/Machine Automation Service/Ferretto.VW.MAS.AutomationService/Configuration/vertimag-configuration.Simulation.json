@@ -285,7 +285,8 @@
               "Name": "ShortPickup",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
                   "Acceleration": 2500.0,
@@ -293,7 +294,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 1,
                   "Position": 450.0,
                   "Acceleration": 2000.0,
@@ -301,7 +303,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
                   "Acceleration": 2000.0,
@@ -309,7 +312,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 3,
                   "Position": 1066.0,
                   "Acceleration": 1700.0,
@@ -317,7 +321,8 @@
                   "Speed": 400.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 1000.0,
@@ -331,7 +336,8 @@
               "Name": "ShortDeposit",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 200.0,
                   "Acceleration": 1000.0,
@@ -339,7 +345,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 350.0,
                   "Acceleration": 1000.0,
@@ -347,7 +354,8 @@
                   "Speed": 200.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 716.0,
                   "Acceleration": 1000.0,
@@ -355,7 +363,8 @@
                   "Speed": 325.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 986.0,
                   "Acceleration": 3000.0,
@@ -363,7 +372,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 3000.0,
@@ -377,7 +387,8 @@
               "Name": "LongPickup",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
                   "Acceleration": 2500.0,
@@ -385,7 +396,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 450.0,
                   "Acceleration": 2000.0,
@@ -393,7 +405,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
                   "Acceleration": 2000.0,
@@ -401,7 +414,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 3,
                   "Position": 1066.0,
                   "Acceleration": 1700.0,
@@ -409,7 +423,8 @@
                   "Speed": 400.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 1000.0,
@@ -423,7 +438,8 @@
               "Name": "LongDeposit",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 200.0,
                   "Acceleration": 1000.0,
@@ -431,7 +447,8 @@
                   "Speed": 200.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 350.0,
                   "Acceleration": 1000.0,
@@ -439,7 +456,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 716.0,
                   "Acceleration": 1000.0,
@@ -447,7 +465,8 @@
                   "Speed": 325.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 986.0,
                   "Acceleration": 3000.0,
@@ -455,7 +474,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 3000.0,
