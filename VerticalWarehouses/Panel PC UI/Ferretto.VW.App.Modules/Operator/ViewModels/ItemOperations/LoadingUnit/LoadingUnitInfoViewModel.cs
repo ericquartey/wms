@@ -6,10 +6,12 @@ using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
+using System.Timers;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -31,9 +33,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
-        private bool loadingUnitsMovements;
+        private int count;
 
-        private DelegateCommand moveToLoadingUnitCommand;
+        private SubscriptionToken positioningMessageReceivedToken;
 
         private SubscriptionToken subscriptionToken;
 
@@ -61,12 +63,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public ICommand MoveToLoadingUnitCommand =>
-            this.moveToLoadingUnitCommand
-            ??
-            (this.moveToLoadingUnitCommand = new DelegateCommand(
-                async () => await this.MoveToLoadingUnitAsync()));
-
         public Sensors Sensors => this.sensors;
 
         #endregion
@@ -76,27 +72,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-        }
 
-        public async Task MoveToLoadingUnitAsync()
-        {
-            try
+            if (this.positioningMessageReceivedToken != null)
             {
-                this.NavigationService.GoBack();
-
-                this.Reset();
-
-                this.operatorNavigationService.NavigateToDrawerView();
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.positioningMessageReceivedToken);
+                this.positioningMessageReceivedToken.Dispose();
+                this.positioningMessageReceivedToken = null;
             }
-            catch (Exception ex)
+
+            if (this.subscriptionToken != null)
             {
-                this.ShowNotification(ex);
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.subscriptionToken);
+                this.subscriptionToken.Dispose();
+                this.subscriptionToken = null;
             }
+
+            this.count = 0;
         }
 
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
+
+            this.count = 0;
 
             await base.OnAppearedAsync();
         }
@@ -114,8 +112,44 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+        }
 
-            this.moveToLoadingUnitCommand?.RaiseCanExecuteChanged();
+        private void ChangePage()
+        {
+            this.NavigationService.GoBack();
+            this.Reset();
+
+            this.operatorNavigationService.NavigateToDrawerView();
+        }
+
+        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            try
+            {
+                if (message.Status == MessageStatus.OperationStop || message.Status == MessageStatus.OperationError)
+                {
+                    this.ChangePage();
+                }
+
+                if (message.Data.LoadingUnitId == this.LoadingUnit.Id)
+                {
+                    if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                    {
+                        if (message.Status == MessageStatus.OperationEnd)
+                        {
+                            this.count++;
+                            if (this.count == 2)
+                            {
+                                this.ChangePage();
+                                this.RaiseCanExecuteChanged();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -134,6 +168,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => m.Data?.SensorsStates != null);
+
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+              ??
+              this.eventAggregator
+                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                  .Subscribe(
+                      this.OnPositioningMessageReceived,
+                      ThreadOption.UIThread,
+                      false);
         }
 
         #endregion

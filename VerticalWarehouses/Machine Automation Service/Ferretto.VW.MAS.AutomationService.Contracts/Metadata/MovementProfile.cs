@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Editable(false)]
             public MovementProfileType Name { get; set; }
 
-            [Category("Steps {0}")]
+            [Category("Step {0}")]
             [CategoryParameter(nameof(StepMovementParameters.Number))]
             [Offset(10)]
             public IEnumerable<StepMovementParameters> Steps { get; set; }

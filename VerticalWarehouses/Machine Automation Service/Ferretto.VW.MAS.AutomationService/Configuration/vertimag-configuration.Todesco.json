@@ -1,7 +1,7 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
-    "LoadingUnits": [
-        {
+  "LoadingUnits": [
+    {
       "Cell": {
         "BlockLevel": "None",
         "Id": 14,
@@ -15,16 +15,16 @@
       "Code": "001",
       "GrossWeight": 88.993316999999934,
       "Height": 123.78125,
-            "Id": 1,
-            "IsInFullTest": false,
+      "Id": 1,
+      "IsInFullTest": false,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 21,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 120.0
-        },
-        {
+    },
+    {
       "Cell": {
         "BlockLevel": "None",
         "Id": 278,
@@ -38,16 +38,16 @@
       "Code": "002",
       "GrossWeight": 88.993316999999934,
       "Height": 123.78125,
-            "Id": 2,
-            "IsInFullTest": false,
+      "Id": 2,
+      "IsInFullTest": false,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 3,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 120.0
-        },
-        {
+    },
+    {
       "Cell": {
         "BlockLevel": "None",
         "Id": 13,
@@ -61,8 +61,8 @@
       "Code": "003",
       "GrossWeight": 102.36900800000012,
       "Height": 123.78125,
-            "Id": 3,
-            "IsInFullTest": false,
+      "Id": 3,
+      "IsInFullTest": false,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 1,
@@ -966,8 +966,8 @@
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
-        }
-    ],
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -1180,7 +1180,8 @@
               "Steps": [
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 19,
                   "Number": 0,
@@ -1189,7 +1190,8 @@
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 18,
                   "Number": 1,
@@ -1198,7 +1200,8 @@
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 17,
                   "Number": 2,
@@ -1207,7 +1210,8 @@
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 25,
                   "Number": 3,
@@ -1216,7 +1220,8 @@
                 },
                 {
                   "Acceleration": 3000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 15,
                   "Number": 4,
@@ -1232,7 +1237,8 @@
               "Steps": [
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 8,
                   "Number": 0,
@@ -1241,7 +1247,8 @@
                 },
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 14,
                   "Number": 1,
@@ -1250,7 +1257,8 @@
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 13,
                   "Number": 2,
@@ -1259,7 +1267,8 @@
                 },
                 {
                   "Acceleration": 1700.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 12,
                   "Number": 3,
@@ -1268,7 +1277,8 @@
                 },
                 {
                   "Acceleration": 1700.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 11,
                   "Number": 4,
@@ -1284,7 +1294,8 @@
               "Steps": [
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 23,
                   "Number": 0,
@@ -1293,7 +1304,8 @@
                 },
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 22,
                   "Number": 1,
@@ -1302,7 +1314,8 @@
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 21,
                   "Number": 2,
@@ -1311,7 +1324,8 @@
                 },
                 {
                   "Acceleration": 1700.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 16,
                   "Number": 3,
@@ -1320,7 +1334,8 @@
                 },
                 {
                   "Acceleration": 1700.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 20,
                   "Number": 4,
@@ -1336,7 +1351,8 @@
               "Steps": [
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 10,
                   "Number": 0,
@@ -1345,7 +1361,8 @@
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 9,
                   "Number": 1,
@@ -1354,7 +1371,8 @@
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 7,
                   "Number": 2,
@@ -1363,7 +1381,8 @@
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 24,
                   "Number": 3,
@@ -1372,7 +1391,8 @@
                 },
                 {
                   "Acceleration": 3000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 26,
                   "Number": 4,
