@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS.IODriver
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                     }
                     this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     continue;
@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS.IODriver
                         {
                             var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                            errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                         }
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.ioTransport.Disconnect();
@@ -522,7 +522,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 {
                                     var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                                 }
                                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                                 continue;
@@ -608,7 +608,7 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                 }
 
                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));

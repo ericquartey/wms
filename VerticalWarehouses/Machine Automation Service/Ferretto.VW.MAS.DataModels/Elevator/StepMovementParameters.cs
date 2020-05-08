@@ -31,11 +31,11 @@ namespace Ferretto.VW.MAS.DataModels
             }
             if (axis.EmptyLoadMovement.Speed < axis.FullLoadMovement.Speed)
             {
-                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedConfiguration, axis.Orientation));
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedConfiguration, axis.Orientation, this.Speed));
             }
             if (axis.EmptyLoadMovement.Acceleration < axis.FullLoadMovement.Acceleration)
             {
-                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation));
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation, this.Acceleration));
             }
 
             if (this.AdjustSpeedByWeight)
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.DataModels
                 }
                 else
                 {
-                    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedRange, axis.Orientation));
+                    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedRange, axis.Orientation, this.Speed));
                 }
             }
             if (this.AdjustAccelerationByWeight)
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataModels
                 }
                 else
                 {
-                    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationRange, axis.Orientation));
+                    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationRange, axis.Orientation, this.Acceleration));
                 }
             }
         }

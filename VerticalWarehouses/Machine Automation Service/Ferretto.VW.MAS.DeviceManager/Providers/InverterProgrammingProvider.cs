@@ -119,7 +119,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
-            return $"{type.ToString()} {ip}:{port}";
+            var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
+
+            return $"{type.ToString()} {ipPort}";
         }
 
         #endregion

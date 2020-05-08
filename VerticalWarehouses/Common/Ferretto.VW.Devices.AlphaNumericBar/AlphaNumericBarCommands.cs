@@ -30,6 +30,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             TEST_OFF,
 
+            TEST_SCROLL_ON,
+
+            TEST_SCROLL_OFF,
+
             SET,
 
             CSTSET,
@@ -52,7 +56,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             CLEAR,
 
-            SET_LUM
+            SET_LUM,
+
+            SET_SCROLL_SPEED,
+
+            SET_SCROLL_DIR,
+        }
+
+        public enum ScrollDirection
+        {
+            LEFT_TO_RIGHT,
+
+            RIGHT_TO_LEFT
         }
 
         #endregion

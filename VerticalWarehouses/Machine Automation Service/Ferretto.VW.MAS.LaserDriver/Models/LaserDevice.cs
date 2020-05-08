@@ -318,7 +318,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                     using (var scope = this.serviceScopeFactory.CreateScope())
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber, ex.Message);
                     }
                     continue;
                 }

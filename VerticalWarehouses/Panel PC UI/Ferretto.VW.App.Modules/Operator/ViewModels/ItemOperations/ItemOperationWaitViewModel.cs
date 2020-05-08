@@ -109,11 +109,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
-
-                if (this.loadingUnits.Count > 0)
-                {
-                    this.isGridVisible = true;
-                }
             }
         }
 
@@ -129,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(5000);
+                    await Task.Delay(500);
                     await this.CheckForNewOperationCount();
                     await this.GetLoadingUnitsAsync();
                 }
@@ -157,10 +152,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.loadingUnitsMovements == 0)
             {
+                this.isGridVisible = false;
+
                 return OperatorApp.NoLoadingUnitsToMove;
             }
             else if (this.loadingUnitsMovements == 1)
             {
+                this.isGridVisible = true;
+
                 return OperatorApp.LoadingUnitSendToBay;
             }
 

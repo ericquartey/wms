@@ -104,7 +104,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.Data = null;
+            this.SelectedFileConfigurationName = string.Empty;
+            this.VertimagConfiguration = null;
+
             this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Dispose();
 
@@ -135,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.SelectedFileConfigurationName = "No file selected, current condfiguration loaded.";
+                    this.SelectedFileConfigurationName = InstallationApp.DefaultConfigurationLoaded;
                     this.invertersParameters = await this.machineDevicesWebService.GetParametersAsync();
                 }
 
@@ -199,7 +201,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
-            return $"{type.ToString()} {ip}:{port}";
+            var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
+            return $"{type.ToString()} {ipPort}";
         }
 
         private async Task SaveAllParametersAsync()
@@ -231,7 +234,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Inverters.INVERTERSPARAMETERSIMPORT,
-                data: null,
+                data: this,
                 trackCurrentView: true);
         }
 
