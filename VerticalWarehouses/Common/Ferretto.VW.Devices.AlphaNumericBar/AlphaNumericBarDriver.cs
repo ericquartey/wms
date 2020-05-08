@@ -77,6 +77,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return (int)pixelOffset;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public int CalculateOffset(int offset, string message)
         {
             int result;
@@ -113,6 +119,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> ClearAsync()
         {
             this.messagesToBeSendQueue.Clear();
@@ -139,12 +149,21 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return true;
         }
 
+        /// <summary>
+        /// Send a CUSTOM command.
+        /// </summary>
+        /// <param name="hexval"></param>
+        /// <returns></returns>
         public async Task<bool> CustomAsync(string hexval)
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CUSTOM, hexval);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a HELP command.
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> HelpAsync()
         {
             this.messagesToBeSendQueue.Clear();
@@ -152,6 +171,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a sequence of SET and WRITE command to show an arrow symbol.
+        /// </summary>
+        /// <param name="arrowPosition"></param>
+        /// <param name="forceClear"></param>
+        /// <returns></returns>
         public async Task<bool> SetAndWriteArrowAsync(int arrowPosition, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
@@ -169,6 +194,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a sequence of SET and WRITE command.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="offset"></param>
+        /// <param name="forceClear"></param>
+        /// <returns></returns>
         public async Task<bool> SetAndWriteMessageAsync(string message, int offset = 0, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
@@ -188,6 +220,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true); ;
         }
 
+        /// <summary>
+        /// Send a sequence of SET and WRITE command width scroll.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="offset"></param>
+        /// <param name="scrollEnd"></param>
+        /// <param name="forceClear"></param>
+        /// <returns></returns>
         public async Task<bool> SetAndWriteMessageScrollAsync(string message, int offset = 0, int scrollEnd = 0, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
@@ -206,6 +246,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a DIM command.
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
         public async Task<bool> SetDimAsync(int dimension)
         {
             this.messagesToBeSendQueue.Clear();
@@ -213,6 +258,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a ENABLE command.
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         public async Task<bool> SetEnabledAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -229,6 +279,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a LUM (luminosity) command.
+        /// </summary>
+        /// <param name="luminosity"></param>
+        /// <returns></returns>
         public async Task<bool> SetLuminosityAsync(int luminosity)
         {
             this.messagesToBeSendQueue.Clear();
@@ -245,6 +300,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public async Task<bool> SetScrollDirAsync(ScrollDirection direction)
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_DIR, null, (int)direction);
@@ -252,6 +312,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         public async Task<bool> SetScrollEnabledAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -268,6 +333,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a scroll speed command.
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <returns></returns>
         public async Task<bool> SetScrollSpeedAsync(int speed)
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_SPEED, null, speed);
@@ -275,6 +345,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a TEST command.
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         public async Task<bool> SetTestAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -291,6 +366,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Send a TEST SCROLL command.
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         public async Task<bool> SetTestScrollAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
@@ -307,6 +387,26 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        /// <summary>
+        /// Encode a trinh into the HTPP protocol.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private string Encode(string str)
+        {
+            //HttpUtility.UrlEncode(str, Encoding.UTF8);
+            return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
+        }
+
+        /// <summary>
+        /// Trasform a command into a message with the right parameters and put into a queue.
+        /// The stringe "message" is encode in HTTP format.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="message"></param>
+        /// <param name="offset"></param>
+        /// <param name="scrollEnd"></param>
+        /// <returns></returns>
         private string EnqueueCommand(AlphaNumericBarCommands.Command command, string message = null, int offset = 0, int scrollEnd = 0)
         {
             var strCommand = command.ToString();
@@ -345,18 +445,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     break;
 
                 case AlphaNumericBarCommands.Command.SET:                       // SET <offset> <string>
-                    strCommand += " " + offset;
-                    if (message != null)
-                    {
-                        strCommand += " " + HttpUtility.UrlEncode(message);
-                    }
+                    strCommand += " " + offset + " " + this.Encode(message);
                     break;
 
                 case AlphaNumericBarCommands.Command.CUSTOM:                    // CUSTOM <index> <hexval>
-                    if (message != null)
-                    {
-                        strCommand += " " + HttpUtility.UrlEncode(message);
-                    }
+                    strCommand += " " + this.Encode(message);
                     break;
 
                 case AlphaNumericBarCommands.Command.CSTSET:                    // CSTSET <offset> <index>
@@ -364,11 +457,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     break;
 
                 case AlphaNumericBarCommands.Command.SCROLL_ON:                 // TODO: must be cheked
-                    strCommand = "SCROLL ON " + offset + " " + scrollEnd;
-                    if (message != null)
-                    {
-                        strCommand += " " + HttpUtility.UrlEncode(message);
-                    }
+                    strCommand = "SCROLL ON " + offset + " " + scrollEnd + " " + this.Encode(message);
                     break;
 
                 case AlphaNumericBarCommands.Command.SCROLL_OFF:
@@ -388,13 +477,17 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     break;
             }
 
-            strCommand += "\r\n";
+            strCommand += Environment.NewLine;
 
             this.messagesToBeSendQueue.Enqueue(strCommand);
 
             return strCommand;
         }
 
+        /// <summary>
+        /// Send the messages int the queue, in the right order.
+        /// </summary>
+        /// <returns></returns>
         private async Task<bool> ExecuteCommandsAsync()
         {
             var result = false;
@@ -458,6 +551,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private bool IsResponseOk(string msgSend, string msgReceive)
         {
             var result = false;
+
+            if (string.IsNullOrEmpty(msgSend) || string.IsNullOrEmpty(msgReceive))
+            {
+                return true;
+            }
+
             msgReceive = msgReceive.Trim();
 
             if (msgSend.StartsWith("GET", StringComparison.Ordinal))
@@ -492,9 +591,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
+        /// <summary>
+        /// Check if the client must wait the response from the server.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private bool IsWaitResponse(string message)
         {
             var result = true;
+
+            if (string.IsNullOrEmpty(message))
+            {
+                return false;
+            }
 
             if (message.StartsWith("CLEAN", StringComparison.Ordinal) || message.StartsWith("ENABLE OFF", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
             {
