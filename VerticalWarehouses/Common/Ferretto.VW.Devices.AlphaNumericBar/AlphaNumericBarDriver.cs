@@ -22,7 +22,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private readonly Queue messagesToBeSendQueue;
 
-        private readonly int tcpTimeout = 1000;
+        private readonly int tcpTimeout = 2000;
 
         private bool barEnabled = false;
 
@@ -348,14 +348,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     strCommand += " " + offset;
                     if (message != null)
                     {
-                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
+                        strCommand += " " + HttpUtility.UrlEncode(message);
                     }
                     break;
 
                 case AlphaNumericBarCommands.Command.CUSTOM:                    // CUSTOM <index> <hexval>
                     if (message != null)
                     {
-                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
+                        strCommand += " " + HttpUtility.UrlEncode(message);
                     }
                     break;
 
@@ -367,7 +367,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     strCommand = "SCROLL ON " + offset + " " + scrollEnd;
                     if (message != null)
                     {
-                        strCommand += " " + System.Web.HttpUtility.UrlEncode(message);
+                        strCommand += " " + HttpUtility.UrlEncode(message);
                     }
                     break;
 
@@ -425,7 +425,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Received: {0}", responseMessage);
                             if (!this.IsResponseOk(sendMessage, responseMessage))
                             {
-                                throw new System.ArgumentException($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                //throw new System.ArgumentException($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                             }
                         }
                         else
