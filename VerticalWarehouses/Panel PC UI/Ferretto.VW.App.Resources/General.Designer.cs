@@ -682,7 +682,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Serial Number: {0}.
+        ///   Looks up a localized string similar to Serial Number:.
         /// </summary>
         public static string SerialNumber {
             get {

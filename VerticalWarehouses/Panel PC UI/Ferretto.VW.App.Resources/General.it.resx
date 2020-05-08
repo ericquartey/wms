@@ -310,7 +310,7 @@
     <value>Password</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale: {0}</value>
+    <value>Numero Seriale:</value>
   </data>
   <data name="UserLogin" xml:space="preserve">
     <value>Nome Utente</value>
