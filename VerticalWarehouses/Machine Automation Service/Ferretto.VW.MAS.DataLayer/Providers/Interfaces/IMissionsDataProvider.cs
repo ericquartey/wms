@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         List<int> GetAllActiveUnitGoBay();
 
+        List<int> GetAllActiveUnitGoCell();
+
         IEnumerable<Mission> GetAllExecutingMissions();
 
         IEnumerable<Mission> GetAllMissions();

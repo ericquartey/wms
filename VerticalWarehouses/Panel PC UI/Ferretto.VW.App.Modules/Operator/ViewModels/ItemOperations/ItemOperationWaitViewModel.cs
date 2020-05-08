@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineService machineService;
 
+        private readonly List<LoadingUnit> moveUnits = new List<LoadingUnit>();
+
         private bool isGridVisible;
 
         private string loadingUnitsInfo;
@@ -29,6 +31,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int loadingUnitsMovements;
 
         private IEnumerable<int> moveUnitId = new List<int>();
+
+        private IEnumerable<int> moveUnitToCellId = new List<int>();
+
+        private bool moveVisible;
 
         private int pendingMissionOperationsCount;
 
@@ -69,6 +75,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitsInfo, value);
         }
 
+        public IEnumerable<LoadingUnit> MoveUnits => new BindingList<LoadingUnit>(this.moveUnits);
+
+        public bool MoveVisible
+        {
+            get => this.moveVisible;
+            set
+            {
+                if (this.SetProperty(ref this.moveVisible, value) && value)
+                {
+                    this.RaisePropertyChanged();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int PendingMissionOperationsCount
         {
             get => this.pendingMissionOperationsCount;
@@ -100,6 +121,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
                     }
                 }
+
+                this.moveUnits.Clear();
+                //this.moveUnitToCellId = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+
+                //if (this.moveUnitToCellId != null)
+                //{
+                //    foreach (var unit in this.moveUnitToCellId)
+                //    {
+                //        this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -109,6 +141,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
+
+                if (this.moveUnits.Count > 0)
+                {
+                    this.moveVisible = true;
+                }
             }
         }
 
