@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public string AdditionalText { get; set; }
+
         public BayNumber BayNumber { get; set; }
 
         /// <summary>
