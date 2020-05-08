@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
@@ -35,12 +37,14 @@ namespace Ferretto.VW.MAS.MissionManager
             IEventAggregator eventAggregator,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsDataProvider missionsDataProvider,
-            IWmsSettingsProvider wmsSettingsProvider)
+            IWmsSettingsProvider wmsSettingsProvider,
+            IErrorsProvider errorsProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -160,6 +164,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             catch (WmsWebApiException ex)
             {
+                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
                 this.NegativeResult(ex);
             }
         }

@@ -889,6 +889,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The WMS system has answerd with an error code.
+        /// </summary>
+        public static string WmsError {
+            get {
+                return ResourceManager.GetString("WmsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The elevator chain zero sensor is active but the elevator is full..
         /// </summary>
         public static string ZeroSensorActiveWithFullElevator {

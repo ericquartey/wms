@@ -16,6 +16,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
 
   <ItemGroup>
@@ -166,10 +167,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TranslationManager\" />
   </ItemGroup>
 
 </Project>

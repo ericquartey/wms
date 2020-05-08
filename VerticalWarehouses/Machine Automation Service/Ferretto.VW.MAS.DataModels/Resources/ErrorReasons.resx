@@ -402,4 +402,7 @@
   <data name="InvalidAxisSpeedRange" xml:space="preserve">
     <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
   </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>The WMS system has answerd with an error code</value>
+  </data>
 </root>

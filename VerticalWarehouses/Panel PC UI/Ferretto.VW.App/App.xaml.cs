@@ -198,10 +198,25 @@ namespace Ferretto.VW.App
 
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
-            }
+            }                    
 
-            //LocRes.Setup();
-            //LocRes.CurrentCulture = CultureInfo.CurrentCulture;
+            // Setup resource manager
+            LocalizedResources.Instance.AddResourceManager(Errors.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(ErrorsApp.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(EventArgsMissionChanged.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(General.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(HelpDescriptions.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(InstallationApp.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(LoadLogin.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(MainMenu.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(MaintenanceMenu.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(Menu.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(OperatorApp.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(SensorCard.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(ServiceHealthProbe.ResourceManager);
+            LocalizedResources.Instance.AddResourceManager(ServiceMachine.ResourceManager);
+
+            LocalizedResources.Instance.CurrentCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion
