@@ -643,6 +643,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;
 
+                        case MovementMode.ExtBayChain:
+                        case MovementMode.ExtBayChainManual:
+                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            break;
+
                         default:
                             break;
                     }

@@ -37,6 +37,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canMoveElevatorUpCommand;
 
+        private bool canMoveManualExternalBayTowardMachineCommand;
+
+        private bool canMoveManualExternalBayTowardOperatorCommand;
+
         private bool canShutterMoveDownCommand;
 
         private bool canShutterMoveUpCommand;
@@ -46,6 +50,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isCarouselOpening;
 
         private bool isElevatorMoving;
+
+        private bool isExternalBayManualMovementTowardMachine;
+
+        private bool isExternalBayManualMovementTowardOperator;
 
         private bool isLightActive;
 
@@ -80,6 +88,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveElevatorForwardsCommand;
 
         private DelegateCommand moveElevatorUpCommand;
+
+        private DelegateCommand moveExternalBayTowardMachineManualCommand;
+
+        private DelegateCommand moveExternalBayTowardOperatorManualCommand;
 
         private DelegateCommand moveToCellHeightCommand;
 
@@ -147,6 +159,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canMoveElevatorUpCommand, value);
         }
 
+        public bool CanMoveManualExternalBayTowardMachineCommand
+        {
+            get => this.canMoveManualExternalBayTowardMachineCommand;
+            private set => this.SetProperty(ref this.canMoveManualExternalBayTowardMachineCommand, value);
+        }
+
+        public bool CanMoveManualExternalBayTowardOperatorCommand
+        {
+            get => this.canMoveManualExternalBayTowardOperatorCommand;
+            private set => this.SetProperty(ref this.canMoveManualExternalBayTowardOperatorCommand, value);
+        }
+
         public bool CanShutterMoveDownCommand
         {
             get => this.canShutterMoveDownCommand;
@@ -175,6 +199,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isElevatorMoving;
             private set => this.SetProperty(ref this.isElevatorMoving, value);
+        }
+
+        public bool IsExternalBayManualMovementTowardMachine
+        {
+            get => this.isExternalBayManualMovementTowardMachine;
+            private set => this.SetProperty(ref this.isExternalBayManualMovementTowardMachine, value);
+        }
+
+        public bool IsExternalBayManualMovementTowardOperator
+        {
+            get => this.isExternalBayManualMovementTowardOperator;
+            private set => this.SetProperty(ref this.isExternalBayManualMovementTowardOperator, value);
         }
 
         public bool IsLightActive
@@ -273,6 +309,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.moveElevatorUpCommand = new DelegateCommand(async () => await this.MoveElevatorUpAsync()));
 
+        public ICommand MoveExternalBayTowardMachineManualCommand =>
+            this.moveExternalBayTowardMachineManualCommand
+            ??
+            (this.moveExternalBayTowardMachineManualCommand = new DelegateCommand(async () => await this.MoveManualExternalBayTowardMachineAsync()));
+
+        public ICommand MoveExternalBayTowardOperatorManualCommand =>
+            this.moveExternalBayTowardOperatorManualCommand
+            ??
+            (this.moveExternalBayTowardOperatorManualCommand = new DelegateCommand(async () => await this.MoveManualExternalBayTowardOperatorAsync()));
+
         public ICommand MoveToCellHeightCommand =>
            this.moveToCellHeightCommand
            ??
@@ -336,6 +382,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task MoveElevatorUpAsync()
         {
             await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
+        }
+
+        public async Task MoveManualExternalBayTowardMachineAsync()
+        {
+            await this.StartExternalBayMovementAsync(ExternalBayMovementDirection.TowardMachine);
+        }
+
+        public async Task MoveManualExternalBayTowardOperatorAsync()
+        {
+            await this.StartExternalBayMovementAsync(ExternalBayMovementDirection.TowardOperator);
         }
 
         public async Task OpenCarouselAsync()
@@ -569,6 +625,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
             this.CanMoveCarouselOpenCommand = this.CanMoveCarouselOpenCommand || this.isPolicyBypassed;
+
+            this.CanMoveManualExternalBayTowardOperatorCommand = !this.IsExternalBayManualMovementTowardMachine && this.moveExtBayTowardOperatorPolicy?.IsAllowed == true &&
+                                                                 !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                                                 !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                                                 !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanMoveManualExternalBayTowardOperatorCommand = this.CanMoveManualExternalBayTowardOperatorCommand || this.isPolicyBypassed;
+
+            this.CanMoveManualExternalBayTowardMachineCommand = !this.IsExternalBayManualMovementTowardOperator && this.moveExtBayTowardMachinePolicy?.IsAllowed == true &&
+                                                                !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                                                !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                                                !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+            this.CanMoveManualExternalBayTowardMachineCommand = this.CanMoveManualExternalBayTowardMachineCommand || this.isPolicyBypassed;
         }
 
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -593,6 +664,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationEnd:
                     this.CloseOperation();
                     break;
+            }
+        }
+
+        private async Task StartExternalBayMovementAsync(ExternalBayMovementDirection direction)
+        {
+            if (this.IsExternalBayManualMovementTowardMachine ||
+                this.IsExternalBayManualMovementTowardOperator)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.machineExternalBayWebService.MoveManualAsync(direction);
+
+                this.IsExternalBayManualMovementTowardMachine = direction is ExternalBayMovementDirection.TowardMachine;
+                this.IsExternalBayManualMovementTowardOperator = direction is ExternalBayMovementDirection.TowardOperator;
+
+                this.IsExternalBayMoving = true;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.CloseOperation();
+
+                this.ShowNotification(ex);
             }
         }
 
@@ -702,6 +798,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;
             this.IsExecutingProcedure = false;
+            this.IsExternalBayManualMovementTowardOperator = false;
+            this.IsExternalBayManualMovementTowardMachine = false;
+            this.IsExternalBayMoving = false;
 
             this.IsPolicyBypassed = false;
             this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));

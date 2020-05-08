@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingEndState : StateBase, System.IDisposable
@@ -131,8 +130,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
                 {
-                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                    var baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                    var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+
+                    if (!bay.IsExternal && bay.Carousel != null)
+                    {
+                        // Handle the carousel
+                        this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                    }
+                    else
+                    {
+                        // Handle the external bay
+                        // TODO...
+                    }
                 }
+
                 var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(

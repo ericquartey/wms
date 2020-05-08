@@ -100,9 +100,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)   // ADD define the interface  bay.External
+            if (bay is null)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
+                return new ActionPolicy { Reason = "The bay is null!" };
+            }
+            //if (bay.Carousel is null)   // ADD define the interface  bay.External
+            //{
+            //    return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
+            //}
+
+            // Always allow the manual movements
+            if (movementCategory == MovementCategory.Manual)
+            {
+                return ActionPolicy.Allowed;
             }
 
             var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
@@ -121,7 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardOperator:
                     if (
 #if CHECK_BAY_SENSOR
-                        (isLoadingUnitInExternalPosition && movementCategory != MovementCategory.Manual) ||
+                        isLoadingUnitInExternalPosition ||
 #endif
                         bay.Positions.FirstOrDefault().LoadingUnit != null          // .FirstOrDefault(p => p.IsExternal).LoadingUnit
                         )
@@ -139,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 movementCategory != MovementCategory.Manual &&
                 direction == ExternalBayMovementDirection.TowardOperator)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
+                //return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
             }
 
             return ActionPolicy.Allowed;
@@ -251,18 +261,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.Carousel.ElevatorDistance : 0;   // bay.External.Race
+            var race = 1100.0d; // bay.External.Race
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race : -race;
 
-            var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);   // .GetAssistedMovementsExternalBay(bayNumber)
+            // Remove this comment
+            //var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);   // .GetAssistedMovementsExternalBay(bayNumber)
+            var feedRate = 1;    // feedRate = procedureParameters.FeedRate
 
-            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var speed = new[] { bay.FullLoadMovement.Speed * feedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
             var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Absolute,
+                MovementType.Relative,  // .Absolute MODIFY THIS!!!
                 MovementMode.ExtBayChain,   // CHECK!! defined a new movement mode
                 targetPosition,
                 speed,
@@ -276,7 +289,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"feedrate: {feedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
                 $"deceleration: {deceleration[0]:0.00};");
@@ -305,18 +318,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var targetPosition = bay.Carousel.ElevatorDistance;    // ADD    bay.External.Race
+            var race = 1100.0d; // bay.Carousel.ElevatorDistance  // ADD    bay.External.Race
+            var targetPosition = race;
             // Check the module of distance to be moved
-            if (distance > 0 && distance < bay.Carousel.ElevatorDistance + Math.Abs(bay.ChainOffset))   //   bay.External.Race + Math.Abs(...
+            if (distance > 0 && distance < race + Math.Abs(bay.ChainOffset))   //   bay.External.Race + Math.Abs(...
             {
                 targetPosition = distance;
             }
 
             targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
 
-            var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(bayNumber);   // ADD  .GetManualMovementsExternalBay(bayNumber)
+            // Uncomment this line
+            //var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(bayNumber);   // ADD  .GetManualMovementsExternalBay(bayNumber)
+            var feedRate = 0.25d;
 
-            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var speed = new[] { bay.FullLoadMovement.Speed * feedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
             var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -344,7 +360,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"feedrate: {feedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
                 $"deceleration: {deceleration[0]:0.00};");

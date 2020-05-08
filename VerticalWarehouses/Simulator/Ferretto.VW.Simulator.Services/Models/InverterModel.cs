@@ -294,6 +294,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int statusWord;
 
+        private double target0_extBay = 0.0d;
+
+        private double targetRace_extBay = 1100.0d;
+
         private bool targetTimerActive;
 
         #endregion
@@ -1266,16 +1270,27 @@ namespace Ferretto.VW.Simulator.Services.Models
                     else
                     {
                         // external bay, simulate the Forward (TowardOperator) direction
-                        if (target - this.AxisPosition < 20)
+                        if (Math.Abs(this.target0_extBay - this.AxisPosition) < 20)
+                        {
+                            // turn on the internal presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                        }
+                        else
+                        {
+                            // turn off the internal presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                        }
+                        if (Math.Abs(this.targetRace_extBay - this.AxisPosition) < 20)
                         {
                             // turn on the external presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
                         }
-                        else if (target - this.AxisPosition > 20 &&
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                        else
                         {
-                            // turn off the internal presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                            // turn off the external presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = true;
                         }
                     }
                 }
@@ -1349,16 +1364,28 @@ namespace Ferretto.VW.Simulator.Services.Models
                     if (this.isExternal)
                     {
                         // external bay, simulate the Backward (TowardMachine) direction
-                        if (Math.Abs(target - this.AxisPosition) < 20)
+                        if (Math.Abs(this.target0_extBay - this.AxisPosition) < 20)
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                         }
-                        else if (Math.Abs(target - this.AxisPosition) > 20 &&
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value)
+                        else
+                        {
+                            // turn off the internal presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                        }
+
+                        if (Math.Abs(this.targetRace_extBay - this.AxisPosition) < 20)
+                        {
+                            // turn on the external presence of drawer
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                        }
+                        else
                         {
                             // turn off the external presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = true;
                         }
                     }
                 }

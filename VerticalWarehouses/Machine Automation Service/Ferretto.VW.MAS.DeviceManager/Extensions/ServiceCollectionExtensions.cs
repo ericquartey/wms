@@ -30,7 +30,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 .AddScoped<IMachineControlProvider, MachineControlProvider>()
                 .AddScoped<ILoadingUnitMovementProvider, LoadingUnitMovementProvider>()
                 .AddScoped<ICarouselProvider, CarouselProvider>()
-                .AddScoped<IInverterProgrammingProvider, InverterProgrammingProvider>();
+                .AddScoped<IInverterProgrammingProvider, InverterProgrammingProvider>()
+                .AddScoped<IExternalBayProvider, ExternalBayProvider>();
 
             return services;
         }

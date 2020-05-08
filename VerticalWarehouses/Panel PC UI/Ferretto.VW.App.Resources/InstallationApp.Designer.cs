@@ -2248,6 +2248,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External bay calibration.
+        /// </summary>
+        public static string ExtBayCalibration {
+            get {
+                return ResourceManager.GetString("ExtBayCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toward machine.
+        /// </summary>
+        public static string ExtBayTowardMachine {
+            get {
+                return ResourceManager.GetString("ExtBayTowardMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toward operator.
+        /// </summary>
+        public static string ExtBayTowardOperator {
+            get {
+                return ResourceManager.GetString("ExtBayTowardOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Bay.
         /// </summary>
         public static string ExternalBay {

@@ -2565,4 +2565,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Read only</value>
     <comment>Header text</comment>
   </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Toward machine</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Toward operator</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>External bay calibration</value>
+  </data>
 </root>
