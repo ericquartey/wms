@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             catch (Exception ex)
             {
                 this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}");
-                serviceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                serviceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
 
                 this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             // connection error
                             this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
-                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
 
                             continue;
