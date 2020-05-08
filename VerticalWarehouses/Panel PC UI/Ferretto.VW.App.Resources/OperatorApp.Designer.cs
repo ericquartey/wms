@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Information.
+        /// </summary>
+        public static string AdditionalText {
+            get {
+                return ResourceManager.GetString("AdditionalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustment.
         /// </summary>
         public static string Adjustment {

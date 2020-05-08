@@ -1669,4 +1669,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
     <value>Unit {0}</value>
   </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Additional Information</value>
+  </data>
 </root>
