@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration.
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is lower than full load acceleration or higher than Empty load acceleration.
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationRange {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed.
+        ///   Looks up a localized string similar to The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed.
         /// </summary>
         public static string InvalidAxisSpeedConfiguration {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is lower than full load speed or higher than empty load speed.
+        ///   Looks up a localized string similar to The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed.
         /// </summary>
         public static string InvalidAxisSpeedRange {
             get {

@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         catch (Exception ex)
                         {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay, ex.Message);
                         }
                     }
 
