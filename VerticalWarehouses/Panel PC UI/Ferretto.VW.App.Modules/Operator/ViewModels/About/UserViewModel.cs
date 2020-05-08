@@ -19,6 +19,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     internal sealed class UserViewModel : BaseAboutMenuViewModel
     {
         #region Fields
+        private const string actualLanguageKey = "Language";
 
         private const string adminLanguageKey = "AdminLanguage";
 
@@ -183,6 +184,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             ((this.sessionService.UserAccessLevel == UserAccessLevel.Operator) && (key == operatorLanguageKey))
                        )
                     {
+                        settings[actualLanguageKey].Value = value;
+
+                        System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(value);
+                        System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(value);
+
                     }
                     settings[key].Value = value;
                 }
