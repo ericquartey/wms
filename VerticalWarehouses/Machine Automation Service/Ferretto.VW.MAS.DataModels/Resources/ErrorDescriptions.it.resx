@@ -405,4 +405,7 @@
   <data name="ExternalBayEmpty" xml:space="preserve">
     <value>Baia esterna vuota</value>
   </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS error</value>
+  </data>
 </root>

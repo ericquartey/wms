@@ -270,9 +270,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 && !machineProvider.StopTest
                 )
             {
-                missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
-                machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
-                machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                try
+                {
+                    missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
+                    machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
+                    machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber, ex.Message);
+                }
             }
             else
             {
