@@ -327,8 +327,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var missions = this.dataContext.Missions
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted
-                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
+                        && x.Status != MissionStatus.Aborted)
                 .OrderBy(o => o.Priority)
                 .ThenBy(o => o.CreationDate)
                 .ToList();

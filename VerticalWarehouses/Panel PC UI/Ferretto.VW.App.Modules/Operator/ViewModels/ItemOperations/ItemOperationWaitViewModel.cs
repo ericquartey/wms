@@ -8,6 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -22,7 +23,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineService machineService;
 
+        private readonly IMissionOperationsService missionOperationsService;
+
         private readonly List<LoadingUnit> moveUnits = new List<LoadingUnit>();
+
+        private int count;
 
         private bool isGridVisible;
 
@@ -32,7 +37,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private IEnumerable<int> moveUnitId = new List<int>();
 
-        private IEnumerable<int> moveUnitToCellId = new List<int>();
+        private IEnumerable<int> moveUnitIdToCell = new List<int>();
 
         private bool moveVisible;
 
@@ -42,7 +47,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public ItemOperationWaitViewModel(IMachineMissionsWebService machineMissionsWebService,
+        public ItemOperationWaitViewModel(
+            IMachineMissionsWebService machineMissionsWebService,
             IMachineService machineService)
             : base(PresentationMode.Operator)
         {
@@ -111,6 +117,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                this.count = 0;
+
                 this.loadingUnits.Clear();
                 this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
 
@@ -119,33 +127,47 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     foreach (var unit in this.moveUnitId)
                     {
                         this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
+                        this.count++;
                     }
                 }
 
                 this.moveUnits.Clear();
-                //this.moveUnitToCellId = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
 
-                //if (this.moveUnitToCellId != null)
-                //{
-                //    foreach (var unit in this.moveUnitToCellId)
-                //    {
-                //        this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
-                //    }
-                //}
+                if (this.moveUnitIdToCell != null)
+                {
+                    var userdifference = this.moveUnitIdToCell.Except(this.moveUnitId);
+
+                    if (userdifference.Any())
+                    {
+                        foreach (var units in userdifference)
+                        {
+                            this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == units));
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.ShowNotification(ex);
                 this.loadingUnits.Clear();
+                this.moveUnits.Clear();
             }
             finally
             {
-                this.RaisePropertyChanged(nameof(this.LoadingUnits));
-
                 if (this.moveUnits.Count > 0)
                 {
                     this.moveVisible = true;
                 }
+                else
+                {
+                    this.moveVisible = false;
+                }
+
+                this.RaisePropertyChanged(nameof(this.LoadingUnits));
+
+                this.RaisePropertyChanged(nameof(this.moveVisible));
+
+                this.RaisePropertyChanged(nameof(this.MoveUnits));
             }
         }
 
@@ -154,6 +176,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.RaisePropertyChanged(nameof(this.isGridVisible));
+
+            this.RaisePropertyChanged(nameof(this.moveVisible));
 
             this.IsBackNavigationAllowed = true;
 

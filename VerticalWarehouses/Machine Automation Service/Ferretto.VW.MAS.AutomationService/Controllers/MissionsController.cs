@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("active/unit/cell")]
         public ActionResult<List<int>> GetAllUnitGoCell()
         {
-            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoCell();
             return this.Ok(missions);
         }
 

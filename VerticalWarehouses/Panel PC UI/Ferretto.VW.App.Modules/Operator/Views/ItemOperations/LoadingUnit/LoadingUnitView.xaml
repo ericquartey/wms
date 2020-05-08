@@ -4,6 +4,7 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
@@ -117,6 +118,85 @@
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom">
+
+
+                    <Border x:Name="border"
+                            Width="160"
+                            Height="auto"
+                            Margin="15,15,15,15"
+                            Background="{DynamicResource PpcBackground}"
+                            BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid Margin="4"
+                              UseLayoutRounding="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="4,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource VWAPP_CardSensor}"
+                                       Text="{Binding UnitNumber, StringFormat={x:Static res:OperatorApp.UnitId}}" />
+
+                            <Grid Grid.Row="1"
+                                  Grid.RowSpan="2"
+                                  Grid.ColumnSpan="2">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           Margin="5,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Small}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{x:Static res:OperatorApp.Weight}" />
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding UnitWeight, StringFormat={}{0:F2} kg}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           Margin="5,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Small}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{x:Static res:OperatorApp.Height}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding UnitHeight, StringFormat={}{0:F2} mm}" />
+                            </Grid>
+
+                        </Grid>
+                    </Border>
 
                     <controls:PpcButton Margin="15,0,15,0"
                                         HorizontalAlignment="Right"
