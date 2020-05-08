@@ -315,12 +315,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.NavigationService.GoBack();
                 this.Reset();
 
-                this.operatorNavigationService.NavigateToDrawerInfoView();
+                //this.operatorNavigationService.NavigateToDrawerInfoView();
 
-                //if (this.IsNewOperationAvailable)
-                //{
-                //    this.operatorNavigationService.NavigateToDrawerView();
-                //}
+                if (this.IsNewOperationAvailable)
+                {
+                    this.operatorNavigationService.NavigateToDrawerView();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
