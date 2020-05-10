@@ -6279,6 +6279,7 @@
     "Bay3ProfileCheck": {
     },
     "Bay1CarouselCalibration": {
+      "FeedRate": 0.9
     },
     "Bay2CarouselCalibration": {
     },

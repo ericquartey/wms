@@ -2171,10 +2171,6 @@
     "CarouselManualMovements": {
       "FeedRate": 0.1
     },
-    "BayHeightCheck": {
-      "FeedRate": 0.1,
-      "Step": 0.5
-    },
     "ShutterTest": {
       "RequiredCycles": 200
     },
