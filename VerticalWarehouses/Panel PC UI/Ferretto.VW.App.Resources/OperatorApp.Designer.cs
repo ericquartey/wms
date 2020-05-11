@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carousel calibration in progress.
+        /// </summary>
+        public static string CarouselCalibration {
+            get {
+                return ResourceManager.GetString("CarouselCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsCellsTotal.
         /// </summary>
         public static string CellsStatisticsCellsTotal {
@@ -1606,6 +1615,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Height {
             get {
                 return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal calibration in progress.
+        /// </summary>
+        public static string HorizontalCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalCalibration", resourceCulture);
             }
         }
         

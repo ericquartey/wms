@@ -1369,4 +1369,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>La frammentazione totale supera il 25%</value>
   </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Calibrazione giostra in corso</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Calibrazione orizzontale in corso</value>
+  </data>
 </root>

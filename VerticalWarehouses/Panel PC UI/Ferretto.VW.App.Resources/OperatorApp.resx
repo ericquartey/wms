@@ -1687,4 +1687,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>Fragmentation total above 25%</value>
   </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Carousel calibration in progress</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Horizontal calibration in progress</value>
+  </data>
 </root>
