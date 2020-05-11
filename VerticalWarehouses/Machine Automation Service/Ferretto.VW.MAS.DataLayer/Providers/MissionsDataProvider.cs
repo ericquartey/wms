@@ -318,6 +318,29 @@ namespace Ferretto.VW.MAS.DataLayer
             return UnitGoBay;
         }
 
+        public List<int> GetAllActiveUnitGoCell()
+        {
+            List<int> UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
+        }
+
         public IEnumerable<Mission> GetAllExecutingMissions()
         {
             lock (this.dataContext)

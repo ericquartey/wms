@@ -335,7 +335,7 @@
     <comment>Action</comment>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Serial Number: {0}</value>
+    <value>Serial Number:</value>
     <comment>Information</comment>
   </data>
   <data name="UserLogin" xml:space="preserve">

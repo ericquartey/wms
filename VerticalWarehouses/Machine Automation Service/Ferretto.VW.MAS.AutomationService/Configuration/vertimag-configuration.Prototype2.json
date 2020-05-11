@@ -5852,10 +5852,6 @@
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },
-    "BayHeightCheck": {
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "BeltBurnishingTest": {
       "RequiredCycles": 200
     },

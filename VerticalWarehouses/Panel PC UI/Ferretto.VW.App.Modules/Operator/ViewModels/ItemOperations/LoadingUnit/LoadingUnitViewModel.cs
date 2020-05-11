@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -17,6 +18,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IMachineItemsWebService itemsWebService;
+
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
+        private readonly IMachineService machineService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -58,13 +63,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand recallLoadingUnitCommand;
 
+        private double? unitHeight;
+
+        private int? unitNumber;
+
+        private double? unitWeight;
+
         #endregion
 
         #region Constructors
 
         public LoadingUnitViewModel(
             IMachineItemsWebService itemsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IMachineCompartmentsWebService compartmentsWebService,
+            IMachineService machineService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
             IOperatorNavigationService operatorNavigationService,
@@ -73,7 +86,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider)
             : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
@@ -222,6 +237,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.RecallLoadingUnitAsync(),
                 this.CanRecallLoadingUnit));
 
+        public double? UnitHeight
+        {
+            get => this.unitHeight;
+            set => this.SetProperty(ref this.unitHeight, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int? UnitNumber
+        {
+            get => this.unitNumber;
+            set => this.SetProperty(ref this.unitNumber, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? UnitWeight
+        {
+            get => this.unitWeight;
+            set => this.SetProperty(ref this.unitWeight, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
@@ -275,11 +308,78 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.Reasons?.Any() == true;
         }
 
-        public override Task OnAppearedAsync()
+        public async Task GetLoadingUnitsAsync()
         {
+            try
+            {
+                var count = 0;
+
+                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+
+                if (moveUnitId != null)
+                {
+                    foreach (var unit in moveUnitId)
+                    {
+                        count++;
+                    }
+                }
+
+                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+
+                if (moveUnitIdToCell != null)
+                {
+                    var userdifference = moveUnitIdToCell.Except(moveUnitId);
+
+                    if (userdifference.Any())
+                    {
+                        foreach (var units in userdifference)
+                        {
+                            var selectedunit = this.machineService.Loadunits.Where(i => i.Id == units).SingleOrDefault();
+                            this.unitNumber = selectedunit.Id;
+                            this.unitHeight = selectedunit.Height;
+                            this.unitWeight = selectedunit.GrossWeight;
+                        }
+                    }
+                    else
+                    {
+                        this.unitNumber = this.LoadingUnit.Id;
+                        this.unitHeight = this.LoadingUnit.Height;
+                        this.unitWeight = this.LoadingUnit.GrossWeight;
+                    }
+                }
+                else
+                {
+                    this.unitNumber = this.LoadingUnit.Id;
+                    this.unitHeight = this.LoadingUnit.Height;
+                    this.unitWeight = this.LoadingUnit.GrossWeight;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.unitNumber));
+                this.RaisePropertyChanged(nameof(this.unitHeight));
+                this.RaisePropertyChanged(nameof(this.unitWeight));
+            }
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
             this.Reasons = null;
 
-            return base.OnAppearedAsync();
+            Task.Run(async () =>
+            {
+                do
+                {
+                    await Task.Delay(500);
+                    await this.GetLoadingUnitsAsync();
+                }
+                while (this.IsVisible);
+            });
         }
 
         public override void RaisePropertyChanged()
@@ -315,12 +415,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.NavigationService.GoBack();
                 this.Reset();
 
-                this.operatorNavigationService.NavigateToDrawerInfoView();
+                //this.operatorNavigationService.NavigateToDrawerInfoView();
 
-                //if (this.IsNewOperationAvailable)
-                //{
-                //    this.operatorNavigationService.NavigateToDrawerView();
-                //}
+                if (this.IsNewOperationAvailable)
+                {
+                    this.operatorNavigationService.NavigateToDrawerView();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

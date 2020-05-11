@@ -131,7 +131,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ChangePage();
                 }
 
-                if (message.Data.LoadingUnitId == this.LoadingUnit.Id)
+                if (message.Data != null &&
+                    message.Data.LoadingUnitId.HasValue &&
+                    this.LoadingUnit != null &&
+                    message.Data.LoadingUnitId == this.LoadingUnit.Id)
                 {
                     if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                     {

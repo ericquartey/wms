@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Information.
+        /// </summary>
+        public static string AdditionalText {
+            get {
+                return ResourceManager.GetString("AdditionalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustment.
         /// </summary>
         public static string Adjustment {
@@ -1579,6 +1588,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GeneralInfoWmsStatus {
             get {
                 return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height:.
+        /// </summary>
+        public static string Height {
+            get {
+                return ResourceManager.GetString("Height", resourceCulture);
             }
         }
         
@@ -3590,6 +3608,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total km traveled.
         /// </summary>
         public static string TotalKm {
@@ -3622,6 +3649,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TotalUnits {
             get {
                 return ResourceManager.GetString("TotalUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit n.{0}.
+        /// </summary>
+        public static string UnitId {
+            get {
+                return ResourceManager.GetString("UnitId", resourceCulture);
             }
         }
         
@@ -3721,6 +3757,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WaitingListDetailDataGridHeaderRow {
             get {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight:.
+        /// </summary>
+        public static string Weight {
+            get {
+                return ResourceManager.GetString("Weight", resourceCulture);
             }
         }
         

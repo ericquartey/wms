@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private const string actualLanguageKey = "Language";
+
         private const string adminLanguageKey = "AdminLanguage";
 
         private const string installerLanguageKey = "InstallerLanguage";
@@ -183,6 +185,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             ((this.sessionService.UserAccessLevel == UserAccessLevel.Operator) && (key == operatorLanguageKey))
                        )
                     {
+                        settings[actualLanguageKey].Value = value;
+
+                        Resources.LocalizedResources.Instance.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(value);
+
+                        //Resources.LocalizedResources.Get("General.BayNumber");
                     }
                     settings[key].Value = value;
                 }

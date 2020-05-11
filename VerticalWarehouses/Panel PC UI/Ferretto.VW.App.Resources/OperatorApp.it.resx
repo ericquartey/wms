@@ -1354,4 +1354,16 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="LoadingUnitIdInfo" xml:space="preserve">
     <value>Cassetto {0}</value>
   </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Informazioni Aggiuntive</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Cassetto n.{0}</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Altezza:</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Peso:</value>
+  </data>
 </root>
