@@ -93,7 +93,9 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             weight = 0;
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnit is null)
+            if (loadingUnit is null
+                || loadingUnit.GrossWeight <= loadingUnit.Tare
+                )
             {
                 return 0;
             }
@@ -101,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
-            return beltElongation + shaftTorsion;
+            return Math.Ceiling(beltElongation + shaftTorsion);
         }
 
         public int ComputePositioningValues(

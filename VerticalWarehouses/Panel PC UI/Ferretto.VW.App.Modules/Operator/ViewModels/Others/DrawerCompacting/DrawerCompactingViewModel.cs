@@ -4,10 +4,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -35,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double fragmentTotalPercent;
 
         private bool isStopPressed;
+
+        private SubscriptionToken positioningOperationChangedToken;
 
         private int totalDrawers;
 
@@ -120,6 +125,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
+
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async m => await this.OnPositioningOperationChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        m => this.IsVisible);
 
             await base.OnAppearedAsync();
         }
@@ -211,6 +226,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        var cells = await this.machineCellsWebService.GetStatisticsAsync();
+                        this.FragmentBackPercent = cells.FragmentBackPercent;
+                        this.FragmentFrontPercent = cells.FragmentFrontPercent;
+                        this.FragmentTotalPercent = cells.FragmentTotalPercent;
+
+                        await base.OnDataRefreshAsync();
+                        break;
+                    }
             }
         }
 

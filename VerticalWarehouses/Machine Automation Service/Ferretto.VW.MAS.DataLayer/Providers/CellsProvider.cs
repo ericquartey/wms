@@ -265,16 +265,27 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
                         var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
-                        Cell prevCell = null;
-                        if (compactingType == CompactingType.ExactMatchCompacting)
+                        bool firstFree = true;
+                        if (compactingType == CompactingType.ExactMatchCompacting || compactingType == CompactingType.AnySpaceCompacting)
                         {
-                            prevCell = cells.LastOrDefault(c => c.Position < cell.Position);
+                            // in these compacting types the cell must be the first empty cell
+                            if (cells.Any(c => c.Panel.Side == cell.Side
+                                && c.Position < cell.Position
+                                && c.IsFree
+                                && c.BlockLevel == BlockLevel.None)
+                            )
+                            {
+                                firstFree = false;
+                            }
                         }
                         // check if load unit fits in available space
                         if (availableSpace >= loadUnitHeight + VerticalPositionTolerance
+                            && (compactingType != CompactingType.AnySpaceCompacting
+                                || firstFree
+                                )
                             && (compactingType != CompactingType.ExactMatchCompacting
                                 || (availableSpace < loadUnitHeight + (4 * VerticalPositionTolerance)
-                                    && (prevCell is null || !prevCell.IsFree || prevCell.BlockLevel == BlockLevel.Blocked)
+                                    && firstFree
                                     )
                                 )
                             )
@@ -308,6 +319,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
+                    $"{compactingType}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
