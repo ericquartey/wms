@@ -138,7 +138,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (!this.loadingUnitId.HasValue)
             {
-                this.ShowNotification(Resources.Errors.IdLoadingUnitNotExists, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
