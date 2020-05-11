@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.15.15" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
