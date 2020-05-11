@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The area of the machine is unknown.
+        /// </summary>
+        public static string AreaMachineUnknow {
+            get {
+                return ResourceManager.GetString("AreaMachineUnknow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic.
         /// </summary>
         public static string Automatic {
@@ -246,6 +255,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmMachineRun {
             get {
                 return ResourceManager.GetString("ConfirmMachineRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToVisibilityType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
             }
         }
         
@@ -439,6 +457,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id loading unit does not exists..
+        /// </summary>
+        public static string IdLoadingUnitNotExists {
+            get {
+                return ResourceManager.GetString("IdLoadingUnitNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverter.
         /// </summary>
         public static string Inverter {
@@ -471,6 +498,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; property of the &apos;{1}&apos; view model shall contain a valid loading unit identifier..
+        /// </summary>
+        public static string LoadingUnitViewModelPropertyIdentifier {
+            get {
+                return ResourceManager.GetString("LoadingUnitViewModelPropertyIdentifier", resourceCulture);
             }
         }
         
@@ -525,6 +561,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ManualMode {
             get {
                 return ResourceManager.GetString("ManualMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
+        /// </summary>
+        public static string MarkupNameOfSyntax {
+            get {
+                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
             }
         }
         
@@ -615,6 +660,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter cannot be null or empty..
+        /// </summary>
+        public static string ParameterCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
             }
         }
         

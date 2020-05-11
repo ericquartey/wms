@@ -44,7 +44,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:ErrorsApp.InverterFaultErrorRestore}" />
+                       Text="{res:Loc ErrorsApp.InverterFaultErrorRestore}" />
 
             <StackPanel Grid.Row="1"
                         MinHeight="100"
@@ -52,7 +52,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:ErrorsApp.ErrorCode}" />
+                           Text="{res:Loc ErrorsApp.ErrorCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -71,7 +71,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:ErrorsApp.Inverter}" />
+                           Text="{res:Loc ErrorsApp.Inverter}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -87,7 +87,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:ErrorsApp.DetailCode}" />
+                           Text="{res:Loc ErrorsApp.DetailCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -102,7 +102,7 @@
                                   MinHeight="80"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Description}"
-                                  LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
+                                  LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
 
 
             <local:PpcLabeledText Grid.Row="2"
@@ -110,7 +110,7 @@
                                   MinHeight="80"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Reason}"
-                                  LabelText="{x:Static res:ErrorsApp.ErrorReason}" />
+                                  LabelText="{res:Loc ErrorsApp.ErrorReason}" />
 
             <local:PpcLabeledText Grid.Row="3"
                                   Grid.ColumnSpan="3"
@@ -124,7 +124,7 @@
                                   MinHeight="80"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding ErrorTime}"
-                                  LabelText="{x:Static res:ErrorsApp.FirstSeen}" />
+                                  LabelText="{res:Loc ErrorsApp.FirstSeen}" />
 
 
             <local:PpcLabeledText Grid.Row="4"
@@ -132,14 +132,14 @@
                                   MinHeight="80"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Id}"
-                                  LabelText="{x:Static res:ErrorsApp.Id}" />
+                                  LabelText="{res:Loc ErrorsApp.Id}" />
 
             <local:PpcButton Grid.Row="5"
                              Grid.ColumnSpan="2"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"
-                             Content="{x:Static res:ErrorsApp.MarkAsResolved}" />
+                             Content="{res:Loc ErrorsApp.MarkAsResolved}" />
 
         </Grid>
     </Grid>
