@@ -91,7 +91,7 @@
                                                VerticalAlignment="Top"
                                                FontSize="{DynamicResource FontSize_High}"
                                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-                                        <Run Text="{res:Loc General.SerialNumber}" /><Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+                                        <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
                                     </TextBlock>
 
                                 </StackPanel>

@@ -106,7 +106,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{x:Static res:General.Next}"
+                                    Content="{res:Loc General.Next}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -358,7 +358,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{x:Static res:General.Next}"
+                                    Content="{res:Loc General.Next}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -376,7 +376,7 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
-                        <Run Text="{x:Static res:General.SwitchToAutomatic}" /><Run Text=":" />
+                        <Run Text="{res:Loc General.SwitchToAutomatic}" /><Run Text=":" />
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
@@ -392,7 +392,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"
-                                    Content="{x:Static res:General.Automatic}"
+                                    Content="{res:Loc General.Automatic}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -470,7 +470,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:General.Stop}" />
+                            Content="{res:Loc General.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

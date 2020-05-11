@@ -58,7 +58,7 @@
             <RadioButton.Content>
                 <TextBlock Grid.Row="2"
                            Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{x:Static res:General.WmsDisabled}" />
+                           Text="{res:Loc General.WmsDisabled}" />
             </RadioButton.Content>
         </RadioButton>
 
@@ -68,7 +68,7 @@
                      IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
             <RadioButton.Content>
                 <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{x:Static res:General.WmsEnabled}" />
+                           Text="{res:Loc General.WmsEnabled}" />
             </RadioButton.Content>
 
         </RadioButton>
@@ -157,7 +157,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
+                            Content="{res:Loc General.Save}"
                             IsBusy="{Binding IsWaitingForResponse}" />
     </Grid>
 </ctrls:View>

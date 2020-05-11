@@ -72,7 +72,7 @@
                             Abbrevation="3.5"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding UserCommand}"
-                            Content="{x:Static resources:OperatorApp.Users}"
+                            Content="{resources:Loc OperatorApp.Users}"
                             IsActive="{Binding IsUserActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />

@@ -377,7 +377,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding ApplyCorrectionCommand}"
-                                    Content="{x:Static res:General.Save}"
+                                    Content="{res:Loc General.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>

@@ -1132,19 +1132,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             var elapsedTime = DateTime.UtcNow - this.machineError.OccurrenceDate;
             if (elapsedTime.TotalMinutes < 1)
             {
-                this.ErrorTime = Resources.General.Now;
+                this.ErrorTime = Localized.Get("General.Now");
             }
             else if (elapsedTime.TotalHours < 1)
             {
-                this.ErrorTime = string.Format(Resources.General.MinutesAgo, elapsedTime.TotalMinutes);
+                this.ErrorTime = string.Format(Localized.Get("General.MinutesAgo"), elapsedTime.TotalMinutes);
             }
             else if (elapsedTime.TotalDays < 1)
             {
-                this.ErrorTime = string.Format(Resources.General.HoursAgo, elapsedTime.TotalHours);
+                this.ErrorTime = string.Format(Localized.Get("General.HoursAgo"), elapsedTime.TotalHours);
             }
             else
             {
-                this.ErrorTime = string.Format(Resources.General.DaysAgo, elapsedTime.TotalDays);
+                this.ErrorTime = string.Format(Localized.Get("General.DaysAgo"), elapsedTime.TotalDays);
             }
         }
 

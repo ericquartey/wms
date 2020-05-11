@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carousel calibration in progress.
+        /// </summary>
+        public static string CarouselCalibration {
+            get {
+                return ResourceManager.GetString("CarouselCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsCellsTotal.
         /// </summary>
         public static string CellsStatisticsCellsTotal {
@@ -1187,6 +1196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fragmentation total above 25%.
+        /// </summary>
+        public static string DrawerCompactingWarning {
+            get {
+                return ResourceManager.GetString("DrawerCompactingWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
         public static string DrawerSaturationDataGridHeaderCompartments {
@@ -1597,6 +1615,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Height {
             get {
                 return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal calibration in progress.
+        /// </summary>
+        public static string HorizontalCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalCalibration", resourceCulture);
             }
         }
         
@@ -3662,7 +3689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utenti.
+        ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string Users {
             get {

@@ -53,7 +53,7 @@
                                  VerticalAlignment="Top"
                                  TextBlock.LineStackingStrategy="BlockLineHeight"
                                  ContentText="{Binding ExistingPath}"
-                                 LabelText="{x:Static res:General.FilePath}" />
+                                 LabelText="{res:Loc General.FilePath}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="3"
