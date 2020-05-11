@@ -100,6 +100,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isHoming;
 
+        private Dictionary<Axis, bool> isHomingStarted;
+
         private bool isMissionInError;
 
         private bool isMissionInErrorByLoadUnitOperations;
@@ -174,6 +176,11 @@ namespace Ferretto.VW.App.Services
             this.MachineStatus = new Models.MachineStatus();
 
             this.isBayHoming = new Dictionary<MAS.AutomationService.Contracts.BayNumber, bool>();
+            this.isHomingStarted = new Dictionary<Axis, bool>();
+            this.isHomingStarted.Add(Axis.Horizontal, false);
+            this.isHomingStarted.Add(Axis.Vertical, false);
+            this.isHomingStarted.Add(Axis.HorizontalAndVertical, false);
+            this.isHomingStarted.Add(Axis.BayChain, false);
         }
 
         #endregion
@@ -654,6 +661,23 @@ namespace Ferretto.VW.App.Services
                         .Publish(new HomingChangedMessage(this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay]));
                     }
                     this.IsHoming = this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay];
+                    switch (message?.Status)
+                    {
+                        case MessageStatus.OperationStart:
+                            if (this.isHomingStarted.ContainsKey(dataHoming.AxisToCalibrate))
+                            {
+                                this.isHomingStarted[dataHoming.AxisToCalibrate] = true;
+                            }
+                            break;
+
+                        case MessageStatus.OperationEnd:
+                        case MessageStatus.OperationError:
+                            if (this.isHomingStarted.ContainsKey(dataHoming.AxisToCalibrate))
+                            {
+                                this.isHomingStarted[dataHoming.AxisToCalibrate] = false;
+                            }
+                            break;
+                    }
                 }
 
                 switch (message.Status)
@@ -1492,13 +1516,27 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
+                        else if (this.machineModeService.MachineMode != MachineMode.Automatic
+                            && this.machineModeService.MachineMode != MachineMode.SwitchingToAutomatic
+                            )
                         {
                             this.ShowNotification(Resources.ServiceMachine.AutomaticMissing, NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                        }
+                        else if (this.isHomingStarted[Axis.Horizontal])
+                        {
+                            this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted, NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
+                        {
+                            this.ShowNotification(VW.App.Resources.InstallationApp.VerticalHomingStarted, NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.BayChain])
+                        {
+                            this.ShowNotification(VW.App.Resources.InstallationApp.BayHomingStarted, NotificationSeverity.Info);
                         }
                         else if (!this.isBayHoming[this.bay.Number])
                         {

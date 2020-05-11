@@ -591,6 +591,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     newStep.OnEnter(null);
                 }
             }
+
+            foreach (var bay in bayProvider.GetAll().Where(w => w.CurrentMission != null))
+            {
+                if (!missions.Any(m => m.Id == bay.CurrentMission.Id && m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted))
+                {
+                    bayProvider.ClearMission(bay.Number);
+                }
+            }
         }
 
         private bool GenerateHoming(IBaysDataProvider bayProvider)

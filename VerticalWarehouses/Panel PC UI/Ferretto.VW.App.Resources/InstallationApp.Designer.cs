@@ -448,6 +448,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay chain homing started.
+        /// </summary>
+        public static string BayHomingStarted {
+            get {
+                return ResourceManager.GetString("BayHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay measurement.
         /// </summary>
         public static string BayMeasurement {
