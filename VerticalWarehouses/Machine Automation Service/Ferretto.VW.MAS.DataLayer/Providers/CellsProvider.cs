@@ -265,16 +265,23 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
                         var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
-                        Cell prevCell = null;
-                        if (compactingType == CompactingType.ExactMatchCompacting)
+                        var firstFree = cell.Id;
+                        if (compactingType == CompactingType.ExactMatchCompacting || compactingType == CompactingType.AnySpaceCompacting)
                         {
-                            prevCell = cells.LastOrDefault(c => c.Position < cell.Position);
+                            // in these compacting types the cell must be the first empty cell
+                            firstFree = cells.FirstOrDefault(c => c.Panel.Side == cell.Side
+                                && c.Position < cell.Position
+                                && c.IsFree
+                                && c.BlockLevel == BlockLevel.None)?.Id ?? -1;
                         }
                         // check if load unit fits in available space
                         if (availableSpace >= loadUnitHeight + VerticalPositionTolerance
+                            && (compactingType != CompactingType.AnySpaceCompacting
+                                || firstFree == cell.Id
+                                )
                             && (compactingType != CompactingType.ExactMatchCompacting
                                 || (availableSpace < loadUnitHeight + (4 * VerticalPositionTolerance)
-                                    && (prevCell is null || !prevCell.IsFree || prevCell.BlockLevel == BlockLevel.Blocked)
+                                    && firstFree == cell.Id
                                     )
                                 )
                             )
