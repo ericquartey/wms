@@ -1187,6 +1187,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fragmentation total above 25%.
+        /// </summary>
+        public static string DrawerCompactingWarning {
+            get {
+                return ResourceManager.GetString("DrawerCompactingWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
         public static string DrawerSaturationDataGridHeaderCompartments {

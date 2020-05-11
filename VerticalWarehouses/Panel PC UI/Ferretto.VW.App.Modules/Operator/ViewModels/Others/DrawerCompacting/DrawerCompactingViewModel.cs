@@ -133,6 +133,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FragmentFrontPercent = cells.FragmentFrontPercent;
                 this.FragmentTotalPercent = cells.FragmentTotalPercent;
 
+                if(this.fragmentFrontPercent > 25.00)
+                {
+                    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                }
+
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
 
