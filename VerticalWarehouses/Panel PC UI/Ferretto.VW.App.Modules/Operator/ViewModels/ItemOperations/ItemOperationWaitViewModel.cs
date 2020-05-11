@@ -163,11 +163,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.moveVisible = false;
                 }
 
+                if (this.loadingUnits.Count > 0)
+                {
+                    this.isGridVisible = true;
+                }
+                else
+                {
+                    this.isGridVisible = false;
+                }
+
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
                 this.RaisePropertyChanged(nameof(this.moveVisible));
 
                 this.RaisePropertyChanged(nameof(this.MoveUnits));
+
+                this.RaisePropertyChanged(nameof(this.isGridVisible));
             }
         }
 
@@ -175,9 +186,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.RaisePropertyChanged(nameof(this.isGridVisible));
-
             this.RaisePropertyChanged(nameof(this.moveVisible));
+
+            this.RaisePropertyChanged(nameof(this.isGridVisible));
 
             this.IsBackNavigationAllowed = true;
 
@@ -213,13 +224,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.loadingUnitsMovements == 0)
             {
-                this.isGridVisible = false;
+                //this.isGridVisible = false;
 
                 return OperatorApp.NoLoadingUnitsToMove;
             }
             else if (this.loadingUnitsMovements == 1)
             {
-                this.isGridVisible = true;
+                //this.isGridVisible = true;
 
                 return OperatorApp.LoadingUnitSendToBay;
             }

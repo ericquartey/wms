@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace Ferretto.VW.App.Resources
 {
-    public class LocalizedResources : INotifyPropertyChanged
+    public class Localized : INotifyPropertyChanged
 
     {
         #region Fields
@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Resources
 
         #region Properties
 
-        public static LocalizedResources Instance { get; } = new LocalizedResources();
+        public static Localized Instance { get; } = new Localized();
 
         public CultureInfo CurrentCulture
 
@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Resources
 
                     Path = new PropertyPath($"[{baseName}{this.StringName}]"),
 
-                    Source = LocalizedResources.Instance,
+                    Source = Localized.Instance,
 
                     FallbackValue = StringName
                 };
@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Resources
                     if (localValue is ResourceManager resourceManager)
 
                     {
-                        LocalizedResources.Instance.AddResourceManager(resourceManager);
+                        Localized.Instance.AddResourceManager(resourceManager);
 
                         return resourceManager;
                     }

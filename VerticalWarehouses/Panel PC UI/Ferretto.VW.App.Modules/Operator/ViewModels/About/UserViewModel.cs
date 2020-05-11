@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         settings[actualLanguageKey].Value = value;
 
-                        Resources.LocalizedResources.Instance.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(value);
+                        Resources.Localized.Instance.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(value);
 
                         //Resources.LocalizedResources.Get("General.BayNumber");
                     }

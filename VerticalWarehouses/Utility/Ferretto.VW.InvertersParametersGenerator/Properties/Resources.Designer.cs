@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.App.Resources {
+namespace Ferretto.VW.InvertersParametersGenerator.Properties {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.VW.App.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Errors {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors() {
+        internal Resources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.Errors", typeof(Errors).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.InvertersParametersGenerator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,74 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The area of the machine is unknown.
+        ///   Looks up a localized string similar to Close.
         /// </summary>
-        public static string AreaMachineUnknow {
+        public static string Close {
             get {
-                return ResourceManager.GetString("AreaMachineUnknow", resourceCulture);
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
+        ///   Looks up a localized string similar to Inverters folder.
         /// </summary>
-        public static string ConverterCanConvertOnlyToVisibilityType {
+        public static string InvertersFolder {
             get {
-                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+                return ResourceManager.GetString("InvertersFolder", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Id loading unit does not exists..
+        ///   Looks up a localized string similar to Inverters parameters file generator.
         /// </summary>
-        public static string IdLoadingUnitNotExists {
+        public static string InvertersParametersGeneratorTitle {
             get {
-                return ResourceManager.GetString("IdLoadingUnitNotExists", resourceCulture);
+                return ResourceManager.GetString("InvertersParametersGeneratorTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;{0}&apos; property of the &apos;{1}&apos; view model shall contain a valid loading unit identifier..
+        ///   Looks up a localized string similar to Next.
         /// </summary>
-        public static string LoadingUnitViewModelPropertyIdentifier {
+        public static string Next {
             get {
-                return ResourceManager.GetString("LoadingUnitViewModelPropertyIdentifier", resourceCulture);
+                return ResourceManager.GetString("Next", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
+        ///   Looks up a localized string similar to Opend file.
         /// </summary>
-        public static string MarkupNameOfSyntax {
+        public static string OpenFile {
             get {
-                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
+                return ResourceManager.GetString("OpenFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter cannot be null or empty..
+        ///   Looks up a localized string similar to Open folder.
         /// </summary>
-        public static string ParameterCannotBeNullOrEmpty {
+        public static string OpenFolder {
             get {
-                return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag confdiguration file.
+        /// </summary>
+        public static string VertimagConfigurationFile {
+            get {
+                return ResourceManager.GetString("VertimagConfigurationFile", resourceCulture);
             }
         }
     }

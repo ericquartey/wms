@@ -117,19 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>L'area della macchina è sconosciuta.</value>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Button test</comment>
   </data>
-  <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>L'identificativo del cassetto non esiste.</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Open folder</value>
   </data>
-  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>La proprietà '{0}' del modello di vista '{1}' deve contenere un identificativo cassetto valido.</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Vertimag confdiguration file</value>
+    <comment>Description</comment>
   </data>
-  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Il parametro non può essere nullo o vuoto.</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Opend file</value>
+  </data>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Inverters folder</value>
+    <comment>Description</comment>
+  </data>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Inverters parameters file generator</value>
+    <comment>Title</comment>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
   </data>
 </root>
