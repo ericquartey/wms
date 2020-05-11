@@ -310,7 +310,7 @@
 
             <DataGridTextColumn x:Name="ColumnDate"
                                 Width="180"
-                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormat}}"
+                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormatComplete}}"
                                 Header="{x:Static Res:OperatorApp.CreationDate}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">

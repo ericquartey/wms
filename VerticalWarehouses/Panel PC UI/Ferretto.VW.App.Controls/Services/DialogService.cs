@@ -189,9 +189,9 @@ namespace Ferretto.VW.App.Controls
             protected override void PopulateStringTable()
             {
                 base.PopulateStringTable();
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Yes, General.Yes);
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.No, General.No);
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Cancel, General.Cancel);
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Yes, Localized.Get("General.Yes"));
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.No, Localized.Get("General.No"));
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Cancel, Localized.Get("General.Cancel"));
             }
 
             #endregion

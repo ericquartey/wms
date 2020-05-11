@@ -274,7 +274,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
+                            Content="{res:Loc General.Save}"
                             IsBusy="{Binding IsWaitingForResponse}" />
 
     </Grid>

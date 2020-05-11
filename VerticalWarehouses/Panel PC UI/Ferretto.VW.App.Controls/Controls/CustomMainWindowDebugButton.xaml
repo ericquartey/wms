@@ -13,6 +13,6 @@
 
     <controls:PpcButton x:Name="LayoutRoot"
                         Command="{Binding ExecuteCommand}"
-                        Content="{x:Static res:General.Debug}"
+                        Content="{res:Loc General.Debug}"
                         Style="{DynamicResource PpcButtonDebugHeaderStyle}" />
 </ctrls:PpcControl>

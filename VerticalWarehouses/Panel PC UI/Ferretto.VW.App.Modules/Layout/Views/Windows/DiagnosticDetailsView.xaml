@@ -56,7 +56,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:General.DiagnosticDetailTitle}" />
+                   Text="{res:Loc General.DiagnosticDetailTitle}" />
 
         <iconPacks:PackIconModern Grid.Row="0"
                                   Grid.Column="2"
@@ -104,7 +104,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               Text="{x:Static res:General.FiniteMachineState}" />
+                               Text="{res:Loc General.FiniteMachineState}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
@@ -112,7 +112,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
@@ -127,7 +127,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
@@ -159,7 +159,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               Text="{x:Static res:General.IODrive}" />
+                               Text="{res:Loc General.IODrive}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
@@ -167,7 +167,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
@@ -182,7 +182,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
@@ -215,7 +215,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               Text="{x:Static res:General.Inverter}" />
+                               Text="{res:Loc General.Inverter}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
@@ -223,7 +223,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
@@ -238,7 +238,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                               Text="{x:Static res:General.StatusDebug}" />
+                               Text="{res:Loc General.StatusDebug}" />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
@@ -275,7 +275,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               Text="{x:Static res:General.Devices}" />
+                               Text="{res:Loc General.Devices}" />
                 </Grid>
 
             </Border>

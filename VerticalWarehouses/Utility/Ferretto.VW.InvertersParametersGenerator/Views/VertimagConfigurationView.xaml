@@ -7,7 +7,7 @@
              mc:Ignorable="d">
 
     <Grid x:Name="Root"
-          Margin="50">
+           Margin="30">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

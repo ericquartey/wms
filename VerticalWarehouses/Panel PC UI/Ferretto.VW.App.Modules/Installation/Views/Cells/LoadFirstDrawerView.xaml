@@ -159,13 +159,13 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:General.Start}" />
+                                Content="{res:Loc General.Start}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:General.Stop}"
+                                Content="{res:Loc General.Stop}"
                                 IsBusy="{Binding IsStopPressed}" />
         </StackPanel>
 

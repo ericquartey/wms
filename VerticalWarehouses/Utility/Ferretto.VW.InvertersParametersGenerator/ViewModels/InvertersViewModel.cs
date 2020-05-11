@@ -27,8 +27,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string selectedFileConfigurationName;
 
-        private VertimagConfiguration vertimagConfiguration;
-
         #endregion
 
         #region Constructors
@@ -71,12 +69,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.selectedFileConfigurationName, value);
         }
 
-        public VertimagConfiguration VertimagConfiguration
-        {
-            get => this.vertimagConfiguration;
-            set => this.SetProperty(ref this.vertimagConfiguration, value);
-        }
-
         #endregion
 
         #region Methods
@@ -92,7 +84,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
             foreach (var axe in vertimagConfiguration.Machine.Elevator.Axes)
             {
-                if (!(axe.Inverter?.Parameters is null))
+                if (!(axe.Inverter is null))
                 {
                     inverterParametersData.Add(new InverterParametersData((byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
                 }
@@ -100,7 +92,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
             foreach (var bay in vertimagConfiguration.Machine.Bays)
             {
-                if (!(bay.Inverter?.Parameters is null))
+                if (!(bay.Inverter is null))
                 {
                     inverterParametersData.Add(new InverterParametersData((byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
                 }
@@ -130,7 +122,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 if (!(this.configurationService.VertimagConfiguration is null))
                 {
-                    this.invertersParameters = this.GetInvertersParameters(this.VertimagConfiguration);
+                    this.invertersParameters = this.GetInvertersParameters(this.configurationService.VertimagConfiguration);
                 }
 
                 this.RaisePropertyChanged(nameof(this.InvertersParameters));

@@ -29,6 +29,6 @@
                             Margin="0,0,10,0"
                             HorizontalAlignment="Right"
                             Click="Button_Click"
-                            Content="{x:Static res:General.Back}" />
+                            Content="{res:Loc General.Back}" />
     </Grid>
 </Window>
