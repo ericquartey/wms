@@ -64,7 +64,9 @@
                     <DataGrid Name="DataGrid"
                               Width="auto"
                               Height="auto"
-                              MaxHeight="250"
+                              MaxHeight="200"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
                               ItemsSource="{Binding LoadingUnits}">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column10"
@@ -86,7 +88,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column20"
                                                 Width="1*"
-                                                Binding="{Binding Path=Height}"
+                                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
                                                 Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -97,7 +99,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column30"
                                                 Width="1*"
-                                                Binding="{Binding Path=GrossWeight}"
+                                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
                                                 Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -149,6 +151,8 @@
                               Width="auto"
                               Height="auto"
                               MaxHeight="200"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
                               ItemsSource="{Binding MoveUnits}">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column1"
@@ -170,7 +174,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column2"
                                                 Width="1*"
-                                                Binding="{Binding Path=Height}"
+                                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
                                                 Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -181,7 +185,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column3"
                                                 Width="1*"
-                                                Binding="{Binding Path=GrossWeight}"
+                                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
                                                 Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
