@@ -212,6 +212,8 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.cells, value, this.CellsNotificationProperty);
         }
 
+        public double FragmentTotalPercent { get; private set; }
+
         public bool HasBayExternal
         {
             get => this.hasBayExternal;
@@ -898,6 +900,11 @@ namespace Ferretto.VW.App.Services
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
                             this.Bay = await this.bayManagerService.GetBayAsync();
+                            if (message?.Data is MoveLoadingUnitMessageData)
+                            {
+                                var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
+                                this.FragmentTotalPercent = cellStat.FragmentTotalPercent;
+                            }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
                                 this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
@@ -1497,6 +1504,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.BayCalibrationNotPerformed, NotificationSeverity.Warning);
                         }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
@@ -1512,6 +1523,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
                         }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        }
                         break;
 
                     case WarningsArea.Information:
@@ -1519,6 +1534,10 @@ namespace Ferretto.VW.App.Services
                         if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                        }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {

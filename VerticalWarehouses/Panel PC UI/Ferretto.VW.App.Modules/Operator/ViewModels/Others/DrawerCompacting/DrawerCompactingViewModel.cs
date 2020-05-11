@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
                     .Subscribe(
                         async m => await this.OnPositioningOperationChangedAsync(m),
                         ThreadOption.UIThread,
@@ -147,11 +147,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FragmentBackPercent = cells.FragmentBackPercent;
                 this.FragmentFrontPercent = cells.FragmentFrontPercent;
                 this.FragmentTotalPercent = cells.FragmentTotalPercent;
-
-                if(this.fragmentFrontPercent > 25.00)
-                {
-                    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
-                }
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
@@ -229,7 +224,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             switch (message.Status)
             {
