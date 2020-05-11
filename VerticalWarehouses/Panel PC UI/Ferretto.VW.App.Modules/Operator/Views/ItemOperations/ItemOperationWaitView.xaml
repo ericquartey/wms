@@ -64,7 +64,7 @@
                     <DataGrid Name="DataGrid"
                               Width="auto"
                               Height="auto"
-                              MaxHeight="200"
+                              MaxHeight="250"
                               ItemsSource="{Binding LoadingUnits}">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column10"
