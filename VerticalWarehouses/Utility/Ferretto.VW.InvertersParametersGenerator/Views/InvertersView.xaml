@@ -78,7 +78,7 @@
                                                        FontFamily="{TemplateBinding FontFamily}"
                                                        FontSize="16"
                                                        FontWeight="{TemplateBinding FontWeight}"
-                                                       Foreground="{DynamicResource Text_Foreground}"
+                                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
                                                        Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
                                             </Grid>
                                         </Grid>
@@ -87,10 +87,11 @@
                                     <TextBlock Grid.Column="1"
                                            Margin="5,18,10,5"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
+                                           VerticalAlignment="Top"                                                 
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{TemplateBinding FontSize}"
                                            FontWeight="{TemplateBinding FontWeight}"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
                                            Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap">
                                         <TextBlock.Style>
@@ -120,7 +121,7 @@
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{DynamicResource FontSize_Small}"
                                            FontWeight="{TemplateBinding FontWeight}"
-                                           Foreground="{DynamicResource TextLight_Foreground}"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap" />
 
@@ -150,6 +151,7 @@
                                                Margin="0,0,-2,4"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Bottom"
+                                               Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
                                                FontFamily="{DynamicResource VWAPP_TitleFont}"
                                                FontSize="14"
                                                FontWeight="Light"
@@ -213,7 +215,7 @@
     </UserControl.Resources>
 
     <Grid Grid.Column="0"
-              Margin="0">
+          Margin="30">
 
         <Grid
               Margin="15,0"
@@ -242,8 +244,7 @@
             </StackPanel>
 
             <ListView Grid.Row="2"
-                          ItemsSource="{Binding InvertersParameters}"
-                          SelectedItem="{Binding SelectedInverter, Mode=TwoWay}"
+                          ItemsSource="{Binding InvertersParameters}"                          
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled"                        
                           HorizontalAlignment="Stretch">
