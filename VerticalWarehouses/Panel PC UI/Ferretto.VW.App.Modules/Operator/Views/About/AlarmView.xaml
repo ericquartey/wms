@@ -172,7 +172,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column3"
-                                            Width="120"
+                                            Width="80"
                                             Binding="{Binding Path=Code}"
                                             Header="{res:Loc OperatorApp.Code}">
                             <DataGridTextColumn.ElementStyle>
@@ -183,12 +183,13 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column4"
-                                            Width="300"
-                                            Binding="{Binding Path=Description, StringFormat={x:Static res:General.DateFormat}}"
+                                            Width="400"
+                                            Binding="{Binding Path=Description}"
                                             Header="{res:Loc OperatorApp.Description}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="10,0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                     <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>
@@ -218,7 +219,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column7"
                                             Width="200"
-                                            Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormat}}"
+                                            Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
                                             Header="{res:Loc OperatorApp.OccurrenceDate}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -229,7 +230,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column8"
                                             Width="200"
-                                            Binding="{Binding Path=ResolutionDate, StringFormat={x:Static res:General.DateFormat}}"
+                                            Binding="{Binding Path=ResolutionDate, StringFormat={x:Static res:General.DateFormatComplete}}"
                                             Header="{res:Loc OperatorApp.ResolutionDate}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -239,12 +240,13 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column9"
-                                            Width="300"
-                                            Binding="{Binding Path=AdditionalText, StringFormat={x:Static res:General.DateFormat}}"
+                                            Width="600"
+                                            Binding="{Binding Path=AdditionalText}"
                                             Header="{res:Loc OperatorApp.AdditionalText}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="10,0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                     <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>

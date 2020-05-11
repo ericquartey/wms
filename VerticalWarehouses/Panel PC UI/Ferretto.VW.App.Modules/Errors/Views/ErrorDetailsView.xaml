@@ -91,11 +91,11 @@
 
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:General.Bay}" />
+                           Text="{res:Loc General.Bay}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoBlue}"
-                           Text="{x:Static res:General.BayOneName}"
+                           Text="{res:Loc General.BayOneName}"
                            TextAlignment="Center"
                            TextWrapping="Wrap">
                     <TextBlock.Style>
@@ -114,7 +114,7 @@
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoBlue}"
-                           Text="{x:Static res:General.BayTwoName}"
+                           Text="{res:Loc General.BayTwoName}"
                            TextAlignment="Center"
                            TextWrapping="Wrap">
                     <TextBlock.Style>
@@ -133,7 +133,7 @@
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoBlue}"
-                           Text="{x:Static res:General.BayThreeName}"
+                           Text="{res:Loc General.BayThreeName}"
                            TextAlignment="Center"
                            TextWrapping="Wrap">
                     <TextBlock.Style>

@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
             if (elapsedTime.TotalMinutes < 1)
             {
-                this.ErrorTime = Resources.General.Now;
+                this.ErrorTime = Resources.Localized.Get("General.Now");
             }
             else if (elapsedTime.TotalHours < 1)
             {

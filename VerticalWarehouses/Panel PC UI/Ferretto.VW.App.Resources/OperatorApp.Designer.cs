@@ -3662,7 +3662,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utenti.
+        ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string Users {
             get {

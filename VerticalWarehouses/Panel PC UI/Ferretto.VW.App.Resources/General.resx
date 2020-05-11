@@ -423,8 +423,8 @@
   <data name="WmsEnabled" xml:space="preserve">
     <value>Enabled</value>
   </data>
-  <data name="DateFormat" xml:space="preserve">
-    <value>{0:dd.MM.yyyy HH:mm}</value>
+  <data name="DateFormatComplete" xml:space="preserve">
+    <value>{0:yyyy.MM.dd HH:mm}</value>
   </data>
   <data name="AreaMachineUnknow" xml:space="preserve">
     <value>The area of the machine is unknown</value>
@@ -443,5 +443,11 @@
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
     <value>Parameter cannot be null or empty.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: yyyy.MM.dd}</value>
+  </data>
+  <data name="DateFormatHourMinutes" xml:space="preserve">
+    <value>{0: HH:mm}</value>
   </data>
 </root>

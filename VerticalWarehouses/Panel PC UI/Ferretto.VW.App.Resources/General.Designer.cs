@@ -277,11 +277,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0:dd.MM.yyyy HH:mm}.
+        ///   Looks up a localized string similar to {0:yyyy.MM.dd HH:mm}.
         /// </summary>
-        public static string DateFormat {
+        public static string DateFormatComplete {
             get {
-                return ResourceManager.GetString("DateFormat", resourceCulture);
+                return ResourceManager.GetString("DateFormatComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0: yyyy.MM.dd}.
+        /// </summary>
+        public static string DateFormatDayNumber {
+            get {
+                return ResourceManager.GetString("DateFormatDayNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0: HH:mm}.
+        /// </summary>
+        public static string DateFormatHourMinutes {
+            get {
+                return ResourceManager.GetString("DateFormatHourMinutes", resourceCulture);
             }
         }
         
