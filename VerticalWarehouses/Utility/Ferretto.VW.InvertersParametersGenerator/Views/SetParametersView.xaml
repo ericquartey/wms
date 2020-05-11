@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Ferretto.VW.InvertersParametersGenerator.Views.SetParametersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    
+    <Grid x:Name="Root"
+          Margin="50">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Title"                   
+                   Grid.ColumnSpan="3"
+                   VerticalAlignment="Top"
+                   FontSize="36"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="Configurazioen inverter" />
+
+        <TextBlock
+                   Margin="0 20 0 0"
+                   Grid.Row="3"                  
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="" />
+
+        <TextBlock Grid.Row="5"
+                   Margin="0 20 0 0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="" />
+
+        <Button Grid.Row="6"
+                Grid.ColumnSpan="3"
+                Margin="15,15,15,0"
+                Width="100"
+                Height="60"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                FontSize="18"
+                Style="{StaticResource ButtonStyle}"
+                Command="{Binding NextCommand}"
+                Content="Next" />
+    </Grid>
+</UserControl>
