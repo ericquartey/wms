@@ -40,7 +40,7 @@
                             Margin="0,0,15,0"
                             HorizontalAlignment="Right"
                             Command="{Binding GoToLogsExport}"
-                            Content="{x:Static Resources:InstallationApp.Export}" />
+                            Content="{Resources:Loc InstallationApp.Export}" />
 
 
         <Grid Grid.Row="1"

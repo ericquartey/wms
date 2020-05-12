@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.exportableDrives != null)
             {
-                this.ShowNotification(Resources.InstallationApp.ExportableDeviceDetected);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.ExportableDeviceDetected"));
             }
             else
             {

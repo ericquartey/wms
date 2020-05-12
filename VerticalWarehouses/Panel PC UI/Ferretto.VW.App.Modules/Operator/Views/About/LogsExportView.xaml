@@ -364,7 +364,7 @@
                             Grid.Column="1"
                             Margin="-20,15,0,0"
                             Command="{Binding ExportCommand}"
-                            Content="{x:Static res:InstallationApp.Export}"
+                            Content="{res:Loc InstallationApp.Export}"
                             IsBusy="{Binding IsBusy}" />
     </Grid>
 </ctrls:View>
