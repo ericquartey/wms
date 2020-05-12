@@ -2565,4 +2565,46 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Read only</value>
     <comment>Header text</comment>
   </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Configure Device</value>
+  </data>
+  <data name="SerialPortName" xml:space="preserve">
+    <value>Serial Port</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>System Ports</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>No serial ports detected. Ensure the device is connected to the panel.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Cannot find the serial port of the barcode reader? Configure the device.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Enable COM Emulation</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Enter Setup</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Exit Setup</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Firmware Version</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Manufacture Date</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Model Number</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
 </root>

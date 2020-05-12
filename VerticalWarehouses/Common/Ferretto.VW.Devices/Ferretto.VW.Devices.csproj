@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
@@ -9,11 +9,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.Devices\Ferretto.VW.Devices.csproj" />
   </ItemGroup>
 
 </Project>

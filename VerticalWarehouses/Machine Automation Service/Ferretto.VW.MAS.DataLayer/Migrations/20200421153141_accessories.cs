@@ -65,8 +65,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IsConfigured = table.Column<string>(nullable: true),
-                    IsEnabled = table.Column<string>(nullable: true),
+                    IsConfigured = table.Column<bool>(),
+                    IsEnabled = table.Column<bool>(),
                     Discriminator = table.Column<string>(nullable: false),
                     PortName = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),

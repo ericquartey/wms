@@ -12,18 +12,12 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
-        public string IsConfigured { get; set; }
+        public DeviceInformation DeviceInformation { get; set; }
 
-        public string IsEnabled { get; set; }
+        public bool IsConfigured { get; set; }
+
+        public bool IsEnabled { get; set; }
 
         #endregion
-
-        // public DateTime? ManufactureDate {get; set;}
-
-        // public string FirmwareVersion {get; set;}
-
-        // public string Model {get; set;}
-
-        // public string SerialNumber {get; set;}
     }
 }

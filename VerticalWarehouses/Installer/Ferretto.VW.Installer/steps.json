@@ -35,7 +35,7 @@
       "number": 4,
       "title": "Installazione servizio automazione",
       "description": "Crea il servizio di automazione da avviare con l'accensione del PanelPc",
-      "script": "New-Service -name $(MAS:ServiceName) -binaryPathName \"$(Install:Root:Path)\\$(Install:MAS:Path)\\$(Install:MAS:FilePath) --service\" -displayName \"$(MAS:Service:DisplayName)\" -description \"$(MAS:Service:Description)\" -startupType Automatic",
+      "script": "New-Service -name $(MAS:ServiceName) -binaryPathName \"$(Install:Root:Path)\\$(Install:MAS:Path)\\$(Install:MAS:FilePath) --service\" -displayName \"$(MAS:Service:DisplayName)\" -description \"$(MAS:Service:Description)\" -startupType AutomaticDelayedStart",
       "rollbackScript": "sc.exe delete $(MAS:ServiceName)",
       //"script": "timeout /T 2", // ** fake
       "setupMode": "install",

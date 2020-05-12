@@ -8,6 +8,8 @@
 
         public const string BarcodeReader = "BarcodeReaderSettingsViewModel";
 
+        public const string BarcodeReaderConfig = "BarcodeReaderConfigurationViewModel";
+
         public const string CardReader = "CardReaderSettingsViewModel";
 
         public const string LabelPrinter = "LabelPrinterSettingsViewModel";

@@ -2484,4 +2484,43 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Configura dispositivo</value>
+  </data>
+  <data name="SerialPortName" xml:space="preserve">
+    <value>Porta seriale</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Porte di sistema</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Nessuna porta seriale rilevata. Assicurarsi che il dispositivo sia collegato al pannello.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>La porta seriale che cerchi non è tra quelle in elenco? Configura il dispositivo.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Abilita Emulazione COM</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Inizia Configurazione</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Termina Configurazione</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Versione Firmware</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Data di Produzione</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Numero Modello</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Matricola</value>
+  </data>
 </root>

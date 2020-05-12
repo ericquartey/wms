@@ -964,6 +964,25 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
+        {
+            if (portName is null)
+            {
+                throw new ArgumentNullException(nameof(portName));
+            }
+
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.BarcodeReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.PortName = portName;
+            }
+        }
+
         public void UpdateELevatorDistance(BayNumber bayNumber, double distance)
         {
             lock (this.dataContext)

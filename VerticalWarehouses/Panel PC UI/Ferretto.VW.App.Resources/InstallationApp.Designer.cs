@@ -79,6 +79,51 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable COM Emulation.
+        /// </summary>
+        public static string AccessoriesBarcodeEnableComEmulation {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeEnableComEmulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Setup.
+        /// </summary>
+        public static string AccessoriesBarcodeEnterSetup {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeEnterSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Setup.
+        /// </summary>
+        public static string AccessoriesBarcodeExitSetup {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeExitSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done..
+        /// </summary>
+        public static string AccessoriesBarcodeReaderConfigurationInstructions {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeReaderConfigurationInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string AccessoryEnabled {
+            get {
+                return ResourceManager.GetString("AccessoryEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active rays quantity.
         /// </summary>
         public static string ActiveRaysQuantity {
@@ -1240,6 +1285,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot find the serial port of the barcode reader? Configure the device..
+        /// </summary>
+        public static string ConfigureBarcodeReaderHint {
+            get {
+                return ResourceManager.GetString("ConfigureBarcodeReaderHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Device.
+        /// </summary>
+        public static string ConfigureDevice {
+            get {
+                return ResourceManager.GetString("ConfigureDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Adjustment.
         /// </summary>
         public static string ConfirmAdjustment {
@@ -2343,6 +2406,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FirewallIsEnabledOnThisTerminal {
             get {
                 return ResourceManager.GetString("FirewallIsEnabledOnThisTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware Version.
+        /// </summary>
+        public static string FirmwareVersion {
+            get {
+                return ResourceManager.GetString("FirmwareVersion", resourceCulture);
             }
         }
         
@@ -4111,6 +4183,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manufacture Date.
+        /// </summary>
+        public static string ManufactureDate {
+            get {
+                return ResourceManager.GetString("ManufactureDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum allowed value is 9..
         /// </summary>
         public static string MaxValue9 {
@@ -4278,6 +4359,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MisuredPosition {
             get {
                 return ResourceManager.GetString("MisuredPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model Number.
+        /// </summary>
+        public static string ModelNumber {
+            get {
+                return ResourceManager.GetString("ModelNumber", resourceCulture);
             }
         }
         
@@ -4593,6 +4683,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NoInstallationFileFound {
             get {
                 return ResourceManager.GetString("NoInstallationFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No serial ports detected. Ensure the device is connected to the panel..
+        /// </summary>
+        public static string NoSerialPortDetected {
+            get {
+                return ResourceManager.GetString("NoSerialPortDetected", resourceCulture);
             }
         }
         
@@ -5724,6 +5823,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        public static string SerialNumber {
+            get {
+                return ResourceManager.GetString("SerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Port.
+        /// </summary>
+        public static string SerialPortName {
+            get {
+                return ResourceManager.GetString("SerialPortName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set manual system date time.
         /// </summary>
         public static string SetManualSystemDateTime {
@@ -6224,6 +6341,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SystemErrorMM {
             get {
                 return ResourceManager.GetString("SystemErrorMM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Ports.
+        /// </summary>
+        public static string SystemPorts {
+            get {
+                return ResourceManager.GetString("SystemPorts", resourceCulture);
             }
         }
         

@@ -25,10 +25,10 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.Charts" Version="19.2.4" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -67,6 +67,7 @@
     <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
     <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
+    <None Remove="Views\Accessories\BarcodeReaderConfigurationView.xaml" />
     <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
@@ -95,6 +96,9 @@
     </Compile>
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\BarcodeReaderConfigurationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Inverters\ParametersInverterDetailsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

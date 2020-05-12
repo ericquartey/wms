@@ -23,7 +23,7 @@
 
     <conv:ReferenceToBoolConverter x:Key="RTBC" />
     <conv:ReferenceToBoolConverter x:Key="RTBIC"
-                                         Invert="True" />
+                                   Invert="True" />
 
     <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />

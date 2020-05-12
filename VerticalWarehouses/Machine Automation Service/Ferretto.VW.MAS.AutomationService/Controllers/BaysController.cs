@@ -154,6 +154,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPut("accessories/barcode-reader")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> UpdateBarcodeReaderSettings(bool isEnabled, string portName)
+        {
+            this.baysDataProvider.UpdateBarcodeReaderSettings(this.BayNumber, isEnabled, portName);
+
+            return this.Ok();
+        }
+
         [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
