@@ -2594,4 +2594,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Default configuration loaded</value>
     <comment>Description</comment>
   </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Bay chain homing started</value>
+  </data>
 </root>
