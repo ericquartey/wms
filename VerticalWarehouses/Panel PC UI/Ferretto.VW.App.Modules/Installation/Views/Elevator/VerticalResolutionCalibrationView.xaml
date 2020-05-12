@@ -40,11 +40,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.AttachMeter}" />
+                               Text="{res:Loc InstallationApp.AttachMeter}" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
+                               Text="{res:Loc InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
@@ -52,7 +52,7 @@
                                     Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartPositionCommand}"
-                                    Content="{x:Static res:InstallationApp.GoToPosition}"
+                                    Content="{res:Loc InstallationApp.GoToPosition}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -62,19 +62,19 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="{x:Static res:InstallationApp.StartQuote}"
+                                   LabelText="{res:Loc InstallationApp.StartQuote}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.RemoveCarterRestore}" />
+                           Text="{res:Loc InstallationApp.RemoveCarterRestore}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
                                     Command="{Binding MoveToFirstMeasuredCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -96,10 +96,10 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart1}" />
+                               Text="{res:Loc InstallationApp.ExecuteFirstMisurationPart1}" />
 
                     <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
+                               Text="{res:Loc InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -110,7 +110,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanDestinationPosition1}"
-                                   LabelText="{x:Static res:InstallationApp.DestinationPosition}"
+                                   LabelText="{res:Loc InstallationApp.DestinationPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
@@ -119,14 +119,14 @@
                                     Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination1Command}"
-                                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                                    Content="{res:Loc InstallationApp.GoToInitialPosition}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            VerticalAlignment="Center"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}" />
+                           Text="{res:Loc InstallationApp.IndicateMisuredPosition}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Grid.Column="0"
@@ -136,7 +136,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding MeasuredPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanMeasuredPosition1}"
-                                   LabelText="{x:Static res:InstallationApp.MisuredPosition}"
+                                   LabelText="{res:Loc InstallationApp.MisuredPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
@@ -144,7 +144,7 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToLastMeasuredCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -165,10 +165,10 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteFirstMisurationPart2}" />
+                               Text="{res:Loc InstallationApp.ExecuteFirstMisurationPart2}" />
 
                     <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHighAttachMeter}" />
+                               Text="{res:Loc InstallationApp.ElevatorHighAttachMeter}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -178,7 +178,7 @@
                                    Margin="0,-15,15,0"
                                    EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanDestinationPosition2}"
-                                   LabelText="{x:Static res:InstallationApp.DestinationPosition}"
+                                   LabelText="{res:Loc InstallationApp.DestinationPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
@@ -187,13 +187,13 @@
                                     Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination2Command}"
-                                    Content="{x:Static res:InstallationApp.GoToPosition}"
+                                    Content="{res:Loc InstallationApp.GoToPosition}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.IndicateMisuredPosition}" />
+                           Text="{res:Loc InstallationApp.IndicateMisuredPosition}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Grid.Column="0"
@@ -202,14 +202,14 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanMeasuredPosition2}"
-                                   LabelText="{x:Static res:InstallationApp.MisuredPosition}"
+                                   LabelText="{res:Loc InstallationApp.MisuredPosition}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     Command="{Binding MoveToConfirmCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -226,10 +226,10 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ConfirmNewResolution}" />
+                               Text="{res:Loc InstallationApp.ConfirmNewResolution}" />
 
                     <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.VerifyNewCalcolatedValue}" />
+                               Text="{res:Loc InstallationApp.VerifyNewCalcolatedValue}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -238,12 +238,12 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding NewResolution, StringFormat={}{0:F6}}"
                                    IsEnabled="False"
-                                   LabelText="{x:Static res:InstallationApp.VerticalResolutionCalibrationNewResolution}"
+                                   LabelText="{res:Loc InstallationApp.VerticalResolutionCalibrationNewResolution}"
                                    Mask="###0.000000" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding SaveCommand}"
-                                    Content="{x:Static res:InstallationApp.Save}"
+                                    Content="{res:Loc InstallationApp.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -283,7 +283,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+                       Text="{res:Loc InstallationApp.VerticalResolutionCalibration}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -341,7 +341,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.CurrentResolution}" />
+                               Text="{res:Loc InstallationApp.CurrentResolution}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -360,7 +360,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

@@ -45,19 +45,19 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1235,2"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+                                 LabelText="{res:Loc InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcButton x:Name="VerticalEngineUp"
                             Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Up}" />
+                            Content="{res:Loc InstallationApp.Up}" />
 
         <controls:PpcButton x:Name="VerticalEngineDown"
                             Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Down}" />
+                            Content="{res:Loc InstallationApp.Down}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -80,8 +80,8 @@
                                  Margin="20,210,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
-                                 LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+                                 ContentText="{res:Loc InstallationApp.LSMTComandNote}"
+                                 LabelText="{res:Loc InstallationApp.LSMTNoteHeader}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,210,0,0"

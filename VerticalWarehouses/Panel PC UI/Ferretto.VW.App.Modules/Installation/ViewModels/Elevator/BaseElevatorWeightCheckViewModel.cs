@@ -50,14 +50,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Elevator.WeightCheck.STEP1,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step1,
+                    VW.App.Resources.Localized.Get("InstallationApp.Step1"),
                     trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Elevator.WeightCheck.STEP2,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step2,
+                    VW.App.Resources.Localized.Get("InstallationApp.Step2"),
                     trackCurrentView: false));
         }
 

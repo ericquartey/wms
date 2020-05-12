@@ -48,7 +48,7 @@
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WmsSetting}" />
+                   Text="{res:Loc InstallationApp.WmsSetting}" />
 
         <RadioButton Grid.Row="2"
                      Margin="10,20,10,0"
@@ -93,7 +93,7 @@
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.WmsHostAddress}" />
+                       Text="{res:Loc InstallationApp.WmsHostAddress}" />
             <TextBox Grid.Row="1"
                      Width="500"
                      Height="60"
@@ -106,7 +106,7 @@
                                 Margin="10,0,0,10"
                                 HorizontalAlignment="Left"
                                 Command="{Binding CheckEndpointCommand}"
-                                Content="{x:Static res:InstallationApp.CheckStatus}"
+                                Content="{res:Loc InstallationApp.CheckStatus}"
                                 IsBusy="{Binding IsCheckingEndpoint}" />
 
             <StackPanel Grid.Row="1"
@@ -117,7 +117,7 @@
                            HorizontalAlignment="Left"
                            FontSize="{DynamicResource FontSize_Small}"
                            Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
-                           Text="{x:Static res:OperatorApp.GeneralInfoWmsStatus}"
+                           Text="{res:Loc OperatorApp.GeneralInfoWmsStatus}"
                            TextAlignment="Right" />
 
                 <StackPanel HorizontalAlignment="Left"

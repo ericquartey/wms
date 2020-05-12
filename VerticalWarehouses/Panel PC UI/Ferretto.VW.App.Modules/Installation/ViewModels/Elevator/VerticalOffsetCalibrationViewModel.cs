@@ -316,7 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (this.StartPosition < 0)
                             {
-                                this.currentError = InstallationApp.StartPositionMustBePositive;
+                                this.currentError = Localized.Get("InstallationApp.StartPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -326,7 +326,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = string.Format(InstallationApp.StartPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound); ;
+                                this.currentError = string.Format(Localized.Get("InstallationApp.StartPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound); ;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -340,20 +340,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (!this.CurrentCellId.HasValue)
                             {
-                                this.currentError = InstallationApp.CellSelectedRequired;
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedRequired");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
 
                             if (this.SelectedCell?.BlockLevel != BlockLevel.None)
                             {
-                                this.currentError = InstallationApp.CellSelectedBlocked;
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedBlocked");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
                             else if (this.SelectedCell is null || this.CurrentCellId is null)
                             {
-                                this.currentError = InstallationApp.CellSelectedNotPresent;
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedNotPresent");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -518,7 +518,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.AxisLowerBound > this.NewDisplacement)
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ModifyLowerBoundDialog, InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ModifyLowerBoundDialog"), Localized.Get("InstallationApp.LowPositionControl"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.No)
                     {
                         return;
@@ -537,7 +537,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.Displacement = null;
 
-                    this.ShowNotification(InstallationApp.AxisVerticalOffsetUpdated, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.AxisVerticalOffsetUpdated"), Services.Models.NotificationSeverity.Success);
 
                     this.NavigationService.GoBack();
                 }
@@ -549,7 +549,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.Displacement = null;
 
-                    this.ShowNotification(InstallationApp.AxisVerticalOffsetUpdated, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.AxisVerticalOffsetUpdated"), Services.Models.NotificationSeverity.Success);
 
                     this.CurrentStep = VerticalOffsetCalibrationStep.OriginCalibration;
                 }
@@ -667,7 +667,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (message.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+                        this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"));
 
                         break;
 
@@ -677,7 +677,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         this.CurrentStep = VerticalOffsetCalibrationStep.Start;
 
-                        this.ShowNotification(InstallationApp.ProcedureCompleted, Services.Models.NotificationSeverity.Success);
+                        this.ShowNotification(Localized.Get("InstallationApp.ProcedureCompleted"), Services.Models.NotificationSeverity.Success);
 
                         this.NavigationService.GoBack();
 
@@ -685,7 +685,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     case MessageStatus.OperationError:
                         this.ShowNotification(
-                            VW.App.Resources.InstallationApp.HorizontalHomingError,
+                            VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingError"),
                             Services.Models.NotificationSeverity.Error);
 
                         break;

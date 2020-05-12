@@ -23,7 +23,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Cells}" />
+                   Text="{res:Loc InstallationApp.Cells}" />
 
         <ctrls:PpcMenuWrap Grid.Row="1"
                            ItemsSource="{Binding CellItems}" />
@@ -32,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Unit}" />
+                   Text="{res:Loc InstallationApp.Unit}" />
 
         <ctrls:PpcMenuWrap Grid.Row="4"
                            ItemsSource="{Binding LodingUnitItems}" />

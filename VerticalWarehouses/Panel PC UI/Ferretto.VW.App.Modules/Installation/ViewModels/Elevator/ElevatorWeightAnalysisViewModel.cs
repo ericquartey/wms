@@ -241,12 +241,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDisplacement):
                         if (!this.InputDisplacement.HasValue)
                         {
-                            return InstallationApp.InputDisplacementRequired;
+                            return Localized.Get("InstallationApp.InputDisplacementRequired");
                         }
 
                         if (this.InputDisplacement.Value <= 0)
                         {
-                            return InstallationApp.InputDisplacementMustBePositive;
+                            return Localized.Get("InstallationApp.InputDisplacementMustBePositive");
                         }
 
                         break;
@@ -254,12 +254,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputNetWeight):
                         if (!this.InputNetWeight.HasValue)
                         {
-                            return InstallationApp.InputNetWeightRequired;
+                            return Localized.Get("InstallationApp.InputNetWeightRequired");
                         }
 
                         if (this.InputNetWeight.Value <= 0)
                         {
-                            return InstallationApp.InputNetWeightMustBePositive;
+                            return Localized.Get("InstallationApp.InputNetWeightMustBePositive");
                         }
 
                         break;
@@ -403,7 +403,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Warning);
             }
             else if (message.Status == MessageStatus.OperationError)
@@ -411,7 +411,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Error);
             }
             else if (message.Status == MessageStatus.OperationEnd)
@@ -424,7 +424,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureCompleted,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"),
                     Services.Models.NotificationSeverity.Success);
             }
         }

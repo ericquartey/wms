@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.TestToRun):
                         if (this.TestToRun < 0)
                         {
-                            return InstallationApp.TestToRunMustBePositive;
+                            return Localized.Get("InstallationApp.TestToRunMustBePositive");
                         }
 
                         break;
@@ -166,12 +166,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputWeight):
                         if (!this.InputWeight.HasValue)
                         {
-                            return InstallationApp.InputWeightMustBeSpecified;
+                            return Localized.Get("InstallationApp.InputWeightMustBeSpecified");
                         }
 
                         if (this.InputWeight.Value <= 0)
                         {
-                            return InstallationApp.InputWeightMustBePositive;
+                            return Localized.Get("InstallationApp.InputWeightMustBePositive");
                         }
 
                         break;
@@ -180,7 +180,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.WeightTolerance <= 0)
                         {
-                            return InstallationApp.WeightToleranceMustBePositive;
+                            return Localized.Get("InstallationApp.WeightToleranceMustBePositive");
                         }
 
                         break;
@@ -270,11 +270,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.IsErrored())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"));
             }
             else if (message.IsNotRunning())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureCompleted);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"));
             }
 
             this.MeasuredWeight = message.Data?.Weight ?? this.MeasuredWeight;

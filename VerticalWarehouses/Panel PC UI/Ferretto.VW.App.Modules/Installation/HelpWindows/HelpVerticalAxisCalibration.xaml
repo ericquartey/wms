@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
+                   Text="{res:Loc InstallationApp.OriginVerticalAxis}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -53,46 +53,46 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="100,0"
-                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
+                                 LabelText="{res:Loc InstallationApp.LowerBound}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,210,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="10350,5"
-                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
+                                 LabelText="{res:Loc InstallationApp.UpperBound}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,280,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="150,0"
-                                 LabelText="{x:Static res:InstallationApp.Offset}" />
+                                 LabelText="{res:Loc InstallationApp.Offset}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="165,15"
-                                 LabelText="{x:Static res:InstallationApp.Resolution}" />
+                                 LabelText="{res:Loc InstallationApp.Resolution}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Stop}"
+                            Content="{res:Loc InstallationApp.Stop}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Start}"
+                            Content="{res:Loc InstallationApp.Start}"
                             IsEnabled="True" />
 
         <TextBlock Width="260"

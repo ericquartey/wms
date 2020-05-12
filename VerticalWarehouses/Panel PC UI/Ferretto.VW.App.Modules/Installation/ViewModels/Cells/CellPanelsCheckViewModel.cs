@@ -284,7 +284,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             .Where(w => w.BlockLevel.Equals(BlockLevel.None))
                             .Any(a => a.Id == this.CurrentCellId))
                         {
-                            return InstallationApp.CellNotValid;
+                            return Localized.Get("InstallationApp.CellNotValid");
                         }
 
                         break;
@@ -455,7 +455,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Displacement = 0;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

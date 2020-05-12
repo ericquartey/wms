@@ -36,7 +36,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding BayNumber, StringFormat={x:Static res:InstallationApp.ShutterEnduranceTestTitle}}" />
+                       Text="{Binding BayNumber, StringFormat={res:Loc InstallationApp.ShutterEnduranceTestTitle}}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -58,7 +58,7 @@
                            Margin="0,30,15,0"
                            EditValue="{Binding InputDelayBetweenCycles, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
+                           LabelText="{res:Loc InstallationApp.DelayBetweenCycles}"
                            MaxValue="30"
                            MinValue="0"
                            WidthNumber="230" />
@@ -86,7 +86,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
+                               Text="{res:Loc InstallationApp.CumulativePerformedCycles}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -124,7 +124,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
+                               Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -167,7 +167,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding ResetTestCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
+                            Content="{res:Loc InstallationApp.Reset}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="2"
@@ -180,14 +180,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
+                                Content="{res:Loc InstallationApp.Start}"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
         </StackPanel>
 
     </Grid>

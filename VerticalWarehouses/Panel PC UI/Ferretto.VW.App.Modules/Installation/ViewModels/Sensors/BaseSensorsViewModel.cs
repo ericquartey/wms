@@ -210,21 +210,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.SECURITY,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Security,
+                    VW.App.Resources.Localized.Get("InstallationApp.Security"),
                     trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.VerticalAxisButton,
+                    VW.App.Resources.Localized.Get("InstallationApp.VerticalAxisButton"),
                     trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Bays,
+                    VW.App.Resources.Localized.Get("InstallationApp.Bays"),
                     trackCurrentView: false));
         }
 

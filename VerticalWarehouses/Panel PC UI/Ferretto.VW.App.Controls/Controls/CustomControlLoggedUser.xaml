@@ -34,7 +34,7 @@
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding LogOutCommand}"
-                                    Content="{x:Static res:InstallationApp.LogOff}" />
+                                    Content="{res:Loc InstallationApp.LogOff}" />
             </StackPanel>
         </Popup>
     </Grid>

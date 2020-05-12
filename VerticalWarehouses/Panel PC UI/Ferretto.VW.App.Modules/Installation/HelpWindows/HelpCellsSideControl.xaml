@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.CellsSideControlDescription}" />
+                   Text="{res:Loc InstallationApp.CellsSideControlDescription}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -39,7 +39,7 @@
                              Highlighted="True"
                              InputText="125"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlInitialCell}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,210,0,0"
@@ -48,7 +48,7 @@
                              Highlighted="True"
                              InputText="175"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlFinalCell}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,280,0,0"
@@ -57,14 +57,14 @@
                              Highlighted="True"
                              InputText="-2,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlCorrection}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Anteriore"
-                                 LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}" />
+                                 LabelText="{res:Loc InstallationApp.CellsSideControlSelectedSide}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -101,7 +101,7 @@
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Correct}" />
+                            Content="{res:Loc InstallationApp.Correct}" />
 
         <TextBlock Width="260"
                    Height="70"

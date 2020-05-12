@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())
             {
-                this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
                 this.NavigationService.GoBackSafelyAsync();
             }
             this.IsBusy = false;
@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.parentConfiguration.SelectedFileConfigurationName = this.selectedFile.FullName;
                 this.parentConfiguration.VertimagConfiguration = vertimagConfiguration;
-                this.ShowNotification(Resources.InstallationApp.ImportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.ImportSuccessful"), Services.Models.NotificationSeverity.Success);
                 this.NavigationService.GoBack();
             }
             catch (Exception exc)

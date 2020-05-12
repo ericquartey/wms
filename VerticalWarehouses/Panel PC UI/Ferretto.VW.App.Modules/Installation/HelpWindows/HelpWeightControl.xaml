@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WeightControl}" />
+                   Text="{res:Loc InstallationApp.WeightControl}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -55,14 +55,14 @@
                              Highlighted="True"
                              InputText="250,0"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+                             LabelText="{res:Loc InstallationApp.InsertedWeight}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,280,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="5,0"
-                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
+                                 LabelText="{res:Loc InstallationApp.AcceptableWeightTolerance}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,140,0,0"
@@ -71,32 +71,32 @@
                              Highlighted="True"
                              InputText="80,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.TestRun}" />
+                             LabelText="{res:Loc InstallationApp.TestRun}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="245,0"
-                                 LabelText="{x:Static res:InstallationApp.MeasuredWeight}" />
+                                 LabelText="{res:Loc InstallationApp.MeasuredWeight}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Misura corretta"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Start}"
+                            Content="{res:Loc InstallationApp.Start}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,280,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Stop}"
+                            Content="{res:Loc InstallationApp.Stop}"
                             IsEnabled="True" />
 
         <TextBlock Width="260"

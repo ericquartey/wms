@@ -411,7 +411,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (message.IsErrored())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
                 this.IsExecutingProcedure = false;
             }
 
@@ -430,7 +430,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (message.Status == MessageStatus.OperationEnd &&
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                 //this.isCompleted = true;
                 this.IsExecutingProcedure = false;
             }

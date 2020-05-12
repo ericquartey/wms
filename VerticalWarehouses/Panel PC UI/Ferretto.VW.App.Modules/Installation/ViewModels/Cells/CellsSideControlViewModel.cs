@@ -168,12 +168,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.StepValue):
                         if (!this.StepValue.HasValue)
                         {
-                            return InstallationApp.StepRequired;
+                            return Localized.Get("InstallationApp.StepRequired");
                         }
 
                         if (this.StepValue.Value <= 0)
                         {
-                            return InstallationApp.StepMustBePositive;
+                            return Localized.Get("InstallationApp.StepMustBePositive");
                         }
 
                         break;
@@ -181,12 +181,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputFormCellId):
                         if (!this.InputFormCellId.HasValue)
                         {
-                            return InstallationApp.InputFormCellIdRequired;
+                            return Localized.Get("InstallationApp.InputFormCellIdRequired");
                         }
 
                         if (this.InputFormCellId.Value <= 0)
                         {
-                            return InstallationApp.InputFormCellIdMustBePositive;
+                            return Localized.Get("InstallationApp.InputFormCellIdMustBePositive");
                         }
 
                         break;
@@ -194,12 +194,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputToCellId):
                         if (!this.InputToCellId.HasValue)
                         {
-                            return InstallationApp.InputToCellIdRequired;
+                            return Localized.Get("InstallationApp.InputToCellIdRequired");
                         }
 
                         if (this.InputToCellId.Value <= 0)
                         {
-                            return InstallationApp.InputToCellIdMustBePositive;
+                            return Localized.Get("InstallationApp.InputToCellIdMustBePositive");
                         }
 
                         break;
@@ -272,7 +272,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineCellsWebService.UpdatesHeightAsync(this.inputFormCellId.Value, this.inputToCellId.Value, this.sideSelected, this.stepValue.Value);
 
-                this.ShowNotification(InstallationApp.SuccessfullChange, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

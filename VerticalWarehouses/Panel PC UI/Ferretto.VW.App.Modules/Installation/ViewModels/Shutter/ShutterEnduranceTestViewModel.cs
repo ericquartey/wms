@@ -188,12 +188,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDelayBetweenCycles):
                         if (!this.InputDelayBetweenCycles.HasValue)
                         {
-                            return InstallationApp.InputDelayBetweenCyclesRequired;
+                            return Localized.Get("InstallationApp.InputDelayBetweenCyclesRequired");
                         }
 
                         if (this.InputDelayBetweenCycles.Value < 0)
                         {
-                            return InstallationApp.InputDelayBetweenCyclesMustBePositive;
+                            return Localized.Get("InstallationApp.InputDelayBetweenCyclesMustBePositive");
                         }
 
                         break;
@@ -300,7 +300,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), NotificationSeverity.Warning);
             }
             else if (message.IsNotRunning())
             {
@@ -321,7 +321,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ShutterEnduranceTest, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ShutterEnduranceTest"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;

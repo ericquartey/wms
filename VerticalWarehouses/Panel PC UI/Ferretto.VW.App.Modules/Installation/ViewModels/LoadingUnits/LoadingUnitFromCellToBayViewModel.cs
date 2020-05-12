@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification(InstallationApp.InvalidEnteredDrawerId, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidEnteredDrawerId"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidSourceChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var updateTask = this.MachineService.OnUpdateServiceAsync();
 
-                this.ShowNotification(string.Format(InstallationApp.DrawerIdExtracted, lu), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(string.Format(Localized.Get("(InstallationApp.DrawerIdExtracted"), lu), Services.Models.NotificationSeverity.Warning);
 
                 await refreshTask;
 

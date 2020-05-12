@@ -202,7 +202,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader}" />
 
         <ListView Grid.Row="1"
                   Grid.Column="0"
@@ -304,7 +304,7 @@
                             Grid.Column="1"
                             Margin="15,15,0,0"
                             Command="{Binding ExportCommand}"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}"
                             IsBusy="{Binding IsBusy}" />
     </Grid>
 </ctrls:View>

@@ -46,14 +46,14 @@
                                    VerticalAlignment="Top"
                                    RenderTransformOrigin="0.45,-2.617"
                                    SensorState="False"
-                                   Text="{x:Static res:InstallationApp.MushroomHeadButton}" />
+                                   Text="{res:Loc InstallationApp.MushroomHeadButton}" />
 
         <controls:PpcSensorControl Width="180"
                                    Margin="20,210,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="True"
-                                   Text="{x:Static res:InstallationApp.MicroCarterLeftSide}" />
+                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,210,0,0"

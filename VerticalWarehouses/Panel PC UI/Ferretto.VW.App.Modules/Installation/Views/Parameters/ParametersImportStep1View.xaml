@@ -34,7 +34,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader2}" />
 
         <TextBlock Grid.Row="1"
                    Grid.Column="1"
@@ -61,7 +61,7 @@
                             VerticalAlignment="Center"
                             Margin="0 40 0 0"
                             Command="{Binding RestoreConfigurationCommand}"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}" />
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigRestoreButton}" />
 
     </Grid>
 </ctrls:View>

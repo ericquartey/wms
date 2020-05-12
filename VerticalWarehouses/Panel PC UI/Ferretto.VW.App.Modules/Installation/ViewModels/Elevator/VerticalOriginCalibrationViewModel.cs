@@ -198,14 +198,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case MessageStatus.OperationExecuting:
                     res = axisToCalibrate == Axis.Horizontal ?
-                        VW.App.Resources.InstallationApp.HorizontalHomingExecuting :
-                        VW.App.Resources.InstallationApp.VerticalHomingExecuting;
+                        VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingExecuting") :
+                        VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingExecuting");
                     break;
 
                 case MessageStatus.OperationError:
                     res = axisToCalibrate == Axis.Horizontal ?
-                        VW.App.Resources.InstallationApp.HorizontalHomingError :
-                        VW.App.Resources.InstallationApp.VerticalHomingError;
+                        VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingError") :
+                        VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingError");
                     break;
             }
 
@@ -217,16 +217,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineStarted);
+                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SwitchEngineStarted"));
                     break;
 
                 case MessageStatus.OperationEnd:
-                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineCompleted);
+                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SwitchEngineCompleted"));
 
                     break;
 
                 case MessageStatus.OperationError:
-                    this.ShowNotification(VW.App.Resources.InstallationApp.SwitchEngineError);
+                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SwitchEngineError"));
 
                     break;
             }
@@ -261,20 +261,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (message.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+                        this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"));
 
                         break;
 
                     case MessageStatus.OperationEnd:
                         this.ShowNotification(
-                            VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
+                            VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingCompleted"),
                             Services.Models.NotificationSeverity.Success);
 
                         break;
 
                     case MessageStatus.OperationError:
                         this.ShowNotification(
-                            VW.App.Resources.InstallationApp.HorizontalHomingError,
+                            VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingError"),
                             Services.Models.NotificationSeverity.Error);
 
                         break;
@@ -309,7 +309,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineService.StopMovingByAllAsync();
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
+                    VW.App.Resources.Localized.Get("InstallationApp.SetOriginVerticalAxisNotCompleted"),
                     Services.Models.NotificationSeverity.Warning);
             }
             catch (Exception ex)

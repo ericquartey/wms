@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.SelectedFileConfigurationName = InstallationApp.DefaultConfigurationLoaded;
+                    this.SelectedFileConfigurationName = Localized.Get("InstallationApp.DefaultConfigurationLoaded");
                     this.invertersParameters = await this.machineDevicesWebService.GetParametersAsync();
                 }
 
@@ -215,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineDevicesWebService.ProgramAllInvertersAsync(new VertimagConfiguration());
 
-                this.ShowNotification(InstallationApp.InvertersProgrammingStarted, Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStarted"), Services.Models.NotificationSeverity.Info);
 
                 this.RaisePropertyChanged(nameof(this.VertimagConfiguration));
             }
@@ -272,15 +272,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 var count = importables.Count;
                 var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-                var message = string.Format(culture, InstallationApp.MultipleConfigurationsDetected, count);
+                var message = string.Format(culture, Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(culture, InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
+                        message = string.Format(culture, Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(importables[0].Name));
                         break;
 
                     case 0:
-                        message = InstallationApp.ExportableDeviceDetected;
+                        message = Localized.Get("InstallationApp.ExportableDeviceDetected");
                         break;
                 }
 
