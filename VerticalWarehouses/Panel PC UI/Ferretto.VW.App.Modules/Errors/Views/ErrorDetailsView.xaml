@@ -45,7 +45,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:ErrorsApp.ErrorRecoveryProcedure}" />
+                       Text="{res:Loc ErrorsApp.ErrorRecoveryProcedure}" />
 
             <StackPanel Grid.Row="1"
                         MinHeight="100"
@@ -53,7 +53,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:ErrorsApp.ErrorCode}" />
+                           Text="{res:Loc ErrorsApp.ErrorCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"

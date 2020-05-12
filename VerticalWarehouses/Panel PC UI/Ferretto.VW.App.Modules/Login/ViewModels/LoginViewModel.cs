@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private readonly ILocalizationService localizationService;
+
         private DelegateCommand loginCommand;
 
         private MachineIdentity machineIdentity;
@@ -52,7 +54,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             ISessionService sessionService,
             IBayManager bayManager,
             IBarcodeReaderService barcodeReaderService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            ILocalizationService localizationService)
             : base(PresentationMode.Login)
         {
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
@@ -63,6 +66,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -286,6 +290,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     trackCurrentView: true);
 
                 this.machineErrorsService.AutoNavigateOnError = true;
+
+                this.localizationService.ActivateCulture(claims.AccessLevel);
             }
             else
             {

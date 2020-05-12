@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Menu.Views
 {
@@ -29,8 +30,8 @@ namespace Ferretto.VW.App.Menu.Views
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            this.txtTime.Text = DateTime.Now.ToShortTimeString();
-            this.txtDate.Text = DateTime.Now.ToShortDateString();
+            this.txtTime.Text = String.Format(Localized.Instance.CurrentCulture, "{0:t}", DateTime.Now);
+            this.txtDate.Text = String.Format(Localized.Instance.CurrentCulture, "{0:d}", DateTime.Now);
         }
 
         #endregion

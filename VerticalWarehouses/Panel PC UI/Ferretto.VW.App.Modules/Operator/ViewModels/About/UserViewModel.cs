@@ -20,17 +20,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private const string actualLanguageKey = "Language";
-
-        private const string adminLanguageKey = "AdminLanguage";
-
-        private const string installerLanguageKey = "InstallerLanguage";
-
-        private const string operatorLanguageKey = "OperatorLanguage";
-
-        private const string serviceLanguageKey = "ServiceLanguage";
-
-        private readonly ISessionService sessionService;
+        private readonly ILocalizationService localizationService;
 
         private string adminLanguage;
 
@@ -46,9 +36,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public UserViewModel(ISessionService sessionService) : base()
+        public UserViewModel(ILocalizationService localizationService) : base()
         {
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
             this.GetLanguageFromFile();
         }
@@ -64,7 +54,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.adminLanguage, value))
                 {
-                    this.Update(adminLanguageKey, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Admin, this.GetCultureFromShortcut(value));
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -78,7 +68,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.installerLanguage, value))
                 {
-                    this.Update(installerLanguageKey, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Installer, this.GetCultureFromShortcut(value));
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -98,7 +88,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.operatorLanguage, value))
                 {
-                    this.Update(operatorLanguageKey, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Operator, this.GetCultureFromShortcut(value));
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -112,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.serviceLanguage, value))
                 {
-                    this.Update(serviceLanguageKey, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Support, this.GetCultureFromShortcut(value));
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -162,53 +152,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
-        public void Update(string key, string value)
-        {
-            try
-            {
-                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var settings = configFile.AppSettings.Settings;
-                if (settings.Count == 0 | settings[key] == null)
-                {
-                    ;
-                }
-                else
-                {
-                    //Update actual language
-                    if (
-                            ((this.sessionService.UserAccessLevel == UserAccessLevel.Admin) && (key == adminLanguageKey))
-                            ||
-                            ((this.sessionService.UserAccessLevel == UserAccessLevel.Installer) && (key == installerLanguageKey))
-                            ||
-                            ((this.sessionService.UserAccessLevel == UserAccessLevel.Support) && (key == serviceLanguageKey))
-                            ||
-                            ((this.sessionService.UserAccessLevel == UserAccessLevel.Operator) && (key == operatorLanguageKey))
-                       )
-                    {
-                        settings[actualLanguageKey].Value = value;
-
-                        Resources.Localized.Instance.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(value);
-
-                        //Resources.LocalizedResources.Get("General.BayNumber");
-                    }
-                    settings[key].Value = value;
-                }
-                configFile.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
-            }
-            catch (ConfigurationErrorsException exc)
-            {
-                //Logger.WriteLog(exc.Message, LoggingLevel.Error);
-            }
-
-            //Configuration config = ConfigurationManager. OpenExeConfiguration(ConfigurationUserLevel.None);
-            //config.AppSettings.Settings[key].Value = value;
-            //config.Save();
-            //ConfigurationManager.RefreshSection("appSettings");
-
-            //this.RaiseCanExecuteChanged();
-        }
-
         internal bool CanExecuteCommand()
         {
             return true;
@@ -239,10 +182,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var settings = configFile.AppSettings.Settings;
 
-            this.adminLanguage = this.GetShortcutFromCulture(settings[adminLanguageKey].Value);
-            this.serviceLanguage = this.GetShortcutFromCulture(settings[serviceLanguageKey].Value);
-            this.installerLanguage = this.GetShortcutFromCulture(settings[installerLanguageKey].Value);
-            this.operatorLanguage = this.GetShortcutFromCulture(settings[operatorLanguageKey].Value);
+            this.adminLanguage = this.GetShortcutFromCulture(settings[this.localizationService.AdminLanguageKey].Value);
+            this.serviceLanguage = this.GetShortcutFromCulture(settings[this.localizationService.ServiceLanguageKey].Value);
+            this.installerLanguage = this.GetShortcutFromCulture(settings[this.localizationService.InstallerLanguageKey].Value);
+            this.operatorLanguage = this.GetShortcutFromCulture(settings[this.localizationService.OperatorLanguageKey].Value);
         }
 
         #endregion
