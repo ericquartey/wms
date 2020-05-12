@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
             containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
 
+            containerRegistry.RegisterSingleton<ILocalizationService, LocalizationService>();
+
             containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
             containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
