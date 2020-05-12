@@ -8,7 +8,7 @@ namespace Ferretto.VW.App.Services
 
         public PresentationNotificationMessage(string notificationMessage, NotificationSeverity notificationSeverity)
         {
-            this.Msg = notificationMessage == string.Empty ? null : notificationMessage;
+            this.Msg = string.IsNullOrEmpty(notificationMessage) ? null : notificationMessage;
             this.NotificationSeverity = notificationSeverity;
         }
 

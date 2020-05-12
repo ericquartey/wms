@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:utils="clr-namespace:Ferretto.VW.Utils;assembly=Ferretto.VW.Utils"
-        Title="MainWindow"
+        Title="Panel PC"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"

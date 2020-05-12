@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
 
         #region Properties
 
-        public bool IsSupport => string.CompareOrdinal(this.UserName, "support") == 0;
+        public bool IsSupport => string.CompareOrdinal(this.UserName, "service") == 0;
 
         public string Password
         {
@@ -40,11 +40,12 @@ namespace Ferretto.VW.App.Modules.Login.Models
             set
             {
                 this.SetProperty(ref this.userName, value);
-                this.RaisePropertyChanged(nameof(this.IsSupport));
-                if (this.IsSupport)
+                if (!this.IsSupport)
                 {
-                    this.RaisePropertyChanged(nameof(this.SupportToken));
+                    this.SupportToken = null;
                 }
+
+                this.RaisePropertyChanged(nameof(this.IsSupport));
             }
         }
 
@@ -59,12 +60,12 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.Password):
                     if (string.IsNullOrEmpty(this.Password))
                     {
-                        return Resources.Errors.UserLogin_PasswordMustBeSpecified;
+                        return Resources.Localized.Get("LoadLogin.PasswordMustBeSpecified");
                     }
 
                     if (this.Password.Length < MinimumPasswordLength)
                     {
-                        return Resources.Errors.UserLogin_PasswordIsTooShort;
+                        return Resources.Localized.Get("LoadLogin.PasswordIsTooShort");
                     }
 
                     break;
@@ -72,7 +73,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.UserName):
                     if (string.IsNullOrWhiteSpace(this.UserName))
                     {
-                        return Resources.Errors.UserLogin_UserNameMustBeSpecified;
+                        return Resources.Localized.Get("LoadLogin.UserNameMustBeSpecified");
                     }
 
                     break;

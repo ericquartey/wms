@@ -8,11 +8,15 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
-        Task AssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionOperationsCount);
+        Task AssignedMissionChanged(BayNumber bayNumber, int? missionId);
+
+        Task AssignedMissionOperationChanged(BayNumber bayNumber);
 
         Task BayStatusChanged(BayNumber bayNumber, BayStatus bayStatus);
 
         Task ErrorStatusChanged(int code);
+
+        Task ProductsChanged();
 
         Task SetBayDrawerOperationToInventory();
 

@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -18,15 +21,24 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private const int WordSize = 16;
 
+        private readonly IConfiguration configuration;
+
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
         private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
 
         #region Constructors
 
-        public InverterProvider(InverterDriver.IInvertersProvider invertersProvider)
+        public InverterProvider(
+            InverterDriver.IInvertersProvider invertersProvider,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IConfiguration configuration)
         {
             this.invertersProvider = invertersProvider;
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider;
+            this.configuration = configuration;
         }
 
         #endregion
@@ -38,6 +50,11 @@ namespace Ferretto.VW.MAS.AutomationService
         #endregion
 
         #region Methods
+
+        public IEnumerable<Inverter> GetAllParameters()
+        {
+            return this.digitalDevicesDataProvider.GetAllParameters();
+        }
 
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)
         {

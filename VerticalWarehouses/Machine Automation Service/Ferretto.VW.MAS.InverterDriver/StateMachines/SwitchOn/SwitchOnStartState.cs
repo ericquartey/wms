@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
     internal class SwitchOnStartState : InverterStateBase
@@ -17,7 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private readonly Axis axisToSwitchOn;
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -31,7 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -41,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         public override void Start()
         {
             this.Logger.LogDebug($"Switch On Start Inverter {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.SwitchOn = true;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
                 this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
@@ -103,7 +102,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
+                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 500)
                 {
                     this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                     returnValue = true;

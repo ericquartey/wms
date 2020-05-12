@@ -11,12 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
         #region Fields
+
+        private readonly object syncMachineObject = new object();
 
         private readonly object syncObject = new object();
 
@@ -32,8 +33,6 @@ namespace Ferretto.VW.MAS.MachineManager
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-
-            this.isDataLayerReady = false;
             this.Logger.LogTrace("Mission manager initialized.");
         }
 
@@ -47,7 +46,6 @@ namespace Ferretto.VW.MAS.MachineManager
 
             if (!this.isDisposed)
             {
-
                 this.isDisposed = true;
             }
         }

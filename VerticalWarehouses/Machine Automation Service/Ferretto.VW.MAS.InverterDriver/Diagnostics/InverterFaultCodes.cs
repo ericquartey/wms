@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
             { 0x0804, "Electronics voltage too high, check wiring of control terminals." },
             // Brake chopper
             { 0x1010, "Brake Chopper Overcurrent; refer to chapter 19.4 “Brake Chopper and Brake Resistance”." },
+            // overrun
+            { 0x0C13, "1ms-Task list overrun. Switch off power and switch on again after a few seconds." },
             // Output frequency
             { 0x1100, "Output frequency too high, check control signals and settings." },
             { 0x1101, "Max. frequency reached by control, check deceleration ramps and connected brake resistor." },

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Reflection;
-using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         #endregion
 
         #region Constructors
@@ -35,11 +31,13 @@ namespace Ferretto.VW.MAS.AutomationService
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
+            IWmsSettingsProvider wmsSettingsProvider,
             DataLayerContext dataContext,
             ILogger<ConfigurationProvider> logger)
         {
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -51,14 +49,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public VertimagConfiguration ConfigurationGet()
         {
-            this.logger.LogDebug($"Configuration Provider get");
-            var r = new VertimagConfiguration
+            return new VertimagConfiguration
             {
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
                 LoadingUnits = this.loadingUnitsDataProvider.GetAll(),
+                MachineStatistics = this.machineProvider.GetStatistics(),
+                ServicingInfo = this.machineProvider.GetServicingInfo(),
+                Wms = this.wmsSettingsProvider.GetAll()
             };
-            return r;
         }
 
         public void ConfigurationImport(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory)
@@ -74,6 +73,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
                         this.loadingUnitsDataProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
+                        this.machineProvider.ImportMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
+                        this.machineProvider.ImportMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);
 
                         this.dataContext.SaveChanges();
 
@@ -102,6 +103,11 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
                         this.loadingUnitsDataProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
+                        this.machineProvider.UpdateMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
+                        if (vertimagConfiguration.ServicingInfo.Any())
+                        {
+                            this.machineProvider.UpdateMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);
+                        }
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");

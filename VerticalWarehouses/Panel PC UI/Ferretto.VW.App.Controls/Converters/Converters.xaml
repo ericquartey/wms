@@ -4,6 +4,8 @@
                     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <!--  converters  -->
+    <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
+
     <conv:BoolToThicknessConverter x:Key="BTTC" />
     <conv:BoolToVisibilityConverter x:Key="BTVC" />
     <conv:BoolToVisibilityConverter x:Key="BTVIC"
@@ -11,14 +13,19 @@
     <conv:BoolToVisibilityConverter x:Key="BTVHC"
                                     Hide="True" />
     <conv:BooleanNegationConverter x:Key="BNC" />
+    <conv:Int32ToStringConverter x:Key="I32TSC" />
 
-    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC"/>
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
                                      Inverse="True" />
 
     <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
                                          Invert="True" />
+
+    <conv:ReferenceToBoolConverter x:Key="RTBC" />
+    <conv:ReferenceToBoolConverter x:Key="RTBIC"
+                                   Invert="True" />
 
     <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />
@@ -35,7 +42,9 @@
 
     <conv:DebugDummyConverter x:Key="DEBUG" />
 
-    <!-- truthy to ui -->
+    <!--  truthy to ui  -->
     <conv:TruthyToUiConverter x:Key="TTUI" />
     <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
+
+    <conv:EnumToHealthStatusConverter x:Key="ETHSC" />
 </ResourceDictionary>

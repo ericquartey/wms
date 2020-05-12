@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -15,6 +17,7 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
+using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -25,12 +28,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         CellMeasured,
 
         Confirm,
+
+        OriginCalibration
     }
 
     [Warning(WarningsArea.Installation)]
     public class VerticalOffsetCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
@@ -58,6 +65,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand displacementCommand;
 
+        private bool isOriginCalibrationStepVisible;
+
         private DelegateCommand moveToCellCommand;
 
         private DelegateCommand moveToCellMeasuredCommand;
@@ -70,9 +79,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double newDisplacement;
 
+        private SubscriptionToken receiveHomingUpdateToken;
+
         private DelegateCommand reloadCommand;
 
         private Cell selectedCell;
+
+        private DelegateCommand startOriginCalibrationCommand;
 
         private double startPosition;
 
@@ -82,6 +95,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
         #endregion
 
         #region Constructors
@@ -90,13 +105,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.verticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = VerticalOffsetCalibrationStep.Start;
         }
@@ -109,7 +126,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.applyCorrectionCommand
             ??
             (this.applyCorrectionCommand = new DelegateCommand(
-                () => this.ApplyCorrectionAsync(),
+                 async () => await this.ApplyCorrectionAsync(),
                 this.CanBaseExecute));
 
         public double AxisLowerBound
@@ -130,6 +147,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.currentCellId, value, () =>
             {
                 this.Displacement = null;
+                this.RaisePropertyChanged(nameof(this.Displacement));
                 this.StepValue = 0;
                 this.UpdateSelectedCell();
             });
@@ -171,17 +189,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepConfirm => this.currentStep is VerticalOffsetCalibrationStep.Confirm;
 
+        public bool HasStepOriginCalibration => this.currentStep is VerticalOffsetCalibrationStep.OriginCalibration;
+
         public bool HasStepStart => this.currentStep is VerticalOffsetCalibrationStep.Start;
 
         public bool IsCanStartPosition => this.CanBaseExecute();
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
+        public bool IsOriginCalibrationStepVisible
+        {
+            get => this.isOriginCalibrationStepVisible;
+            set => this.SetProperty(ref this.isOriginCalibrationStepVisible, value);
+        }
+
         public ICommand MoveToCellCommand =>
-            this.moveToCellCommand
+                    this.moveToCellCommand
             ??
             (this.moveToCellCommand = new DelegateCommand(
-                async () => await this.StartAsync(this.SelectedCell.Position),
+                async () =>
+                {
+                    await this.StartAsync(this.SelectedCell.Position);
+                },
                 this.CanMoveToCellCommand));
 
         public ICommand MoveToCellMeasuredCommand =>
@@ -206,6 +235,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
                     this.NewDisplacement = this.CurrentVerticalOffset.Value - (double)this.Displacement.Value;
+
+                    this.IsOriginCalibrationStepVisible = (this.Displacement.Value != 0);
+                    this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
                 },
                 this.CanMoveToConfirm));
 
@@ -234,6 +266,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.selectedCell;
             protected set => this.SetProperty(ref this.selectedCell, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand StartOriginCalibrationCommand =>
+         this.startOriginCalibrationCommand
+          ??
+          (this.startOriginCalibrationCommand = new DelegateCommand(
+              async () => await this.StartOriginCalibrationAsync(),
+              this.CanExecuteStartOriginCalibrationCommand));
 
         public double StartPosition
         {
@@ -277,7 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (this.StartPosition < 0)
                             {
-                                this.currentError = $"Start position must be strictly positive.";
+                                this.currentError = Localized.Get("InstallationApp.StartPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -287,7 +326,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(Localized.Get("InstallationApp.StartPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound); ;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -301,15 +340,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (!this.CurrentCellId.HasValue)
                             {
-                                this.currentError = $"Cell selected is required.";
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedRequired");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
 
-                            if (this.CurrentCellId < 1 ||
-                                this.SelectedCell is null)
+                            if (this.SelectedCell?.BlockLevel != BlockLevel.None)
                             {
-                                this.currentError = $"Cell selected not present.";
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedBlocked");
+                                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                                return this.currentError;
+                            }
+                            else if (this.SelectedCell is null || this.CurrentCellId is null)
+                            {
+                                this.currentError = Localized.Get("InstallationApp.CellSelectedNotPresent");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -349,6 +393,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
             }
+
+            if (this.receiveHomingUpdateToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
+                this.receiveHomingUpdateToken?.Dispose();
+                this.receiveHomingUpdateToken = null;
+            }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -358,6 +416,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.UpdateStatusButtonFooter();
 
             this.UpdateSelectedCell();
+
+            if (this.CurrentStep != VerticalOffsetCalibrationStep.OriginCalibration)
+            {
+                this.IsOriginCalibrationStepVisible = false;
+                this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+            }
 
             await base.OnAppearedAsync();
         }
@@ -371,16 +435,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (!this.CurrentVerticalOffset.HasValue || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
                 {
                     await this.RetrieveVerticalOffset();
-
-                    var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-                    this.AxisUpperBound = procedureParameters.UpperBound;
-                    this.AxisLowerBound = procedureParameters.LowerBound;
+                    await this.GetAxisBound();
 
                     var procedureCalibrationParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
                     this.StartPosition = procedureCalibrationParameters.StartPosition;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -435,6 +496,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
+            this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
 
             this.stopCommand?.RaiseCanExecuteChanged();
             this.moveToStartPositionCommand?.RaiseCanExecuteChanged();
@@ -445,27 +507,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.reloadCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.startOriginCalibrationCommand?.RaiseCanExecuteChanged();
         }
 
-        private async void ApplyCorrectionAsync()
+        private async Task ApplyCorrectionAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
 
-                await this.verticalOffsetWebService.CompleteAsync(this.NewDisplacement);
+                if (this.AxisLowerBound > this.NewDisplacement)
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ModifyLowerBoundDialog"), Localized.Get("InstallationApp.LowPositionControl"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.No)
+                    {
+                        return;
+                    }
 
-                await this.RetrieveVerticalOffset();
+                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewDisplacement);
 
-                this.Displacement = null;
+                    await this.GetAxisBound();
+                }
 
-                this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
+                if ((this.Displacement.HasValue) && (this.Displacement.Value == 0))
+                {
+                    await this.verticalOffsetWebService.UpdateVerticalOffsetAndCompleteAsync(this.NewDisplacement);
 
-                this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+                    await this.RetrieveVerticalOffset();
 
-                this.NavigationService.GoBack();
+                    this.Displacement = null;
+
+                    this.ShowNotification(Localized.Get("InstallationApp.AxisVerticalOffsetUpdated"), Services.Models.NotificationSeverity.Success);
+
+                    this.NavigationService.GoBack();
+                }
+                else
+                {
+                    await this.verticalOffsetWebService.UpdateVerticalOffsetAsync(this.NewDisplacement);
+
+                    await this.RetrieveVerticalOffset();
+
+                    this.Displacement = null;
+
+                    this.ShowNotification(Localized.Get("InstallationApp.AxisVerticalOffsetUpdated"), Services.Models.NotificationSeverity.Success);
+
+                    this.CurrentStep = VerticalOffsetCalibrationStep.OriginCalibration;
+                }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -487,13 +576,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisplacementCommand()
         {
             return this.CanBaseExecute() &&
-                   this.StepValue != 0;
+                   this.StepValue != 0 &&
+                   this.MachineService.IsHoming;
+        }
+
+        private bool CanExecuteStartOriginCalibrationCommand()
+        {
+            return !this.MachineService.MachineStatus.IsMoving &&
+                   !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanMoveToCellCommand()
         {
             return this.CanBaseExecute() &&
-                   !(this.SelectedCell is null) &&
+                   this.SelectedCell?.BlockLevel == BlockLevel.None &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
 
@@ -545,13 +643,53 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Displacement += Convert.ToDecimal(this.StepValue);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task GetAxisBound()
+        {
+            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+            this.AxisUpperBound = procedureParameters.UpperBound;
+            this.AxisLowerBound = procedureParameters.LowerBound;
+        }
+
+        private async Task OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            if (message.Data.AxisToCalibrate == Axis.HorizontalAndVertical)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"));
+
+                        break;
+
+                    case MessageStatus.OperationEnd:
+
+                        await this.verticalOffsetWebService.CompleteProcedureAsync();
+
+                        this.CurrentStep = VerticalOffsetCalibrationStep.Start;
+
+                        this.ShowNotification(Localized.Get("InstallationApp.ProcedureCompleted"), Services.Models.NotificationSeverity.Success);
+
+                        this.NavigationService.GoBack();
+
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ShowNotification(
+                            VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingError"),
+                            Services.Models.NotificationSeverity.Error);
+
+                        break;
+                }
             }
         }
 
@@ -576,7 +714,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveManualToVerticalPositionAsync(
                     position, false, false);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StartOriginCalibrationAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureWebService.StartAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -613,13 +769,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.receiveHomingUpdateToken = this.receiveHomingUpdateToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                        async (m) =>
+                        {
+                            if (this.currentStep == VerticalOffsetCalibrationStep.OriginCalibration)
+                            { await this.OnHomingProcedureStatusChanged(m); }
+                        },
+                        ThreadOption.UIThread,
+                        false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepStart));
+                           this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
+                           this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.HasStepOriginCalibration));
+                           this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateSelectedCell()
         {
             if (this.CurrentCellId is null)
             {
-                this.SelectedCell = this.MachineService.Cells.FirstOrDefault();
+                this.SelectedCell = this.MachineService.Cells.FirstOrDefault(x => x.BlockLevel != BlockLevel.Blocked);
                 this.CurrentCellId = this.SelectedCell?.Id;
             }
             else
@@ -646,6 +830,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
                     break;
+
+                case VerticalOffsetCalibrationStep.OriginCalibration:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, false);
+                    break;
             }
 
             this.ShowAbortStep(true, !this.IsMoving);
@@ -653,6 +842,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasStepStart));
             this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
             this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+            this.RaisePropertyChanged(nameof(this.HasStepOriginCalibration));
+            this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
         }
 
         #endregion

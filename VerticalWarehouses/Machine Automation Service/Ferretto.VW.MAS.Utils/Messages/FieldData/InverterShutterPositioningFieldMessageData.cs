@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterShutterPositioningFieldMessageData : FieldMessageData, IInverterShutterPositioningFieldMessageData
+    public sealed class InverterShutterPositioningFieldMessageData : FieldMessageData, IInverterShutterPositioningFieldMessageData
     {
         #region Constructors
 
@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.MovementType = shutterPositioningFieldMessageData.MovementType;
             this.HighSpeedDurationOpen = (int)shutterPositioningFieldMessageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = (int)shutterPositioningFieldMessageData.HighSpeedDurationClose;
+            this.HighSpeedHalfDurationOpen = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationOpen;
+            this.HighSpeedHalfDurationClose = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationClose;
             this.LowerSpeed = (int)shutterPositioningFieldMessageData.LowerSpeed;
         }
 
@@ -34,6 +36,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int HighSpeedDurationClose { get; set; }
 
         public int HighSpeedDurationOpen { get; set; }
+
+        public int? HighSpeedHalfDurationClose { get; set; }
+
+        public int? HighSpeedHalfDurationOpen { get; set; }
 
         public int LowerSpeed { get; set; }
 

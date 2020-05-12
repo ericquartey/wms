@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services.Models
 {
-    public class MachineStatus : BindableBase, ICloneable
+    public class MachineStatus : BindableBase
     {
         #region Fields
 
@@ -20,6 +21,10 @@ namespace Ferretto.VW.App.Services.Models
         private int? bayPositionId;
 
         private bool? bayPositionUpper;
+
+        private MoveLoadingUnitMessageData currentMission;
+
+        private string currentMissionDescription;
 
         private int? currentMissionId;
 
@@ -42,6 +47,8 @@ namespace Ferretto.VW.App.Services.Models
         private bool flagForNotification;
 
         private double? horizontalTargetPosition;
+
+        private bool isDepositAndPickUpRunning;
 
         private bool isError;
 
@@ -95,6 +102,18 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.bayPositionUpper;
             set => this.SetProperty(ref this.bayPositionUpper, value);
+        }
+
+        public MoveLoadingUnitMessageData CurrentMission
+        {
+            get => this.currentMission;
+            set => this.SetProperty(ref this.currentMission, value);
+        }
+
+        public string CurrentMissionDescription
+        {
+            get => this.currentMissionDescription;
+            set => this.SetProperty(ref this.currentMissionDescription, value);
         }
 
         public int? CurrentMissionId
@@ -163,6 +182,12 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.horizontalTargetPosition, value);
         }
 
+        public bool IsDepositAndPickUpRunning
+        {
+            get => this.isDepositAndPickUpRunning;
+            set => this.SetProperty(ref this.isDepositAndPickUpRunning, value);
+        }
+
         public bool IsError
         {
             get => this.isError;
@@ -184,7 +209,13 @@ namespace Ferretto.VW.App.Services.Models
         public bool IsMovingLoadingUnit
         {
             get => this.isMovingLoadingUnit;
-            set => this.SetProperty(ref this.isMovingLoadingUnit, value);
+            set
+            {
+                if (this.SetProperty(ref this.isMovingLoadingUnit, value))
+                {
+                    System.Diagnostics.Debug.WriteLine("****** isMovingLoadingUnit " + value);
+                }
+            }
         }
 
         public bool IsMovingShutter
@@ -239,15 +270,6 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.verticalTargetPosition;
             set => this.SetProperty(ref this.verticalTargetPosition, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.OperatorMenuView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.OperatorMenuView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
@@ -7,7 +7,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:OperatorMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
@@ -29,18 +29,10 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top">
             <TextBlock x:Name="txtTime"
-                       Margin="0"
-                       HorizontalAlignment="Center"
-                       FontSize="56"
-                       Foreground="{DynamicResource FerrettoPureWhite}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTimeTextBlockStyle}"
                        Text="10:10" />
             <TextBlock x:Name="txtDate"
-                       Margin="0"
-                       HorizontalAlignment="Center"
-                       FontSize="24"
-                       Foreground="{DynamicResource FerrettoPureWhite}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewDateTextBlockStyle}"
                        Text="12/12/2019" />
         </StackPanel>
 
@@ -61,8 +53,9 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+            </TextBlock>
 
         </StackPanel>
 
@@ -93,9 +86,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="PICK"
+                                    Abbreviation="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperationAbbreviation}"
                                     Command="{Binding DrawerActivityButtonCommand}"
-                                    Description="Picking"
+                                    Description="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperationDescription}"
                                     Kind="HandPointingRight"
                                     MenuBrush="{StaticResource FerrettoBlue}"
                                     Number="1.1" />
@@ -108,9 +101,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="ITEM"
+                                    Abbreviation="{x:Static res:OperatorApp.NavigationMainMenuListsAbbreviation}"
                                     Command="{Binding ShowItemSearchCommand}"
-                                    Description="Ricerca e richiama articoli"
+                                    Description="{x:Static res:OperatorApp.NavigationMainMenuListsDescription}"
                                     Kind="Magnify"
                                     MenuBrush="{StaticResource FerrettoBlue}"
                                     Number="1.3" />
@@ -123,9 +116,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Abbreviation="LIST"
+                                    Abbreviation="{x:Static res:OperatorApp.NavigationMainMenuListsAbbreviation}"
                                     Command="{Binding ShowItemListsCommand}"
-                                    Description="Esecuzione/sospensione di liste"
+                                    Description="{x:Static res:OperatorApp.NavigationMainMenuListsDescription}"
                                     Kind="PlaylistCheck"
                                     MenuBrush="{StaticResource FerrettoBlue}"
                                     Number="1.2" />
@@ -138,9 +131,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Abbreviation="DRAW"
+                                    Abbreviation="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCallAbbreviation}"
                                     Command="{Binding ImmediateLoadingUnitCallMenuCommand}"
-                                    Description="Operazioni su cassetto"
+                                    Description="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCallDescription}"
                                     Kind="AccountBoxOutline"
                                     MenuBrush="{StaticResource FerrettoBlue}"
                                     Number="1.4" />
@@ -149,12 +142,12 @@
 
         </Grid>
 
-        <controls:PpcBadge Grid.RowSpan="2"
+        <controls:PpcBayBadge Grid.RowSpan="2"
                            Grid.ColumnSpan="2"
                            Margin="15,15,30,-10"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
-                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}"
+                           BayNumber="{Binding BayNumber}"
                            Visibility="Collapsed" />
 
     </Grid>

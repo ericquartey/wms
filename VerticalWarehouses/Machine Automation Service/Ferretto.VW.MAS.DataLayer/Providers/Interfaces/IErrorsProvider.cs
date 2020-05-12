@@ -10,13 +10,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineError GetCurrent();
 
+        List<MachineError> GetErrors();
+
         ErrorStatisticsSummary GetStatistics();
 
         bool IsErrorSmall();
 
-        MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None);
-
         MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None);
+
+        MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null);
 
         MachineError Resolve(int id);
 

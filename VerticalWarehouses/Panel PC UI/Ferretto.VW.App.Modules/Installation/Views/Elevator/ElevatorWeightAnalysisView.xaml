@@ -26,14 +26,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WeightAnalysis}" />
+                   Text="{res:Loc InstallationApp.WeightAnalysis}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
                              InputText="{Binding InputLoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.LoadedTray}" />
+                             LabelText="{res:Loc InstallationApp.LoadedTray}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
@@ -42,20 +42,20 @@
                              InputScope="Number"
                              InputText="{Binding InputNetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding CanInputNetWeight}"
-                             LabelText="{x:Static res:InstallationApp.NetWeight}" />
+                             LabelText="{res:Loc InstallationApp.NetWeight}" />
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding LoadingUnit.Tare}"
-                                 LabelText="{x:Static res:InstallationApp.TrayTare}" />
+                                 LabelText="{res:Loc InstallationApp.TrayTare}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+                                 LabelText="{res:Loc InstallationApp.ElevatorVerticalPosition}" />
 
         <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="1"
@@ -63,34 +63,34 @@
                              VerticalAlignment="Top"
                              InputScope="Number"
                              InputText="{Binding InputDisplacement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.Displacement}" />
+                             LabelText="{res:Loc InstallationApp.Displacement}" />
 
         <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding AverageCurrent, StringFormat={}{0:N4}}"
-                                 LabelText="Corrente Media [A]" />
+                                 LabelText="{res:Loc InstallationApp.AverageCurrent}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{res:Loc InstallationApp.Start}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding MoveToBayCommand}"
-                            Content="Sposta a posizione elevatore" />
+                            Content="{res:Loc InstallationApp.MoveToElevatorPosition}" />
 
 
         <dxc:ChartControl Grid.Row="3"
@@ -112,7 +112,7 @@
                             <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisY2D.Label>
                         <dxc:AxisY2D.Title>
-                            <dxc:AxisTitle Content="Corrente [A]"
+                            <dxc:AxisTitle Content="{res:Loc InstallationApp.Current}"
                                            Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisY2D.Title>
                     </dxc:AxisY2D>
@@ -129,7 +129,7 @@
                             <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisX2D.Label>
                         <dxc:AxisX2D.Title>
-                            <dxc:AxisTitle Content="Tempo [s]"
+                            <dxc:AxisTitle Content="{res:Loc InstallationApp.Time}"
                                            Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisX2D.Title>
                     </dxc:AxisX2D>

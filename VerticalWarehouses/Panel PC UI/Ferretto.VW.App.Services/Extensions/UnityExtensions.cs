@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -13,8 +14,7 @@ namespace Ferretto.VW.App.Services
 
         public static IContainerRegistry RegisterAppServices(
             this IContainerRegistry containerRegistry,
-            System.Uri serviceMasUrl,
-            System.Uri serviceWmsUrl,
+            Uri serviceMasUrl,
             string serviceLiveHealthPath,
             string serviceReadyHealthPath)
         {
@@ -30,23 +30,20 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
             containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
 
+            containerRegistry.RegisterSingleton<ILocalizationService, LocalizationService>();
+
             containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
             containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
 
-            // Operator
-            containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
-            containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
-            containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
-
             _ = containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                  new InjectionFactory(c =>
                      new HealthProbeService(
                          serviceMasUrl,
-                         serviceWmsUrl,
                          serviceLiveHealthPath,
                          serviceReadyHealthPath,
+                         c.Resolve<IMachineWmsStatusWebService>(),
                          c.Resolve<IEventAggregator>())));
 
             return containerRegistry;
@@ -64,7 +61,6 @@ namespace Ferretto.VW.App.Services
             containerProvider.Resolve<IHealthProbeService>().Start();
             containerProvider.Resolve<IMachineService>().StartAsync();
             containerProvider.Resolve<ITimeSyncService>().Start();
-            containerProvider.Resolve<IMissionOperationsService>().StartAsync();
 
             return containerProvider;
         }

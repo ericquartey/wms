@@ -3,7 +3,6 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
@@ -13,8 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class FiniteStateMachine<TStartState, TErrorState> : IFiniteStateMachine, IDisposable
@@ -36,6 +33,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly Thread notificationsDequeuingThread;
+
+        private readonly object syncObject = new object();
 
         private IState activeState;
 
@@ -100,66 +99,71 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             get => this.activeState;
             private set
             {
-                if (this.activeState != value)
+                lock (this.syncObject)
                 {
-                    this.activeState?.Exit();
-
-                    if (this.activeState is IProgressMessageState progressMessageState)
+                    if (this.activeState != value)
                     {
-                        if (progressMessageState.Message != null)
+                        this.Logger.LogTrace($"Active state: {this.activeState?.GetType().Name}, new state {value?.GetType().Name} ");
+                        this.activeState?.Exit();
+
+                        if (this.activeState is IProgressMessageState progressMessageState)
                         {
-                            this.notificationEvent.Publish(progressMessageState.Message);
-                        }
-                    }
-
-                    if (this.activeState is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-
-                    this.activeState = value;
-
-                    try
-                    {
-                        this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
-                    }
-                    catch (StateMachineException ex)
-                    {
-                        this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                        this.notificationEvent.Publish(ex.NotificationMessage);
-
-                        if (this.activeState == null)
-                        {
-                            var eventArgs = new FiniteStateMachinesEventArgs
+                            if (progressMessageState.Message != null)
                             {
-                                InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                                NotificationMessage = ex.NotificationMessage,
-                            };
-                            this.RaiseCompleted(eventArgs);
+                                this.notificationEvent.Publish(progressMessageState.Message);
+                            }
                         }
-                        else
+
+                        if (this.activeState is IDisposable disposable)
                         {
-                            this.activeState = this.activeState?.Stop(StopRequestReason.Error);
+                            disposable.Dispose();
+                        }
+
+                        this.activeState = value;
+                        this.Logger.LogTrace($"Active state changed: {this.activeState?.GetType().Name} ");
+
+                        try
+                        {
                             this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
                         }
+                        catch (StateMachineException ex)
+                        {
+                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                            this.notificationEvent.Publish(ex.NotificationMessage);
+
+                            if (this.activeState == null)
+                            {
+                                var eventArgs = new FiniteStateMachinesEventArgs
+                                {
+                                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                                    NotificationMessage = ex.NotificationMessage,
+                                };
+                                this.RaiseCompleted(eventArgs);
+                            }
+                            else
+                            {
+                                this.activeState = this.activeState?.Stop(StopRequestReason.Error);
+                                this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
+                            }
+                        }
+
+                        if (this.activeState is IStartMessageState startMessageState)
+                        {
+                            this.notificationEvent.Publish(startMessageState.Message);
+                        }
                     }
 
-                    if (this.activeState is IStartMessageState startMessageState)
+                    // These code lines MUST be the last in the Setter
+                    if (this.activeState is IEndState endState && endState.IsCompleted)
                     {
-                        this.notificationEvent.Publish(startMessageState.Message);
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        {
+                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                            NotificationMessage = endState.EndMessage,
+                        };
+
+                        this.RaiseCompleted(eventArgs);
                     }
-                }
-
-                // These code lines MUST be the last in the Setter
-                if (this.activeState is IEndState endState && endState.IsCompleted)
-                {
-                    var eventArgs = new FiniteStateMachinesEventArgs
-                    {
-                        InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                        NotificationMessage = endState.EndMessage,
-                    };
-
-                    this.RaiseCompleted(eventArgs);
                 }
             }
         }
@@ -178,7 +182,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Abort()
         {
-            this.activeState = this.OnAbort();
+            this.ActiveState = this.OnAbort();
         }
 
         public virtual bool AllowMultipleInstances(CommandMessage command)
@@ -197,29 +201,34 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Pause()
         {
-            this.activeState = this.OnPause();
+            this.ActiveState = this.OnPause();
         }
 
         public void Resume(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            if (this.ActiveState is null)
+            lock (this.syncObject)
             {
-                this.isStarted = true;
+                if (this.ActiveState is null)
+                {
+                    this.isStarted = true;
 
-                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+                    this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-                this.StartData = commandMessage;
+                    this.StartData = commandMessage;
 
-                this.requestingBay = commandMessage.RequestingBay;
+                    this.requestingBay = commandMessage.RequestingBay;
 
-                this.commandsDequeuingThread.Start(cancellationToken);
-                this.notificationsDequeuingThread.Start(cancellationToken);
+                    this.commandsDequeuingThread.Start(cancellationToken);
+                    this.notificationsDequeuingThread.Start(cancellationToken);
 
-                this.InitializeSubscriptions();
+                    this.InitializeSubscriptions();
 
-                this.ActiveState = this.GetState<TErrorState>();
+                    this.ActiveState = this.GetState<TErrorState>();
+
+                    return;
+                }
+                this.ActiveState = this.OnResume(commandMessage);
             }
-            this.ActiveState = this.OnResume(commandMessage);
         }
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
@@ -229,51 +238,57 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 throw new ArgumentNullException(nameof(commandMessage));
             }
 
-            if (this.isStarted)
+            lock (this.syncObject)
             {
-                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
-            }
-
-            if (this.OnStart(commandMessage, cancellationToken))
-            {
-                this.isStarted = true;
-
-                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-
-                this.StartData = commandMessage;
-
-                this.requestingBay = commandMessage.RequestingBay;
-
-                this.commandsDequeuingThread.Start(cancellationToken);
-                this.notificationsDequeuingThread.Start(cancellationToken);
-
-                this.InitializeSubscriptions();
-
-                this.ActiveState = this.GetState<TStartState>();
-            }
-            else
-            {
-                var eventArgs = new FiniteStateMachinesEventArgs
+                if (this.isStarted)
                 {
-                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                };
-                this.RaiseCompleted(eventArgs);
+                    throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
+                }
+
+                if (this.OnStart(commandMessage, cancellationToken))
+                {
+                    this.isStarted = true;
+
+                    this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+                    this.StartData = commandMessage;
+
+                    this.requestingBay = commandMessage.RequestingBay;
+
+                    this.commandsDequeuingThread.Start(cancellationToken);
+                    this.notificationsDequeuingThread.Start(cancellationToken);
+
+                    this.InitializeSubscriptions();
+
+                    this.ActiveState = this.GetState<TStartState>();
+                }
+                else
+                {
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    {
+                        InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                    };
+                    this.RaiseCompleted(eventArgs);
+                }
             }
         }
 
         public void Stop(StopRequestReason reason)
         {
-            if (this.activeState is null)
+            lock (this.syncObject)
             {
-                var eventArgs = new FiniteStateMachinesEventArgs
+                if (this.activeState is null)
                 {
-                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                };
-                this.RaiseCompleted(eventArgs);
-            }
-            else
-            {
-                this.ActiveState = this.OnStop(reason);
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    {
+                        InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                    };
+                    this.RaiseCompleted(eventArgs);
+                }
+                else
+                {
+                    this.ActiveState = this.OnStop(reason);
+                }
             }
         }
 
@@ -362,7 +377,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                         &&
                         commandMessage != null)
                     {
-                        this.ActiveState = this.OnCommandReceived(commandMessage);
+                        lock (this.syncObject)
+                        {
+                            this.ActiveState = this.OnCommandReceived(commandMessage);
+                        }
                     }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
@@ -374,17 +392,21 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a command.");
                     this.NotifyError(ex);
-                    if (this.activeState is null)
+
+                    lock (this.syncObject)
                     {
-                        var eventArgs = new FiniteStateMachinesEventArgs
+                        if (this.activeState is null)
                         {
-                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                        };
-                        this.RaiseCompleted(eventArgs);
-                    }
-                    else
-                    {
-                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                            var eventArgs = new FiniteStateMachinesEventArgs
+                            {
+                                InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                            };
+                            this.RaiseCompleted(eventArgs);
+                        }
+                        else
+                        {
+                            this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                        }
                     }
                 }
             }
@@ -403,7 +425,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                         &&
                         notificationMessage != null)
                     {
-                        this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                        lock (this.syncObject)
+                        {
+                            this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                        }
                     }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
@@ -415,17 +440,21 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
-                    if (this.activeState is null)
+
+                    lock (this.syncObject)
                     {
-                        var eventArgs = new FiniteStateMachinesEventArgs
+                        if (this.activeState is null)
                         {
-                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
-                        };
-                        this.RaiseCompleted(eventArgs);
-                    }
-                    else
-                    {
-                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                            var eventArgs = new FiniteStateMachinesEventArgs
+                            {
+                                InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                            };
+                            this.RaiseCompleted(eventArgs);
+                        }
+                        else
+                        {
+                            this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                        }
                     }
                 }
             }

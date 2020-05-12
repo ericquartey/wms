@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private readonly DateTime startTime;
-
         private ShutterPosition oldShutterPosition;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -35,7 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.shutterPositionData = shutterPositionData;
             this.shutterDestination = this.shutterPositionData.ShutterPosition;
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -46,6 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.Logger.LogDebug($"Shutter positioning Enable Operation");
             this.InverterStatus.CommonControlWord.EnableOperation = true;
+            this.startTime = DateTime.UtcNow;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
 

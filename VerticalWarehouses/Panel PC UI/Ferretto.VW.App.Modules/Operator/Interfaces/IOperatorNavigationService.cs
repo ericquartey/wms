@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.App.Modules.Operator.Services
+﻿namespace Ferretto.VW.App.Modules.Operator
 {
     public interface IOperatorNavigationService
     {
         #region Methods
 
-        Task NavigateToDrawerViewAsync();
+        void NavigateToDrawerInfoView();
 
-        Task NavigateToOperatorMenuAsync();
+        void NavigateToDrawerView();
+
+        void NavigateToOperatorMenu();
 
         #endregion
     }

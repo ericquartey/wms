@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken machinePowerChangedToken;
 
+        private readonly IMachineService machineService;
+
         private bool isBusy;
 
         private bool isDisposed;
@@ -37,11 +39,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationMachinePowerSwitch(
             IMachineModeService machineModeService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IMachineService machineService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.machinePowerChangedToken = this.EventAggregator
                 .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
@@ -99,7 +103,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineRun, General.MachineRun, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Resources.Localized.Get("General.ConfirmMachineRun"), Resources.Localized.Get("General.MachineRun"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();

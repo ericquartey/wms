@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS.DataModels
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public class ShutterManualParameters : DataModel
     {
@@ -13,6 +9,10 @@ namespace Ferretto.VW.MAS.DataModels
         private double highSpeedDurationClose;
 
         private double highSpeedDurationOpen;
+
+        private double? highSpeedHalfDurationClose;
+
+        private double? highSpeedHalfDurationOpen;
 
         private double maxSpeed;
 
@@ -41,11 +41,6 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.highSpeedDurationClose;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.highSpeedDurationClose = value;
             }
         }
@@ -55,12 +50,25 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.highSpeedDurationOpen;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.highSpeedDurationOpen = value;
+            }
+        }
+
+        public double? HighSpeedHalfDurationClose
+        {
+            get => this.highSpeedHalfDurationClose;
+            set
+            {
+                this.highSpeedHalfDurationClose = value;
+            }
+        }
+
+        public double? HighSpeedHalfDurationOpen
+        {
+            get => this.highSpeedHalfDurationOpen;
+            set
+            {
+                this.highSpeedHalfDurationOpen = value;
             }
         }
 
@@ -69,11 +77,6 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.maxSpeed;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.maxSpeed = value;
             }
         }
@@ -83,11 +86,6 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.minSpeed;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.minSpeed = value;
             }
         }

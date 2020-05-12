@@ -12,7 +12,7 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
     public class StatisticsSpaceSaturationViewModel : BaseOperatorViewModel
@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
                 */
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

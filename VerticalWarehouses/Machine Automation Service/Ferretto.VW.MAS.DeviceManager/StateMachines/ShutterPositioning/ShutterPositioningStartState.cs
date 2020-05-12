@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningStartState : StateBase
@@ -75,6 +74,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                         -this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                                         this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                                        this.machineData.PositioningMessageData.HighSpeedHalfDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedHalfDurationClose,
                                         -this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
@@ -111,6 +112,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                         this.machineData.PositioningMessageData.SpeedRate,
                                         this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                                         this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                                        this.machineData.PositioningMessageData.HighSpeedHalfDurationOpen,
+                                        this.machineData.PositioningMessageData.HighSpeedHalfDurationClose,
                                         this.machineData.PositioningMessageData.LowerSpeed,
                                         this.machineData.PositioningMessageData.MovementType);
 
@@ -230,6 +233,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     -this.machineData.PositioningMessageData.SpeedRate,
                     this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                     this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                    this.machineData.PositioningMessageData.HighSpeedHalfDurationOpen,
+                    this.machineData.PositioningMessageData.HighSpeedHalfDurationClose,
                     -this.machineData.PositioningMessageData.LowerSpeed,
                     this.machineData.PositioningMessageData.MovementType);
             }

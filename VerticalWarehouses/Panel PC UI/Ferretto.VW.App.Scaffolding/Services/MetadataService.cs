@@ -25,6 +25,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
             return attribute != null;
         }
 
+        public static bool TryGetCustomAttributes<T>(this MemberInfo member, out T[] attributes) where T : Attribute
+        {
+            attributes = (member ?? throw new ArgumentNullException(nameof(member))).GetCustomAttributes<T>().ToArray();
+            return attributes != null;
+        }
+
         private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
             => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
 
@@ -84,9 +90,14 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 var modelType = type.GetCustomAttribute<Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataTypeAttribute>()?.MetadataClassType ?? type;
                 Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
-                foreach (var prop in GetMemberInfos(modelType))
+                foreach (var prop in GetMemberInfos(modelType).Where(x => !branch.ExclusionList?.Contains(x.Name) ?? true))
                 {
                     PropertyInfo actualProp = type.GetProperty(prop.Name);
+                    if (actualProp is null)
+                    {
+                        // configuration error
+                        continue;
+                    }
                     Type propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
                     ScaffoldedStructureInternal target = branch;
 
@@ -122,6 +133,14 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         offset = offsetAttribute.Offset;
                     }
 
+                    List<string> exclusionList = new List<string>();
+                    if (prop.TryGetCustomAttribute<HidePropertiesAttribute>(out var hidePropertiesAttribute))
+                    {
+                        exclusionList = hidePropertiesAttribute.PropertyList;
+                    }
+
+                    prop.TryGetCustomAttributes<FilterPropertiesAttribute>(out var filterAttributes);
+
                     #region array? (must have Category AND CategoryParameter attributes)
 
                     // flattening
@@ -155,7 +174,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 }
 
                                 var category = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
-                                string categoryDescription = GetCategoryDescription(elementType);
+                                string categoryDescription = GetCategoryDescription(prop);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == category.Name);
                                 if (newBranch != null)
                                 {
@@ -179,6 +198,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     Category = category.Name,
                                     Parent = target,
                                     Description = categoryDescription,
+                                    ExclusionList = filterAttributes.SelectMany(x => x.GetExclusionList(item)).ToList(),
                                     CategoryParameter = category.FirstParameter,
                                     Id = target.Id + id + (offset * index)
                                 };
@@ -199,12 +219,18 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             var category = GetCategoryName(prop, instance, this._culture);
                             string categoryDescription = GetCategoryDescription(prop);
                             var tget = target.Children.FirstOrDefault(c => c.Category == category.Name);
+                            if (filterAttributes.Length > 0)
+                            {
+                                exclusionList = exclusionList.Union(filterAttributes.SelectMany(x => x.GetExclusionList(instance))).ToList();
+                            }
+
                             if (tget == null)
                             {
                                 tget = new ScaffoldedStructureInternal
                                 {
                                     Category = category.Name,
                                     Parent = target,
+                                    ExclusionList = exclusionList,
                                     Description = categoryDescription,
                                     CategoryParameter = category.FirstParameter,
                                     Id = target.Id + id + offset
@@ -399,6 +425,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
         public string Description { get; set; }
 
         public List<ScaffoldedEntityInternal> Entities { get; set; } = new List<ScaffoldedEntityInternal>();
+
+        public List<string> ExclusionList { get; set; }
 
         public int Id { get; set; }
 

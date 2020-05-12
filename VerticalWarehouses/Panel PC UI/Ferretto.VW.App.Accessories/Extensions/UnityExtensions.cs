@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
+using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.Devices.BarcodeReader;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -12,8 +16,19 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Methods
 
-        public static IContainerRegistry ConfigureBarcodeReaderUiServices(
-            this IContainerRegistry containerRegistry)
+        public static IContainerRegistry ConfigureAlphaNumericBarUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TODO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
+
+            return containerRegistry;
+        }
+
+        public static IContainerRegistry ConfigureBarcodeReaderUiServices(this IContainerRegistry containerRegistry)
         {
             if (containerRegistry is null)
             {
@@ -23,19 +38,6 @@ namespace Ferretto.VW.App.Accessories
             containerRegistry.RegisterSingleton<IBarcodeReaderService, BarcodeReaderService>();
 
             return containerRegistry;
-        }
-
-        public static IContainerProvider UseBarcodeReader(
-            this IContainerProvider containerProvider)
-        {
-            if (containerProvider is null)
-            {
-                throw new ArgumentNullException(nameof(containerProvider));
-            }
-
-            _ = containerProvider.Resolve<IBarcodeReaderService>();
-
-            return containerProvider;
         }
 
         #endregion

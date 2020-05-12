@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public DbSet<Accessory> Accessories { get; set; }
 
         public DbSet<BayPosition> BayPositions { get; set; }
 
@@ -87,8 +87,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<SetupProcedure> SetupProcedures { get; set; }
 
         public DbSet<SetupProceduresSet> SetupProceduresSets { get; set; }
-
-        public DbSet<SetupStatus> SetupStatus { get; set; }
 
         public DbSet<ShutterManualParameters> ShutterManualParameters { get; set; }
 

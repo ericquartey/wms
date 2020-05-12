@@ -5,12 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public class ImmediateLoadingUnitCallViewModel : BaseOperatorViewModel
@@ -20,6 +24,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
 
@@ -35,9 +41,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
+        private bool pressMinus;
+
         private LoadingUnit selectedUnitUnit;
 
         private DelegateCommand upSelectionCommand;
+
+        private SubscriptionToken receiveHomingUpdateToken;
+
+        private SubscriptionToken positioningMessageReceivedToken;
 
         #endregion
 
@@ -45,9 +57,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ImmediateLoadingUnitCallViewModel(
             IMachineService machineService,
+            IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base(PresentationMode.Operator)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
@@ -96,19 +110,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.loadingUnitId;
             set
             {
-                if (this.SetProperty(ref this.loadingUnitId, value))
-                {
-                    this.CheckToSelectLoadingUnit();
-                }
+                this.pressMinus = value < this.loadingUnitId;
+                this.SetProperty(ref this.loadingUnitId, value, this.CheckToSelectLoadingUnit);
             }
         }
 
         public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
 
         public ICommand LoadingUnitsMissionsCommand =>
-                        this.loadingUnitsMissionsCommand
-                        ??
-                        (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
+            this.loadingUnitsMissionsCommand
+            ??
+            (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -138,7 +150,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             if (!this.loadingUnitId.HasValue)
             {
-                this.ShowNotification("Id loading unit does not exists.", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
@@ -148,9 +160,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 await this.machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnitId.Value);
 
-                this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(string.Format(Resources.ServiceMachine.LoadingUnitSuccessfullyRequested, this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -185,6 +197,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.SubscribeToEvents();
 
             this.IsBackNavigationAllowed = true;
 
@@ -249,7 +263,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void CheckToSelectLoadingUnit()
         {
-            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
+            if ((this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound) && this.selectedUnitUnit != null)
             {
                 if (loadingUnitfound.Id == this.selectedUnitUnit.Id)
                 {
@@ -257,6 +271,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
+                this.SelectLoadingUnit();
+            }
+            else if (this.currentItemIndex <= (this.loadingUnits.Count - 1))
+            {
+                if (!this.pressMinus)
+                {
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) + 1;
+                }
+                else
+                {
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) - 1;
+                }
+
                 this.SelectLoadingUnit();
             }
             else
@@ -278,6 +305,51 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private void SelectLoadingUnit()
         {
             this.SelectedLoadingUnit = this.loadingUnits.ElementAtOrDefault(this.currentItemIndex);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+               ??
+               this.eventAggregator
+                   .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                   .Subscribe(
+                       this.OnPositioningMessageReceived,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.receiveHomingUpdateToken = this.receiveHomingUpdateToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                    this.OnHomingProcedureStatusChanged,
+                        ThreadOption.UIThread,
+                    false);
+        }
+
+        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.CarouselCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+
+            if (message.Data?.MovementMode == MovementMode.HorizontalCalibration)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.HorizontalCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+        }
+
+        private async void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            if (message.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical)
+            {
+                if (message.Status == MessageStatus.OperationStart)
+                {
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), Services.Models.NotificationSeverity.Info);
+                }
+            }
         }
 
         #endregion

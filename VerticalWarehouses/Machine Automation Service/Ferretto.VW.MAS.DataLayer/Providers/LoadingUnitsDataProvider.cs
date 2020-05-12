@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double MinimumLoadOnBoard = 10.0;
 
+        private readonly ICellsProvider cellsProvider;
+
         private readonly DataLayerContext dataContext;
 
         private readonly ILogger<LoadingUnitsDataProvider> logger;
@@ -29,11 +31,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public LoadingUnitsDataProvider(
             DataLayerContext dataContext,
             IMachineProvider machineProvider,
+            ICellsProvider cellsProvider,
             ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
         #endregion
@@ -45,6 +49,24 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.LoadingUnits.AddRange(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void AddTestUnit(LoadingUnit testUnit)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == testUnit.Id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(testUnit.Id);
+                }
+                loadingUnit.IsInFullTest = true;
 
                 this.dataContext.SaveChanges();
             }
@@ -89,12 +111,47 @@ namespace Ferretto.VW.MAS.DataLayer
             return check;
         }
 
+        public int CountIntoMachine()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .Count(l => l.IsIntoMachine);
+            }
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
             {
                 return this.dataContext.LoadingUnits
                     .AsNoTracking()
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<LoadingUnit> GetAllTestUnits()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Where(u => u.IsInFullTest)
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<LoadingUnit> GetAllNotTestUnits()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Where(u => u.IsInFullTest == false)
                     .Include(l => l.Cell)
                     .ThenInclude(c => c.Panel)
                     .ToArray();
@@ -213,6 +270,127 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Remove(int loadingUnitsId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitsId));
+            if (lu is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitsId}");
+            }
+
+            if (lu.CellId.HasValue)
+            {
+                this.cellsProvider.SetLoadingUnit(lu.CellId.Value, null);
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.Remove(lu);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void RemoveTestUnit(LoadingUnit testUnit)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == testUnit.Id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(testUnit.Id);
+                }
+                loadingUnit.IsInFullTest = false;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void Save(LoadingUnit loadingUnit)
+        {
+            int? cellIdOld = null;
+            double luHeightOld = 0;
+            var originalStatus = loadingUnit.Status;
+
+            var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
+            if (luDb is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
+            }
+
+            if (loadingUnit.CellId.HasValue &&
+                loadingUnit.Height == 0)
+            {
+                throw new ArgumentException($"LoadingUnit with Height to 0 (Id={loadingUnit.Id})");
+            }
+
+            if (luDb.CellId.HasValue &&
+                (luDb.CellId != loadingUnit.CellId ||
+                luDb.Height != loadingUnit.Height ||
+                loadingUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InElevator))
+            {
+                cellIdOld = luDb.CellId.Value;
+                luHeightOld = luDb.Height;
+                this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
+
+                lock (this.dataContext)
+                {
+                    luDb.Height = loadingUnit.Height;
+                    this.dataContext.SaveChanges();
+                }
+            }
+
+            if (loadingUnit.CellId.HasValue &&
+                (luDb.CellId != loadingUnit.CellId ||
+                 luDb.Height != loadingUnit.Height))
+            {
+                if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
+                {
+                    lock (this.dataContext)
+                    {
+                        luDb.Height = luHeightOld;
+                        luDb.CellId = cellIdOld;
+                        this.dataContext.SaveChanges();
+                    }
+
+                    if (cellIdOld.HasValue)
+                    {
+                        this.cellsProvider.SetLoadingUnit(cellIdOld.Value, luDb.Id);
+                    }
+
+                    throw new ArgumentException($"LoadingUnit error cell or height (CellId={loadingUnit.CellId}, Id={loadingUnit.Id})");
+                }
+            }
+
+            lock (this.dataContext)
+            {
+                luDb.Description = loadingUnit.Description;
+                luDb.MissionsCount = loadingUnit.MissionsCount;
+                luDb.GrossWeight = loadingUnit.GrossWeight;
+                luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
+                luDb.Tare = loadingUnit.Tare;
+                if (originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+                {
+                    luDb.Status = loadingUnit.Status;
+                }
+                else
+                {
+                    luDb.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                }
+
+                this.dataContext.SaveChanges();
+            }
+
+            if (loadingUnit.CellId.HasValue &&
+                luDb.CellId != loadingUnit.CellId &&
+                originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+            {
+                this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+            }
+        }
+
         public void SetHeight(int id, double height)
         {
             lock (this.dataContext)
@@ -269,6 +447,14 @@ namespace Ferretto.VW.MAS.DataLayer
             loadingUnits.ForEach((l) => dataContext.AddOrUpdate(l, (e) => e.Id));
 
             dataContext.SaveChanges();
+        }
+
+        public void UpdateWeightStatistics()
+        {
+            lock (this.dataContext)
+            {
+                this.machineProvider.UpdateWeightStatistics(this.dataContext);
+            }
         }
 
         #endregion

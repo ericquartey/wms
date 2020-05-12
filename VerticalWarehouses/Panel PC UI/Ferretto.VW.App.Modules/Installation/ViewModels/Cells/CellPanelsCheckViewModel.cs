@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -19,6 +20,13 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    public enum CellPanelsCheckStep
+    {
+        Inizialize,
+
+        Measured,
+    }
+
     [Warning(WarningsArea.Installation)]
     internal sealed class CellPanelsCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
@@ -46,6 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int currentPanelNumber;
 
+        private CellPanelsCheckStep currentStep;
+
         private double displacement;
 
         private DelegateCommand displacementCommand;
@@ -65,6 +75,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double stepValue;
 
         private DelegateCommand stopCommand;
+
+        private SubscriptionToken themeChangedToken;
 
         #endregion
 
@@ -116,6 +128,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.currentPanel, value))
                 {
                     this.CurrentCell = this.CurrentPanel?.Cells
+                        .Where(w => w.BlockLevel.Equals(BlockLevel.None))
                         .OrderBy(c => c.Position)
                         .FirstOrDefault();
                 }
@@ -145,12 +158,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CurrentPanel = this.Panels?.ElementAtOrDefault(value - 1);
 
-                    this.CurrentPanelMinValue = this.CurrentPanel.Cells.Min(m => m.Id);
-                    this.CurrentPanelMaxValue = this.CurrentPanel.Cells.Max(m => m.Id);
+                    this.CurrentPanelMinValue =
+                        this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .DefaultIfEmpty(new Cell())
+                            .Min(m => m.Id);
+                    this.CurrentPanelMaxValue =
+                        this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .DefaultIfEmpty(new Cell())
+                            .Max(m => m.Id);
 
                     this.CurrentCellId = this.CurrentPanelMinValue;
                 }
             }
+        }
+
+        public CellPanelsCheckStep CurrentStep
+        {
+            get => this.currentStep;
+            set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
         }
 
         public double Displacement
@@ -180,11 +207,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.GoToCellHeightAsync(),
                this.CanGoToCellHeight));
 
+        public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
+
+        public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
+
         public bool IsCanStartPosition => this.CanBaseExecute();
 
-        public bool IsCanStepValue => this.CanBaseExecute();
-
-        public override bool KeepAlive => false;
+        public bool IsCanStepValue => this.CanBaseExecute() && this.CurrentCellId > 0;
 
         public IEnumerable<CellPanel> Panels
         {
@@ -192,6 +221,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set
             {
                 var panels = value
+                    .ToList()
+                    .Where(w => w.Cells.Any(c => c.BlockLevel.Equals(BlockLevel.None)))
                     .OrderBy(p => p.Side)
                     .ThenBy(p => p.Cells.Min(c => c.Position))
                     .ToArray();
@@ -249,9 +280,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     case nameof(this.CurrentCellId):
                         if (this.CurrentPanel == null ||
-                            !this.CurrentPanel.Cells.Any(a => a.Id == this.CurrentCellId))
+                            !this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .Any(a => a.Id == this.CurrentCellId))
                         {
-                            return "Cella non valida";
+                            return Localized.Get("InstallationApp.CellNotValid");
                         }
 
                         break;
@@ -283,6 +316,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
             }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -304,7 +344,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentHeight = this.MachineStatus.ElevatorVerticalPosition;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -333,7 +373,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
                     this.CurrentPanelNumber = currentPanelNumber;
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
                     this.ShowNotification(ex);
                 }
@@ -342,24 +382,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.onGoToCell = false;
                 }
             }
-        }
-
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
-            {
-                this.CurrentPanelNumber++;
-
-                this.RaiseCanExecuteChanged();
-            }
-            else if (e.Back && this.CurrentPanelNumber > 1)
-            {
-                this.CurrentPanelNumber--;
-
-                this.RaiseCanExecuteChanged();
-            }
-
-            this.Displacement = 0;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -392,10 +414,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Displacement = 0;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -422,6 +444,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisplacementCommand()
         {
             return this.CanBaseExecute() &&
+                   this.CurrentCellId > 0 &&
                    this.StepValue != 0;
         }
 
@@ -429,7 +452,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CurrentCell != null &&
                    !this.IsMoving &&
-                   Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D);
+                   (Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D) ||
+                    this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
         }
 
         private bool CanStop()
@@ -447,7 +471,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Displacement += this.StepValue;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -472,7 +496,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.onGoToCell = true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -484,7 +508,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentCellIdChanged()
         {
-            this.CurrentCell = this.CurrentPanel?.Cells.FirstOrDefault(f => f.Id == this.currentCellId);
+            this.CurrentCell = this.CurrentPanel?.Cells
+                .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                .FirstOrDefault(f => f.Id == this.currentCellId);
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                    }
+
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber > 1)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber == 1)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Inizialize;
+                    }
+
+                    this.Displacement = 0;
+
+                    break;
+
+                default:
+                    break;
+            }
+
             this.RaiseCanExecuteChanged();
         }
 
@@ -495,7 +562,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -514,13 +581,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+                           this.RaisePropertyChanged(nameof(this.HasStepMeasured));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()
         {
-            this.ShowPrevStepSinglePage(true, true);
-            this.ShowNextStepSinglePage(true, true);
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+            }
+
             this.ShowAbortStep(true, true);
+
+            this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+            this.RaisePropertyChanged(nameof(this.HasStepMeasured));
         }
 
         #endregion

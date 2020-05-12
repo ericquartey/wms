@@ -3,20 +3,33 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Errors.Designer.cs">
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ErrorsApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Errors.resx</DependentUpon>
+      <DependentUpon>ErrorsApp.resx</DependentUpon>
+    </Compile>
+    <Compile Update="EventArgsMissionChanged.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EventArgsMissionChanged.resx</DependentUpon>
     </Compile>
     <Compile Update="General.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -33,10 +46,40 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>InstallationApp.resx</DependentUpon>
     </Compile>
+    <Compile Update="LoadLogin.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoadLogin.resx</DependentUpon>
+    </Compile>
+    <Compile Update="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="MaintenanceMenu.Designer.cs">
+      <DependentUpon>MaintenanceMenu.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ServiceHealthProbe.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceHealthProbe.resx</DependentUpon>
+    </Compile>
     <Compile Update="Menu.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Menu.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ServiceMachine.Designer.cs">
+      <DependentUpon>ServiceMachine.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="SensorCard.Designer.cs">
+      <DependentUpon>SensorCard.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="OperatorApp.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -51,9 +94,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Errors.resx">
+    <EmbeddedResource Update="ErrorsApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      <LastGenOutput>ErrorsApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EventArgsMissionChanged.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EventArgsMissionChanged.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventArgsMissionChanged.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -67,13 +117,43 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="LoadLogin.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadLogin.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Menu.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Menu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="MainMenu.resx">
+      <LastGenOutput>MainMenu.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MaintenanceMenu.resx">
+      <LastGenOutput>MaintenanceMenu.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ServiceHealthProbe.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ServiceHealthProbe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceHealthProbe.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ServiceMachine.resx">
+      <LastGenOutput>ServiceMachine.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SensorCard.resx">
+      <LastGenOutput>SensorCard.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Test.it.resx">
+      <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="VWApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

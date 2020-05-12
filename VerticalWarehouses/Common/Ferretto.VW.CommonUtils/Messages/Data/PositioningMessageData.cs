@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData
@@ -108,6 +107,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        public bool BypassConditions { get; set; } = false;
+
         public bool ComputeElongation { get; set; }
 
         public int Delay { get; set; }
@@ -120,7 +121,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsOneTonMachine { get; set; }
 
+        public bool IsPickupMission { get; set; }
+
         public bool IsStartedOnBoard { get; set; }
+
+        public bool IsTestStopped { get; set; }
 
         public double? LoadedNetWeight { get; set; }
 

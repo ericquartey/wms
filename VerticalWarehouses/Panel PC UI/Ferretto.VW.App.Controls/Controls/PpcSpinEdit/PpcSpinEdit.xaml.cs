@@ -6,6 +6,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
+using Ferretto.VW.App.Controls.Keyboards;
+using Ferretto.VW.App.Keyboards;
 using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls
@@ -290,6 +292,30 @@ namespace Ferretto.VW.App.Controls
         }
 
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
+        {
+            if (this.IsEnabled && this.InnerSpinEdit.IsEnabled && !this.InnerSpinEdit.IsReadOnly)
+            {
+                Type type = this.InnerSpinEdit.EditValueType;
+
+                // ensure type is not null
+                if (type == null)
+                {
+                    if (this.EditValue != null)
+                    {
+                        Type objType = this.EditValue.GetType();
+                        type = Nullable.GetUnderlyingType(objType) ?? objType;
+                    }
+                    else
+                    {
+                        type = typeof(int);
+                    }
+                }
+
+                this.InnerSpinEdit.PopupKeyboard(DevExpress.Xpf.Editors.SpinEdit.EditValueProperty, type, KeyboardLayoutCodes.Numpad, this.LabelText, TimeSpan.FromSeconds(60));
+            }
+        }
+
+        private void OnKeyboardOpenHandlerOld(object sender, InputEventArgs e)
         {
             switch (this.Keyboard)
             {

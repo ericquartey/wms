@@ -27,6 +27,115 @@
     <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
+
+    <SolidColorBrush x:Key="VWAPP_ViewTitleTextBlock_Foreground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="SpinEditTitle_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="Text_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="TextLight_Foreground"
+                     Color="{DynamicResource EDBGrayC}" />
+
+    <SolidColorBrush x:Key="Service_Foreground"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+
+    <SolidColorBrush x:Key="PopupText_Foreground"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="PopupContent_Foreground"
+                     Color="{DynamicResource EDBGrayD}" />
+
+
+    <SolidColorBrush x:Key="MainButtonBackground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+
+    <SolidColorBrush x:Key="LogIn_Background"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="ComboBox_Background"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="ComboBoxArrow_Background"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ComboBox_Foreground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ComboBoxDrop_Foreground"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="ComboBoxMouseOver"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsChecked"
+                     Color="{DynamicResource EDBGrayC}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsEnabled_Background"
+                     Color="{DynamicResource EDBGrayA1}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsEnabled_BorderBrush"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsEnabled_Foreground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsEnabledBackground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="ComboBoxIsEnabledBorderBrush"
+                     Color="{DynamicResource EDBGrayA1}" />
+
+    <SolidColorBrush x:Key="PasswordLabel_Foreground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="PasswordBox_Foreground"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="PasswordBoxKeyboard_Foreground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="ComboBoxContentColor"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ComboBoxItemBarColor"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="LogInBanner"
+                     Opacity="0.8"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="SensorColor"
+                     Color="{DynamicResource EDBGrayI}" />
+
+
+    <SolidColorBrush x:Key="InfoTextSmallForeground"
+                     Color="{DynamicResource EDBGrayA1}" />
+
+    <SolidColorBrush x:Key="InfoTextForeground"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+
+    <SolidColorBrush x:Key="CheckBoxDescription"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+
+    <SolidColorBrush x:Key="SearchTextBox_Background"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="SearchTextBox_Foreground"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+
+    <SolidColorBrush x:Key="BorderTimeLineCirleTextBlock_Foreground"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+
     <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <FontFamily x:Key="VWAPP_GridFont">pack://application:,,,/Fonts/#Microsoft-sans-serif.ttf</FontFamily>

@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using Ferretto.VW.App.Resources;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
@@ -20,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private const string DEFAULTDEVICENAME = "F";
+        private const string DEFAULTDEVICENAME = "G";
 
         private const string DEFAULTEXTENSION = "*.exe";
 
@@ -100,15 +101,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.installations.Count == 0)
                 {
-                    return "No installation file found";
+                    return Localized.Get("InstallationApp.NoInstallationFileFound");
                 }
 
                 if (this.installations.Count == 1)
                 {
-                    return "One installation file found";
+                    return Localized.Get("InstallationApp.OneInstallationFileFound");
                 }
 
-                return string.Format("{0} installation files found", this.installations.Count);
+                return string.Format(Localized.Get("InstallationApp.InstallationFileFound"), this.installations.Count);
             }
         }
 
@@ -170,11 +171,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public override async Task OnAppearedAsync()
-        {            
-            this.IsBusy = true;
-
+        {
             try
             {
+                this.IsBusy = true;
+
+                this.DevicePath = null;
+                this.IsInstallationReady = false;
+                this.IsDeviceReady = false;               
+
                 this.ClearNotifications();
 
                 await base.OnAppearedAsync();
@@ -199,7 +204,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.InstallationFilesInfo));
         }
 
-        private void CheckForValidZipFiles(IEnumerable<string> zipFiles)
+        private void CheckForValidZipFiles(IEnumerable<string> zipFiles, bool isRemotePath)
         {
             this.installations.Clear();
 
@@ -209,7 +214,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     using (var archive = ZipFile.OpenRead(zipFile))
                     {
-                        var installerFileInfo = new InstallerInfo(zipFile);
+                        var installerFileInfo = new InstallerInfo(zipFile, isRemotePath);
 
                         foreach (var entry in archive.Entries.Where(e => e.FullName.Contains(DEFAULTMANIFESTFILE)))
                         {
@@ -238,10 +243,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void CheckPath(string path)
+        private void CheckPath(string path, bool isRemotePath)
         {
             var zipFiles = Directory.EnumerateFiles(path, DEFAULTEXTENSION, SearchOption.TopDirectoryOnly);
-            this.CheckForValidZipFiles(zipFiles);
+            this.CheckForValidZipFiles(zipFiles, isRemotePath);
             this.IsInstallationReady = this.installations.Count > 0;
         }
 
@@ -283,13 +288,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.RefreshDefaultPath();
 
-                if (!(this.isSystemConfigurationPathReady
-                      &&
-                      this.IsInstallationReady))
-                {
-                    this.RefreshDevicesStatus();
-                   
-                }
+                //if (!(this.isSystemConfigurationPathReady
+                //      &&
+                //      this.IsInstallationReady))
+                //{
+                this.RefreshDevicesStatus();
+
+                //}
 
                 this.RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
@@ -318,7 +323,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.isSystemConfigurationPathReady = true;
 
-            this.CheckPath(this.configurationUpdateRepositoryPath);
+            this.CheckPath(this.configurationUpdateRepositoryPath, true);
         }
 
         private void RefreshDevicesStatus()
@@ -338,7 +343,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.DevicePath = deviceFound;
                 this.IsDeviceReady = true;
-                this.CheckPath(this.DevicePath);
+                this.CheckPath(this.DevicePath, false);
             }
             else
             {

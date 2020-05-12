@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public ParametersImportViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
-            this._machineConfigurationWebService = machineConfigurationWebService;
+            this._machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this._usbWatcher = usb;
         }
 
@@ -69,11 +69,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     if (this.importingConfiguration != null)
                     {
-                        this.ShowNotification(string.Format(Resources.InstallationApp.RestorePossibleFromFile, this.selectedFile.Name));
+                        this.ShowNotification(string.Format(Resources.Localized.Get("InstallationApp.RestorePossibleFromFile"), this.selectedFile.Name));
                     }
                     else if (this.selectedConfiguration != null)
                     {
-                        this.ShowNotification(string.Format(Resources.InstallationApp.RestoreNotPossibleFromFile, this.selectedFile.Name), Services.Models.NotificationSeverity.Warning);
+                        this.ShowNotification(string.Format(Resources.Localized.Get("InstallationApp.RestoreNotPossibleFromFile"), this.selectedFile.Name), Services.Models.NotificationSeverity.Warning);
                     }
                 }
             }
@@ -161,11 +161,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsBusy = true;
             UsbWatcherService usb = this._usbWatcher;
-            var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
+            IEnumerable<FileInfo> configurationFiles = null;
+
+            configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
+
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())
             {
-                this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
                 this.NavigationService.GoBackSafelyAsync();
             }
             this.IsBusy = false;
@@ -219,9 +222,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var target = VertimagConfiguration.FromJson(result.ToString());
 
                 await this._machineConfigurationWebService.SetAsync(target);
-
                 this.SelectedFile = null;
-                this.ShowNotification(Resources.InstallationApp.RestoreSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.RestoreSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception exc)
             {

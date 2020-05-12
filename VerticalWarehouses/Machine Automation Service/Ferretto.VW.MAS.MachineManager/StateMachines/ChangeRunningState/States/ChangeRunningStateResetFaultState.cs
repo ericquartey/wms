@@ -1,4 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
+﻿
 
 using System;
 using System.Collections.Generic;
@@ -115,6 +115,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override IState OnStop(StopRequestReason reason)
         {
+            this.Logger.LogDebug($"ChangeRunningStateStartState: OnStop.");
             var returnValue = this.GetState<IChangeRunningStateEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;

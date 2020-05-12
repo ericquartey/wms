@@ -1,16 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class DrawerSpaceSaturationViewModel : BaseViewModel, IDrawerSpaceSaturationViewModel
+    public class DrawerSpaceSaturationViewModel : BaseViewModel
     {
         #region Fields
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 }
                 */
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 // this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }

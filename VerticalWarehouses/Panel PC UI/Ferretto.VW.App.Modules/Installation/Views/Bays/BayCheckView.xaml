@@ -18,7 +18,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -41,15 +41,13 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo posizione alta:"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.HighPositionControl}" /><Run Text=":" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente."
-                               TextWrapping="Wrap" />
+                    </TextBlock>
+
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
@@ -87,18 +85,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Baia"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayNumber}"
                                            TextWrapping="Wrap" />
 
@@ -126,18 +121,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Posizione"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Position}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding CurrentBayPosition}"
                                            TextWrapping="Wrap" />
 
@@ -165,17 +157,14 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Quota iniziale" />
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayPositionActive.Height}"
                                            TextWrapping="Wrap" />
 
@@ -200,18 +189,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Spostamento"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding DisplacementUp, StringFormat={}{0:F1}, FallbackValue=0}"
                                            TextWrapping="Wrap" />
 
@@ -231,7 +217,7 @@
                                         Margin="0"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
-                                        Content="Vai a posizione"
+                                        Content="{res:Loc InstallationApp.MoveToPosition}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
@@ -247,22 +233,19 @@
                 <TextBlock Grid.Row="3"
                            Grid.ColumnSpan="3"
                            Margin="0,30,0,15"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore."
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="180"
+                                   Width="215"
                                    Height="80"
                                    Margin="0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueUp, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
-                                   LabelText="{x:Static res:InstallationApp.StepValue}"
-                                   Mask="#0.0" />
+                                   LabelText="{res:Loc InstallationApp.StepValue}"
+                                   Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="1"
@@ -270,7 +253,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
-                                    Content="Sposta elevatore"
+                                    Content="{res:Loc InstallationApp.MoveElevator}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -279,7 +262,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{res:Loc InstallationApp.NextLarge}"
                                     Style="{DynamicResource WizardConfirmButton}" />
 
             </Grid>
@@ -303,15 +286,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo posizione bassa:"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente."
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.HighPositionControl}" /> <Run Text=":" />
+                    </TextBlock>
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
@@ -349,18 +328,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Baia"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayNumber}"
                                            TextWrapping="Wrap" />
 
@@ -388,18 +364,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Posizione"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Position}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding CurrentBayPosition}"
                                            TextWrapping="Wrap" />
 
@@ -427,17 +400,14 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Quota iniziale" />
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding BayPositionActive.Height}"
                                            TextWrapping="Wrap" />
 
@@ -462,18 +432,15 @@
                                 <TextBlock Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Spostamento"
+                                           Style="{DynamicResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
+                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
                                            Text="{Binding DisplacementDown, StringFormat={}{0:F1}, FallbackValue=0}"
                                            TextWrapping="Wrap" />
 
@@ -493,7 +460,7 @@
                                         Margin="0"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
-                                        Content="Vai a posizione"
+                                        Content="{res:Loc InstallationApp.MoveToPosition}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
@@ -508,22 +475,19 @@
                 <TextBlock Grid.Row="3"
                            Grid.ColumnSpan="3"
                            Margin="0,30,0,15"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore."
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="180"
+                                   Width="215"
                                    Height="80"
                                    Margin="0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValueDown, Mode=TwoWay}"
-                                   Increment="0.5"
                                    IsEnabled="{Binding IsCanStepValue}"
-                                   LabelText="{x:Static res:InstallationApp.StepValue}"
-                                   Mask="#0.0" />
+                                   LabelText="{res:Loc InstallationApp.StepValue}"
+                                   Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="1"
@@ -531,7 +495,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
-                                    Content="Sposta elevatore"
+                                    Content="{res:Loc InstallationApp.MoveElevator}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -540,7 +504,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{res:Loc InstallationApp.NextLarge}"
                                     Style="{DynamicResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -556,15 +520,13 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Conferma modifiche:"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.ConfirmChanges}" /><Run Text=":" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verificare le nuove quote e premere Salva per rendere le modifiche effettive."
-                               TextWrapping="Wrap" />
+                    </TextBlock>
+
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.SaveCheckPosition}" />
                 </StackPanel>
 
                 <Grid Grid.Row="1"
@@ -573,10 +535,8 @@
 
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Non sono state apportate modifiche."
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.NoChanges}" />
                 </Grid>
 
                 <Grid Grid.Row="1"
@@ -593,17 +553,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Margin="8,4"
-                                       FontSize="{StaticResource FontSize_Normal}"
-                                       FontWeight="Normal"
-                                       Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="Nuova quota posizione alta (mm)" />
+                                       Style="{DynamicResource VWAPP_CardSensor}"
+                                       Text="{res:Loc InstallationApp.BayPositionUpHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="28"
-                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}">
+                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
                                 <Run Text="{Binding NewPositionUp, StringFormat={}{0:0.00}}" />
                                 <Run Text="{Binding DisplacementUp, StringFormat={}({0:+0.0;-#.0})}" />
                             </TextBlock>
@@ -626,17 +583,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Margin="8,4"
-                                       FontSize="{StaticResource FontSize_Normal}"
-                                       FontWeight="Normal"
-                                       Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="Nuova quota posizione bassa (mm)" />
+                                       Style="{DynamicResource VWAPP_CardSensor}"
+                                       Text="{res:Loc InstallationApp.BayPositionDownHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="28"
-                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}">
+                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
                                 <Run Text="{Binding NewPositionDown, StringFormat={}{0:0.00}}" />
                                 <Run Text="{Binding DisplacementDown, StringFormat={}({0:+0.0;-#.0})}" />
                             </TextBlock>
@@ -646,7 +600,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding SaveCommand}"
-                                    Content="Salva"
+                                    Content="{res:Loc General.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -685,7 +639,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.BayHeightCheck}" />
+                       Text="{res:Loc InstallationApp.BayHeightCheck}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -695,10 +649,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpBCTRDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -727,7 +679,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->
@@ -756,9 +708,9 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
-                    Background="{StaticResource PpcBackground}"
-                    BorderBrush="{StaticResource PpcBorderBrush}"
-                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">
                 <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
                                 ContentTemplateSelector="{StaticResource selector}" />

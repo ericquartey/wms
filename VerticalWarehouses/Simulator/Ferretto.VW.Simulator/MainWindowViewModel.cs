@@ -17,6 +17,8 @@ namespace Ferretto.VW.Simulator
     {
         #region Fields
 
+        private readonly ICultureService cultureService;
+
         private readonly IThemeService themeService;
 
         private string configurationName;
@@ -33,6 +35,8 @@ namespace Ferretto.VW.Simulator
 
         private ICommand stopSimulatorCommand;
 
+        private ICommand toggleCultureCommand;
+
         private ICommand toggleThemeCommand;
 
         #endregion
@@ -41,10 +45,13 @@ namespace Ferretto.VW.Simulator
 
         public MainWindowViewModel(
             IMachineService inverterService,
-            IThemeService themeService)
+            IThemeService themeService,
+            ICultureService cultureService
+            )
         {
             this.machineService = inverterService ?? throw new ArgumentNullException(nameof(inverterService));
             this.themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
+            this.cultureService = cultureService ?? throw new ArgumentNullException(nameof(cultureService));
         }
 
         #endregion
@@ -68,7 +75,7 @@ namespace Ferretto.VW.Simulator
         public ICommand ImportConfigurationCommand =>
             this.importConfigurationCommand
             ??
-            (this.importConfigurationCommand = new DelegateCommand(this.ImportConfiguration));
+            (this.importConfigurationCommand = new DelegateCommand(async () => await this.ImportConfiguration()));
 
         public bool IsBusy
         {
@@ -78,6 +85,8 @@ namespace Ferretto.VW.Simulator
 
         public bool IsDarkThemeActive => this.themeService.ActiveTheme == ApplicationTheme.Dark;
 
+        public bool IsEngCultureActive => this.cultureService.ActiveCulture == ApplicationCulture.Eng;
+
         public IMachineService MachineService
         {
             get => this.machineService;
@@ -85,7 +94,7 @@ namespace Ferretto.VW.Simulator
         }
 
         public ICommand StartSimulatorCommand =>
-            this.startSimulatorCommand
+                    this.startSimulatorCommand
             ??
             (this.startSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStartSimulatorAsync()));
 
@@ -94,8 +103,13 @@ namespace Ferretto.VW.Simulator
             ??
             (this.stopSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStopSimulatorAsync()));
 
+        public ICommand ToggleCultureCommand =>
+            this.toggleCultureCommand
+            ??
+            (this.toggleCultureCommand = new DelegateCommand(() => this.ToggleCulture()));
+
         public ICommand ToggleThemeCommand =>
-            this.toggleThemeCommand
+                    this.toggleThemeCommand
             ??
             (this.toggleThemeCommand = new DelegateCommand(() => this.ToggleTheme()));
 
@@ -103,7 +117,7 @@ namespace Ferretto.VW.Simulator
 
         #region Methods
 
-        public void ImportConfiguration()
+        public async Task ImportConfiguration()
         {
             try
             {
@@ -123,6 +137,7 @@ namespace Ferretto.VW.Simulator
 
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    await this.machineService.ProcessStopSimulatorAsync();
                     this.LoadConfiguration(openFileDialog.FileName);
                 }
             }
@@ -159,6 +174,16 @@ namespace Ferretto.VW.Simulator
             {
                 this.ErrorMessage = ex.Message;
             }
+        }
+
+        private void ToggleCulture()
+        {
+            this.cultureService.ApplyCulture(
+                this.cultureService.ActiveCulture == ApplicationCulture.Ita
+                    ? ApplicationCulture.Eng
+                    : ApplicationCulture.Ita);
+
+            this.RaisePropertyChanged(nameof(this.IsEngCultureActive));
         }
 
         private void ToggleTheme()

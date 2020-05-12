@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Operator
+﻿namespace Ferretto.VW.App.Modules.Operator
 {
     public enum OperationalContext
     {
@@ -9,6 +9,7 @@
         ItemPut,
 
         ItemInventory,
+
         ListSearch,
     }
 }

@@ -36,7 +36,22 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 &&
                 context.ExceptionHandled == false)
             {
-                if (context.Exception is DataLayer.EntityNotFoundException)
+                if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException)
+                {
+                    context.Result = new BadRequestObjectResult(new ProblemDetails
+                    {
+                        Title = Resources.General.BadRequestTitle,
+                        Detail = context.Exception.Message,
+                    });
+                }
+                else if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException<WMS.Data.WebAPI.Contracts.ProblemDetails> ex)
+                {
+                    context.Result = new ObjectResult(ex.Result)
+                    {
+                        StatusCode = ex.Result.Status,
+                    };
+                }
+                else if (context.Exception is DataLayer.EntityNotFoundException)
                 {
                     context.Result = new NotFoundObjectResult(new ProblemDetails
                     {

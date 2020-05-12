@@ -57,34 +57,34 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 nameof(IInstallationHub.CalibrateAxisNotify), this.OnCalibrateAxisNotify);
 
             connection.On<NotificationMessageUI<SwitchAxisMessageData>>(
-                 nameof(IInstallationHub.SwitchAxisNotify), this.OnSwitchAxisNotify);
+                nameof(IInstallationHub.SwitchAxisNotify), this.OnSwitchAxisNotify);
 
             connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
-                 nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
+                nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
             connection.On<NotificationMessageUI<PositioningMessageData>>(
-                 nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
+                nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
             connection.On<NotificationMessageUI<HomingMessageData>>(
-                 nameof(IInstallationHub.HomingProcedureStatusChanged), this.OnHomingProcedureStatusChanged);
+                nameof(IInstallationHub.HomingProcedureStatusChanged), this.OnHomingProcedureStatusChanged);
 
             connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
-                 nameof(IInstallationHub.ResolutionCalibrationNotify), this.OnResolutionCalibrationNotify);
+                nameof(IInstallationHub.ResolutionCalibrationNotify), this.OnResolutionCalibrationNotify);
 
             connection.On<NotificationMessageUI<InverterStatusWordMessageData>>(
-                 nameof(IInstallationHub.InverterStatusWordChanged), this.OnInverterStatusWordChanged);
+                nameof(IInstallationHub.InverterStatusWordChanged), this.OnInverterStatusWordChanged);
 
             connection.On<NotificationMessageUI<MachineStatusActiveMessageData>>(
-                 nameof(IInstallationHub.MachineStatusActiveNotify), this.OnMachineStatusActiveNotify);
+                nameof(IInstallationHub.MachineStatusActiveNotify), this.OnMachineStatusActiveNotify);
 
             connection.On<NotificationMessageUI<MachineStateActiveMessageData>>(
-                 nameof(IInstallationHub.MachineStateActiveNotify), this.OnMachineStateActiveNotify);
+                nameof(IInstallationHub.MachineStateActiveNotify), this.OnMachineStateActiveNotify);
 
             connection.On<NotificationMessageUI<PowerEnableMessageData>>(
-                 nameof(IInstallationHub.PowerEnableNotify), this.OnPowerEnableNotify);
+                nameof(IInstallationHub.PowerEnableNotify), this.OnPowerEnableNotify);
 
             connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
-                 nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
+                nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
 
             connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
                 nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
@@ -92,11 +92,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<FsmExceptionMessageData>>(
                 nameof(IInstallationHub.FsmException), this.OnFsmException);
 
+            connection.On<NotificationMessageUI<ProfileCalibrationMessageData>>(
+                nameof(IInstallationHub.ProfileCalibration), this.OnProfileCalibrationNotify);
+
+            connection.On<NotificationMessageUI<MoveTestMessageData>>(
+                nameof(IInstallationHub.MoveTest), this.OnMoveTestNotify);
+
             connection.On<bool, BayNumber>(
                 nameof(IInstallationHub.BayLightChanged), this.OnBayLightChanged);
 
             connection.On(
                 nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
+
+            connection.On<NotificationMessageUI<RepetitiveHorizontalMovementsMessageData>>(
+                nameof(IInstallationHub.RepetitiveHorizontalMovementsNotify), this.OnRepetitiveHorizontalMovementsNotify);
+
+            connection.On<NotificationMessageUI<InverterProgrammingMessageData>>(
+                nameof(IInstallationHub.InverterProgrammingChanged), this.OnInverterProgramming);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -136,6 +148,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
+        private void OnInverterProgramming(NotificationMessageUI<InverterProgrammingMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
         private void OnInverterStatusWordChanged(NotificationMessageUI<InverterStatusWordMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
@@ -166,12 +183,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
+        private void OnMoveTestNotify(NotificationMessageUI<MoveTestMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
         private void OnPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnProfileCalibrationNotify(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnRepetitiveHorizontalMovementsNotify(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

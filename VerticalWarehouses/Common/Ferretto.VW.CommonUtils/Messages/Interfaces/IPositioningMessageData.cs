@@ -11,6 +11,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        bool BypassConditions { get; set; }
+
         bool ComputeElongation { get; set; }
 
         int Delay { get; set; }
@@ -23,7 +25,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsOneTonMachine { get; set; }
 
+        bool IsPickupMission { get; set; }
+
         bool IsStartedOnBoard { get; set; }
+
+        bool IsTestStopped { get; set; }
 
         double? LoadedNetWeight { get; }
 
@@ -35,7 +41,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementType MovementType { get; }
 
-        int RequiredCycles { get; }
+        int RequiredCycles { get; set; }
 
         int? SourceBayPositionId { get; set; }
 

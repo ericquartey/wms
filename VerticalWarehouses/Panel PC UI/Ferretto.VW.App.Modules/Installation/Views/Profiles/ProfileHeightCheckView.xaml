@@ -18,7 +18,7 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="{StaticResource PpcBackground}"
+                                        FalseColor="PpcBackground"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
@@ -27,7 +27,7 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -39,16 +39,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Cassetto in Baia:"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.UnitBay}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia."
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ProfileHeighCheckDescription}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -59,7 +55,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding Path=LoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding CanLoadingUnitId}"
-                                   LabelText="{x:Static res:InstallationApp.DrawerNumber}"
+                                   LabelText="{res:Loc InstallationApp.DrawerNumber}"
                                    Mask="#0"
                                    MinValue="1" />
 
@@ -67,24 +63,69 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CallLoadunitToBayCommand}"
-                                    Content="Chiamata cassetto"
+                                    Content="{res:Loc InstallationApp.CallUnit}"
                                     Style="{StaticResource WizardIntoButton}" />
+
+                <StackPanel Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Visibility="{Binding AdminCalibration}">
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="15,5,5,5"
+                                       EditValue="{Binding Path=ProfileCorrectDistance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{res:Loc InstallationApp.CorrectDistance}"
+                                       Mask="N1" />
+
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="5"
+                                       EditValue="{Binding Path=ProfileDegrees, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{res:Loc InstallationApp.TemplateInclination}"
+                                       Mask="N1" />
+
+                    <ctrls:PpcSpinEdit Width="200"
+                                       Margin="5,5,15,5"
+                                       EditValue="{Binding Path=ProfileTotalDistance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       LabelText="{res:Loc InstallationApp.TemplateLenght}"
+                                       Mask="N1" />
+                </StackPanel>
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="{res:Loc InstallationApp.GateOpen}"
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
-                                    Content="Chiudi serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Content="{res:Loc InstallationApp.GateClose}"
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
+                <StackPanel Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding SaveParametersCommand}"
+                                        Content="{res:Loc InstallationApp.SaveParameters}"
+                                        Visibility="{Binding AdminCalibration}" />
 
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="15,15,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToElevatorPositionCommand}"
-                                    Content="Avanti"
-                                    Style="{StaticResource WizardConfirmButton}" />
+
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding MoveToElevatorPositionCommand}"
+                                        Content="{res:Loc InstallationApp.Forwards}"
+                                        Style="{StaticResource WizardConfirmButton}" />
+
+                </StackPanel>
 
             </Grid>
         </DataTemplate>
@@ -93,7 +134,7 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -105,16 +146,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Elevatore in posizione:"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ElevatorInPosition}" />
 
                     <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia."
-                               TextWrapping="Wrap" />
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.PositionElevatorBayHeight}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -125,7 +162,7 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding BayPosition.Height}"
                                    IsEnabled="False"
-                                   LabelText="Posizione baia"
+                                   LabelText="{res:Loc InstallationApp.BayPosition}"
                                    Mask="####0.00"
                                    MinValue="1" />
 
@@ -134,17 +171,25 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToBayCommand}"
-                                    Content="Vai a baia"
+                                    Content="{res:Loc InstallationApp.GoToBay}"
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="{res:Loc InstallationApp.GateOpen}"
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
-                                    Content="Chiudi serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Content="{res:Loc InstallationApp.GateClose}"
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -152,7 +197,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToShapePositionDxCommand}"
-                                    Content="Avanti"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -171,23 +216,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="Posizionare la sagoma a" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
-                             Text="destra" />
+                             Text="{res:Loc InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ProfileHeighCheckProcedureDescription}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.TemplateMeasurement}" />
                 </StackPanel>
 
                 <Image Grid.Row="1"
@@ -196,14 +235,24 @@
                        Source="{DynamicResource PHCSagoma1}"
                        Stretch="Uniform" />
 
-                <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="15,15,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MensurationDxCommand}"
-                                    Content="Misurazione lato destro"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom">
+
+                    <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="15,15,0,0"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding OpenShutterCommand}"
+                                        Content="{res:Loc InstallationApp.GateOpen}"
+                                        Style="{StaticResource WizardIntoButton}" />
+
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        Command="{Binding MensurationDxCommand}"
+                                        Content="{res:Loc InstallationApp.RightSideMeasurement}"
+                                        Style="{StaticResource WizardConfirmButton}" />
+                </StackPanel>
 
             </Grid>
         </DataTemplate>
@@ -225,25 +274,22 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="Misurazione baia" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
-                             Text="destra" />
+                             Text="{res:Loc InstallationApp.Right}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               FontWeight="Bold"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
-                               TextWrapping="Wrap" />
+                    <TextBlock FontWeight="Bold"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.WaitAutomaticProcedureEnd}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
                         Grid.ColumnSpan="3"
-                        Background="{DynamicResource PpcBackground}">
+                        Background="{DynamicResource PpcBackground}"
+                        Visibility="Collapsed">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
                         <Grid>
@@ -278,7 +324,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Tolleranza richiesta"
+                                           Text="{res:Loc InstallationApp.TolleranceRequired}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -317,7 +363,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Correzione barriera"
+                                           Text="{res:Loc InstallationApp.GateCorrection2}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -356,7 +402,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Errore di sistema" />
+                                           Text="{res:Loc InstallationApp.SystemError}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -391,7 +437,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.Output}"
+                                           Text="{res:Loc InstallationApp.Output}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -413,17 +459,15 @@
                                            Grid.Column="1"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           SensorState="{Binding LuPresentInBay}"
-                                           Text="{x:Static res:InstallationApp.HeightReaced}" />
+                                           SensorState="{Binding SensorsService.ProfileCalibrationBay}"
+                                           Text="{res:Loc InstallationApp.HeightReaced}" />
 
                 <TextBlock Grid.Row="3"
                            Grid.ColumnSpan="3"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Al termine della procedure la pagina cambiera automaticamente."
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.PageChangeAutomatically}" />
             </Grid>
         </DataTemplate>
 
@@ -441,23 +485,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="Posizionare la sagoma a" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.PositioningTemplate}" />
                         <Run FontWeight="Bold"
-                             Text="sinistra:" />
+                             Text="{res:Loc InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ProfileHeightCheckProcedureLeftUnitDescription}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.TemplateMeasurement}" />
                 </StackPanel>
 
                 <Image Grid.Row="1"
@@ -466,13 +504,21 @@
                        Source="{DynamicResource PHCSagoma1}"
                        Stretch="Uniform" />
 
+                <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="15,15,0,0"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding OpenShutterCommand}"
+                                        Content="{res:Loc InstallationApp.GateOpen}"
+                                        Style="{StaticResource WizardIntoButton}" />
+
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MensurationSxCommand}"
-                                    Content="Misurazione lato sinistro"
+                                    Content="{res:Loc InstallationApp.LeftSideMeasurement}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -495,25 +541,22 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="Misurazione baia" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+                        <Run Text="{res:Loc InstallationApp.BayMeasurement}" />
                         <Run FontWeight="Bold"
-                             Text="sinistra" />
+                             Text="{res:Loc InstallationApp.Left}" />
                         <Run Text=":" />
                     </TextBlock>
 
-                    <TextBlock FontSize="18"
-                               FontWeight="Bold"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
-                               TextWrapping="Wrap" />
+                    <TextBlock FontWeight="Bold"
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.WaitAutomaticProcedureEnd}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
                         Grid.ColumnSpan="3"
-                        Background="{DynamicResource PpcBackground}">
+                        Background="{DynamicResource PpcBackground}"
+                        Visibility="Collapsed">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
                         <Grid>
@@ -548,7 +591,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Tolleranza richiesta"
+                                           Text="{res:Loc InstallationApp.TolleranceRequired}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -587,7 +630,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Correzione barriera"
+                                           Text="{res:Loc InstallationApp.GateCorrection2}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -625,8 +668,8 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Errore di sistema" />
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{res:Loc InstallationApp.SystemError}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -660,8 +703,8 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.Output}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{res:Loc InstallationApp.Output}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -683,17 +726,15 @@
                                            Grid.Column="1"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           SensorState="{Binding LuPresentInBay}"
-                                           Text="{x:Static res:InstallationApp.HeightReaced}" />
+                                           SensorState="{Binding SensorsService.ProfileCalibrationBay}"
+                                           Text="{res:Loc InstallationApp.HeightReaced}" />
 
                 <TextBlock Grid.Row="3"
                            Grid.ColumnSpan="3"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Al termine della procedure la pagina cambiera automaticamente."
-                           TextWrapping="Wrap" />
+                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.PageChangeAutomatically}" />
             </Grid>
         </DataTemplate>
 
@@ -713,19 +754,13 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Risultato misurazione:"
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.CalibrationResult}" />
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="In base al risultato della misurazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm."
-                               TextWrapping="Wrap" />
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Se il risultato della misurazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione."
-                               TextWrapping="Wrap" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ProfileHeighCheckCalibrationLess}" />
+                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.ProfileHeighCheckCalibrationMore}" />
                 </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -734,7 +769,7 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredSx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Misurazione lato sinistro"
+                                   LabelText="{res:Loc InstallationApp.CalibrationLeftSideMM}"
                                    Mask="###0.0" />
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -744,18 +779,18 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredDx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Misurazione lato destro"
+                                   LabelText="{res:Loc InstallationApp.CalibrationRightSideMM}"
                                    Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="0"
-                                    Command="{Binding ApplyCorrectionCommand}"
-                                    Content="Ripeti misurazione"
+                                    Command="{Binding RepeatCommand}"
+                                    Content="{res:Loc InstallationApp.RepeteCalibration}"
                                     Style="{StaticResource WizardConfirmButton}" />
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
-                                    Command="{Binding ApplyCorrectionCommand}"
-                                    Content="Completa"
+                                    Command="{Binding CompletedCommand}"
+                                    Content="{res:Loc InstallationApp.Complete}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -798,7 +833,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Calibrazione barriera" />
+                       Text="{res:Loc InstallationApp.BarrierCalibration2}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -808,10 +843,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpGHCDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -828,12 +861,23 @@
                                            MinHeight="90"
                                            Margin="0,15,15,0" />
 
-        <controls:CardSensorBay Grid.Row="4"
-                                Grid.Column="3"
-                                Width="230"
-                                Height="90"
-                                MinHeight="90"
-                                Margin="0,15,15,0" />
+        <Grid Grid.Row="4"
+              Grid.Column="3"
+              Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVIC}, Mode=OneWay}">
+            <controls:CardSensorBay Width="230"
+                                    Height="90"
+                                    MinHeight="90"
+                                    Margin="0,15,15,0" />
+        </Grid>
+
+        <Grid Grid.Row="4"
+              Grid.Column="3"
+              Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+            <controls:CardSensorPosition Width="230"
+                                         Height="90"
+                                         MinHeight="90"
+                                         Margin="0,15,15,0" />
+        </Grid>
 
         <controls:CardSensorShutter Grid.Row="5"
                                     Grid.Column="3"
@@ -848,7 +892,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->
@@ -881,9 +925,9 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
-                    Background="{StaticResource PpcBackground}"
-                    BorderBrush="{StaticResource PpcBorderBrush}"
-                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
                     CornerRadius="2,0,0,2">
                 <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
                                 ContentTemplateSelector="{StaticResource selector}" />

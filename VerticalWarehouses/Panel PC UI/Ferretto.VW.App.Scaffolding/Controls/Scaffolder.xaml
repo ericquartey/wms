@@ -10,6 +10,7 @@
              xmlns:g11n="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:resx="clr-namespace:Ferretto.VW.App.Scaffolding.Resources"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
@@ -49,14 +50,14 @@
 
         <Style x:Key="BreadcrumbTextBlock"
                TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
             <Setter Property="Margin" Value="5,0,0,0" />
         </Style>
 
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -100,7 +101,7 @@
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Height" Value="54" />
-                        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                        <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
                         <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -149,8 +150,8 @@
                                     <Condition Property="IsSelected" Value="True" />
                                     <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
+                                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
                             </MultiTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -165,7 +166,7 @@
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsEnabled" Value="False" />
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextDisabled}" />
                             </MultiTrigger>
                         </Style.Triggers>
                     </Style>
@@ -198,9 +199,9 @@
                 </Setter.Value>
             </Setter>
             <EventSetter Event="MouseDoubleClick"
-                         Handler="ListViewItem_Click" />
-            <EventSetter Event="TouchUp"
-                         Handler="ListViewItem_Click" />
+                         Handler="ListViewItem_DblClick" />
+            <EventSetter Event="PreviewTouchDown"
+                         Handler="ListViewItem_PreviewTouchDown" />
             <Style.Triggers>
                 <Trigger Property="HasItems" Value="False">
                     <Setter Property="Template">
@@ -218,8 +219,8 @@
         <Style x:Key="SearchTextBoxStyle"
                BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                TargetType="{x:Type TextBox}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
-            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource SearchTextBox_Foreground}" />
+            <Setter Property="Background" Value="{DynamicResource SearchTextBox_Background}" />
         </Style>
 
         <Style x:Key="IconButtonBorderStyle"
@@ -274,7 +275,7 @@
         UI
         ===================================
     -->
-    <Grid>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
         <Grid.Visibility>
             <Binding Converter="{StaticResource TTUI}"
                      Path="Model"
@@ -303,20 +304,22 @@
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2"
+                    Margin="0,0,0,8"
                     DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                     Orientation="Horizontal"
                     Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
 
+            <!--  Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}"  -->
             <Button Margin="0,0,0,8"
                     Click="Back_Click"
                     Style="{StaticResource IconButtonStyle}"
-                    Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
+                    Visibility="Collapsed">
                 <Button.Content>
                     <icons:PackIconFontAwesome Kind="ReplySolid" />
                 </Button.Content>
             </Button>
 
-            <TextBlock Margin="10,0,0,0"
+            <TextBlock Margin="0,0,0,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource BreadcrumbTextBlock}"
                        Text="{x:Static resx:UI.Root}"
@@ -418,7 +421,7 @@
                 <TextBlock Margin="0,0,10,0"
                            VerticalAlignment="Center"
                            FontSize="{DynamicResource FontSize_High}"
-                           Foreground="{DynamicResource FerrettoWhiteGray}"
+                           Foreground="{DynamicResource Text_Foreground}"
                            Text="{x:Static resx:UI.Search}" />
 
                 <TextBox Grid.Column="1"
@@ -428,7 +431,9 @@
                          Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, UpdateSourceTrigger=PropertyChanged, Delay=500}">
                     <i:Interaction.Behaviors>
                         <behaviors:TextBoxAutoSelectBehavior />
-                        <behaviors:TextBoxKeyboardBehavior KeyboardCaption="{x:Static resx:UI.Search}" />
+                        <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
+                                                                 KeyboardLabel="{x:Static resx:UI.Search}" />
+                        <!--<behaviors:TextBoxKeyboardBehavior KeyboardCaption="{x:Static resx:UI.Search}" />-->
                     </i:Interaction.Behaviors>
                 </TextBox>
 
@@ -444,7 +449,7 @@
                     <Button.Template>
                         <ControlTemplate>
                             <Grid Margin="0"
-                                  Background="{TemplateBinding Background}">
+                                  Background="Transparent">
                                 <icons:PackIconFontAwesome Width="{TemplateBinding Width}"
                                                            Height="{TemplateBinding Height}"
                                                            Margin="2"
@@ -459,10 +464,12 @@
             </Grid>
             <!--  entities  -->
             <ListView Grid.Row="1"
-                      ItemsSource="{Binding}">
+                      ItemsSource="{Binding}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      SelectionChanged="ListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="60"
+                        <GridViewColumn Width="55"
                                         Header="Id">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -476,7 +483,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="400"
+                        <GridViewColumn Width="480"
                                         Header="Nome">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -489,7 +496,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="200"
+                        <GridViewColumn Width="110"
                                         Header="Value">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -510,40 +517,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="80"
-                                        Header="Default">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="80"
-                                        Header="Min">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="80"
-                                        Header="Max">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="80"
+                        <GridViewColumn Width="94"
                                         Header="U.m.">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -554,6 +528,40 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn Width="75"
+                                        Header="Default">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="75"
+                                        Header="Min">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="75"
+                                        Header="Max">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
                         <!--<GridViewColumn Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>

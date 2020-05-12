@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Keyboards.Controls
             DependencyProperty.Register(nameof(KeyButtonStyle), typeof(Style), typeof(KeyboardButton), new PropertyMetadata(OnKeyButtonStylePropertyChanged));
 
         public static readonly DependencyPropertyKey KeyCommandPropertyKey =
-                                                    DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
+            DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
 
         public static readonly DependencyProperty KeyCommandProperty = KeyCommandPropertyKey.DependencyProperty;
 
@@ -74,9 +74,21 @@ namespace Ferretto.VW.App.Keyboards.Controls
             ((KeyboardButton)d).SynchronizeLayout();
         }
 
-        private void Btn_Click(object sender, RoutedEventArgs e)
+        private void UserControl_TouchUp(object sender, TouchEventArgs e)
         {
+            // e.Handled = true;
             this.ExecuteKeyCommand();
+
+            // how to avoid .IsMouseOver trigger?
+        }
+
+        private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.StylusDevice == null)
+            {
+                // REAL mouse event
+                this.ExecuteKeyCommand();
+            }
         }
 
         private void SynchronizeButtonStyle()

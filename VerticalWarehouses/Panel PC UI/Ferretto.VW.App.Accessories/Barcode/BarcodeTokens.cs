@@ -4,10 +4,12 @@
     {
         ListId,
 
-        ItemId,
+        ItemCode,
 
         ItemQuantity,
 
         ItemBarcode,
+
+        BearerToken,
     }
 }

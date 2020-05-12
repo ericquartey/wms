@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int AccessLevel { get; set; }
 
-        public bool IsSupport => string.CompareOrdinal(this.Name, "support") == 0;
+        public bool IsService => string.CompareOrdinal(this.Name, "service") == 0;
 
         public string Name { get; set; }
 
@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.DataModels
                 Id = -99,
                 Name = "admin",
                 AccessLevel = 99,
-                PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
-                PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
+                PasswordHash = "hnxfwmv7zEfyPQReC+IS5dGisCYf5r6wTo/87XLv0tU=",
+                PasswordSalt = "1PPY6bdLHijNylozacy1RQ==",
             };
 
             public static readonly User Installer = new User
@@ -40,8 +40,8 @@ namespace Ferretto.VW.MAS.DataModels
                 Id = -2,
                 Name = "installer",
                 AccessLevel = 2,
-                PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
-                PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A==",
+                PasswordHash = "RFzfGJR1H1hAi+t4eamhB1O0saoZkbKg3tWLkhlWiqs=",
+                PasswordSalt = "obChaz6W7brGMtT7Dn7TAw==",
             };
 
             public static readonly User Operator = new User
@@ -53,10 +53,10 @@ namespace Ferretto.VW.MAS.DataModels
                 PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
             };
 
-            public static readonly User Support = new User
+            public static readonly User Service = new User
             {
                 Id = -3,
-                Name = "support",
+                Name = "service",
                 AccessLevel = 2,
                 PasswordHash = "",
                 PasswordSalt = "",

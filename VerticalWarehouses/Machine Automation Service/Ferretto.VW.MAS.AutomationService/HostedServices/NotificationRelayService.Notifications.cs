@@ -8,7 +8,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService
@@ -79,8 +78,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.ResolutionCalibrationMethod(message);
                     break;
 
-                case MessageType.AssignedMissionOperationChanged when message.Data is AssignedMissionOperationChangedMessageData:
-                    await this.OnAssignedMissionOperationChanged(message.Data as AssignedMissionOperationChangedMessageData);
+                case MessageType.AssignedMissionChanged when message.Data is AssignedMissionChangedMessageData:
+                    await this.OnAssignedMissionOperationChanged(message.Data as AssignedMissionChangedMessageData);
                     break;
 
                 case MessageType.ElevatorWeightCheck:
@@ -108,7 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.DataLayerReady:
-                    this.OnDataLayerReady(serviceProvider);
+                    await this.OnDataLayerReady(serviceProvider);
                     break;
 
                 case MessageType.ChangeRunningState:
@@ -125,6 +124,26 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.BayLight:
                     await this.OnBayLight(message);
+                    break;
+
+                case MessageType.ProfileCalibration:
+                    await this.OnProfileCalibration(message);
+                    break;
+
+                case MessageType.MoveTest:
+                    await this.OnMoveTest(message);
+                    break;
+
+                case MessageType.WmsEnableChanged:
+                    await this.OnWmsEnableChanged(serviceProvider);
+                    break;
+
+                case MessageType.RepetitiveHorizontalMovements:
+                    await this.OnRepetitiveHorizontalMovementsChanged(message);
+                    break;
+
+                case MessageType.InverterProgramming:
+                    await this.OnInverterProgrammingChanged(message);
                     break;
             }
         }

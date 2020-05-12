@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Controls.Converters
 {
@@ -20,7 +20,12 @@ namespace Ferretto.VW.App.Controls.Converters
 
             if (value is IEnumerable<Machine> machines)
             {
-                return string.Join(", ", machines.Select(m => m.Nickname).ToArray());
+                return string.Join(", ", machines.Select(m => m.Id).ToArray());
+            }
+
+            if (value is IEnumerable<Machine2> listRowMachines)
+            {
+                return string.Join(", ", listRowMachines.Select(m => m.Id).ToArray());
             }
 
             return null;

@@ -1,19 +1,23 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     internal sealed class SwitchAxisSwitchOnMotorState : IoStateBase
     {
         #region Fields
 
+        private const int CheckDelayTime = 100;
+
         private readonly Axis axisToSwitchOn;
 
         private readonly IoIndex index;
 
         private readonly IoStatus status;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -53,17 +57,25 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     ||
                     (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
-                    this.Logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
+                    this.Logger.LogTrace("2b:Axis switched on");
+
+                    var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 300
+                        || feedback)
+                    {
+                        this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
+                        // send an OperationError when timeout expires
+                        this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, !feedback, this.Logger, this.ParentStateMachine));
+                    }
                 }
             }
         }
 
         public override void Start()
         {
-            var switchOnAxisIoMessage = new IoWriteMessage();
+            var switchOnAxisIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
-            this.Logger.LogTrace($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
+            this.Logger.LogDebug($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {
@@ -78,6 +90,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             switchOnAxisIoMessage.ResetSecurity = false;
             switchOnAxisIoMessage.PowerEnable = true;
+
+            this.startTime = DateTime.UtcNow;
 
             this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)

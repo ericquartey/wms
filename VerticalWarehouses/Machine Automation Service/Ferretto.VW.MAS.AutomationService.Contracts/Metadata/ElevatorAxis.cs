@@ -11,14 +11,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private class Metadata
         {
+            //[Id(30)]
+            //[Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
+            //[HideProperties(nameof(ElevatorAxisManualParameters.TargetDistance), nameof(ElevatorAxisManualParameters.TargetDistanceAfterZero))]
+            //public ElevatorAxisManualParameters AssistedMovements { get; set; }
+
             #region Properties
 
-            [Id(20)]
-            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
-            public ElevatorAxisManualParameters AssistedMovements { get; set; }
-
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
-            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Unit("%")]
             [Id(1)]
             public double BrakeActivatePercent { get; set; }
 
@@ -32,11 +34,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(3)]
             public double ChainOffset { get; set; }
 
-            [Offset(35)]
+            [Id(40)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             public MovementParameters EmptyLoadMovement { get; set; }
 
-            [Offset(40)]
+            [Id(45)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             public MovementParameters FullLoadMovement { get; set; }
 
@@ -50,19 +52,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(5)]
             public double HomingFastSpeed { get; set; }
 
-            [Id(30)]
-            [Unfold]
+            [Id(20)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Inverter))]
             public Inverter Inverter { get; set; }
 
             [ScaffoldColumn(false)]
             [Id(6)]
             public double LastIdealPosition { get; set; }
 
-            [ScaffoldColumn(false)]
             [Id(7)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_LowerBound))]
             public double LowerBound { get; set; }
 
-            [Id(25)]
+            [Id(35)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
             public ElevatorAxisManualParameters ManualMovements { get; set; }
 
@@ -72,33 +75,49 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public Orientation Orientation { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(12)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateLength))]
             public double ProfileCalibrateLength { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(13)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibratePosition))]
             public int ProfileCalibratePosition { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(14)]
+            [Unit("mm/s")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
             public double ProfileCalibrateSpeed { get; set; }
 
             [Category("Profilo {0}")]
             [CategoryParameter(nameof(MovementProfile.Name), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(100)]
-            [Offset(10)]
+            [Offset(50)]
             public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]
-            [Id(8)]
+            [Id(9)]
+            [Unit("imp/mm")]
             public double Resolution { get; set; }
 
-            [ScaffoldColumn(false)]
-            public int TotalCycles { get; set; }
-
-            [ScaffoldColumn(false)]
+            [Unit("mm")]
+            [Id(8)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
             public double UpperBound { get; set; }
 
+            [Unit("mm")]
+            [Id(10)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalDepositOffset))]
+            public double? VerticalDepositOffset { get; set; }
+
+            [Unit("mm")]
+            [Id(11)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalPickupOffset))]
+            public double? VerticalPickupOffset { get; set; }
+
+            [Id(25)]
             [Unfold]
-            [Id(30)]
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion

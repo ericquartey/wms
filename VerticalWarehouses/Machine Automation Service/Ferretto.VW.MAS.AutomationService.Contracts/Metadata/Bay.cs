@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Offset(10)]
             public Carousel Carousel { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ChainOffset))]
             [Unit("mm")]
             [Id(1)]
             public double ChainOffset { get; set; }
@@ -30,30 +30,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public int? CurrentWmsMissionOperationId { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
+            [Id(90)]
             public MovementParameters EmptyLoadMovement { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
+            [Id(95)]
             public MovementParameters FullLoadMovement { get; set; }
 
-            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
-            [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(20)]
+            [ScaffoldColumn(false)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(25)]
+            [Id(20)]
             public IoDevice IoDevice { get; set; }
 
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsActive))]
-            [Id(3)]
+            [ScaffoldColumn(false)]
             public bool IsActive { get; set; }
 
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsDouble))]
-            [Id(4)]
+            [ScaffoldColumn(false)]
             public bool IsDouble { get; set; }
 
             [Editable(false)]
@@ -82,6 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
             [Id(7)]
+            [Unit("imp/mm")]
             public double Resolution { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]

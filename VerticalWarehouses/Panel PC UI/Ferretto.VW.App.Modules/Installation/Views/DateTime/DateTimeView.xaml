@@ -32,7 +32,7 @@
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SystemDateTime}" />
+                   Text="{res:Loc InstallationApp.SystemDateTime}" />
 
         <RadioButton Grid.Row="2"
                      Grid.Column="1"
@@ -43,12 +43,8 @@
             <RadioButton.Content>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Grid.Row="2"
-                               Margin="0,25"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               FontSize="{DynamicResource FontSize_High}"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.SetManualSystemDateTime}" />
+                               Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                               Text="{res:Loc InstallationApp.SetManualSystemDateTime}" />
                 </StackPanel>
             </RadioButton.Content>
         </RadioButton>
@@ -60,12 +56,8 @@
                      IsChecked="{Binding IsAuto, Mode=TwoWay}"
                      IsEnabled="{Binding CanGoAutoSync}">
             <RadioButton.Content>
-                <TextBlock Margin="0,25"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           FontSize="{DynamicResource FontSize_High}"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.WMSAutoSync}" />
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.WMSAutoSync}" />
             </RadioButton.Content>
         </RadioButton>
 
@@ -84,7 +76,7 @@
                 <ctrls:PpcSpinEdit MinWidth="200"
                                    MinHeight="91"
                                    EditValue="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   LabelText="{x:Static res:InstallationApp.Hour}"
+                                   LabelText="{res:Loc InstallationApp.Hour}"
                                    Mask="##00"
                                    MaxValue="23"
                                    MinValue="0" />
@@ -92,7 +84,7 @@
                                    MinHeight="91"
                                    Margin="15,0,0,0"
                                    EditValue="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   LabelText="{x:Static res:InstallationApp.Minutes}"
+                                   LabelText="{res:Loc InstallationApp.Minutes}"
                                    Mask="##00"
                                    MaxValue="59"
                                    MinValue="0" />
@@ -104,7 +96,7 @@
                 <ctrls:PpcSpinEdit MinWidth="200"
                                    MinHeight="91"
                                    EditValue="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   LabelText="{x:Static res:InstallationApp.Day}"
+                                   LabelText="{res:Loc InstallationApp.Day}"
                                    Mask="##"
                                    MaxValue="31"
                                    MinValue="1" />
@@ -112,7 +104,7 @@
                                    MinHeight="91"
                                    Margin="15,0,0,0"
                                    EditValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   LabelText="{x:Static res:InstallationApp.Month}"
+                                   LabelText="{res:Loc InstallationApp.Month}"
                                    Mask="##"
                                    MaxValue="12"
                                    MinValue="1" />
@@ -120,7 +112,7 @@
                                    MinHeight="91"
                                    Margin="15,0,0,0"
                                    EditValue="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   LabelText="{x:Static res:InstallationApp.Year}"
+                                   LabelText="{res:Loc InstallationApp.Year}"
                                    Mask="####"
                                    MaxValue="3000"
                                    MinValue="2020" />
@@ -133,7 +125,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
+                            Content="{res:Loc General.Save}"
                             IsBusy="{Binding IsBusy}" />
     </Grid>
 </ctrls:View>

@@ -1,0 +1,17 @@
+trigger:  
+  branches:
+    include:    
+    - release    
+  paths:
+    include:
+    - VerticalWarehouses/Installer/*
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- template: azure-pipeline-vw-installer-template.yml
+  parameters:      
+    BuildConfiguration: 'release'  
+    RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'    
+    

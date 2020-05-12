@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     public interface IRequestingBayController

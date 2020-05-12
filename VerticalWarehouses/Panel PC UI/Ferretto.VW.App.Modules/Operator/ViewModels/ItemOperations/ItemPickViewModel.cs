@@ -1,18 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
+
+        private bool canConfirmOnEmpty;
 
         private DelegateCommand emptyOperationCommand;
 
@@ -21,14 +23,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IMissionsWmsWebService missionsWmsWebService,
-            IItemsWmsWebService itemsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -37,6 +37,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ItemPick.ToString();
+
+        public bool CanConfirmOnEmpty
+        {
+            get => this.canConfirmOnEmpty;
+            set => this.SetProperty(ref this.canConfirmOnEmpty, value);
+        }
 
         public ICommand EmptyOperationCommand =>
             this.emptyOperationCommand
@@ -51,20 +57,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         public override Task OnAppearedAsync()
         {
             this.Compartments = null;
             this.SelectedCompartment = null;
+
             return base.OnAppearedAsync();
         }
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity;
+            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -84,7 +93,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
-            return
+            this.CanConfirmOnEmpty =
                 this.MissionOperation != null
                 &&
                 !this.IsWaitingForResponse
@@ -98,17 +107,31 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value >= 0
                 &&
                 this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+
+            return this.CanConfirmOnEmpty;
         }
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()
         {
+            this.IsWaitingForResponse = true;
+            this.IsOperationConfirmed = true;
+
             try
             {
-                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (!canComplete)
+                {
+                    this.ShowOperationCanceledMessage();
+                }
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
+                this.IsOperationConfirmed = false;
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

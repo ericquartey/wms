@@ -9,6 +9,7 @@
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +22,7 @@
    <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.Gauges" Version="19.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -47,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ViewModels\About\ParametersExportView.xaml" />
     <None Remove="Views\AboutMenuView.xaml" />
     <None Remove="Views\About\AlarmView.xaml" />
     <None Remove="Views\About\CountersView.xaml" />
@@ -54,6 +56,7 @@
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
     <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
+    <None Remove="Views\LogsExportView.xaml" />
     <None Remove="Views\Others\LoadingUnitMissionDataGridView.xaml" />
     <None Remove="Views\Others\LoadingUnitsMissionsView.xaml" />
   </ItemGroup>
@@ -66,6 +69,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Update="Views\About\AlarmsExportView.xaml.cs">
+      <DependentUpon>AlarmsExportView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\About\CountersView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -84,6 +90,12 @@
     <Compile Update="Views\ItemOperations\LoadingUnitView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Others\LoadingUnitMissionDataGridView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -99,7 +111,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
+   
   </Target>
 
 </Project>

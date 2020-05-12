@@ -270,8 +270,8 @@
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante di emergenza è stato premuto</value>
   </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>The left side panel is open.</value>
   </data>
   <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Errore cassetto in posizione inattesa</value>
@@ -349,12 +349,63 @@
     <value>Homing conditions not met.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>The height of the loading unit is over the maximum.</value>
+    <value>The height of the loading unit is over the maximum or below the minimum</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
   </data>
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
     <value>Destination bay needs calibration</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test not completed</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Not empty warehouse.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Errore di posizionamento</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>The right side panel is open.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Vertical position has changed after machine start</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test not completed</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Baia non valida</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Posizione baia non valida</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Invalid {0} Axis movement Acceleration configuration</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Invalid {0} Axis movement Deceleration configuration</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Invalid {0} Axis movement Speed configuration</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Positioning error at top or bottom side</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>External bay is occupied</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>External bay empty</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS error</value>
   </data>
 </root>

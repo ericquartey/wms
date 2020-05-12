@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -14,7 +15,9 @@ namespace Ferretto.VW.MAS.MissionManager
             return
                 notification.Destination is MessageActor.Any
                 ||
-                notification.Destination is MessageActor.MissionManager;
+                notification.Destination is MessageActor.MissionManager
+                ||
+                notification.Destination is MessageActor.AutomationService;
         }
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
@@ -37,6 +40,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnNewWmsMissionAvailable();
                     break;
 
+                case MessageType.MoveLoadingUnit when message.Status is MessageStatus.OperationEnd:
+                    await this.OnMissionOperationCompletedAsync();
+                    break;
+
                 case MessageType.DataLayerReady:
                     await this.OnDataLayerReadyAsync();
                     break;
@@ -54,11 +61,13 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 return;
             }
+            this.Logger.LogTrace("OnDataLayerReady start");
             this.dataLayerIsReady = true;
 
             this.RetrieveMachineId();
 
             await this.RetrieveNewWmsMissionsAsync();
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnMachineModeChangedAsync()

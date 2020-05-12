@@ -41,8 +41,13 @@ namespace Ferretto.VW.App.Modules.Installation
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<AlphaNumericBarSettingsView>();
+            containerRegistry.RegisterForNavigation<BarcodeReaderSettingsView>();
+            containerRegistry.RegisterForNavigation<BarcodeReaderConfigurationView>();
+
             containerRegistry.RegisterForNavigation<BayCheckView>();
             containerRegistry.RegisterForNavigation<DepositAndPickUpTestView>();
+            containerRegistry.RegisterForNavigation<CarouselCalibrationView>();
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
@@ -60,6 +65,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
             containerRegistry.RegisterForNavigation<CellsSideControlView>();
 
+            containerRegistry.RegisterForNavigation<HorizontalChainCalibrationView>();
+
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToBayView>();
@@ -68,12 +75,6 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<FullTestView>();
 
             containerRegistry.RegisterForNavigation<ProfileHeightCheckView>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep1View>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep2View>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep3View>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep4View>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep5View>();
-            containerRegistry.RegisterForNavigation<ProfileHeightCheckStep6View>();
 
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
 
@@ -95,8 +96,10 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<UpdateStep2View>();
             containerRegistry.RegisterForNavigation<UsersView>();
             containerRegistry.RegisterForNavigation<ParameterInverterView>();
-            containerRegistry.RegisterForNavigation<ComunicationWmsView>();
+            containerRegistry.RegisterForNavigation<ParametersInverterDetailsView>();
+            containerRegistry.RegisterForNavigation<InvertersParametersImportView>();
             containerRegistry.RegisterForNavigation<DateTimeView>();
+            containerRegistry.RegisterForNavigation<WmsSettingsView>();
 
             containerRegistry.Register<INavigableView, DevicesView>(nameof(DevicesView));
         }

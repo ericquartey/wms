@@ -6,6 +6,7 @@
       "GrossWeight": 0.0,
       "Height": 0.0,
       "IsIntoMachine": false,
+      "IsInFullTest": false,
       "MaxNetWeight": 800.0,
       "MissionsCount": 0,
       "NetWeight": 0.0,
@@ -18,6 +19,7 @@
       "GrossWeight": 0.0,
       "Height": 0.0,
       "IsIntoMachine": false,
+      "IsInFullTest": false,
       "MaxNetWeight": 800.0,
       "MissionsCount": 0,
       "NetWeight": 0.0,
@@ -30,6 +32,7 @@
       "GrossWeight": 0.0,
       "Height": 0.0,
       "IsIntoMachine": false,
+      "IsInFullTest": false,
       "MaxNetWeight": 800.0,
       "MissionsCount": 0,
       "NetWeight": 0.0,
@@ -44,7 +47,33 @@
         "ChainOffset": 0.0,
         "Inverter": {
           "Index": "Slave3",
-          "Type": "Acu"
+          "Type": "Acu",
+          "Parameters": [
+            {
+              "id": 1,
+              "code": 4,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0,
+              "isReadonly": true
+            },
+            {
+              "id": 2,
+              "code": 5,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0,
+              "isReadonly": true
+            },
+            {
+              "id": 3,
+              "code": 6,
+              "value": 6,
+              "type": "uint16",
+              "dataSet": 0,
+              "isReadonly": false
+            }
+          ]
         },
         "IoDevice": {
           "Index": "IoDevice1",
@@ -60,7 +89,7 @@
             "Location": "InternalBay1Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
-            "ProfileOffset": 0.0
+            "ProfileOffset": 50.0
           }
         ],
         "Resolution": 369.8453,
@@ -78,8 +107,6 @@
           },
           "ManualMovements": {
             "FeedRate": 0.1,
-            "HighSpeedDurationClose": 16.0,
-            "HighSpeedDurationOpen": 16.0,
             "MaxSpeed": 32000.0,
             "MinSpeed": 5000.0
           },
@@ -100,11 +127,17 @@
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 772.0,
-            "Location": "InternalBay2Up",
-            "MaxDoubleHeight": 695.0,
-            "MaxSingleHeight": 320.0,
-            "ProfileOffset": 0.0
+            "Height": 772,
+            "MaxSingleHeight": 320,
+            "MaxDoubleHeight": 695,
+            "ProfileOffset": 50,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1190,
+            "MaxSingleHeight": 320,
+            "ProfileOffset": -370,
+            "Location": "InternalBay2Up"
           }
         ],
         "Resolution": 0.0,
@@ -139,9 +172,7 @@
         {
           "AssistedMovements": {
             "FeedRate": 0.3,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 0.0,
-            "TargetDistanceAfterZero": 0.0
+            "FeedRateAfterZero": 0.9
           },
           "BrakeActivatePercent": 10.0,
           "BrakeReleaseTime": 150.0,
@@ -162,7 +193,32 @@
             "Index": "MainInverter",
             "IpAddress": "127.0.0.1",
             "TcpPort": 17221,
-            "Type": "Ang"
+            "Type": "Ang",
+            "Parameters": [
+              {
+                "id": 4,
+                "code": 1,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0,
+                "isReadonly": true
+              },
+              {
+                "code": 5,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0,
+                "isReadonly": true
+              },
+              {
+                "id": 6,
+                "code": 3,
+                "value": 6,
+                "type": "uint16",
+                "dataSet": 0,
+                "isReadonly": false
+              }
+            ]
           },
           "LastIdealPosition": 1970.0,
           "LowerBound": 350.0,
@@ -181,6 +237,8 @@
           "Resolution": 77.4970626897481,
           "TotalCycles": 1,
           "UpperBound": 4000.0,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "WeightMeasurement": {
             "MeasureConst0": -723.53,
             "MeasureConst1": 159.73,
@@ -192,9 +250,7 @@
         {
           "AssistedMovements": {
             "FeedRate": 0.3,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 0.0,
-            "TargetDistanceAfterZero": 0.0
+            "FeedRateAfterZero": 0.9
           },
           "BrakeActivatePercent": 0.0,
           "BrakeReleaseTime": 0.0,
@@ -229,7 +285,8 @@
               "Name": "ShortPickup",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
                   "Acceleration": 2500.0,
@@ -237,7 +294,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 1,
                   "Position": 450.0,
                   "Acceleration": 2000.0,
@@ -245,7 +303,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
                   "Acceleration": 2000.0,
@@ -253,7 +312,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 3,
                   "Position": 1066.0,
                   "Acceleration": 1700.0,
@@ -261,7 +321,8 @@
                   "Speed": 400.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 1000.0,
@@ -275,7 +336,8 @@
               "Name": "ShortDeposit",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 200.0,
                   "Acceleration": 1000.0,
@@ -283,7 +345,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 350.0,
                   "Acceleration": 1000.0,
@@ -291,7 +354,8 @@
                   "Speed": 200.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 716.0,
                   "Acceleration": 1000.0,
@@ -299,7 +363,8 @@
                   "Speed": 325.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 986.0,
                   "Acceleration": 3000.0,
@@ -307,7 +372,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 3000.0,
@@ -321,7 +387,8 @@
               "Name": "LongPickup",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
                   "Acceleration": 2500.0,
@@ -329,7 +396,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 450.0,
                   "Acceleration": 2000.0,
@@ -337,7 +405,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
                   "Acceleration": 2000.0,
@@ -345,7 +414,8 @@
                   "Speed": 600.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 3,
                   "Position": 1066.0,
                   "Acceleration": 1700.0,
@@ -353,7 +423,8 @@
                   "Speed": 400.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 1000.0,
@@ -367,7 +438,8 @@
               "Name": "LongDeposit",
               "Steps": [
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 0,
                   "Position": 200.0,
                   "Acceleration": 1000.0,
@@ -375,7 +447,8 @@
                   "Speed": 200.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 1,
                   "Position": 350.0,
                   "Acceleration": 1000.0,
@@ -383,7 +456,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Number": 2,
                   "Position": 716.0,
                   "Acceleration": 1000.0,
@@ -391,7 +465,8 @@
                   "Speed": 325.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 986.0,
                   "Acceleration": 3000.0,
@@ -399,7 +474,8 @@
                   "Speed": 100.0
                 },
                 {
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Number": 4,
                   "Position": 1230.0,
                   "Acceleration": 3000.0,
@@ -426,7 +502,8 @@
       }
     },
     "Height": 4563.0,
-    "LoadUnitMaxHeight": 750.0,
+    "LoadUnitMaxHeight": 695.0,
+    "LoadUnitMinHeight": 145.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 50000.0,
@@ -2091,11 +2168,29 @@
     "Id": 1
   },
   "SetupProcedures": {
+    "CarouselManualMovements": {
+      "FeedRate": 0.1
+    },
+    "ShutterTest": {
+      "RequiredCycles": 200
+    },
+    "Bay1CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1FullTest": {
+    },
     "Bay1HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay1Laser": {
+    },
+    "Bay1ProfileCheck": {
     },
     "Bay1ShutterTest": {
       "InProgress": false,
@@ -2104,11 +2199,23 @@
       "FeedRate": 1.0,
       "IsCompleted": true
     },
+    "Bay2CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2FullTest": {
+    },
     "Bay2HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay2Laser": {
+    },
+    "Bay2ProfileCheck": {
     },
     "Bay2ShutterTest": {
       "InProgress": false,
@@ -2117,11 +2224,23 @@
       "FeedRate": 1.0,
       "IsCompleted": false
     },
+    "Bay3CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3FullTest": {
+    },
     "Bay3HeightCheck": {
       "InProgress": false,
       "Step": 0.0,
       "FeedRate": 0.1,
       "IsCompleted": false
+    },
+    "Bay3Laser": {
+    },
+    "Bay3ProfileCheck": {
     },
     "Bay3ShutterTest": {
       "InProgress": false,
@@ -2160,6 +2279,9 @@
       "FeedRate": 0.2,
       "IsCompleted": false
     },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
       "InProgress": false,
@@ -2177,6 +2299,10 @@
       "StartPosition": 500.0,
       "FeedRate": 0.2,
       "IsCompleted": true
+    },
+    "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   }
 }

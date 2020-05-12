@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
@@ -55,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
 
-            this.ApplicationVersion = string.Format(Resources.VWApp.Version, versionString);
+            this.ApplicationVersion = string.Format(Resources.Localized.Get("General.Version"), versionString);
         }
 
         #endregion
@@ -101,6 +102,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await base.OnAppearedAsync();
         }
 
+        protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+           // await base.OnHealthStatusChangedAsync(e);
+
+            await this.RetrieveMachineInfoAsync();
+        }
+
         private async Task CheckFirewallStatusAsync()
         {
             await Task.Delay(FirewallCheckDelay);
@@ -116,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     if (isFirewallenabled)
                     {
                         this.ShowNotification(
-                            Resources.InstallationApp.FirewallIsEnabledOnThisTerminal,
+                            Resources.Localized.Get("InstallationApp.FirewallIsEnabledOnThisTerminal"),
                             Services.Models.NotificationSeverity.Warning);
                     }
                 }
@@ -138,11 +146,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 trackCurrentView: false);
         }
 
-        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
-        {
-            await this.RetrieveMachineInfoAsync();
-        }
-
         private async Task RetrieveMachineInfoAsync()
         {
             this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}'.");
@@ -151,14 +154,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
-                    this.ShowNotification("I servizi sono in fase di inizializzazione.");
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ServiceInitialization"));
 
                     break;
 
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
 
-                    this.ShowNotification("Connessione ai servizi stabilita.", Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionEstablished"), Services.Models.NotificationSeverity.Success);
 
                     try
                     {
@@ -167,7 +170,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                         this.NavigateToLoginPage(machineIdentity);
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
                         this.ShowNotification(ex);
                     }
@@ -176,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowNotification("Impossibile connettersi al servizio di automazione", Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionNotPossible"), Services.Models.NotificationSeverity.Error);
                     break;
             }
         }

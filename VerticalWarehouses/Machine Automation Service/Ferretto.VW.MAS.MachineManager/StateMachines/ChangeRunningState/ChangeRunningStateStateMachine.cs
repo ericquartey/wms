@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -13,7 +14,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
 {
     internal class ChangeRunningStateStateMachine : FiniteStateMachine<IChangeRunningStateStartState, IChangeRunningStateStartState>, IChangeRunningStateStateMachine
@@ -86,12 +87,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
             var newState = base.OnNotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
+                this.Logger.LogTrace($"1.Active state: {this.ActiveState?.GetType().Name}, new state {newState?.GetType().Name} ");
                 return newState;
             }
 
             newState = this.ActiveState.NotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
+                this.Logger.LogTrace($"2.Active state: {this.ActiveState?.GetType().Name}, new state {newState?.GetType().Name} ");
+                //if (newState is IChangeRunningStateStartState && this.ActiveState is IChangeRunningStateEndState)
+                //{
+                //    Debugger.Break();
+                //}
                 return newState;
             }
 
@@ -121,7 +128,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
             {
                 if (messageData.Enable)
                 {
-                    returnValue = this.sensorsProvider.IsMachineSecureForRun();
+                    this.errorsProvider.ResolveAll();
+                    returnValue = this.sensorsProvider.IsMachineSecureForRun(out var errorText);
+                    if (!returnValue)
+                    {
+                        this.Logger.LogError(errorText);
+                    }
                 }
                 else
                 {

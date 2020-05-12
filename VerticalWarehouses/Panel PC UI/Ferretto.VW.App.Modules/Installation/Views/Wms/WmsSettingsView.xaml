@@ -1,0 +1,163 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.WmsSettingsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <ctrls:View.Resources>
+        <Style x:Key="IPAddressSeparator"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
+            <Setter Property="Margin" Value="4,0,6,10" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Text" Value=":" />
+        </Style>
+
+        <Style x:Key="ByteTextBox"
+               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="MaxLength" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+    </ctrls:View.Resources>
+
+    <Grid x:Name="Root"
+          Margin="40,0,15,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Title"
+                   Grid.ColumnSpan="3"
+                   VerticalAlignment="Top"
+                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.WmsSetting}" />
+
+        <RadioButton Grid.Row="2"
+                     Margin="10,20,10,0"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     GroupName="test">
+            <RadioButton.Content>
+                <TextBlock Grid.Row="2"
+                           Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{res:Loc General.WmsDisabled}" />
+            </RadioButton.Content>
+        </RadioButton>
+
+        <RadioButton Grid.Row="3"
+                     Margin="10,0,10,0"
+                     GroupName="test"
+                     IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{res:Loc General.WmsEnabled}" />
+            </RadioButton.Content>
+
+        </RadioButton>
+
+        <Grid Grid.Row="4"
+              Grid.ColumnSpan="2"
+              Margin="55,0,0,0"
+              IsEnabled="{Binding IsWmsEnabled}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_High}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.WmsHostAddress}" />
+            <TextBox Grid.Row="1"
+                     Width="500"
+                     Height="60"
+                     VerticalAlignment="Top"
+                     VerticalContentAlignment="Center"
+                     Style="{StaticResource VWAPP_PpcTextBox_WmsStyle}"
+                     Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <controls:PpcButton Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="10,0,0,10"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CheckEndpointCommand}"
+                                Content="{res:Loc InstallationApp.CheckStatus}"
+                                IsBusy="{Binding IsCheckingEndpoint}" />
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        Orientation="Vertical">
+                <TextBlock Margin="10,5"
+                           HorizontalAlignment="Left"
+                           FontSize="{DynamicResource FontSize_Small}"
+                           Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
+                           Text="{res:Loc OperatorApp.GeneralInfoWmsStatus}"
+                           TextAlignment="Right" />
+
+                <StackPanel HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                    <Ellipse Width="8"
+                             Height="8"
+                             Margin="10,0"
+                             VerticalAlignment="Center"
+                             Fill="{Binding WmsServicesStatusBrush}" />
+                    <TextBlock Margin="5,5,20,5"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
+                               Text="{Binding WmsServicesStatusDescription}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </StackPanel>
+            <!--<StackPanel Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="{DynamicResource FontSize_Normal}"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:OperatorApp.GeneralInfoWmsStatus}" />
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="{DynamicResource FontSize_Normal}"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding Path=HealthStatus, Converter={StaticResource ETHSC}}" />
+            </StackPanel>-->
+
+        </Grid>
+
+        <controls:PpcButton Grid.Row="5"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SaveCommand}"
+                            Content="{res:Loc General.Save}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+    </Grid>
+</ctrls:View>

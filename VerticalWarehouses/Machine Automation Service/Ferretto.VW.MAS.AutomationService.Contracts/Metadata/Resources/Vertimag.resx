@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accelerazione</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
-    <value>AssistedMovements</value>
+    <value>Movimenti guidati</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia {0}</value>
@@ -156,8 +156,26 @@
   <data name="BayNumber.ElevatorBay" xml:space="preserve">
     <value>culla</value>
   </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Quota</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Altezza massima doppia</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Altezza massima standard</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Offset controllo sagoma</value>
+  </data>
   <data name="BayShutter" xml:space="preserve">
     <value>Shutter baia {0}</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri e i dispositivi della baia.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Offset zero catena</value>
   </data>
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Attiva</value>
@@ -175,25 +193,25 @@
     <value>Lato</value>
   </data>
   <data name="BeltRigidity" xml:space="preserve">
-    <value>BeltRigidity</value>
+    <value>Rigidezza della cinghia</value>
   </data>
   <data name="BeltSpacing" xml:space="preserve">
-    <value>BeltSpacing</value>
+    <value>Distanza blocchi tensionamento cinghia</value>
   </data>
   <data name="Carousel" xml:space="preserve">
     <value>Giostra</value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
-    <value>Distanza dalla culla</value>
+    <value>Interasse mensole</value>
   </data>
   <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
     <value>Velocità homing</value>
   </data>
   <data name="Carousel_HomingFastSpeed" xml:space="preserve">
-    <value>Velocità homing (fast)</value>
+    <value>Velocità homing fast</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Decelerazione</value>
   </data>
   <data name="Elevator" xml:space="preserve">
     <value>Elevatore</value>
@@ -208,13 +226,25 @@
     <value>Tempo di rilascio in frenata</value>
   </data>
   <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
-    <value>Offset cinghia</value>
+    <value>Offset zero catena</value>
   </data>
   <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
     <value>Velocità homing</value>
   </data>
   <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
-    <value>Velocità homing (fast)</value>
+    <value>Velocità homing fast</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Limite asse inferiore</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Distanza max calibrazione sagoma</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Distanza sagoma lettura 6a ftc</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Velocità calibrazione sagoma</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
     <value>Profiles</value>
@@ -222,23 +252,35 @@
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
   </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Limite asse superiore</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Offset posizionamento in deposito</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Offset posizionamento in prelievo</value>
+  </data>
   <data name="ElevatorWeight" xml:space="preserve">
-    <value>ElevatorWeight</value>
+    <value>Peso elevatore</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati.</value>
   </data>
   <data name="EmptyLoadMovement" xml:space="preserve">
-    <value>EmptyLoadMovement</value>
+    <value>Movimenti a vuoto</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>FeedRate</value>
+    <value>Feed Rate</value>
   </data>
   <data name="FeedRateAfterZero" xml:space="preserve">
-    <value>FeedRateAfterZero</value>
+    <value>Feed Rate dopo zero asse</value>
   </data>
   <data name="FullLoadMovement" xml:space="preserve">
-    <value>FullLoadMovement</value>
+    <value>Movimenti a pieno carico</value>
   </data>
   <data name="HalfShaftLength" xml:space="preserve">
-    <value>HalfShaftLength</value>
+    <value>Lunghezza semi albero</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -270,23 +312,35 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP Laser</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Porta Laser</value>
+  </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri strutturali della macchina.</value>
   </data>
   <data name="Machine_Height" xml:space="preserve">
     <value>Altezza</value>
   </data>
   <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
-    <value>Alt. max cassetto</value>
+    <value>Altezza massima cassetto</value>
   </data>
   <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
-    <value>Peso netto max cassetto</value>
+    <value>Peso netto massimo cassetto</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Altezza minima cassetto</value>
   </data>
   <data name="Machine_LoadUnitTare" xml:space="preserve">
     <value>Tara cassetto</value>
   </data>
   <data name="Machine_MaxGrossWeight" xml:space="preserve">
-    <value>Peso lordo max cassetto</value>
+    <value>Peso lordo massimo macchina</value>
   </data>
   <data name="Machine_ModelName" xml:space="preserve">
     <value>Modello</value>
@@ -295,22 +349,22 @@
     <value>Matricola</value>
   </data>
   <data name="ManualMovements" xml:space="preserve">
-    <value>ManualMovements</value>
+    <value>Movimenti manuali</value>
   </data>
   <data name="MeasureConst0" xml:space="preserve">
-    <value>MeasureConst0</value>
+    <value>Costante K0 pesatura</value>
   </data>
   <data name="MeasureConst1" xml:space="preserve">
-    <value>MeasureConst1</value>
+    <value>Costante K1 pesatura</value>
   </data>
   <data name="MeasureConst2" xml:space="preserve">
-    <value>MeasureConst2</value>
+    <value>Costante K2 pesatura</value>
   </data>
   <data name="MeasureSpeed" xml:space="preserve">
-    <value>MeasureSpeed</value>
+    <value>Velocità pesatura</value>
   </data>
   <data name="MeasureTime" xml:space="preserve">
-    <value>MeasureTime</value>
+    <value>Tempo pesatura</value>
   </data>
   <data name="MovementParameters" xml:space="preserve">
     <value>MovementParameters</value>
@@ -343,28 +397,34 @@
     <value>Posizione {0}</value>
   </data>
   <data name="PulleyDiameter" xml:space="preserve">
-    <value>PulleyDiameter</value>
+    <value>Diametro primitivo puleggia</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
-    <value>ShaftDiameter</value>
+    <value>Diametro albero</value>
   </data>
   <data name="ShaftElasticity" xml:space="preserve">
-    <value>ShaftElasticity</value>
+    <value>Modulo di elasticità</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
-    <value>Feed rate parametri manuali shutter</value>
+    <value>Feed rate serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
-    <value>Durata chiusura shutter</value>
+    <value>Durata chiusura serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
-    <value>Durata apertura shutter</value>
+    <value>Durata apertura serranda</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Durata chiusura a metà serranda</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Durata apertura a metà serranda</value>
   </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
-    <value>Velocità massima parametri manuali shutter</value>
+    <value>Velocità massima serranda</value>
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
-    <value>Velocità minima parametri manuali shutter</value>
+    <value>Velocità minima serranda</value>
   </data>
   <data name="ShutterType.NotSpecified" xml:space="preserve">
     <value>Non specificato</value>
@@ -376,22 +436,34 @@
     <value>Due sensori</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
-    <value>Movimenti assistiti shutter</value>
+    <value>Mov. guidati serranda</value>
   </data>
   <data name="Shutter_ManualMovements" xml:space="preserve">
-    <value>Movimenti manuali shutter</value>
+    <value>Mov. manuali serranda</value>
   </data>
   <data name="Shutter_Type" xml:space="preserve">
-    <value>Tipo shutter</value>
+    <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
-    <value>Speed</value>
+    <value>Velocità</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Correggi accelerazone con peso</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Correggi velocità con peso</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Posizione</value>
   </data>
   <data name="TargetDistance" xml:space="preserve">
-    <value>TargetDistance</value>
+    <value>Max spazio percorribile con comandi manuali</value>
   </data>
   <data name="TargetDistanceAfterZero" xml:space="preserve">
-    <value>TargetDistanceAfterZero</value>
+    <value>Max spazio percorribile con comandi manuali dopo zero asse</value>
   </data>
   <data name="TotalDistance" xml:space="preserve">
     <value>Totale distanza</value>

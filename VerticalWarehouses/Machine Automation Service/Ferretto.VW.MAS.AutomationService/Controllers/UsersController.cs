@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UserAccessLevel = Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel;
 using UserClaims = Ferretto.VW.CommonUtils.Messages.Data.UserClaims;
@@ -18,27 +19,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly ILogger<UsersController> logger;
 
         private readonly IUsersProvider usersProvider;
-
-        private readonly IUsersWmsWebService usersWmsWebService;
 
         #endregion
 
         #region Constructors
 
         public UsersController(
-            IUsersWmsWebService usersWmsWebService,
             IUsersProvider usersProvider,
-            IConfiguration configuration,
             ILogger<UsersController> logger)
         {
-            this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -52,23 +45,47 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("authenticate")]
+        [HttpPost("authenticate-bearer-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<UserClaims>> AuthenticateWithBearerToken(
+           string bearerToken,
+           [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+           [FromServices] IUsersWmsWebService usersWmsWebService)
+        {
+            this.logger.LogDebug($"Login requested for token '{bearerToken}' by '{this.BayNumber}'.");
+
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var claims = await usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
+
+                this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
+
+                return this.Ok(claims);
+            }
+
+            return this.BadRequest("The Wms is not enabled.");
+        }
+
+        [HttpPost("authenticate-resource-owner")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<UserClaims>> AuthenticateWithResourceOwnerPassword(
             string userName,
             string password,
-            string supportToken)
+            string supportToken,
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            [FromServices] IUsersWmsWebService usersWmsWebService)
         {
             this.logger.LogDebug($"Login requested for user '{userName}' by '{this.BayNumber}'.");
 
-            if (string.IsNullOrEmpty(supportToken) && this.configuration.IsWmsEnabled())
+            if (string.IsNullOrEmpty(supportToken) && wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
-                    var claims = await this.usersWmsWebService
-                        .AuthenticateWithResourceOwnerPasswordAsync(userName, password);
+                    var claims = await usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
                     this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' through WMS.");
 
@@ -103,7 +120,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<string> GetSupportToken()
         {
-            var token = this.usersProvider.GetSupportToken();
+            var token = this.usersProvider.GetServiceToken();
 
             this.logger.LogInformation($"Get token: {token}");
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -62,6 +61,8 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public bool IsInFullTest { get; set; }
+
         public bool IsIntoMachine { get; set; }
 
         /// <summary>
@@ -81,6 +82,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// to be used to calculate ABC rotation class
+        /// </summary>
         public int MissionsCount
         {
             get => this.missionsCount;

@@ -55,39 +55,39 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
-                                   Text="{x:Static res:InstallationApp.Elevator}" />
+                                   Text="{res:Loc InstallationApp.Elevator}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+                                       Text="{res:Loc InstallationApp.ElevatorVerticalPosition}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.ElevatorVerticalPosition, StringFormat={}{0:F2}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
+                                       Text="{res:Loc InstallationApp.ElevatorHorizontalPosition}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.ElevatorHorizontalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ElevatorLogicalPosition}" />
+                                       Text="{res:Loc InstallationApp.ElevatorLogicalPosition}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.ElevatorLogicalPosition, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LoadingUnitCode}" />
+                                       Text="{res:Loc InstallationApp.LoadingUnitCode}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.EmbarkedLoadingUnit.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.TrayWeight}" />
+                                       Text="{res:Loc InstallationApp.TrayWeight}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
@@ -101,7 +101,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+                                       Text="{res:Loc InstallationApp.ZeroPawlSensor}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.IsZeroChain}"
@@ -110,7 +110,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradle}" />
+                                       Text="{res:Loc InstallationApp.LuPresenceOnMachineCradle}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
@@ -119,7 +119,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradle}" />
+                                       Text="{res:Loc InstallationApp.LuPresenceOnOperatorCradle}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
@@ -130,23 +130,23 @@
 
                     <StackPanel Orientation="Vertical">
                         <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
-                                   Text="{x:Static res:InstallationApp.Bay}" />
+                                   Text="{res:Loc InstallationApp.Bay}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
 
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.BayPositionUpHeight}" />
+                                       Text="{res:Loc InstallationApp.BayPositionUpHeight}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding SensorsService.BayPositionUpHeight}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.BayHeight}"
+                                       Text="{res:Loc InstallationApp.BayHeight}"
                                        Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.BayPositionDownHeight}"
+                                       Text="{res:Loc InstallationApp.BayPositionDownHeight}"
                                        Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding SensorsService.BayPositionDownHeight}" />
@@ -163,11 +163,11 @@
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                           Text="{x:Static res:InstallationApp.TrayInBay}"
+                                           Text="{res:Loc InstallationApp.TrayInBay}"
                                            Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                           Text="{x:Static res:InstallationApp.TrayInBayPositionUp}"
+                                           Text="{res:Loc InstallationApp.TrayInBayPositionUp}"
                                            Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                                 <controls:PpcSensorControl Margin="2,0"
                                                            VerticalAlignment="Center"
@@ -177,11 +177,11 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                           Text="{x:Static res:InstallationApp.TrayInBay}"
+                                           Text="{res:Loc InstallationApp.TrayInBay}"
                                            Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                           Text="{x:Static res:InstallationApp.TrayInBayPositionDown}"
+                                           Text="{res:Loc InstallationApp.TrayInBayPositionDown}"
                                            Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                                 <controls:PpcSensorControl Margin="2,0"
                                                            VerticalAlignment="Center"
@@ -193,10 +193,10 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LoadingUnitCode}"
+                                       Text="{res:Loc InstallationApp.LoadingUnitCode}"
                                        Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LoadingUnitCodePositionUp}"
+                                       Text="{res:Loc InstallationApp.LoadingUnitCodePositionUp}"
                                        Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.LoadingUnitPositionUpInBay.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
@@ -205,7 +205,7 @@
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.LoadingUnitCodePositionDown}" />
+                                       Text="{res:Loc InstallationApp.LoadingUnitCodePositionDown}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
                                        Text="{Binding MachineService.MachineStatus.LoadingUnitPositionDownInBay.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
@@ -213,7 +213,7 @@
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding SensorsService.BayZeroChainIsVisible, Converter={StaticResource BTVC}}">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ZeroChain}" />
+                                       Text="{res:Loc InstallationApp.ZeroChain}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.BayZeroChain}"
@@ -225,12 +225,12 @@
                     <StackPanel Orientation="Vertical"
                                 Visibility="{Binding MachineService.HasShutter, Converter={StaticResource BTVC}}">
                         <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
-                                   Text="{x:Static res:InstallationApp.Shutter}" />
+                                   Text="{res:Loc InstallationApp.Shutter}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ShutterOpen}" />
+                                       Text="{res:Loc InstallationApp.ShutterOpen}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.ShutterSensors.Open}"
@@ -240,7 +240,7 @@
                                     Visibility="{Binding MachineService.IsShutterThreeSensors, Converter={StaticResource BTVC}}">
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ShutterMidWay}"
+                                       Text="{res:Loc InstallationApp.ShutterMidWay}"
                                        Visibility="{Binding MachineService.IsShutterThreeSensors, Converter={StaticResource BTVC}}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
@@ -250,7 +250,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
-                                       Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                                       Text="{res:Loc InstallationApp.ShutterClosed}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.ShutterSensors.Closed}"

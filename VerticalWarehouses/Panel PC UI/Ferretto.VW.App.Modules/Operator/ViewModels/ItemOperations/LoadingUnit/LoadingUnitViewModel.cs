@@ -1,35 +1,41 @@
 ﻿using System;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class LoadingUnitViewModel : BaseLoadingUnitViewModel
+    public class LoadingUnitViewModel : BaseLoadingUnitViewModel, IOperationReasonsSelector
     {
         #region Fields
 
-        public double? inputQuantity;
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
 
-        private readonly ICompartmentsWmsWebService compartmentsWmsWebService;
+        private readonly IMachineItemsWebService itemsWebService;
 
-        private readonly IItemsWmsWebService itemsWmsWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
-        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+        private readonly IMachineService machineService;
 
-        private readonly IMissionOperationsService missionOperationsService;
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
-        private readonly IWmsDataProvider wmsDataProvider;
+        private readonly IOperatorNavigationService operatorNavigationService;
+
+        private DelegateCommand cancelReasonCommand;
 
         private bool canInputQuantity;
 
         private DelegateCommand confirmOperationCommand;
+
+        private DelegateCommand confirmReasonCommand;
+
+        private double? inputQuantity;
 
         private string inputQuantityInfo;
 
@@ -49,32 +55,54 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int? quantityTolerance;
 
+        private int? reasonId;
+
+        private string reasonNotes;
+
+        private IEnumerable<OperationReason> reasons;
+
         private DelegateCommand recallLoadingUnitCommand;
+
+        private double? unitHeight;
+
+        private int? unitNumber;
+
+        private double? unitWeight;
 
         #endregion
 
         #region Constructors
 
         public LoadingUnitViewModel(
-            IItemsWmsWebService itemsWmsWebService,
-            ICompartmentsWmsWebService compartmentsWmsWebService,
+            IMachineItemsWebService itemsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineService machineService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
-            ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
+            IOperatorNavigationService operatorNavigationService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, loadingUnitsWmsWebService, eventAggregator)
+            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
-            this.compartmentsWmsWebService = compartmentsWmsWebService ?? throw new ArgumentNullException(nameof(compartmentsWmsWebService));
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
-            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
+            this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
 
         #region Properties
+
+        public ICommand CancelReasonCommand =>
+      this.cancelReasonCommand
+      ??
+      (this.cancelReasonCommand = new DelegateCommand(
+          this.CancelReason));
 
         public bool CanInputQuantity
         {
@@ -83,9 +111,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public ICommand ConfirmOperationCommand =>
-               this.confirmOperationCommand
-                ??
-                (this.confirmOperationCommand = new DelegateCommand(async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
+            this.confirmOperationCommand
+            ??
+            (this.confirmOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
+
+        public ICommand ConfirmReasonCommand =>
+                          this.confirmReasonCommand
+          ??
+          (this.confirmReasonCommand = new DelegateCommand(
+              async () => await this.ExecuteOperationAsync(),
+              this.CanExecuteItemPick));
 
         public double? InputQuantity
         {
@@ -102,7 +138,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public bool IsAdjustmentVisible
         {
             get => this.isAdjustmentVisible;
-            set => this.SetProperty(ref this.isAdjustmentVisible, value);
+            set
+            {
+                if (this.SetProperty(ref this.isAdjustmentVisible, value) && value)
+                {
+                    this.IsPickVisible = false;
+                    this.IsPutVisible = false;
+                }
+            }
         }
 
         public bool IsItemStockVisible => this.isPickVisible || this.isPutVisible;
@@ -116,13 +159,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public bool IsPickVisible
         {
             get => this.isPickVisible;
-            set => this.SetProperty(ref this.isPickVisible, value);
+            set
+            {
+                if (this.SetProperty(ref this.isPickVisible, value) && value)
+                {
+                    this.IsPutVisible = false;
+                    this.IsAdjustmentVisible = false;
+                }
+            }
         }
 
         public bool IsPutVisible
         {
             get => this.isPutVisible;
-            set => this.SetProperty(ref this.isPutVisible, value);
+            set
+            {
+                if (this.SetProperty(ref this.isPutVisible, value) && value)
+                {
+                    this.IsPickVisible = false;
+                    this.IsAdjustmentVisible = false;
+                }
+            }
         }
 
         public string MeasureUnit
@@ -132,9 +189,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public ICommand OperationCommand =>
-               this.operationCommand
-                ??
-                (this.operationCommand = new DelegateCommand<string>(async (param) => await this.SetTypeOperationAsync(param), this.CanDoOperation));
+            this.operationCommand
+            ??
+            (this.operationCommand = new DelegateCommand<string>(
+                async (param) => await this.ToggleOperation(param), this.CanDoOperation));
 
         public double QuantityIncrement
         {
@@ -154,6 +212,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public int? ReasonId
+        {
+            get => this.reasonId;
+            set => this.SetProperty(ref this.reasonId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ReasonNotes
+        {
+            get => this.reasonNotes;
+            set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public IEnumerable<OperationReason> Reasons
+        {
+            get => this.reasons;
+            set => this.SetProperty(ref this.reasons, value);
+        }
+
         public ICommand RecallLoadingUnitCommand =>
             this.recallLoadingUnitCommand
             ??
@@ -161,25 +237,155 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 async () => await this.RecallLoadingUnitAsync(),
                 this.CanRecallLoadingUnit));
 
+        public double? UnitHeight
+        {
+            get => this.unitHeight;
+            set => this.SetProperty(ref this.unitHeight, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int? UnitNumber
+        {
+            get => this.unitNumber;
+            set => this.SetProperty(ref this.unitNumber, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? UnitWeight
+        {
+            get => this.unitWeight;
+            set => this.SetProperty(ref this.unitWeight, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
+        public async Task<bool> CheckReasonsAsync()
+        {
+            this.ReasonId = null;
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+
+                var missionOperationType = MissionOperationType.NotSpecified;
+                if (this.IsPickVisible)
+                {
+                    missionOperationType = MissionOperationType.Pick;
+                }
+                else if (this.IsPutVisible)
+                {
+                    missionOperationType = MissionOperationType.Put;
+                }
+                else if (this.IsAdjustmentVisible)
+                {
+                    missionOperationType = MissionOperationType.Inventory;
+                }
+
+                if (missionOperationType != MissionOperationType.NotSpecified)
+                {
+                    this.Reasons = null;
+                    // this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(missionOperationType);
+                }
+
+                if (this.reasons?.Any() == true)
+                {
+                    if (this.reasons.Count() == 1)
+                    {
+                        this.ReasonId = this.reasons.First().Id;
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.Reasons = null;
+            }
+            finally
+            {
+                this.IsBusyConfirmingOperation = false;
+            }
+
+            return this.Reasons?.Any() == true;
+        }
+
+        public async Task GetLoadingUnitsAsync()
+        {
+            try
+            {
+                var count = 0;
+
+                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+
+                if (moveUnitId != null)
+                {
+                    foreach (var unit in moveUnitId)
+                    {
+                        count++;
+                    }
+                }
+
+                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+
+                if (moveUnitIdToCell != null)
+                {
+                    var userdifference = moveUnitIdToCell.Except(moveUnitId);
+
+                    if (userdifference.Any())
+                    {
+                        foreach (var units in userdifference)
+                        {
+                            var selectedunit = this.machineService.Loadunits.Where(i => i.Id == units).SingleOrDefault();
+                            this.unitNumber = selectedunit.Id;
+                            this.unitHeight = selectedunit.Height;
+                            this.unitWeight = selectedunit.GrossWeight;
+                        }
+                    }
+                    else
+                    {
+                        this.unitNumber = this.LoadingUnit.Id;
+                        this.unitHeight = this.LoadingUnit.Height;
+                        this.unitWeight = this.LoadingUnit.GrossWeight;
+                    }
+                }
+                else
+                {
+                    this.unitNumber = this.LoadingUnit.Id;
+                    this.unitHeight = this.LoadingUnit.Height;
+                    this.unitWeight = this.LoadingUnit.GrossWeight;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.unitNumber));
+                this.RaisePropertyChanged(nameof(this.unitHeight));
+                this.RaisePropertyChanged(nameof(this.unitWeight));
+            }
+        }
+
+        public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            if (this.CanReset)
+            this.Reasons = null;
+
+            Task.Run(async () =>
             {
-                this.ResetOperations();
-            }
+                do
+                {
+                    await Task.Delay(500);
+                    await this.GetLoadingUnitsAsync();
+                }
+                while (this.IsVisible);
+            });
         }
 
         public override void RaisePropertyChanged()
         {
             base.RaisePropertyChanged();
 
-            this.RaisePropertyChanged(nameof(this.RecallLoadingUnitInfo));
             this.RaisePropertyChanged(nameof(this.ConfirmOperationInfo));
             this.RaisePropertyChanged(nameof(this.IsItemStockVisible));
         }
@@ -189,29 +395,42 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.IsBusyConfirmingRecallOperation = true;
-                this.IsWaitingForNewOperation = true;
-                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
+                this.IsWaitingForResponse = true;
+
+                var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+                if (this.WmsDataProvider.IsEnabled && activeOperation != null)
+                {
+                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
+                    if (!canComplete)
+                    {
+                        await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+                    }
+                }
+                else
+                {
+                    await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+                }
 
                 this.NavigationService.GoBack();
+                this.Reset();
+
+                //this.operatorNavigationService.NavigateToDrawerInfoView();
+
+                //if (this.IsNewOperationAvailable)
+                //{
+                    this.operatorNavigationService.NavigateToDrawerView();
+                //}
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 this.IsBusyConfirmingRecallOperation = false;
             }
-        }
-
-        public override void ResetOperations()
-        {
-            base.ResetOperations();
-
-            this.IsOperationVisible = false;
-            this.IsPickVisible = false;
-            this.IsPutVisible = false;
-            this.IsAdjustmentVisible = false;
         }
 
         protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
@@ -221,6 +440,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        protected override void OnSelectedCompartmentChanged()
+        {
+            this.HideOperation();
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -228,14 +452,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.operationCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.confirmReasonCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void CancelReason()
+        {
+            this.Reasons = null;
         }
 
         private bool CanConfirmOperation()
         {
             return
-                ConfigurationManager.AppSettings.GetWmsDataServiceEnabled()
+                this.IsWmsEnabledAndHealthy
                 &&
-                !this.IsWaitingForNewOperation
+                !this.IsWaitingForResponse
                 &&
                 this.InputQuantity.HasValue
                 &&
@@ -246,15 +476,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanDoOperation(string param)
         {
-            return !(this.SelectedItem is null)
-                   &&
-                   !this.IsWaitingForNewOperation
-                   &&
-                   !this.IsBusyConfirmingRecallOperation
-                   &&
-                   !this.IsBusyConfirmingOperation
-                   &&
-                   this.IsWmsHealthy;
+            return
+                this.SelectedItemCompartment?.ItemId != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
+        }
+
+        private bool CanExecuteItemPick()
+        {
+            return !(this.reasonId is null);
         }
 
         private bool CanRecallLoadingUnit()
@@ -269,88 +505,158 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task ConfirmOperationAsync()
         {
+            this.IsWaitingForResponse = true;
+
+            var waitForReason = await this.CheckReasonsAsync();
+
+            if (!waitForReason)
+            {
+                await this.ExecuteOperationAsync();
+            }
+        }
+
+        private async Task ExecuteOperationAsync()
+        {
             try
             {
                 this.IsBusyConfirmingOperation = true;
 
                 if (this.IsPickVisible)
                 {
-                    this.IsWaitingForNewOperation = true;
+                    this.IsWaitingForResponse = true;
 
-                    await this.wmsDataProvider.PickAsync(
+                    await this.WmsDataProvider.PickAsync(
                         this.SelectedItem.ItemId.Value,
-                        this.InputQuantity.Value);
+                        this.InputQuantity.Value,
+                        this.reasonId,
+                        this.reasonNotes);
                 }
                 else if (this.IsPutVisible)
                 {
-                    this.IsWaitingForNewOperation = true;
+                    this.IsWaitingForResponse = true;
 
-                    await this.wmsDataProvider.PutAsync(
+                    await this.WmsDataProvider.PutAsync(
                         this.SelectedItem.ItemId.Value,
-                        this.InputQuantity.Value);
+                        this.InputQuantity.Value,
+                        this.reasonId,
+                        this.reasonNotes);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
-                    var compartment = new CompartmentDetails()
-                    {
-                        ItemId = this.SelectedItemCompartment.ItemId,
-                        Stock = this.InputQuantity.Value,
-                    };
+                    await this.compartmentsWebService.UpdateItemStockAsync(
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItemCompartment.ItemId.Value,
+                        this.InputQuantity.Value,
+                        this.reasonId,
+                        this.reasonNotes);
 
-                    var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
-
-                    await this.ResetLoadDataAsync();
+                    await this.OnDataRefreshAsync();
                 }
+
+                this.HideOperation();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 this.IsBusyConfirmingOperation = false;
+                this.Reasons = null;
                 this.RaiseCanExecuteChanged();
             }
         }
 
         private async Task GetItemInfoAsync()
         {
-            var item = await this.itemsWmsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
-            this.QuantityTolerance = item.PickTolerance ?? 0;
-            this.MeasureUnit = item.MeasureUnitDescription;
+            if (this.SelectedItemCompartment?.ItemId is null)
+            {
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+                var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+
+                this.QuantityTolerance = item.PickTolerance ?? 0;
+                this.MeasureUnit = item.MeasureUnitDescription;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
-        private async Task SetTypeOperationAsync(string param)
+        private void HideOperation()
         {
-            this.ResetOperations();
-            this.IsOperationVisible = true;
-            this.IsListVisibile = false;
+            this.IsAdjustmentVisible = false;
+            this.IsPickVisible = false;
+            this.IsPutVisible = false;
 
-            await this.GetItemInfoAsync();
+            this.IsOperationVisible = false;
+        }
 
-            if (param == OperatorApp.Pick)
+        private async Task ToggleOperation(string operationType)
+        {
+            if (!this.SelectedItemCompartment.ItemId.HasValue)
             {
-                this.InputQuantity = null;
-                this.IsPickVisible = true;
-                this.InputQuantityInfo = string.Format(OperatorApp.PickingQuantity, this.MeasureUnit);
-            }
-            else if (param == OperatorApp.Put)
-            {
-                this.InputQuantity = null;
-                this.IsPutVisible = true;
-                this.InputQuantityInfo = string.Format(OperatorApp.PutQuantity, this.MeasureUnit);
-            }
-            else if (param == OperatorApp.Adjustment)
-            {
-                this.InputQuantity = this.SelectedItemCompartment.Stock;
-                this.IsAdjustmentVisible = true;
-                this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
+                return;
             }
 
-            this.CanInputQuantity = true;
+            var previousIsListModeEnabled = this.IsListModeEnabled;
+            this.IsListModeEnabled = false;
 
-            this.RaisePropertyChanged();
-            this.RaiseCanExecuteChanged();
+            try
+            {
+                await this.GetItemInfoAsync();
+
+                if (operationType == OperatorApp.Pick)
+                {
+                    this.InputQuantity = null;
+                    this.IsPickVisible = !this.IsPickVisible;
+                    this.InputQuantityInfo = string.Format(OperatorApp.PickingQuantity, this.MeasureUnit);
+                }
+                else if (operationType == OperatorApp.Put)
+                {
+                    this.InputQuantity = null;
+                    this.IsPutVisible = !this.IsPutVisible;
+                    this.InputQuantityInfo = string.Format(OperatorApp.PutQuantity, this.MeasureUnit);
+                }
+                else if (operationType == OperatorApp.Adjustment)
+                {
+                    this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
+                    this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
+                }
+                else
+                {
+                    this.ShowNotification(string.Format(OperatorApp.InvalidOperation, operationType));
+                    return;
+                }
+
+                this.IsOperationVisible =
+                    this.IsPickVisible
+                    ||
+                    this.IsPutVisible
+                    ||
+                    this.IsAdjustmentVisible;
+
+                this.CanInputQuantity = this.IsOperationVisible;
+
+                this.RaisePropertyChanged();
+                this.RaiseCanExecuteChanged();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.IsListModeEnabled = previousIsListModeEnabled;
+            }
         }
 
         #endregion

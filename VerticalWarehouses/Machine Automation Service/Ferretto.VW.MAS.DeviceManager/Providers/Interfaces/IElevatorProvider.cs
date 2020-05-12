@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
 
-        ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided);
+        ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided, bool enforceLoadUnitPresent = true);
 
         ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
 
@@ -56,7 +56,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? sourceCellId = null,
             int? sourceBayPositionId = null);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender);
+
+        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender);
 
         void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender);
 
@@ -69,6 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? targetCellId,
             bool checkHomingDone,
             bool waitContinue,
+            bool isPickupMission,
             BayNumber requestingBay,
             MessageActor sender);
 
@@ -84,6 +87,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void ResetBeltBurnishing();
 
+        void ResetEnduranceTest();
+
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit);
@@ -95,7 +100,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             requestingBay,
             MessageActor sender);
 
+        void StartRepetitiveHorizontalMovements(
+            int bayPositionId,
+            int loadingUnitId,
+            BayNumber requestingBay,
+            MessageActor sender);
+
         void Stop(BayNumber requestingBay, MessageActor sender);
+
+        void StopTest(BayNumber requestingBay, MessageActor sender);
 
         void UnloadToBay(int bayPosition, BayNumber bayNumber, MessageActor automationService);
 

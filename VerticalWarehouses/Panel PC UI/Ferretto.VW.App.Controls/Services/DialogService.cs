@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using CommonServiceLocator;
 using DevExpress.Xpf.WindowsUI;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
 
@@ -188,9 +189,9 @@ namespace Ferretto.VW.App.Controls
             protected override void PopulateStringTable()
             {
                 base.PopulateStringTable();
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Yes, "Si");
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.No, "No");
-                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Cancel, "Annulla");
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Yes, Localized.Get("General.Yes"));
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.No, Localized.Get("General.No"));
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Cancel, Localized.Get("General.Cancel"));
             }
 
             #endregion

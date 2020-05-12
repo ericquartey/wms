@@ -1,4 +1,5 @@
-﻿using CommonServiceLocator;
+﻿using System;
+using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 using Prism.Events;
 using Prism.Regions;
@@ -22,6 +23,12 @@ namespace Ferretto.VW.App.Controls
         protected BaseNavigationViewModel()
         {
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<System.ComponentModel.CancelEventArgs> NavigatingBack;
 
         #endregion
 
@@ -61,6 +68,14 @@ namespace Ferretto.VW.App.Controls
             {
                 this.Data = navigationContext.Parameters[parametersStorageKey];
             }
+        }
+
+        public override void OnNavigatingBack(BackNavigationContext navigationContext)
+        {
+            base.OnNavigatingBack(navigationContext);
+            var args = new System.ComponentModel.CancelEventArgs(false);
+            this.NavigatingBack?.Invoke(this, args);
+            navigationContext.Cancel = args.Cancel;
         }
 
         #endregion

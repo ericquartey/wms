@@ -33,6 +33,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly int DELAY_HEARTBEAT = 800;
 
+        private readonly TcpListener listenerAlphaNumericBar1 = new TcpListener(IPAddress.Any, 2020);
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -46,6 +48,10 @@ namespace Ferretto.VW.Simulator.Services
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
+
+        private string alphaNumericBar1Message = "";
+
+        private int alphaNumericBar1Offset = 0;
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -78,6 +84,14 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
             this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+
+            this.MinTorqueCurrent = 72;
+            this.MaxTorqueCurrent = 120;
+
+            this.MinProfileHeight = new Dictionary<LoadingUnitLocation, int>();
+            this.MaxProfileHeight = new Dictionary<LoadingUnitLocation, int>();
+            this.MinProfileHeight.Add(LoadingUnitLocation.NoLocation, 2000);
+            this.MaxProfileHeight.Add(LoadingUnitLocation.NoLocation, 10000);
         }
 
         #endregion
@@ -112,8 +126,53 @@ namespace Ferretto.VW.Simulator.Services
                 this.machine = value;
                 this.remoteIOs.ForEach(x => x.Machine = value);
                 this.Inverters.ForEach(x => x.Machine = value);
+                if (this.machine.LoadUnitMaxNetWeight > 800)
+                {
+                    this.MinTorqueCurrent = 69;
+                    this.MaxTorqueCurrent = 127;
+                }
+                else
+                {
+                    this.MinTorqueCurrent = 74;
+                    this.MaxTorqueCurrent = 130;
+                }
+                // simulate weight errors
+                //this.MaxTorqueCurrent = (int)(this.MaxTorqueCurrent * 1.1);
+
+                this.MinProfileHeight.Clear();
+                this.MaxProfileHeight.Clear();
+                this.MinProfileHeight.Add(LoadingUnitLocation.NoLocation, 2000);
+                this.MaxProfileHeight.Add(LoadingUnitLocation.NoLocation, 10000);
+                foreach (var bayPosition in this.machine.Bays.Where(b => b.Positions != null).SelectMany(p => p.Positions))
+                {
+                    this.MinProfileHeight.Add(bayPosition.Location, (int)Math.Round((this.machine.LoadUnitMinHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
+                    var maxHeight = (bayPosition.MaxDoubleHeight > 0) ? bayPosition.MaxDoubleHeight : bayPosition.MaxSingleHeight;
+                    if (maxHeight > this.machine.LoadUnitMaxHeight)
+                    {
+                        Debug.WriteLine($"{DateTime.Now}: Warning: configuration error! max bay height {maxHeight} > LoadUnitMaxHeight {this.machine.LoadUnitMaxHeight}");
+                        maxHeight = this.machine.LoadUnitMaxHeight;
+                    }
+                    // simulate height errors
+                    //maxHeight *= 1.1;
+
+                    this.MaxProfileHeight.Add(bayPosition.Location, (int)Math.Round((maxHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
+                    if (this.MaxProfileHeight[bayPosition.Location] > this.MaxProfileHeight[LoadingUnitLocation.NoLocation])
+                    {
+                        // warning: configuration error!!!
+                        Debug.WriteLine($"{DateTime.Now}: Warning: configuration error! max profile height {this.MaxProfileHeight[bayPosition.Location]} > 10000");
+                        this.MaxProfileHeight[bayPosition.Location] = this.MaxProfileHeight[LoadingUnitLocation.NoLocation];
+                    }
+                }
             }
         }
+
+        public Dictionary<LoadingUnitLocation, int> MaxProfileHeight { get; private set; }
+
+        public int MaxTorqueCurrent { get; private set; }
+
+        public Dictionary<LoadingUnitLocation, int> MinProfileHeight { get; private set; }
+
+        public int MinTorqueCurrent { get; private set; }
 
         public IODeviceModel RemoteIOs01 { get => this.remoteIOs[0]; set { var ios = this.remoteIOs[0]; this.SetProperty(ref ios, value); } }
 
@@ -149,7 +208,10 @@ namespace Ferretto.VW.Simulator.Services
             {
                 this.listenerIoDriver3.Start();
             }
+
             this.listenerLaser1.Start();
+
+            this.listenerAlphaNumericBar1.Start();
 
             _ = Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             if (this.RemoteIOs01.Enabled)
@@ -168,6 +230,8 @@ namespace Ferretto.VW.Simulator.Services
             }
 
             _ = Task.Run(() => this.AcceptClient(this.listenerLaser1, this.cts.Token, (client, message) => this.ReplyLaser(client, message, 1)));
+
+            _ = Task.Run(() => this.AcceptClient(this.listenerAlphaNumericBar1, this.cts.Token, (client, message) => this.ReplyAlphaNumericBar1(client, message, 1)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -247,6 +311,46 @@ namespace Ferretto.VW.Simulator.Services
             byteMessage[5] = message[5];
             Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
             return byteMessage;
+        }
+
+        private void GetProfileRange(InverterModel inverter, out int minProfileHeight, out int maxProfileHeight)
+        {
+            minProfileHeight = this.MinProfileHeight[LoadingUnitLocation.NoLocation];
+            maxProfileHeight = this.MaxProfileHeight[LoadingUnitLocation.NoLocation];
+            if (this.Machine != null)
+            {
+                var bays = this.Machine.Bays.Where(b => b.Positions != null);
+                if (bays.Any())
+                {
+                    Bay bay = null;
+                    switch (inverter.InverterRole)
+                    {
+                        case InverterRole.Main:
+                            bay = bays.FirstOrDefault(b => b.Number == BayNumber.BayOne);
+                            break;
+
+                        case InverterRole.Shutter2:
+                            bay = bays.FirstOrDefault(b => b.Number == BayNumber.BayTwo);
+                            break;
+
+                        case InverterRole.Shutter3:
+                            bay = bays.FirstOrDefault(b => b.Number == BayNumber.BayThree);
+                            break;
+
+                        default:
+                            return;
+                    }
+                    if (bay != null)
+                    {
+                        var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
+                        if (bayPosition != null)
+                        {
+                            this.MinProfileHeight.TryGetValue(bayPosition.Location, out minProfileHeight);
+                            this.MaxProfileHeight.TryGetValue(bayPosition.Location, out maxProfileHeight);
+                        }
+                    }
+                }
+            }
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
@@ -334,7 +438,7 @@ namespace Ferretto.VW.Simulator.Services
                     bool isCarousel = bay.Carousel != null;
 
                     // Retrieve bay position (upper/lower position)
-                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
                     if (bayPosition != null)
                     {
                         // Set/Reset bay presence
@@ -343,39 +447,72 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayOne:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
 
                             case BayNumber.BayTwo:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
 
                             case BayNumber.BayThree:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
                         }
                     }
                 }
             }
+        }
+
+        private void ReplyAlphaNumericBar1(TcpClient client, byte[] message, int index)
+        {
+            var messageReceived = Encoding.ASCII.GetString(message).Trim();
+            var messageResponse = "OK";
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 receive <-- '{messageReceived}'");
+
+            if (messageReceived.StartsWith("TEST ON", StringComparison.Ordinal))
+            {
+                messageResponse = "TEST ON OK";
+            }
+            else if (messageReceived.StartsWith("TEST OFF", StringComparison.Ordinal))
+            {
+                messageResponse = "TEST OFF OK";
+            }
+            else if (messageReceived.StartsWith("SET ", StringComparison.Ordinal))
+            {
+                var subStr = messageReceived.Split(' ');
+                if (subStr.Length > 1)
+                {
+                    this.alphaNumericBar1Offset = int.Parse(subStr[1]);
+                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1]) + subStr[1].Length).Trim();
+                }
+            }
+            else if (messageReceived.StartsWith("GET ", StringComparison.Ordinal))
+            {
+                messageResponse = "GET " + this.alphaNumericBar1Message;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
+            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + "\r\n"));
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)
@@ -477,6 +614,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 case "LASER ON":
                 case "LASER OFF":
+                    System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
                     client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
                     break;
             }
@@ -495,6 +633,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
                 Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
+                this.Logger.Error($"HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
                 //inverter.IsFault = true;
@@ -563,12 +702,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TorqueCurrent:
-                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(72, 120)));
+                    // simulate measure weight
+                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinTorqueCurrent, this.MaxTorqueCurrent)));
+                    //var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)((this.MinTorqueCurrent+ this.MaxTorqueCurrent)/2)));
                     result = client.Client.Send(torqueMessage);
                     break;
 
                 case InverterParameterId.ProfileInput:
-                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
+                    // simulate measure profile height
+                    this.GetProfileRange(inverter, out int minProfileHeight, out int maxProfileHeight);
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
                     result = client.Client.Send(profileMessage);
                     break;
 
@@ -693,6 +836,8 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.CurrentError:
                     var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(inverter.IsFault ? (ushort)random.Next(1, 100) : (ushort)0));
+                    // simulate all inverters in fault
+                    //var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(1, 100)));
                     result = client.Client.Send(errorMessage);
                     break;
 
@@ -834,7 +979,8 @@ namespace Ferretto.VW.Simulator.Services
                 !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value ||
-                !device.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value
+                !device.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value ||
+                this.Inverters00.IsElevatorOverrun
                 )
             {
                 // Reset run status

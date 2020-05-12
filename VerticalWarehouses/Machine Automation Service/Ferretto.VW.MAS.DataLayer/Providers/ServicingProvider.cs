@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class ServicingProvider : IServicingProvider
@@ -28,7 +27,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.FirstOrDefault();
+                return this.dataContext.ServicingInfo.LastOrDefault();
+            }
+        }
+
+        public void SetInstallationDate()
+        {
+            lock (this.dataContext)
+            {
+                var s = new ServicingInfo();
+                s.InstallationDate = DateTime.Now;
+                this.dataContext.ServicingInfo.Add(s);
+                this.dataContext.SaveChanges();
             }
         }
 

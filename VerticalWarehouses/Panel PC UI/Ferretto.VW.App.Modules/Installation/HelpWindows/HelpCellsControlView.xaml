@@ -1,101 +1,155 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.CellsControlHelpView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
     <Grid Width="1024"
           Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image  Width="200" Height="60"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,618"
-                Source="{DynamicResource Ferretto_Logo}"
-                Stretch="Uniform" />
+        <Image Width="200"
+               Height="60"
+               Margin="10,10,0,618"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                   Text="{x:Static res:InstallationApp.CellsControl}"
-                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.CellsControl}" />
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                   Width="670"  Height="60"
-                   Text="{x:Static res:HelpDescriptions.HelpCCVDescription}"
-                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"  />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVDescription}" />
 
-        <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,140,0,0"
-                    Width="260" Height="70"
-                    Text="{x:Static res:HelpDescriptions.HelpCCVSelectedCell}"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVSelectedCell}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCCVSetPosition}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVSetPosition}" />
 
-        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
-                                                ContentText="125"
-                                                LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="125"
+                                 LabelText="{res:Loc InstallationApp.CurrentCell}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
-                                               ContentText="1250,0"
-                                               LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,210,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="1250,0"
+                                 LabelText="{res:Loc InstallationApp.ReferenceCellHeight}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
-                                               ContentText="1251,5"
-                                               LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,350,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="1251,5"
+                                 LabelText="{res:Loc InstallationApp.CurrentHeight}" />
 
-        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
+        <controls:PpcTextBox Width="180"
+                             Margin="20,280,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="0,5"
+                             IsEnabled="True"
+                             LabelText="{res:Loc InstallationApp.StepValue}" />
 
-                                                    InputText="0,5"
-                                                    Highlighted="True" IsEnabled="True"
-                                                    LabelText="{x:Static res:InstallationApp.StepValue}" />
-
-        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
-                                                ContentText="1,5"
-                                                LabelText="{x:Static res:InstallationApp.CellCorrection}" />
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
-            Content="{x:Static res:InstallationApp.GoToInitialPosition}"
-             />
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
-            Content="{x:Static res:InstallationApp.Up}"
-             />
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,280,0,0"
-            Content="{x:Static res:InstallationApp.Down}"
-             />
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,350,0,0"
-            Content="{x:Static res:InstallationApp.Correct}"
-             />
-        <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,210,0,0"
-            Width="260" Height="70"
-            Text="{x:Static res:HelpDescriptions.HelpCCVCellPosition}"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}" />
-        <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,280,0,0"
-            Width="260" Height="70"
-            Text="{x:Static res:HelpDescriptions.HelpCCVStepValue}"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}" />
-        <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,350,0,0"
-            Width="260" Height="70"
-            Text="{x:Static res:HelpDescriptions.HelpCCVAttualPosition}"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}" />
-        <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,420,0,0"
-            Width="260" Height="70"
-            Text="{x:Static res:HelpDescriptions.HelpCCVCorrectionValue}"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCCVStepPiu}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,280,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCCVStepMeno}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,350,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCCVApplyCorrection}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,420,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="1,5"
+                                 LabelText="{res:Loc InstallationApp.CellCorrection}" />
+        <controls:PpcButton Margin="530,140,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.GoToInitialPosition}" />
+        <controls:PpcButton Margin="530,210,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.Up}" />
+        <controls:PpcButton Margin="530,280,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.Down}" />
+        <controls:PpcButton Margin="530,350,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.Correct}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVCellPosition}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,280,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVStepValue}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,350,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVAttualPosition}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,420,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVCorrectionValue}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVStepPiu}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,280,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVStepMeno}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,350,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpCCVApplyCorrection}" />
 
     </Grid>
 </UserControl>

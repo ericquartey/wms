@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="160" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -38,7 +39,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Test completo" />
+                       Text="{res:Loc InstallationApp.FullTest}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -46,27 +47,25 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.FullTestDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
                                          Height="90"
-                                         Margin="0,30,15,0" />
+                                         Margin="0,20,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="2"
                                            Grid.Column="1"
                                            Height="90"
-                                           Margin="0,30,15,0" />
+                                           Margin="0,20,15,0" />
         <controls:CardSensorPosition Grid.Row="2"
                                      Grid.Column="2"
                                      Height="90"
-                                     Margin="0,30,15,0" />
+                                     Margin="0,20,15,0" />
         <controls:CardSensorDrawer Grid.Row="2"
                                    Grid.Column="3"
                                    Height="90"
-                                   Margin="0,30,15,0" />
+                                   Margin="0,20,15,0" />
 
         <controls:CardSensorBay Grid.Row="3"
                                 Grid.Column="0"
@@ -84,8 +83,8 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="Cicli richiesti"
-                           MaxValue="999"
+                           LabelText="{res:Loc InstallationApp.RequiredCycles}"
+                           MaxValue="99999"
                            MinValue="1" />
 
         <Border Grid.Row="3"
@@ -112,10 +111,10 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli sessione" />
+                               Style="{DynamicResource VWAPP_CardSensor}">
+                        <Run Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
+                        <!--<Run Text="(" /><Run Text="{Binding TotalCycles}" /><Run Text=")" />-->
+                    </TextBlock>
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -125,21 +124,18 @@
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="{Binding PerformedCyclesThisSession, FallbackValue=0}" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
                                    Text="/" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding InputRequiredCycles, FallbackValue=0}" />
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding RequiredCycles, FallbackValue=0}" />
                     </StackPanel>
 
                     <controls:PpcProgressBar Grid.Row="2"
@@ -156,27 +152,92 @@
         </Border>
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                    Grid.ColumnSpan="4"
-                                                    Margin="0,30,15,0"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    Margin="0,15,15,0"
                                                     ItemsSource="{Binding LoadingUnits}"
                                                     SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                    Grid.Column="2"
+                                                    Grid.ColumnSpan="2"
+                                                    Margin="0,15,15,0"
+                                                    ItemsSource="{Binding TestUnits}"
+                                                    SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         <StackPanel Grid.Row="5"
-                    Grid.Column="2"
+                            Grid.Column="2"
                     Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                     Margin="0,0,15,0"
+                            VerticalAlignment="Center" >
+
+            <controls:PpcButton
+                            Margin="0,10,15,10"
+                            Command="{Binding RemoveAllUnitCommand}"
+                            Content="{res:Loc InstallationApp.RemoveTestAllUnits}" />
+
+            <controls:PpcButton 
+                            Margin="0,10,0,10"
+                            
+                            Command="{Binding RemoveUnitCommand}"
+                            Content="{res:Loc InstallationApp.RemoveTestUnit}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="5"
+                            Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                     HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                            VerticalAlignment="Center">
+            <controls:PpcButton 
+                            Margin="0,10,15,10"
+                            Command="{Binding AddUnitCommand}"
+                            Content="{res:Loc InstallationApp.AddTestUnit}" />
+
+            <controls:PpcButton 
+                            Margin="0,10,15,10"
+                            Command="{Binding AddAllUnitCommand}"
+                            Content="{res:Loc InstallationApp.AddTestAllUnit}" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="6"
+                    Grid.ColumnSpan="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
+                                Command="{Binding ResetSessionCommand}"
+                                Content="{res:Loc InstallationApp.ResetSession}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ResetTotalCommand}"
+                                Content="{res:Loc InstallationApp.ResetTotal}"
+                                Visibility="Collapsed" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}" />
+                                Content="{res:Loc InstallationApp.Start}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding StopTestCommand}"
+                                Content="{res:Loc InstallationApp.StopTest}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
         </StackPanel>
 
     </Grid>

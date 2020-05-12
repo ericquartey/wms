@@ -60,6 +60,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public List<MachineError> GetErrors()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Errors.ToList();
+            }
+        }
+
         public ErrorStatisticsSummary GetStatistics()
         {
             lock (this.dataContext)
@@ -81,7 +89,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    summary.TotalLoadingUnits = this.dataContext.MachineStatistics.First().TotalMovedTrays;
+                    var statistics = this.dataContext.MachineStatistics.First();
+                    summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {
                         summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
@@ -105,7 +114,9 @@ namespace Ferretto.VW.MAS.DataLayer
             return (error.Code == (int)MachineErrorCode.SecurityWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityBarrierWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
-                || error.Code == (int)MachineErrorCode.SecuritySensorWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityLeftSensorWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityRightSensorWasTriggered
+                || error.Code == (int)MachineErrorCode.ElevatorOverrunDetected
                 || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
         }
 
@@ -115,7 +126,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="code">The error code id.</param>
         /// <param name="bayNumber">The bay number.</param>
         /// <returns></returns>
-        public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
+        public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null)
         {
             var newError = new MachineError
             {
@@ -123,7 +134,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 OccurrenceDate = DateTime.Now,
                 InverterIndex = 0,
                 DetailCode = 0,
-                BayNumber = bayNumber
+                BayNumber = bayNumber,
+                AdditionalText = additionalText
             };
 
             lock (this.dataContext)
@@ -138,12 +150,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (existingUnresolvedError.Any())
                 {
-                    // TODO enable this call to discard only the same error
-                    //if (existingUnresolvedError.Any(e => e.Code == (int)code))
-                    //{
-                    //    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
-                    //    return existingUnresolvedError.First(e => e.Code == (int)code);
-                    //}
+                    // discard only the same error
+                    if (newError.Severity >= 2 && existingUnresolvedError.Any(e => e.Code == (int)code))
+                    {
+                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                        return existingUnresolvedError.First(e => e.Code == (int)code);
+                    }
 
                     // there are active errors different from code
 
@@ -175,7 +187,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.NotifyErrorCreation(newError, bayNumber);
 
-            this.logger.LogError($"Error: {code} ({(int)code}); {newError.Description}");
+            this.logger.LogError($"Error: {code} ({(int)code}); Bay {bayNumber}; {newError.Description}");
 
             return newError;
         }
@@ -230,6 +242,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.NotifyErrorCreation(newError, bayNumber);
+
+            this.logger.LogError($"Error: {MachineErrorCode.InverterFaultStateDetected} ({newError.Code}); Inverter Fault: 0x{detailCode:X4}; index {inverterIndex}; Bay {bayNumber}; {newError.Description}");
 
             return newError;
         }

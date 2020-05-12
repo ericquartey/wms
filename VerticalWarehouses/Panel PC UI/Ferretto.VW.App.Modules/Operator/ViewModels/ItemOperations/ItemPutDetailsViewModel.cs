@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemPutDetailsViewModel : BaseItemOperationViewModel
     {
@@ -37,13 +36,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemPutDetailsViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
-            IMissionsWmsWebService missionsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 
@@ -86,6 +83,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
+
+            if (this.Data is DrawerActivityItemDetail itemDetail)
+            {
+                this.ItemDetail = itemDetail;
+            }
 
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;

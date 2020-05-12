@@ -142,10 +142,10 @@
     <value>Il tipo di destinazione non è valido</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
-    <value>La configurazione della accelerazione del movimento dell'asse  {0} non è valida: accelerazione a vuoto minore del pieno carico</value>
+    <value>The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration</value>
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
-    <value>La configurazione della velocità del movimento dell'asse  {0} non è valida: velocità a vuoto minore del pieno carico</value>
+    <value>The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Sensori di presenza non validi</value>
@@ -196,7 +196,7 @@
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
-    <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.</value>
+    <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.  In seguito rimettere in automatico.</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
     <value>Presenza a bordo elevatore con elevatore logicamente scarico.</value>
@@ -265,12 +265,144 @@
     <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore. Controllare inoltre che la serranda sia chiusa.</value>
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>Abbassare l'altezza del materiale nel cassetto.</value>
+    <value>Abbassare l'altezza del materiale nel cassetto. In seguito rimettere in automatico.</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
     <value>Baia di destinazione priva di taratura.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Il magazzino non è vuoto. Il test di carico del primo cassetto non è permesso.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Il sensore di zero della baia non risulta attivo alla fine del posizionamento</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale destro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>La posizione verticale dell'elevatore è cambiata dopo l'avvio della macchina.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Esiste già una missione in esecuzione per questa baia.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Esiste già una missione in esecuzione per questo cassetto.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Esiste già una missione in esecuzione per questa tipologia di missione.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>La baia ha già un comando in esecuzione e non può accettarne un altro.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Livello baia bassa  vuoto.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Cassetto già presente in un'altra baia.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Cassetto già presente in cella.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Serranda non in posizione aperta. Verificare lo stato dei sensori.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Serranda non in posizione chiusa. Verificare lo stato dei sensori.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Impossibile determinare il cassetto a bordo elevatore.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Peso cassetto inferiore al peso atteso.  In seguito rimettere in automatico.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nessun errore rilevato.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Livello alto baia vuoto.</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Il sensore di nottolino a zero risulta non attivo dopo un'operazione di deposito.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>I sensori di presenza su elevatore risultano non attivi dopo un'operazione di carico.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Il test completo è fallito: non tutti i cicli previsti sono stati eseguiti.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>La baia selezionata non è valida</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>La posizione selezionata della baia non è valida</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>L'elevatore ha raggiunto il sensore di oltrecorsa</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>La baia esterna è occupata</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>La baia esterna è vuota</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>The WMS system has answerd with an error code</value>
   </data>
 </root>

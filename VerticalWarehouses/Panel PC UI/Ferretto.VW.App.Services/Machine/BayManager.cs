@@ -1,18 +1,21 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
-
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.App.Services
 {
     internal sealed class BayManager : IBayManager
     {
         #region Fields
+
+        private readonly SubscriptionToken chainPositionChangedToken;
+
+        private readonly object healthStatusChangedToken;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
@@ -32,10 +35,17 @@ namespace Ferretto.VW.App.Services
 
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            eventAggregator
+            this.chainPositionChangedToken = eventAggregator
                 .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
                 .Subscribe(
                     this.OnBayChainPositionChanged,
+                    ThreadOption.UIThread,
+                    false);
+
+            this.healthStatusChangedToken = eventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChangedAsync(e),
                     ThreadOption.UIThread,
                     false);
         }
@@ -48,8 +58,6 @@ namespace Ferretto.VW.App.Services
 
         public MachineIdentity Identity { get; private set; }
 
-        public IMachineIdentityWebService IdentityService => this.machineIdentityWebService;
-
         #endregion
 
         #region Methods
@@ -59,10 +67,15 @@ namespace Ferretto.VW.App.Services
             var bay = await this.GetBayAsync();
 
             return bay.Positions
-                    .Where(p => p.LoadingUnit != null)
-                    .OrderByDescending(p => p.Height)
-                    .Select(p => p.LoadingUnit)
-                    .FirstOrDefault();
+                .Where(p => p.LoadingUnit != null)
+                .OrderByDescending(p => p.Height)
+                .Select(p => p.LoadingUnit)
+                .FirstOrDefault();
+        }
+
+        public async Task<BayAccessories> GetBayAccessoriesAsync()
+        {
+            return await this.machineBaysWebService.GetAccessoriesAsync();
         }
 
         public async Task<Bay> GetBayAsync()
@@ -74,12 +87,29 @@ namespace Ferretto.VW.App.Services
 
         public async Task InitializeAsync()
         {
-            this.Identity = await this.IdentityService.GetAsync();
+            try
+            {
+                this.Identity = await this.machineIdentityWebService.GetAsync();
+            }
+            catch
+            {
+                // do nothing
+            }
+        }
+
+        public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port)
+        {
+            await this.machineBaysWebService.SetAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
         {
             this.ChainPosition = e.Position;
+        }
+
+        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            await this.InitializeAsync();
         }
 
         #endregion

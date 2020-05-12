@@ -1,12 +1,9 @@
 
 steps:
 
-- task: gittools.gitversion.gitversion-task.GitVersion@4
-  displayName: GitVersion
+- task: GitVersion@5
   inputs:
-    updateAssemblyInfo: true
-    preferBundledVersion: false
-
+    runtime: 'core'
 
 - task: Assembly-Info-NetCore@2
   displayName: 'Set Assembly Manifest Data'

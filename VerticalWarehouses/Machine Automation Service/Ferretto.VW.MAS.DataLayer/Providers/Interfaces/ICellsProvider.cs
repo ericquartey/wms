@@ -9,11 +9,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        bool CanFitLoadingUnit(int cellId, int loadingUnitId);
+        bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false);
 
         int FindDownCell(LoadingUnit loadingUnit);
 
-        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting);
+        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false);
 
         IEnumerable<Cell> GetAll();
 
@@ -22,6 +22,12 @@ namespace Ferretto.VW.MAS.DataLayer
         Cell GetByLoadingUnitId(int loadingUnitId);
 
         CellStatisticsSummary GetStatistics();
+
+        bool IsCellToTest();
+
+        void Save(Cell cell);
+
+        int SetCellsToTest();
 
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 

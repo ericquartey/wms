@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public interface IBayEventArgs
     {

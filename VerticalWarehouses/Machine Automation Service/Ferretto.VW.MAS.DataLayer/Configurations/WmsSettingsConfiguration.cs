@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,7 +22,21 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasData(new WmsSettings { Id = -1, IsWmsTimeSyncEnabled = true, TimeSyncIntervalMilliseconds = DefaultTimeSyncInterval });
+            builder.Property(s => s.ServiceUrl)
+             .HasColumnType("text")
+             .HasConversion(
+                 uri => uri.ToString(),
+                 stringValue => new Uri(stringValue));
+
+            builder.HasData(
+                new WmsSettings
+                {
+                    Id = -1,
+                    IsEnabled = false,
+                    IsTimeSyncEnabled = false,
+                    TimeSyncIntervalMilliseconds = DefaultTimeSyncInterval,
+                    ServiceUrl = new Uri("http://127.0.0.1:10000")
+                });
         }
 
         #endregion

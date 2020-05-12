@@ -19,8 +19,6 @@ namespace Ferretto.VW.App.Modules.Menu
 
         private readonly IUnityContainer container;
 
-        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
         #endregion
 
         #region Constructors

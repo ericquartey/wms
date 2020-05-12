@@ -7,35 +7,50 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="100,30,0,0">
+    <Grid Margin="15,0,0,0">
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="15" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="15" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="150" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"                   
+                   HorizontalAlignment="Left"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Installazione" />
-
-        <views:UpdatesDataGridView Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" />
+                   Text="{Resources:Loc InstallationApp.Installation}" />
 
         <Grid Grid.Row="1"
               Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding RestoreInfo}"
+                       Visibility="{Binding IsUpdate, Converter={StaticResource BTVIC}}" />
+
+            <views:UpdatesDataGridView Height="200"
+                                       VerticalAlignment="Stretch"
+                                       Visibility="{Binding IsUpdate, Converter={StaticResource BTVC}}" />
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Grid.Column="3"
+              Visibility="{Binding IsUpdate, Converter={StaticResource BTVC}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -43,14 +58,14 @@
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
-                                Margin="15,0,15,15"
+                                Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpCommand}"
                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Margin="15,0,15,15"
+                                Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownCommand}"
@@ -60,29 +75,30 @@
 
         <Border Name="InstallLogBorder"
                 Grid.Row="2"
-                Grid.RowSpan="2"                
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Padding="15,20,15,0"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"                
-                Background="{DynamicResource PpcButtonBackground}"                 
-                Padding="15,20,15,0" 
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
                 BorderThickness="1"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"                                                
                 CornerRadius="{DynamicResource PpcCornerRadius}">
             <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   FontSize="12"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding UpdatesInfo}" />
+                       Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="12"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding UpdatesInfo}" />
         </Border>
 
         <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="0 0 15 0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding UpdateCommand}"
-                                Content="Sart Update" />
+                            Grid.Column="3"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding UpdateCommand}"
+                            Content="{x:Static Resources:OperatorApp.StartUpdate}" />
     </Grid>
 </ctrls:View>

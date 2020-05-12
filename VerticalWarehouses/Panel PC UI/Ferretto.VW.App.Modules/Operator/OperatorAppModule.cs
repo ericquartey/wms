@@ -1,11 +1,14 @@
 ﻿using System.Configuration;
+using System.Net;
+using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Modules.Operator.Services;
-using Ferretto.VW.App.Operator.Views;
+using Ferretto.VW.App.Modules.Operator.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.BarcodeReader.Newland;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -42,23 +45,25 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             containerProvider.UseMachineAutomationHubs();
 
-            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
-            {
-                containerProvider.UseBarcodeReader();
-            }
-
             containerProvider.Resolve<IOperatorNavigationService>();
+            containerProvider.Resolve<IMissionOperationsService>().StartAsync();
+            containerProvider.Resolve<IWmsDataProvider>().Start();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            ConfigureBarcodeReader(containerRegistry);
+            containerRegistry.ConfigureAlphaNumericBarUiServices();
+
+            // Operator
+            containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
+            containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
 
             containerRegistry.RegisterSingleton<IOperatorNavigationService, OperatorNavigationService>();
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
             containerRegistry.RegisterForNavigation<LoadingUnitView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitInfoView>();
 
             containerRegistry.RegisterForNavigation<ItemOperationWaitView>();
             containerRegistry.RegisterForNavigation<ItemInventoryDetailsView>();
@@ -70,8 +75,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
-
-            containerRegistry.RegisterForNavigation<LoadingUnitCheckView>();
 
             containerRegistry.RegisterForNavigation<WaitingListsView>();
             containerRegistry.RegisterForNavigation<WaitingListDetailView>();
@@ -92,10 +95,13 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
 
             containerRegistry.RegisterForNavigation<AlarmView>();
+            containerRegistry.RegisterForNavigation<AlarmsExportView>();
             containerRegistry.RegisterForNavigation<CountersView>();
             containerRegistry.RegisterForNavigation<GeneralView>();
             containerRegistry.RegisterForNavigation<StatisticsView>();
             containerRegistry.RegisterForNavigation<DiagnosticsView>();
+            containerRegistry.RegisterForNavigation<UserView>();
+            containerRegistry.RegisterForNavigation<LogsExportView>();
 
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
@@ -103,27 +109,6 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
-        }
-
-        private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)
-        {
-            var portName = ConfigurationManager.AppSettings.GetBarcodeReaderSerialPortName();
-            if (!string.IsNullOrEmpty(portName))
-            {
-                var options = new ConfigurationOptions
-                {
-                    PortName = portName,
-                };
-
-                var baudRate = ConfigurationManager.AppSettings.GetBarcodeReaderBaudRate();
-                if (baudRate.HasValue)
-                {
-                    options.BaudRate = baudRate.Value;
-                }
-
-                containerRegistry.ConfigureBarcodeReaderUiServices();
-                containerRegistry.ConfigureNewlandBarcodeReader(options);
-            }
         }
 
         #endregion

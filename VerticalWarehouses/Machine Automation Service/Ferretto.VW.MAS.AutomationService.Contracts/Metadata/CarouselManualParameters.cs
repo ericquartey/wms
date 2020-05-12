@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Id(1)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FeedRate))]
+            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
             public double FeedRate { get; set; }
 
             [ScaffoldColumn(false)]

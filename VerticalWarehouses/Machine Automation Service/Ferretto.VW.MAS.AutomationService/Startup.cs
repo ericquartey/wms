@@ -2,40 +2,30 @@
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.InverterDriver;
-using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Prism.Events;
 using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Converters;
+using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
-        #region Fields
-
-        private const string LiveHealthCheckTag = "live";
-
-        private const string ReadyHealthCheckTag = "ready";
-
-        #endregion
-
         #region Constructors
 
         public Startup(IConfiguration configuration)
@@ -86,20 +76,9 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             }
 
-            if (this.Configuration.IsWmsEnabled())
-            {
-                app.UseDataHub();
-            }
+            app.UseMasHealthChecks();
 
-            app.UseHealthChecks("/health/ready", new HealthCheckOptions()
-            {
-                Predicate = (check) => check.Tags.Contains(ReadyHealthCheckTag),
-            });
-
-            app.UseHealthChecks("/health/live", new HealthCheckOptions()
-            {
-                Predicate = (check) => check.Tags.Contains(LiveHealthCheckTag),
-            });
+            app.UseCors("AllowAll");
 
             app.UseDataLayer();
 
@@ -131,10 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddSignalR();
 
-            services
-                .AddHealthChecks()
-                .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
-                .AddCheck<ReadinessHealthCheck>("readiness-check", null, tags: new[] { ReadyHealthCheckTag });
+            services.AddMasHealthChecks();
 
             services.AddSwaggerGen(config =>
             {
@@ -162,7 +138,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 });
             });
 
-            this.InitialiseWmsInterfaces(services);
+            AddWmsServices(services);
 
             services
                 .AddIODriver()
@@ -170,8 +146,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddLaserDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
-                .AddMissionManager()
-                .AddTimeServices();
+                .AddMissionManager();
 
             services.AddHostedService<NotificationRelayService>();
 
@@ -180,18 +155,24 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
         }
 
-        private void InitialiseWmsInterfaces(IServiceCollection services)
+        private static void AddWmsServices(IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new System.ArgumentNullException(nameof(services));
-            }
+            services.AddWmsWebServices(
+                s => s.GetRequiredService<IWmsSettingsProvider>().ServiceUrl,
+                s =>
+                {
+                    var dataLayerService = s.GetRequiredService<IDataLayerService>();
 
-            var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
-            services.AddWmsWebServices(wmsServiceAddress);
+                    return dataLayerService.IsReady
+                        ? s.GetRequiredService<IMachineProvider>().GetIdentity()
+                        : 0;
+                });
 
-            var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
-            services.AddDataHub(wmsServiceAddressHubsEndpoint);
+            services.AddWmsDataHub();
+
+            services.AddWmsMissionManager();
+
+            services.AddTimeServices();
         }
 
         #endregion

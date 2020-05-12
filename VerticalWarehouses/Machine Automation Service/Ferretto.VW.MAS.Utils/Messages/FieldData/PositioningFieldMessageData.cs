@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class PositioningFieldMessageData : FieldMessageData, IPositioningFieldMessageData
+    public sealed class PositioningFieldMessageData : FieldMessageData, IPositioningFieldMessageData
     {
         #region Constructors
 
@@ -55,11 +55,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
             this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
             this.IsWeightMeasure = (messageData.MovementMode == MovementMode.PositionAndMeasureWeight && this.AxisMovement == Axis.Vertical);
+            this.IsProfileCalibrate = (messageData.MovementMode == MovementMode.ProfileCalibration);
+            this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration);
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
             this.FeedRate = messageData.FeedRate;
             this.ComputeElongation = messageData.ComputeElongation;
+            this.IsPickupMission = messageData.IsPickupMission;
 
             this.WaitContinue = messageData.WaitContinue;
             this.RequestingBay = requestingBay;
@@ -76,6 +79,12 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public HorizontalMovementDirection Direction { get; set; }
 
         public double FeedRate { get; }
+
+        public bool IsHorizontalCalibrate { get; set; }
+
+        public bool IsPickupMission { get; }
+
+        public bool IsProfileCalibrate { get; set; }
 
         public bool IsTorqueCurrentSamplingEnabled { get; }
 

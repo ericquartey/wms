@@ -16,5 +16,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         // no load unit or its content can be placed on the cell. No loading unit content can occupy the space of the cell.
         Blocked,
+
+        // the cell must be tested in the "first load unit" test. After testing the BlockLevel returns to None.
+        NeedsTest,
     }
 }

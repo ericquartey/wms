@@ -24,7 +24,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainPageHeadr}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainPageHeadr}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -32,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainPageDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainPageDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -40,7 +40,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainManu}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainManu}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -48,7 +48,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainUser}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainUser}" />
 
         <controls:PpcButton Margin="510,260,0,0"
                             HorizontalAlignment="Left"
@@ -141,7 +141,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainAuto}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainAuto}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -149,7 +149,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainOff}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainOff}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -157,7 +157,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainOn}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainOn}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -165,7 +165,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAdvice}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainServiceAdvice}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -173,7 +173,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAllert}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainServiceAllert}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -181,7 +181,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainError}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainError}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -189,7 +189,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainHelp}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainHelp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -197,7 +197,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainDrawerOp}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainDrawerOp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -205,7 +205,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainItem}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainItem}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -213,7 +213,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainLists}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainLists}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -221,7 +221,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpOpMainOther}" />
+                   Text="{res:Loc HelpDescriptions.HelpOpMainOther}" />
 
     </Grid>
 </UserControl>

@@ -5,14 +5,13 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
 
-        private const int CheckDelayTime = 100;
+        private const int CheckDelayTime = 200;
 
         private readonly IInverterPositioningFieldMessageData data;
 
@@ -46,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Enable Operation");
+            this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Enable Operation");
             this.startTime = DateTime.MinValue;
 
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
@@ -129,11 +128,30 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                         this.Inverter,
                                         this.Logger));
                             }
+                            else if (this.data.IsProfileCalibrate && !this.data.IsProfileCalibrateDone)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningProfileStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.data,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else if (this.data.IsHorizontalCalibrate)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningHorizontalCalibrateStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.data,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
                             else
                             {
                                 this.ParentStateMachine.ChangeState(
                                     new PositioningStartMovingState(
                                         this.ParentStateMachine,
+                                        this.data,
                                         this.Inverter,
                                         this.Logger));
                             }

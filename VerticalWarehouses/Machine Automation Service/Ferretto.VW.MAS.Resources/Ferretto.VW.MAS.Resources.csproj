@@ -2,7 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Bays.Designer.cs">
@@ -30,6 +38,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>General.resx</DependentUpon>
     </Compile>
+    <Compile Update="Missions.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Missions.resx</DependentUpon>
+    </Compile>
     <Compile Update="ResolutionCalibrationProcedure.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -39,6 +52,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Shutters.resx</DependentUpon>
+    </Compile>
+    <Compile Update="TorqueCurrent.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TorqueCurrent.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -55,6 +73,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Cells.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Elevator.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Elevator.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Elevator.Designer.cs</LastGenOutput>
@@ -63,6 +84,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Missions.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Missions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Missions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ResolutionCalibrationProcedure.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResolutionCalibrationProcedure.Designer.cs</LastGenOutput>
@@ -70,6 +98,13 @@
     <EmbeddedResource Update="Shutters.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Shutters.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="TorqueCurrent.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="TorqueCurrent.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TorqueCurrent.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

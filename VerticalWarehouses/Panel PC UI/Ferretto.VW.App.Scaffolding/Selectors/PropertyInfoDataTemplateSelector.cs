@@ -8,6 +8,8 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
 {
     public class PropertyInfoDataTemplateSelector : DataTemplateSelector
     {
+        #region Methods
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             if (container is FrameworkElement element && item is Models.ScaffoldedEntity entity)
@@ -58,6 +60,21 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                     {
                         resourceKey = "IPAddressDataTemplate";
                     }
+                    else if (this.IsNumeric(type))
+                    {
+                        if (type.FullName == "System.Int32")
+                        {
+                            resourceKey = "NumericIntDataTemplate";
+                        }
+                        else
+                        {
+                            resourceKey = "NumericDoubleDataTemplate";
+                        }
+                    }
+                    else if (this.IsBoolean(type))
+                    {
+                        resourceKey = "BooleanDataTemplate";
+                    }
                 }
 
                 return element.FindResource(resourceKey ?? /* fallback */ "StringDataTemplate") as DataTemplate;
@@ -65,5 +82,28 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
 
             return null;
         }
+
+        private bool IsBoolean(Type complexType)
+        {
+            var type = Nullable.GetUnderlyingType(complexType) ?? complexType;
+            return type == typeof(bool);
+        }
+
+        private bool IsNumeric(Type complexType)
+        {
+            var type = Nullable.GetUnderlyingType(complexType) ?? complexType;
+            return type == typeof(byte)
+                       || type == typeof(short)
+                       || type == typeof(ushort)
+                       || type == typeof(int)
+                       || type == typeof(uint)
+                       || type == typeof(long)
+                       || type == typeof(ulong)
+                       || type == typeof(float)
+                       || type == typeof(double)
+                       || type == typeof(decimal);
+        }
+
+        #endregion
     }
 }

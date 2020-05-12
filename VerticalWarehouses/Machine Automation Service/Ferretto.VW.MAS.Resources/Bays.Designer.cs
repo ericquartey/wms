@@ -70,6 +70,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The bay contains a Loading Unit in its external position.
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsExternalPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TheBayContainsALoadingUnitInItsLowerPosition.
         /// </summary>
         public static string TheBayContainsALoadingUnitInItsLowerPosition {
@@ -102,6 +111,24 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheBayHeightMustBeInRange {
             get {
                 return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method.
+        /// </summary>
+        public static string TheBayHorizontalAndVerticalNotValid {
+            get {
+                return ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum height of the loading unit is not valid..
+        /// </summary>
+        public static string TheBayLoadingMaxHeightNotValid {
+            get {
+                return ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", resourceCulture);
             }
         }
         

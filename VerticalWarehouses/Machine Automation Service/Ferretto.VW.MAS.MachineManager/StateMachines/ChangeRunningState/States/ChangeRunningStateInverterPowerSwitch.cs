@@ -13,7 +13,7 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateInverterPowerSwitch : StateBase, IChangeRunningStateInverterPowerSwitch
@@ -112,6 +112,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override IState OnStop(StopRequestReason reason)
         {
+            this.Logger.LogDebug($"ChangeRunningStateStartState: OnStop.");
             var returnValue = this.GetState<IChangeRunningStateEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;

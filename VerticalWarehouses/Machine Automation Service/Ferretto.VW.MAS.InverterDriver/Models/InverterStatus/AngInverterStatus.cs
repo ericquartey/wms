@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus, IPositioningInverterStatus, IHomingInverterStatus
@@ -40,6 +39,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Properties
 
+        public bool ANG_ElevatorOverrunSensor => this.Inputs?[(int)InverterSensors.ANG_ElevatorOverrunSensor] ?? false;
+
         public bool ANG_EncoderChannelACradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelACradle] ?? false;
 
         public bool ANG_EncoderChannelBCradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelBCradle] ?? false;
@@ -47,8 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public bool ANG_HardwareSensorSS1 => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
 
         public bool ANG_HardwareSensorSTO => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSTO] ?? false;
-
-        public bool ANG_OverrunElevatorSensor => this.Inputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
 
         public bool ANG_ZeroCradleSensor => this.Inputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
 

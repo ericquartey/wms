@@ -1,25 +1,22 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Constructors
 
         public ItemInventoryViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
-            IMissionsWmsWebService missionsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -49,6 +46,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
+            // do nothing
+        }
+
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = null;
         }
 
         protected override void ShowOperationDetails()

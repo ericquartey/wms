@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class ShutterProvider : BaseProvider, IShutterProvider
@@ -48,9 +47,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// It stops when top or bottom sensors are detected or when operator sends a stop command.
         /// </summary>
         /// <param name="direction"></param>
+        /// <param name="bypassConditions"></param>
         /// <param name="bayNumber"></param>
         /// <param name="sender"></param>
-        public void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
             var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
 
@@ -75,7 +75,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 delay: 0,
                 highSpeedDurationOpen: 0,
                 highSpeedDurationClose: 0,
+                highSpeedHalfDurationOpen: null,
+                highSpeedHalfDurationClose: null,
                 lowerSpeed: 0);
+
+            messageData.BypassConditions = bypassConditions;
 
             this.logger.LogDebug(
                 $"Move Shutter " +
@@ -84,9 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"feedRate: {parameters.FeedRate}; " +
                 $"speed: {speedRate}; " +
                 $"minspeed: {parameters.MinSpeed}; " +
-                $"maxspeed: {parameters.MaxSpeed}; " +
-                $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"maxspeed: {parameters.MaxSpeed}; ");
 
             this.PublishCommand(
                 messageData,
@@ -172,6 +174,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
+                parameters.HighSpeedHalfDurationOpen,
+                parameters.HighSpeedHalfDurationClose,
                 lowSpeed);
 
             this.logger.LogDebug(
@@ -183,7 +187,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"minspeed: {parameters.MinSpeed}; " +
                 $"maxspeed: {parameters.MaxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose};" +
+                $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +
+                $"highspeedHalfdurationclose: {parameters.HighSpeedHalfDurationClose}");
 
             this.PublishCommand(
                 messageData,
@@ -199,7 +205,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void ResetTest(BayNumber bayNumber)
         {
-            var procedureParameters = this.setupProceduresDataProvider.GetShutterTest(bayNumber);
+            var procedureParameters = this.setupProceduresDataProvider.GetBayShutterTest(bayNumber);
 
             this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }
@@ -236,6 +242,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 delayInMilliseconds,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
+                parameters.HighSpeedHalfDurationOpen,
+                parameters.HighSpeedHalfDurationClose,
                 lowSpeed);
 
             this.logger.LogDebug(
@@ -245,7 +253,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"minspeed: {parameters.MinSpeed}; " +
                 $"maxspeed: {parameters.MaxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}" +
+                $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +
+                $"highspeedHalfdurationclose: {parameters.HighSpeedHalfDurationClose}");
 
             this.PublishCommand(
                 messageData,
@@ -262,7 +272,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
-                "Stop Command",
+                "Stop shutter Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,

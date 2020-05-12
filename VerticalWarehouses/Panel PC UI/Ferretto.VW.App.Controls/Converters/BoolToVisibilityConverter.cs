@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             if (targetType != typeof(Visibility))
             {
-                throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
+                throw new InvalidOperationException(General.ConverterCanConvertOnlyToVisibilityType);
             }
 
             var visible = System.Convert.ToBoolean(value, culture);
@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             if (value is Visibility == false)
             {
-                throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
+                throw new InvalidOperationException(General.ConverterCanConvertOnlyToVisibilityType);
             }
 
             var visible = (Visibility)value == Visibility.Visible ? true : false;

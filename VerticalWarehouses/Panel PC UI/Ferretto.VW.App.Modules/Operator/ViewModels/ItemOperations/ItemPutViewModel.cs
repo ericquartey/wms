@@ -4,11 +4,10 @@ using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
@@ -21,14 +20,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemPutViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
-            IMissionsWmsWebService missionsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -51,11 +48,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
+            // do nothing
         }
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity;
+            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -69,7 +67,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.NavigationService.Appear(
                nameof(Utils.Modules.Operator),
                Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
-               null,
+               new DrawerActivityItemDetail
+               {
+                   ItemCode = this.MissionOperation.ItemCode,
+                   ItemDescription = this.MissionOperation.ItemDescription,
+                   ListCode = this.MissionOperation.ItemListCode,
+                   ListDescription = this.MissionOperation.ItemListDescription,
+                   ListRow = this.MissionOperation.ItemListRowCode,
+                   Batch = this.MissionOperation.ItemListShipmentUnitCode,
+                   ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
+                   RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
+               },
                trackCurrentView: true);
         }
 
@@ -93,13 +101,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task PartiallyCompleteOnFullCompartmentAsync()
         {
+            this.IsWaitingForResponse = true;
+            this.IsOperationConfirmed = true;
+
             try
             {
-                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (!canComplete)
+                {
+                    this.ShowOperationCanceledMessage();
+                }
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
+                this.IsOperationConfirmed = false;
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

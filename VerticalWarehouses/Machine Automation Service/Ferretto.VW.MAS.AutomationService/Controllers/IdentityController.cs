@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -15,17 +16,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly ILoadingUnitsDataProvider loadingUnitStatisticsProvider;
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachinesWmsWebService machinesWmsWebService;
-
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly IServicingProvider servicingProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -36,15 +37,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
-            IConfiguration configuration,
-            IMachinesWmsWebService machinesWmsWebService)
+            IWmsSettingsProvider wmsSettingsProvider,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
-            this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
-            this.machinesWmsWebService = machinesWmsWebService ?? throw new System.ArgumentNullException(nameof(machinesWmsWebService));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new System.ArgumentNullException(nameof(wmsSettingsProvider));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new System.ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         #endregion
@@ -52,7 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<ActionResult<MachineIdentity>> Get()
+        public async Task<ActionResult<MachineIdentity>> Get([FromServices] IMachinesWmsWebService machinesWebService)
         {
             var servicingInfo = this.servicingProvider.GetInfo();
 
@@ -61,11 +62,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var machine = this.machineProvider.Get();
 
             int? areaId = null;
-            if (this.configuration.IsWmsEnabled())
+            if (this.wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
-                    var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
+                    var area = await machinesWebService.GetAreaByIdAsync(machine.Id);
                     areaId = area.Id;
                 }
                 catch
@@ -81,9 +82,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
                 MaxGrossWeight = machine.MaxGrossWeight,
-                InstallationDate = servicingInfo.InstallationDate,
-                NextServiceDate = servicingInfo.NextServiceDate,
-                LastServiceDate = servicingInfo.LastServiceDate,
+                InstallationDate = servicingInfo?.InstallationDate,
+                NextServiceDate = servicingInfo?.NextServiceDate,
+                LastServiceDate = servicingInfo?.LastServiceDate,
                 IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value,
             };
 
@@ -91,16 +92,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("statistics")]
-        public async Task<ActionResult<MachineStatistics>> GetStatistics([FromServices] IConfiguration configuration)
+        public async Task<ActionResult<MachineStatistics>> GetStatistics([FromServices] IMachinesWmsWebService machinesWebService)
         {
             var statistics = this.machineProvider.GetStatistics();
 
-            if (configuration.IsWmsEnabled())
+            if (this.wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
                     var machine = this.machineProvider.Get();
-                    var wmsMachine = await this.machinesWmsWebService.GetByIdAsync(machine.Id);
+
+                    var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
 
                     statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
                 }

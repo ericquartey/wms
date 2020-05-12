@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
@@ -14,17 +15,10 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService
     {
-        #region Fields
-
-        private bool isDataLayerReady;
-
-        #endregion
-
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -42,7 +36,10 @@ namespace Ferretto.VW.MAS.MachineManager
             {
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(message, serviceProvider);
+                    lock (this.syncMachineObject)
+                    {
+                        this.OnMachineRunningStatusChange(message, serviceProvider);
+                    }
                     lock (this.syncObject)
                     {
                         missionMoveProvider.OnNotification(message, serviceProvider);
@@ -50,11 +47,17 @@ namespace Ferretto.VW.MAS.MachineManager
                     break;
 
                 case MessageType.DataLayerReady:
-                    // performance optimization
-                    serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
-                    serviceProvider.GetRequiredService<IMachineProvider>().Get();
+                    {
+                        this.Logger.LogTrace("OnDataLayerReady start");
+                        // performance optimization
+                        serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
+                        serviceProvider.GetRequiredService<IMachineProvider>().Get();
+                        serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
 
-                    this.isDataLayerReady = true;
+                        var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                        machineVolatileDataProvider.IsAutomationServiceReady = true;
+                        this.Logger.LogInformation("Machine Automation Service ready");
+                    }
                     break;
 
                 case MessageType.Positioning:
@@ -111,6 +114,11 @@ namespace Ferretto.VW.MAS.MachineManager
                     else
                     {
                         this.Logger.LogWarning("Failed to create Change Running State machine mission");
+                        var activeMachineMission = machineMissionsProvider.GetMissionsByType(FsmType.ChangeRunningType, MissionType.Manual).FirstOrDefault();
+                        if (activeMachineMission != null)
+                        {
+                            machineMissionsProvider.StopMachineMission(activeMachineMission.FsmId, StopRequestReason.Stop);
+                        }
                     }
                 }
             }

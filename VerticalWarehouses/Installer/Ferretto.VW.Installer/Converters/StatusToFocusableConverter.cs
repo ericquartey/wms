@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
+using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer
 {
@@ -14,7 +14,7 @@ namespace Ferretto.VW.Installer
         {
             if (!Enum.IsDefined(typeof(StepStatus), value))
             {
-                throw new ArgumentException(nameof(value));
+                throw new ArgumentException($"The converter accepts only values of type {nameof(StepStatus)}", nameof(value));
             }
 
             var stepStatus = (StepStatus)value;

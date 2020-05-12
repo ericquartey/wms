@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              x:Name="Card"
              d:DesignHeight="120"
              d:DesignWidth="250"
@@ -48,9 +49,7 @@
 
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -165,8 +164,7 @@
                             </Border.Style>
                         </Border>
 
-                        <Popup Width="380"
-                               Height="90"
+                        <Popup Height="90"
                                VerticalAlignment="Top"
                                AllowsTransparency="True"
                                HorizontalOffset="0"
@@ -177,7 +175,7 @@
                                StaysOpen="False"
                                UseLayoutRounding="True"
                                VerticalOffset="-28">
-                            <Grid Width="350">
+                            <Grid>
                                 <Border Grid.RowSpan="2"
                                         Grid.ColumnSpan="4"
                                         Margin="23,0,0,0"
@@ -205,7 +203,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -213,7 +211,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -304,7 +302,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -330,7 +328,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -356,7 +354,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -388,9 +386,7 @@
 
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -518,8 +514,7 @@
                             </ToggleButton>
                         </Border>
 
-                        <Popup Width="380"
-                               Height="90"
+                        <Popup Height="90"
                                VerticalAlignment="Top"
                                AllowsTransparency="True"
                                HorizontalOffset="0"
@@ -530,7 +525,7 @@
                                StaysOpen="False"
                                UseLayoutRounding="True"
                                VerticalOffset="-28">
-                            <Grid Width="350">
+                            <Grid>
                                 <Border Grid.RowSpan="2"
                                         Grid.ColumnSpan="4"
                                         Margin="23,0,0,0"
@@ -558,7 +553,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -566,7 +561,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -575,7 +570,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuUp.GrossWeight, StringFormat={}{0:F2} kg}" />
+                                                   Text="{Binding ElementName=Card, Path=CardLuUp.NetWeight, StringFormat={}{0:F2} kg}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="1"
                                                    Margin="4"
@@ -664,8 +659,7 @@
                             </ToggleButton>
                         </Border>
 
-                        <Popup Width="380"
-                               Height="90"
+                        <Popup Height="90"
                                VerticalAlignment="Top"
                                AllowsTransparency="True"
                                HorizontalOffset="0"
@@ -676,7 +670,7 @@
                                StaysOpen="False"
                                UseLayoutRounding="True"
                                VerticalOffset="-28">
-                            <Grid Width="350">
+                            <Grid>
                                 <Border Grid.RowSpan="2"
                                         Grid.ColumnSpan="4"
                                         Margin="23,0,0,0"
@@ -704,7 +698,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -712,7 +706,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -721,7 +715,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuDown.GrossWeight, StringFormat={}{0:F2} kg}" />
+                                                   Text="{Binding ElementName=Card, Path=CardLuDown.NetWeight, StringFormat={}{0:F2} kg}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="1"
                                                    Margin="4"
@@ -769,7 +763,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -799,7 +793,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -829,7 +823,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
                                                  Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -860,17 +854,13 @@
 
                 <TextBlock Margin="4,0"
                            VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <TextBlock Grid.Column="2"
                            Margin="0"
                            VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardDescription}" />
 
                 <Grid Grid.Row="1"
@@ -915,7 +905,7 @@
 
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Margin="28,0"
+                               Margin="15,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_High}"
@@ -965,7 +955,7 @@
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Margin="28,0,0,0"
+                               Margin="15,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_High}"
@@ -1007,9 +997,7 @@
 
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -1089,8 +1077,7 @@
                         </Border.Style>
                     </Border>
 
-                    <Popup Width="380"
-                           Height="90"
+                    <Popup Height="90"
                            VerticalAlignment="Top"
                            AllowsTransparency="True"
                            HorizontalOffset="0"
@@ -1098,10 +1085,10 @@
                            Placement="Right"
                            PlacementTarget="{Binding ElementName=BorderBadge}"
                            SnapsToDevicePixels="True"
-                           StaysOpen="False"
+                           StaysOpen="True"
                            UseLayoutRounding="True"
                            VerticalOffset="-28">
-                        <Grid Width="350">
+                        <Grid>
                             <Border Grid.RowSpan="2"
                                     Grid.ColumnSpan="4"
                                     Margin="23,0,0,0"
@@ -1128,16 +1115,16 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Bottom"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="Peso" />
+                                               Foreground="{DynamicResource PopupText_Foreground}"
+                                               Text="{x:Static res:SensorCard.Weight}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                Margin="4"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="Altezza" />
+                                               Foreground="{DynamicResource PopupText_Foreground}"
+                                               Text="{x:Static res:SensorCard.Height}" />
 
 
                                     <TextBlock Grid.Row="0"
@@ -1146,7 +1133,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Bottom"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource PopupContent_Foreground}"
                                                Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="1"
@@ -1154,7 +1141,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource PopupContent_Foreground}"
                                                Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
 
                                 </Grid>
@@ -1267,9 +1254,7 @@
 
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
-                           FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Normal"
-                           Foreground="{DynamicResource FerrettoLightGray}"
+                           Style="{DynamicResource VWAPP_CardSensor}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <TextBlock Grid.Row="1"

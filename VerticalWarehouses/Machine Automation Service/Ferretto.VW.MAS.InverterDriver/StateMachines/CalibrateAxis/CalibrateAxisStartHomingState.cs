@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal sealed class CalibrateAxisStartHomingState : InverterStateBase
@@ -18,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -35,7 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
             this.Inverter = inverterStatus;
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -51,6 +49,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.Logger.LogDebug($"Calibrate start homing axis {this.axisToCalibrate}");
+
+            this.startTime = DateTime.UtcNow;
 
             this.Inverter.HomingControlWord.HomingOperation = true;
 

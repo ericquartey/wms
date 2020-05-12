@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -39,6 +39,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetAutomatic()
         {
             this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Automatic);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("LoadUnitOperations")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult SetLoadUnitOperations()
+        {
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations);
 
             return this.Accepted();
         }

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -613,7 +613,7 @@
     <comment>Button text</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
-    <value>OtherNavigationImmediateDrawerCall</value>
+    <value>Drawer Call</value>
     <comment>Button text</comment>
   </data>
   <data name="StatisticsNavigationItems" xml:space="preserve">
@@ -1077,7 +1077,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Height [mm]</value>
+    <value>Height (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
@@ -1172,6 +1172,9 @@
   <data name="QuantityToPick" xml:space="preserve">
     <value>Quantity to pick</value>
   </data>
+  <data name="QuantityToPut" xml:space="preserve">
+    <value>Quantity to put</value>
+  </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Picked quantity [{0}]</value>
   </data>
@@ -1189,9 +1192,8 @@
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>Pick request for item {0} (q.ty {1}) was accepted.</value>
   </data>
-  <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
-    <value>Executable</value>
-    <comment>Waiting lists header </comment>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Available</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Empty</value>
@@ -1430,7 +1432,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Not defined</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Loading unit in bay</value>
+    <value>Loading unit {0} in bay</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Recall Drawer</value>
@@ -1470,8 +1472,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Item code</value>
     <comment>Header text</comment>
   </data>
-  <data name="CompartmentId" xml:space="preserve">
-    <value>Comp. Id</value>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
     <comment>Header text</comment>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
@@ -1501,5 +1503,194 @@ Please put back any moved pieces in their original position.</value>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
     <value>Loading unit present {0}</value>
     <comment>Label text</comment>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Select compartment</value>
+    <comment>Title test</comment>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>PICK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Picking</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ITEM</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Search and request articles</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>LIST</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Execution / suspension of lists</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>DRAW</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Drawer operations</value>
+  </data>
+  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
+    <value>Back free space</value>
+  </data>
+  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
+    <value>Front free space</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Compacting</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>NeedsTest</value>
+    <comment>BlockLevel</comment>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Barcode '{0}' not recognized.</value>
+  </data>
+  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
+    <value>The current page does not support barcode scanning.</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>No item with code '{0}' is available</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Start Update</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Alarms</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Compaction in progress</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>General informations</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Machine number</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Total km traveled</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Total machine weight</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Total missions</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Total units</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Counters</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>No item on selected compartment.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>First Test</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Full Test IN</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Full Test OUT</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Load Unit Operation</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>List of machine alarms</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay number</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detail code</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Inverter index</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Occurrence date</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Resolution date</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Fragment back</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Fragment front</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Fragment total</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Cannot execute List.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Invalid operation {0}</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>Unit {0} out of the bay</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Unit {0}</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Additional Information</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Unit n.{0}</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Fragmentation total above 25%</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Carousel calibration in progress</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Horizontal calibration in progress</value>
   </data>
 </root>

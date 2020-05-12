@@ -31,8 +31,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
+            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
+
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.DepositUnit;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -59,7 +62,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             var shutterInverter = baySource.Shutter.Inverter.Index;
-                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed)
+                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
+                                && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
+                                )
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, this.Mission.TargetBay);
                                 throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, this.Mission.TargetBay, MessageActor.MachineManager);
@@ -104,7 +109,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
             }
 
-            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
@@ -149,13 +154,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
 
-                        if (notification.Type == MessageType.ShutterPositioning)
+                        if (notification.Type == MessageType.ShutterPositioning
+                            && this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified
+                            )
                         {
                             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                                 {
                                     this.Logger.LogInformation($"Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay);
@@ -175,7 +182,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
-                        else if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                        else if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                         {
                             this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);

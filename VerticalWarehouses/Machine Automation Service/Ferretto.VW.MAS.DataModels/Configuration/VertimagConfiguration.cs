@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -12,7 +11,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Machine Machine { get; set; }
 
+        public MachineStatistics MachineStatistics { get; set; }
+
+        public IEnumerable<ServicingInfo> ServicingInfo { get; set; }
+
         public SetupProceduresSet SetupProcedures { get; set; }
+
+        public WmsSettings Wms { get; set; }
 
         #endregion
 

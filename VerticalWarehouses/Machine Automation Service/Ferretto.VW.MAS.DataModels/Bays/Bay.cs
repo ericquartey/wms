@@ -9,13 +9,13 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public BayAccessories Accessories { get; set; }
+
         public Carousel Carousel { get; set; }
 
         public double ChainOffset { get; set; }
 
         public Mission CurrentMission { get; set; }
-
-        public int? CurrentWmsMissionOperationId { get; set; }
 
         public MovementParameters EmptyLoadMovement { get; set; }
 
@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDouble => this.Positions?.Count() == 2;
 
         public bool IsExternal { get; set; }
-
-        public Laser Laser { get; set; }
 
         public BayNumber Number { get; set; }
 
@@ -51,7 +49,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (this.IsActive)
                 {
-                    return this.CurrentWmsMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
+                    return this.CurrentMission is null ? BayStatus.Idle : BayStatus.Busy;
                 }
 
                 return BayStatus.Disconnected;

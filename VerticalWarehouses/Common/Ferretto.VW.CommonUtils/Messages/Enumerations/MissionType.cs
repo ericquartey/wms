@@ -6,13 +6,19 @@
 
         Manual,
 
+        LoadUnitOperation,
+
         WMS,
 
         IN,
 
         OUT,
 
-        FullTest,
+        FirstTest,
+
+        FullTestIN,
+
+        FullTestOUT,
 
         Compact
     }

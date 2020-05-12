@@ -1,30 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using DevExpress.Xpf.Data.Native;
-using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
-using Prism.Regions;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public class ItemOperationWaitViewModel : BaseOperatorViewModel
     {
         #region Fields
 
+        private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
+        private readonly IMachineService machineService;
+
+        private readonly IMissionOperationsService missionOperationsService;
+
+        private readonly List<LoadingUnit> moveUnits = new List<LoadingUnit>();
+
+        private int count;
+
+        private bool isGridVisible;
+
+        private string loadingUnitsInfo;
+
         private int loadingUnitsMovements;
+
+        private IEnumerable<int> moveUnitId = new List<int>();
+
+        private IEnumerable<int> moveUnitIdToCell = new List<int>();
+
+        private bool moveVisible;
 
         private int pendingMissionOperationsCount;
 
@@ -32,31 +47,52 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemOperationWaitViewModel(IMachineMissionsWebService machineMissionsWebService)
+        public ItemOperationWaitViewModel(
+            IMachineMissionsWebService machineMissionsWebService,
+            IMachineService machineService)
             : base(PresentationMode.Operator)
         {
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
 
         #region Properties
 
+        public bool IsGridVisible
+        {
+            get => this.isGridVisible;
+            set
+            {
+                if (this.SetProperty(ref this.isGridVisible, value) && value)
+                {
+                    this.RaisePropertyChanged();
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
+
         public string LoadingUnitsInfo
         {
-            get
+            get => this.loadingUnitsInfo;
+            set => this.SetProperty(ref this.loadingUnitsInfo, value);
+        }
+
+        public IEnumerable<LoadingUnit> MoveUnits => new BindingList<LoadingUnit>(this.moveUnits);
+
+        public bool MoveVisible
+        {
+            get => this.moveVisible;
+            set
             {
-                if (this.loadingUnitsMovements == 0)
+                if (this.SetProperty(ref this.moveVisible, value) && value)
                 {
-                    return OperatorApp.NoLoadingUnitsToMove;
+                    this.RaisePropertyChanged();
+                    this.RaiseCanExecuteChanged();
                 }
-
-                if (this.loadingUnitsMovements == 1)
-                {
-                    return OperatorApp.LoadingUnitSendToBay;
-                }
-
-                return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
             }
         }
 
@@ -70,9 +106,89 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            this.LoadingUnitsInfo = null;
+
+            base.Disappear();
+        }
+
+        public async Task GetLoadingUnitsAsync()
+        {
+            try
+            {
+                this.count = 0;
+
+                this.loadingUnits.Clear();
+                this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+
+                if (this.moveUnitId != null)
+                {
+                    foreach (var unit in this.moveUnitId)
+                    {
+                        this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
+                        this.count++;
+                    }
+                }
+
+                this.moveUnits.Clear();
+                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+
+                if (this.moveUnitIdToCell != null)
+                {
+                    var userdifference = this.moveUnitIdToCell.Except(this.moveUnitId);
+
+                    if (userdifference.Any())
+                    {
+                        foreach (var units in userdifference)
+                        {
+                            this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == units));
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.loadingUnits.Clear();
+                this.moveUnits.Clear();
+            }
+            finally
+            {
+                if (this.moveUnits.Count > 0)
+                {
+                    this.moveVisible = true;
+                }
+                else
+                {
+                    this.moveVisible = false;
+                }
+
+                if (this.loadingUnits.Count > 0)
+                {
+                    this.isGridVisible = true;
+                }
+                else
+                {
+                    this.isGridVisible = false;
+                }
+
+                this.RaisePropertyChanged(nameof(this.LoadingUnits));
+
+                this.RaisePropertyChanged(nameof(this.moveVisible));
+
+                this.RaisePropertyChanged(nameof(this.MoveUnits));
+
+                this.RaisePropertyChanged(nameof(this.isGridVisible));
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.RaisePropertyChanged(nameof(this.moveVisible));
+
+            this.RaisePropertyChanged(nameof(this.isGridVisible));
 
             this.IsBackNavigationAllowed = true;
 
@@ -80,8 +196,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(5000);
+                    await Task.Delay(500);
                     await this.CheckForNewOperationCount();
+                    await this.GetLoadingUnitsAsync();
                 }
                 while (this.IsVisible);
             });
@@ -91,6 +208,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             await base.OnDataRefreshAsync();
 
+            await this.GetLoadingUnitsAsync();
+
             await this.CheckForNewOperationCount();
         }
 
@@ -98,7 +217,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             var missions = await this.machineMissionsWebService.GetAllAsync();
             this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
-            this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
+            this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
+        }
+
+        private string ComputeLoadingUnitInfo()
+        {
+            if (this.loadingUnitsMovements == 0)
+            {
+                //this.isGridVisible = false;
+
+                return OperatorApp.NoLoadingUnitsToMove;
+            }
+            else if (this.loadingUnitsMovements == 1)
+            {
+                //this.isGridVisible = true;
+
+                return OperatorApp.LoadingUnitSendToBay;
+            }
+
+            return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
         }
 
         #endregion

@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityBarrierWasTriggered), 2)]
         SecurityBarrierWasTriggered,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecuritySensorWasTriggered), 2)]
-        SecuritySensorWasTriggered,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityLeftSensorWasTriggered), 2)]
+        SecurityLeftSensorWasTriggered,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected), 2)]
         InverterFaultStateDetected,
@@ -205,6 +205,43 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitUndefinedBottom), 1)]
         LoadUnitUndefinedBottom,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(FirstTestFailed), 1)]
+        FirstTestFailed,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(FullTestFailed), 1)]
+        FullTestFailed,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WarehouseNotEmpty), 1)]
+        WarehouseNotEmpty,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensorZeroBayNotActiveAtEnd), 1)]
+        SensorZeroBayNotActiveAtEnd,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityRightSensorWasTriggered), 2)]
+        SecurityRightSensorWasTriggered,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(VerticalPositionChanged), 1)]
+        VerticalPositionChanged,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidBay), 1)]
+        InvalidBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPositionBay), 1)]
+        InvalidPositionBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ElevatorOverrunDetected), 2)]
+        [ErrorCondition(typeof(IElevatorOverrunConditionEvaluator))]
+        ElevatorOverrunDetected,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ExternalBayEmpty), 1)]
+        ExternalBayEmpty,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ExternalBayOccupied), 1)]
+        ExternalBayOccupied,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WmsError), 1)]
+        WmsError,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 1000,

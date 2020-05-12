@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -74,12 +75,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputLoadingUnitId):
                         if (!this.InputLoadingUnitId.HasValue)
                         {
-                            return $"LoadingUnit Id is required.";
+                            return Localized.Get("InstallationApp.LoadingUnitIdRequired");
                         }
 
                         if (this.InputLoadingUnitId.Value <= 0)
                         {
-                            return "LoadingUnit Id must be strictly positive.";
+                            return Localized.Get("InstallationApp.LoadingUnitIdMustBePositive");
                         }
 
                         break;

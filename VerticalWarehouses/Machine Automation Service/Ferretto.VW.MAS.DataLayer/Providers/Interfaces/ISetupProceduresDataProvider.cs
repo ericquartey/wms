@@ -10,7 +10,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProceduresSet GetAll();
 
-        PositioningProcedure GetBayHeightCheck(BayNumber bayNumber);
+        RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber);
+
+        SetupProcedure GetBayHeightCheck(BayNumber bayNumber);
+
+        SetupProcedure GetBayLaser(BayNumber bayNumber);
+
+        BayProfileCheckProcedure GetBayProfileCheck(BayNumber bayNumber);
+
+        RepeatedTestProcedure GetBayShutterTest(BayNumber bayNumber);
 
         RepeatedTestProcedure GetBeltBurnishingTest();
 
@@ -20,11 +28,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
 
-        SetupProcedure GetLoadFirstDrawerTest();
+        RepeatedTestProcedure GetFullTest(BayNumber bayNumber);
+
+        SetupProcedure GetHorizontalChainCalibration();
+
+        PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
-
-        RepeatedTestProcedure GetShutterTest(BayNumber bayNumber);
 
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
@@ -34,9 +44,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
-        RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
+        RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest, int? requiredCycles = null);
+
         PositioningProcedure InProgressProcedure(PositioningProcedure procedure);
-        SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
+
+        SetupProcedure MarkAsCompleted(SetupProcedure procedure, bool bypassed = false);
 
         RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);
 

@@ -18,10 +18,16 @@
         "ASPNETCORE_ENVIRONMENT": "Prototype2"
       }
     },
-    "MAS (EjLog)": {
+    "MAS (EjLog - Server R&D)": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "EjLog"
+        "ASPNETCORE_ENVIRONMENT": "EjLog_ServerRnD"
+      }
+    },
+    "MAS (EjLog - Localhost)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "EjLog_Localhost"
       }
     },
     "MAS (Bender)": {
@@ -34,6 +40,18 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "SimulationP2"
+      }
+    },
+    "MAS (Eurofork)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Eurofork"
+      }
+    },
+    "MAS (Todesco)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Todesco"
       }
     }
   }

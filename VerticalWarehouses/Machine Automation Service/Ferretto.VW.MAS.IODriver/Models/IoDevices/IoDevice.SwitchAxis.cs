@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver
 {
     internal partial class IoDevice
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.eventAggregator,
                                 this.logger);
 
-                            this.logger.LogDebug("3:Method Start State Machine");
+                            this.logger.LogTrace("3:Method Start State Machine");
 
                             this.CurrentStateMachine.Start();
                         }

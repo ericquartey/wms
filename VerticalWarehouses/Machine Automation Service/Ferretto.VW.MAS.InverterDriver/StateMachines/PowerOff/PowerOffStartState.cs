@@ -8,14 +8,13 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
     internal class PowerOffStartState : InverterStateBase
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -27,7 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -36,6 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.EnableOperation = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);

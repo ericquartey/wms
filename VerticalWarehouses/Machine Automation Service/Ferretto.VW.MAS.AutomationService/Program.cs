@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -32,11 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
+            var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
+
             ILogger logger = null;
             try
             {
-                var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
-
                 var pathToContentRoot = isService
                     ? Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
                     : Directory.GetCurrentDirectory();
@@ -48,8 +49,9 @@ namespace Ferretto.VW.MAS.AutomationService
                     .Build();
 
                 logger = host.Services.GetRequiredService<ILogger<Startup>>();
-
                 logger.LogInformation($"VertiMag Automation Service version {GetVersion()}");
+
+                logger.LogInformation($"Working directory is '{pathToContentRoot}'.");
 
                 if (isService)
                 {
@@ -58,18 +60,18 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
                 else
                 {
-                    Console.Title = "Vertimag Automation Service";
+                    Console.Title = "MAS";
                     host.Run();
                 }
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "Application terminated unexpectedly.");
+                logger?.LogError(ex, "Service terminated unexpectedly.");
 
-                return -1;
+                throw;
             }
 
-            logger?.LogInformation("Application terminated.");
+            logger?.LogInformation("Service exited with no error.");
 
             return NoError;
         }

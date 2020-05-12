@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
+using Ferretto.VW.App.Controls.Keyboards;
 using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -101,6 +103,14 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
+            if (this.IsEnabled && !this.IsReadOnly && this.InputTextBox.IsEnabled && !this.InputTextBox.IsReadOnly)
+            {
+                this.InputTextBox.PopupKeyboard(caption: this.LabelText, timeout: TimeSpan.FromSeconds(60));
+            }
+        }
+
+        private void OnKeyboardOpenHandlerOld(object sender, InputEventArgs e)
+        {
             if (this.IsReadOnly)
             {
                 return;
@@ -117,17 +127,6 @@ namespace Ferretto.VW.App.Controls.Controls
                     ppcKeyboard.ShowInTaskbar = false;
                     PpcMessagePopup.ShowDialog(ppcKeyboard);
                     this.InputText = vmKeyboard.ScreenText;
-                    break;
-
-                case KeyboardType.Multi:
-                    var keyboard = new Keyboards.Keyboards();
-                    var vmMulti = new PpcKeypadsPopupViewModel();
-                    keyboard.Keyboardsss = vmMulti.Keyboards;
-                    vmMulti.Update(this.LabelText, this.InputText?.ToString() ?? string.Empty);
-                    keyboard.Topmost = false;
-                    keyboard.ShowInTaskbar = false;
-                    PpcMessagePopup.ShowDialog(keyboard);
-                    this.InputText = vmMulti.ScreenText;
                     break;
 
                 case KeyboardType.NumpadCenter:

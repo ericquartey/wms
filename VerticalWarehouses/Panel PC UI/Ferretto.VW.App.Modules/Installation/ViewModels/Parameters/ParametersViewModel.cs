@@ -107,22 +107,29 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsBackNavigationAllowed = true;
+
+            this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Start();
+
+#if DEBUG
+            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            //  this.importableFiles = new ReadOnlyCollection<FileInfo>(DriveInfo.GetDrives().First().FindConfigurationFiles().ToList());
+#endif
+
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
             try
             {
                 this.IsBusy = true;
-                this.IsBackNavigationAllowed = true;
+
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
-
-                this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-                this.usbWatcher.Start();
-
-#if DEBUG
-                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-#endif
-                await base.OnAppearedAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -148,23 +155,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanShowExport()
         {
-            return !this.IsBusy && this.AvailableDrives.Any();
+            return this.AvailableDrives.Any();
         }
 
         private bool CanShowImport()
         {
-            return !this.IsBusy && !this.IsMoving && this.ImportableFiles.Any();
+            return this.ImportableFiles.Any();
         }
 
         private async Task SaveAsync()
         {
             try
             {
+                // tabula rasa
+                this.ClearNotifications();
                 this.IsBusy = true;
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
-                this.ShowNotification(Resources.InstallationApp.SaveSuccessful);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
 
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
@@ -204,7 +213,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             // exportable drives
             var drives = ((UsbWatcherService)sender).Drives;
-            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
+            try
+            {
+                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
+            }
+            catch (Exception ex)
+            {
+                var exc = ex;
+            }
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToExport?.RaiseCanExecuteChanged();
 
@@ -218,15 +234,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 int count = importables.Count;
                 CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-                string message = string.Format(culture, Resources.InstallationApp.MultipleConfigurationsDetected, count);
+                string message = string.Format(culture, Resources.Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(culture, Resources.InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
+                        message = string.Format(culture, Resources.Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(importables[0].Name));
                         break;
 
                     case 0:
-                        message = Resources.InstallationApp.ExportableDeviceDetected;
+                        message = Resources.Localized.Get("InstallationApp.ExportableDeviceDetected");
                         break;
                 }
 

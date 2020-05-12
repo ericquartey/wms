@@ -1,12 +1,13 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Menu.Views.AccessoriesMenuView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:acc="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:AccessoriesMenuViewModel,
@@ -50,21 +51,101 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Menu Accessori" />
+                       Text="{x:Static res:Menu.AccessoriesMenuName}" />
 
             <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="Puntatore Laser"
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesAlphaNumBarMenuTitle}"
+                                        Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.1"
                                         BorderBrush="{DynamicResource FerrettoBlue}"
-                                        Command="{Binding LaserCommand}"
-                                        Content="Gestione della configurazione e test funzionalità del Laser"
-                                        IsEnabled="False"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.AlphaNumericBar}"
+                                        Content="{x:Static res:Menu.AccessoriesAlphaNumBarMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsAlphaNumericBarAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.2"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.BarcodeReader}"
+                                        Content="{x:Static res:Menu.AccessoriesBarcodeReaderMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsBarcodeReaderAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesCardReaderMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.3"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.CardReader}"
+                                        Content="{x:Static res:Menu.AccessoriesCardReaderMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsCardReaderAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesLabelPrinterMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.4"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.LabelPrinter}"
+                                        Content="{x:Static res:Menu.AccessoriesLabelPrinterMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsLabelPrinterAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesLaserMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.5"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.LaserPointer}"
+                                        Content="{x:Static res:Menu.AccessoriesLaserMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsLaserPointerAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesTokenReaderMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.6"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.TokenReader}"
+                                        Content="{x:Static res:Menu.AccessoriesTokenReaderMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsTokenReaderAvailable, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="{x:Static res:Menu.AccessoriesWeightingScaleMenuTitle}"
+                                        Height="130"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.6.7"
+                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        Command="{Binding OpenSettingsCommand}"
+                                        CommandParameter="{x:Static acc:Accessories.WeightingScale}"
+                                        Content="{x:Static res:Menu.AccessoriesWeightingScaleMenuDescription}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsWeightingScaleAvailable, Converter={StaticResource BTVC}}" />
 
                 </WrapPanel>
             </Grid>

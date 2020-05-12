@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningStateMachine : StateMachineBase
@@ -34,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new ShutterPositioningMachineData(
                 positioningMessageData,
@@ -99,7 +98,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                 {
                     var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest(this.machineData.RequestingBay).PerformedCycles;
+                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetBayShutterTest(this.machineData.RequestingBay).PerformedCycles;
                 }
 
                 var stateData = new ShutterPositioningStateData(this, this.machineData);
@@ -138,13 +137,18 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
-            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle)
+            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle
+                && !this.machineData.PositioningMessageData.BypassConditions
+                )
             {
                 ok = false;
                 errorText = ErrorDescriptions.InvalidPresenceSensors;
                 errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
             }
-            else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle)
+            else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle
+                && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle
+                && !this.machineData.PositioningMessageData.BypassConditions
+                )
             {
                 ok = false;
                 errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;

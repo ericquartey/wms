@@ -18,6 +18,16 @@
 
         public const string ExitSetup = "99900031";
 
+        public const string InquireAllInformation = "99900300";
+
+        public const string InquireFirmwareVersion = "99900301";
+
+        public const string InquireManufactureDate = "99900303";
+
+        public const string InquireModelNumber = "99900304";
+
+        public const string InquireSerialNumber = "99900302";
+
         public const string ManualMode = "99900110";
 
         public const string PowerOff = "99900100";

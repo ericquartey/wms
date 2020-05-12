@@ -136,7 +136,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
-        public bool IsExtraVertical => this.sensors.OverrunElevator;
+        public bool IsExtraVertical => this.sensors.ElevatorOverrun;
 
         public bool IsHorizontalInconsistentBothHigh => (this.IsZeroChain && this.IsLoadingUnitOnElevator);
 
@@ -201,6 +201,32 @@ namespace Ferretto.VW.App.Services
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneTon : this.sensors.ZeroPawlSensor;
 
         public bool IsZeroVertical => this.sensors.ZeroVerticalSensor;
+
+        public bool ProfileCalibrationBay
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.ProfileCalibrationBay1;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.ProfileCalibrationBay2;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.ProfileCalibrationBay3;
+                }
+
+                return false;
+            }
+        }
 
         public Sensors Sensors => this.sensors;
 
@@ -352,6 +378,7 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));
+            this.RaisePropertyChanged(nameof(this.ProfileCalibrationBay));
         }
 
         private void ShowNotification(Exception exception)

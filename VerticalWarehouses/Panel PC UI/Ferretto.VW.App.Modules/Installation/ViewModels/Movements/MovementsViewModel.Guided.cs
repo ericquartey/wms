@@ -391,7 +391,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected void OnGuidedRaiseCanExecuteChanged()
+        private void OnGuidedRaiseCanExecuteChanged()
         {
             this.CanInputLoadingUnitId =
                 this.CanBaseExecute() &&
@@ -440,6 +440,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
         }
@@ -452,6 +453,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsShutterMoving
                 &&
                 this.BayIsShutterThreeSensors
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.Closed));
         }
@@ -459,8 +461,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromBay()
         {
             var selectedBayPosition = this.SelectedBayPosition();
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.CanBaseExecute() &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
@@ -470,15 +473,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromCell()
         {
+            if (this.Cells is null)
+            {
+                return false;
+            }
             var cellPosition = this.Cells.FirstOrDefault(f => f.Id == this.MachineStatus?.LogicalPositionId);
-
-            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
                    !(cellPosition?.IsFree ?? true) &&
-                   this.MachineStatus.EmbarkedLoadingUnit is null;
-
+                   this.MachineStatus.EmbarkedLoadingUnit is null &&
+                   this.LoadingUnitInCell != null;
             return res;
         }
 
@@ -500,7 +506,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                 this.CanBaseExecute()
                 &&
                 this.SelectedBayPosition() != null
@@ -511,7 +517,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             var canMove =
-                (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed)
+                (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay)
                 &&
                 this.CanBaseExecute()
                 &&
@@ -530,7 +536,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!canMove)
             {
                 canMove =
-                    (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed)
+                    (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay)
                     &&
                     this.CanBaseExecute()
                     &&
@@ -554,13 +560,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
+                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay));
         }
 
         private bool CanSelectBayPosition()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute();
         }
 
@@ -591,9 +598,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             var selectedBayPosition = this.SelectedBayPosition();
-            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit == null &&
@@ -604,7 +612,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanUnloadToCell()
         {
-            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                 this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
@@ -626,7 +634,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsShutterMoving = true;
                 this.IsExecutingProcedure = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -719,11 +727,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var selectedBayPosition = this.SelectedBayPosition();
-                if (selectedBayPosition.LoadingUnit is null)
-                {
-                    await this.machineElevatorWebService.LoadFromBayAsync(selectedBayPosition.Id);
-                }
-                else
+                if (selectedBayPosition.LoadingUnit != null)
                 {
                     await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
                 }
@@ -747,11 +751,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.LoadingUnitInCell is null)
-                {
-                    await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
-                }
-                else
+                if (this.LoadingUnitInCell != null)
                 {
                     await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitInCell.Id, LoadingUnitLocation.Elevator);
                 }
@@ -970,7 +970,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Taratura baia", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.BayCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineCarouselWebService.FindZeroAsync();
@@ -992,7 +992,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningChainAsync()
         {
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Taratura catena", DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ChainCalibration"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try
@@ -1058,11 +1058,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.MachineStatus.LogicalPositionId.HasValue)
                     {
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, this.MachineStatus.LogicalPositionId, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.Elevator, this.MachineStatus.LogicalPositionId, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                     else
                     {
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.Elevator, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                 }
 

@@ -8,7 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class LoadingUnitsMissionsViewModel : BaseOperatorViewModel
     {
@@ -22,11 +22,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentMissionIndex;
 
-        private DelegateCommand downCommand;
-
         private Mission selectedMission;
-
-        private DelegateCommand upCommand;
 
         #endregion
 
@@ -43,11 +39,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownCommand =>
-            this.downCommand
-            ??
-            (this.downCommand = new DelegateCommand(() => this.ChangeSelectedList(false), this.CanDown));
-
         public override EnableMask EnableMask => EnableMask.Any;
 
         public IList<Mission> Missions => new List<Mission>(this.missions);
@@ -57,11 +48,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.selectedMission;
             set => this.SetProperty(ref this.selectedMission, value);
         }
-
-        public ICommand UpCommand =>
-            this.upCommand
-            ??
-            (this.upCommand = new DelegateCommand(() => this.ChangeSelectedList(true), this.CanUp));
 
         #endregion
 
@@ -84,35 +70,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.missions.Clear();
+            this.RaisePropertyChanged(nameof(this.Missions));
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
-            await this.LoadListRowsAsync();
-
             await this.RefreshMissionsAsync();
         }
 
-        protected override void RaiseCanExecuteChanged()
+        protected override async Task OnDataRefreshAsync()
         {
-            base.RaiseCanExecuteChanged();
-
-            this.upCommand?.RaiseCanExecuteChanged();
-            this.downCommand?.RaiseCanExecuteChanged();
-        }
-
-        private bool CanDown()
-        {
-            return
-              this.currentMissionIndex < this.missions.Count - 1;
-        }
-
-        private bool CanUp()
-        {
-            return
-                this.currentMissionIndex > 0;
+            await this.LoadListRowsAsync();
         }
 
         private async Task LoadListRowsAsync()

@@ -11,13 +11,14 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
@@ -27,8 +28,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IConfiguration configuration;
-
-        private readonly IDataHubClient dataHubClient;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
@@ -44,7 +43,6 @@ namespace Ferretto.VW.MAS.AutomationService
             IEventAggregator eventAggregator,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<NotificationRelayService> logger,
-            IDataHubClient dataHubClient,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
@@ -53,13 +51,10 @@ namespace Ferretto.VW.MAS.AutomationService
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
-
-            this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
 
             this.EventAggregator
                 .GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>()
@@ -74,10 +69,14 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
-            if (this.configuration.IsWmsEnabled())
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
-                await this.dataHubClient.ConnectAsync();
+                var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
+
+                dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
+                dataHubClient.ConnectionStatusChanged += this.OnWmsConnectionStatusChanged;
+
+                await this.OnWmsEnableChanged(scope.ServiceProvider);
             }
         }
 
@@ -104,12 +103,12 @@ namespace Ferretto.VW.MAS.AutomationService
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
-        private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private void OnWmsConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
             if (e.IsConnected)
             {
-                this.OnDataHubClientEntityChanged(this, new EntityChangedEventArgs(
+                this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
                     nameof(MissionOperation),
                     null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
                     null,
@@ -117,7 +116,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)
+        private async Task OnWmsEntityChangedAsync(object sender, EntityChangedEventArgs e)
         {
             if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
             {
@@ -141,6 +140,25 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(msg);
+
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            try
+                            {
+                                var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
+                                var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                                if (int.TryParse(e.Id, out var operationId))
+                                {
+                                    var oepration = await missionWebService.GetByIdAsync(operationId);
+                                    var mission = missionDataProvider.GetByWmsId(oepration.MissionId);
+                                    await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
+                                }
+                            }
+                            catch
+                            {
+                                // do nothing
+                            }
+                        }
                         break;
                     }
             }

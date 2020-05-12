@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningExecutingState : StateBase, IDisposable
@@ -194,13 +193,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                         .GetRequiredService<ISetupProceduresDataProvider>();
 
                     var testParameters = setupProceduresDataProvider.IncreasePerformedCycles(
-                        setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
+                        setupProceduresDataProvider.GetBayShutterTest(this.machineData.RequestingBay));
 
                     this.machineData.PositioningMessageData.PerformedCycles = testParameters.PerformedCycles;
 
                     if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
                     {
-                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
+                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayShutterTest(this.machineData.RequestingBay));
                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                     }
                     else
@@ -263,6 +262,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 this.machineData.PositioningMessageData.SpeedRate * directionMultiplier,
                 this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                 this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                this.machineData.PositioningMessageData.HighSpeedHalfDurationOpen,
+                this.machineData.PositioningMessageData.HighSpeedHalfDurationClose,
                 this.machineData.PositioningMessageData.LowerSpeed * directionMultiplier,
                 this.machineData.PositioningMessageData.MovementType);
 

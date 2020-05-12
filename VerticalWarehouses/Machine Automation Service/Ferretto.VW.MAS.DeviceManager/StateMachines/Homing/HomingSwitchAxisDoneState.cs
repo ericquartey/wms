@@ -1,8 +1,10 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -10,12 +12,13 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingSwitchAxisDoneState : StateBase
     {
         #region Fields
+
+        private readonly IElevatorProvider elevatorProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.machineData = stateData.MachineData as IHomingMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
         }
 
         #endregion
@@ -127,6 +131,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             var inverterIndex = this.machineData.CurrentInverterIndex;
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {inverterIndex}");
+
+            if (this.machineData.AxisToCalibrate == Axis.Vertical)
+            {
+                this.machineData.VerticalStartingPosition = this.elevatorProvider.VerticalPosition;
+            }
 
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType);
             var commandMessage = new FieldCommandMessage(

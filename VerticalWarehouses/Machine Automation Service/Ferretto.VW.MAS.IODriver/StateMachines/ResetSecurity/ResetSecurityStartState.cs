@@ -4,7 +4,6 @@ using System.Timers;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     internal sealed class ResetSecurityStartState : IoStateBase, IDisposable
@@ -72,11 +71,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         public override void Start()
         {
-            var resetIoMessage = new IoWriteMessage();
+            var resetIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
             resetIoMessage.ResetSecurity = true;
             resetIoMessage.PowerEnable = true;
 
-            this.Logger.LogTrace($"1:Reset Security Pulse={resetIoMessage}");
+            this.Logger.LogDebug($"1:Reset Security Pulse={resetIoMessage}");
 
             lock (this.status)
             {

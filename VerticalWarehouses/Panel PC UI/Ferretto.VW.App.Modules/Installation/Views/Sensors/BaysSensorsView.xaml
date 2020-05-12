@@ -42,28 +42,28 @@
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay1}" />
+                           Text="{res:Loc InstallationApp.Bay1}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay1}"
-                                           Text="Cassetto in posizione alta"
+                                           Text="{res:Loc InstallationApp.UnitHightPosition}"
                                            Visibility="{Binding IsBay1PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
-                                           Text="Cassetto in posizione bassa"
+                                           Text="{res:Loc InstallationApp.UnitLowPosition}"
                                            Visibility="{Binding IsBay1PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay1}"
-                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
+                                           Text="{res:Loc InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay1}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorA}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorA}"
                                            Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay1}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorB}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorB}"
                                            Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay1S3IND}"
-                                           Text="{x:Static res:InstallationApp.ZeroChain}"
+                                           Text="{res:Loc InstallationApp.ZeroChain}"
                                            Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
             </StackPanel>
@@ -74,28 +74,28 @@
                         Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay2}" />
+                           Text="{res:Loc InstallationApp.Bay2}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay2}"
-                                           Text="Cassetto in posizione alta"
+                                           Text="{res:Loc InstallationApp.UnitHightPosition}"
                                            Visibility="{Binding IsBay2PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay2}"
-                                           Text="Cassetto in posizione bassa"
+                                           Text="{res:Loc InstallationApp.UnitLowPosition}"
                                            Visibility="{Binding IsBay2PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay2}"
-                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
+                                           Text="{res:Loc InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay2}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorA}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorA}"
                                            Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay2}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorB}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorB}"
                                            Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay2S3IND}"
-                                           Text="{x:Static res:InstallationApp.ZeroChain}"
+                                           Text="{res:Loc InstallationApp.ZeroChain}"
                                            Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
             </StackPanel>
@@ -105,28 +105,28 @@
                         Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay3}" />
+                           Text="{res:Loc InstallationApp.Bay3}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay3}"
-                                           Text="Cassetto in posizione alta"
+                                           Text="{res:Loc InstallationApp.UnitHightPosition}"
                                            Visibility="{Binding IsBay3PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay3}"
-                                           Text="Cassetto in posizione bassa"
+                                           Text="{res:Loc InstallationApp.UnitLowPosition}"
                                            Visibility="{Binding IsBay3PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay3}"
-                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
+                                           Text="{res:Loc InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay3}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorA}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorA}"
                                            Visibility="{Binding Bay3HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay3}"
-                                           Text="{x:Static res:InstallationApp.ShutterSensorB}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorB}"
                                            Visibility="{Binding Bay3HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay3S3IND}"
-                                           Text="{x:Static res:InstallationApp.ZeroChain}"
+                                           Text="{res:Loc InstallationApp.ZeroChain}"
                                            Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
             </StackPanel>
         </Grid>

@@ -37,6 +37,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnBayOperationalStatusChangedAsync(serviceProvider);
                     break;
 
+                case MessageType.Homing:
+                    await this.OnHoming(message, serviceProvider);
+                    break;
+
                 case MessageType.NewMachineMissionAvailable:
                     await this.OnNewMachineMissionAvailableAsync(serviceProvider);
                     break;

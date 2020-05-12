@@ -1,47 +1,68 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.HelpWindows.HelpDrawerWait"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
-    <Grid Width="1024" Height="688"
+    <Grid Width="1024"
+          Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200" Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+        <Image Width="200"
+               Height="60"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWaitDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWaitDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWaitNote}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWaitNote}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
-                                               ContentText="Operazione precede"
-                                               LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Operazione precede"
+                                 LabelText="{x:Static res:OperatorApp.CommonNote}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
-                                               ContentText="3"
-                                               LabelText="{x:Static res:OperatorApp.DrawerWaitOperation}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,190,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="3"
+                                 LabelText="{x:Static res:OperatorApp.DrawerWaitOperation}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWaitScheduledOperations}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,190,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWaitScheduledOperations}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerWaitPageHeader}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.DrawerWaitPageHeader}" />
 
     </Grid>
 </UserControl>

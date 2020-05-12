@@ -33,6 +33,40 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double VerticalPositionValidationTolerance = 7.5;
 
+        private static readonly Func<DataLayerContext, BayPosition> GetCurrentBayPositionCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Select(e => e.BayPosition)
+                        .Include(p => p.LoadingUnit)
+                        .Include(p => p.Bay)
+                    .SingleOrDefault());
+
+        private static readonly Func<DataLayerContext, Cell> GetCurrentCellCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                   .Select(e => e.Cell)
+                   .Include(c => c.Panel)
+                   .Include(c => c.LoadingUnit)
+                   .SingleOrDefault());
+
+        private static readonly Func<DataLayerContext, Elevator> GetLoadingUnitOnBoardCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Include(e => e.LoadingUnit)
+                    .ThenInclude(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .Single());
+
+        private static readonly Func<DataLayerContext, Elevator> GetStructuralPropertiesCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Include(e => e.StructuralProperties)
+                    .Single());
+
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -120,6 +154,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void CompleteProcedure()
+        {
+            lock (this.dataContext)
+            {
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
+        }
+
         public ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation) => this.GetAxis(orientation).AssistedMovements;
 
         public ElevatorAxis GetAxis(Orientation orientation)
@@ -172,11 +215,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentBayPosition = this.dataContext.Elevators
-                    .Select(e => e.BayPosition)
-                        .Include(p => p.LoadingUnit)
-                        .Include(p => p.Bay)
-                    .SingleOrDefault();
+                var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
 
                 return currentBayPosition;
             }
@@ -186,11 +225,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentCell = this.dataContext.Elevators
-                   .Select(e => e.Cell)
-                   .Include(c => c.Panel)
-                   .Include(c => c.LoadingUnit)
-                   .SingleOrDefault();
+                var currentCell = GetCurrentCellCompile(this.dataContext);
 
                 return currentCell;
             }
@@ -224,11 +259,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators.AsNoTracking()
-                    .Include(e => e.LoadingUnit)
-                    .ThenInclude(l => l.Cell)
-                    .ThenInclude(c => c.Panel)
-                    .Single();
+                var elevator = GetLoadingUnitOnBoardCompile(this.dataContext);
 
                 return elevator.LoadingUnit;
             }
@@ -240,27 +271,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
-                    .Include(e => e.StructuralProperties)
-                    .Single();
+                var elevator = GetStructuralPropertiesCompile(this.dataContext);
 
                 return elevator.StructuralProperties;
-            }
-        }
-
-        public void IncreaseCycleQuantity(Orientation orientation)
-        {
-            lock (this.dataContext)
-            {
-                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-                if (axis is null)
-                {
-                    throw new EntityNotFoundException(orientation.ToString());
-                }
-
-                axis.TotalCycles++;
-
-                this.dataContext.SaveChanges();
             }
         }
 
@@ -270,21 +283,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
                 &&
                 this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
-        }
-
-        public void LoadLoadingUnit(int id)
-        {
-            lock (this.dataContext)
-            {
-                var elevator = this.dataContext
-                    .Elevators
-                    .Include(e => e.LoadingUnit)
-                    .Single();
-
-                elevator.LoadingUnitId = id;
-
-                this.dataContext.SaveChanges();
-            }
         }
 
         public void ResetMachine()
@@ -405,6 +403,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateHorizontalDistance(double newDistance)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
+
+                var axis = this.GetAxis(Orientation.Horizontal);
+
+                foreach (var profile in axis.Profiles)
+                {
+                    profile.TotalDistance = newDistance;
+                    var lastStep = profile.Steps.OrderBy(x => x.Number).Last();
+                    lastStep.Position = newDistance;
+                }
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal)
         {
             lock (this.dataContext)
@@ -427,7 +445,37 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateVerticalLowerBound(double newLowerBound)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
+
+                verticalAxis.LowerBound = newLowerBound;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateVerticalOffset(double newOffset)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
+
+                verticalAxis.Offset = newOffset;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateVerticalOffsetAndComplete(double newOffset)
         {
             lock (this.dataContext)
             {

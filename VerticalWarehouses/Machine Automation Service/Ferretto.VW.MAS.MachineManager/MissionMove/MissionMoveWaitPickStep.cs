@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -33,8 +35,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
+            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
+
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Waiting;
             this.MissionsDataProvider.Update(this.Mission);
@@ -46,15 +51,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
             }
-            else
+            else if (!bay.IsDouble
+                || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
+                )
             {
-                this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, this.Mission, null);
+                this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);
             }
 
-            if (this.Mission.LoadUnitId > 0)
-            {
-                this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
-            }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
@@ -68,10 +71,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnNotification(NotificationMessage notification)
         {
+            switch (notification.Status)
+            {
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationError:
+                case MessageStatus.OperationRunningStop:
+                    if (notification.RequestingBay == this.Mission.TargetBay)
+                    {
+                        this.OnStop(StopRequestReason.Error);
+                    }
+                    break;
+            }
+            switch (notification.Type)
+            {
+                case MessageType.Stop:
+                    if (notification.RequestingBay == this.Mission.TargetBay
+                        || notification.TargetBay == this.Mission.TargetBay
+                        )
+                    {
+                        this.OnStop(StopRequestReason.Error);
+                    }
+                    break;
+            }
         }
 
         public override void OnResume(CommandMessage command)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             var ejectBayLocation = this.Mission.LoadUnitDestination;
             var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
 #if CHECK_BAY_SENSOR
@@ -84,6 +110,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     if (messageData.MissionType == MissionType.NoType)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         // Remove LoadUnit
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
@@ -95,24 +122,35 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        // Update mission and start moving
-                        this.Mission.MissionType = messageData.MissionType;
-                        this.Mission.WmsId = messageData.WmsId;
-                        this.Mission.LoadUnitSource = bayPosition.Location;
-                        if (messageData.Destination == LoadingUnitLocation.Cell)
+                        var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
+                            .FirstOrDefault(x => x.Status == MissionStatus.Executing);
+
+                        if (activeMission != null)
                         {
-                            // prepare for finding a new empty cell
-                            this.Mission.DestinationCellId = null;
-                            this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                         }
-                        else if (bayPosition.Location != messageData.Destination)
+                        else
                         {
-                            // bay to bay movement
-                            this.Mission.LoadUnitDestination = messageData.Destination;
+                            // Update mission and start moving
+                            this.Mission.StepTime = DateTime.UtcNow;
+                            this.Mission.MissionType = messageData.MissionType;
+                            this.Mission.WmsId = messageData.WmsId;
+                            this.Mission.LoadUnitSource = bayPosition.Location;
+                            if (messageData.Destination == LoadingUnitLocation.Cell)
+                            {
+                                // prepare for finding a new empty cell
+                                this.Mission.DestinationCellId = null;
+                                this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                            }
+                            else if (bayPosition.Location != messageData.Destination)
+                            {
+                                // bay to bay movement
+                                this.Mission.LoadUnitDestination = messageData.Destination;
+                            }
+                            this.MissionsDataProvider.Update(this.Mission);
+                            var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
                         }
-                        this.MissionsDataProvider.Update(this.Mission);
-                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
                     }
                 }
                 else

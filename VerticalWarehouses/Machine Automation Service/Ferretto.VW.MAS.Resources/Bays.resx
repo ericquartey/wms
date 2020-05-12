@@ -144,4 +144,13 @@
   <data name="TheBayNotContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
     <value>TheBayNotContainsALoadingUnitInItsUpperPosition</value>
   </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>The maximum height of the loading unit is not valid.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>The bay contains a Loading Unit in its external position</value>
+  </data>
 </root>

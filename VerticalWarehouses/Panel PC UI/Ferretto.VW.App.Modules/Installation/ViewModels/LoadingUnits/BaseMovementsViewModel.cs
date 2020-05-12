@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineModeWebService machineModeWebService;
+
         private SubscriptionToken fsmExceptionToken;
 
         private bool isExecutingProcedure;
@@ -35,10 +37,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
-        //private bool isStopping;
-
         private int? loadingUnitId;
-        
+
+        private DelegateCommand loadingUnitsCommand;
+
         private SubscriptionToken moveLoadingUnitToken;
 
         private DelegateCommand selectBayPositionDownCommand;
@@ -55,29 +57,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public BaseMovementsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
         }
 
         #endregion
 
         #region Properties
-
-        private DelegateCommand loadingUnitsCommand;
-
-        public ICommand LoadingUnitsCommand =>
-            this.loadingUnitsCommand
-            ??
-            (this.loadingUnitsCommand = new DelegateCommand(
-                () => this.NavigationService.Appear(
-                          nameof(Utils.Modules.Installation),
-                          Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
-                          data: null,
-                          trackCurrentView: true),
-                () => !this.IsMoving));
 
         public int? CurrentMissionId { get; private set; }
 
@@ -130,12 +121,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        //public bool IsStopping
-        //{
-        //    get => this.isStopping;
-        //    set => this.SetProperty(ref this.isStopping, value);
-        //}
-
         public virtual bool KeepAlive => true;
 
         public int? LoadingUnitCellId
@@ -163,7 +148,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public ICommand LoadingUnitsCommand =>
+            this.loadingUnitsCommand
+            ??
+            (this.loadingUnitsCommand = new DelegateCommand(
+                () => this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
+                        data: null,
+                        trackCurrentView: true),
+                () => !this.IsMoving));
+
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
+
+        public IMachineModeWebService MachineModeWebService => this.machineModeWebService;
 
         public ICommand SelectBayPositionDownCommand =>
             this.selectBayPositionDownCommand
@@ -282,8 +280,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsBackNavigationAllowed = true;
-
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -316,7 +312,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                this.IsBackNavigationAllowed = true;
                 this.IsWaitingForResponse = true;
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
@@ -340,15 +335,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
 
             this.ShowNotification(
-                VW.App.Resources.InstallationApp.ProcedureCompleted,
+                VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"),
                 Services.Models.NotificationSeverity.Success);
         }
 
         protected virtual void Error(Exception ex, string errorMessage)
         {
-            this.IsBackNavigationAllowed = true;
-            //this.IsStopping = false;
-
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -411,7 +403,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.IsBackNavigationAllowed = false;
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
@@ -424,31 +415,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationEnd:
+                    if (!this.IsExecutingProcedure)
                     {
-                        this.IsBackNavigationAllowed = true;
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
-
-                        this.Ended();
-
                         break;
                     }
+
+                    this.Ended();
+
+                    break;
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                    {
-                        this.IsBackNavigationAllowed = true;
-                        this.Stopped();
+                    this.Stopped();
 
-                        break;
-                    }
+                    break;
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;
-                    this.IsBackNavigationAllowed = true;
 
                     break;
             }
@@ -467,7 +451,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
 
             this.ShowNotification(
-                Resources.InstallationApp.ProcedureWasStopped,
+                Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                 Services.Models.NotificationSeverity.Warning);
         }
 

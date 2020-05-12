@@ -13,13 +13,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void AddElevatorPseudoBay();
 
-        Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId);
+        Bay AssignMission(BayNumber bayNumber, Mission mission);
 
         Bay ClearMission(BayNumber bayNumber);
 
         double ConvertProfileToHeight(ushort profile, int positionId);
 
         void FindZero(BayNumber bayNumber);
+
+        BayAccessories GetAccessories(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
 
@@ -106,6 +108,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
+        void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port);
+
         Bay SetBayActive(BayNumber bayNumber, bool active);
 
         void SetChainPosition(BayNumber bayNumber, double value);
@@ -120,6 +124,10 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="loadingUnitId">The identifier of the loading unit.</param>
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
+
+        void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName);
+
+        void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 

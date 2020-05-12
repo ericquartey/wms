@@ -15,7 +15,6 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-
     <ctrls:View.Resources>
         <converters:DriveToVertimagFilenameConverter x:Key="DriveToVertimagFilenameConverter" />
 
@@ -44,7 +43,7 @@
         <Style x:Key="GridViewColumnHeaderStyle"
                TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -89,7 +88,7 @@
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Height" Value="54" />
-                        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                        <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
                         <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -135,8 +134,8 @@
                                     <Condition Property="IsSelected" Value="True" />
                                     <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
+                                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
                             </MultiTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -203,7 +202,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader}" />
 
         <ListView Grid.Row="1"
                   Grid.Column="0"
@@ -305,7 +304,7 @@
                             Grid.Column="1"
                             Margin="15,15,0,0"
                             Command="{Binding ExportCommand}"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}"
                             IsBusy="{Binding IsBusy}" />
     </Grid>
 </ctrls:View>

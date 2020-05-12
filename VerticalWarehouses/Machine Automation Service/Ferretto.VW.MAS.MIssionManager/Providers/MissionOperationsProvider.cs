@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -17,13 +19,15 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
+        private readonly IErrorsProvider errorsProvider;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
 
         private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -33,12 +37,14 @@ namespace Ferretto.VW.MAS.MissionManager
             IEventAggregator eventAggregator,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsDataProvider missionsDataProvider,
-            IConfiguration configuration)
+            IWmsSettingsProvider wmsSettingsProvider,
+            IErrorsProvider errorsProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -47,7 +53,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task AbortAsync(int wmsId)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -62,11 +68,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        public async Task CancelAsync()
-        {
-            // TODO implement missionOperationsDataService cancel
-        }
-
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>
@@ -75,7 +76,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         public async Task CompleteAsync(int wmsId, double quantity, string printerName)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -122,6 +123,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Count();
         }
 
+        public async Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type)
+        {
+            return await this.missionOperationsWmsWebService.GetAllReasonsAsync(type);
+        }
+
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>
@@ -130,7 +136,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         public async Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName)
         {
-            if (!this.configuration.IsWmsEnabled())
+            if (!this.wmsSettingsProvider.IsEnabled)
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
@@ -158,16 +164,21 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             catch (WmsWebApiException ex)
             {
+                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
                 this.NegativeResult(ex);
             }
         }
 
         private void NegativeResult(WmsWebApiException exception)
         {
-            var problemDetails = new ProblemDetails();
+            ProblemDetails problemDetails;
             if (exception is WmsWebApiException<ProblemDetails> problemDetailsException)
             {
                 problemDetails = problemDetailsException.Result;
+            }
+            else
+            {
+                problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(exception.Response);
             }
 
             switch (exception.StatusCode)

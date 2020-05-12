@@ -10,7 +10,7 @@
            TargetType="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Margin" Value="0,0,0,20" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -60,7 +60,7 @@
                                  BorderBrush="Transparent"
                                  BorderThickness="0"
                                  FontSize="{DynamicResource VWAPP_TextBlock_Normal_FontSize}"
-                                 Foreground="{DynamicResource FerrettoPureWhite}"
+                                 Foreground="{DynamicResource Text_Foreground}"
                                  IsReadOnly="True"
                                  IsReadOnlyCaretVisible="False"
                                  Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}}"

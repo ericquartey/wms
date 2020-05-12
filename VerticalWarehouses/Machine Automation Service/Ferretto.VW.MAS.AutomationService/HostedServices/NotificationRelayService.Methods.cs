@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService
@@ -25,17 +26,6 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.CalibrateAxisNotify(message);
-        }
-
-        private void ChangeMachineMode()
-        {
-            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
-                || this.machineVolatileDataProvider.Mode == MachineMode.Restore
-                )
-            {
-                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
-            }
         }
 
         private async Task CurrentPositionMethod(NotificationMessage receivedMessage)
@@ -54,55 +44,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
-            {
-                if (receivedMessage.Status == MessageStatus.OperationEnd
-                    && receivedMessage.Data is IHomingMessageData data)
-                {
-                    this.machineVolatileDataProvider.IsHomingActive = false;
-                    if (data.AxisToCalibrate == Axis.BayChain)
-                    {
-                        this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
-
-                        // the following message wakes up MissionSchedulingService
-                        this.EventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new NotificationMessage
-                                {
-                                    Data = new MachineModeMessageData(this.machineVolatileDataProvider.Mode),
-                                    Destination = MessageActor.MissionManager,
-                                    Source = MessageActor.AutomationService,
-                                    Type = MessageType.MachineMode,
-                                });
-                    }
-                    else
-                    {
-                        this.machineVolatileDataProvider.IsHomingExecuted = true;
-                        var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
-                        var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                        if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                            && elevatorDataProvider.GetLoadingUnitOnBoard() == null
-                            )
-                        {
-                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
-                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                        }
-                        else
-                        {
-                            this.ChangeMachineMode();
-                        }
-                    }
-                }
-                else if (receivedMessage.Status == MessageStatus.OperationError)
-                {
-                    this.machineVolatileDataProvider.IsHomingActive = false;
-                    this.ChangeMachineMode();
-                }
-            }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
         }
@@ -119,15 +60,13 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
-        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionChangedMessageData e)
         {
             Contract.Requires(e != null);
 
-            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
+            await this.operatorHub.Clients.All.AssignedMissionChanged(
                 e.BayNumber,
-                e.MissionId,
-                e.MissionOperationId,
-                e.PendingMissionsCount);
+                e.MissionId);
         }
 
         private async Task OnBayChainPositionChanged(BayChainPositionMessageData data)
@@ -178,22 +117,33 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
-                this.machineVolatileDataProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
+
+                this.machineVolatileDataProvider.MachinePowerState = machinePowerState;
 
                 await this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }
         }
 
-        private void OnDataLayerReady(IServiceProvider serviceProvider)
+        private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
+            this.Logger.LogTrace("OnDataLayerReady start");
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var bays = baysDataProvider.GetAll().ToList();
-            foreach (var bay in bays.Where(b => b.Carousel == null))
+            var bays = baysDataProvider.GetAll();
+            foreach (var bay in bays.Where(b => b.Carousel == null && b.Number != BayNumber.ElevatorBay))
             {
                 this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
             }
 
             baysDataProvider.AddElevatorPseudoBay();
+
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+                dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+            }
+
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)
@@ -224,6 +174,13 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private async Task OnInverterProgrammingChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+
+            await this.installationHub.Clients.All.InverterProgrammingChanged(message);
+        }
+
         private async Task OnInverterStatusWordChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
@@ -244,11 +201,36 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
+        private async Task OnMoveTest(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is MoveTestMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.MoveTest(messageToUi);
+            }
+        }
+
         private async Task OnPositioningChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
 
             await this.installationHub.Clients.All.PositioningNotify(message);
+        }
+
+        private async Task OnProfileCalibration(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is ProfileCalibrationMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.ProfileCalibration(messageToUi);
+            }
+        }
+
+        private async Task OnRepetitiveHorizontalMovementsChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+
+            await this.installationHub.Clients.All.RepetitiveHorizontalMovementsNotify(message);
         }
 
         private async Task OnSensorsChanged(NotificationMessage receivedMessage)
@@ -260,6 +242,30 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnSystemTimeChangedAsync()
         {
             await this.installationHub.Clients.All.SystemTimeChanged();
+        }
+
+        private async Task OnWmsEnableChanged(IServiceProvider serviceProvider)
+        {
+            var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+            }
+            else
+            {
+                try
+                {
+                    if (dataHubClient.IsConnected)
+                    {
+                        await dataHubClient.DisconnectAsync();
+                    }
+                }
+                catch
+                {
+                    // do nothing
+                }
+            }
         }
 
         private async Task ResolutionCalibrationMethod(NotificationMessage receivedMessage)

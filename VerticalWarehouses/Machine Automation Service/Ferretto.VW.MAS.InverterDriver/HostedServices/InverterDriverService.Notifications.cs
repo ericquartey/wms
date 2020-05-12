@@ -24,7 +24,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
@@ -288,7 +287,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             var inverter = invertersProvider.GetByIndex(InverterIndex.MainInverter);
                             if (inverter is AngInverterStatus angInverter)
                             {
-                                ioStatuses[5] = angInverter.ANG_OverrunElevatorSensor;
+                                ioStatuses[5] = angInverter.ANG_ElevatorOverrunSensor;
                                 if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)InverterIndex.MainInverter])
                                 {
                                     this.Logger.LogTrace("Sensor Update");

@@ -66,11 +66,8 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                FontFamily="{DynamicResource VWAPP_TitleFont}"
-                               Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}">
-                        <Run Text="Stato installazione incompleto. Eseguite" />
-                        <Run Text="{Binding ProceduresCompleted}" /><Run Text="/" /><Run Text="{Binding ProceduresCount}" />
-                        <Run Text="procedure" />
-                    </TextBlock>
+                               Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                               Text="{Binding SubTitleLabel, Mode=OneWay}" />
 
                     <Grid Margin="0,5,0,0"
                           HorizontalAlignment="Stretch"
@@ -109,7 +106,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <ItemsControl Height="400"
+
+                    <ItemsControl Height="380"
                                   Margin="0,25,0,0"
                                   ItemsSource="{Binding Source}">
                         <ItemsControl.ItemsPanel>
@@ -121,21 +119,46 @@
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Center"
                                             Orientation="Horizontal">
+
                                     <icon:PackIconMaterial Width="24"
                                                            Height="24"
                                                            VerticalAlignment="Center"
                                                            BorderThickness="1"
                                                            Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
                                                            Kind="{Binding Status, Converter={StaticResource StatusToIconConverter}}" />
-                                    <TextBlock Margin="15,8"
+                                    <TextBlock Width="230"
+                                               Margin="15,8"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                               Text="{Binding Text}" />
+                                               Text="{Binding Text}"
+                                               TextWrapping="Wrap" />
+
+                                    <controls:PpcButton Padding="3,0"
+                                                        Command="{Binding Command}"
+                                                        Content="Bypass"
+                                                        FontSize="11"
+                                                        Foreground="{DynamicResource FerrettoYellow}"
+                                                        Permission="Admin"
+                                                        Style="{DynamicResource PpcBadgeButtonStyle}"
+                                                        Visibility="{Binding Bypassable, Converter={StaticResource ResourceKey=BTVC}}" />
+
+                                    <controls:PpcButton Padding="3,0"
+                                                        Content="Bypassed"
+                                                        FontSize="11"
+                                                        Foreground="{DynamicResource FerrettoRed}"
+                                                        IsEnabled="False"
+                                                        Style="{DynamicResource PpcBadgeButtonStyle}"
+                                                        Visibility="{Binding Bypassed, Converter={StaticResource ResourceKey=BTVC}}" />
+
+                                    <TextBlock Margin="0,0,30,0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
+
                     </ItemsControl>
+
+
                 </Grid>
 
             </Grid>

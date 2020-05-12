@@ -154,21 +154,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStep}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.RestoreStep)
+            if (this.Mission.ErrorMovements == MissionErrorMovements.None)
             {
-                case MissionStep.LoadElevator:
-                    this.RestoreLoadElevatorStart();
-                    break;
-
-                default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
-
-                    {
-                        this.Mission.StopReason = StopRequestReason.NoReason;
-                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
-                    break;
+                this.RestoreLoadElevatorStart();
+            }
+            else
+            {
+                this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
             }
         }
 
@@ -176,7 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
             this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
+            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
             this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
             this.MissionsDataProvider.Update(this.Mission);
         }
@@ -195,18 +187,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
                 var loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnitOnBoard is null
+                    && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                    )
+                {
+                    this.LoadUnitChangePosition();
+                    loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                }
                 if (loadUnitOnBoard != null
                     && loadUnitOnBoard.Id == this.Mission.LoadUnitId
                     )
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
                     this.Mission.RestoreStep = MissionStep.ToTarget;
+                    this.Mission.StepTime = DateTime.UtcNow;
                     var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnResume(null);
 
                     return;
                 }
             }
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
@@ -279,6 +280,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         measure = false;
                     }
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                     if (this.Mission.OpenShutterPosition == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
@@ -324,7 +326,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
                     this.MissionsDataProvider.Update(this.Mission);
                 }

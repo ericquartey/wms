@@ -1,0 +1,173 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.LoadFirstDrawerView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="15,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="4"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.4.5" />
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.LoadFirstDrawerPageHeader}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,0"
+                   VerticalAlignment="Top"
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpLFDDescription}" />
+
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="0"
+                                         Height="90"
+                                         Margin="0,30,15,0" />
+        <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                           Grid.Column="1"
+                                           Height="90"
+                                           Margin="0,30,15,0" />
+        <controls:CardSensorPosition Grid.Row="2"
+                                     Grid.Column="2"
+                                     Height="90"
+                                     Margin="0,30,15,0" />
+        <controls:CardSensorDrawer Grid.Row="2"
+                                   Grid.Column="3"
+                                   Height="90"
+                                   Margin="0,30,15,0" />
+
+        <controls:CardSensorBay Grid.Row="3"
+                                Grid.Column="0"
+                                Height="90"
+                                Margin="0,15,15,0" />
+
+        <controls:CardSensorShutter Grid.Row="3"
+                                    Grid.Column="1"
+                                    Height="90"
+                                    Margin="0,15,15,0" />
+
+        <Border Grid.Row="3"
+                Grid.Column="2"
+                Height="90"
+                Margin="0,15,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource VWAPP_CardSensor}"
+                               Text="Step" />
+
+                    <StackPanel Grid.Row="1"
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding Step, FallbackValue=0}" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="/" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding TotalStep, FallbackValue=0}" />
+                    </StackPanel>
+
+                    <controls:PpcProgressBar Grid.Row="2"
+                                             Height="8"
+                                             Margin="8,4,8,8"
+                                             Color1="{DynamicResource FerrettoGreen}"
+                                             Color2="Green"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             Value="{Binding StepPercent, Mode=OneWay}" />
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="3"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding LoadUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{res:Loc InstallationApp.LoadingUnitId}"
+                           MaxValue="999"
+                           MinValue="1" />
+
+        <StackPanel Grid.Row="4"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding StartCommand}"
+                                Content="{res:Loc General.Start}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding StopCommand}"
+                                Content="{res:Loc General.Stop}"
+                                IsBusy="{Binding IsStopPressed}" />
+        </StackPanel>
+
+    </Grid>
+</ctrls:View>

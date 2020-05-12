@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -53,8 +54,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand CorrectCommand =>
-            this.correctCommand
+                    this.correctCommand
             ??
             (this.correctCommand = new DelegateCommand(
                 async () => await this.CorrectCommandAsync(),
@@ -142,18 +155,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         #endregion
 
         #region Indexers
@@ -167,12 +168,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.StepValue):
                         if (!this.StepValue.HasValue)
                         {
-                            return $"Step is required.";
+                            return Localized.Get("InstallationApp.StepRequired");
                         }
 
                         if (this.StepValue.Value <= 0)
                         {
-                            return "Step must be positive.";
+                            return Localized.Get("InstallationApp.StepMustBePositive");
                         }
 
                         break;
@@ -180,12 +181,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputFormCellId):
                         if (!this.InputFormCellId.HasValue)
                         {
-                            return $"InputFormCellId is required.";
+                            return Localized.Get("InstallationApp.InputFormCellIdRequired");
                         }
 
                         if (this.InputFormCellId.Value <= 0)
                         {
-                            return "InputFormCellId must be positive.";
+                            return Localized.Get("InstallationApp.InputFormCellIdMustBePositive");
                         }
 
                         break;
@@ -193,12 +194,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputToCellId):
                         if (!this.InputToCellId.HasValue)
                         {
-                            return $"InputToCellId is required.";
+                            return Localized.Get("InstallationApp.InputToCellIdRequired");
                         }
 
                         if (this.InputToCellId.Value <= 0)
                         {
-                            return "InputToCellId must be positive.";
+                            return Localized.Get("InstallationApp.InputToCellIdMustBePositive");
                         }
 
                         break;
@@ -271,9 +272,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineCellsWebService.UpdatesHeightAsync(this.inputFormCellId.Value, this.inputToCellId.Value, this.sideSelected, this.stepValue.Value);
 
-                this.ShowNotification("Modifica avvenuta con successo", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

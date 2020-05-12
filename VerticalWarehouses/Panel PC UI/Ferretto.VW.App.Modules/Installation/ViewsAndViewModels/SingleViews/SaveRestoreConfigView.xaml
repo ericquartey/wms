@@ -18,60 +18,60 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader}" />
 
         <controls:PpcLabeledText Margin="220,100,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="F:\VW_190012"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
         <controls:PpcButton Margin="220,180,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmSaveButton}"
                             IsEnabled="False" />
 
         <controls:PpcButton Margin="640,100,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}" />
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}" />
 
         <controls:PpcButton Margin="640,180,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortSaveButton}"
                             IsEnabled="False" />
 
         <TextBlock Margin="220,350,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader2}" />
 
         <controls:PpcLabeledText Margin="220,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="F:"
                                  IsEnabled="False"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
         <controls:PpcButton Margin="220,500,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
                             IsEnabled="False" />
 
         <controls:PpcButton Margin="640,420,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigRestoreButton}"
                             IsEnabled="False" />
 
         <controls:PpcButton Margin="640,500,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortRestoreButton}"
                             IsEnabled="False" />
 
     </Grid>

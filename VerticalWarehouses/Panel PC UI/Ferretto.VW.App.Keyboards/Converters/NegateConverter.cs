@@ -11,6 +11,11 @@ namespace Ferretto.VW.App.Keyboards.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value is string text && double.TryParse(text, NumberStyles.Any, culture, out double d0))
+            {
+                value = d0;
+            }
+
             if (value is double d)
             {
                 return -d;

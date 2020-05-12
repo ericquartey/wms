@@ -23,6 +23,8 @@
 
         BackToTarget,
 
+        WaitDeposit,
+
         End,
 
         Error = 101,

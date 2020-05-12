@@ -32,12 +32,12 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="4.2.4" />
+                       Text="4.2.5" />
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.BeltBurnishing}" />
+                       Text="{res:Loc InstallationApp.BeltBurnishing}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -45,10 +45,8 @@
                    Height="Auto"
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}"
-                   TextWrapping="Wrap" />
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingFunctionDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -67,7 +65,97 @@
 
         <Border Grid.Row="2"
                 Grid.Column="3"
+                Height="90"
                 Margin="0,30,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource VWAPP_CardSensor}"
+                               Text="{res:Loc InstallationApp.TotalCyclesCompleted}" />
+
+                    <StackPanel Grid.Row="1"
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding CumulativePerformedCycles}" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="/" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding InputRequiredCycles}" />
+                    </StackPanel>
+
+                    <controls:PpcProgressBar Grid.Row="2"
+                                             Height="8"
+                                             Margin="8,4,8,8"
+                                             Color1="{DynamicResource FerrettoGreen}"
+                                             Color2="Green"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             Value="{Binding CyclesPercent, Mode=OneWay}" />
+
+                </Grid>
+
+            </Border>
+        </Border>
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="0"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{res:Loc InstallationApp.LowerBound}"
+                           WidthNumber="230" />
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="1"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{res:Loc InstallationApp.UpperBound}"
+                           WidthNumber="230" />
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="2"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{res:Loc InstallationApp.DelayBetweenCycles}"
+                           WidthNumber="230" />
+
+        <Border Grid.Row="3"
+                Grid.Column="3"
+                Margin="0,15,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -87,116 +175,15 @@
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli totali completati" />
+                               Style="{DynamicResource VWAPP_CardSensor}"
+                               Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CumulativePerformedCycles}"
-                               TextWrapping="Wrap" />
-
-                </Grid>
-
-            </Border>
-        </Border>
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="0"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.LowerBound}"
-                           WidthNumber="230" />
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="1"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.UpperBound}"
-                           WidthNumber="230" />
-
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="2"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
-                           WidthNumber="230" />
-
-        <Border Grid.Row="3"
-                Grid.Column="3"
-                Height="90"
-                Margin="0,15,15,0"
-                Background="{DynamicResource PpcBackground}">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
-
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli sessione" />
-
-                    <StackPanel Grid.Row="1"
-                                Margin="4"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Orientation="Horizontal">
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding PerformedCyclesThisSession}" />
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="/" />
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding InputRequiredCycles}" />
-                    </StackPanel>
-
-                    <controls:PpcProgressBar Grid.Row="2"
-                                             Height="8"
-                                             Margin="8,4,8,8"
-                                             Color1="{DynamicResource FerrettoGreen}"
-                                             Color2="Green"
-                                             Maximum="100"
-                                             Minimum="0"
-                                             Value="{Binding CyclesPercent, Mode=OneWay}" />
+                               Style="{DynamicResource VWAPP_CardSensor_Data}"
+                               Text="{Binding PerformedCyclesThisSession}" />
 
                 </Grid>
 
@@ -209,7 +196,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding ResetCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
+                            Content="{res:Loc InstallationApp.Reset}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="2"
@@ -221,14 +208,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
+                                Content="{res:Loc InstallationApp.Start}"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
         </StackPanel>
 
     </Grid>

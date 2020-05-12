@@ -20,7 +20,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             services.AddHostedService<DeviceManagerService>();
 
             services
-                .AddScoped<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>();
+                .AddScoped<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>()
+                .AddScoped<IElevatorOverrunConditionEvaluator, ElevatorOverrunConditionEvaluator>();
 
             services
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()
@@ -29,7 +30,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 .AddScoped<IShutterProvider, ShutterProvider>()
                 .AddScoped<IMachineControlProvider, MachineControlProvider>()
                 .AddScoped<ILoadingUnitMovementProvider, LoadingUnitMovementProvider>()
-                .AddScoped<ICarouselProvider, CarouselProvider>();
+                .AddScoped<ICarouselProvider, CarouselProvider>()
+                .AddScoped<IInverterProgrammingProvider, InverterProgrammingProvider>();
 
             return services;
         }

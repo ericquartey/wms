@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -22,16 +18,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorProvider elevatorProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public ProfileProcedureController(
             IElevatorProvider elevatorProvider,
-            IElevatorDataProvider elevatorDataProvider)
+            IElevatorDataProvider elevatorDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -55,12 +55,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("{bayNumber}/save")]
+        [HttpGet("parameters")]
+        public ActionResult<BayProfileCheckProcedure> GetParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber));
+        }
+
+        [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Save(int bayNumber)
+        public IActionResult Save()
         {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber));
+
             return this.Accepted();
         }
 

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.Simulator.Resources;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -86,22 +86,22 @@ namespace Ferretto.VW.Simulator.Services.Models
         public IODeviceModel()
         {
             // Initialize inputs
-            this.inputs.Add(new BitModel("00", false, "Stato funzione sicurezza"));
-            this.inputs.Add(new BitModel("01", false, "Fungo di emergenza"));
-            this.inputs.Add(new BitModel("02", false, "Sensore carter protezione SX"));
-            this.inputs.Add(new BitModel("03", false, "Sensore carter protezione DX"));
-            this.inputs.Add(new BitModel("04", false, "Barriera ottica anti-intrusione"));
-            this.inputs.Add(new BitModel("05", false, "Sensore presenza cassetto in baia"));
-            this.inputs.Add(new BitModel("06", false, "Sensore presenza cassetto inferiore / baia intermedia"));
-            this.inputs.Add(new BitModel("07", false, "Cumulativo Inverter In Fault"));
-            this.inputs.Add(new BitModel("08", false, "Selezione motore elevatore (feedback)"));
-            this.inputs.Add(new BitModel("09", false, "Selezione motore culla (feedback)"));
-            this.inputs.Add(new BitModel("10", false, "Presenza cassetto su culla lato operatore"));
-            this.inputs.Add(new BitModel("11", false, "Presenza cassetto su culla lato macchina"));
-            this.inputs.Add(new BitModel("12", false, "Taratura barriera"));
-            this.inputs.Add(new BitModel("13", false, "Libero"));
-            this.inputs.Add(new BitModel("14", false, "Opzione trolley - Aggancio trolley"));
-            this.inputs.Add(new BitModel("15", false, "Opzione robot - Tasto fine picking (oppure fine picking robot)"));
+            this.inputs.Add(new BitModel("00", false, IODevice.SafetyStatus));
+            this.inputs.Add(new BitModel("01", false, IODevice.EmergencyPB));
+            this.inputs.Add(new BitModel("02", false, IODevice.CarterSensorLeft));
+            this.inputs.Add(new BitModel("03", false, IODevice.CarterSensorRight));
+            this.inputs.Add(new BitModel("04", false, IODevice.LightCurtain));
+            this.inputs.Add(new BitModel("05", false, IODevice.UpperBayBoxSensorPresence));
+            this.inputs.Add(new BitModel("06", false, IODevice.LowerBayBoxSensorPresence));
+            this.inputs.Add(new BitModel("07", false, IODevice.InverterFaultSignal));
+            this.inputs.Add(new BitModel("08", false, IODevice.FeedbackElevatorMotorSelected));
+            this.inputs.Add(new BitModel("09", false, IODevice.FeedbackElevatorChainMotorSelected));
+            this.inputs.Add(new BitModel("10", false, IODevice.OperatorSideElevatorChainBoxPresence));
+            this.inputs.Add(new BitModel("11", false, IODevice.MachineSideElevatorChainBoxPresence));
+            this.inputs.Add(new BitModel("12", false, IODevice.LightCurtainCalibration));
+            this.inputs.Add(new BitModel("13", false, IODevice.Free));
+            this.inputs.Add(new BitModel("14", false, IODevice.TrolleyHook));
+            this.inputs.Add(new BitModel("15", false, IODevice.RobotEndPicking));
 
             // Initialize ouputs
             this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, GetRemoteIOSignalDescription(x))).ToList();
@@ -190,28 +190,28 @@ namespace Ferretto.VW.Simulator.Services.Models
             switch (signalIndex)
             {
                 case 0:
-                    return "Reset funzione sicurezza (impulso 300ms)";
+                    return IODevice.ResetSafetyFunction;
 
                 case 1:
-                    return "Selezione motore elevatore";
+                    return IODevice.MotorElevatorSelection;
 
                 case 2:
-                    return "Selezione motore culla";
+                    return IODevice.MotorElevatorChainSelection;
 
                 case 3:
-                    return "Attivazione lettura altezza (barriera di misura)";
+                    return IODevice.HeightReadingActivation;
 
                 case 4:
-                    return "Attivazione illuminazione baia";
+                    return IODevice.BayLightActivation;
 
                 case 5:
-                    return "Abilitazione al marcia dalla console";
+                    return IODevice.EnableRunConsole;
 
                 case 6:
-                    return "Opzione robot - Missione terminata magazzino";
+                    return IODevice.RobotOptionMissionCompletedWarhouse;
 
                 case 7:
-                    return "Opzione robot - Magazzino pronto/guasto";
+                    return IODevice.RobotOptionWarhouseReadyFault;
 
                 default:
                     return string.Empty;

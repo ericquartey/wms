@@ -241,9 +241,6 @@
     <value>CheckBoxDark</value>
     <comment>Check box label</comment>
   </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="MachineOff" xml:space="preserve">
     <value>Off</value>
   </data>
@@ -273,5 +270,184 @@
   </data>
   <data name="Automatic" xml:space="preserve">
     <value>Automatic</value>
+  </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>Shutting down ...</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Theme change</value>
+  </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>Information</comment>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Information</comment>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} days ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergency is on</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Ensure no emergency buttons are pressed.</value>
+    <comment>Instruction</comment>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Error communicating with services.</value>
+    <comment>Information</comment>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0:0} hours ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Information</comment>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} minutes ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Just now</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Information</comment>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password</value>
+    <comment>Action</comment>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number:</value>
+    <comment>Information</comment>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Username</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>User Name</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>One</value>
+  </data>
+  <data name="BayOneNumber" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Three</value>
+  </data>
+  <data name="BayThreeNumber" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Two</value>
+  </data>
+  <data name="BayTwoNumber" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Switch to Automatic</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="LoadUnitOperations" xml:space="preserve">
+    <value>LoadUnit Operations</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="DiagnosticDetailTitle" xml:space="preserve">
+    <value>DEBUG</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>Finite state machine</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
+  <data name="IODrive" xml:space="preserve">
+    <value>IO Drive</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>No row in the list</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="DateFormatComplete" xml:space="preserve">
+    <value>{0:yyyy.MM.dd HH:mm}</value>
+  </data>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>The area of the machine is unknown</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Converter can only convert to value of type Visibility.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>Id loading unit does not exists.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>The '{0}' property of the '{1}' view model shall contain a valid loading unit identifier.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Parameter cannot be null or empty.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: yyyy.MM.dd}</value>
+  </data>
+  <data name="DateFormatHourMinutes" xml:space="preserve">
+    <value>{0: HH:mm}</value>
   </data>
 </root>

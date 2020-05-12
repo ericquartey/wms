@@ -51,7 +51,17 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 var presentationState = presentation.States.Single(s => s.Type == state.Type);
 
-                state.IsVisible = presentationState.IsVisible;
+                // Succede che se mentre stai effettuando il logout arriva un messaggio per far visualizzare l'errore allora viene mostrato comunque il pulsante di errore
+                if (this.CurrentPresentation == PresentationMode.Login &&
+                    state.Type == PresentationTypes.Error)
+                {
+                    state.IsVisible = false;
+                }
+                else
+                {
+                    state.IsVisible = presentationState.IsVisible;
+                }
+
                 state.IsEnabled = presentationState.IsEnabled;
             }
         }
@@ -74,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Logged, false);
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
-                    this.Show(PresentationTypes.Theme, true);
+                    this.Show(PresentationTypes.Theme, false);
 #if DEBUG
                     this.Show(PresentationTypes.Shutdown, true);
 #endif

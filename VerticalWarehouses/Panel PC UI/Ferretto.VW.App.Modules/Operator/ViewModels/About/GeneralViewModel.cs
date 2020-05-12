@@ -1,31 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
     internal sealed class GeneralViewModel : BaseAboutMenuViewModel
     {
         #region Fields
 
-        private readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
+        private readonly IHealthProbeService healthProbeService;
 
         private readonly IMachineIdentityWebService identityService;
+
+        private readonly IMachineAboutWebService machineAboutWebService;
 
         private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
+
+        private MachineStatistics statistics;
+
+        private int totalMissionCounter;
 
         private DelegateCommand viewStatusSensorsCommand;
 
@@ -39,14 +42,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public GeneralViewModel(
             IMachineIdentityWebService identityService,
-            WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient)
+            IMachineAboutWebService machineAboutWebService,
+            IHealthProbeService healthProbeService)
             : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
-            this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
 
-            this.UpdateWmsServicesStatus();
+            this.machineAboutWebService = machineAboutWebService ?? throw new ArgumentNullException(nameof(machineAboutWebService));
+
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+
+            this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
 
         #endregion
@@ -67,8 +73,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
 
+        public MachineStatistics Statistics
+        {
+            get => this.statistics;
+            set => this.SetProperty(ref this.statistics, value);
+        }
+
+        public int TotalDrawersCounter { get => this.MachineService.Loadunits.Count(); }
+
+        public double TotalDrawersWeight { get => this.MachineService.Loadunits.Sum(s => s.GrossWeight); }
+
+        public int TotalMissionCounter
+        {
+            get => this.totalMissionCounter;
+            set => this.SetProperty(ref this.totalMissionCounter, value);
+        }
+
         public ICommand ViewStatusSensorsCommand =>
-                                            this.viewStatusSensorsCommand
+                            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),
@@ -90,11 +112,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
@@ -109,9 +126,35 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            this.Model = await this.identityService.GetAsync();
+            try
+            {
+                this.Model = await this.identityService.GetAsync();
 
-            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+                this.Statistics = await this.identityService.GetStatisticsAsync();
+
+                this.TotalMissionCounter = await this.machineAboutWebService.MissionTotalNumberAsync();
+
+                this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.healthProbeService.HealthMasStatus);
+
+                this.UpdateWmsServicesStatus(this.healthProbeService.HealthWmsStatus);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected override Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(e.HealthMasStatus);
+
+            this.UpdateWmsServicesStatus(e.HealthWmsStatus);
+
+            return base.OnHealthStatusChangedAsync(e);
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -121,29 +164,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 
-        private Brush GetBrushForServiceStatus(MachineServiceStatus serviceStatus)
+        private Brush GetBrushForServiceStatus(HealthStatus serviceStatus)
         {
             switch (serviceStatus)
             {
-                case MachineServiceStatus.Expired:
-                    return Brushes.Red;
-
-                case MachineServiceStatus.Expiring:
+                case HealthStatus.Initialized:
+                case HealthStatus.Initializing:
                     return Brushes.Gold;
 
-                case MachineServiceStatus.Valid:
+                case HealthStatus.Healthy:
                     return Brushes.Green;
 
                 default:
-                    return Brushes.Gray;
+                    return Brushes.Red;
             }
-        }
-
-        private void OperatorHubClient_ConnectionStatusChanged(
-            object sender,
-            WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
-        {
-            this.UpdateWmsServicesStatus();
         }
 
         private void StatusSensorsCommand()
@@ -168,16 +202,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private void UpdateWmsServicesStatus()
+        private void UpdateWmsServicesStatus(HealthStatus wmsHealthStatus)
         {
-            if (this.dataHubClient.IsConnected)
+            if (wmsHealthStatus is HealthStatus.Healthy || wmsHealthStatus is HealthStatus.Degraded)
             {
-                this.WmsServicesStatusDescription = "Online"; // VW.App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = Resources.OperatorApp.WmsServicesOnline;
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = "Offline"; //VW.App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = Resources.OperatorApp.WmsServicesOffline;
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }

@@ -20,11 +20,7 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly IDataLayerService dataLayerService;
-
-        private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private bool dataLayerIsReady;
 
@@ -35,16 +31,12 @@ namespace Ferretto.VW.MAS.MissionManager
         #region Constructors
 
         public WmsMissionProxyService(
-            IMachinesWmsWebService machinesWmsWebService,
-            IConfiguration configuration,
             IDataLayerService dataLayerService,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
         }
 
@@ -81,63 +73,78 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task RetrieveNewWmsMissionsAsync()
         {
-            if (!this.configuration.IsWmsEnabled() || !this.dataLayerIsReady)
+            if (!this.dataLayerIsReady)
             {
                 return;
             }
 
-            this.Logger.LogDebug("Checking for new WMS missions ...");
-
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
+                var wmsSettingsProvider = scope.ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
+                if (!wmsSettingsProvider.IsEnabled)
+                {
+                    return;
+                }
+
+                this.Logger.LogDebug("Checking for new WMS missions ...");
+
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                 var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
-                // 1. Get all missions from WMS
-                var wmsMissions = await this.machinesWmsWebService.GetMissionsByIdAsync(this.machineId);
-
-                // 2. Get all known WMS missions (already recorded in the local database)
-                var localMissions = missionsDataProvider.GetAllWmsMissions();
-
-                // 3. Select the new unknown WMS missions and queue them
-                var newWmsMissions = wmsMissions
-                    .Where(m => m.BayId.HasValue)
-                    .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
-                    .Where(m => m.Status == MissionStatus.New);
-
-                this.Logger.LogDebug(newWmsMissions.Any()
-                    ? "A total of {newMissionsCount} new WMS mission(s) are available."
-                    : "No new WMS missions are available.", newWmsMissions.Count());
-
-                foreach (var wmsMission in newWmsMissions)
+                try
                 {
-                    var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
-                    try
-                    {
-                        var bay = baysDataProvider.GetByNumber(bayNumber);
+                    // 1. Get all missions from WMS
+                    var machinesWmsWebService = scope.ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+                    var wmsMissions = await machinesWmsWebService.GetMissionsByIdAsync(this.machineId);
 
-                        missionSchedulingProvider.QueueBayMission(
-                            wmsMission.LoadingUnitId,
-                            bay.Number,
-                            wmsMission.Id,
-                            wmsMission.Priority);
-                    }
-                    catch (Exception ex)
+                    // 2. Get all known WMS missions (already recorded in the local database)
+                    var localMissions = missionsDataProvider.GetAllWmsMissions();
+
+                    // 3. Select the new unknown WMS missions and queue them
+                    var newWmsMissions = wmsMissions
+                        .Where(m => m.BayId.HasValue)
+                        .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
+                        .Where(m => m.Status == MissionStatus.New);
+
+                    if (newWmsMissions.Any())
                     {
-                        this.Logger.LogError("Unable to queue mission on bay '{bayNumber}': '{details}'.", bayNumber, ex.Message);
+                        this.Logger.LogDebug("A total of {newMissionsCount} new WMS mission(s) are available.", newWmsMissions.Count());
+                    }
+
+                    foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status is MissionOperationStatus.Executing)))
+                    {
+                        var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
+                        try
+                        {
+                            var bay = baysDataProvider.GetByNumber(bayNumber);
+
+                            missionSchedulingProvider.QueueBayMission(
+                                wmsMission.LoadingUnitId,
+                                bay.Number,
+                                wmsMission.Id,
+                                wmsMission.Priority);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError("Unable to queue mission on bay '{bayNumber}': '{details}'.", bayNumber, ex.Message);
+                        }
+                    }
+
+                    // 4. Select the known missions that were aborted/completed on WMS and abort them
+                    var localMissionsToAbort = localMissions
+                        .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
+                        .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId && m.Status == MissionStatus.Completed)).ToArray();
+
+                    foreach (var localMissionToAbort in localMissionsToAbort)
+                    {
+                        missionSchedulingProvider.AbortMission(localMissionToAbort);
                     }
                 }
-
-                //// 4. Select the known missions that were aborted on WMS and abort them
-                //var localMissionsToAbort = localMissions
-                //    .Where(m => m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
-                //    .Where(m => wmsMissions.Any(m1 => m1.Id == m.WmsId && m1.Status == MissionStatus.Completed)).ToArray();
-
-                //foreach (var localMissionToAbort in localMissionsToAbort)
-                //{
-                //    missionSchedulingProvider.AbortMission(localMissionToAbort);
-                //}
+                catch (Exception ex)
+                {
+                    this.Logger.LogWarning("Unable to retrieve WMS missions: {details}", ex.Message);
+                }
             }
         }
 

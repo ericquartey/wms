@@ -1,23 +1,62 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Installation.Controls.ImportExportFeatures"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:self="clr-namespace:Ferretto.VW.App.Modules.Installation.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:self="clr-namespace:Ferretto.VW.App.Modules.Installation.Controls"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <UserControl.Resources />
 
-    </UserControl.Resources>
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=self:ImportExportFeatures}}">
 
-    <StackPanel Orientation="Horizontal" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=self:ImportExportFeatures}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <CheckBox IsEnabled="{Binding HasParameters}" IsChecked="{Binding IncludeParameters, Mode=TwoWay}" Content="Parametri" Style="{StaticResource PpcCheckBoxStyle}" />
-        <CheckBox IsEnabled="{Binding HasLoadingUnits}" IsChecked="{Binding IncludeLoadingUnits, Mode=TwoWay}" Content="Cassetti" Style="{StaticResource PpcCheckBoxStyle}" />
-        <CheckBox IsEnabled="{Binding HasCellPanels}" IsChecked="{Binding IncludeCellPanels, Mode=TwoWay}" Content="Pannelli" Style="{StaticResource PpcCheckBoxStyle}" />
-        <CheckBox IsEnabled="{Binding HasSetupProcedures}" IsChecked="{Binding IncludeSetupProcedures, Mode=TwoWay}" Content="Dati collaudo" Style="{StaticResource PpcCheckBoxStyle}" />
-
-    </StackPanel>
+        <CheckBox Grid.Column="0"
+                  Margin="0,0,20,0"
+                  Content="{res:Loc InstallationApp.Parameters}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeParameters, Mode=TwoWay}"
+                  IsEnabled="{Binding HasParameters}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox Grid.Column="1"
+                  Margin="0,0,20,0"
+                  Content="{res:Loc InstallationApp.Unit}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeLoadingUnits, Mode=TwoWay}"
+                  IsEnabled="{Binding HasLoadingUnits}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox Grid.Column="2"
+                  Margin="0,0,20,0"
+                  Content="{res:Loc InstallationApp.Panels}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeCellPanels, Mode=TwoWay}"
+                  IsEnabled="{Binding HasCellPanels}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox Grid.Column="3"
+                  Margin="0,0,20,0"
+                  Content="{res:Loc InstallationApp.TestData}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeSetupProcedures, Mode=TwoWay}"
+                  IsEnabled="{Binding HasSetupProcedures}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox Grid.Column="4"
+                  Margin="0,0,0,0"
+                  HorizontalAlignment="Right"
+                  Content="{res:Loc InstallationApp.Statistics}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeStatistics, Mode=TwoWay}"
+                  IsEnabled="{Binding HasStatistics}"
+                  Style="{StaticResource PpcCheckBoxStyle}" />
+    </Grid>
 </UserControl>

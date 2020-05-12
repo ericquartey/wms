@@ -85,11 +85,6 @@ namespace Ferretto.VW.App.Services
             this.Dispose(true);
         }
 
-        public async Task OnUpdateServiceAsync()
-        {
-            await this.GetMachineStatusAsync();
-        }
-
         public async Task GetMachineStatusAsync()
         {
             try
@@ -119,6 +114,11 @@ namespace Ferretto.VW.App.Services
             {
                 // do nothing
             }
+        }
+
+        public async Task OnUpdateServiceAsync()
+        {
+            await this.GetMachineStatusAsync();
         }
 
         public async Task PowerOffAsync()

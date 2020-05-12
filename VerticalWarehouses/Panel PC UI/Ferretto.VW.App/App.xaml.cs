@@ -1,17 +1,20 @@
 using System;
 using System.Configuration;
+using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -93,31 +96,24 @@ namespace Ferretto.VW.App
 
             SplashScreenService.Show();
 
-            this.HACK_ForceItalianLanguage();
+            this.SetLanguage();
+
+            this.ClearTempFolder();
 
             base.OnStartup(e);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // UI controls services
-            containerRegistry.RegisterUiControlServices(
-                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
-
-            // App services
-            var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
-            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
-            var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
-            var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
-
-            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
-
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
+
+            var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
-                var client = c.Resolve<RetryHttpClient>();
+                var client = new HttpClient();
 
                 var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
                 client.DefaultRequestHeaders.Add("Bay-Number", bayNumber.ToString());
@@ -126,12 +122,15 @@ namespace Ferretto.VW.App
                 return client;
             });
 
-            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
+            // UI controls services
+            containerRegistry.RegisterUiControlServices(
+                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
 
-            // WMS Web API services
-            RegisterWmsProviders(containerRegistry);
-            var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
-            containerRegistry.RegisterWmsHub(wmsHubPath);
+            // App services
+            var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
+            var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
+
+            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // USB Watcher
             RegisterUsbWatcher(containerRegistry);
@@ -142,19 +141,15 @@ namespace Ferretto.VW.App
             container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
         }
 
-        private static void RegisterWmsProviders(IContainerRegistry container)
+        private void ClearTempFolder()
         {
-            var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
-            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
-
-            container.RegisterWmsWebServices(wmsServiceUrl, c =>
+            var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
+#if !DEBUG
+            if (Directory.Exists(tempFolder))
             {
-                var client = c.Resolve<RetryHttpClient>();
-
-                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
-
-                return client;
-            });
+                Directory.Delete(tempFolder, true);
+            }
+#endif
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -183,15 +178,44 @@ namespace Ferretto.VW.App
                         .GetAwaiter().GetResult();
                 }
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
             }
         }
 
-        private void HACK_ForceItalianLanguage()
+        private void SetLanguage()
         {
-            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
-            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+            try
+            {
+                string language = System.Configuration.ConfigurationManager.AppSettings["Language"];
+
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(language);
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(language);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex.ToString());
+
+                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
+            }
+
+            // Setup resource manager
+            Localized.Instance.AddResourceManager(ErrorsApp.ResourceManager);
+            Localized.Instance.AddResourceManager(EventArgsMissionChanged.ResourceManager);
+            Localized.Instance.AddResourceManager(General.ResourceManager);
+            Localized.Instance.AddResourceManager(HelpDescriptions.ResourceManager);
+            Localized.Instance.AddResourceManager(InstallationApp.ResourceManager);
+            Localized.Instance.AddResourceManager(LoadLogin.ResourceManager);
+            Localized.Instance.AddResourceManager(MainMenu.ResourceManager);
+            Localized.Instance.AddResourceManager(MaintenanceMenu.ResourceManager);
+            Localized.Instance.AddResourceManager(Menu.ResourceManager);
+            Localized.Instance.AddResourceManager(OperatorApp.ResourceManager);
+            Localized.Instance.AddResourceManager(SensorCard.ResourceManager);
+            Localized.Instance.AddResourceManager(ServiceHealthProbe.ResourceManager);
+            Localized.Instance.AddResourceManager(ServiceMachine.ResourceManager);
+
+            Localized.Instance.CurrentCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion

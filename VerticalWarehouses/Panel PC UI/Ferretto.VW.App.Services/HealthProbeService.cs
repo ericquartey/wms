@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -13,11 +15,7 @@ namespace Ferretto.VW.App.Services
 
         private const int DefaultPollInterval = 3000;
 
-        private const string ErrorMessage = "String cannot be null or empty.";
-
         private readonly Uri baseMasAddress;
-
-        private readonly Uri baseWmsAddress;
 
         private readonly Task healthProbeMasTask;
 
@@ -33,6 +31,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
         private HealthStatus healthMasStatus;
 
         private HealthStatus healthWmsStatus;
@@ -45,15 +45,15 @@ namespace Ferretto.VW.App.Services
 
         public HealthProbeService(
             Uri baseMasAddress,
-            Uri baseWmsAddress,
             string liveHealthCheckPath,
             string readyHealthCheckPath,
+            IMachineWmsStatusWebService wmsStatusWebService,
             IEventAggregator eventAggregator)
         {
             this.baseMasAddress = baseMasAddress ?? throw new ArgumentNullException(nameof(baseMasAddress));
-            this.baseWmsAddress = baseWmsAddress;
             this.liveHealthCheckPath = liveHealthCheckPath ?? throw new ArgumentNullException(nameof(liveHealthCheckPath));
             this.readyHealthCheckPath = readyHealthCheckPath ?? throw new ArgumentNullException(nameof(readyHealthCheckPath));
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
 
             if (eventAggregator is null)
             {
@@ -66,11 +66,8 @@ namespace Ferretto.VW.App.Services
             this.healthProbeMasTask = new Task(
                 async () => await this.RunHealthProbeMasAsync(this.tokenSource.Token), this.tokenSource.Token);
 
-            if (!(this.baseWmsAddress is null))
-            {
-                this.healthProbeWmsTask = new Task(
-                    async () => await this.RunHealthProbeWmsAsync(this.tokenSource.Token), this.tokenSource.Token);
-            }
+            this.healthProbeWmsTask = new Task(
+                async () => await this.RunHealthProbeWmsAsync(this.tokenSource.Token), this.tokenSource.Token);
         }
 
         #endregion
@@ -105,7 +102,7 @@ namespace Ferretto.VW.App.Services
                 {
                     this.healthWmsStatus = value;
 
-                    this.logger.Debug($"Service at '{this.baseWmsAddress}' is {this.healthWmsStatus}.");
+                    this.logger.Debug($"WMS service is {this.healthWmsStatus}.");
 
                     this.healthStatusChangedEvent
                         .Publish(new HealthStatusChangedEventArgs(this.healthMasStatus, this.healthWmsStatus));
@@ -120,7 +117,7 @@ namespace Ferretto.VW.App.Services
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "The value cannot be negative.");
+                    throw new ArgumentOutOfRangeException(nameof(value), Resources.ServiceHealthProbe.ValueCannotNegative);
                 }
 
                 this.pollInterval = value;
@@ -134,7 +131,7 @@ namespace Ferretto.VW.App.Services
         public void Start()
         {
             this.healthProbeMasTask.Start();
-            this.healthProbeWmsTask.Start();
+            this.healthProbeWmsTask?.Start();
         }
 
         public void Stop()
@@ -142,7 +139,7 @@ namespace Ferretto.VW.App.Services
             this.tokenSource.Cancel(false);
         }
 
-        private async Task<HealthStatus> CheckLivelinessStatus(RetryHttpClient client, CancellationToken cancellationToken)
+        private async Task<HealthStatus> CheckLivelinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
             try
             {
@@ -160,8 +157,10 @@ namespace Ferretto.VW.App.Services
             return HealthStatus.Unknown;
         }
 
-        private async Task<HealthStatus> CheckReadinessStatus(RetryHttpClient client, CancellationToken cancellationToken)
+        private async Task<HealthStatus> CheckReadinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
+            this.logger.Debug($"Checking readiness of service at '{client.BaseAddress}' ...");
+
             try
             {
                 var readinessResponseString = await this.GetHealthCheckStatus(client, this.readyHealthCheckPath, cancellationToken);
@@ -186,30 +185,34 @@ namespace Ferretto.VW.App.Services
             return HealthStatus.Unknown;
         }
 
-        private async Task<string> GetHealthCheckStatus(RetryHttpClient client, string healthCheckPath, CancellationToken cancellationToken)
+        private async Task<string> GetHealthCheckStatus(HttpClient client, string healthCheckPath, CancellationToken cancellationToken)
         {
-            var readinessResponse = await client.SendAsync(
-                new System.Net.Http.HttpRequestMessage
-                {
-                    RequestUri = new Uri(this.baseMasAddress, healthCheckPath),
-                    Method = new System.Net.Http.HttpMethod("GET")
-                },
-                System.Net.Http.HttpCompletionOption.ResponseContentRead,
-                cancellationToken);
+            using (var message = new HttpRequestMessage
+            {
+                RequestUri = new Uri(client.BaseAddress, healthCheckPath),
+                Method = new HttpMethod(HttpMethod.Get.Method)
+            })
+            {
+                var response = await client.SendAsync(message,
+                    HttpCompletionOption.ResponseContentRead,
+                    cancellationToken);
 
-            var readinessResponseString = await readinessResponse.Content.ReadAsStringAsync();
-            return readinessResponseString;
+                var responseString = await response.Content.ReadAsStringAsync();
+                return responseString;
+            }
         }
 
         private async Task RunHealthProbeMasAsync(CancellationToken cancellationToken)
         {
             do
             {
-                using (var client = new RetryHttpClient { BaseAddress = this.baseMasAddress })
+                using (var client = new HttpClient { BaseAddress = this.baseMasAddress })
                 {
                     if (this.HealthMasStatus == HealthStatus.Unknown
                         ||
-                        this.HealthMasStatus == HealthStatus.Unhealthy)
+                        this.HealthMasStatus == HealthStatus.Unhealthy
+                        ||
+                        this.HealthMasStatus == HealthStatus.Initializing)
                     {
                         this.HealthMasStatus = await this.CheckReadinessStatus(client, cancellationToken);
                     }
@@ -228,18 +231,24 @@ namespace Ferretto.VW.App.Services
         {
             do
             {
-                using (var client = new RetryHttpClient { BaseAddress = this.baseWmsAddress })
+                try
                 {
-                    if (this.HealthWmsStatus == HealthStatus.Unknown
-                        ||
-                        this.HealthWmsStatus == HealthStatus.Unhealthy)
+                    var healthStatusString = await this.wmsStatusWebService.GetHealthAsync();
+
+                    if (Enum.TryParse<HealthStatus>(healthStatusString, out var healthStatus))
                     {
-                        this.HealthWmsStatus = await this.CheckReadinessStatus(client, cancellationToken);
+                        this.HealthWmsStatus = healthStatus;
                     }
                     else
                     {
-                        this.HealthWmsStatus = await this.CheckLivelinessStatus(client, cancellationToken);
+                        this.logger.Debug($"Unable to parse health status of WMS (response was '{healthStatus}').");
+
+                        this.HealthWmsStatus = HealthStatus.Unknown;
                     }
+                }
+                catch
+                {
+                    this.HealthWmsStatus = HealthStatus.Unhealthy;
                 }
 
                 await Task.Delay(this.pollInterval);

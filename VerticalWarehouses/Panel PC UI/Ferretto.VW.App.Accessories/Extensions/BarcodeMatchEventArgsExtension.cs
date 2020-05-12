@@ -4,6 +4,21 @@
     {
         #region Methods
 
+        public static string GetBearerToken(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.BearerToken.ToString(), out var bearerToken))
+            {
+                return bearerToken;
+            }
+
+            return null;
+        }
+
         public static string GetItemBarCode(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
@@ -19,14 +34,14 @@
             return null;
         }
 
-        public static string GetItemId(this UserActionEventArgs eventArgs)
+        public static string GetItemCode(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
             {
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemId.ToString(), out var itemBarcode))
+            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemCode.ToString(), out var itemBarcode))
             {
                 return itemBarcode;
             }

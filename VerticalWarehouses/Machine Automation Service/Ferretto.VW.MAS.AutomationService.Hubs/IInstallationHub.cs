@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
+        Task InverterProgrammingChanged(IBaseNotificationMessageUI message);
+
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
 
         Task MachineModeChanged(CommonUtils.Messages.MachineMode machineMode);
@@ -35,9 +37,15 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task MoveLoadingUnit(IBaseNotificationMessageUI message);
 
+        Task MoveTest(IBaseNotificationMessageUI message);
+
         Task PositioningNotify(IBaseNotificationMessageUI message);
 
         Task PowerEnableNotify(IBaseNotificationMessageUI message);
+
+        Task ProfileCalibration(IBaseNotificationMessageUI message);
+
+        Task RepetitiveHorizontalMovementsNotify(IBaseNotificationMessageUI message);
 
         Task ResolutionCalibrationNotify(IBaseNotificationMessageUI message);
 

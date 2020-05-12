@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using NLog;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.CommonUtils.Messages
 {
     public class NotificationMessage

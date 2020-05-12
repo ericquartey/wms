@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
@@ -86,7 +87,18 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
             if (message.ClearMessage)
             {
-                this.NotificationMessage = null;
+                if (this.NotificationMessage != null)
+                {
+                    if (this.NotificationSeverity != NotificationSeverity.Success)
+                    {
+                        this.NotificationMessage = null;
+                    }
+                    else
+                    {
+                        _ = Task.Delay(1500).ContinueWith(t => this.NotificationMessage = null, TaskScheduler.Current);
+                    }
+                }
+
                 return;
             }
 
@@ -130,7 +142,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
                     case MasWebApiException webApiException:
                         {
-                            var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+                            var notificationMessage = Resources.Localized.Get("General.ErrorCommunicatingWithServices");
 
                             if (webApiException.InnerException != null)
                             {
@@ -140,9 +152,18 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                             }
                             else
                             {
-                                notificationMessage +=
-                                   System.Environment.NewLine +
-                                   webApiException.Message.Split('\n', '\r').FirstOrDefault();
+                                try
+                                { 
+                                    var problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(webApiException.Response);
+
+                                    notificationMessage +=
+                                       System.Environment.NewLine +
+                                       problemDetails.Detail ?? problemDetails.Title;
+                                }
+                                catch
+                                {
+                                    // do nothing
+                                }
                             }
 
                             this.NotificationMessage = notificationMessage;

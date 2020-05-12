@@ -8,10 +8,11 @@
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -54,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ferretto.VW.App.Accessories\Ferretto.VW.App.Accessories.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />

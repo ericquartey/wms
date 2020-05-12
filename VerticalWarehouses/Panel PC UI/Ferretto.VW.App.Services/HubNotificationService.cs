@@ -22,23 +22,30 @@ namespace Ferretto.VW.App.Services
 
         private readonly Logger logger;
 
+        private readonly IOperatorHubClient operatorHubClient;
+
         #endregion
 
         #region Constructors
 
         public HubNotificationService(
             IEventAggregator eventAggregator,
-            IInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient,
+            IOperatorHubClient operatorHubClient)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
+            this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+
             this.installationHubClient.MessageReceived += this.OnMessageReceived;
             this.installationHubClient.MachineModeChanged += this.OnEventReceived;
             this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
             this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
             this.installationHubClient.BayChainPositionChanged += this.OnBayEventReceived;
             this.installationHubClient.SystemTimeChanged += this.OnEventReceived;
+
+            this.operatorHubClient.ProductsChanged += this.OnEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
 
@@ -172,6 +179,30 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<FsmExceptionMessageData>>()
                         .Publish(fsm);
+                    break;
+
+                case NotificationMessageUI<ProfileCalibrationMessageData> rc:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
+                        .Publish(rc);
+                    break;
+
+                case NotificationMessageUI<MoveTestMessageData> rc:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<MoveTestMessageData>>()
+                        .Publish(rc);
+                    break;
+
+                case NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> rh:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<RepetitiveHorizontalMovementsMessageData>>()
+                        .Publish(rh);
+                    break;
+
+                case NotificationMessageUI<InverterProgrammingMessageData> ip:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterProgrammingMessageData>>()
+                        .Publish(ip);
                     break;
 
                 default:

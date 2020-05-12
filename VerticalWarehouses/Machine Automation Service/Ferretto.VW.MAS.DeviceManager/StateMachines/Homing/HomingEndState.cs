@@ -10,7 +10,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingEndState : StateBase, System.IDisposable
@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             switch (message.Type)
             {
                 case FieldMessageType.InverterPowerOff:
+                case FieldMessageType.InverterPowerOn:
                 case FieldMessageType.CalibrateAxis:
                 case FieldMessageType.InverterSwitchOn:
                 case FieldMessageType.InverterSwitchOff:
@@ -103,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} stopRequest {this.stateData.StopRequestReason}");
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var targetInverter = this.machineData.CurrentInverterIndex;
@@ -119,9 +120,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal
-                    ||
-                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                if (//this.machineData.AxisToCalibrate == Axis.Horizontal
+                    //||
+                    this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevatorDataProvider.UpdateLastIdealPosition(0);
@@ -149,7 +150,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason
                 &&
-                this.machineData.AxisToCalibrate != Axis.BayChain)
+                this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
             {
                 var setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 

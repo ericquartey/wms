@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
@@ -15,13 +15,15 @@ using Prism.Events;
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
     [Warning(WarningsArea.Login)]
-    internal sealed class LoginViewModel : BaseMainViewModel
+    internal sealed class LoginViewModel : BaseMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
 
         private readonly IBayManager bayManager;
+
+        private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IHealthProbeService healthProbeService;
 
@@ -30,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private readonly IMachineErrorsService machineErrorsService;
 
         private readonly ISessionService sessionService;
+
+        private readonly ILocalizationService localizationService;
 
         private DelegateCommand loginCommand;
 
@@ -49,22 +53,30 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IHealthProbeService healthProbeService,
             ISessionService sessionService,
             IBayManager bayManager,
-            IMachineBaysWebService machineBaysWebService)
+            IBarcodeReaderService barcodeReaderService,
+            IMachineBaysWebService machineBaysWebService,
+            ILocalizationService localizationService)
             : base(PresentationMode.Login)
         {
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
+#if DEBUG
             this.UserLogin = new UserLogin
             {
                 UserName = "installer",
-                Password = "password",
+                Password = "vertimag2020",
             };
+#else
+            this.UserLogin = new UserLogin { };
+#endif
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
             this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
@@ -72,12 +84,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
+        public string ActiveContextName => "Login";
+
         #region Properties
 
-        public int BayNumber
-        {
-            get => (int)this.MachineService?.BayNumber;
-        }
+        public int BayNumber => (int)this.MachineService?.BayNumber;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -117,6 +128,34 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public UserLogin UserLogin { get; }
 
         protected override bool IsDataRefreshSyncronous => true;
+
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
+        {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                if (userAction is UserAction.LoginUser)
+                {
+                    try
+                    {
+                        this.ClearNotifications();
+                        var bearerToken = e.GetBearerToken();
+                        var claims = await this.authenticationService.LogInAsync(bearerToken);
+
+                        await this.NavigateToMainMenuAsync(claims);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
+                        this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"));
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -159,7 +198,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
-            await base.OnAppearedAsync();
+            this.IsVisible = true;
+            this.IsEnabled = true;
+
+            await this.barcodeReaderService.StartAsync();
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -179,7 +221,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowNotification("Connection to Automation Service is lost, trying to resume...", Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionLost"), Services.Models.NotificationSeverity.Error);
                 this.RaiseCanExecuteChanged();
             }
         }
@@ -221,28 +263,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                    this.UserLogin.Password,
                    this.UserLogin.SupportToken);
 
-                if (claims != null)
-                {
-                    this.sessionService.SetUserAccessLevel(claims.AccessLevel);
-
-                    await this.machineBaysWebService.ActivateAsync();
-
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Menu),
-                        Utils.Modules.Menu.MAIN_MENU,
-                        data: this.Data,
-                        trackCurrentView: true);
-
-                    this.machineErrorsService.AutoNavigateOnError = true;
-                }
-                else
-                {
-                    this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials, Services.Models.NotificationSeverity.Error);
-                }
+                await this.NavigateToMainMenuAsync(claims);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                this.ShowNotification(Ferretto.VW.App.Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
             finally
             {
@@ -250,9 +275,33 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
+        private async Task NavigateToMainMenuAsync(UserClaims claims)
+        {
+            if (claims != null)
+            {
+                this.sessionService.SetUserAccessLevel(claims.AccessLevel);
+
+                await this.machineBaysWebService.ActivateAsync();
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Menu),
+                    Utils.Modules.Menu.MAIN_MENU,
+                    data: this.Data,
+                    trackCurrentView: true);
+
+                this.machineErrorsService.AutoNavigateOnError = true;
+
+                this.localizationService.ActivateCulture(claims.AccessLevel);
+            }
+            else
+            {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
+            }
+        }
+
         private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (e.PropertyName == nameof(this.MachineService.BayNumber))
                 {
@@ -260,7 +309,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     {
                         this.RaisePropertyChanged(nameof(this.BayNumber));
                     }
-                    catch (HttpRequestException)
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
                     }
                 }
@@ -273,13 +322,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
                 {
-                    try
+                    if (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded)
                     {
-                        this.UserLogin.Password = string.Empty;
-                        this.UserLogin.SupportToken = await this.authenticationService.GetToken();
-                    }
-                    catch (HttpRequestException)
-                    {
+                        try
+                        {
+                            this.UserLogin.Password = string.Empty;
+                            this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                        }
+                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                        {
+                        }
                     }
                 }
             }));

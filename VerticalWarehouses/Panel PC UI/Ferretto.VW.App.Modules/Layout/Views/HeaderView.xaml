@@ -111,11 +111,11 @@
             </ctrls:PpcControl>
 
             <!--  ToggleThemeCommand  -->
-            <ctrls:PpcControl 
-                              VerticalAlignment="Center"
+            <ctrls:PpcControl VerticalAlignment="Center"
+                              Margin="15,0,0,0"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
-                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                              Visibility="Visible">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
                                     Style="{DynamicResource PpcButtonThemeStyle}" />
             </ctrls:PpcControl>
@@ -129,7 +129,7 @@
                               PresentationType="{x:Static enums:PresentationTypes.Shutdown}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
-                                    Content="{x:Static res:VWApp.SwitchOff}" />
+                                    Content="{res:Loc General.SwitchOff}" />
             </ctrls:PpcControl>
         </StackPanel>
 

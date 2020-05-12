@@ -11,7 +11,7 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
     public class StatisticsCellsViewModel : BaseOperatorViewModel
@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

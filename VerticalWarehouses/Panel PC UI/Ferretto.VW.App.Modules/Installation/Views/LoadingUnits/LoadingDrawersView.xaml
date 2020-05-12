@@ -18,40 +18,40 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LoadingDrawersPageHeader}" />
+                   Text="{res:Loc InstallationApp.LoadingDrawersPageHeader}" />
 
         <controls:PpcLabeledText Margin="240,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersTotalDrawers}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersTotalDrawers}" />
 
         <controls:PpcLabeledText Margin="580,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersInsertedDrawers}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersInsertedDrawers}" />
 
         <controls:PpcLabeledText Margin="240,240,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersMaxWeight}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersMaxWeight}" />
 
         <controls:PpcTextBox Margin="580,240,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.LoadingDrawersDrawerToInsert}" />
+                             LabelText="{res:Loc InstallationApp.LoadingDrawersDrawerToInsert}" />
 
         <controls:PpcButton Margin="580,480,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.LoadingDrawersStartInsertion}" />
+                            Content="{res:Loc InstallationApp.LoadingDrawersStartInsertion}" />
         <controls:PpcButton Margin="240,480,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.LoadingDrawersNextDrawer}" />
+                            Content="{res:Loc InstallationApp.LoadingDrawersNextDrawer}" />
 
     </Grid>
 </ctrls:View>

@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
     internal sealed class PowerEnableStartState : IoStateBase
@@ -60,9 +59,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         public override void Start()
         {
-            var powerEnableIoMessage = new IoWriteMessage();
+            var powerEnableIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
-            this.Logger.LogTrace($"1:Power Enable ={powerEnableIoMessage}");
+            this.Logger.LogDebug($"1:Power Enable ={powerEnableIoMessage}");
 
             powerEnableIoMessage.PowerEnable = this.enable;
 

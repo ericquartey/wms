@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -24,6 +21,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand bayControlCommand;
 
         private DelegateCommand bayHeightCommand;
+
+        private DelegateCommand carouselCalibrationCommand;
 
         private DelegateCommand testShutterCommand;
 
@@ -50,6 +49,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             BayHeight,
 
+            CarouselCalibration,
+
             TestShutter,
         }
 
@@ -64,8 +65,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayControl),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
@@ -74,21 +74,46 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayHeight),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+
+        private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
+
+        public ICommand CarouselCalibrationCommand =>
+                    this.carouselCalibrationCommand
+            ??
+            (this.carouselCalibrationCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.CarouselCalibration),
+                () => this.CanExecuteCommand() &&
+               //this.MachineModeService.MachineMode == MachineMode.Manual &&
+               (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsBayControlCompleted => this.BayControl.IsCompleted;
+        public bool IsBayControlBypassed => this.BayControl.IsBypassed;
 
-        public bool IsBayHeightCompleted => false;
+        public bool IsBayControlCompleted => this.BayControl.IsCompleted && !this.BayControl.IsBypassed;
 
-        public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
+        public bool IsBayProfileBypassed => this.BayProfile.IsBypassed;
 
-        public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
+        public bool IsBayProfileCompleted => this.BayProfile.IsCompleted && !this.BayProfile.IsBypassed;
+
+        public bool IsCarouselCalibrationBypassed => this.CarouselCalibration.IsBypassed;
+
+        public bool IsCarouselCalibrationCompleted => this.CarouselCalibration.IsCompleted && !this.CarouselCalibration.IsBypassed;
+
+        public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
+
+        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
+
+        public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
+
+        public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;
+
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         public ICommand TestShutterCommand =>
-            this.testShutterCommand
+                    this.testShutterCommand
             ??
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
@@ -96,11 +121,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
-        protected SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
+        private SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
 
-        protected BaySetupStatus BaySetupStatus
+        private SetupStepStatus BayProfile => this.BaySetupStatus?.Profile ?? new SetupStepStatus();
+
+        private BaySetupStatus BaySetupStatus
         {
             get
             {
@@ -125,13 +152,27 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
         }
 
-        protected SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
-
-        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+        private SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
 
         #endregion
 
         #region Methods
+
+        public override async Task OnAppearedAsync()
+        {
+            this.RaisePropertyChanged(nameof(this.IsBayControlBypassed));
+            this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileBypassed));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileCompleted));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterBypassed));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationBypassed));
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
+
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+
+            await base.OnAppearedAsync();
+        }
 
         protected override async Task OnDataRefreshAsync()
         {
@@ -145,12 +186,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
-            this.RaisePropertyChanged(nameof(this.IsBayHeightCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileCompleted));
             this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
 
             this.bayControlCommand?.RaiseCanExecuteChanged();
             this.bayHeightCommand?.RaiseCanExecuteChanged();
             this.testShutterCommand?.RaiseCanExecuteChanged();
+            this.carouselCalibrationCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -169,6 +211,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.PROFILEHEIGHTCHECKVIEW,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.CarouselCalibration:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.CAROUSELCALIBRATION,
                         data: null,
                         trackCurrentView: true);
                     break;

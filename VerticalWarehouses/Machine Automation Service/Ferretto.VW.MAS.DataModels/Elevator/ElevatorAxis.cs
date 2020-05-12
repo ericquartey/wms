@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double resolution;
 
-        private int totalCycles = 1;
-
         private double upperBound = 1;
 
         #endregion
@@ -104,20 +102,6 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public int TotalCycles
-        {
-            get => this.totalCycles;
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
-                }
-
-                this.totalCycles = value;
-            }
-        }
-
         public double UpperBound
         {
             get => this.upperBound;
@@ -131,6 +115,16 @@ namespace Ferretto.VW.MAS.DataModels
                 this.upperBound = value;
             }
         }
+
+        /// <summary>
+        /// this parameter is added to the belt elongation
+        /// </summary>
+        public double? VerticalDepositOffset { get; set; }
+
+        /// <summary>
+        /// this parameter is added when positioning for pickup mission
+        /// </summary>
+        public double? VerticalPickupOffset { get; set; }
 
         public WeightMeasurement WeightMeasurement { get; set; }
 
@@ -146,15 +140,15 @@ namespace Ferretto.VW.MAS.DataModels
             }
             if (this.EmptyLoadMovement.Speed < this.FullLoadMovement.Speed)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Speed configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementSpeedConfigurationInvalid, this.Orientation));
             }
             if (this.EmptyLoadMovement.Acceleration < this.FullLoadMovement.Acceleration)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Acceleration configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementAccelerationConfigurationInvalid, this.Orientation));
             }
             if (this.EmptyLoadMovement.Deceleration < this.FullLoadMovement.Deceleration)
             {
-                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Deceleration configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorDescriptions.AxisMovementDecelerationConfigurationInvalid, this.Orientation));
             }
 
             var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;
@@ -164,6 +158,7 @@ namespace Ferretto.VW.MAS.DataModels
                 "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
             // if weight is unknown we move as full weight
+            // min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration/Deceleration
             var scalingFactor = (loadingUnit.GrossWeight == 0 || loadingUnit.GrossWeight > maxGrossWeight) ? 1 : (loadingUnit.GrossWeight / maxGrossWeight);
 
             return new MovementParameters

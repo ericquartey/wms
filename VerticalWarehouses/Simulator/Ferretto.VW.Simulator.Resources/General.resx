@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Control Word</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="Inputs" xml:space="preserve">
+    <value>Inputs</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="Outputs" xml:space="preserve">
+    <value>Outputs</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
   <data name="ImportConfigurationCommand" xml:space="preserve">
     <value>Load configuration</value>
   </data>
@@ -126,7 +144,13 @@
   <data name="StartSimulatorCommand" xml:space="preserve">
     <value>Start simulation</value>
   </data>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Status Word</value>
+  </data>
   <data name="StopSimulatorCommand" xml:space="preserve">
     <value>Stop simulation</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>VW Simulator</value>
   </data>
 </root>

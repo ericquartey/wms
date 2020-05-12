@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly IMachineService machineService;
+
         private readonly ISessionService sessionService;
 
         private MachineIdentity machineIdentity;
@@ -37,11 +40,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public MaintenanceMenuViewModel(
             IBayManager bayManager,
-            ISessionService sessionService)
+            ISessionService sessionService, IMachineService machineService)
             : base(PresentationMode.Operator)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -75,15 +79,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineModeService.MachinePower == MachinePowerState.Powered));
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Compact) &&
+                      this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                     (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+               )
+            );
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                this.CanExecuteCommand));
+                () => false && this.CanExecuteCommand()));
 
         public ICommand MenuUpdateCommand =>
             this.menuUpdateCommand

@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public BayNumber CloseShutterBayNumber { get; set; }
 
+        public ShutterPosition CloseShutterPosition { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public int? DestinationCellId { get; set; }
@@ -23,6 +25,8 @@ namespace Ferretto.VW.MAS.DataModels
         public HorizontalMovementDirection Direction { get; set; }
 
         public bool EjectLoadUnit { get; set; }
+
+        public MachineErrorCode ErrorCode { get; set; }
 
         public MissionErrorMovements ErrorMovements { get; set; }
 
@@ -52,6 +56,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionStep Step { get; set; }
 
+        public DateTime StepTime { get; set; }
+
         public StopRequestReason StopReason { get; set; }
 
         public BayNumber TargetBay { get; set; }
@@ -69,10 +75,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsRestoringType()
         {
-            return this.MissionType == MissionType.WMS
-                || this.MissionType == MissionType.IN
-                || this.MissionType == MissionType.Manual
-                || this.MissionType == MissionType.OUT;
+            return this.MissionType is MissionType.WMS
+                || this.MissionType is MissionType.IN
+                || this.MissionType is MissionType.LoadUnitOperation
+                || this.MissionType is MissionType.OUT
+                || this.MissionType is MissionType.Compact
+                || this.MissionType is MissionType.FullTestIN
+                || this.MissionType is MissionType.FullTestOUT;
         }
 
         public override string ToString()
@@ -94,7 +103,8 @@ namespace Ferretto.VW.MAS.DataModels
                 $"RestoreConditions={this.RestoreConditions}; " +
                 $"Status={this.Status}; " +
                 $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
-                $"OpenShutterPosition={this.OpenShutterPosition}; " +
+                $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
+                $"CloseShutterPosition={this.CloseShutterPosition}; " +
                 $"DeviceNotifications={this.DeviceNotifications}; " +
                 $"Action={this.Action}; " +
                 $"BayNotifications={this.BayNotifications}; " +
@@ -102,7 +112,8 @@ namespace Ferretto.VW.MAS.DataModels
                 $"Direction={this.Direction}; " +
                 $"EjectLoadUnit={this.EjectLoadUnit}; " +
                 $"Priority={this.Priority}; " +
-                $"StopReason={this.StopReason}; ";
+                $"StopReason={this.StopReason}; " +
+                $"ErrorCode={this.ErrorCode}; ";
             return returnString;
         }
 

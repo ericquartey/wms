@@ -5,6 +5,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -22,7 +23,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Celle" />
+                   Text="{res:Loc InstallationApp.Cells}" />
 
         <ctrls:PpcMenuWrap Grid.Row="1"
                            ItemsSource="{Binding CellItems}" />
@@ -31,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Cassetti" />
+                   Text="{res:Loc InstallationApp.Unit}" />
 
         <ctrls:PpcMenuWrap Grid.Row="4"
                            ItemsSource="{Binding LodingUnitItems}" />

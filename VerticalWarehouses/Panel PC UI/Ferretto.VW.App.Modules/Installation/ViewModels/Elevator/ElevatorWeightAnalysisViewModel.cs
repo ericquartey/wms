@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -239,12 +241,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDisplacement):
                         if (!this.InputDisplacement.HasValue)
                         {
-                            return $"InputDisplacement is required.";
+                            return Localized.Get("InstallationApp.InputDisplacementRequired");
                         }
 
                         if (this.InputDisplacement.Value <= 0)
                         {
-                            return "InputDisplacement must be strictly positive.";
+                            return Localized.Get("InstallationApp.InputDisplacementMustBePositive");
                         }
 
                         break;
@@ -252,12 +254,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputNetWeight):
                         if (!this.InputNetWeight.HasValue)
                         {
-                            return $"InputNetWeight is required.";
+                            return Localized.Get("InstallationApp.InputNetWeightRequired");
                         }
 
                         if (this.InputNetWeight.Value <= 0)
                         {
-                            return "InputNetWeight must be strictly positive.";
+                            return Localized.Get("InstallationApp.InputNetWeightMustBePositive");
                         }
 
                         break;
@@ -401,7 +403,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Warning);
             }
             else if (message.Status == MessageStatus.OperationError)
@@ -409,7 +411,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Error);
             }
             else if (message.Status == MessageStatus.OperationEnd)
@@ -422,7 +424,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureCompleted,
+                    VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"),
                     Services.Models.NotificationSeverity.Success);
             }
         }
@@ -467,7 +469,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.InputNetWeight.Value,
                     this.loadingUnit?.Id);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(ex);
@@ -486,7 +488,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineElevatorWebService.StopAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

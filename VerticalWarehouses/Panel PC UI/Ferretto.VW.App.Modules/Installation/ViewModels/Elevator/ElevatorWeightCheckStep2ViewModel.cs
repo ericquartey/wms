@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -157,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.TestToRun):
                         if (this.TestToRun < 0)
                         {
-                            return $"Test to Run must be positive";
+                            return Localized.Get("InstallationApp.TestToRunMustBePositive");
                         }
 
                         break;
@@ -165,12 +166,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputWeight):
                         if (!this.InputWeight.HasValue)
                         {
-                            return "Input Weight must be specified.";
+                            return Localized.Get("InstallationApp.InputWeightMustBeSpecified");
                         }
 
                         if (this.InputWeight.Value <= 0)
                         {
-                            return "Input Weight must be strictly positive.";
+                            return Localized.Get("InstallationApp.InputWeightMustBePositive");
                         }
 
                         break;
@@ -179,7 +180,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.WeightTolerance <= 0)
                         {
-                            return "Weight Tolerance must be strictly positive.";
+                            return Localized.Get("InstallationApp.WeightToleranceMustBePositive");
                         }
 
                         break;
@@ -269,11 +270,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.IsErrored())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"));
             }
             else if (message.IsNotRunning())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureCompleted);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"));
             }
 
             this.MeasuredWeight = message.Data?.Weight ?? this.MeasuredWeight;
@@ -300,7 +301,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsWorking = false;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsWorking = false;
                 this.ShowNotification(ex);

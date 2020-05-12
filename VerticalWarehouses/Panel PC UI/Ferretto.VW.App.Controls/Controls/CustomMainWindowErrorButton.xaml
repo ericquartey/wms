@@ -13,6 +13,6 @@
 
     <controls:PpcButton x:Name="LayoutRoot"
                         Command="{Binding ExecuteCommand}"
-                        Content="{x:Static res:General.Error}"
+                        Content="{res:Loc General.Error}"
                         Style="{DynamicResource PpcButtonMachineErrorHeaderStyle}" />
 </ctrls:PpcControl>

@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -28,6 +29,23 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Image Grid.ColumnSpan="2"
+               Width="60"
+               Margin="30"
+               gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+               gif:ImageBehavior.AutoStart="true">
+            <Image.Visibility>
+                <MultiBinding Converter="{StaticResource MBTUI}">
+                    <Binding Path="IsBusy" />
+                    <Binding Converter="{StaticResource TTUI}"
+                             ConverterParameter="Invert"
+                             ElementName="scaffolder"
+                             Path="FocusStructure" />
+                </MultiBinding>
+            </Image.Visibility>
+        </Image>
+
+
         <Grid Grid.Column="0"
               Margin="0">
             <Grid.RowDefinitions>
@@ -45,11 +63,10 @@
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15,0,15,0"
                                     Padding="-2,1,0,0"
-                                    Abbrevation="4...1"
+                                    Abbrevation="Imp"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding GoToImport}"
-                                    Content="Importa"
-                                    IsBusy="{Binding IsBusy}"
+                                    Content="{res:Loc InstallationApp.Import}"
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
@@ -57,11 +74,10 @@
                 <controls:PpcButton Grid.Row="1"
                                     Margin="15,15,15,0"
                                     Padding="-2,1,0,0"
-                                    Abbrevation="4...2"
+                                    Abbrevation="Exp"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding GoToExport}"
-                                    Content="{x:Static res:InstallationApp.Export}"
-                                    IsBusy="{Binding IsBusy}"
+                                    Content="{res:Loc InstallationApp.Export}"
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
@@ -87,7 +103,7 @@
                            Margin="0,10,15,10"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Parametri" />
+                           Text="{res:Loc InstallationApp.Parameters}" />
             </StackPanel>
             <!--#endregion-->
 

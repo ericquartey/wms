@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -15,17 +17,21 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MachineModeProvider(
             IMachineVolatileDataProvider machineVolatileDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<MachineModeProvider> logger,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -35,10 +41,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MachineMode GetCurrent()
         {
-            return this.machineVolatileDataProvider.Mode;
+            return this.machineVolatileDataProvider.UiFilteredMode;
         }
 
-        public void RequestChange(MachineMode machineMode)
+        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null)
         {
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
@@ -49,22 +55,43 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 case MachineMode.Automatic:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Manual:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Compact:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    break;
+
+                case MachineMode.FullTest:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.RequiredCycles = cycles;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
+
+                    var procedureParameters = this.setupProceduresDataProvider.GetFullTest(bayNumber);
+                    this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                    this.machineVolatileDataProvider.StopTest = false;
+                    break;
+
+                case MachineMode.FirstTest:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                    this.machineVolatileDataProvider.StopTest = false;
                     break;
 
                 default:
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
+
+            this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
 
             this.SendCommandToMachineManager(
                 new MachineModeMessageData(machineMode),
@@ -72,6 +99,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
+        }
+
+        public void StopTest()
+        {
+            this.machineVolatileDataProvider.StopTest = true;
         }
 
         #endregion

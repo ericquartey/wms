@@ -21,8 +21,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 
-// ReSharper disable ArrangeThisQualifier
-// ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
     internal partial class InverterDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
@@ -194,8 +192,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
-                this.Logger.LogError($"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}", ex);
-                serviceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}");
+                serviceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
 
                 this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
@@ -289,7 +287,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             // connection error
                             this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
-                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
 
                             continue;

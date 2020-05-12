@@ -16,7 +16,7 @@
 
         DataLayerReady,
 
-        AssignedMissionOperationChanged,
+        AssignedMissionChanged,
 
         SwitchAxis,
 
@@ -84,6 +84,8 @@
 
         InverterFaultReset,
 
+        InverterProgramming,
+
         ResetSecurity,
 
         WeightAcquisitionCommand,
@@ -106,6 +108,16 @@
 
         BayLight,
 
-        FullTest
+        ProfileCalibration,
+
+        MoveTest,
+
+        StopTest,
+
+        WmsEnableChanged,
+
+        /// Repetitive horizontal movements on a specified bay.
+        /// </summary>
+        RepetitiveHorizontalMovements
     }
 }

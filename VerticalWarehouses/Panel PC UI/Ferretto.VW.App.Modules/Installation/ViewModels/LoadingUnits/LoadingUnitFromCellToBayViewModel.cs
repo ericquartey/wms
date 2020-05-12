@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -26,12 +27,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                IMachineBaysWebService machineBaysWebService,
-                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                IBayManager bayManagerService)
-        : base(
-            machineLoadingUnitsWebService,
-            bayManagerService)
+            IMachineBaysWebService machineBaysWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
+            IBayManager bayManagerService)
+            : base(
+                machineLoadingUnitsWebService,
+                machineModeWebService,
+                bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -71,9 +74,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    this.LoadingUnitId.HasValue &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
-                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
+                    (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
         }
 
         public override async Task OnAppearedAsync()
@@ -89,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidEnteredDrawerId"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -97,15 +101,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidSourceChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
+                //await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
+                await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -128,7 +133,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.SensorsService.RefreshAsync(true);
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
             {
                 this.SelectBayPositionUp();
             }
@@ -176,14 +181,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineBaysWebService.RemoveLoadUnitAsync(lu);
 
-                this.SensorsService.RefreshAsync(true);
-                this.MachineService.OnUpdateServiceAsync();
+                var refreshTask = this.SensorsService.RefreshAsync(true);
 
-                this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+                var updateTask = this.MachineService.OnUpdateServiceAsync();
+
+                this.ShowNotification(string.Format(Localized.Get("(InstallationApp.DrawerIdExtracted"), lu), Services.Models.NotificationSeverity.Warning);
+
+                await refreshTask;
+
+                await updateTask;
             }
-            catch (Exception e)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(e);
+                this.ShowNotification(ex);
             }
         }
 

@@ -14,7 +14,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateEndState : StateBase, IChangeRunningStateEndState, IEndState
@@ -28,6 +27,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         private readonly IMachineControlProvider machineControlProvider;
 
         private readonly IMachineVolatileDataProvider machineModeDataProvider;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -43,6 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IErrorsProvider errorsProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             ISensorsProvider sensorsProvider,
+            IMissionsDataProvider missionsDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.machineModeDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -88,16 +91,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     && this.sensorsProvider.IsMachineSecurityRunning == runningState.Enable)
                 {
                     this.IsCompleted = true;
-                    if (runningState.Enable)
-                    {
-                        this.errorsProvider.ResolveAll();
-                    }
 
                     this.machineModeDataProvider.Mode = MachineMode.Manual;
                     this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}; Running state {runningState.Enable}");
+
+                    if (this.missionsDataProvider.GetAllExecutingMissions().Any(m => m.TargetBay == commandMessage.RequestingBay && m.Status == MissionStatus.Waiting))
+                    {
+                        this.baysDataProvider.Light(commandMessage.RequestingBay, true);
+                    }
                 }
                 else
                 {
+                    this.Logger.LogWarning($"ChangeRunningStateEndState: Running state {runningState.Enable} not valid or error detected");
+
                     var endMessageData = new ChangeRunningStateMessageData(false, null, runningState.CommandAction, StopRequestReason.Error);
                     this.EndMessage = new NotificationMessage(
                         endMessageData,
@@ -162,6 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
             {
                 this.IsCompleted = true;
+                this.Logger.LogInformation($"ChangeRunningStateEndState: Completed; Running state {this.sensorsProvider.IsMachineSecurityRunning}");
             }
 
             return returnValue;

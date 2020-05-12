@@ -8,16 +8,26 @@
 
         Manual,
 
+        LoadUnitOperations,
+
         Test,
 
         Compact,
 
-        Restore,
+        FullTest,
+
+        FirstTest,
 
         SwitchingToAutomatic,
 
         SwitchingToManual,
 
-        SwitchingToCompact
+        SwitchingToLoadUnitOperations,
+
+        SwitchingToCompact,
+
+        SwitchingToFullTest,
+
+        SwitchingToFirstTest,
     }
 }

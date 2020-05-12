@@ -15,5 +15,7 @@
         ConfirmPutOperation,
 
         ConfirmInventoryOperation,
+
+        LoginUser
     }
 }

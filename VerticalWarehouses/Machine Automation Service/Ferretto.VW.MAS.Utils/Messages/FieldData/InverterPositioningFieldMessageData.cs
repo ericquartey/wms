@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterPositioningFieldMessageData : FieldMessageData, IInverterPositioningFieldMessageData
+    public sealed class InverterPositioningFieldMessageData : FieldMessageData, IInverterPositioningFieldMessageData
     {
         #region Constructors
 
@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             IPositioningFieldMessageData positioningFieldMessageData,
             int[] targetAcceleration,
             int[] targetDeceleration,
+            int startPosition,
             int targetPosition,
             int[] targetSpeed,
             int[] switchPosition,
@@ -29,6 +30,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.NumberCycles = positioningFieldMessageData.NumberCycles;
             this.TargetAcceleration = targetAcceleration;
             this.TargetDeceleration = targetDeceleration;
+            this.StartPosition = startPosition;
             this.TargetPosition = targetPosition;
             this.TargetSpeed = targetSpeed;
             this.SwitchPosition = switchPosition;
@@ -43,9 +45,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
             this.FeedRate = positioningFieldMessageData.FeedRate;
             this.ComputeElongation = positioningFieldMessageData.ComputeElongation;
+            this.IsProfileCalibrate = positioningFieldMessageData.IsProfileCalibrate;
+            this.IsHorizontalCalibrate = positioningFieldMessageData.IsHorizontalCalibrate;
+            this.IsPickupMission = positioningFieldMessageData.IsPickupMission;
 
             this.IsWeightMeasureDone = false;
             this.MeasuredWeight = 0.0;
+            this.IsProfileCalibrateDone = false;
         }
 
         #endregion
@@ -59,6 +65,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int Direction { get; set; }
 
         public double FeedRate { get; set; }
+
+        public bool IsHorizontalCalibrate { get; set; }
+
+        public bool IsPickupMission { get; set; }
+
+        public bool IsProfileCalibrate { get; set; }
+
+        public bool IsProfileCalibrateDone { get; set; }
 
         public bool IsTorqueCurrentSamplingEnabled { get; set; }
 
@@ -79,6 +93,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public bool RefreshAll { get; }
 
         public BayNumber RequestingBay { get; set; }
+
+        public int StartPosition { get; set; }
 
         public int[] SwitchPosition { get; set; }
 

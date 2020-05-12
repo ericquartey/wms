@@ -1,18 +1,50 @@
 ﻿using System;
-using System.ComponentModel;
-using System.IO.Ports;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public class MockReader : IBarcodeReader, IDisposable
+    public class MockReader : IBarcodeReaderDriver, IQueryableDevice, IDisposable
     {
         #region Fields
+
+        private readonly IList<string> barcodes;
+
+        private readonly int intervalMilliseconds;
+
+        private int barcodeIndex;
 
         private bool isDisposed;
 
         private Timer timer;
+
+        #endregion
+
+        #region Constructors
+
+        public MockReader(
+            IList<string> barcodes,
+            int intervalMilliseconds)
+        {
+            if (barcodes is null)
+            {
+                throw new ArgumentNullException(nameof(barcodes));
+            }
+
+            if (!barcodes.Any())
+            {
+                throw new ArgumentException(nameof(barcodes));
+            }
+
+            if (intervalMilliseconds <= 0)
+            {
+                throw new ArgumentException(nameof(intervalMilliseconds));
+            }
+
+            this.barcodes = barcodes;
+            this.intervalMilliseconds = intervalMilliseconds;
+        }
 
         #endregion
 
@@ -22,12 +54,26 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         #endregion
 
+        #region Properties
+
+        public DeviceInformation Information => new DeviceInformation
+        {
+            FirmwareVersion = "0.0.0.1-Mock",
+            ModelNumber = "Newland 1553",
+            ManufactureDate = DateTime.Now.Subtract(TimeSpan.FromDays(95)),
+            SerialNumber = "1023841985"
+        };
+
+        #endregion
+
         #region Methods
 
-        public void Connect(IBarcodeConfigurationOptions options)
+        public void Connect(ConfigurationOptions options)
         {
             this.Disconnect();
-            this.timer = new Timer(this.OnTimerTick, null, 10000, 10000);
+            this.barcodeIndex = 0;
+
+            this.timer = new Timer(this.OnTimerTick, null, this.intervalMilliseconds, this.intervalMilliseconds);
         }
 
         public void Disconnect()
@@ -45,7 +91,10 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void OnTimerTick(object state)
         {
-            this.BarcodeReceived?.Invoke(this, new ActionEventArgs("L001F"));
+            var index = this.barcodeIndex;
+            this.barcodeIndex = (this.barcodeIndex + 1) % this.barcodes.Count;
+
+            this.BarcodeReceived?.Invoke(this, new ActionEventArgs(this.barcodes[index]));
         }
 
         protected virtual void Dispose(bool disposing)

@@ -16,11 +16,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission Complete(int id);
 
-        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType);
+        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType, LoadingUnitLocation destination = LoadingUnitLocation.NoLocation);
 
-        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority);
+        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority, LoadingUnitLocation destination = LoadingUnitLocation.NoLocation);
 
-        Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber);
+        Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType);
 
         void Delete(int id);
 
@@ -33,6 +33,10 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <returns>The list of new or executing missions, ordered by priority, allocated to the specified bay.</returns>
         IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber);
 
+        List<int> GetAllActiveUnitGoBay();
+
+        List<int> GetAllActiveUnitGoCell();
+
         IEnumerable<Mission> GetAllExecutingMissions();
 
         IEnumerable<Mission> GetAllMissions();
@@ -41,9 +45,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission GetById(int id);
 
+        Mission GetByWmsId(int id);
+
         IDbContextTransaction GetContextTransaction();
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
+
+        int PurgeWmsMissions();
 
         void Reload(Mission mission);
 

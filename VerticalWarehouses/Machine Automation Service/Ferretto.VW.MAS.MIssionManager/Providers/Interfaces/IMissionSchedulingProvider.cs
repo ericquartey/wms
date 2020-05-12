@@ -11,15 +11,17 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void AbortMission(Mission localMissionToAbort);
 
-        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber);
+        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, MissionType missionType);
 
         void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority);
 
         void QueueCellMission(int loadingUnitId, int targetCellId);
 
-        void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
+        bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, int cycle, IServiceProvider serviceProvider);
 
-        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber);
+        bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
+
+        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType);
 
         #endregion
     }

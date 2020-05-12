@@ -5,6 +5,7 @@
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:k="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:rules="clr-namespace:Ferretto.VW.App.Controls.ValidationRules"
              Style="{StaticResource PpcSpinEditStyle}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -34,7 +35,7 @@
                                        Foreground="{DynamicResource PpcForeground}"
                                        MouseDoubleClick="OnKeyboardOpenHandler"
                                        Template="{TemplateBinding ActualEditorControlTemplate}"
-                                       TouchEnter="OnKeyboardOpenHandler" />
+                                       TouchUp="OnKeyboardOpenHandler" />
                     <dxe:ButtonsControl x:Name="PART_RightButtons"
                                         Grid.Column="3"
                                         Margin="0"
@@ -90,7 +91,7 @@
                        Margin="4,0"
                        FontSize="{StaticResource FontSize_Normal}"
                        FontWeight="Normal"
-                       Foreground="{DynamicResource FerrettoLightGray}"
+                       Foreground="{DynamicResource SpinEditTitle_Foreground}"
                        Text="{Binding LabelText}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
@@ -111,14 +112,30 @@
                           Margin="0"
                           HorizontalContentAlignment="Center"
                           AllowDefaultButton="False"
-                          EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           FontSize="{StaticResource FontSize_Very_High}"
                           Foreground="{DynamicResource PpcForeground}"
-                          Increment="1"
                           IsEnabled="{Binding IsEnabled}"
                           MaxValue="{Binding MaxValue}"
                           MinValue="{Binding MinValue}"
                           Template="{StaticResource SpinEditControlTemplate}">
+                <dxe:SpinEdit.Resources>
+                    <rules:BindingProxy x:Key="proxy"
+                                        Data="{Binding}" />
+                </dxe:SpinEdit.Resources>
+                <dxe:SpinEdit.EditValue>
+                    <Binding Mode="TwoWay"
+                             Path="EditValue"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <rules:NumericValidationRule>
+                                <rules:NumericValidationRule.Wrapper>
+                                    <rules:WrapperNumericValidationRule MaxValue="{Binding Data.MaxValue, Source={StaticResource proxy}}"
+                                                                        MinValue="{Binding Data.MinValue, Source={StaticResource proxy}}" />
+                                </rules:NumericValidationRule.Wrapper>
+                            </rules:NumericValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </dxe:SpinEdit.EditValue>
                 <dxe:SpinEdit.Buttons>
                     <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                     IsLeft="True"

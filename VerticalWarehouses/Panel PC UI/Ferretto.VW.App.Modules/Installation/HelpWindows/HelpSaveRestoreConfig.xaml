@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpSaveRestoreConfig"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
@@ -13,100 +13,153 @@
 
         <Image Width="200"
                Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCPageHeader}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCPageHeader}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,165,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCSaveFolder}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,165,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveFolder}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,165,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpSRCSaveFolder}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,165,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveFolder}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,125,0,0"
-                     Width="300"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpSRCSaveSide}" />
+        <TextBlock Width="300"
+                   Margin="220,125,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveSide}" />
 
-        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,165,0,0" Width="180"
-                                                 ContentText="F:\VW_190012"
-                                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}"  />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,165,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="F:\VW_190012"
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,305,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmSaveButton}"
-                     IsEnabled="True" />
+        <controls:PpcButton Margin="20,305,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmSaveButton}"
+                            IsEnabled="True" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,235,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}"
-                     />
+        <controls:PpcButton Margin="20,235,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,375,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortSaveButton}"
-                     IsEnabled="True" />
+        <controls:PpcButton Margin="20,375,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortSaveButton}"
+                            IsEnabled="True" />
 
-        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,165,0,0" Width="180"
-                                                 ContentText="F:\VW_190012"
-                                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" IsEnabled="True" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,165,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="F:\VW_190012"
+                                 IsEnabled="True"
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,305,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
-                     IsEnabled="True" />
+        <controls:PpcButton Margin="530,305,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
+                            IsEnabled="True" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,235,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
-                     IsEnabled="True" />
+        <controls:PpcButton Margin="530,235,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigRestoreButton}"
+                            IsEnabled="True" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,375,0,0"
-                    Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
-                     IsEnabled="True" />
+        <controls:PpcButton Margin="530,375,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortRestoreButton}"
+                            IsEnabled="True" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,125,0,0"
-                     Width="300"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpSRCLoadSide}" />
+        <TextBlock Width="300"
+                   Margin="530,125,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCLoadSide}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,235,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCSaveButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,235,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveButton}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,305,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCSaveConfirmButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,305,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveConfirmButton}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,375,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCSaveAbortButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,375,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCSaveAbortButton}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,235,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCLoadButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,235,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCLoadButton}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,305,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCLoadConfirmButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,305,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCLoadConfirmButton}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,375,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpSRCLoadAbortButton}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,375,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSRCLoadAbortButton}" />
 
     </Grid>
 </UserControl>

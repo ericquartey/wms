@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -11,7 +13,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService
@@ -31,7 +32,10 @@ namespace Ferretto.VW.MAS.MachineManager
             switch (command.Type)
             {
                 case MessageType.ChangeRunningState:
-                    this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                    lock (this.syncMachineObject)
+                    {
+                        this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                    }
                     break;
 
                 case MessageType.MoveLoadingUnit:
@@ -39,10 +43,6 @@ namespace Ferretto.VW.MAS.MachineManager
                     {
                         this.OnMoveLoadingUnit(command, serviceProvider);
                     }
-                    break;
-
-                case MessageType.FullTest:
-                    this.OnFullTest(command, serviceProvider);
                     break;
             }
             return Task.CompletedTask;
@@ -55,7 +55,8 @@ namespace Ferretto.VW.MAS.MachineManager
                 return;
             }
 
-            if (!this.isDataLayerReady)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (!machineVolatileDataProvider.IsAutomationServiceReady)
             {
                 this.Logger.LogError($"Failed to start Change Running State machine mission: DataLayer is not ready!");
                 this.NotifyCommandError(command);
@@ -83,6 +84,11 @@ namespace Ferretto.VW.MAS.MachineManager
                         else
                         {
                             this.Logger.LogWarning("Failed to create Change Running State machine mission");
+                            var activeMachineMission = machineMissionsProvider.GetMissionsByType(FsmType.ChangeRunningType, MissionType.Manual).FirstOrDefault();
+                            if (activeMachineMission != null)
+                            {
+                                machineMissionsProvider.StopMachineMission(activeMachineMission.FsmId, StopRequestReason.Stop);
+                            }
                         }
 
                         break;
@@ -107,11 +113,6 @@ namespace Ferretto.VW.MAS.MachineManager
             }
         }
 
-        private void OnFullTest(CommandMessage command, IServiceProvider serviceProvider)
-        {
-            throw new NotImplementedException();
-        }
-
         private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
@@ -124,7 +125,8 @@ namespace Ferretto.VW.MAS.MachineManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            if (!this.isDataLayerReady)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (!machineVolatileDataProvider.IsAutomationServiceReady)
             {
                 this.Logger.LogError($"Unable to start load unit movement: dataLayer is not ready.");
                 this.NotifyCommandError(command);
@@ -145,11 +147,15 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 try
                                 {
-                                    missionMoveProvider.StartMission(mission, command, serviceProvider, true);
+                                    if (!missionMoveProvider.StartMission(mission, command, serviceProvider, true))
+                                    {
+                                        machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                        this.Logger.LogInformation($"Start Mission error: Machine status switched to {machineVolatileDataProvider.Mode}");
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.Logger.LogError($"Failed to start mission: {ex.Message}");
+                                    this.Logger.LogError($"Failed to start mission: {ex}");
                                     this.NotifyCommandError(command);
                                 }
                             }
@@ -171,12 +177,12 @@ namespace Ferretto.VW.MAS.MachineManager
                                 || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
                                 )
                             {
-                                this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
+                                this.Logger.LogWarning($"Conditions not met to activate Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} .");
                             }
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to activate mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to activate mission: {ex}");
                         }
                         break;
 
@@ -201,7 +207,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to abort mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to abort mission: {ex}");
                         }
                         break;
 
@@ -226,7 +232,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to stop mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to stop mission: {ex}");
                         }
                         break;
 

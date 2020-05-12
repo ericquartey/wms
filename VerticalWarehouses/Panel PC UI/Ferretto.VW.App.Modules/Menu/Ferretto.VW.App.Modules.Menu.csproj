@@ -8,10 +8,11 @@
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -46,13 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <None Remove="Models\**" />
-    <Page Remove="Models\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Remove="App.xaml" />
   </ItemGroup>
 
@@ -82,9 +76,5 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
-  </Target>
 
 </Project>

@@ -15,7 +15,6 @@ using Ferretto.VW.MAS.Utils.Missions;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class MachineMissionsProvider : IMachineMissionsProvider
@@ -77,9 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type)
         {
-            return this.machineMissions.Where(m => (m.Type == fsmType)
-                    && (m.MachineData is IMoveLoadingUnitMachineData data)
-                    && data.MissionType == type);
+            return this.machineMissions.Where(m => (m.Type == fsmType));
         }
 
         public bool PauseMachineMission(Guid fsmId)
@@ -154,7 +151,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             {
                                 mission.MissionType = MissionType.Manual;
                                 mission.TargetBay = command.RequestingBay;
-                                mission.CreationDate = DateTime.Now;
+                                mission.CreationDate = DateTime.UtcNow;
+                                mission.StepTime = DateTime.UtcNow;
                             }
                             this.machineMissions.Add(newMission);
                             missionId = newMission.FsmId;

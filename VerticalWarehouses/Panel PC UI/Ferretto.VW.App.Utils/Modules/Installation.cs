@@ -1,10 +1,35 @@
 ﻿namespace Ferretto.VW.Utils.Modules
 {
+    public static class Accessories
+    {
+        #region Fields
+
+        public const string AlphaNumericBar = "AlphaNumericBarSettingsViewModel";
+
+        public const string BarcodeReader = "BarcodeReaderSettingsViewModel";
+
+        public const string BarcodeReaderConfig = "BarcodeReaderConfigurationViewModel";
+
+        public const string CardReader = "CardReaderSettingsViewModel";
+
+        public const string LabelPrinter = "LabelPrinterSettingsViewModel";
+
+        public const string LaserPointer = "LaserPointerSettingsViewModel";
+
+        public const string TokenReader = "TokenReaderSettingsViewModel";
+
+        public const string WeightingScale = "WeightingScaleSettingsViewModel";
+
+        #endregion
+    }
+
     public static class Installation
     {
         #region Fields
 
         public const string BELTBURNISHING = "BeltBurnishingViewModel";
+
+        public const string CAROUSELCALIBRATION = "CarouselCalibrationViewModel";
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
@@ -12,17 +37,15 @@
 
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
-        public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
-
         public const string DATETIME = "DateTimeViewModel";
 
         public const string FULLTEST = "FullTestViewModel";
 
+        public const string HORIZONTALCHAINCALIBRATION = "HorizontalChainCalibrationViewModel";
+
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
-
-        public const string PARAMETERINVERTER = "ParameterInverterViewModel";
 
         public const string PROFILEHEIGHTCHECKVIEW = "ProfileHeightCheckViewModel";
 
@@ -43,6 +66,8 @@
         public const string VERTICALRESOLUTIONCALIBRATION = "VerticalResolutionCalibrationViewModel";
 
         public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";
+
+        public const string WMSSETTINGS = "WmsSettingsViewModel";
 
         #endregion
 
@@ -97,6 +122,19 @@
 
                 #endregion
             }
+
+            #endregion
+        }
+
+        public static class Inverters
+        {
+            #region Fields
+
+            public const string INVERTERSPARAMETERSIMPORT = "InvertersParametersImportViewModel";
+
+            public const string PARAMETERINVERTER = "ParameterInverterViewModel";
+
+            public const string PARAMETERSINVERTERDETAILS = "ParametersInverterDetailsViewModel";
 
             #endregion
         }

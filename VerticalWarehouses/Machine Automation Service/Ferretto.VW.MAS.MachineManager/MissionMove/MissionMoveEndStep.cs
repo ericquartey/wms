@@ -32,8 +32,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
+            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
+
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.End;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
@@ -42,6 +45,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.StopReason == StopRequestReason.NoReason)
             {
+                this.Logger.LogInformation($"End Move load unit {this.Mission.LoadUnitId} to {this.Mission.LoadUnitDestination} {this.Mission.DestinationCellId} on bay {this.Mission.TargetBay} ");
+
                 this.Mission.Status = MissionStatus.Completed;
                 this.MissionsDataProvider.Update(this.Mission);
 
@@ -55,6 +60,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MissionsDataProvider.Update(this.Mission);
 
                 this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+            }
+
+            if (this.Mission.MissionType == MissionType.LoadUnitOperation)
+            {
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             }
 
             return true;

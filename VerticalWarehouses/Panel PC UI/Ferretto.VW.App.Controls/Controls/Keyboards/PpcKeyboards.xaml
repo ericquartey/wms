@@ -6,79 +6,96 @@
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:keyboardConverters="clr-namespace:Ferretto.VW.App.Keyboards.Converters;assembly=Ferretto.VW.App.Keyboards"
                       xmlns:keyboards="clr-namespace:Ferretto.VW.App.Keyboards.Controls;assembly=Ferretto.VW.App.Keyboards"
-                      xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
+                      xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       Title="PpcKeyboards"
                       Width="800"
                       Height="450"
                       IsClosed="{Binding IsClosed}"
+                      Background="Transparent"
                       mc:Ignorable="d">
     <dialog:PpcDialogView.Resources>
         <keyboardConverters:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
-
+        <converters:BooleanToPasswordFontFamilyConverter x:Key="BooleanToPasswordFontFamilyConverter" />
 
         <Style x:Key="KeyboardTextBoxStyle"
                BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                TargetType="{x:Type TextBox}">
-            <Setter Property="Padding" Value="0,15" />
+            <Setter Property="Padding" Value="30,15,65,15" />
+            <Setter Property="Margin" Value="15" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
             <Setter Property="Background" Value="#3000" />
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
-                        <DockPanel LastChildFill="False">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
                             <TextBlock Margin="5"
-                                       DockPanel.Dock="Right"
+                                       Grid.Column="1"
                                        FontSize="{DynamicResource FontSize_Normal}"
                                        Foreground="{DynamicResource FerrettoRed}"
                                        Text="{Binding ElementName=MyAdorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
                                        Visibility="Collapsed" />
 
                             <Border Padding="5"
+                                    Grid.Column="1"
                                     Background="{DynamicResource FerrettoRed}"
-                                    CornerRadius="0,2,2,0"
-                                    DockPanel.Dock="Right">
+                                    CornerRadius="0">
 
                                 <iconPacks:PackIconModern Foreground="{DynamicResource FerrettoPureWhite}"
                                                           Kind="WarningCircle" />
                             </Border>
 
                             <Border BorderBrush="{DynamicResource FerrettoRed}"
+                                    Grid.ColumnSpan="2"
                                     BorderThickness="{DynamicResource PpcBorderThickness}">
                                 <AdornedElementPlaceholder Name="MyAdorner" />
                             </Border>
-                        </DockPanel>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
+                <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
     </dialog:PpcDialogView.Resources>
-    <dialog:PpcDialogView.Background>
-        <SolidColorBrush Opacity="0.5"
-                         Color="Snow" />
-    </dialog:PpcDialogView.Background>
-    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
+    <Grid Background="{DynamicResource KeyboardBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="150" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Border VerticalAlignment="Top"
+                Visibility="{Binding Path=LabelText, Converter={StaticResource TTUI}}"
+                Margin="15" Padding="15,5" Background="{DynamicResource KeyboardHeaderBackground}">
+
+            <TextBlock Text="{Binding LabelText}"
+                       HorizontalAlignment="Center"
+                   FontSize="{DynamicResource FontSize_Very_High}"
+                       Foreground="{DynamicResource KeyboardHeaderForeground}">
+            </TextBlock>
+        </Border>
+
         <TextBox x:Name="textBox"
                  Grid.Row="1"
-                 Margin="50,15"
+                 Margin="19,15"
+                 Foreground="{DynamicResource PasswordBoxKeyboard_Foreground}"
+                 FontFamily="{Binding IsPassword, Converter={StaticResource BooleanToPasswordFontFamilyConverter}}"
                  Style="{StaticResource KeyboardTextBoxStyle}"
                  Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
 
-        <keyboards:Keyboard Grid.Row="2"
+        <keyboards:Keyboard Grid.Row="2" Margin="15,0"
                             KeyboardCommand="Keyboard_KeyboardCommand"
                             KeyboardLayout="{Binding Path=KeyboardLayoutCode, Converter={StaticResource LayoutCodeToKeyboardLayoutConverter}}"
                             KeyboardLayoutChangeRequest="Keyboard_KeyboardLayoutChangeRequest" />
@@ -88,6 +105,7 @@
                 Padding="5"
                 HorizontalAlignment="Center"
                 Background="Transparent"
+                Visibility="Collapsed"
                 Command="{Binding CloseCommand}"
                 Style="{StaticResource {x:Type Button}}">
             <iconPacks:PackIconFontAwesome Width="32"

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
     internal sealed class RunningStateProvider : BaseProvider, IRunningStateProvider
@@ -35,9 +36,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Properties
 
-        public bool IsHoming => this.machineVolatileDataProvider.IsHomingExecuted;
+        public Dictionary<BayNumber, bool> IsBayHoming => this.machineVolatileDataProvider.IsBayHomingExecuted;
 
-        public bool IsRunning => this.machineVolatileDataProvider.IsMachineRunning;
+        public MachinePowerState MachinePowerState => this.machineVolatileDataProvider.MachinePowerState;
 
         #endregion
 

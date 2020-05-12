@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
         private readonly SubscriptionToken machineModeChangedToken;
@@ -162,54 +164,21 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void CheckMissingLoadunits()
+        private string GetViewDescription(int activeErrorCode)
         {
-            try
+            string viewDesc = Utils.Modules.Errors.ERRORDETAILSVIEW;
+
+            if ((activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnElevator) ||
+                (activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnBay))
             {
-                if (this.machineService.MachinePower.Equals(MachinePowerState.Powered) &&
-                    this.machineService.MachineMode.Equals(MachineMode.Automatic) &&
-                    this.machineService.MachineStatus.EmbarkedLoadingUnit is null &&
-                    this.ActiveError is null)
-                {
-                    lock (this)
-                    {
-                        // presenza elevatore
-                        if (this.sensorsService.IsLoadingUnitOnElevator &&
-                            !this.sensorsService.IsZeroChain)
-                        {
-                            //Task.Run(() => this.machineErrorsWebService.SetErrorPPCAsync(MachineErrorCode.LoadUnitMissingOnElevator)).GetAwaiter().GetResult(); 
-                        }
-
-                        // presenza baia 1
-                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayOne))
-                        {
-                        }
-                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayOne))
-                        {
-                        }
-
-                        // presenza baia 2
-                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayTwo))
-                        {
-                        }
-                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayTwo))
-                        {
-                        }
-
-                        // presenza baia 3
-                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayThree))
-                        {
-                        }
-                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayThree))
-                        {
-                        }
-                    }
-                }
+                viewDesc = Utils.Modules.Errors.ERRORLOADUNITMISSING;
             }
-            catch (Exception ex)
+            if (activeErrorCode == (int)MachineErrorCode.InverterFaultStateDetected)
             {
-                string s = "";
+                viewDesc = Utils.Modules.Errors.ERRORINVERTERFAULT;
             }
+
+            return viewDesc;
         }
 
         private async Task NavigateToErrorPageAsync()
@@ -222,6 +191,26 @@ namespace Ferretto.VW.App.Services
             if (this.ActiveError is null)
             {
                 await Application.Current.Dispatcher.BeginInvoke(
+                   System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                   new Action(() =>
+                   {
+                       if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), this.ViewErrorActive))
+                       {
+                           this.navigationService.GoBack();
+                       }
+                   }));
+
+                this.ViewErrorActive = null;
+            }
+            else
+            {
+                string viewRequest = this.GetViewDescription(this.ActiveError.Code);
+
+                this.logger.Debug("Received alarm code: " + this.ActiveError.Code.ToString());
+
+                if ((this.ViewErrorActive != null) && (this.ViewErrorActive != viewRequest))
+                {
+                    await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
@@ -230,37 +219,25 @@ namespace Ferretto.VW.App.Services
                             this.navigationService.GoBack();
                         }
                     }));
-            }
-            else
-            {
-                this.ViewErrorActive = Utils.Modules.Errors.ERRORDETAILSVIEW;
+                }
 
-                if ((this.ActiveError.Code == (int)MachineErrorCode.LoadUnitMissingOnElevator) ||
-                    (this.ActiveError.Code == (int)MachineErrorCode.LoadUnitSourceElevator))
-                {
-                    this.ViewErrorActive = Utils.Modules.Errors.ERRORLOADUNITMISSING;
-                }
-                if (this.ActiveError.Code == (int)MachineErrorCode.InverterFaultStateDetected)
-                {
-                    this.ViewErrorActive = Utils.Modules.Errors.ERRORINVERTERFAULT;
-                }
+                this.ViewErrorActive = viewRequest;
 
                 await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
                         this.navigationService.Appear(
-                            nameof(Utils.Modules.Errors),
-                            this.ViewErrorActive,
-                            data: null,
-                            trackCurrentView: true);
+                                nameof(Utils.Modules.Errors),
+                                this.ViewErrorActive,
+                                data: null,
+                                trackCurrentView: true);
                     }));
             }
         }
 
         private void OnChangedEventArgs(EventArgs e)
         {
-            this.CheckMissingLoadunits();
         }
 
         private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
@@ -279,12 +256,10 @@ namespace Ferretto.VW.App.Services
 
         private void OnMachineStatusChanged(MachineStatusChangedMessage e)
         {
-            this.CheckMissingLoadunits();
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.CheckMissingLoadunits();
         }
 
         #endregion

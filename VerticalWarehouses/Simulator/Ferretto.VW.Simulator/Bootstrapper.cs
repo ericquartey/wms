@@ -11,6 +11,14 @@ namespace Ferretto.VW.Simulator
 {
     internal class Bootstrapper : UnityBootstrapper
     {
+        #region Fields
+
+        private const string AutostartArgumentKey = "--autostart";
+
+        private const string ConfigurationArgumentKey = "--configuration";
+
+        #endregion
+
         #region Methods
 
         public void BindViewModelToView<TViewModel, TView>()
@@ -22,6 +30,7 @@ namespace Ferretto.VW.Simulator
         {
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<IMachineService>());
+            this.Container.RegisterInstance(ServiceFactory.Get<ICultureService>());
             //this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
 
             this.Container.RegisterType<MainWindowViewModel>();
@@ -48,18 +57,18 @@ namespace Ferretto.VW.Simulator
             var application = Application.Current as App;
             application.MainWindow.DataContext = mainWindowViewModel;
 
-            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals("--configuration", System.StringComparison.InvariantCultureIgnoreCase)))
+            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals(ConfigurationArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 var filePath = System.Environment
                     .GetCommandLineArgs()
-                    .SkipWhile(a => !a.Equals("--configuration", System.StringComparison.InvariantCultureIgnoreCase))
+                    .SkipWhile(a => !a.Equals(ConfigurationArgumentKey, System.StringComparison.InvariantCultureIgnoreCase))
                     .Skip(1)
                     .FirstOrDefault();
 
                 mainWindowViewModel.LoadConfiguration(filePath);
             }
 
-            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals("--autostart", System.StringComparison.InvariantCultureIgnoreCase)))
+            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals(AutostartArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 mainWindowViewModel.StartSimulatorCommand.Execute(null);
             }

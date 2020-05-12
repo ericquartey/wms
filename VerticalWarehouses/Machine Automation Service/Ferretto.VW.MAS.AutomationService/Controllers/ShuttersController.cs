@@ -5,9 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -60,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("test-parameters")]
         public ActionResult<RepeatedTestProcedure> GetTestParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetShutterTest(this.BayNumber));
+            return this.Ok(this.setupProceduresDataProvider.GetBayShutterTest(this.BayNumber));
         }
 
         [HttpPost("move")]
@@ -68,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Move(ShutterMovementDirection direction)
         {
-            this.shutterProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
+            this.shutterProvider.Move(direction, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

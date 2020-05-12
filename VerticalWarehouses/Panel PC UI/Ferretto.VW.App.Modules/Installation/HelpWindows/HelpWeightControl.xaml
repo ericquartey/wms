@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpWeightControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -12,89 +12,132 @@
 
         <Image Width="200"
                Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:InstallationApp.WeightControl}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.WeightControl}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpWCDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpWCTestRun}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCTestRun}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpWCFinalResult}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCFinalResult}" />
 
-        <controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,210,0,0"
-                                                     Width="180"
-                                                     Highlighted="True" IsEnabled="True"
-                                                     InputText="250,0"
+        <controls:PpcTextBox Width="180"
+                             Margin="20,210,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="250,0"
+                             IsEnabled="True"
+                             LabelText="{res:Loc InstallationApp.InsertedWeight}" />
 
-                                                     LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,280,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="5,0"
+                                 LabelText="{res:Loc InstallationApp.AcceptableWeightTolerance}" />
 
-        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
-                                                  ContentText="5,0"
-                                                  LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
+        <controls:PpcTextBox Width="180"
+                             Margin="20,140,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="80,5"
+                             IsEnabled="True"
+                             LabelText="{res:Loc InstallationApp.TestRun}" />
 
-        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
-                                                       Width="180"
-                                                       Highlighted="True" IsEnabled="True"
-                                                       InputText="80,5"
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,350,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="245,0"
+                                 LabelText="{res:Loc InstallationApp.MeasuredWeight}" />
 
-                                                       LabelText="{x:Static res:InstallationApp.TestRun}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Misura corretta"
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
-        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
-                                                  ContentText="245,0"
-                                                  LabelText="{x:Static res:InstallationApp.MeasuredWeight}"  />
+        <controls:PpcButton Margin="530,210,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.Start}"
+                            IsEnabled="True" />
 
-        <controls:PpcLabeledText     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
-                                                  ContentText="Misura corretta"
-                                                  LabelText="{x:Static res:InstallationApp.Output}" />
+        <controls:PpcButton Margin="530,280,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{res:Loc InstallationApp.Stop}"
+                            IsEnabled="True" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,210,0,0"
-                    Content="{x:Static res:InstallationApp.Start}"
-                    IsEnabled="True"
-                      />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightInserted}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
-                    Content="{x:Static res:InstallationApp.Stop}"
-                    IsEnabled="True"
-                      />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,280,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightTollerance}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpWCWeightInserted}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,350,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightMeasured}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpWCWeightTollerance}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCStart}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,350,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpWCWeightMeasured}" />
-
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpWCStart}" />
-
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,280,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpWCStop}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,280,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpWCStop}" />
 
     </Grid>
 </UserControl>

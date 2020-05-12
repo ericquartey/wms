@@ -1,19 +1,16 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.MAS.AutomationService;
-using Ferretto.VW.MAS.DeviceManager;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -28,6 +25,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -41,6 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider,
+            IErrorsProvider errorsProvider,
             IEventAggregator eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider ?? throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -195,12 +196,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("horizontal/calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalCalibration(HorizontalMovementDirection direction)
+        {
+            this.elevatorProvider.MoveHorizontalCalibration(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("horizontal/move-manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalManual(direction, -1, false, null, null, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalManual(direction, -1, false, null, null, true, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -223,6 +233,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetCellId: null,
                 checkHomingDone: true,
                 waitContinue: false,
+                isPickupMission: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -292,12 +303,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 manualMovment: false,
                 targetPosition,
-                false,
+                computeElongation: false,
                 performWeighting,
                 targetBayPositionId: this.elevatorDataProvider.GetCachedCurrentBayPosition()?.Id,
                 targetCellId: this.elevatorDataProvider.GetCachedCurrentCell()?.Id,
                 checkHomingDone: true,
                 waitContinue: false,
+                isPickupMission: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -328,6 +340,36 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SearchHorizontalZero()
         {
             this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/calibration/set-completed")]
+        public IActionResult SetHorizontalChainCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), false);
+            return this.Ok();
+        }
+
+        [HttpPost("deposit/and/pickup/set-completed")]
+        public IActionResult SetDepositAndPickUpTestCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetDepositAndPickUpTest(), false);
+            return this.Ok();
+        }
+
+        [HttpPost("horizontal/calibration/update-distance")]
+        public IActionResult SetHorizontalChainCalibrationDistance(double distance)
+        {
+            this.elevatorDataProvider.UpdateHorizontalDistance(distance);
+            return this.Ok();
+        }
+
+        [HttpPost("set-loadunit-on-elevator")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadUnitOnElevator(int loadingUnitId)
+        {
+            this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
             return this.Accepted();
         }
 
@@ -367,6 +409,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.UnloadToCell(cellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpPost("vertical/lowerbound")]
+        public IActionResult UpdateVerticalLowerBound(double newLowerBound)
+        {
+            this.elevatorDataProvider.UpdateVerticalLowerBound(newLowerBound);
+            return this.Ok();
         }
 
         [HttpPost("vertical/resolution")]

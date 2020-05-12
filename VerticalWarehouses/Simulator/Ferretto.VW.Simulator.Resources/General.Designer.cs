@@ -61,11 +61,65 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Control Word.
+        /// </summary>
+        public static string ControlWord {
+            get {
+                return ResourceManager.GetString("ControlWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load configuration.
         /// </summary>
         public static string ImportConfigurationCommand {
             get {
                 return ResourceManager.GetString("ImportConfigurationCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input.
+        /// </summary>
+        public static string Input {
+            get {
+                return ResourceManager.GetString("Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inputs.
+        /// </summary>
+        public static string Inputs {
+            get {
+                return ResourceManager.GetString("Inputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output.
+        /// </summary>
+        public static string Output {
+            get {
+                return ResourceManager.GetString("Output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outputs.
+        /// </summary>
+        public static string Outputs {
+            get {
+                return ResourceManager.GetString("Outputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Safety.
+        /// </summary>
+        public static string Safety {
+            get {
+                return ResourceManager.GetString("Safety", resourceCulture);
             }
         }
         
@@ -88,11 +142,29 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status Word.
+        /// </summary>
+        public static string StatusWord {
+            get {
+                return ResourceManager.GetString("StatusWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop simulation.
         /// </summary>
         public static string StopSimulatorCommand {
             get {
                 return ResourceManager.GetString("StopSimulatorCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VW Simulator.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }

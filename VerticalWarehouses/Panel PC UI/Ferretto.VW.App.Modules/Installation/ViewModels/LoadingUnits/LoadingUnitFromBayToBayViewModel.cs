@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -20,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly ISensorsService sensorsService;
+        private readonly Services.ISensorsService sensorsService;
 
         private DelegateCommand confirmEjectLoadingUnitCommand;
 
@@ -55,10 +54,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToBayViewModel(
             IMachineBaysWebService machineBaysWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            ISensorsService sensorsService,
-            IBayManager bayManagerService)
+            Services.ISensorsService sensorsService,
+            Services.IBayManager bayManagerService,
+            IMachineModeWebService machineModeWebService)
             : base(
                 machineLoadingUnitsWebService,
+                machineModeWebService,
                 bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
@@ -144,19 +145,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual;
+        }
+
         public async Task GetLoadingUnits()
         {
             try
             {
-                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-                this.loadingUnits = lst;
+                this.loadingUnits = await this.MachineLoadingUnitsWebService.GetAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
-            }
-            finally
-            {
             }
         }
 
@@ -172,21 +175,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var source = this.GetLoadingUnitSource(!(this.MachineStatus.LoadingUnitPositionUpInBay != null));
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidSourceChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 var loadingUnit = this.MachineStatus.LoadingUnitPositionUpInBay != null ?
                                   this.MachineStatus.LoadingUnitPositionUpInBay?.Id.ToString() :
                                   this.MachineStatus.LoadingUnitPositionDownInBay?.Id.ToString();
-                int id = 0;
+                var id = 0;
                 int.TryParse(loadingUnit, out id);
 
                 this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Id == id)?.Id;
 
                 if (this.LoadingUnitId is null)
                 {
-                    this.ShowNotification("Id cassetto in baia non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidDrawerIdInBay"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -195,7 +198,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta destinazione non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidDestinationChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

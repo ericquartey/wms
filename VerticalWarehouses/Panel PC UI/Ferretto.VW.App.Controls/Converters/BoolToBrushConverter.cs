@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Controls.Converters
 {
@@ -13,7 +12,7 @@ namespace Ferretto.VW.App.Controls.Converters
     {
         #region Properties
 
-        public SolidColorBrush FalseColor { get; set; }
+        public string FalseColor { get; set; }
 
         public SolidColorBrush TrueColor { get; set; }
 
@@ -35,7 +34,16 @@ namespace Ferretto.VW.App.Controls.Converters
                 throw new InvalidOperationException(nameof(this.TrueColor));
             }
 
-            if (!(this.FalseColor is SolidColorBrush))
+            //if (!(this.FalseColor is SolidColorBrush))
+            //{
+            //    throw new InvalidOperationException(nameof(this.FalseColor));
+            //}
+            object resource = null;
+            try
+            {
+                resource = Application.Current.FindResource(this.FalseColor);
+            }
+            catch (ResourceReferenceKeyNotFoundException ex)
             {
                 throw new InvalidOperationException(nameof(this.FalseColor));
             }
@@ -47,7 +55,7 @@ namespace Ferretto.VW.App.Controls.Converters
 
             #endregion
 
-            return condition ? this.TrueColor : this.FalseColor;
+            return condition ? this.TrueColor : resource;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

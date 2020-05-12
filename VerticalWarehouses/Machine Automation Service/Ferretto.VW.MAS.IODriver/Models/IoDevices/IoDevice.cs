@@ -22,7 +22,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
     internal sealed partial class IoDevice : IIoDevice, IDisposable
@@ -51,27 +50,29 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly bool isCarousel;
 
+        private readonly bool isExternalBay;
+
         private readonly ILogger logger;
 
         private readonly IoStatus mainIoDevice;
 
         private readonly int port;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly CancellationToken stoppingToken;
 
-        private readonly ManualResetEventSlim writeEnableEvent;
+        private readonly ManualResetEventSlim writeEnableEvent = new ManualResetEventSlim(true);
 
         private IIoStateMachine currentStateMachine;
 
-        private bool disposed;
-
         private bool forceIoStatusPublish;
+
+        private bool isDisposed;
 
         private Timer pollIoTimer;
 
         private byte[] receiveBuffer;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -97,11 +98,10 @@ namespace Ferretto.VW.MAS.IODriver
             this.logger = logger;
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
-            this.isCarousel = (bay.Carousel != null);
+            this.isCarousel = bay.Carousel != null;
+            this.isExternalBay = bay.IsExternal;
             this.bayNumber = bay.Number;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction(env));
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
@@ -151,6 +151,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         public void DestroyStateMachine()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(IoDevice));
+            }
+
             if (this.CurrentStateMachine is IDisposable stateMachine)
             {
                 stateMachine.Dispose();
@@ -166,6 +171,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         public async Task ReceiveIoDataTaskFunction(IHostingEnvironment env)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(IoDevice));
+            }
+
             this.logger.LogTrace("1:Method Start");
 
             const int N_BYTES_16 = 16;
@@ -262,7 +272,7 @@ namespace Ferretto.VW.MAS.IODriver
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                     }
                     this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     continue;
@@ -361,7 +371,7 @@ namespace Ferretto.VW.MAS.IODriver
                         {
                             var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                            errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                         }
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.ioTransport.Disconnect();
@@ -372,20 +382,22 @@ namespace Ferretto.VW.MAS.IODriver
                     {
                         case ShdFormatDataOperation.Data:
 
-                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay];
-
-                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay];
-
                             inputData[(int)IoPorts.AntiIntrusionBarrierBay] = !inputData[(int)IoPorts.AntiIntrusionBarrierBay];
 
-                            // INFO The mushroom signal must be inverted
+                            // INFO The emergency button signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
+
+                            // INFO the left carter signal is inverted and it depends from emergency button
+                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay] && !inputData[(int)IoPorts.MushroomEmergency];
+
+                            // INFO the right carter signal is inverted and it depends from emergency button and left carter
+                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay] && !inputData[(int)IoPorts.MushroomEmergency] && !inputData[(int)IoPorts.MicroCarterLeftSideBay];
 
                             // INFO The sensor presence in bay must be inverted
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
 
-                            // INFO The sensor presence in lower bay must be inverted (NOT for carousel)
-                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = this.isCarousel ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
+                            // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || this.isExternalBay) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
@@ -442,7 +454,7 @@ namespace Ferretto.VW.MAS.IODriver
                     }
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested && !this.disposed);
+            while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
         public async Task SendIoCommandTaskFunction()
@@ -510,7 +522,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 {
                                     var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                                 }
                                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                                 continue;
@@ -546,7 +558,7 @@ namespace Ferretto.VW.MAS.IODriver
                     return;
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested && !this.disposed);
+            while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
         public void SendIoMessageData(object state)
@@ -596,7 +608,7 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber);
+                    errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                 }
 
                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
@@ -668,7 +680,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -677,13 +689,14 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.DestroyStateMachine();
 
+                this.ioTransport?.Dispose();
                 this.pollIoTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
 
                 this.ioCommandQueue.Dispose();
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         #endregion

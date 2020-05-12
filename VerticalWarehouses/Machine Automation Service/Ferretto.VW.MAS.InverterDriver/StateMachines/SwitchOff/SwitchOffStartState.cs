@@ -8,14 +8,13 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     internal class SwitchOffStartState : InverterStateBase
     {
         #region Fields
 
-        private readonly DateTime startTime;
+        private DateTime startTime;
 
         #endregion
 
@@ -27,7 +26,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -37,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.SwitchOn = false;
+            this.startTime = DateTime.UtcNow;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
@@ -95,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
-                    this.ParentStateMachine.ChangeState(new SwitchOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new SwitchOffWaitState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)

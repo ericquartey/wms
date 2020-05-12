@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -54,6 +53,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var statistics = this.cellsProvider.GetStatistics();
 
             return this.Ok(statistics);
+        }
+
+        [HttpPost("save-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult SaveCell(DataModels.Cell cell)
+        {
+            this.cellsProvider.Save(cell);
+            return this.Accepted();
         }
 
         [HttpPost("{id}/height")]

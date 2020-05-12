@@ -1,9 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStartMovingState : InverterStateBase
@@ -12,18 +15,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly Timer axisPositionUpdateTimer;
 
+        private readonly IInverterPositioningFieldMessageData data;
+
+        private int? oldPosition;
+
+        private DateTime startTime;
+
         #endregion
 
         #region Constructors
 
         public PositioningStartMovingState(
             IInverterStateMachine parentStateMachine,
+            IInverterPositioningFieldMessageData data,
             IPositioningInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.data = data;
             this.Inverter = inverterStatus;
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+            this.oldPosition = null;
         }
 
         #endregion
@@ -31,6 +43,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         #region Properties
 
         public IPositioningInverterStatus Inverter { get; }
+
+        public bool SignalsArrived { get; private set; }
 
         protected bool TargetPositionReached =>
             this.Inverter.PositionStatusWord.SetPointAcknowledge
@@ -46,6 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
 
+            this.startTime = DateTime.UtcNow;
             this.Inverter.PositionControlWord.NewSetPoint = true;
 
             this.Logger.LogDebug("Set New Setpoint");
@@ -105,22 +120,64 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-            if (this.TargetPositionReached
-                && message.ParameterId == InverterParameterId.ActualPositionShaft
+            if (message.ParameterId == InverterParameterId.ActualPositionShaft
+                && message.SystemIndex == this.Inverter.SystemIndex
                 )
             {
-                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(
-                    new PositioningDisableOperationState(
-                        this.ParentStateMachine,
-                        this.Inverter,
-                        this.Logger));
+                if (this.TargetPositionReached)
+                {
+                    if (this.SignalsArrived)
+                    {
+                        this.Logger.LogDebug($"Target position reached, inverter {this.InverterStatus.SystemIndex}.");
 
-                this.Logger.LogDebug("Target position reached.");
+                        this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningDisableOperationState(
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
+                    }
+                }
+                else
+                {
+                    this.SignalsArrived = false;
+                    int? position = null;
+                    if (this.Inverter is AngInverterStatus angInverter)
+                    {
+                        if (this.data.AxisMovement == Axis.Horizontal)
+                        {
+                            position = angInverter.CurrentPositionAxisHorizontal;
+                        }
+                        else
+                        {
+                            position = angInverter.CurrentPositionAxisVertical;
+                        }
+                    }
+                    else if (this.Inverter is AcuInverterStatus acuInverter)
+                    {
+                        position = acuInverter.CurrentPosition;
+                    }
+
+                    if (position.HasValue)
+                    {
+                        this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target position: present {position.Value}, old {this.oldPosition}");
+                        // if position doesn't change raise an alarm
+                        if (this.oldPosition.HasValue
+                            && position.Value == this.oldPosition.Value
+                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                        {
+                            this.Logger.LogError($"PositioningStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                            return true;
+                        }
+                        this.startTime = DateTime.UtcNow;
+                        this.oldPosition = position;
+                    }
+                }
             }
-            else
+            else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
-                this.Logger.LogTrace("Moving towards target position.");
+                this.SignalsArrived = true;
             }
 
             return true; //INFO Next status word request handled by timer

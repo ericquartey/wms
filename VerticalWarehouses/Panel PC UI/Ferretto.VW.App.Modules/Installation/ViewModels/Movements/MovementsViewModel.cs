@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
+        private readonly IMachineService machineService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
@@ -95,9 +98,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCarouselWebService machineCarouselWebService,
             Services.IDialogService dialogService,
             IMachineBaysWebService machineBaysWebService,
-            IMachineMissionOperationsWebService machineMissionOperationsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IBayManager bayManagerService,
-            IInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient,
+            IMachineService machineService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
@@ -108,8 +112,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -122,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public string Error => string.Join(
             Environment.NewLine,
@@ -133,7 +138,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.goToMovementsGuidedCommand = new DelegateCommand(
                 () => this.GoToMovementsExecuteCommand(true),
-                this.CanGoToMovementsGuidedExecuteCommand));
+                this.CanGoToMovementsGuidedExecuteCommand
+                ));
 
         public ICommand GoToMovementsManualCommand =>
             this.goToMovementsManualCommand
@@ -146,7 +152,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToStatusSensorsCommand
             ??
             (this.goToStatusSensorsCommand = new DelegateCommand(
-                () => this.StatusSensorsCommand()));
+                () => this.StatusSensorsCommand(),
+                () => (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
 
         public bool HasCarousel => this.MachineService.HasCarousel;
 
@@ -229,7 +236,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
                         {
-                            return "Il cassetto selezionato non è valido";
+                            return Localized.Get("InstallationApp.InvalidDrawerSelected");
                         }
 
                         break;
@@ -274,12 +281,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SubscribeToEvents();
 
-                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
 
                 this.isManualMovementCompleted = false;
 
                 this.IsElevatorInBay = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
                 this.IsElevatorInCell = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
+                if (!this.CanGoToMovementsGuidedExecuteCommand())
+                {
+                    this.isMovementsGuided = false;
+                }
 
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
@@ -335,7 +347,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachineModeChangedAsync(e);
 
             if (e.MachineMode == MachineMode.SwitchingToAutomatic
-                || e.MachineMode == MachineMode.Restore)
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations)
             {
                 this.GoToMovementsExecuteCommand(true);
                 this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
@@ -383,11 +395,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
-                this.LabelMoveToLoadunit = "Vai a cella libera";
+                this.LabelMoveToLoadunit = Localized.Get("InstallationApp.GoToFreeCell");
             }
             else
             {
-                this.LabelMoveToLoadunit = InstallationApp.GoToDrawer;
+                this.LabelMoveToLoadunit = Localized.Get("InstallationApp.GoToDrawer");
             }
 
             this.RaisePropertyChanged(nameof(this.SensorsService));
@@ -401,6 +413,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanBaseExecute()
         {
             return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
@@ -420,12 +433,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ;
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
         }
 
         private bool CanResetCommand()
@@ -454,11 +471,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (isGuided)
             {
-                this.Title = InstallationApp.MovementsGuided;
+                this.Title = Localized.Get("InstallationApp.MovementsGuided");
             }
             else
             {
-                this.Title = InstallationApp.MovementsManual;
+                this.Title = Localized.Get("InstallationApp.MovementsManual");
             }
 
             this.isMovementsGuided = isGuided;
@@ -472,7 +489,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Bay?.Number == e.BayNumber)
             {
                 this.IsLightActive = e.IsLightOn;
-                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
             }
         }
 
@@ -547,7 +564,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else
             {
                 this.ShowNotification(
-                    InstallationApp.ProcedureWasStopped,
+                    Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Warning);
             }
         }
@@ -608,18 +625,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsKeyboardOpened = true;
 
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Reset macchina", DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ResetMachine"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try
                 {
                     this.IsWaitingForResponse = true;
 
-                    await this.machineMissionOperationsWebService.ResetMachineAsync();
+                    await this.machineMissionsWebService.ResetMachineAsync();
 
-                    this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.ResetMachineSuccessfull"), Services.Models.NotificationSeverity.Success);
 
-                    this.RaiseCanExecuteChanged();
+                    this.MachineService.OnUpdateServiceAsync();
                 }
                 catch (Exception ex)
                 {

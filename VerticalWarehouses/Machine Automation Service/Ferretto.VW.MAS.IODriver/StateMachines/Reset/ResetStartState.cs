@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     internal sealed class ResetStartState : IoStateBase
@@ -50,7 +49,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             var resetIoMessage = new IoWriteMessage();
 
-            this.Logger.LogTrace($"1:Reset IO={resetIoMessage}");
+            this.Logger.LogDebug($"1:Reset IO={resetIoMessage}");
 
             lock (this.status)
             {

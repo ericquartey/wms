@@ -1,115 +1,252 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.ItemSearchDetailView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.ItemSearchDetailView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:in="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+            xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
-    <Grid Margin="100,30,100,0">
+
+    <Grid Margin="15,0,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
+        </StackPanel>
 
-        <Grid Grid.Row="1"
-              Grid.Column="0"
-              Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Height="Auto"
+                   Margin="0"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{Resources:Loc HelpDescriptions.HelpItemSearchDescription}"
+                   TextWrapping="Wrap" />
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="0">
+            <Grid Margin="20">
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <ctrls:PpcImage Grid.Row="0"
+                                Grid.RowSpan="4"
+                                Grid.Column="0"
+                                Width="180"
+                                Height="180"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Path="{Binding Item.Id}"
+                                Stretch="Uniform" />
+
+                <controls:PpcLabeledText Grid.Row="0"
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.Description}"
+                                         LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
+
+                <controls:PpcLabeledText Grid.Row="1"
+                                         Grid.Column="1"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.ManagementType, Converter={StaticResource EIMTC}}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}" />
+
+                <controls:PpcLabeledText Grid.Row="1"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.FifoTimePick}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}" />
+
+                <controls:PpcLabeledText Grid.Row="2"
+                                         Grid.Column="1"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.ItemCategoryDescription}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailCategory}" />
+
+                <controls:PpcLabeledText Grid.Row="2"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.MeasureUnitDescription}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailMeasurementUnity}" />
+
+                <controls:PpcLabeledText Grid.Row="3"
+                                         Grid.Column="1"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.AbcClassDescription}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailClasse}" />
+
+                <controls:PpcLabeledText Grid.Row="3"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding Item.AverageWeight}"
+                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailWeight}" />
+
+            </Grid>
+
+        </Border>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="0,15,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <controls:PpcLabeledText Grid.Row="0"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.Code, Mode=OneWay}"
-                                     LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
+            <Border Grid.Row="0"
+                    Width="230"
+                    Height="90"
+                    MinHeight="90"
+                    Margin="15,0"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
 
-            <controls:PpcLabeledText Grid.Row="0"
-                                     Grid.Column="1"
-                                     Grid.ColumnSpan="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.Description}"
-                                     LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <ctrls:PpcImage Grid.Row="1"
-                   Grid.RowSpan="4"
-                   Grid.Column="0"
-                   Width="180"
-                   Height="180"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Path="{Binding Item.Id}"                
-                   Stretch="Uniform" />
-            
+                        <TextBlock Margin="8,4"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Text="{x:Static Resources:OperatorApp.CommonItemCode}" />
 
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.ManagementType, Converter={StaticResource EIMTC}}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}" />
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding Item.Code, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                   TextWrapping="Wrap" />
 
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.FifoTimePick}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}" />
+                    </Grid>
+                </Border>
+            </Border>
 
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.ItemCategoryDescription}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailCategory}" />
+            <Border Grid.Row="1"
+                    Height="90"
+                    MinHeight="90"
+                    Margin="15,15,15,0"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
 
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.MeasureUnitDescription}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailMeasurementUnity}" />
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
 
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.AbcClassDescription}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailClasse}" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding Item.AverageWeight}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemDetailWeight}" />
+                        <TextBlock Margin="8,4"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Text="{Binding Item.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding Item.AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                   TextWrapping="Wrap" />
+
+                    </Grid>
+                </Border>
+            </Border>
+
+            <ctrls:PpcSpinEdit Grid.Row="2"
+                               Width="230"
+                               Height="90"
+                               Margin="15,15,15,0"
+                               EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding Item.PickIncrement}"
+                               LabelText="{Binding Item.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.RequestedQuantity}}"
+                               Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
+
+            <controls:PpcButton Grid.Row="3"
+                                Margin="15,15,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding RequestItemPickCommand}"
+                                Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                                IsBusy="{Binding IsBusyRequestingItemPick}"
+                                Style="{StaticResource ConfirmButton}" />
 
         </Grid>
     </Grid>

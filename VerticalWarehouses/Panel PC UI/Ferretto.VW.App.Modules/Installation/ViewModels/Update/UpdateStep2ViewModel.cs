@@ -23,9 +23,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CSVEXTENSION = ".csv";
 
-        private const string EXEEXTENSION = ".exe";
+        private const string RESTOREARG = "--restore";
+
+        private const string UPDATEARG = "--update";
 
         private readonly IDialogService dialogService;
+
+        private readonly string snapshotFileName;
 
         private readonly string updateExchangeInstallerName;
 
@@ -42,6 +46,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private DelegateCommand downCommand;
 
         private bool isCurrentOperationValid;
+
+        private bool isUpdate;
+
+        private string restoreInfo;
 
         private InstallerInfo selectedUpdate;
 
@@ -64,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.updateExchangeInstallerPath = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerPath();
             this.updateExchangeInstallerName = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerName();
             this.updateZipChecksumFileName = ConfigurationManager.AppSettings.GetUpdateZipChecksumFileName();
+            this.snapshotFileName = ConfigurationManager.AppSettings.GetInstallerSnapshotFileName();
         }
 
         #endregion
@@ -76,6 +85,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.downCommand = new DelegateCommand(() => this.ChangeSelectedUpdate(false), this.CanDown));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsUpdate
+        {
+            get => this.isUpdate;
+            set => this.SetProperty(ref this.isUpdate, value);
+        }
+
+        public string RestoreInfo
+        {
+            get => this.restoreInfo;
+            set => this.SetProperty(ref this.restoreInfo, value);
+        }
 
         public InstallerInfo SelectedUpdate
         {
@@ -125,6 +146,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.DataCheck();
 
+            this.ClearNotifications();
+
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
@@ -132,6 +155,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public void RaisePropertyChanged()
         {
+            this.RaisePropertyChanged(nameof(this.IsUpdate));
             this.RaisePropertyChanged(nameof(this.UpdatesInfo));
         }
 
@@ -151,6 +175,36 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.UpdatesInfo));
         }
 
+        private async Task ApplyRestoreAsnc(string restoreFilePath)
+        {
+            this.ClearNotifications();
+
+            this.RestoreInfo = Localized.Get("InstallationApp.RestoreInProgress");
+
+            this.isCurrentOperationValid = true;
+            this.IsEnabled = false;
+            this.updatesInfo = string.Empty;
+
+            await this.ClearTempFolderAsync();
+
+            await this.ExtractZipInFolderAsync(restoreFilePath);
+            await this.DeleteSnapshotFileAsync();
+            await this.StartRestoreAppAsync();
+
+            this.IsEnabled = true;
+            this.RaisePropertyChanged();
+
+            if (this.isCurrentOperationValid)
+            {
+                this.ShowNotification(Localized.Get("InstallationApp.UpdateSuccessfullyCompleted"), Services.Models.NotificationSeverity.Success);
+            }
+            else
+            {
+                this.RestoreInfo = Localized.Get("InstallationApp.RestoreEndedWithErrors");
+                this.ShowNotification(Localized.Get("InstallationApp.ErrorOnInitialPhaseUpdate"), Services.Models.NotificationSeverity.Error);
+            }
+        }
+
         private async Task ApplyUpdatesync()
         {
             if (!this.IsEnabled)
@@ -165,8 +219,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.updatesInfo = string.Empty;
 
             await this.ClearTempFolderAsync();
-            await this.ExtractZipInFolderAsync();
+            await this.ExtractZipInFolderAsync(this.selectedUpdate.FileName);
             await this.CheckIntegrityOnFilesAsync();
+            await this.DeleteSnapshotFileAsync();
             await this.StartInstallerAppAsync();
 
             this.IsEnabled = true;
@@ -174,11 +229,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (this.isCurrentOperationValid)
             {
-                this.ShowNotification(InstallationApp.UpdateSuccessfullyCompleted, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.UpdateSuccessfullyCompleted"), Services.Models.NotificationSeverity.Success);
             }
             else
             {
-                this.ShowNotification(InstallationApp.ErrorOnInitialPhaseUpdate, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Localized.Get("InstallationApp.ErrorOnInitialPhaseUpdate"), Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -214,14 +269,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var filePath = $"{this.updateExchangeTemp}{Path.DirectorySeparatorChar}{this.updateZipChecksumFileName}{CSVEXTENSION}";
 
-                this.AppendLine($"Start checking files checksum '{filePath}'.");
+                this.AppendLine(string.Format(Localized.Get("InstallationApp.StartChecksum"), filePath));
 
                 var csvFilesToCheck = File.ReadLines(filePath).Select(a => a.Split(';').First())?.Skip(1);
 
                 if (csvFilesToCheck is null)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error on checking file '{filePath}'. No checksums found.");
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.ErrorChecksumNotFound"), filePath));
                     return;
                 }
 
@@ -233,8 +288,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     var checksumFilePath = fileCheck[1].Trim('"');
                     if (this.GeMD5FromFile(absoluteFilePath) != checksumFilePath)
                     {
-                        this.AppendLine($"Operation aborted.");
-                        this.AppendLine($"Error on checking file '{fileName}'");
+                        this.AppendLine(Localized.Get("InstallationApp.OperationAborted"));
+                        this.AppendLine(string.Format(Localized.Get("InstallationApp.ErrorCheckFile"), fileName));
                         this.isCurrentOperationValid = false;
                         break;
                     }
@@ -242,13 +297,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.isCurrentOperationValid)
                 {
-                    this.AppendLine("Checksum files check successfully completed.");
+                    this.AppendLine(Localized.Get("InstallationApp.ChecksumCompleted"));
                 }
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine($"Error on checking files checksum:");
+                this.AppendLine(Localized.Get("InstallationApp.ErrorChecksum"));
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
@@ -266,25 +321,31 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 try
                 {
-                    this.AppendLine($"Clear temp folder '{this.updateExchangeTemp}'.");
-                    Directory.Delete(this.updateExchangeTemp, true);
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.ClearTempFolder"), this.updateExchangeTemp));
+                    if (Directory.Exists(this.updateExchangeTemp))
+                    {
+                        Directory.Delete(this.updateExchangeTemp, true);
+                    }
                 }
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error on clear temp folder:");
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorClearTempFolder"));
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
             });
         }
 
-        private void DataCheck()
+        private async Task DataCheck()
         {
             if (this.Data is IList<InstallerInfo> updatesFound)
             {
+                this.IsUpdate = true;
+
                 this.updates.Clear();
                 updatesFound.ForEach(u => this.updates.Add(u));
+
                 var lastUpdateId = this.selectedUpdate?.Id;
 
                 this.RaisePropertyChanged(nameof(this.Updates));
@@ -293,9 +354,39 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.SelectLoadingUnit();
             }
+
+            if (this.Data is string restoreFilePath)
+            {
+                this.IsUpdate = false;
+                this.updates.Clear();
+                await this.ApplyRestoreAsnc(restoreFilePath);
+            }
         }
 
-        private async Task ExtractZipInFolderAsync()
+        private async Task DeleteSnapshotFileAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var snapshtoFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.snapshotFileName}";
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.DeleteSnapshotFile"), snapshtoFilePath));
+                    if (File.Exists(snapshtoFilePath))
+                    {
+                        Directory.Delete(snapshtoFilePath, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.isCurrentOperationValid = false;
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorDeleteSnapshotFile"));
+                    var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
+                    this.AppendLine(errMsg);
+                }
+            });
+        }
+
+        private async Task ExtractZipInFolderAsync(string fileName)
         {
             await Task.Run(() =>
             {
@@ -308,14 +399,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 try
                 {
-                    this.AppendLine($"Start excracting files from '{this.selectedUpdate.FileName}'.");
-                    ZipFile.ExtractToDirectory(this.selectedUpdate.FileName, this.updateExchangeTemp);
-                    this.AppendLine("Extraction successfullly completed.");
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.StartExtractingFiles"), fileName));
+                    ZipFile.ExtractToDirectory(fileName, this.updateExchangeTemp);
+                    this.AppendLine(Localized.Get("InstallationApp.ExtractingFilesCompleted"));
                 }
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error excracting files:");
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorExtractingFiles"));
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -362,7 +453,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void StartInstallerApp()
+        private void StartInstallerApp(string parameter)
         {
             if (!this.isCurrentOperationValid)
             {
@@ -373,27 +464,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.isCurrentOperationValid = true;
 
-                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}{EXEEXTENSION}";
+                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
 
-                this.AppendLine($"Starting application '{installerFilePath}'.");
+                this.AppendLine(string.Format(Localized.Get("InstallationApp.StartingApplication"), installerFilePath));
 
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = installerFilePath
+                        FileName = installerFilePath,
+                        Arguments = parameter
                     }
                 };
 
                 process.Start();
                 process.WaitForExit();
+                var exitCode = process.ExitCode;
 
-                this.AppendLine("Starting installer app successfully completed.");
+                if (exitCode == 0)
+                {
+                    this.AppendLine(Localized.Get("InstallationApp.InstallerAppStartedSuccessfully"));
+                }
+                else
+                {
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorExecutingInstallerApp"));
+                    this.isCurrentOperationValid = false;
+                }
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine($"Error on starting:");
+                this.AppendLine(Localized.Get("InstallationApp.ErrorOnStarting"));
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
@@ -402,13 +503,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task StartInstallerAppAsync()
         {
-            await Task.Run(() => this.StartInstallerApp());
+            await Task.Run(() => this.StartInstallerApp(UPDATEARG));
+        }
+
+        private async Task StartRestoreAppAsync()
+        {
+            await Task.Run(() => this.StartInstallerApp(RESTOREARG));
         }
 
         private async Task UpdateAsync()
         {
-            var msg = string.Format(InstallationApp.ConfirmUpdateVer, Environment.NewLine, this.selectedUpdate.ProductVersion);
-            var messageBoxResult = this.dialogService.ShowMessage(msg, InstallationApp.ConfirmUpdate, DialogType.Question, DialogButtons.YesNo);
+            var msg = string.Format(Localized.Get("InstallationApp.ConfirmUpdateVer"), Environment.NewLine, this.selectedUpdate.ProductVersion);
+            var messageBoxResult = this.dialogService.ShowMessage(msg, Localized.Get("InstallationApp.ConfirmUpdate"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

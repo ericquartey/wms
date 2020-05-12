@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerPartiallyOnCradle { get; }
 
+        bool IsElevatorOverrun { get; }
+
         bool IsMachineInEmergencyState { get; }
 
         bool IsMachineInFaultState { get; }
@@ -79,6 +81,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         ShutterPosition GetShutterPosition(InverterIndex inverterIndex);
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
+
+        bool IsDrawerInBayExternalPosition(BayNumber bayNumber);
+
+        bool IsDrawerInBayInternalPosition(BayNumber bayNumber);
 
         bool IsDrawerInBayTop(BayNumber bayNumber);
 

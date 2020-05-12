@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -15,12 +16,129 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
         #region Fields
+
+        private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+            context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .Include(b => b.CurrentMission));
+
+        private static readonly Func<DataLayerContext, int, Bay> GetByBayPositionIdCompile =
+                EF.CompileQuery((DataLayerContext context, int bayPositionId) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
+
+        private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
+                EF.CompileQuery((DataLayerContext context, Cell cell) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.Positions)
+                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
+                    .OrderBy(o => cell.Position - o.Positions.First().Height)
+                    .FirstOrDefault());
+
+        private static readonly Func<DataLayerContext, IoIndex, Bay> GetByIoIndexCompile =
+                EF.CompileQuery((DataLayerContext context, IoIndex ioIndex) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
+
+        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetByLoadingUnitLocationCompile =
+                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+                context.Bays
+                    .AsNoTracking()
+                     .Include(b => b.Shutter)
+                        .ThenInclude(i => i.Inverter)
+                     .Include(b => b.Carousel)
+                     .Include(b => b.Positions)
+                        .ThenInclude(t => t.LoadingUnit)
+                     .Include(b => b.CurrentMission)
+                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+
+        private static readonly Func<DataLayerContext, BayNumber, Bay> GetByNumberCompile =
+                                EF.CompileQuery((DataLayerContext context, BayNumber bayNumber) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.CurrentMission)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.BarcodeReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.CardReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LabelPrinter)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.TokenReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.WeightingScale)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .SingleOrDefault(b => b.Number == bayNumber));
+
+        private static readonly Func<DataLayerContext, LoadingUnitLocation, BayPosition> GetPositionByLocationCompile =
+                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+                context.BayPositions
+                    .AsNoTracking()
+                .Include(b => b.Bay)
+                    .ThenInclude(i => i.Carousel)
+                .Include(b => b.LoadingUnit)
+                .SingleOrDefault(p => p.Location == location));
 
         private readonly IMemoryCache cache;
 
@@ -48,6 +166,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly NotificationEvent notificationEvent;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
@@ -60,6 +180,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
             IMemoryCache memoryCache,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
@@ -69,6 +190,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.cacheOptions = configuration.GetMemoryCacheOptions();
@@ -96,7 +218,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId)
+        public Bay AssignMission(BayNumber bayNumber, Mission mission)
         {
             if (mission is null)
             {
@@ -119,7 +241,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(mission.Id);
                 }
-                bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
 
                 this.Update(bay);
 
@@ -138,7 +259,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 bay.CurrentMission = null;
-                bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
 
@@ -178,26 +298,37 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
+        public BayAccessories GetAccessories(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.BarcodeReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.CardReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LabelPrinter)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.TokenReader)
+                    .Include(b => b.Accessories)
+                        .ThenInclude(a => a.WeightingScale)
+                    .AsNoTracking()
+                    .Single(b => b.Number == bayNumber);
+
+                return bay.Accessories;
+            }
+        }
+
         public IEnumerable<Bay> GetAll()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Inverter)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .Include(b => b.CurrentMission)
-                    .ToArray();
+                return GetAllCompile(this.dataContext).ToArray();
             }
         }
 
@@ -205,7 +336,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays.Count();
+                return this.dataContext.Bays.AsNoTracking().Count();
             }
         }
 
@@ -237,9 +368,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Positions)
-                    .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
+                var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);
@@ -253,14 +382,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Shutter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.Positions)
-                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
-                    .OrderBy(o => cell.Position - o.Positions.First().Height)
-                    .FirstOrDefault();
+                return GetByCellCompile(this.dataContext, cell);
             }
         }
 
@@ -339,21 +461,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Inverter)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+                var bay = GetByIoIndexCompile(this.dataContext, ioIndex);
 
                 if (bay is null)
                 {
@@ -368,15 +476,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                     .Include(b => b.Shutter)
-                        .ThenInclude(i => i.Inverter)
-                     .Include(b => b.Carousel)
-                     .Include(b => b.Positions)
-                        .ThenInclude(t => t.LoadingUnit)
-                     .Include(b => b.CurrentMission)
-                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+                return GetByLoadingUnitLocationCompile(this.dataContext, location);
             }
         }
 
@@ -387,7 +487,7 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (data.MovementMode)
             {
                 case MovementMode.BeltBurnishing:
-                case MovementMode.FindZero:
+                case MovementMode.HorizontalCalibration:
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
                     targetBay = BayNumber.ElevatorBay;
@@ -423,26 +523,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Inverter)
-                    .Include(b => b.CurrentMission)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Carousel)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .SingleOrDefault(b => b.Number == bayNumber);
+                var bay = GetByNumberCompile(this.dataContext, bayNumber);
 
                 if (bay is null)
                 {
@@ -526,7 +607,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException("Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method");
+                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
                             }
 
                             break;
@@ -536,7 +617,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = InverterIndex.MainInverter;
                             break;
 
-                        case MovementMode.FindZero:
+                        case MovementMode.HorizontalCalibration:
                             returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
@@ -672,6 +753,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bayPosition = this.dataContext.BayPositions
                     .Include(b => b.LoadingUnit)
+                    .AsNoTracking()
                     .SingleOrDefault(p => p.Id == bayPositionId);
 
                 if (bayPosition is null)
@@ -685,11 +767,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = this.dataContext.BayPositions
-                .Include(b => b.Bay)
-                    .ThenInclude(i => i.Carousel)
-                .Include(b => b.LoadingUnit)
-                .SingleOrDefault(p => p.Location == location);
+            var bayPosition = GetPositionByLocationCompile(this.dataContext, location);
             if (bayPosition is null)
             {
                 throw new EntityNotFoundException(location.ToString());
@@ -792,9 +870,25 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
                     bay.CurrentMission = null;
-                    bay.CurrentWmsMissionOperationId = null;
                     this.Update(bay);
                 }
+            }
+        }
+
+        public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
+        {
+            lock (this.dataContext)
+            {
+                var barBay = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                        .Single(b => b.Number == bayNumber);
+
+                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled;
+                barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
+                barBay.Accessories.AlphaNumericBar.TcpPort = port;
+
+                this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
+                this.dataContext.SaveChanges();
             }
         }
 
@@ -804,7 +898,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(bayNumber);
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == bayNumber);
 
                 if (bay is null)
                 {
@@ -880,9 +974,48 @@ namespace Ferretto.VW.MAS.DataLayer
                     loadingUnit.Height = height.Value;
                 }
                 position.LoadingUnit = loadingUnit;
+
+                this.dataContext.LoadingUnits.Update(loadingUnit);
             }
 
+            this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
+        }
+
+        public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
+        {
+            if (portName is null)
+            {
+                throw new ArgumentNullException(nameof(portName));
+            }
+
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.BarcodeReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.PortName = portName;
+
+                this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateELevatorDistance(BayNumber bayNumber, double distance)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+                if (bay.Carousel != null)
+                {
+                    bay.Carousel.ElevatorDistance = distance;
+                    this.dataContext.AddOrUpdate(bay.Carousel, f => f.Id);
+                    this.dataContext.SaveChanges();
+                }
+            }
         }
 
         public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
@@ -933,20 +1066,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 position.Height = height;
 
-                var status = this.dataContext.SetupStatus.FirstOrDefault();
-                if (bayNumber == BayNumber.BayOne)
-                {
-                    status.Bay1HeightCheck = true;
-                }
-                else if (bayNumber == BayNumber.BayTwo)
-                {
-                    status.Bay2HeightCheck = true;
-                }
-                else if (bayNumber == BayNumber.BayThree)
-                {
-                    status.Bay3HeightCheck = true;
-                }
+                var procedureParameters = this.setupProceduresDataProvider.GetBayHeightCheck(bayNumber);
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
 
+                this.dataContext.BayPositions.Update(position);
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);

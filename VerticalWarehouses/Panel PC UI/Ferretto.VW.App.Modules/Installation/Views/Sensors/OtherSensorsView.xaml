@@ -37,18 +37,18 @@
             <TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.SecuritySensors}" />
+                       Text="{res:Loc InstallationApp.SecuritySensors}" />
 
             <StackPanel Grid.Row="1"
                         Orientation="Vertical">
                 <controls:PpcSensorControl SensorState="{Binding Sensors.RunningState}"
-                                           Text="{x:Static res:InstallationApp.SecurityFunctionActive}" />
+                                           Text="{res:Loc InstallationApp.SecurityFunctionActive}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSide}"
-                                           Text="{x:Static res:InstallationApp.MicroCarterLeftSide}" />
+                                           Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSide}"
-                                           Text="{x:Static res:InstallationApp.MicroCarterRightSide}" />
+                                           Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"
@@ -56,13 +56,13 @@
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay1}" />
+                           Text="{res:Loc InstallationApp.Bay1}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay1}"
-                                           Text="{x:Static res:InstallationApp.MushroomHeadButton}" />
+                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay1}"
-                                           Text="{x:Static res:InstallationApp.AntiIntrusionGate}" />
+                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"
@@ -72,26 +72,26 @@
                         Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay2}" />
+                           Text="{res:Loc InstallationApp.Bay2}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay2}"
-                                           Text="{x:Static res:InstallationApp.MushroomHeadButton}" />
+                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay2}"
-                                           Text="{x:Static res:InstallationApp.AntiIntrusionGate}" />
+                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
             </StackPanel>
             <StackPanel Grid.Row="3"
                         Orientation="Vertical"
                         Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Bay3}" />
+                           Text="{res:Loc InstallationApp.Bay3}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay3}"
-                                           Text="{x:Static res:InstallationApp.MushroomHeadButton}" />
+                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay3}"
-                                           Text="{x:Static res:InstallationApp.AntiIntrusionGate}" />
+                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
             </StackPanel>
 
         </Grid>

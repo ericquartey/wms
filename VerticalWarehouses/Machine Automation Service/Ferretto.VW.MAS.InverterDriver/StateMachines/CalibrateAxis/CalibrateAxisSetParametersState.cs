@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal sealed class CalibrateAxisSetParametersState : InverterStateBase
@@ -27,9 +26,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private const int FAST_SPEED_ELEVATOR_VERT_DEFAULT = 25;   // [mm/s]
 
-        private const short HORIZONTAL_SENSOR = 548;    // MF2ID
+        private const short HORIZONTAL_SENSOR = 548;    // MF2ID - elevator chain zero sensor
 
-        private const short VERTICAL_SENSOR = 527;      // S3IND
+        private const short VERTICAL_SENSOR = 527;      // S3IND - elevator vertical zero position and bay chain zero position
 
         private readonly Axis axisToCalibrate;
 
@@ -126,7 +125,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 {
                     case InverterParameterId.HomingCalibration:
                         {
-                            var sensor = (this.axisToCalibrate == Axis.Vertical || isOneTonMachine) ? VERTICAL_SENSOR : HORIZONTAL_SENSOR;
+                            var sensor = (this.axisToCalibrate == Axis.Horizontal && this.InverterStatus.SystemIndex == InverterIndex.MainInverter) ? HORIZONTAL_SENSOR : VERTICAL_SENSOR;
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingSensor,

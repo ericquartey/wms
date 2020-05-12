@@ -1,11 +1,11 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -15,15 +15,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICarouselProvider carouselProvider;
+
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public CarouselController(ICarouselProvider carouselProvider)
+        public CarouselController(ICarouselProvider carouselProvider,
+            IBaysDataProvider baysDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -50,6 +58,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.carouselProvider.Homing(Calibration.FindSensor, null, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpGet("parameters")]
+        public ActionResult<RepeatedTestProcedure> GetParameters()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);
+
+            return this.Ok(procedureParameters);
         }
 
         [HttpGet("position")]
@@ -90,7 +106,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(VerticalMovementDirection direction)
         {
-            this.carouselProvider.MoveManual(direction, -1, null, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.MoveManual(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("reset-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResetCalibration()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("set-completed")]
+        public IActionResult SetCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), false);
+            return this.Ok();
+        }
+
+        [HttpPost("start-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartCalibration()
+        {
+            this.carouselProvider.StartTest(this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -101,6 +145,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Stop()
         {
             this.carouselProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("stop-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StopCalibration()
+        {
+            this.carouselProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("update-elevator-distance")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateElevatorChainDistance(double value)
+        {
+            this.baysDataProvider.UpdateELevatorDistance(this.BayNumber, value);
             return this.Accepted();
         }
 

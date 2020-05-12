@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.CommonUtils.Messages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum ReasonType
     {

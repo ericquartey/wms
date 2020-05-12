@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Controls
             this.InitializeComponent();
 
             this.copyrightText.Text = SplashScreenService.Copyright;
-            this.versionText.Text = string.Format(VWApp.Version, SplashScreenService.Version);
+            this.versionText.Text = string.Format(General.Version, SplashScreenService.Version);
         }
 
         #endregion

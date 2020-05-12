@@ -61,20 +61,299 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the alphanumeric bar.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration parameters.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarMenuSection1 {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuSection1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commands.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarMenuSection2 {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuSection2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alphanumeric Bar.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the barcode reader.
+        /// </summary>
+        public static string AccessoriesBarcodeReaderMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode Reader.
+        /// </summary>
+        public static string AccessoriesBarcodeReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the card reader.
+        /// </summary>
+        public static string AccessoriesCardReaderMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card Reader.
+        /// </summary>
+        public static string AccessoriesCardReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        public static string AccessoriesEnable {
+            get {
+                return ResourceManager.GetString("AccessoriesEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ip address.
+        /// </summary>
+        public static string AccessoriesIpAddress {
+            get {
+                return ResourceManager.GetString("AccessoriesIpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the label printer.
+        /// </summary>
+        public static string AccessoriesLabelPrinterMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesLabelPrinterMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Label Printer.
+        /// </summary>
+        public static string AccessoriesLabelPrinterMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesLabelPrinterMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the laser printer.
+        /// </summary>
+        public static string AccessoriesLaserMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser Pointer.
+        /// </summary>
+        public static string AccessoriesLaserMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luminosity.
+        /// </summary>
+        public static string AccessoriesLuminosity {
+            get {
+                return ResourceManager.GetString("AccessoriesLuminosity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessories Menu.
+        /// </summary>
+        public static string AccessoriesMenuName {
+            get {
+                return ResourceManager.GetString("AccessoriesMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string AccessoriesOff {
+            get {
+                return ResourceManager.GetString("AccessoriesOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string AccessoriesOn {
+            get {
+                return ResourceManager.GetString("AccessoriesOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string AccessoriesPort {
+            get {
+                return ResourceManager.GetString("AccessoriesPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string AccessoriesSize {
+            get {
+                return ResourceManager.GetString("AccessoriesSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch on.
+        /// </summary>
+        public static string AccessoriesSwitchOn {
+            get {
+                return ResourceManager.GetString("AccessoriesSwitchOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string AccessoriesTest {
+            get {
+                return ResourceManager.GetString("AccessoriesTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the token reader.
+        /// </summary>
+        public static string AccessoriesTokenReaderMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesTokenReaderMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token Reader.
+        /// </summary>
+        public static string AccessoriesTokenReaderMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesTokenReaderMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration and test of the wheighting scale.
+        /// </summary>
+        public static string AccessoriesWeightingScaleMenuDescription {
+            get {
+                return ResourceManager.GetString("AccessoriesWeightingScaleMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weighting Scale.
+        /// </summary>
+        public static string AccessoriesWeightingScaleMenuTitle {
+            get {
+                return ResourceManager.GetString("AccessoriesWeightingScaleMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay {
+            get {
+                return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Bay.
+        /// </summary>
+        public static string BaysMenuName {
+            get {
+                return ResourceManager.GetString("BaysMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Cells.
+        /// </summary>
+        public static string CellsMenuName {
+            get {
+                return ResourceManager.GetString("CellsMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Test.
+        /// </summary>
+        public static string ConfirmTest {
+            get {
+                return ResourceManager.GetString("ConfirmTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Elevator.
+        /// </summary>
+        public static string ElevatorMenuName {
+            get {
+                return ResourceManager.GetString("ElevatorMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation.
+        /// </summary>
+        public static string Installation {
+            get {
+                return ResourceManager.GetString("Installation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation Status.
         /// </summary>
         public static string InstallationStatus {
             get {
                 return ResourceManager.GetString("InstallationStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public static string MenuAbout {
-            get {
-                return ResourceManager.GetString("MenuAbout", resourceCulture);
             }
         }
         
@@ -115,15 +394,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instalation.
-        /// </summary>
-        public static string MenuInstalation {
-            get {
-                return ResourceManager.GetString("MenuInstalation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading Units.
         /// </summary>
         public static string MenuLoadingUnits {
@@ -133,29 +403,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maintenance.
-        /// </summary>
-        public static string MenuMaintenance {
-            get {
-                return ResourceManager.GetString("MenuMaintenance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Picking.
-        /// </summary>
-        public static string MenuOperation {
-            get {
-                return ResourceManager.GetString("MenuOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Movements.
         /// </summary>
         public static string Movements {
             get {
                 return ResourceManager.GetString("Movements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Other.
+        /// </summary>
+        public static string OtherMenuName {
+            get {
+                return ResourceManager.GetString("OtherMenuName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Units.
+        /// </summary>
+        public static string UnitsMenuName {
+            get {
+                return ResourceManager.GetString("UnitsMenuName", resourceCulture);
             }
         }
     }

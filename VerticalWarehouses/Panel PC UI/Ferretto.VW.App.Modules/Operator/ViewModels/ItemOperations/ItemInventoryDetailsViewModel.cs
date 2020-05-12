@@ -1,21 +1,18 @@
-﻿using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemInventoryDetailsViewModel : BaseItemOperationViewModel
     {
         #region Constructors
 
         public ItemInventoryDetailsViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
-            IMissionsWmsWebService missionsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 

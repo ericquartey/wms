@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private DelegateCommand confirmSetupCommand;
+
         private bool isAccessoriesActive;
 
         private bool isBaysActive;
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private bool isCellsActive;
 
         private bool isElevatorActive;
+
+        private bool isExecutingProcedure;
 
         private bool isGeneralActive;
 
@@ -83,6 +87,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public ICommand ConfirmSetupCommand =>
+               this.confirmSetupCommand
+               ??
+               (this.confirmSetupCommand = new DelegateCommand(
+                 async () => await this.ConfirmSetupAsync(),
+                 () => this.ConfirmSetupEnabled()));
+
+        public virtual bool ConfirmSetupVisible => false;
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsAccessoriesActive
@@ -107,6 +120,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             get => this.isElevatorActive;
             set => this.SetProperty(ref this.isElevatorActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get { return this.isExecutingProcedure; }
+            set { this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged); }
         }
 
         public bool IsGeneralActive
@@ -158,7 +177,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.General)));
 
         public ICommand MenuLoadingUnitsCommand =>
-                    this.menuLoadingUnitsCommand
+            this.menuLoadingUnitsCommand
             ??
             (this.menuLoadingUnitsCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.LoadingUnits)));
@@ -168,8 +187,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
-                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                     (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
+                () => this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded));
 
         public ICommand MenuOtherCommand =>
             this.menuOtherCommand
@@ -186,6 +204,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
+
+        public virtual Task ConfirmSetupAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual bool ConfirmSetupEnabled()
+        {
+            return true;
+        }
 
         public override void Disappear()
         {
@@ -240,9 +268,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         internal virtual bool CanExecuteCommand()
         {
-            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
-                   this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                   (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            return (
+                this.MachineModeService.MachineMode == MachineMode.Manual
+                ||
+                this.MachineModeService.MachineMode == MachineMode.Test)
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -271,6 +306,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuOtherCommand?.RaiseCanExecuteChanged();
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
+            this.confirmSetupCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.ConfirmSetupVisible));
         }
 
         private bool CanExecuteMovementsCommand()

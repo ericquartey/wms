@@ -22,17 +22,29 @@ namespace Ferretto.VW.App.Services
 
         BayNumber BayNumber { get; }
 
+        IEnumerable<Bay> Bays { get; }
+
         IEnumerable<Cell> Cells { get; }
 
         bool HasBayExternal { get; }
+
+        bool HasBayWithInverter { get; set; }
 
         bool HasCarousel { get; }
 
         bool HasShutter { get; }
 
+        bool IsAxisTuningCompleted { get; }
+
         bool IsHoming { get; }
 
+        bool IsMissionInError { get; }
+
+        bool IsMissionInErrorByLoadUnitOperations { get; }
+
         bool IsShutterThreeSensors { get; }
+
+        bool IsTuningCompleted { get; }
 
         IEnumerable<LoadingUnit> Loadunits { get; }
 
@@ -40,7 +52,7 @@ namespace Ferretto.VW.App.Services
 
         MachinePowerState MachinePower { get; }
 
-        MachineStatus MachineStatus { get; }
+        Models.MachineStatus MachineStatus { get; }
 
         #endregion
 
@@ -49,6 +61,12 @@ namespace Ferretto.VW.App.Services
         void ClearNotifications();
 
         LoadingUnitLocation GetBayPositionSourceByDestination(bool isPositionDownSelected);
+
+        Task GetCells();
+
+        Task GetLoadUnits();
+
+        Task GetTuningStatus();
 
         Task OnUpdateServiceAsync();
 

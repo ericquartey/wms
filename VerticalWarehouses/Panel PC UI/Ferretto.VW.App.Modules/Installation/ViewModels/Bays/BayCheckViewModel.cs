@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -33,11 +34,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineShuttersWebService machineShuttersWebService;
+
+        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
         private BayCheckStep currentStep;
 
@@ -46,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private decimal? displacementDown;
 
         private decimal? displacementUp;
+
+        private double lowerBound;
 
         private DelegateCommand moveToBayPositionCommand;
 
@@ -67,6 +74,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private SubscriptionToken themeChangedToken;
+
+
         #endregion
 
         #region Constructors
@@ -74,12 +84,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayCheckViewModel(
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService machineShuttersWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineShuttersWebService = machineShuttersWebService ?? throw new ArgumentNullException(nameof(machineShuttersWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = BayCheckStep.PositionUp;
         }
@@ -140,6 +154,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
+        public double LowerBound
+        {
+            get => this.lowerBound;
+            set => this.SetProperty(ref this.lowerBound, value);
+        }
+
         public ICommand MoveToBayPositionCommand =>
             this.moveToBayPositionCommand
             ??
@@ -152,17 +172,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         try
                         {
-                            // TODO : Così lo faccio sono quando serve
                             var policy = Task.Run(async () => await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.BayPositionActive.Id).ConfigureAwait(false)).GetAwaiter().GetResult();
                             res &= policy?.IsAllowed == true;
+                            if (!res)
+                            {
+                                this.Logger.Debug($"Policy.IsAllowed = false ({policy.Reason})");
+                            }
                         }
-                        catch (HttpRequestException ex)
+                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                         {
+                            this.Logger.Error(ex);
                             res = false;
                             this.ShowNotification(ex);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
+                            this.Logger.Error(e);
                             throw;
                         }
                     }
@@ -249,6 +274,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
             }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -262,57 +294,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            await this.SensorsService.RefreshAsync(true);
-        }
-
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            switch (this.CurrentStep)
+            try
             {
-                case BayCheckStep.PositionUp:
-                    if (e.Next)
-                    {
-                        if (this.Bay?.IsDouble ?? false)
-                        {
-                            this.CurrentStep = BayCheckStep.PositionDown;
-                        }
-                        else
-                        {
-                            this.CurrentStep = BayCheckStep.Confirm;
-                        }
-                    }
-
-                    break;
-
-                case BayCheckStep.PositionDown:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = BayCheckStep.Confirm;
-                    }
-                    else
-                    {
-                        this.CurrentStep = BayCheckStep.PositionUp;
-                    }
-
-                    break;
-
-                case BayCheckStep.Confirm:
-                    if (!e.Next)
-                    {
-                        if (this.Bay?.IsDouble ?? false)
-                        {
-                            this.CurrentStep = BayCheckStep.PositionDown;
-                        }
-                        else
-                        {
-                            this.CurrentStep = BayCheckStep.PositionUp;
-                        }
-                    }
-
-                    break;
-
-                default:
-                    break;
+                await this.SensorsService.RefreshAsync(true);
+                await this.GetLowerBound();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -321,6 +314,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
+            this.RaisePropertyChanged(nameof(this.BayPositionActive));
 
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.moveToNextCommand?.RaiseCanExecuteChanged();
@@ -333,6 +327,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                if (this.DisplacementDown != null && this.LowerBound > this.NewPositionDown)
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ModifyLowerBoundDialog"), Localized.Get("InstallationApp.LowPositionControl"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewPositionDown);
+
+                    await this.GetLowerBound();
+                }
+
                 this.IsWaitingForResponse = true;
 
                 // Up
@@ -363,12 +370,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentStep = BayCheckStep.PositionUp;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -452,7 +459,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.NewPositionDown = this.BayPositionActive.Height + (double)this.DisplacementDown.Value;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -466,20 +473,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task GetLowerBound()
+        {
+            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+
+            this.LowerBound = procedureParameters.LowerBound;
+        }
+
         private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
-                if (e.PropertyName == nameof(this.MachineService.MachineStatus))
-                {
-                    try
-                    {
-                        this.RaisePropertyChanged(nameof(this.ShutterLabel));
-                    }
-                    catch (HttpRequestException)
-                    {
-                    }
-                }
+                this.RaisePropertyChanged(nameof(this.ShutterLabel));
             }));
         }
 
@@ -506,7 +511,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.StepValueDown = 0;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -531,7 +536,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     ShutterPosition.Closed :
                     ShutterPosition.Opened);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -545,6 +550,57 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case BayCheckStep.PositionUp:
+                    if (e.Next)
+                    {
+                        if (this.Bay?.IsDouble ?? false)
+                        {
+                            this.CurrentStep = BayCheckStep.PositionDown;
+                        }
+                        else
+                        {
+                            this.CurrentStep = BayCheckStep.Confirm;
+                        }
+                    }
+
+                    break;
+
+                case BayCheckStep.PositionDown:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = BayCheckStep.Confirm;
+                    }
+                    else
+                    {
+                        this.CurrentStep = BayCheckStep.PositionUp;
+                    }
+
+                    break;
+
+                case BayCheckStep.Confirm:
+                    if (!e.Next)
+                    {
+                        if (this.Bay?.IsDouble ?? false)
+                        {
+                            this.CurrentStep = BayCheckStep.PositionDown;
+                        }
+                        else
+                        {
+                            this.CurrentStep = BayCheckStep.PositionUp;
+                        }
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private async Task StopAsync()
         {
             this.IsWaitingForResponse = true;
@@ -553,7 +609,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -578,6 +634,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.themeChangedToken = this.themeChangedToken
+               ?? this.EventAggregator
+                   .GetEvent<ThemeChangedPubSubEvent>()
+                   .Subscribe(
+                       (m) =>
+                       {
+                           this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionDown));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.HasStepPositionUp));
+                           this.RaisePropertyChanged(nameof(this.NumberStepConfirm));
+                           this.RaisePropertyChanged(nameof(this.CurrentBayPosition));
+                           this.RaisePropertyChanged(nameof(this.BayPositionActive));
+                           this.RaisePropertyChanged(nameof(this.HasDisplacementUpValue));
+                           this.RaisePropertyChanged(nameof(this.HasDisplacementDownValue));
+                       },
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UpdateStatusButtonFooter()

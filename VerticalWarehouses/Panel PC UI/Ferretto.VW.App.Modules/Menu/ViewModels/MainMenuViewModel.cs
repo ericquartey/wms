@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Services;
+using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Fields
 
         private readonly IBayManager bayManager;
+
+        private readonly IMachineService machineService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
@@ -40,12 +43,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public MainMenuViewModel(
             IBayManager bayManager,
             ISessionService sessionService,
-            IOperatorNavigationService operatorNavigationService)
+            IOperatorNavigationService operatorNavigationService,
+            IMachineService machineService)
             : base(PresentationMode.Menu)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -106,7 +111,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuOperationCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Operation),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode != MachineMode.Test));
+                      this.MachineModeService.MachineMode != MachineMode.Test
+                        && (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                )
+            )
+            ;
 
         #endregion
 
@@ -162,7 +171,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 switch (menu)
                 {
                     case Menu.Operation:
-                        this.operatorNavigationService.NavigateToOperatorMenuAsync();
+                        this.operatorNavigationService.NavigateToOperatorMenu();
                         break;
 
                     case Menu.Maintenance:

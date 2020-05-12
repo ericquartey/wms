@@ -321,9 +321,7 @@
                   "required": [
                     "FeedRate",
                     "MaxSpeed",
-                    "MinSpeed",
-                    "HighSpeedDurationOpen",
-                    "HighSpeedDurationClose"
+                    "MinSpeed"
                   ],
                   "properties": {
                     "FeedRate": {
@@ -342,18 +340,6 @@
                       "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MinSpeed",
                       "type": "number",
                       "title": "The Minspeed Schema",
-                      "default": 0
-                    },
-                    "HighSpeedDurationOpen": {
-                      "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationOpen",
-                      "type": "number",
-                      "title": "The Highspeeddurationopen Schema",
-                      "default": 0
-                    },
-                    "HighSpeedDurationClose": {
-                      "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationClose",
-                      "type": "number",
-                      "title": "The Highspeeddurationclose Schema",
                       "default": 0
                     }
                   }
@@ -966,257 +952,282 @@
         "minLength": 1,
         "description": "The serial number of the machine"
       }
-    }
-  },
-  "SetupProcedures": {
-    "$id": "#/properties/SetupProcedures",
-    "type": "object",
-    "title": "The Setupprocedures Schema",
-    "required": [
-      "BayHeightCheck",
-      "BeltBurnishingTest",
-      "CarouselManualMovements",
-      "CellPanelsCheck",
-      "CellsHeightCheck",
-      "DepositAndPickUpTest",
-      "LoadFirstDrawerTest",
-      "ShutterHeightCheck",
-      "ShutterTest",
-      "VerticalOffsetCalibration",
-      "VerticalResolutionCalibration"
-    ],
-    "properties": {
-      "BayHeightCheck": {
-        "$id": "#/properties/SetupProcedures/properties/BayHeightCheck",
-        "type": "object",
-        "title": "The Bayheightcheck Schema",
-        "required": [
-          "Step",
-          "FeedRate"
-        ],
-        "properties": {
-          "Step": {
-            "$id": "#/properties/SetupProcedures/properties/BayHeightCheck/properties/Step",
-            "type": "number",
-            "title": "The Step Schema",
-            "default": 0.0
-          },
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/BayHeightCheck/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
+    },
+    "SetupProcedures": {
+      "$id": "#/properties/SetupProcedures",
+      "type": "object",
+      "title": "The Setupprocedures Schema",
+      "required": [
+        "Bay1HeightCheck",
+        "BeltBurnishingTest",
+        "Bay1CarouselCalibration",
+        "CellPanelsCheck",
+        "CellsHeightCheck",
+        "DepositAndPickUpTest",
+        "LoadFirstDrawerTest",
+        "ShutterHeightCheck",
+        "Bay1ShutterTest",
+        "VerticalOffsetCalibration",
+        "VerticalResolutionCalibration"
+      ],
+      "properties": {
+        "Bay1HeightCheck": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1HeightCheck",
+          "type": "object",
+          "title": "The Bayheightcheck Schema",
+          "required": [
+            "FeedRate"
+          ],
+          "properties": {
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/Bay1HeightCheck/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            }
+          }
+        },
+        "BeltBurnishingTest": {
+          "$id": "#/properties/SetupProcedures/properties/BeltBurnishingTest",
+          "type": "object",
+          "title": "The Beltburnishingtest Schema",
+          "required": [
+            "RequiredCycles"
+          ],
+          "properties": {
+            "RequiredCycles": {
+              "$id": "#/properties/SetupProcedures/properties/BeltBurnishingTest/properties/RequiredCycles",
+              "type": "integer",
+              "title": "The RequiredCycles Schema",
+              "default": 0
+            }
+          }
+        },
+        "Bay1CarouselCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration",
+          "type": "object",
+          "title": "The Bay1CarouselCalibration Schema",
+          "required": [
+            "FeedRate"
+          ],
+          "properties": {
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            },
+            "RequiredCycles": {
+              "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration/properties/RequiredCycles",
+              "type": "integer",
+              "title": "The RequiredCycles Schema",
+              "default": 0
+            }
+          }
+        },
+        "CellPanelsCheck": {
+          "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck",
+          "type": "object",
+          "title": "The Cellpanelscheck Schema",
+          "required": [
+            "FeedRate",
+            "Step"
+          ],
+          "properties": {
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            },
+            "Step": {
+              "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/Step",
+              "type": "number",
+              "title": "The Step Schema",
+              "default": 0.0
+            }
+          }
+        },
+        "CellsHeightCheck": {
+          "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck",
+          "type": "object",
+          "title": "The Cellsheightcheck Schema",
+          "required": [
+            "Step",
+            "FeedRate"
+          ],
+          "properties": {
+            "Step": {
+              "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck/properties/Step",
+              "type": "number",
+              "title": "The Step Schema",
+              "default": 0.0
+            },
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            }
+          }
+        },
+        "DepositAndPickUpTest": {
+          "$id": "#/properties/SetupProcedures/properties/DepositAndPickUpTest",
+          "type": "object",
+          "title": "The Depositandpickuptest Schema",
+          "required": [
+            "RequiredCycles"
+          ],
+          "properties": {
+            "RequiredCycles": {
+              "$id": "#/properties/SetupProcedures/properties/DepositAndPickUpTest/properties/RequiredCycles",
+              "type": "integer",
+              "title": "The RequiredCycles Schema",
+              "default": 0
+            }
+          }
+        },
+        "LoadFirstDrawerTest": {
+          "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest",
+          "type": "object",
+          "title": "The Loadfirstdrawertest Schema",
+          "required": [
+            "FeedRate"
+          ],
+          "properties": {
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            }
+          }
+        },
+        "ShutterHeightCheck": {
+          "$id": "#/properties/SetupProcedures/properties/ShutterHeightCheck",
+          "type": "object",
+          "title": "The Shutterheightcheck Schema",
+          "required": [
+            "FeedRate"
+          ],
+          "properties": {
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/ShutterHeightCheck/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            }
+          }
+        },
+        "Bay1ShutterTest": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1ShutterTest",
+          "type": "object",
+          "title": "The Bay1ShutterTest Schema",
+          "required": [
+            "RequiredCycles"
+          ],
+          "properties": {
+            "RequiredCycles": {
+              "$id": "#/properties/SetupProcedures/properties/Bay1ShutterTest/properties/RequiredCycles",
+              "type": "integer",
+              "title": "The RequiredCycles Schema",
+              "default": 0
+            }
+          }
+        },
+        "VerticalOffsetCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
+          "type": "object",
+          "title": "The VerticalOffsetCalibration Schema",
+          "required": [
+            "ReferenceCellId",
+            "Step",
+            "FeedRate"
+          ],
+          "properties": {
+            "ReferenceCellId": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
+              "type": "integer",
+              "title": "The ReferenceCellId Schema",
+              "default": 0
+            },
+            "Step": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
+              "type": "number",
+              "title": "The Step Schema",
+              "default": 0.0
+            },
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
+              "default": 0.0,
+              "title": "The FeedRate Schema",
+              "type": "number"
+            }
+          }
+        },
+        "VerticalResolutionCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration",
+          "type": "object",
+          "title": "The Verticalresolutioncalibration Schema",
+          "required": [
+            "InitialPosition",
+            "FinalPosition",
+            "FeedRate"
+          ],
+          "properties": {
+            "StartPosition": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/InitialPosition",
+              "type": "number",
+              "title": "The Initialposition Schema",
+              "default": 0
+            },
+            "InitialPosition": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/InitialPosition",
+              "type": "number",
+              "title": "The Initialposition Schema",
+              "default": 0
+            },
+            "FinalPosition": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/FinalPosition",
+              "type": "number",
+              "title": "The Finalposition Schema",
+              "default": 0
+            },
+            "FeedRate": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/FeedRate",
+              "type": "number",
+              "title": "The Feedrate Schema",
+              "default": 0.0
+            }
           }
         }
-      },
-      "BeltBurnishingTest": {
-        "$id": "#/properties/SetupProcedures/properties/BeltBurnishingTest",
-        "type": "object",
-        "title": "The Beltburnishingtest Schema",
-        "required": [
-          "RequiredCycles"
-        ],
-        "properties": {
-          "RequiredCycles": {
-            "$id": "#/properties/SetupProcedures/properties/BeltBurnishingTest/properties/RequiredCycles",
-            "type": "integer",
-            "title": "The RequiredCycles Schema",
-            "default": 0
-          }
-        }
-      },
-      "CarouselManualMovements": {
-        "$id": "#/properties/SetupProcedures/properties/CarouselManualMovements",
-        "type": "object",
-        "title": "The Carouselmanualmovements Schema",
-        "required": [
-          "FeedRate"
-        ],
-        "properties": {
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/CarouselManualMovements/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          }
-        }
-      },
-      "CellPanelsCheck": {
-        "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck",
-        "type": "object",
-        "title": "The Cellpanelscheck Schema",
-        "required": [
-          "FeedRate",
-          "Step"
-        ],
-        "properties": {
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          },
-          "Step": {
-            "$id": "#/properties/SetupProcedures/properties/CellPanelsCheck/properties/Step",
-            "type": "number",
-            "title": "The Step Schema",
-            "default": 0.0
-          }
-        }
-      },
-      "CellsHeightCheck": {
-        "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck",
-        "type": "object",
-        "title": "The Cellsheightcheck Schema",
-        "required": [
-          "Step",
-          "FeedRate"
-        ],
-        "properties": {
-          "Step": {
-            "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck/properties/Step",
-            "type": "number",
-            "title": "The Step Schema",
-            "default": 0.0
-          },
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/CellsHeightCheck/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          }
-        }
-      },
-      "DepositAndPickUpTest": {
-        "$id": "#/properties/SetupProcedures/properties/DepositAndPickUpTest",
-        "type": "object",
-        "title": "The Depositandpickuptest Schema",
-        "required": [
-          "RequiredCycles"
-        ],
-        "properties": {
-          "RequiredCycles": {
-            "$id": "#/properties/SetupProcedures/properties/DepositAndPickUpTest/properties/RequiredCycles",
-            "type": "integer",
-            "title": "The RequiredCycles Schema",
-            "default": 0
-          }
-        }
-      },
-      "LoadFirstDrawerTest": {
-        "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest",
-        "type": "object",
-        "title": "The Loadfirstdrawertest Schema",
-        "required": [
-          "FeedRate"
-        ],
-        "properties": {
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          }
-        }
-      },
-      "ShutterHeightCheck": {
-        "$id": "#/properties/SetupProcedures/properties/ShutterHeightCheck",
-        "type": "object",
-        "title": "The Shutterheightcheck Schema",
-        "required": [
-          "FeedRate"
-        ],
-        "properties": {
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/ShutterHeightCheck/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          }
-        }
-      },
-      "ShutterTest": {
-        "$id": "#/properties/SetupProcedures/properties/ShutterTest",
-        "type": "object",
-        "title": "The Shuttertest Schema",
-        "required": [
-          "RequiredCycles"
-        ],
-        "properties": {
-          "RequiredCycles": {
-            "$id": "#/properties/SetupProcedures/properties/ShutterTest/properties/RequiredCycles",
-            "type": "integer",
-            "title": "The RequiredCycles Schema",
-            "default": 0
-          }
-        }
-      },
-      "VerticalOffsetCalibration": {
-        "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
-        "type": "object",
-        "title": "The VerticalOffsetCalibration Schema",
-        "required": [
-          "ReferenceCellId",
-          "Step",
-          "FeedRate"
-        ],
-        "properties": {
-          "ReferenceCellId": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
-            "type": "integer",
-            "title": "The ReferenceCellId Schema",
-            "default": 0
-          },
-          "Step": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
-            "type": "number",
-            "title": "The Step Schema",
-            "default": 0.0
-          },
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
-            "default": 0.0,
-            "title": "The FeedRate Schema",
-            "type": "number"
-          }
-        }
-      },
-      "VerticalResolutionCalibration": {
-        "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration",
-        "type": "object",
-        "title": "The Verticalresolutioncalibration Schema",
-        "required": [
-          "InitialPosition",
-          "FinalPosition",
-          "FeedRate"
-        ],
-        "properties": {
-          "StartPosition": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/InitialPosition",
-            "type": "number",
-            "title": "The Initialposition Schema",
-            "default": 0
-          },
-          "InitialPosition": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/InitialPosition",
-            "type": "number",
-            "title": "The Initialposition Schema",
-            "default": 0
-          },
-          "FinalPosition": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/FinalPosition",
-            "type": "number",
-            "title": "The Finalposition Schema",
-            "default": 0
-          },
-          "FeedRate": {
-            "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/FeedRate",
-            "type": "number",
-            "title": "The Feedrate Schema",
-            "default": 0.0
-          }
+      }
+    },
+    "Wms": {
+      "id": "#/properties/Wms",
+      "type": "object",
+      "title": "The Setupprocedures Schema",
+      "required": [
+        "IsEnabled",
+        "ServiceUrl"
+      ],
+      "properties": {
+        "IsEnabled": {
+          "id": "#/properties/Wms/properties/IsEnabled",
+          "type": "boolean",
+          "title": "The IsEnabled Schema"
+        },
+        "ServiceUrl": {
+          "id": "#/properties/Wms/properties/ServiceUrl",
+          "type": "string",
+          "title": "The IsTimeSyncEnabled Schema"
+        },
+        "IsTimeSyncEnabled": {
+          "id": "#/properties/Wms/properties/IsTimeSyncEnabled",
+          "type": "boolean",
+          "title": "The IsTimeSyncEnabled Schema"
         }
       }
     }
   }
-} }
+}

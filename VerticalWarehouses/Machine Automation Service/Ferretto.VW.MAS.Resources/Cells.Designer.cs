@@ -79,6 +79,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The cell is not free..
+        /// </summary>
+        public static string TheCellIsNotFree {
+            get {
+                return ResourceManager.GetString("TheCellIsNotFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The cell is unexpectedly free..
         /// </summary>
         public static string TheCellIsUnexpectedlyFree {

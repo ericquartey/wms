@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -95,6 +96,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
+
+        private SubscriptionToken themeChangedToken;
 
         private CancellationTokenSource tokenSource;
 
@@ -323,14 +326,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (!this.DestinationPosition1.HasValue)
                             {
-                                this.currentError = $"Destination position is required.";
+                                this.currentError = Localized.Get("InstallationApp.DestinationPositionRequired");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
 
                             if (this.DestinationPosition1.Value < 0)
                             {
-                                this.currentError = "Destination position must be strictly positive.";
+                                this.currentError = Localized.Get("InstallationApp.DestinationPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -338,7 +341,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             if (this.DestinationPosition1.Value < this.axisLowerBound ||
                                 this.DestinationPosition1.Value > this.axisUpperBound)
                             {
-                                this.currentError = $"Destination position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(Localized.Get("InstallationApp.DestinationPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -355,7 +358,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition1.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
                             {
-                                this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(Localized.Get("InstallationApp.MeasuredPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -369,7 +372,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (this.StartPosition < 0)
                             {
-                                this.currentError = $"Start position must be strictly positive.";
+                                this.currentError = Localized.Get("InstallationApp.StartPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -379,7 +382,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(Localized.Get("InstallationApp.StartPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -396,14 +399,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             {
                                 if (!this.DestinationPosition2.HasValue)
                                 {
-                                    this.currentError = $"Destination position is required.";
+                                    this.currentError = Localized.Get("InstallationApp.DestinationPositionRequired");
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
 
                                 if (this.DestinationPosition2.Value < 0)
                                 {
-                                    this.currentError = "Destination position must be strictly positive.";
+                                    this.currentError = Localized.Get("InstallationApp.DestinationPositionMustBePositive");
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
@@ -411,7 +414,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 if (this.DestinationPosition2.Value < this.axisLowerBound ||
                                     this.DestinationPosition2.Value > this.axisUpperBound)
                                 {
-                                    this.currentError = $"Destination position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                    this.currentError = string.Format(Localized.Get("InstallationApp.DestinationPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
@@ -422,7 +425,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition2.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value))
                             {
-                                this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(Localized.Get("InstallationApp.MeasuredPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -461,6 +464,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
             }
+
+            if (this.themeChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
+                this.themeChangedToken?.Dispose();
+                this.themeChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -493,7 +503,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.AxisLowerBound = procedureParameters.LowerBound;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -591,12 +601,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentStep = CalibrationStep.PositionMeter;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -712,7 +722,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsRetrievingNewResolution = false;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.NewResolution = null;
@@ -728,7 +738,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveManualToVerticalPositionAsync(
                     position, false, false);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -780,6 +790,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                    (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
                                    (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
                         });
+
+            this.themeChangedToken = this.themeChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<ThemeChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
+                            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
+                            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
+                            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
+                        },
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private void UpdateStatusButtonFooter()

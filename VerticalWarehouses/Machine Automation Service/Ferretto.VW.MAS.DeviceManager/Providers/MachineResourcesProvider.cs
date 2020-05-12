@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -9,8 +12,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
@@ -76,17 +77,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay1Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
 
+        public bool IsDrawerInBay1ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerInBay1InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+
         public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
 
         public bool IsDrawerInBay2Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+
+        public bool IsDrawerInBay2ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+
+        public bool IsDrawerInBay2InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
 
         public bool IsDrawerInBay2Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
 
         public bool IsDrawerInBay3Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
 
+        public bool IsDrawerInBay3ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
+
+        public bool IsDrawerInBay3InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+
         public bool IsDrawerInBay3Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
         public bool IsDrawerPartiallyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
+
+        public bool IsElevatorOverrun => this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun];
 
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
@@ -175,6 +190,38 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public bool IsDrawerInBayExternalPosition(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1ExternalPosition;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2ExternalPosition;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3ExternalPosition;
+            }
+        }
+
+        public bool IsDrawerInBayInternalPosition(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1InternalPosition;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2InternalPosition;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3InternalPosition;
+            }
+        }
+
         public bool IsDrawerInBayTop(BayNumber bayNumber)
         {
             switch (bayNumber)
@@ -223,7 +270,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case LoadingUnitLocation.Elevator:
-                    returnValue = this.IsDrawerCompletelyOnCradle;
+                    returnValue = this.IsDrawerCompletelyOnCradle && !this.IsSensorZeroOnCradle;
                     break;
 
                 // If location can't be idientifies simply become a "no operation" function
@@ -235,36 +282,79 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return returnValue;
         }
 
-        public bool IsMachineSecureForRun()
+        public bool IsMachineSecureForRun(out string errorText)
         {
-            var returnValue = true;
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
-            {
-                returnValue = false;
-            }
+            var isMarchPossible = true;
+            var reason = new StringBuilder();
 
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
             {
-                returnValue = false;
+                isMarchPossible = false;
+                reason.Append("Micro Carter Active Bay1 Left; ");
             }
-
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
             {
-                returnValue = false;
+                isMarchPossible = false;
+                reason.Append("Micro Carter Active Bay1 Right; ");
             }
 
-            return returnValue;
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                foreach (var bay in baysDataProvider.GetAll())
+                {
+                    switch (bay.Number)
+                    {
+                        case BayNumber.BayOne:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay1; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
+                            {
+                                //isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay1; ");
+                            }
+
+                            break;
+
+                        case BayNumber.BayTwo:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay2; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
+                            {
+                                //isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay2; ");
+                            }
+
+                            break;
+
+                        case BayNumber.BayThree:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay3; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
+                            {
+                                //isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay3; ");
+                            }
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            errorText = reason.ToString();
+            return isMarchPossible;
         }
 
         public bool IsProfileCalibratedBay(BayNumber bayNumber)
@@ -385,6 +475,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
+                                if (this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] != newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                    && newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                    )
+                                {
+                                    var errorCode = MachineErrorCode.ElevatorOverrunDetected;
+                                    using (var scope = this.serviceScopeFactory.CreateScope())
+                                    {
+                                        scope.ServiceProvider
+                                            .GetRequiredService<IErrorsProvider>()
+                                            .RecordNew(errorCode);
+                                    }
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                    this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                }
+
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
                                 updateDone = true;
                             }

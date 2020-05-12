@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace Ferretto.VW.App.Keyboards.Converters
@@ -28,11 +24,11 @@ namespace Ferretto.VW.App.Keyboards.Converters
                     var match = Regex.Match(command.Caption, IconPattern);
                     if (match?.Success == true)
                     {
-                        string kindString = match.Groups["Kind"].Value;
+                        var kindString = match.Groups["Kind"].Value;
                         if (Enum.TryParse<MahApps.Metro.IconPacks.PackIconFontAwesomeKind>(kindString, out var kind))
                         {
-                            double rotation = 0D;
-                            string rotationStr = match.Groups["Rotation"]?.Value;
+                            var rotation = 0D;
+                            var rotationStr = match.Groups["Rotation"]?.Value;
                             if (!string.IsNullOrEmpty(rotationStr))
                             {
                                 rotation = double.Parse(rotationStr);
@@ -40,7 +36,7 @@ namespace Ferretto.VW.App.Keyboards.Converters
                             return new MahApps.Metro.IconPacks.PackIconFontAwesome
                             {
                                 Kind = kind,
-                                Rotation = rotation
+                                RotationAngle = rotation
                             };
                         }
                         return kindString;

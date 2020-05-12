@@ -135,4 +135,13 @@
   <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
     <value>La catena della baia non è in posizione di zero.</value>
   </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical non è un asse valido per il metodo GetInverterIndexByMovementType ()</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>L'altezza massima del carrello non è valida.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>La baia contiene un cassetto nella sua posizione esterna</value>
+  </data>
 </root>

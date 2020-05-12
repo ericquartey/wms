@@ -6,11 +6,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
+        bool BypassConditions { get; set; }
+
         int Delay { get; set; }
 
         double HighSpeedDurationClose { get; }
 
         double HighSpeedDurationOpen { get; }
+
+        double? HighSpeedHalfDurationClose { get; }
+
+        double? HighSpeedHalfDurationOpen { get; }
 
         double LowerSpeed { get; }
 

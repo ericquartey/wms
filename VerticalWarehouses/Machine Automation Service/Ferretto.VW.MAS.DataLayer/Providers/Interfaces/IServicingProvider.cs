@@ -7,6 +7,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         ServicingInfo GetInfo();
+        void SetInstallationDate();
 
         #endregion
     }

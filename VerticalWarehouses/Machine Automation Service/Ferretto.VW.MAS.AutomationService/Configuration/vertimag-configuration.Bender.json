@@ -4,23 +4,28 @@
     {
       "Id": 1,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     },
     {
       "Id": 2,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     },
     {
       "Id": 3,
       "Tare": 120,
-      "MaxNetWeight": 800
+      "MaxNetWeight": 800,
+      "IsIntoMachine": false,
+      "IsInFullTest": false
     }
   ],
   "Machine": {
     "Bays": [
       {
-        "AlphaNumericBar": null,
         "Side": "Front",
         "IsExternal": false,
         "ChainOffset": 0,
@@ -29,7 +34,8 @@
           {
             "Height": 645,
             "MaxSingleHeight": 695,
-            "Location": "InternalBay1Down"
+            "ProfileOffset": 50,
+            "Location": "InternalBay1Up"
           }
         ],
         "IoDevice": {
@@ -47,9 +53,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "MaxSpeed": 31500,
-            "MinSpeed": 2500,
-            "HighSpeedDurationOpen": 16,
-            "HighSpeedDurationClose": 17
+            "MinSpeed": 2500
           },
           "AssistedMovements": {
             "FeedRate": 0.2,
@@ -80,6 +84,8 @@
           "HomingCreepSpeed": 6,
           "UpperBound": 4000,
           "LowerBound": 350,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "EmptyLoadMovement": {
             "Acceleration": 1000,
             "Deceleration": 1000,
@@ -105,9 +111,7 @@
           },
           "AssistedMovements": {
             "FeedRate": 0.15,
-            "FeedRateAfterZero": 0.2,
-            "TargetDistance": 30,
-            "TargetDistanceAfterZero": 30
+            "FeedRateAfterZero": 0.2
           }
         },
         {
@@ -145,33 +149,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 200
+                  "Position": 200,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 500,
                   "Speed": 100,
                   "Number": 1,
-                  "Position": 550
+                  "Position": 550,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Number": 2,
                   "Position": 950,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 250,
                   "Number": 3,
                   "Position": 1350,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 800,
                   "Speed": 50,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1415,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -183,33 +195,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 200
+                  "Position": 200,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 500,
                   "Speed": 100,
                   "Number": 1,
-                  "Position": 550
+                  "Position": 550,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Number": 2,
                   "Position": 950,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 250,
                   "Number": 3,
                   "Position": 1350,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 800,
                   "Speed": 50,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1415,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -221,33 +241,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 100
+                  "Position": 100,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 100,
                   "Position": 200,
-                  "Number": 1
+                  "Number": 1,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 300,
                   "Number": 2,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 985,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 1310,
-                  "Number": 4
+                  "Number": 4,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -259,33 +287,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 100,
-                  "Number": 0
+                  "Number": 0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 100,
                   "Position": 200,
-                  "Number": 1
+                  "Number": 1,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 300,
                   "Number": 2,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 985,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 1310,
-                  "Number": 4
+                  "Number": 4,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             }
@@ -308,7 +344,8 @@
     "ModelName": "Vertimag 800kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
-    "LoadUnitMaxHeight": 750,
+    "LoadUnitMaxHeight": 695,
+    "LoadUnitMinHeight": 145.0,
     "Panels": [
       {
         "Side": "Front",
@@ -3151,9 +3188,56 @@
     "SerialNumber": "Prototype #1"
   },
   "SetupProcedures": {
-    "BayHeightCheck": {
-      "FeedRate": 0.2,
-      "Step": 0.5
+    "Bay1CarouselCalibration": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1FullTest": {
+    },
+    "Bay1HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay1Laser": {
+    },
+    "Bay1ProfileCheck": {
+    },
+    "Bay1ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2FullTest": {
+    },
+    "Bay2HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay2Laser": {
+    },
+    "Bay2ProfileCheck": {
+    },
+    "Bay2ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay3CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3FullTest": {
+    },
+    "Bay3HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay3Laser": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay3ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
     },
     "BeltBurnishingTest": {
       "RequiredCycles": 200
@@ -3175,31 +3259,18 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-    "Bay1HeightCheck": {
+    "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
-    "Bay2HeightCheck": {
-      "FeedRate": 0.1
-    },
-    "Bay3HeightCheck": {
-      "FeedRate": 0.1
-    },
-    "Bay1ShutterTest": {
-      "FeedRate": 1.0,
-      "RequiredCycles": 20
-    },
-    "Bay2ShutterTest": {
-      "FeedRate": 1.0,
-      "RequiredCycles": 20
-    },
-    "Bay3ShutterTest": {
-      "FeedRate": 1.0,
-      "RequiredCycles": 20
+    "ShutterTest": {
+      "RequiredCycles": 200
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
       "Step": 0.5,
       "FeedRate": 0.2
+    },
+    "VerticalOriginCalibration": {
     },
     "VerticalResolutionCalibration": {
       "StartPosition": 500,
@@ -3207,7 +3278,9 @@
       "FinalPosition": 5500, //TEMP Temporary value for software test
       "FeedRate": 0.2
     },
-    "VerticalOriginCalibration": {
+    "WeightMeasurement": {
+    },
+    "HorizontalChainCalibration": {
     }
   }
 }

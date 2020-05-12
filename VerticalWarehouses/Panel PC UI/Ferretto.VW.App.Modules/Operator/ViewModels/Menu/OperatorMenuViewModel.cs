@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public class OperatorMenuViewModel : BaseOperatorViewModel
@@ -21,7 +18,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly int bayNumber;
+        // private readonly int bayNumber;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
@@ -30,6 +27,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IOperatorNavigationService operatorNavigationService;
 
         private readonly ISessionService sessionService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
 
         private bool areItemsEnabled;
 
@@ -54,7 +53,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ISessionService sessionService,
             IOperatorNavigationService operatorNavigationService,
             IMachineBaysWebService machineBaysWebService,
-            IMissionOperationsService missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IWmsDataProvider wmsDataProvider)
         : base(PresentationMode.Operator)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
@@ -62,6 +62,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
         #endregion
@@ -79,7 +80,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
             (this.drawerActivityButtonCommand = new DelegateCommand(
-                async () => await this.operatorNavigationService.NavigateToDrawerViewAsync(),
+                this.operatorNavigationService.NavigateToDrawerView,
                 this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -136,7 +137,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
-            this.IsWmsEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+            this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
 
             await base.OnAppearedAsync();
         }

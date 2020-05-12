@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -97,7 +98,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         }
                         catch (StateMachineException ex)
                         {
-                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                            this.Logger.LogError(ex.NotificationMessage.Description, "State notification error.");
                             //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                             state.OnStop(StopRequestReason.Error);
@@ -151,10 +152,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
             catch (StateMachineException ex)
             {
-                this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                this.Logger.LogError(ex.NotificationMessage.Description, "Error while starting a mission.");
                 //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                newState.OnStop(StopRequestReason.Error);
+                newState.OnStop(StopRequestReason.Stop);
                 return false;
             }
         }
@@ -167,6 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 if (mission.Status == MissionStatus.Completed
                     || mission.Status == MissionStatus.Aborted
+                    || mission.Status == MissionStatus.New
                     )
                 {
                     missionsDataProvider.Complete(missionId);
@@ -217,8 +219,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                    mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
-                    if (this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
+                    mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, messageData.MissionType);
+                    if (mission != null
+                        && this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
                     {
                         return true;
                     }
@@ -233,11 +236,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
-                    && !m.WmsId.HasValue
                     && (m.Status == MissionStatus.Waiting
-                        || m.Status == MissionStatus.New
-                        || m.Status == MissionStatus.Completed
-                        || m.Status == MissionStatus.Aborted)
+                        || m.Status == MissionStatus.New)
                 );
             if (waitMission != null)
             {
@@ -256,8 +256,16 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         mission.NeedHomingAxis = waitMission.NeedHomingAxis;
                     }
 
-                    missionsDataProvider.Delete(waitMission.Id);
-                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                    if (waitMission.WmsId.HasValue)
+                    {
+                        missionsDataProvider.Complete(waitMission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Complete {waitMission}");
+                    }
+                    else
+                    {
+                        missionsDataProvider.Delete(waitMission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                    }
                 }
                 catch (Exception ex)
                 {

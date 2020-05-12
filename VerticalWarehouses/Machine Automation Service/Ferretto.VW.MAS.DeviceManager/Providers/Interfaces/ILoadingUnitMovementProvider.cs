@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit);
 
-        void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore);
+        void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore, ShutterPosition shutterPosition = ShutterPosition.Closed);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
 
@@ -21,11 +21,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         BayNumber GetBayByCell(int cellId);
 
+        double GetCurrentHorizontalPosition();
+
         double GetCurrentVerticalPosition();
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
 
         double GetLastVerticalPosition();
+
+        ShutterPosition GetShutterClosedPosition(Bay bay, LoadingUnitLocation location);
 
         ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location);
 
@@ -53,6 +57,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void PositionElevatorToPosition(double targetHeight,
             BayNumber shutterBay,
+            ShutterPosition shutterPosition,
             bool measure,
             MessageActor sender,
             BayNumber requestingBay,
@@ -63,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
-        void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, BayNumber targetBay, MessageActor sender);
+        void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, MissionType missionType, BayNumber targetBay, MessageActor sender);
 
         MessageStatus ShutterStatus(NotificationMessage message);
 

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -57,6 +58,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isMovingElevatorForwards;
 
         private bool isMovingElevatorUp;
+
+        private bool isPolicyBypassed;
 
         private bool isShutterMovingDown;
 
@@ -204,6 +207,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isMovingElevatorUp, value);
         }
 
+        public bool IsPolicyBypassed
+        {
+            get => this.isPolicyBypassed;
+            set
+            {
+                this.SetProperty(ref this.isPolicyBypassed, value);
+                this.OnManualRaiseCanExecuteChanged();
+            }
+        }
+
         public bool IsShutterMovingDown
         {
             get => this.isShutterMovingDown;
@@ -222,7 +235,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.lightCommand = new DelegateCommand(
                 async () => await this.LightAsync(),
                 () => !this.IsMoving &&
-                      this.MachineModeService?.MachineMode == MachineMode.Manual));
+                      (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
 
         public string LightIcon
         {
@@ -342,7 +355,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
                    this.moveToCellPolicy?.IsAllowed == true;
@@ -350,7 +363,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToHeight()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.InputHeight.HasValue &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.InputHeight.GetValueOrDefault());
@@ -360,6 +373,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.StopMoving();
             this.isManualMovementCompleted = true;
+            this.isPolicyBypassed = false;
         }
 
         private async Task ManualShutterStartMovementAsync(ShutterMovementDirection direction)
@@ -490,45 +504,71 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false) &&
                                            !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanShutterMoveUpCommand = this.CanShutterMoveUpCommand || this.isPolicyBypassed;
 
             this.CanShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false) &&
                                              !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                              !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanShutterMoveDownCommand = this.CanShutterMoveDownCommand || this.isPolicyBypassed;
 
             this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                            !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
             this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                            !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
-            this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            this.CanMoveElevatorBackwards = this.CanMoveElevatorBackwards || this.isPolicyBypassed;
+            this.CanMoveElevatorForwards = this.CanMoveElevatorForwards || this.isPolicyBypassed;
+
+            this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                                      !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
                                      ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                      !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                      !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                     !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                     !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
-            this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            this.CanMoveElevatorUp = this.CanMoveElevatorUp || this.isPolicyBypassed;
+
+            this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                                        !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
                                        ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                        !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                        !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                       !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                       !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanMoveElevatorDown = this.CanMoveElevatorDown || this.isPolicyBypassed;
 
             this.CanMoveCarouselCloseCommand = !this.IsCarouselOpening && this.moveCarouselDownPolicy?.IsAllowed == true &&
                                                !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                                !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                               !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                               !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanMoveCarouselCloseCommand = this.CanMoveCarouselCloseCommand || this.isPolicyBypassed;
+
             this.CanMoveCarouselOpenCommand = !this.IsCarouselClosing && this.moveCarouselUpPolicy?.IsAllowed == true &&
                                               !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                               !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                           this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+            this.CanMoveCarouselOpenCommand = this.CanMoveCarouselOpenCommand || this.isPolicyBypassed;
         }
 
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -577,7 +617,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 
@@ -601,7 +641,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsCarouselMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 
@@ -630,7 +670,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 
@@ -662,17 +702,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;
             this.IsExecutingProcedure = false;
+
+            this.IsPolicyBypassed = false;
+            this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
         }
 
         private void WriteInfo(Axis? axisMovement)
         {
             if (axisMovement.HasValue && axisMovement == Axis.Vertical)
             {
-                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.VerticalAxisMovementInProgress"), Services.Models.NotificationSeverity.Info);
             }
             else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
             {
-                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.HorizontalAxisMovementInProgress"), Services.Models.NotificationSeverity.Info);
             }
         }
 

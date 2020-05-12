@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -40,18 +38,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<CommonUtils.Messages.MachinePowerState> Get()
         {
-            return this.runningStateProvider.IsRunning
-                ? CommonUtils.Messages.MachinePowerState.Powered
-                : CommonUtils.Messages.MachinePowerState.Unpowered;
+            return this.runningStateProvider.MachinePowerState;
         }
 
         [HttpGet("power-ishoming")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<bool> GetIsHoming()
+        public ActionResult<Dictionary<BayNumber, bool>> GetIsHoming()
         {
-            return this.Ok(this.runningStateProvider?.IsHoming ?? false);
+            return this.Ok(this.runningStateProvider?.IsBayHoming);
         }
 
         [HttpPost("power-off")]

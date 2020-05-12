@@ -23,7 +23,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WeightControl}" />
+                   Text="{res:Loc InstallationApp.WeightControl}" />
 
         <ctrls:PpcStepsMenu Grid.Row="1"
                             VerticalAlignment="Top"
@@ -34,13 +34,13 @@
                              VerticalAlignment="Center"
                              InputScope="Number"
                              InputText="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
+                             LabelText="{res:Loc InstallationApp.InsertDesiredLoadingUnitId}" />
 
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding CheckLoadingUnitCommand}"
-                            Content="{x:Static res:InstallationApp.Verify}" />
+                            Content="{res:Loc InstallationApp.Verify}" />
     </Grid>
 </ctrls:View>

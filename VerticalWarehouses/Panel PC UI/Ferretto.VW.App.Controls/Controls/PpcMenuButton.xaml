@@ -83,7 +83,7 @@
                                                           ViewportUnits="Absolute">
                                                 <DrawingBrush.Drawing>
                                                     <DrawingGroup>
-                                                        <GeometryDrawing Brush="White">
+                                                        <GeometryDrawing Brush="{DynamicResource MenuButtonBorderBrush}">
                                                             <GeometryDrawing.Geometry>
                                                                 <GeometryGroup>
                                                                     <RectangleGeometry Rect="0,0,50,50" />
@@ -106,7 +106,7 @@
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
                                                  Fill="{TemplateBinding MenuBrush}"
-                                                 Stroke="White"
+                                                 Stroke="{DynamicResource MenuButtonStroke}"
                                                  StrokeThickness="1">
                                             <Ellipse.BitmapEffect>
                                                 <DropShadowBitmapEffect Opacity="0.5"
@@ -119,13 +119,13 @@
                                                                Height="28"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
-                                                               Foreground="White"
+                                                               Foreground="{DynamicResource Foreground}"
                                                                Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Grid>
                                 <Grid x:Name="Grid_MenuButton"
                                       Grid.Column="1"
-                                      Background="{DynamicResource FerrettoDarkGray}">
+                                      Background="{DynamicResource MainButtonBackground}">
                                     <Grid.RowDefinitions>
                                         <!--  Margine Top  -->
                                         <RowDefinition Height="10" />
@@ -150,7 +150,7 @@
                                                Grid.Row="1"
                                                Grid.Column="1"
                                                FontSize="24"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource Text_Foreground}"
                                                Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
                                                TextWrapping="Wrap" />
 
@@ -158,7 +158,7 @@
                                                Grid.Row="2"
                                                Grid.Column="1"
                                                FontSize="{DynamicResource FontSize_Small}"
-                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Foreground="{DynamicResource TextLight_Foreground}"
                                                Text="{Binding ElementName=MenuButton, Path=Description, FallbackValue='bla bla bla bla bla'}"
                                                TextWrapping="Wrap" />
                                 </Grid>

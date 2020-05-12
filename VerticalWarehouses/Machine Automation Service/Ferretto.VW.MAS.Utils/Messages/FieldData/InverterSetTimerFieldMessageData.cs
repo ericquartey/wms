@@ -2,10 +2,10 @@
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterSetTimerFieldMessageData : FieldMessageData, IInverterSetTimerFieldMessageData
+    public sealed class InverterSetTimerFieldMessageData : FieldMessageData, IInverterSetTimerFieldMessageData
     {
         #region Constructors
 

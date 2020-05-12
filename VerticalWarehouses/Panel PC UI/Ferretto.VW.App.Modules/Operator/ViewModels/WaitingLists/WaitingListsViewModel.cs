@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,10 +9,9 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public class WaitingListsViewModel : BaseOperatorViewModel, IOperationalContextViewModel
@@ -22,13 +20,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int PollIntervalMilliseconds = 5000;
 
-        private readonly IAreasWmsWebService areasWmsWebService;
+        private readonly IMachineAreasWebService areasWebService;
 
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsWmsWebService itemListsWmsWebService;
+        private readonly IMachineItemListsWebService itemListsWebService;
 
         private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
@@ -44,24 +42,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private ItemListExecution selectedList;
 
-        private DelegateCommand selectNextCommand;
-
-        private DelegateCommand selectPreviousCommand;
-
         #endregion
 
         #region Constructors
 
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsWmsWebService itemListsWmsWebService,
-            IAreasWmsWebService areasWmsWebService,
+            IMachineItemListsWebService itemListsWebService,
+            IMachineAreasWebService areasWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
-            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
+            this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
+            this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
@@ -93,25 +87,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand SelectNextCommand =>
-            this.selectNextCommand
-            ??
-            (this.selectNextCommand = new DelegateCommand(
-                () => this.ChangeSelectedList(false),
-                this.CanSelectNext));
-
-        public ICommand SelectPreviousCommand =>
-            this.selectPreviousCommand
-            ??
-            (this.selectPreviousCommand = new DelegateCommand(
-                () => this.ChangeSelectedList(true),
-                this.CanSelectPrevious));
-
         #endregion
 
         #region Methods
 
-        public void ChangeSelectedList(bool isUp)
+        public void ChangeSelectedList(bool selectPrevious)
         {
             if (this.lists is null)
             {
@@ -120,7 +100,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (this.lists.Any())
             {
-                var newIndex = isUp ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
+                var newIndex = selectPrevious ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
 
                 this.currentItemIndex = Math.Max(0, Math.Min(newIndex, this.lists.Count - 1));
             }
@@ -146,11 +126,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             {
                                 try
                                 {
-                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     this.ShowDetails();
                                 }
-                                catch (Exception ex)
+                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                                 {
                                     this.ShowNotification(ex);
                                 }
@@ -166,11 +146,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             {
                                 try
                                 {
-                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     await this.ExecuteListAsync();
                                 }
-                                catch (Exception ex)
+                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                                 {
                                     this.ShowNotification(ex);
                                 }
@@ -192,12 +172,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.OperatorApp.CannotExecuteList, Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -225,8 +205,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.selectPreviousCommand?.RaiseCanExecuteChanged();
-            this.selectNextCommand?.RaiseCanExecuteChanged();
             this.listExecuteCommand?.RaiseCanExecuteChanged();
             this.listDetailButtonCommand.RaiseCanExecuteChanged();
         }
@@ -236,35 +214,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 this.areaId.HasValue
                 &&
-                !this.IsWaitingForResponse
-                &&
                 this.SelectedList != null
                 &&
                 this.SelectedList.ExecutionMode != ListExecutionMode.None;
         }
 
-        private bool CanSelectNext()
-        {
-            return
-                this.currentItemIndex < this.lists.Count - 1
-                &&
-                !this.IsWaitingForResponse;
-        }
-
-        private bool CanSelectPrevious()
-        {
-            return
-                this.currentItemIndex > 0
-                &&
-                !this.IsWaitingForResponse;
-        }
-
         private bool CanShowDetailCommand()
         {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
+            return this.SelectedList != null;
         }
 
         private async Task LoadListsAsync()
@@ -281,7 +238,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value);
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
@@ -292,7 +249,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.SelectLoadingUnit();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.lists?.Clear();
                 this.ShowNotification(ex);

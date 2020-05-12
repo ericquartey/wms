@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningStateMachine : StateMachineBase
@@ -34,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             ILogger logger,
             IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
 
@@ -94,18 +93,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stateData = new PositioningStateData(this, this.machineData);
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                if (this.CheckConditions(out var errorText, out var errorCode))
+                if (this.machineData.MessageData.BypassConditions
+                    || this.CheckConditions(out var errorText, out var errorCode)
+                    )
                 {
-                    if (this.machineData.MessageData.MovementMode == MovementMode.FindZero
-                        &&
-                        this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
-                    {
-                        this.ChangeState(new PositioningEndState(stateData));
-                    }
-                    else
-                    {
-                        this.ChangeState(new PositioningStartState(stateData));
-                    }
+                    this.ChangeState(new PositioningStartState(stateData));
                 }
                 else
                 {
@@ -182,7 +174,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
                 }
             }
-            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain ||
+                this.machineData.MessageData.MovementMode == MovementMode.BayTest)
             {
 #if CHECK_BAY_SENSOR
                 ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?

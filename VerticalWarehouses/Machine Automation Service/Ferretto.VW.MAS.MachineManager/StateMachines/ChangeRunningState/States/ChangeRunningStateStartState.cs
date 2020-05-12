@@ -1,6 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
@@ -84,7 +82,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     this.stopReason = messageData.StopReason;
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
-
                     this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                     this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                 }
@@ -178,6 +175,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override IState OnStop(StopRequestReason reason)
         {
+            this.Logger.LogDebug($"ChangeRunningStateStartState: OnStop.");
             var returnValue = this.GetState<IChangeRunningStateEndState>();
 
             ((IEndState)returnValue).StopRequestReason = reason;

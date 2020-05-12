@@ -3,7 +3,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningWaitState : InverterStateBase
@@ -39,7 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Positioning Wait State");
+            this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Positioning Wait State");
         }
 
         /// <inheritdoc />

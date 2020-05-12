@@ -108,5 +108,108 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="VWAPP_PpcTextBox_WmsStyle"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="CaretBrush" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="false"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsReadOnly" Value="true">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_Foreground_TextBox_Readonly}" />
+                <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_TextBox_Readonly}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Readonly}" />
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+                <Setter Property="Background" Value="{DynamicResource PpcBackgroundDisabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SearchTextBoxStyle"
+           BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
+        <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+    </Style>
+
+    <Style x:Key="IconButtonBorderStyle"
+           TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+    </Style>
+    <Style x:Key="IconButtonBorderInvertStyle"
+           BasedOn="{StaticResource IconButtonBorderStyle}"
+           TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+    </Style>
+
+    <Style x:Key="IconButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Style="{StaticResource IconButtonBorderStyle}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
+                            <Setter TargetName="border" Property="Cursor" Value="Hand" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource PpcButtonBackgroundPressed}" />
+                            <Setter TargetName="border" Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="IconButtonInvertStyle"
+           BasedOn="{StaticResource IconButtonStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Style="{StaticResource IconButtonBorderInvertStyle}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

@@ -25,11 +25,6 @@
             get => this.performedCycles;
             set
             {
-                if (value < 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.performedCycles = value;
             }
         }
@@ -39,11 +34,6 @@
             get => this.requiredCycles;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.requiredCycles = value;
             }
         }

@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IErrorsProvider errorsProvider;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ILogger<InverterDriverService> logger;
 
         private readonly IMachineProvider machineProvider;
@@ -54,11 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             ILogger<InverterDriverService> logger
             )
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator)); ;
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -74,7 +72,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
+                this.eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
                     this.OnDataLayerReady(),
                     ThreadOption.PublisherThread,
                     false,
@@ -91,18 +89,21 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// </summary>
         /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
         /// <returns>The vertical position displacement, in millimeters.</returns>
-        public double ComputeDisplacement(double targetPosition)
+        public double ComputeDisplacement(double targetPosition, out double weight)
         {
+            weight = 0;
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnit is null)
+            if (loadingUnit is null
+                || loadingUnit.GrossWeight <= loadingUnit.Tare
+                )
             {
                 return 0;
             }
-
+            weight = loadingUnit.GrossWeight;
             var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
-            return beltElongation + shaftTorsion;
+            return Math.Ceiling(beltElongation + shaftTorsion);
         }
 
         public int ComputePositioningValues(
@@ -124,20 +125,34 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (position < axis.LowerBound)
                 {
                     this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
+                    throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the axis lower bound ({axis.LowerBound:0.00}).");
                 }
                 if (position > axis.UpperBound)
                 {
                     this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
+                    throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the axis upper bound ({axis.UpperBound}:0.00).");
                 }
 
                 position -= axis.Offset;
-                if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
+                if (axis.Orientation == Orientation.Vertical)
                 {
-                    var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
-                    this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement:0.00} [mm].");
-                    position += beltDisplacement;
+                    if (positioningData.ComputeElongation)
+                    {
+                        var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition, out var weight);
+                        this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
+                        position += beltDisplacement;
+                        if (axis.VerticalDepositOffset.HasValue)
+                        {
+                            position += axis.VerticalDepositOffset.Value;
+                        }
+                    }
+                    else if (positioningData.IsPickupMission
+                        && axis.VerticalPickupOffset.HasValue
+                        )
+                    {
+                        this.logger.LogInformation($"Vertical positioning for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
+                        position += axis.VerticalPickupOffset.Value;
+                    }
                 }
             }
             if (positioningData.AxisMovement == Axis.BayChain)
@@ -208,6 +223,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 positioningData,
                 targetAcceleration,
                 targetDeceleration,
+                currentPosition,
                 targetPosition,
                 targetSpeed,
                 switchPosition,
@@ -318,16 +334,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var machineHeight = this.machineProvider.GetHeight();
 
-            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000;
+            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000.0;
 
             var properties = this.elevatorDataProvider.GetStructuralProperties();
 
-            var beltSpacingMeters = properties.BeltSpacing / 1000;
+            var beltSpacingMeters = properties.BeltSpacing / 1000.0;
 
-            var targetPositionMeters = targetPosition / 1000;
+            var targetPositionMeters = targetPosition / 1000.0;
 
             return
-                  5000 * grossWeight
+                  5000.0 * grossWeight
                 /
                 ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
         }
@@ -341,16 +357,33 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var properties = this.elevatorDataProvider.GetStructuralProperties();
 
-            const double m = 10.0 / 3;
+            const double m = 10.0 / 3.0;
 
             return
-                64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
+                64.0 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
 
         private void OnDataLayerReady()
         {
+            if (inverters != null)
+            {
+                // already initialized
+                return;
+            }
+            this.logger.LogTrace("OnDataLayerReady start");
+
+            // performance optimization
+            this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            this.elevatorDataProvider.GetLoadingUnitOnBoard();
+            this.elevatorDataProvider.GetStructuralProperties();
+            this.machineProvider.GetHeight();
+            this.baysDataProvider.GetByNumber(BayNumber.BayOne);
+            //this.baysDataProvider.GetResolution(InverterIndex.MainInverter);
+
+            // retrieve inverters configuration
             inverters = inverters ?? this.digitalDevicesDataProvider
              .GetAllInverters()
              .Select<Inverter, IInverterStatusBase>(i =>
@@ -376,6 +409,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 throw new Exception("No main inverter is configured in the system.");
             }
+            this.logger.LogTrace("OnDataLayerReady end");
         }
 
         #endregion

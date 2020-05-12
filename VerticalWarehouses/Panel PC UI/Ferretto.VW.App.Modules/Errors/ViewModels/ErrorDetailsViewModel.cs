@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
+    [Warning(WarningsArea.None)]
     internal sealed class ErrorDetailsViewModel : BaseMainViewModel
     {
         #region Fields
@@ -72,11 +78,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
+            this.ShowAbortStep(false, false);
 
             await this.RetrieveErrorAsync();
 
-            this.IsBackNavigationAllowed = true;
+            await base.OnAppearedAsync();
         }
 
         private bool CanMarkAsResolved()
@@ -99,11 +107,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-                //await this.machineErrorsWebService.ResolveAllAsync();
 
+                // await this.machineErrorsWebService.ResolveAllAsync();
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -124,19 +132,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
             if (elapsedTime.TotalMinutes < 1)
             {
-                this.ErrorTime = Resources.VWApp.Now;
+                this.ErrorTime = Resources.Localized.Get("General.Now");
             }
             else if (elapsedTime.TotalHours < 1)
             {
-                this.ErrorTime = string.Format(Resources.VWApp.MinutesAgo, elapsedTime.TotalMinutes);
+                this.ErrorTime = string.Format(Resources.General.MinutesAgo, elapsedTime.TotalMinutes);
             }
             else if (elapsedTime.TotalDays < 1)
             {
-                this.ErrorTime = string.Format(Resources.VWApp.HoursAgo, elapsedTime.TotalHours);
+                this.ErrorTime = string.Format(Resources.General.HoursAgo, elapsedTime.TotalHours);
             }
             else
             {
-                this.ErrorTime = string.Format(Resources.VWApp.DaysAgo, elapsedTime.TotalDays);
+                this.ErrorTime = string.Format(Resources.General.DaysAgo, elapsedTime.TotalDays);
             }
         }
 
@@ -148,7 +156,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         double VerticalPosition { get; set; }
 
+        void CompleteProcedure();
+
         #endregion
 
         #region Methods
@@ -62,11 +64,11 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetCurrentCell(int? cellId);
 
         void SetLoadingUnit(int? loadingUnitId);
-
+        void UpdateHorizontalDistance(double newDistance);
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
-
+        void UpdateVerticalLowerBound(double newLowerBound);
         void UpdateVerticalOffset(double newOffset);
-
+        void UpdateVerticalOffsetAndComplete(double newOffset);
         void UpdateVerticalResolution(double newResolution);
 
         #endregion

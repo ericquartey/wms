@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 {
     internal class InverterPowerEnableErrorState : StateBase
@@ -49,7 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
             var notificationMessage = new NotificationMessage(
                 null,
-                $"InverterPowerEnable failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",
+                $"InverterPowerEnable failed on bay {this.machineData.TargetBay}. Field message: {this.stateData.FieldMessage.Description}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,
                 MessageType.InverterPowerEnable,

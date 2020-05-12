@@ -24,22 +24,38 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Gestione Cassetti" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.5.1" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.DrawerManagement}" />
+        </StackPanel>
 
-        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="1"
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,15"
+                   VerticalAlignment="Top"
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.UnitEditing}" />
+
+        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="2"
                                                     Grid.ColumnSpan="2"
                                                     ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Border Grid.Row="2"
+                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay}" />
+        <Border Grid.Row="3"
                 Grid.ColumnSpan="2"
                 Margin="0,15,0,0"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -52,6 +68,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -75,125 +92,204 @@
                                      LabelText="Code" />
 
                 <controls:PpcTextBox Grid.Column="2"
+                                     Grid.ColumnSpan="3"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Description}"
-                                     IsEnabled="False"
+                                     InputText="{Binding SelectedLU.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="Description" />
-
-                <controls:PpcTextBox Grid.Column="3"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.GrossWeight}"
-                                     IsEnabled="False"
-                                     LabelText="GrossWeight" />
-
-                <controls:PpcTextBox Grid.Column="4"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.NetWeight}"
-                                     IsEnabled="False"
-                                     LabelText="NetWeight" />
 
                 <controls:PpcTextBox Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.MaxNetWeight}"
-                                     IsEnabled="False"
-                                     LabelText="Height" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Height}"
-                                     IsEnabled="False"
-                                     LabelText="Height" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.MissionsCount}"
-                                     IsEnabled="False"
+                                     InputText="{Binding SelectedLU.MissionsCount, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="MissionsCount" />
 
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Status}"
-                                     IsEnabled="False"
-                                     LabelText="Status" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="3"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Tare}"
-                                     IsEnabled="False"
-                                     LabelText="Tare" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="4"
+                <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.IsIntoMachine}"
                                      IsEnabled="False"
                                      LabelText="IsIntoMachine" />
 
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="0,1,0,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            IsEnabled="{Binding IsEditStatus}">
+                    <TextBlock Margin="0,0,5,0"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="Status" />
+                    <ComboBox Margin="0,4,5,5"
+                              FontFamily="{DynamicResource VWAPP_TitleFont}"
+                              FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                              IsEnabled="{Binding IsEditStatus}"
+                              ItemsSource="{Binding Status}"
+                              SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              Style="{DynamicResource PpcComboBoxStyle}" />
+                </StackPanel>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedBayPositionId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEditStatus}"
+                                     LabelText="BayPositionId">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.CellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="CellId">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InElevator">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Height">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InElevator">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="3"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.MaxNetWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="MaxNetWeight" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="4"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.GrossWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="GrossWeight" />
+
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.CellId}"
+                                     InputText="{Binding SelectedLU.Tare, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Tare" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="6"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.NetWeight}"
                                      IsEnabled="False"
-                                     LabelText="CellId" />
+                                     LabelText="NetWeight" />
+
+
             </Grid>
         </Border>
 
-        <Grid Grid.Row="3"
+        <Grid Grid.Row="4"
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <controls:PpcButton Grid.Column="0"
                                 Margin="0,0,15,0"
                                 Command="{Binding SaveDrawerCommand}"
-                                Content="Salva cassetto" />
+                                Content="{res:Loc InstallationApp.SaveUnit}" />
 
             <controls:PpcButton Grid.Column="1"
                                 Margin="0,0,15,0"
                                 Command="{Binding FreeDrawerCommand}"
-                                Content="Libera cassetto" />
+                                Content="{res:Loc InstallationApp.FreeUnit}"
+                                Visibility="Collapsed" />
 
             <controls:PpcButton Grid.Column="2"
                                 Margin="0,0,15,0"
                                 Command="{Binding InsertDrawerCommand}"
-                                Content="Inserisci cassetto" />
+                                Content="{res:Loc InstallationApp.InsertUnit}"
+                                Visibility="Collapsed" />
 
             <controls:PpcButton Grid.Column="3"
                                 Margin="0,0,15,0"
                                 Command="{Binding RemoveDrawerCommand}"
-                                Content="Elimina cassetto" />
+                                Content="{res:Loc InstallationApp.DeleteUnit}" />
 
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
+                                HorizontalAlignment="Right"
                                 Command="{Binding StopMovingCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}"
-                                Style="{DynamicResource PpcButtonStopStyle}" />
+                                Content="{res:Loc InstallationApp.Stop}"
+                                Style="{DynamicResource PpcButtonStopStyle}"
+                                Visibility="{Binding IsMoving, Converter={StaticResource ResourceKey=BTVC}}" />
 
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding ImmediateDrawerReturnCommand}"
+                                Content="{res:Loc InstallationApp.FallsUnit}"
+                                Visibility="{Binding IsDrawerReturnVisible, Converter={StaticResource ResourceKey=BTVC}}" />
+
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                HorizontalAlignment="Right"
                                 Command="{Binding ImmediateDrawerCallCommand}"
-                                Content="Chiamata cassetto" />
+                                Content="{res:Loc InstallationApp.CallUnit}"
+                                Visibility="{Binding IsDrawerCallVisible, Converter={StaticResource ResourceKey=BTVC}}" />
 
         </Grid>
 

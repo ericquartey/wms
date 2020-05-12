@@ -117,11 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della barra alfanumerica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Parametri di configurazione</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Comandi</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Barra Alfanumerica</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore di codici a barre</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Lettore Codici a Barre</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore badge</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Lettore Badge</value>
+  </data>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Abilitazione</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Indirizzo IP</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della stampante etichette</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Stampante Etichette</value>
+  </data>
+  <data name="AccessoriesLaserMenuDescription" xml:space="preserve">
+    <value>Gestione della configurazione e test funzionalità del Laser</value>
+  </data>
+  <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
+    <value>Puntatore Laser</value>
+  </data>
+  <data name="AccessoriesLuminosity" xml:space="preserve">
+    <value>Luminosità</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Menu Accessori</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Spento</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Acceso</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Porta</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Dimensione</value>
+  </data>
+  <data name="AccessoriesSwitchOn" xml:space="preserve">
+    <value>Accensione</value>
+  </data>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica del lettore token</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Lettore di Token</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Configurazione e verifica della bilancia contapezzi</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Bilancia Contapezzi</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menu Baia</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menu Celle</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Conferma Collaudo</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menu Elevatore</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installazione</value>
+  </data>
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
-  </data>
-  <data name="MenuAbout" xml:space="preserve">
-    <value>Informazioni</value>
   </data>
   <data name="MenuAccessories" xml:space="preserve">
     <value>Accessori</value>
@@ -135,19 +228,19 @@
   <data name="MenuElevator" xml:space="preserve">
     <value>Elevatore</value>
   </data>
-  <data name="MenuInstalation" xml:space="preserve">
-    <value>Installazione</value>
-  </data>
   <data name="MenuLoadingUnits" xml:space="preserve">
     <value>Cassetti</value>
   </data>
-  <data name="MenuMaintenance" xml:space="preserve">
-    <value>Manutenzione</value>
-  </data>
-  <data name="MenuOperation" xml:space="preserve">
-    <value>Picking</value>
-  </data>
   <data name="Movements" xml:space="preserve">
     <value>Movimenti</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Menu Altro</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menu Cassetti</value>
   </data>
 </root>

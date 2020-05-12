@@ -19,6 +19,8 @@
             VerticalOriginCalibration = SetupStepStatus.Complete,
             VerticalResolutionCalibration = SetupStepStatus.Complete,
             WeightMeasurement = SetupStepStatus.Complete,
+            HorizontalChainCalibration = SetupStepStatus.Complete,
+            DepositAndPickUpTest = SetupStepStatus.Complete
         };
 
         #endregion
@@ -41,9 +43,15 @@
 
         public System.DateTime? CompletedDate { get; set; }
 
+        public SetupStepStatus DepositAndPickUpTest { get; set; }
+
+        public SetupStepStatus HorizontalChainCalibration { get; set; }
+
         public SetupStepStatus HorizontalHoming { get; set; }
 
         public bool IsComplete { get; set; }
+
+        public SetupStepStatus LoadFirstDrawerTest { get; set; }
 
         public SetupStepStatus VerticalOffsetCalibration { get; set; }
 
