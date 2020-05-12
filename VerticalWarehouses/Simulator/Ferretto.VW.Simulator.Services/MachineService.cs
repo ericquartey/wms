@@ -633,6 +633,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
                 Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
+                this.Logger.Error($"HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
                 //inverter.IsFault = true;
@@ -979,7 +980,7 @@ namespace Ferretto.VW.Simulator.Services
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value ||
                 !device.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value ||
-                this.Inverters00.IsOverrunElevator
+                this.Inverters00.IsElevatorOverrun
                 )
             {
                 // Reset run status

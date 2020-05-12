@@ -387,7 +387,7 @@
   <data name="InvalidPositionBay" xml:space="preserve">
     <value>La posizione selezionata della baia non è valida</value>
   </data>
-  <data name="OverrunElevatorDetected" xml:space="preserve">
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
     <value>L'elevatore ha raggiunto il sensore di oltrecorsa</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
