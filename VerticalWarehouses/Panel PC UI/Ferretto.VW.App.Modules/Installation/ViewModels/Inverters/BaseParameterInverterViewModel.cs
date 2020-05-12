@@ -74,21 +74,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     this.isBusy = false;
-                    this.ShowNotification(InstallationApp.InverterProgrammingSuccessfullyEnded, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                     this.isBusy = false;
-                    this.ShowNotification(InstallationApp.InverterProgrammingEndedErrors, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingEndedErrors"), Services.Models.NotificationSeverity.Error);
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     this.isBusy = false;
-                    this.ShowNotification(InstallationApp.InvertersProgrammingStopped, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStopped"), Services.Models.NotificationSeverity.Warning);
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
-                    this.ShowNotification(InstallationApp.InverterProgrammingNext, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingNext"), Services.Models.NotificationSeverity.Warning);
                     break;
 
                 default:

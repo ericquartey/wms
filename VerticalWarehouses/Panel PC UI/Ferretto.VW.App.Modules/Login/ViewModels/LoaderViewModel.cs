@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     if (isFirewallenabled)
                     {
                         this.ShowNotification(
-                            Resources.InstallationApp.FirewallIsEnabledOnThisTerminal,
+                            Resources.Localized.Get("InstallationApp.FirewallIsEnabledOnThisTerminal"),
                             Services.Models.NotificationSeverity.Warning);
                     }
                 }

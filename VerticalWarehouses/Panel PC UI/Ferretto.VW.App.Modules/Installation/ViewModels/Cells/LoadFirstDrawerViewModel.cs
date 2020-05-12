@@ -215,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.IsExecutingProcedure = false;
                                 if (m.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
                                 {
-                                    this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                                 }
                             }
                             else

@@ -23,7 +23,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.DLUTestHeader}" />
+                   Text="{res:Loc InstallationApp.DLUTestHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -56,20 +56,20 @@
                              Highlighted="True"
                              InputText="10"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
+                             LabelText="{res:Loc InstallationApp.DLUTestFeedRate}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,490,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="12"
-                                 LabelText="{x:Static res:InstallationApp.DLUTestCompletedCycles}" />
+                                 LabelText="{res:Loc InstallationApp.DLUTestCompletedCycles}" />
 
         <controls:PpcLabeledText Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
+                                 LabelText="{res:Loc InstallationApp.DLUTestActualposition}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,420,0,0"
@@ -78,22 +78,22 @@
                              Highlighted="True"
                              InputText="20"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}" />
+                             LabelText="{res:Loc InstallationApp.DLUTestCycleRequired}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.MoveToPosition}" />
+                            Content="{res:Loc InstallationApp.MoveToPosition}" />
 
         <controls:PpcButton Margin="530,280,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.DLUTestStop}" />
+                            Content="{res:Loc InstallationApp.DLUTestStop}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.DLUTestStart}" />
+                            Content="{res:Loc InstallationApp.DLUTestStart}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -154,7 +154,7 @@
                              Highlighted="True"
                              InputText="1"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
+                             LabelText="{res:Loc InstallationApp.BayHeightCheckSelectedPosition}" />
 
     </Grid>
 </UserControl>

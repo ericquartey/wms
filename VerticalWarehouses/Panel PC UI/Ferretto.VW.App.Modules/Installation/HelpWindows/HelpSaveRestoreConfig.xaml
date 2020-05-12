@@ -61,23 +61,23 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="F:\VW_190012"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
         <controls:PpcButton Margin="20,305,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmSaveButton}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="20,235,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}" />
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}" />
 
         <controls:PpcButton Margin="20,375,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortSaveButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortSaveButton}"
                             IsEnabled="True" />
 
         <controls:PpcLabeledText Width="180"
@@ -86,24 +86,24 @@
                                  VerticalAlignment="Top"
                                  ContentText="F:\VW_190012"
                                  IsEnabled="True"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 LabelText="{res:Loc InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
         <controls:PpcButton Margin="530,305,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,235,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigRestoreButton}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,375,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
+                            Content="{res:Loc InstallationApp.SaveRestoreConfigAbortRestoreButton}"
                             IsEnabled="True" />
 
         <TextBlock Width="300"

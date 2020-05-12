@@ -184,7 +184,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.ImportConfigurationFile}" />
+                   Text="{res:Loc InstallationApp.ImportConfigurationFile}" />
 
         <ListView Grid.Row="1"
                       SelectedValue="{Binding SelectedFile, Mode=TwoWay}"
@@ -221,7 +221,7 @@
                                 Margin="15,15,0,0"
                                 HorizontalAlignment="Right"
                                 Command="{Binding ImportCommand}"
-                                Content="{x:Static res:InstallationApp.LoadFile}"
+                                Content="{res:Loc InstallationApp.LoadFile}"
                                 IsBusy="{Binding IsBusy}" />
         
 

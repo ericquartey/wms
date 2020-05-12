@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, null);
 
-                this.ShowNotification(InstallationApp.InverterProgrammingStarted, Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

@@ -18,14 +18,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.DrawerStoreAndRecall}" />
+                   Text="{res:Loc InstallationApp.DrawerStoreAndRecall}" />
 
         <controls:PpcButton Grid.Column="0"
                             Margin="407,369,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StopButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
+                            Content="{res:Loc InstallationApp.Stop}"
                             IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <controls:PpcButton Grid.Column="0"
@@ -33,7 +33,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartStoreButtonCommand}"
-                            Content="{x:Static res:InstallationApp.StartManualDrawerStore}"
+                            Content="{res:Loc InstallationApp.StartManualDrawerStore}"
                             IsEnabled="{Binding IsStartStoreButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <controls:PpcButton Grid.Column="0"
@@ -41,14 +41,14 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartRecallButtonCommand}"
-                            Content="{x:Static res:InstallationApp.StartManualDrawerRecall}"
+                            Content="{res:Loc InstallationApp.StartManualDrawerRecall}"
                             IsEnabled="{Binding IsStartRecallButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <controls:PpcLabeledText Margin="250,504,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
     </Grid>
 </UserControl>

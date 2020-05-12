@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+                   Text="{res:Loc InstallationApp.VerticalResolutionCalibration}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -47,14 +47,14 @@
                              Highlighted="True"
                              InputText="1025,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
+                             LabelText="{res:Loc InstallationApp.InitialPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="125,36"
-                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentResolution}" />
 
         <TextBlock Width="260"
                    Height="70"

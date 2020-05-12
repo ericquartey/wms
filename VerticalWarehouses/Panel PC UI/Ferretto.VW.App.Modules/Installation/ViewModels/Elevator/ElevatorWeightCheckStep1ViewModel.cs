@@ -75,12 +75,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputLoadingUnitId):
                         if (!this.InputLoadingUnitId.HasValue)
                         {
-                            return InstallationApp.LoadingUnitIdRequired;
+                            return Localized.Get("InstallationApp.LoadingUnitIdRequired");
                         }
 
                         if (this.InputLoadingUnitId.Value <= 0)
                         {
-                            return InstallationApp.LoadingUnitIdMustBePositive;
+                            return Localized.Get("InstallationApp.LoadingUnitIdMustBePositive");
                         }
 
                         break;

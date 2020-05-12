@@ -215,18 +215,18 @@
     <Style x:Key="PpcButtonMachinePowerHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Content" Value="{x:Static res:InstallationApp.Off}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Off}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMachinePoweredOn}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.On}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.On}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsUnknownState}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.Unknown}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.Unknown}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -282,43 +282,43 @@
     <Style x:Key="PpcButtonMachineModeHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Content" Value="{x:Static res:InstallationApp.Manual}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Manual}" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.Auto}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.ModeLoadUnitOperations}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInSwitchingToLoadUnitOperations}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.ModeLoadUnitOperations}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInTestMode}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.Test}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.Test}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInCompact}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.Compact}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.Compact}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInFirstTest}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.FirstTest}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.FirstTest}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMissionInErrorByLoadUnitOperations}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
-                <Setter Property="Content" Value="{x:Static res:InstallationApp.Restore}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.Restore}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

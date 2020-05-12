@@ -23,7 +23,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.CellsControl}" />
+                   Text="{res:Loc InstallationApp.CellsControl}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -61,14 +61,14 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1250,0"
-                                 LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
+                                 LabelText="{res:Loc InstallationApp.ReferenceCellHeight}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1251,5"
-                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentHeight}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,280,0,0"
@@ -77,26 +77,26 @@
                              Highlighted="True"
                              InputText="0,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.StepValue}" />
+                             LabelText="{res:Loc InstallationApp.StepValue}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1,5"
-                                 LabelText="{x:Static res:InstallationApp.CellCorrection}" />
+                                 LabelText="{res:Loc InstallationApp.CellCorrection}" />
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.GoToInitialPosition}" />
+                            Content="{res:Loc InstallationApp.GoToInitialPosition}" />
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Up}" />
+                            Content="{res:Loc InstallationApp.Up}" />
         <controls:PpcButton Margin="530,280,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Down}" />
+                            Content="{res:Loc InstallationApp.Down}" />
         <controls:PpcButton Margin="530,350,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"

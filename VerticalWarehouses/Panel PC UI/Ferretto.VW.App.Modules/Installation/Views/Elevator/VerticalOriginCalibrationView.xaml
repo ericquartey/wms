@@ -34,7 +34,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
+                       Text="{res:Loc InstallationApp.OriginVerticalAxis}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -98,7 +98,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:InstallationApp.LowerBound}"
+                                   Text="{res:Loc InstallationApp.LowerBound}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
@@ -134,7 +134,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:InstallationApp.UpperBound}"
+                                   Text="{res:Loc InstallationApp.UpperBound}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
@@ -170,7 +170,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:InstallationApp.Offset}" />
+                                   Text="{res:Loc InstallationApp.Offset}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
@@ -201,7 +201,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:InstallationApp.Resolution}"
+                                   Text="{res:Loc InstallationApp.Resolution}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
@@ -227,14 +227,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
+                                Content="{res:Loc InstallationApp.Start}"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
         </StackPanel>
 
     </Grid>

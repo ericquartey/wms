@@ -294,7 +294,7 @@
                 <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
-                                    Content="{x:Static res:InstallationApp.Back}"
+                                    Content="{res:Loc InstallationApp.Back}"
                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
             </ctrls:PpcControl>
 

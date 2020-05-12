@@ -40,7 +40,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBay}" />
+                       Text="{res:Loc InstallationApp.LoadingUnitFromBayToBay}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -49,7 +49,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBayDescription}" />
+                   Text="{res:Loc InstallationApp.LoadingUnitFromBayToBayDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -120,7 +120,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
+                           LabelText="{res:Loc InstallationApp.InsertDesiredLoadingUnitId}" />
 
         <TextBlock Grid.Row="4"
                    Grid.Column="1"
@@ -130,7 +130,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LoadingUnitFromBayToBaySelectDrawerPosition}"
+                   Text="{res:Loc InstallationApp.LoadingUnitFromBayToBaySelectDrawerPosition}"
                    TextWrapping="Wrap" />
 
         <StackPanel Grid.Row="4"
@@ -156,14 +156,14 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionDownCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                Content="{res:Loc InstallationApp.BayPositionDown}"
                                 IsActive="{Binding IsPositionDownSelected}" />
 
             <controls:PpcButton Margin="0,0,15,15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionUpCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                Content="{res:Loc InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}"
                                 Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
@@ -179,7 +179,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay1Command}"
-                                Content="{x:Static res:InstallationApp.Bay1}"
+                                Content="{res:Loc InstallationApp.Bay1}"
                                 IsActive="{Binding IsBay1Destination}"
                                 Visibility="{Binding IsBay1Present, Converter={StaticResource BTVC}}" />
 
@@ -187,7 +187,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay2Command}"
-                                Content="{x:Static res:InstallationApp.Bay2}"
+                                Content="{res:Loc InstallationApp.Bay2}"
                                 IsActive="{Binding IsBay2Destination}"
                                 Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}" />
 
@@ -195,7 +195,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay3Command}"
-                                Content="{x:Static res:InstallationApp.Bay3}"
+                                Content="{res:Loc InstallationApp.Bay3}"
                                 IsActive="{Binding IsBay3Destination}"
                                 Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}" />
 
@@ -211,19 +211,19 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmEjectLoadingUnitCommand}"
-                                Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}" />
+                                Content="{res:Loc InstallationApp.ConfirmEjectLoadingUnit}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartToBayCommand}"
-                                Content="{x:Static res:InstallationApp.Start}" />
+                                Content="{res:Loc InstallationApp.Start}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
 
         </StackPanel>
 

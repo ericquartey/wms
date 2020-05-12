@@ -482,17 +482,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.NewErrorValue):
                         if (!this.NewErrorValue.HasValue)
                         {
-                            return InstallationApp.MissValue;
+                            return Localized.Get("InstallationApp.MissValue");
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
                         {
-                            return InstallationApp.DataBePositive;
+                            return Localized.Get("InstallationApp.DataBePositive");
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
                         {
-                            return InstallationApp.MaxValue9;
+                            return Localized.Get("InstallationApp.MaxValue9");
                         }
 
                         break;
@@ -864,7 +864,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCalibrationProcedure, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.HorizontalCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.IsExecutingStopInPhase = false;
@@ -873,7 +873,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     await this.machineCarouselWebService.SetCalibrationCompletedAsync();
 
                     this.ShowNotification(
-                            VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                            VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                             Services.Models.NotificationSeverity.Success);
                 }
 
@@ -906,7 +906,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
 
                 this.ShowNotification(
-                        VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                        VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                         Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
@@ -966,7 +966,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsErrored() ||
                 this.MachineError != null)
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
 
                 this.IsCalibrationCompletedOrStopped = false;
 
@@ -991,7 +991,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Status == MessageStatus.OperationEnd)
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
 
                 this.IsCalibrationNotCompleted = false;
 
@@ -1024,7 +1024,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
 
                 this.IsCalibrationCompletedOrStopped = false;
                 this.NewErrorValue = 0;
@@ -1061,7 +1061,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.StartProcedureMessage, InstallationApp.HorizontalCalibration, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.StartProcedureMessage"), Localized.Get("InstallationApp.HorizontalCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     //await this.machineCarouselWebService.ResetCalibrationAsync();
@@ -1153,7 +1153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningChainAsync()
         {
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ChainCalibration, DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ChainCalibration"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

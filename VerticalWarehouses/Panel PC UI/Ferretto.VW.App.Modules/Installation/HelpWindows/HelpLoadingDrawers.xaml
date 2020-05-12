@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LoadingDrawersPageHeader}" />
+                   Text="{res:Loc InstallationApp.LoadingDrawersPageHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -53,21 +53,21 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="55"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersTotalDrawers}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersTotalDrawers}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,210,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="12"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersInsertedDrawers}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersInsertedDrawers}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="500"
-                                 LabelText="{x:Static res:InstallationApp.LoadingDrawersMaxWeight}" />
+                                 LabelText="{res:Loc InstallationApp.LoadingDrawersMaxWeight}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,280,0,0"
@@ -76,17 +76,17 @@
                              Highlighted="True"
                              InputText="15"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.LoadingDrawersDrawerToInsert}" />
+                             LabelText="{res:Loc InstallationApp.LoadingDrawersDrawerToInsert}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.LoadingDrawersStartInsertion}" />
+                            Content="{res:Loc InstallationApp.LoadingDrawersStartInsertion}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.LoadingDrawersNextDrawer}" />
+                            Content="{res:Loc InstallationApp.LoadingDrawersNextDrawer}" />
 
         <TextBlock Width="260"
                    Height="70"

@@ -329,7 +329,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.DisplacementDown != null && this.LowerBound > this.NewPositionDown)
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ModifyLowerBoundDialog, InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ModifyLowerBoundDialog"), Localized.Get("InstallationApp.LowPositionControl"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.No)
                     {
                         return;
@@ -370,7 +370,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentStep = BayCheckStep.PositionUp;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();

@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+                   Text="{res:Loc InstallationApp.VerticalResolutionCalibration}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -47,12 +47,12 @@
                              Highlighted="True"
                              InputText="1025,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
+                             LabelText="{res:Loc InstallationApp.InitialPosition}" />
 
         <controls:PpcButton Margin="20,295,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
+                            Content="{res:Loc InstallationApp.StartResolutionProcedure}"
                             IsEnabled="True" />
 
         <TextBlock Width="260"
@@ -70,12 +70,12 @@
                              Highlighted="True"
                              InputText="5150.0"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.FinalPosition}" />
+                             LabelText="{res:Loc InstallationApp.FinalPosition}" />
 
         <controls:PpcButton Margin="20,590,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Move}"
+                            Content="{res:Loc InstallationApp.Move}"
                             IsEnabled="True" />
 
         <TextBlock Width="260"
@@ -101,7 +101,7 @@
                              Highlighted="True"
                              InputText="4250,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.MeasuredMovement}" />
+                             LabelText="{res:Loc InstallationApp.MeasuredMovement}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -116,30 +116,30 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="125,36"
-                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentResolution}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,295,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="127,12"
-                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />
+                                 LabelText="{res:Loc InstallationApp.NewResolution}" />
 
         <controls:PpcButton Margin="530,365,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+                            Content="{res:Loc InstallationApp.ApplyCorrection}" />
 
         <controls:PpcButton Margin="530,526,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                            Content="{res:Loc InstallationApp.GoToInitialPosition}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,599,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.CloseProcedure}"
+                            Content="{res:Loc InstallationApp.CloseProcedure}"
                             IsEnabled="True" />
 
         <TextBlock Width="260"
@@ -216,7 +216,7 @@
                              VerticalAlignment="Top"
                              Highlighted="True"
                              InputText="875,5"
-                             LabelText="{x:Static res:InstallationApp.MeasuredInitialPosition}" />
+                             LabelText="{res:Loc InstallationApp.MeasuredInitialPosition}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,520,0,0"
@@ -225,7 +225,7 @@
                              Highlighted="True"
                              InputText="5045,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.ReadFinalPosition}" />
+                             LabelText="{res:Loc InstallationApp.ReadFinalPosition}" />
 
         <TextBlock Width="260"
                    Height="70"

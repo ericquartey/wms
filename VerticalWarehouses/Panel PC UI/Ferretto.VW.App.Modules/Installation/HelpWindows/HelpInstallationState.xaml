@@ -23,21 +23,21 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.InstallationState}" />
+                   Text="{res:Loc InstallationApp.InstallationState}" />
 
         <controls:PpcSensorControl Width="180"
                                    Margin="20,140,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="False"
-                                   Text="{x:Static res:InstallationApp.VerticalAxisHomedDone}" />
+                                   Text="{res:Loc InstallationApp.VerticalAxisHomedDone}" />
 
         <controls:PpcSensorControl Width="180"
                                    Margin="20,210,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="True"
-                                   Text="{x:Static res:InstallationApp.VerticalOffsetVerify}" />
+                                   Text="{res:Loc InstallationApp.VerticalOffsetVerify}" />
 
         <TextBlock Width="670"
                    Height="60"

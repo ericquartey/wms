@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var source = this.GetLoadingUnitSource(!(this.MachineStatus.LoadingUnitPositionUpInBay != null));
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidSourceChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.LoadingUnitId is null)
                 {
-                    this.ShowNotification(InstallationApp.InvalidDrawerIdInBay, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidDrawerIdInBay"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -198,7 +198,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification(InstallationApp.InvalidDestinationChoiceType, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidDestinationChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

@@ -711,11 +711,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (axisMovement.HasValue && axisMovement == Axis.Vertical)
             {
-                this.ShowNotification(InstallationApp.VerticalAxisMovementInProgress, Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.VerticalAxisMovementInProgress"), Services.Models.NotificationSeverity.Info);
             }
             else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
             {
-                this.ShowNotification(InstallationApp.HorizontalAxisMovementInProgress, Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.HorizontalAxisMovementInProgress"), Services.Models.NotificationSeverity.Info);
             }
         }
 

@@ -37,7 +37,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.BeltBurnishing}" />
+                       Text="{res:Loc InstallationApp.BeltBurnishing}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -88,7 +88,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.TotalCyclesCompleted}" />
+                               Text="{res:Loc InstallationApp.TotalCyclesCompleted}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -132,7 +132,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.LowerBound}"
+                           LabelText="{res:Loc InstallationApp.LowerBound}"
                            WidthNumber="230" />
 
         <ctrls:PpcSpinEdit Grid.Row="3"
@@ -141,7 +141,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.UpperBound}"
+                           LabelText="{res:Loc InstallationApp.UpperBound}"
                            WidthNumber="230" />
 
         <ctrls:PpcSpinEdit Grid.Row="3"
@@ -150,7 +150,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
+                           LabelText="{res:Loc InstallationApp.DelayBetweenCycles}"
                            WidthNumber="230" />
 
         <Border Grid.Row="3"
@@ -176,7 +176,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.FullTestSessionCycles}" />
+                               Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -196,7 +196,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding ResetCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
+                            Content="{res:Loc InstallationApp.Reset}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="2"
@@ -208,14 +208,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
+                                Content="{res:Loc InstallationApp.Start}"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}" />
         </StackPanel>
 
     </Grid>

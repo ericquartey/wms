@@ -114,7 +114,7 @@
         <controls:PpcButton Margin="500,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.InstallationState}"
+                            Content="{res:Loc InstallationApp.InstallationState}"
                             IsEnabled="True"
                             Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 

@@ -14,19 +14,19 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case AlphaNumericBarSize.ExtraLarge:
-                    return Resources.InstallationApp.AlphaNumericBarSizeXL;
+                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXL");
 
                 case AlphaNumericBarSize.ExtraSmall:
-                    return Resources.InstallationApp.AlphaNumericBarSizeXS;
+                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXS");
 
                 case AlphaNumericBarSize.Large:
-                    return Resources.InstallationApp.AlphaNumericBarSizeL;
+                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeL");
 
                 case AlphaNumericBarSize.Medium:
-                    return Resources.InstallationApp.AlphaNumericBarSizeM;
+                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeM");
 
                 default:
-                    return Resources.InstallationApp.AlphaNumericBarSizeS;
+                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeS");
             }
         }
 
