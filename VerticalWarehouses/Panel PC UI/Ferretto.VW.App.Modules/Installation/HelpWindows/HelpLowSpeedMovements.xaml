@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTTitle}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTTitle}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTActualPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTActualPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,140,0,0"
@@ -65,7 +65,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTMoveUp}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTMoveUp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -73,7 +73,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTMoveDown}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTMoveDown}" />
 
         <controls:PpcLabeledText Width="180"
                                  Height="65"
@@ -88,7 +88,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLSMTComandMode}" />
+                   Text="{res:Loc HelpDescriptions.HelpLSMTComandMode}" />
 
     </Grid>
 </UserControl>

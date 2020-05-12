@@ -33,7 +33,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -41,14 +41,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationTotalDrawers}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationTotalDrawers}" />
 
         <TextBlock Width="260"
                    Margin="220,120,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock Width="180"
                    Margin="20,150,0,0"
@@ -63,7 +63,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridDrawer}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridDrawer}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,600,0,0"
@@ -116,7 +116,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridHeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridHeight}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -124,7 +124,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridMaxWeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridMaxWeight}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -132,7 +132,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridGross}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridGross}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -140,7 +140,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridActualWeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridActualWeight}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -148,7 +148,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationWeightPercent}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationWeightPercent}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -156,7 +156,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -164,7 +164,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,190,0,0"
@@ -214,7 +214,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridWeightPercent}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGridWeightPercent}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -222,7 +222,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossCapacityMax}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGrossCapacityMax}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -230,7 +230,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossLoaded}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationGrossLoaded}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -238,7 +238,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetCapacity}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationNetCapacity}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -246,7 +246,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetLoaded}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerWeightSaturationNetLoaded}" />
 
     </Grid>
 </UserControl>

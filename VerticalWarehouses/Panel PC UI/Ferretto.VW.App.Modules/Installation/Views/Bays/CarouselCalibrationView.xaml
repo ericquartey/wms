@@ -323,7 +323,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.CarouselCalibrationFunctionDescription}" />
+                   Text="{res:Loc HelpDescriptions.CarouselCalibrationFunctionDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->

@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpSSTitle}" />
+                   Text="{res:Loc HelpDescriptions.HelpSSTitle}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpSSDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpSSDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpSSStateOff}" />
+                   Text="{res:Loc HelpDescriptions.HelpSSStateOff}" />
 
         <controls:PpcSensorControl Width="180"
                                    Margin="20,140,0,0"
@@ -60,7 +60,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpSSStateOn}" />
+                   Text="{res:Loc HelpDescriptions.HelpSSStateOn}" />
 
     </Grid>
 </UserControl>

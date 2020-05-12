@@ -32,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityInventoryDetailDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -40,7 +40,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonList}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -48,7 +48,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,120,0,0"
@@ -126,7 +126,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonListDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -134,7 +134,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailListRow}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityRefillingDetailListRow}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -142,7 +142,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonItem}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -150,7 +150,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonItemDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -158,7 +158,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityInventoryDetailProductionDate}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailProductionDate}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -166,7 +166,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityInventoryDetailMaterialStatus}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailMaterialStatus}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -174,7 +174,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityInventoryDetailLotto}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailLotto}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -182,7 +182,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityInventoryDetailPackaging}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailPackaging}" />
 
     </Grid>
 </UserControl>

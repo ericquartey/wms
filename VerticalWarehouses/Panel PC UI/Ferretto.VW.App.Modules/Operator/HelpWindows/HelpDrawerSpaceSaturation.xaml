@@ -24,16 +24,16 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationDescription}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationTotalDrawer}" />
+                     Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationTotalDrawer}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
@@ -42,7 +42,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationGridDrawer}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationGridDrawer}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="3.050 x 840"
@@ -87,47 +87,47 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationGridMissions}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationGridMissions}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationGridCompartments}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationGridCompartments}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationMachineFilling}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationMachineFilling}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationWeightAnalisys}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationWeightAnalisys}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationDimension}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationDimension}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationMachineFilling}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationMachineFilling}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerSpaceSaturationWeightAnalisys}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerSpaceSaturationWeightAnalisys}" />
 
     </Grid>
 </UserControl>

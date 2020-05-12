@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGHeder}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGHeder}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGError}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGError}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -46,7 +46,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGUp}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGUp}" />
 
         <controls:CustomMainWindowErrorButton Margin="20,140,0,0"
                                               HorizontalAlignment="Left"
@@ -124,7 +124,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGOff}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGOff}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -132,7 +132,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGOn}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGOn}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -140,7 +140,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGInstaller}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGInstaller}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -148,7 +148,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGHelp}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGHelp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -156,7 +156,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGButton}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGButton}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -164,7 +164,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpIPGDown}" />
+                   Text="{res:Loc HelpDescriptions.HelpIPGDown}" />
 
     </Grid>
 </UserControl>

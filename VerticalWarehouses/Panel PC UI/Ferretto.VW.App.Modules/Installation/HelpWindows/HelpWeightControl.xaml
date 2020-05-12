@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCTestRun}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCTestRun}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -46,7 +46,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCFinalResult}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCFinalResult}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,210,0,0"
@@ -105,7 +105,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCWeightInserted}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightInserted}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -113,7 +113,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCWeightTollerance}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightTollerance}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -121,7 +121,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCWeightMeasured}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCWeightMeasured}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -129,7 +129,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCStart}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCStart}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -137,7 +137,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpWCStop}" />
+                   Text="{res:Loc HelpDescriptions.HelpWCStop}" />
 
     </Grid>
 </UserControl>

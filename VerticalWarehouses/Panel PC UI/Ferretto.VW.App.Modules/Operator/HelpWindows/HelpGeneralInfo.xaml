@@ -23,17 +23,17 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoModel}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoModel}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoInstallationDate}" />
+                     Text="{res:Loc HelpDescriptions.HelpGeneralInfoInstallationDate}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
@@ -70,52 +70,52 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoSerial}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoSerial}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,570,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoSwRelease}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoSwRelease}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoTotalDrawers}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoTotalDrawers}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoLastMaintenanceDate}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoLastMaintenanceDate}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoNextMaintenanceDate}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoNextMaintenanceDate}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoMachineStatus}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoMachineStatus}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoButtonDrawerCall}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoButtonDrawerCall}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoButtonCompacting}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoButtonCompacting}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoButtonStastistics}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoButtonStastistics}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoButtonMaintenance}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoButtonMaintenance}" />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
                  Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}"
@@ -143,7 +143,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoWmsStatus}" />
+                    Text="{res:Loc HelpDescriptions.HelpGeneralInfoWmsStatus}" />
 
     </Grid>
 </UserControl>

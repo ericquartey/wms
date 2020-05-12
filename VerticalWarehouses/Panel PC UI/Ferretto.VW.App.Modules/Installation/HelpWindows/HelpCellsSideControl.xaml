@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCDescription}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,140,0,0"
@@ -72,7 +72,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCInitialCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCInitialCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -80,7 +80,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCFinalCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCFinalCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -88,7 +88,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCCorrection}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCCorrection}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -96,7 +96,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCSelectedSide}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCSelectedSide}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
@@ -109,7 +109,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCSCApplyCorrection}" />
+                   Text="{res:Loc HelpDescriptions.HelpCSCApplyCorrection}" />
 
     </Grid>
 </UserControl>

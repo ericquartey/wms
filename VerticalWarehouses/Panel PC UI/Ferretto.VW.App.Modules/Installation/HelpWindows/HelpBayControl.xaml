@@ -28,19 +28,19 @@
                    Height="60"
                    Margin="320,50,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,140,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRSelectedBay}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRSelectedBay}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,140,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRMoveToPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRMoveToPosition}" />
 
 
 
@@ -110,19 +110,19 @@
                    Height="70"
                    Margin="220,210,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRSelectedPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRSelectedPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,280,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRPositionHeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRPositionHeight}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,350,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepValue}" />
 
 
 
@@ -130,31 +130,31 @@
                    Height="70"
                    Margin="220,490,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRCorrectionValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRCorrectionValue}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,210,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepPiu}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepPiu}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,280,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepMeno}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepMeno}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,350,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRAdjust}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRAdjust}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,420,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRNextPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRNextPosition}" />
 
     </Grid>
 </UserControl>

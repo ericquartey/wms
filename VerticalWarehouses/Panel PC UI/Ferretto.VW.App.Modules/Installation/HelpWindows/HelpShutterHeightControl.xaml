@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCVelocity}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCVelocity}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -46,7 +46,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCFinalResult}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCFinalResult}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,140,0,0"
@@ -115,7 +115,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCSystemError}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCSystemError}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -123,7 +123,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCTollerance}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCTollerance}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -131,7 +131,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCHeightReached}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCHeightReached}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -139,7 +139,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCCurrentPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCCurrentPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -147,7 +147,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCBarrierCorrection}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCBarrierCorrection}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -155,7 +155,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCStart}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCStart}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -163,7 +163,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGHCStop}" />
+                   Text="{res:Loc HelpDescriptions.HelpGHCStop}" />
 
     </Grid>
 </UserControl>

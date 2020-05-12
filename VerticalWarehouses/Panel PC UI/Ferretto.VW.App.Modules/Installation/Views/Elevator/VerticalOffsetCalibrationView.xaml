@@ -468,7 +468,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->

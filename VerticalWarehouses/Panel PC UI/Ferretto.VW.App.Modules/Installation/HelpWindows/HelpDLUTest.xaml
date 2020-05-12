@@ -31,7 +31,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -39,7 +39,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTBay}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTBay}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -47,7 +47,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTGotoPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTGotoPosition}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,280,0,0"
@@ -101,49 +101,49 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTPosition}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,280,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTFeedRate}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTFeedRate}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,350,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTChain}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTChain}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,420,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTCyclesRequired}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTCyclesRequired}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,490,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTCycleCompleted}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTCycleCompleted}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,210,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTStart}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTStart}" />
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,280,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDLUTStop}" />
+                   Text="{res:Loc HelpDescriptions.HelpDLUTStop}" />
 
 
 

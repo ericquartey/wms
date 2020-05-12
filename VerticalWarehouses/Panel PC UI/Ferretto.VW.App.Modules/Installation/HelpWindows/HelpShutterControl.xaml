@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCRequiredCycles}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCRequiredCycles}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,140,0,0"
@@ -91,7 +91,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCDelay}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCDelay}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -99,7 +99,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCCompleted}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCCompleted}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -107,7 +107,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCSensorA}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCSensorA}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -115,7 +115,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCSensorB}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCSensorB}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -123,7 +123,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCStartButton}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCStartButton}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -131,7 +131,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpGCStopButton}" />
+                   Text="{res:Loc HelpDescriptions.HelpGCStopButton}" />
 
     </Grid>
 </UserControl>

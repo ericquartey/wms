@@ -24,12 +24,12 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallDescription}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallRequestedDrawer}" />
+                     Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallRequestedDrawer}" />
 
         <controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                      Width="180"
@@ -40,7 +40,7 @@
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
@@ -49,7 +49,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridDrawer}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridDrawer}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
                   Content="{x:Static res:OperatorApp.CommonUp}"
@@ -90,47 +90,47 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridHeight}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridHeight}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridWeight}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridWeight}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridCell}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridCell}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridSide}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridSide}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallGridStatus}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallGridStatus}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonNote}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallDrawerCall}" />
+                    Text="{res:Loc HelpDescriptions.HelpImmediateDrawerCallDrawerCall}" />
 
     </Grid>
 </UserControl>
