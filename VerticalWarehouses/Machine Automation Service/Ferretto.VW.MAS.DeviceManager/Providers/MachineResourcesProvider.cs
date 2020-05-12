@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -485,6 +486,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                             .GetRequiredService<IErrorsProvider>()
                                             .RecordNew(errorCode);
                                     }
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                    this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
                                 }
 
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);

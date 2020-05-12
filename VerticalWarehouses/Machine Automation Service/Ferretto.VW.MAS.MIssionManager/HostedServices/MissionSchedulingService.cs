@@ -703,6 +703,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.SwitchingToFirstTest:
                 case MachineMode.SwitchingToFullTest:
                     {
+                        var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                        if (errorsProvider.GetCurrent() != null)
+                        {
+                            this.Logger.LogError($"Scheduling Machine status switched to {MachineMode.Manual} from {this.machineVolatileDataProvider.Mode}: no error is allowed!");
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            break;
+                        }
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
