@@ -52,7 +52,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static Resources:HelpDescriptions.HelpListsInWaitDescription}"
+                   Text="{Resources:Loc HelpDescriptions.HelpListsInWaitDescription}"
                    TextWrapping="Wrap" />
 
         <Border Grid.Row="2"

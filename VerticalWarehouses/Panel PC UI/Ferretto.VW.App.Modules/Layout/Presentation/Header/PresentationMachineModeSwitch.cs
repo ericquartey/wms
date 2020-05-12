@@ -212,7 +212,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(Resources.Localized.Get("General.ConfirmMachineModeSwitchAutomatic"), Resources.Localized.Get("General.Automatic"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineModeWebService.SetAutomaticAsync();
@@ -220,7 +220,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 }
                 else
                 {
-                    var messageBoxResult = this.dialogService.ShowMessage("Completare tutte le procedure di setup e calibrazione prima di entrare in modalità automatica.", General.MachineRun, DialogType.Information, DialogButtons.OK);
+                    var messageBoxResult = this.dialogService.ShowMessage("Completare tutte le procedure di setup e calibrazione prima di entrare in modalità automatica.", Resources.Localized.Get("General.MachineRun"), DialogType.Information, DialogButtons.OK);
                 }
             }
             else if (this.machineMode is MachineMode.LoadUnitOperations)

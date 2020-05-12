@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
 
-            this.ApplicationVersion = string.Format(Resources.General.Version, versionString);
+            this.ApplicationVersion = string.Format(Resources.Localized.Get("General.Version"), versionString);
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     if (isFirewallenabled)
                     {
                         this.ShowNotification(
-                            Resources.InstallationApp.FirewallIsEnabledOnThisTerminal,
+                            Resources.Localized.Get("InstallationApp.FirewallIsEnabledOnThisTerminal"),
                             Services.Models.NotificationSeverity.Warning);
                     }
                 }
@@ -154,14 +154,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
-                    this.ShowNotification(Resources.LoadLogin.ServiceInitialization);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ServiceInitialization"));
 
                     break;
 
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
 
-                    this.ShowNotification(Resources.LoadLogin.ConnectionEstablished, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionEstablished"), Services.Models.NotificationSeverity.Success);
 
                     try
                     {
@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowNotification(Resources.LoadLogin.ConnectionNotPossible, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionNotPossible"), Services.Models.NotificationSeverity.Error);
                     break;
             }
         }

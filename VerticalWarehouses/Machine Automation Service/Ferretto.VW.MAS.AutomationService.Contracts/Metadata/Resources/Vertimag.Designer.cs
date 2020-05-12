@@ -1051,11 +1051,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usa correzione peso.
+        ///   Looks up a localized string similar to Correggi accelerazone con peso.
         /// </summary>
-        public static string StepMovementParameters_AdjustByWeight {
+        public static string StepMovementParameters_AdjustAccelerationByWeight {
             get {
-                return ResourceManager.GetString("StepMovementParameters_AdjustByWeight", resourceCulture);
+                return ResourceManager.GetString("StepMovementParameters_AdjustAccelerationByWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correggi velocità con peso.
+        /// </summary>
+        public static string StepMovementParameters_AdjustSpeedByWeight {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_AdjustSpeedByWeight", resourceCulture);
             }
         }
         

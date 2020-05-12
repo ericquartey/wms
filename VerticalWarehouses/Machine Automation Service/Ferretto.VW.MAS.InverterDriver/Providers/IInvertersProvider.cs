@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Methods
 
-        double ComputeDisplacement(double targetPosition);
+        double ComputeDisplacement(double targetPosition, out double weight);
 
         int ComputePositioningValues(
             IInverterStatusBase inverter,

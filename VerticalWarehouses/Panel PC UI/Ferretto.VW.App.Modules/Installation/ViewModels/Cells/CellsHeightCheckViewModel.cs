@@ -335,7 +335,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsElevatorMoving = false;
 
                             this.ShowNotification(
-                                VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                                VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                                 Services.Models.NotificationSeverity.Warning);
 
                             break;

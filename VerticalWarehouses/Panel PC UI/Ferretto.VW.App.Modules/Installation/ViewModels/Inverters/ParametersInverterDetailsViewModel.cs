@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private Inverter inverterParameters;
+        private InverterParametersData inverterParameters;
 
         private DelegateCommand setInverterParamertersCommand;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public Inverter InverterParameters
+        public InverterParametersData InverterParameters
         {
             get => this.inverterParameters;
             set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
@@ -62,9 +62,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
-            if (this.Data is Inverter inverterParameterSet)
+            if (this.Data is InverterParametersData inverterParameters)
             {
-                this.InverterParameters = inverterParameterSet;
+                this.InverterParameters = inverterParameters;
             }
 
             this.IsWaitingForResponse = false;
@@ -89,9 +89,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.Index, null);
+                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, null);
 
-                this.ShowNotification(InstallationApp.InverterProgrammingStarted, Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

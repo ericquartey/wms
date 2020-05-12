@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDelay):
                         if (this.InputDelay < 0)
                         {
-                            return InstallationApp.InputDelayMustBePositive;
+                            return Localized.Get("InstallationApp.InputDelayMustBePositive");
                         }
 
                         break;
@@ -246,12 +246,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputRequiredCycles):
                         if (!this.InputRequiredCycles.HasValue)
                         {
-                            return InstallationApp.InputRequiredCyclesMustBePositive;
+                            return Localized.Get("InstallationApp.InputRequiredCyclesMustBePositive");
                         }
 
                         if (this.InputRequiredCycles.Value <= 0)
                         {
-                            return InstallationApp.InputRequiredCyclesRequired;
+                            return Localized.Get("InstallationApp.InputRequiredCyclesRequired");
                         }
 
                         break;
@@ -259,24 +259,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputLowerBound):
                         if (!this.InputLowerBound.HasValue)
                         {
-                            return InstallationApp.InputLowerBoundRequired;
+                            return Localized.Get("InstallationApp.InputLowerBoundRequired");
                         }
 
                         if (this.InputLowerBound.Value <= 0)
                         {
-                            return InstallationApp.InputLowerBoundMustBePositive;
+                            return Localized.Get("InstallationApp.InputLowerBoundMustBePositive");
                         }
 
                         if (this.InputUpperBound.HasValue
                           &&
                           this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return InstallationApp.InputLowerBoundMustBeGreatherThanUpper;
+                            return Localized.Get("InstallationApp.InputLowerBoundMustBeGreatherThanUpper");
                         }
 
                         if (this.InputLowerBound.Value < this.machineLowerBound)
                         {
-                            return string.Format(InstallationApp.InputLowerBoundMustBeGreatherThanValue, this.machineLowerBound);
+                            return string.Format(Localized.Get("InstallationApp.InputLowerBoundMustBeGreatherThanValue"), this.machineLowerBound);
                         }
 
                         break;
@@ -284,24 +284,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputUpperBound):
                         if (!this.InputUpperBound.HasValue)
                         {
-                            return InstallationApp.InputUpperBoundRequired;
+                            return Localized.Get("InstallationApp.InputUpperBoundRequired");
                         }
 
                         if (this.InputUpperBound.Value <= 0)
                         {
-                            return InstallationApp.InputUpperBoundMustBePositive;
+                            return Localized.Get("InstallationApp.InputUpperBoundMustBePositive");
                         }
 
                         if (this.InputLowerBound.HasValue
                             &&
                             this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return InstallationApp.InputUpperBoundMustBeGreatherThanLower;
+                            return Localized.Get("InstallationApp.InputUpperBoundMustBeGreatherThanLower");
                         }
 
                         if (this.InputUpperBound.Value > this.machineUpperBound)
                         {
-                            return string.Format(InstallationApp.InputUpperBoundMustBeGreatherThanValue, this.machineUpperBound);
+                            return string.Format(Localized.Get("InstallationApp.InputUpperBoundMustBeGreatherThanValue"), this.machineUpperBound);
                         }
 
                         break;
@@ -459,7 +459,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.IsErrored())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
                 this.IsExecutingProcedure = false;
             }
 
@@ -485,13 +485,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message.Data?.MovementMode == MovementMode.BeltBurnishing &&
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.BeltMustBeTight, InstallationApp.BeltBurnishing, DialogType.Exclamation, DialogButtons.OK);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BeltMustBeTight"), Localized.Get("InstallationApp.BeltBurnishing"), DialogType.Exclamation, DialogButtons.OK);
                 if (messageBoxResult == DialogResult.OK)
                 {
                     ;
                 }
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;
             }
@@ -503,7 +503,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ResetTotalCyclesNumber, InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ResetTotalCyclesNumber"), Localized.Get("InstallationApp.BeltBreakIn"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;
@@ -531,7 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (totalCyclesToPerform <= 0)
                 {
                     this.isCompleted = true;
-                    this.ShowNotification(InstallationApp.RequiredCyclesCompleted, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.RequiredCyclesCompleted"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

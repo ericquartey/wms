@@ -15,59 +15,59 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
+                   Text="{res:Loc InstallationApp.Gate1HeightControl}" />
 
         <controls:PpcTextBox Margin="160,140,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+                             LabelText="{res:Loc InstallationApp.SpeedMMSec}" />
 
         <controls:PpcLabeledText Margin="700,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Tolerance}" />
+                                 LabelText="{res:Loc InstallationApp.Tolerance}" />
 
         <controls:PpcLabeledText Margin="410,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
+                                 LabelText="{res:Loc InstallationApp.SystemErrorMM}" />
 
         <controls:PpcLabeledText Margin="160,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentHeight}" />
 
         <controls:PpcLabeledText Margin="700,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+                                 LabelText="{res:Loc InstallationApp.GateCorrection}" />
 
         <controls:PpcLabeledText Margin="160,360,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
         <controls:PpcButton Margin="410,490,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{res:Loc InstallationApp.Start}" />
 
         <controls:PpcButton Margin="700,490,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
 
         <controls:PpcSensorControl Margin="410,260,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    SensorState="{Binding LuPresentInBay}"
-                                   Text="{x:Static res:InstallationApp.Gate1HeightReached}" />
+                                   Text="{res:Loc InstallationApp.Gate1HeightReached}" />
 
     </Grid>
 </ctrls:View>

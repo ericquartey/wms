@@ -31,7 +31,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -39,7 +39,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsVerticalCycles}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsVerticalCycles}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -47,7 +47,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsHorizontalCycles}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsHorizontalCycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,150,0,0"
@@ -146,7 +146,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsVerticalKm}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsVerticalKm}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -154,7 +154,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsShutter1}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsShutter1}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -162,7 +162,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsShutter2}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsShutter2}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -170,7 +170,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsShutter3}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsShutter3}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -178,7 +178,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsBay1}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsBay1}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -186,7 +186,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsBay2}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsBay2}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -194,7 +194,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsBay3}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsBay3}" />
 
     </Grid>
 </UserControl>

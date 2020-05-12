@@ -319,10 +319,10 @@
     <value>Laser connection error. Please check ethernet connections.</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
-    <value>The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration</value>
+    <value>The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration</value>
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
-    <value>The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed</value>
+    <value>The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed</value>
   </data>
   <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
     <value>Automatic restore of the movement is not allowed</value>
@@ -387,7 +387,7 @@
   <data name="InvalidPositionBay" xml:space="preserve">
     <value>The selected bay position is invalid</value>
   </data>
-  <data name="OverrunElevatorDetected" xml:space="preserve">
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
     <value>The elevator is positioned on the overrun sensor.</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
@@ -395,5 +395,14 @@
   </data>
   <data name="ExternalBayEmpty" xml:space="preserve">
     <value>The external bay is empty</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>The WMS system has answerd with an error code</value>
   </data>
 </root>

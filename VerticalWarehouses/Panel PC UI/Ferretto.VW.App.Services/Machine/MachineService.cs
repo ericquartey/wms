@@ -100,6 +100,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isHoming;
 
+        private Dictionary<Axis, bool> isHomingStarted;
+
         private bool isMissionInError;
 
         private bool isMissionInErrorByLoadUnitOperations;
@@ -174,6 +176,11 @@ namespace Ferretto.VW.App.Services
             this.MachineStatus = new Models.MachineStatus();
 
             this.isBayHoming = new Dictionary<MAS.AutomationService.Contracts.BayNumber, bool>();
+            this.isHomingStarted = new Dictionary<Axis, bool>();
+            this.isHomingStarted.Add(Axis.Horizontal, false);
+            this.isHomingStarted.Add(Axis.Vertical, false);
+            this.isHomingStarted.Add(Axis.HorizontalAndVertical, false);
+            this.isHomingStarted.Add(Axis.BayChain, false);
         }
 
         #endregion
@@ -211,6 +218,8 @@ namespace Ferretto.VW.App.Services
             get => this.cells;
             set => this.SetProperty(ref this.cells, value, this.CellsNotificationProperty);
         }
+
+        public double FragmentTotalPercent { get; private set; }
 
         public bool HasBayExternal
         {
@@ -652,6 +661,23 @@ namespace Ferretto.VW.App.Services
                         .Publish(new HomingChangedMessage(this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay]));
                     }
                     this.IsHoming = this.isBayHoming[MAS.AutomationService.Contracts.BayNumber.ElevatorBay];
+                    switch (message?.Status)
+                    {
+                        case MessageStatus.OperationStart:
+                            if (this.isHomingStarted.ContainsKey(dataHoming.AxisToCalibrate))
+                            {
+                                this.isHomingStarted[dataHoming.AxisToCalibrate] = true;
+                            }
+                            break;
+
+                        case MessageStatus.OperationEnd:
+                        case MessageStatus.OperationError:
+                            if (this.isHomingStarted.ContainsKey(dataHoming.AxisToCalibrate))
+                            {
+                                this.isHomingStarted[dataHoming.AxisToCalibrate] = false;
+                            }
+                            break;
+                    }
                 }
 
                 switch (message.Status)
@@ -898,6 +924,11 @@ namespace Ferretto.VW.App.Services
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
                             this.Bay = await this.bayManagerService.GetBayAsync();
+                            if (message?.Data is MoveLoadingUnitMessageData)
+                            {
+                                var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
+                                this.FragmentTotalPercent = cellStat.FragmentTotalPercent;
+                            }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
                                 this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
@@ -1319,7 +1350,7 @@ namespace Ferretto.VW.App.Services
 
                     if (dataElevatorPosition.CellId != null)
                     {
-                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.Localized.Get("InstallationApp.CellWithNumber"), dataElevatorPosition.CellId);
 
                         var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
                         if (cell != null)
@@ -1345,15 +1376,15 @@ namespace Ferretto.VW.App.Services
                     {
                         var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == dataElevatorPosition.BayPositionId));
 
-                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.Localized.Get("InstallationApp.InBayWithNumber"), (int)bay.Number);
 
                         if (dataElevatorPosition?.BayPositionUpper ?? false)
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.InstallationApp.PositionOnTop);
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnTop"));
                         }
                         else
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.InstallationApp.PositionOnBotton);
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnBotton"));
                         }
 
                         this.MachineStatus.LogicalPositionId = (int)bay.Number;
@@ -1485,7 +1516,9 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
+                        else if (this.machineModeService.MachineMode != MachineMode.Automatic
+                            && this.machineModeService.MachineMode != MachineMode.SwitchingToAutomatic
+                            )
                         {
                             this.ShowNotification(Resources.ServiceMachine.AutomaticMissing, NotificationSeverity.Warning);
                         }
@@ -1493,9 +1526,25 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
                         }
+                        else if (this.isHomingStarted[Axis.Horizontal])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.BayChain])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                        }
                         else if (!this.isBayHoming[this.bay.Number])
                         {
                             this.ShowNotification(Resources.ServiceMachine.BayCalibrationNotPerformed, NotificationSeverity.Warning);
+                        }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {
@@ -1512,6 +1561,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
                         }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        }
                         break;
 
                     case WarningsArea.Information:
@@ -1519,6 +1572,10 @@ namespace Ferretto.VW.App.Services
                         if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                        }
+                        else if (this.FragmentTotalPercent > 25)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {

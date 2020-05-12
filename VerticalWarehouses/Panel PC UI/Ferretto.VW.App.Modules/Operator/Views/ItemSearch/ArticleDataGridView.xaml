@@ -11,7 +11,8 @@
               ItemsSource="{Binding Items}"
               SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
         <DataGrid.Resources>
-            <ctrls:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <ctrls:BindingProxy x:Key="proxy"
+                                Data="{Binding}" />
         </DataGrid.Resources>
 
         <DataGrid.Columns>
@@ -63,11 +64,11 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn    x:Name="Column4"
-                                    Width="100"
-                                    Binding="{Binding Path=Lot}"
-                                    Visibility="{Binding Source={StaticResource proxy},Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}"
-                                    Header="{x:Static Resources:OperatorApp.Lot}">
+            <DataGridTextColumn x:Name="Column4"
+                                Width="100"
+                                Binding="{Binding Path=Lot}"
+                                Header="{x:Static Resources:OperatorApp.Lot}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}">
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0" />
@@ -83,10 +84,10 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column5"
-                                    Width="100"                                
-                                    Binding="{Binding Path=SerialNumber}"
-                                    Visibility="{Binding Source={StaticResource proxy},Path=Data.IsDistinctBySerialNumber, Converter={StaticResource BTVC}}"
-                                    Header="{x:Static Resources:OperatorApp.SerialNumber}">
+                                Width="100"
+                                Binding="{Binding Path=SerialNumber}"
+                                Header="{x:Static Resources:OperatorApp.SerialNumber}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsDistinctBySerialNumber, Converter={StaticResource BTVC}}">
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0" />

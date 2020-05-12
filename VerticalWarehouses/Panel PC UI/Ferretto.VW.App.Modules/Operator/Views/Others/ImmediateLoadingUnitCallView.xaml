@@ -213,7 +213,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding LoadingUnitsMissionsCommand}"
-                                Content="{x:Static Resources:OperatorApp.MissionsList}"
+                                Content="{Resources:Loc OperatorApp.MissionsList}"
                                 IsBusy="{Binding IsBusyRequestingItemPick}" />
 
             <controls:PpcButton Grid.Row="4"

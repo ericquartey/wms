@@ -22,25 +22,25 @@
         <TextBlock Margin="320,20,0,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BayHeightCheck}" />
+                   Text="{res:Loc InstallationApp.BayHeightCheck}" />
 
         <TextBlock Width="670"
                    Height="60"
                    Margin="320,50,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,140,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRSelectedBay}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRSelectedBay}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,140,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRMoveToPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRMoveToPosition}" />
 
 
 
@@ -49,14 +49,14 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1"
-                                 LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
+                                 LabelText="{res:Loc InstallationApp.BayHeightCheckSelectedPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,280,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1256,5"
-                                 LabelText="{x:Static res:InstallationApp.BayHeight}" />
+                                 LabelText="{res:Loc InstallationApp.BayHeight}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,350,0,0"
@@ -65,64 +65,64 @@
                              Highlighted="True"
                              InputText="0,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.StepValue}" />
+                             LabelText="{res:Loc InstallationApp.StepValue}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1258,0"
-                                 LabelText="{x:Static res:InstallationApp.BayHeightCheckActualHeight}" />
+                                 LabelText="{res:Loc InstallationApp.BayHeightCheckActualHeight}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,490,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1,5"
-                                 LabelText="{x:Static res:InstallationApp.BayHeightCheckCorrectionValue}" />
+                                 LabelText="{res:Loc InstallationApp.BayHeightCheckCorrectionValue}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.MoveToPosition}" />
+                            Content="{res:Loc InstallationApp.MoveToPosition}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Up}" />
+                            Content="{res:Loc InstallationApp.Up}" />
 
         <controls:PpcButton Margin="530,280,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Down}" />
+                            Content="{res:Loc InstallationApp.Down}" />
 
         <controls:PpcButton Margin="530,350,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+                            Content="{res:Loc InstallationApp.ApplyCorrection}" />
 
         <controls:PpcButton Margin="530,420,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.BayHeightCheckNextPosition}" />
+                            Content="{res:Loc InstallationApp.BayHeightCheckNextPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,210,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRSelectedPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRSelectedPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,280,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRPositionHeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRPositionHeight}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="220,350,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepValue}" />
 
 
 
@@ -130,31 +130,31 @@
                    Height="70"
                    Margin="220,490,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRCorrectionValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRCorrectionValue}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,210,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepPiu}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepPiu}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,280,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRStepMeno}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRStepMeno}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,350,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRAdjust}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRAdjust}" />
 
         <TextBlock Width="260"
                    Height="70"
                    Margin="730,420,0,0"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpBCTRNextPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpBCTRNextPosition}" />
 
     </Grid>
 </UserControl>

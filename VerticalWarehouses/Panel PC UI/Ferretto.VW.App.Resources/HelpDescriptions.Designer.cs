@@ -142,6 +142,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration mask of the alphanumeric bar parameters..
+        /// </summary>
+        public static string HelpAlphaNumericDescription {
+            get {
+                return ResourceManager.GetString("HelpAlphaNumericDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HelpBCTRActualHeight.
         /// </summary>
         public static string HelpBCTRActualHeight {

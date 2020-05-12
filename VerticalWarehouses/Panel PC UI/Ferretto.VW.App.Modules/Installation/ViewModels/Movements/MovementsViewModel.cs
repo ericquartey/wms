@@ -236,7 +236,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
                         {
-                            return InstallationApp.InvalidDrawerSelected;
+                            return Localized.Get("InstallationApp.InvalidDrawerSelected");
                         }
 
                         break;
@@ -395,11 +395,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
-                this.LabelMoveToLoadunit = InstallationApp.GoToFreeCell;
+                this.LabelMoveToLoadunit = Localized.Get("InstallationApp.GoToFreeCell");
             }
             else
             {
-                this.LabelMoveToLoadunit = InstallationApp.GoToDrawer;
+                this.LabelMoveToLoadunit = Localized.Get("InstallationApp.GoToDrawer");
             }
 
             this.RaisePropertyChanged(nameof(this.SensorsService));
@@ -471,11 +471,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (isGuided)
             {
-                this.Title = InstallationApp.MovementsGuided;
+                this.Title = Localized.Get("InstallationApp.MovementsGuided");
             }
             else
             {
-                this.Title = InstallationApp.MovementsManual;
+                this.Title = Localized.Get("InstallationApp.MovementsManual");
             }
 
             this.isMovementsGuided = isGuided;
@@ -564,7 +564,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else
             {
                 this.ShowNotification(
-                    InstallationApp.ProcedureWasStopped,
+                    Localized.Get("InstallationApp.ProcedureWasStopped"),
                     Services.Models.NotificationSeverity.Warning);
             }
         }
@@ -625,7 +625,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsKeyboardOpened = true;
 
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ResetMachine, DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ResetMachine"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try
@@ -634,7 +634,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineMissionsWebService.ResetMachineAsync();
 
-                    this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.ResetMachineSuccessfull"), Services.Models.NotificationSeverity.Success);
 
                     this.MachineService.OnUpdateServiceAsync();
                 }

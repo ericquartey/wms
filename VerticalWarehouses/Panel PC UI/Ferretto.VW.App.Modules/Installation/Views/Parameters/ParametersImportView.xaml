@@ -189,7 +189,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
+                   Text="{res:Loc InstallationApp.SaveRestoreConfigPageHeader2}" />
 
         <ListView Grid.Row="1" Grid.Column="0"
                       SelectedValue="{Binding SelectedFile, Mode=TwoWay}"
@@ -233,7 +233,7 @@
             <controls:PpcButton Grid.Row="2" Grid.Column="1"
                                 Margin="15,15,0,0"
                                 Command="{Binding RestoreCommand}"
-                                Content="{x:Static res:InstallationApp.Import}"
+                                Content="{res:Loc InstallationApp.Import}"
                                 IsBusy="{Binding IsBusy}" />
         
 

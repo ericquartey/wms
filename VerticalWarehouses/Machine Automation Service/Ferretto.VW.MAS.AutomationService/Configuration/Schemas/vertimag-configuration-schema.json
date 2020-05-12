@@ -958,36 +958,29 @@
       "type": "object",
       "title": "The Setupprocedures Schema",
       "required": [
-        "BayHeightCheck",
+        "Bay1HeightCheck",
         "BeltBurnishingTest",
-        "CarouselManualMovements",
+        "Bay1CarouselCalibration",
         "CellPanelsCheck",
         "CellsHeightCheck",
         "DepositAndPickUpTest",
         "LoadFirstDrawerTest",
         "ShutterHeightCheck",
-        "ShutterTest",
+        "Bay1ShutterTest",
         "VerticalOffsetCalibration",
         "VerticalResolutionCalibration"
       ],
       "properties": {
-        "BayHeightCheck": {
-          "$id": "#/properties/SetupProcedures/properties/BayHeightCheck",
+        "Bay1HeightCheck": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1HeightCheck",
           "type": "object",
           "title": "The Bayheightcheck Schema",
           "required": [
-            "Step",
             "FeedRate"
           ],
           "properties": {
-            "Step": {
-              "$id": "#/properties/SetupProcedures/properties/BayHeightCheck/properties/Step",
-              "type": "number",
-              "title": "The Step Schema",
-              "default": 0.0
-            },
             "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/BayHeightCheck/properties/FeedRate",
+              "$id": "#/properties/SetupProcedures/properties/Bay1HeightCheck/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0
@@ -1010,19 +1003,25 @@
             }
           }
         },
-        "CarouselManualMovements": {
-          "$id": "#/properties/SetupProcedures/properties/CarouselManualMovements",
+        "Bay1CarouselCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration",
           "type": "object",
-          "title": "The Carouselmanualmovements Schema",
+          "title": "The Bay1CarouselCalibration Schema",
           "required": [
             "FeedRate"
           ],
           "properties": {
             "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/CarouselManualMovements/properties/FeedRate",
+              "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0
+            },
+            "RequiredCycles": {
+              "$id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration/properties/RequiredCycles",
+              "type": "integer",
+              "title": "The RequiredCycles Schema",
+              "default": 0
             }
           }
         },
@@ -1120,16 +1119,16 @@
             }
           }
         },
-        "ShutterTest": {
-          "$id": "#/properties/SetupProcedures/properties/ShutterTest",
+        "Bay1ShutterTest": {
+          "$id": "#/properties/SetupProcedures/properties/Bay1ShutterTest",
           "type": "object",
-          "title": "The Shuttertest Schema",
+          "title": "The Bay1ShutterTest Schema",
           "required": [
             "RequiredCycles"
           ],
           "properties": {
             "RequiredCycles": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterTest/properties/RequiredCycles",
+              "$id": "#/properties/SetupProcedures/properties/Bay1ShutterTest/properties/RequiredCycles",
               "type": "integer",
               "title": "The RequiredCycles Schema",
               "default": 0

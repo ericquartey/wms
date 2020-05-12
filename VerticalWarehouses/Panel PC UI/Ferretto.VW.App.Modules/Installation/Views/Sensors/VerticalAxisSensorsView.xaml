@@ -31,19 +31,19 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.VerticalAxis}" />
+                           Text="{res:Loc InstallationApp.VerticalAxis}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.OverrunElevator}"
-                                           Text="{x:Static res:InstallationApp.EmergencyEndRun}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ElevatorOverrun}"
+                                           Text="{res:Loc InstallationApp.EmergencyEndRun}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroVerticalSensor}"
-                                           Text="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
+                                           Text="{res:Loc InstallationApp.ZeroVerticalSensor}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ElevatorEngineSelectedBay1}"
-                                           Text="{x:Static res:InstallationApp.ElevatorEngineSelected}" />
+                                           Text="{res:Loc InstallationApp.ElevatorEngineSelected}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.CradleEngineSelectedBay1}"
-                                           Text="{x:Static res:InstallationApp.CradleEngineSelected}" />
+                                           Text="{res:Loc InstallationApp.CradleEngineSelected}" />
 
             </StackPanel>
 
@@ -52,21 +52,21 @@
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Cradle}" />
+                           Text="{res:Loc InstallationApp.Cradle}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensor}"
-                                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                           Text="{res:Loc InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneTon}"
-                                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                           Text="{res:Loc InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInMachineSide}"
-                                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
+                                           Text="{res:Loc InstallationApp.LuPresenceOnMachineCradleSide}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInOperatorSide}"
-                                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
+                                           Text="{res:Loc InstallationApp.LuPresenceOnOperatorCradleSide}" />
             </StackPanel>
         </Grid>
     </Grid>

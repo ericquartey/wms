@@ -24,17 +24,17 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataMovedDrawers}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataMovedDrawers}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataPowerOnTotalTime}" />
+                     Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataPowerOnTotalTime}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="12.235"
@@ -63,22 +63,22 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataOccupiedArea}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataOccupiedArea}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,570,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataLoadedWeight}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataLoadedWeight}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataAutomaticTotalTime}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataAutomaticTotalTime}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataUseRatio}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataUseRatio}" />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
                  Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
@@ -103,22 +103,22 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonMachineStatistics}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataButtonMachineStatistics}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonDrawersStatistics}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataButtonDrawersStatistics}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonCellsStatistics}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataButtonCellsStatistics}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonErrorsStatistics}" />
+                    Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataButtonErrorsStatistics}" />
 
     </Grid>
 </UserControl>

@@ -120,6 +120,12 @@
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Configuration and test of the alphanumeric bar</value>
   </data>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Configuration parameters</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Commands</value>
+  </data>
   <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
     <value>Alphanumeric Bar</value>
   </data>
@@ -135,6 +141,12 @@
   <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
     <value>Card Reader</value>
   </data>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Ip address</value>
+  </data>
   <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
     <value>Configuration and test of the label printer</value>
   </data>
@@ -147,8 +159,29 @@
   <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
     <value>Laser Pointer</value>
   </data>
+  <data name="AccessoriesLuminosity" xml:space="preserve">
+    <value>Luminosity</value>
+  </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Accessories Menu</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="AccessoriesSwitchOn" xml:space="preserve">
+    <value>Switch on</value>
+  </data>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
   </data>
   <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
     <value>Configuration and test of the token reader</value>

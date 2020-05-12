@@ -24,22 +24,22 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItem}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchGridItem}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
                      Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
                      Width="180"
@@ -91,42 +91,42 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItemDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchGridItemDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchGridMachine}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchGridMachine}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchTextToFind}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchTextToFind}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyAvailable}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchQtyAvailable}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,570,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyRequired}" />
+                    Text="{res:Loc HelpDescriptions.HelpItemSearchQtyRequired}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonDetail}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonDetail}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpItemSearchItemCall}" />
+                     Text="{res:Loc HelpDescriptions.HelpItemSearchItemCall}" />
 
     </Grid>
 </UserControl>

@@ -335,7 +335,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
 
             this.ShowNotification(
-                VW.App.Resources.InstallationApp.ProcedureCompleted,
+                VW.App.Resources.Localized.Get("InstallationApp.ProcedureCompleted"),
                 Services.Models.NotificationSeverity.Success);
         }
 
@@ -451,7 +451,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
 
             this.ShowNotification(
-                Resources.InstallationApp.ProcedureWasStopped,
+                Resources.Localized.Get("InstallationApp.ProcedureWasStopped"),
                 Services.Models.NotificationSeverity.Warning);
         }
 

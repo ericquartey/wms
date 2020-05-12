@@ -130,6 +130,8 @@
         {
             #region Fields
 
+            public const string INVERTERSPARAMETERSIMPORT = "InvertersParametersImportViewModel";
+
             public const string PARAMETERINVERTER = "ParameterInverterViewModel";
 
             public const string PARAMETERSINVERTERDETAILS = "ParametersInverterDetailsViewModel";

@@ -35,7 +35,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.RestoreConfiguration}" />
+                   Text="{res:Loc InstallationApp.RestoreConfiguration}" />
 
         <dxprg:PropertyGridControl Grid.Row="1"
                                    AllowExpanding="Force"
@@ -67,7 +67,7 @@
             <controls:PpcButton Margin="15,0,15,0"
                                 VerticalAlignment="Top"
                                 Command="{Binding ConfirmSaveCommand}"
-                                Content="{x:Static res:InstallationApp.Restore}"
+                                Content="{res:Loc InstallationApp.Restore}"
                                 IsBusy="{Binding IsBusy}" />
 
         </Grid>

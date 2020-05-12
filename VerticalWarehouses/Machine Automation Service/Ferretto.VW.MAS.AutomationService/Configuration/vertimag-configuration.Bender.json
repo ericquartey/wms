@@ -149,33 +149,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 200
+                  "Position": 200,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 500,
                   "Speed": 100,
                   "Number": 1,
-                  "Position": 550
+                  "Position": 550,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Number": 2,
                   "Position": 950,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 250,
                   "Number": 3,
                   "Position": 1350,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 800,
                   "Speed": 50,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1415,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -187,33 +195,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 200
+                  "Position": 200,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 500,
                   "Speed": 100,
                   "Number": 1,
-                  "Position": 550
+                  "Position": 550,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Number": 2,
                   "Position": 950,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 250,
                   "Number": 3,
                   "Position": 1350,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 800,
                   "Speed": 50,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1415,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -225,33 +241,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Number": 0,
-                  "Position": 100
+                  "Position": 100,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 100,
                   "Position": 200,
-                  "Number": 1
+                  "Number": 1,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 300,
                   "Number": 2,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 985,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 1310,
-                  "Number": 4
+                  "Number": 4,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             },
@@ -263,33 +287,41 @@
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 100,
-                  "Number": 0
+                  "Number": 0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 100,
                   "Position": 200,
-                  "Number": 1
+                  "Number": 1,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 300,
                   "Number": 2,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 500,
                   "Position": 985,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true
                 },
                 {
                   "Acceleration": 1000,
                   "Speed": 200,
                   "Position": 1310,
-                  "Number": 4
+                  "Number": 4,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false
                 }
               ]
             }
@@ -3206,10 +3238,6 @@
     "Bay3ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 20
-    },
-    "BayHeightCheck": {
-      "FeedRate": 0.2,
-      "Step": 0.5
     },
     "BeltBurnishingTest": {
       "RequiredCycles": 200

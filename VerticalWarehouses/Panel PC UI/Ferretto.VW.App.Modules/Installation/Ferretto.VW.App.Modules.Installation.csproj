@@ -77,6 +77,7 @@
     <None Remove="Views\Cells\CellsHeightCheckView.xaml" />
     <None Remove="Views\DateTime\DateTimeView.xaml" />
     <None Remove="Views\Elevator\VerticalOffsetCalibrationView.xaml" />
+    <None Remove="Views\Inverters\InvertersParametersImportView.xaml" />
     <None Remove="Views\Inverters\ParametersInverterDetailsView.xaml" />
     <None Remove="Views\LoadingUnits\FullTestView.xaml" />
     <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
@@ -97,6 +98,9 @@
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Inverters\InvertersParametersImportView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Accessories\BarcodeReaderConfigurationView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -104,7 +108,7 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Inverters\ParameterInverterView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+      <DependentUpon>ParameterInverterView.xaml</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\UsersView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

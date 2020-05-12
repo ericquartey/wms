@@ -53,8 +53,9 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:General.SerialNumber}, FallbackValue='SerialNumber'}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+            </TextBlock>
 
         </StackPanel>
 
@@ -141,12 +142,12 @@
 
         </Grid>
 
-        <controls:PpcBadge Grid.RowSpan="2"
+        <controls:PpcBayBadge Grid.RowSpan="2"
                            Grid.ColumnSpan="2"
                            Margin="15,15,30,-10"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
-                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:General.BayNumber}}"
+                           BayNumber="{Binding BayNumber}"
                            Visibility="Collapsed" />
 
     </Grid>

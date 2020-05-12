@@ -117,22 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>The area of the machine is unknown</value>
+  <data name="Close" xml:space="preserve">
+    <value>Chiudi</value>
   </data>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Converter can only convert to value of type Visibility.</value>
+  <data name="Next" xml:space="preserve">
+    <value>Successivo</value>
   </data>
-  <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>Id loading unit does not exists.</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Apri cartella</value>
   </data>
-  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>The '{0}' property of the '{1}' view model shall contain a valid loading unit identifier.</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>File di configurazione Vertimag</value>
   </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Apri file</value>
   </data>
-  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Parameter cannot be null or empty.</value>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Cartella Inverters</value>
+  </data>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>File di generazione parametri Inverters</value>
   </data>
 </root>

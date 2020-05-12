@@ -14,14 +14,14 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case HealthStatus.Healthy:
-                    return Resources.InstallationApp.WmsOn;
+                    return Resources.Localized.Get("InstallationApp.WmsOn");
 
                 case HealthStatus.Unknown:
                 case HealthStatus.Unhealthy:
                 case HealthStatus.Degraded:
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
-                    return Resources.InstallationApp.WmsOff;
+                    return Resources.Localized.Get("InstallationApp.WmsOff");
             }
 
             return string.Empty;

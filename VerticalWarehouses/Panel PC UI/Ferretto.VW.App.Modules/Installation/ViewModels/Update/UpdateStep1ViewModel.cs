@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (!this.Installations.Any())
                 {
-                    this.ShowNotification(InstallationApp.FileReadError, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Localized.Get("InstallationApp.FileReadError"), Services.Models.NotificationSeverity.Error);
                     this.IsBusy = false;
                     return;
                 }
@@ -121,7 +121,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void Restore()
         {
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmRestoreToPreviousVersion, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmRestoreToPreviousVersion"), Localized.Get("InstallationApp.ConfirmRestore"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

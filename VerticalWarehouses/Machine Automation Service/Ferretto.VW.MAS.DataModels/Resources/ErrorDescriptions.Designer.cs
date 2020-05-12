@@ -250,6 +250,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positioning error at top or bottom side.
+        /// </summary>
+        public static string ElevatorOverrunDetected {
+            get {
+                return ResourceManager.GetString("ElevatorOverrunDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External bay empty.
         /// </summary>
         public static string ExternalBayEmpty {
@@ -772,15 +781,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Positioning error at top or bottom side.
-        /// </summary>
-        public static string OverrunElevatorDetected {
-            get {
-                return ResourceManager.GetString("OverrunElevatorDetected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The picking confirmation command is not valid.
         /// </summary>
         public static string ResumeCommandNotValid {
@@ -894,6 +894,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string WarehouseNotEmpty {
             get {
                 return ResourceManager.GetString("WarehouseNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS error.
+        /// </summary>
+        public static string WmsError {
+            get {
+                return ResourceManager.GetString("WmsError", resourceCulture);
             }
         }
         

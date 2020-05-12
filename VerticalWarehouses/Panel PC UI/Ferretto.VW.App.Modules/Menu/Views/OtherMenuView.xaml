@@ -45,59 +45,59 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:Menu.OtherMenuName}" />
+                       Text="{res:Loc Menu.OtherMenuName}" />
 
             <WrapPanel Grid.Row="1">
 
-                <controls:PpcButton Title="{x:Static res:InstallationApp.ManageUserMenuTitle}"
+                <controls:PpcButton Title="{res:Loc InstallationApp.ManageUserMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.1"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuUsersCommand}"
-                                    Content="{x:Static res:InstallationApp.manageUserMenuDescription}"
+                                    Content="{res:Loc InstallationApp.manageUserMenuDescription}"
                                     IsEnabled="False"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="{x:Static res:InstallationApp.WMSComunicationMenuTitle}"
+                <controls:PpcButton Title="{res:Loc InstallationApp.WMSComunicationMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.2"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuComunicationWmsCommand}"
-                                    Content="{x:Static res:InstallationApp.WMSComunicationMenuDescription}"
+                                    Content="{res:Loc InstallationApp.WMSComunicationMenuDescription}"
                                     IsEnabled="True"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="{x:Static res:InstallationApp.ParametersMenuTitle}"
+                <controls:PpcButton Title="{res:Loc InstallationApp.ParametersMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.3"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParametersCommand}"
-                                    Content="{x:Static res:InstallationApp.ParametersMenuDescription}"
+                                    Content="{res:Loc InstallationApp.ParametersMenuDescription}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="{x:Static res:InstallationApp.InverterParameterizationMenuTitle}"
+                <controls:PpcButton Title="{res:Loc InstallationApp.InverterParameterizationMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParameterInverterCommand}"
-                                    Content="{x:Static res:InstallationApp.InverterParameterizationMenuDescription}"                                    
+                                    Content="{res:Loc InstallationApp.InverterParameterizationMenuDescription}"                                    
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="{x:Static res:InstallationApp.DateTimeMenuTitle}"
+                <controls:PpcButton Title="{res:Loc InstallationApp.DateTimeMenuTitle}"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.5"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuDateTimeCommand}"
-                                    Content="{x:Static res:InstallationApp.DateTimeMenuDescription}"
+                                    Content="{res:Loc InstallationApp.DateTimeMenuDescription}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

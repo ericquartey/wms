@@ -245,7 +245,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     !this.isAuto)
                 {
-                    this.ShowNotification(InstallationApp.DateTimeEnteredIsInvalid, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.DateTimeEnteredIsInvalid"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -260,7 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     await this.machineUtcTimeWebService.SetAsync(newDateTime.Value);
                 }
 
-                this.ShowNotification(InstallationApp.SaveSuccessful);
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

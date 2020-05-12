@@ -49,25 +49,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification(InstallationApp.InvalidEnteredDrawerId, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidEnteredDrawerId"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (this.LoadingUnitCellId == null)
                 {
-                    this.ShowNotification(InstallationApp.InvalidCellIdOnInsertedDrawer, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidCellIdOnInsertedDrawer"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (!this.IsCellIdValid)
                 {
-                    this.ShowNotification(InstallationApp.InvalidCellIdEntered, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidCellIdEntered"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (!this.IsCellFree)
                 {
-                    this.ShowNotification(InstallationApp.CellInsertedNotFree, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.CellInsertedNotFree"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

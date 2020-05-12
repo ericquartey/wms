@@ -1,30 +1,7 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
-    "LoadingUnits": [
-        {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 14,
-        "IsFree": false,
-        "PanelId": 2,
-        "Position": 445.0,
-        "Priority": 14,
-        "Side": "Back"
-      },
-      "CellId": 14,
-      "Code": "001",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-            "Id": 1,
-            "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 21,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 120.0
-        },
-        {
+  "LoadingUnits": [
+    {
       "Cell": {
         "BlockLevel": "None",
         "Id": 278,
@@ -35,37 +12,14 @@
         "Side": "Back"
       },
       "CellId": 278,
-      "Code": "002",
+      "Code": "001",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-            "Id": 2,
-            "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 1,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 3,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 120.0
-        },
-        {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 13,
-        "IsFree": false,
-        "PanelId": 1,
-        "Position": 2145.0,
-        "Priority": 13,
-        "Side": "Front"
-      },
-      "CellId": 13,
-      "Code": "003",
-      "GrossWeight": 102.36900800000012,
-      "Height": 123.78125,
-            "Id": 3,
-            "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 38,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 120.0
@@ -73,22 +27,68 @@
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 26,
+        "Id": 62,
         "IsFree": false,
-        "PanelId": 4,
-        "Position": 595.0,
-        "Priority": 26,
+        "PanelId": 8,
+        "Position": 1045.0,
+        "Priority": 62,
         "Side": "Back"
       },
-      "CellId": 26,
-      "Code": "004",
+      "CellId": 62,
+      "Code": "002",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 4,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 2,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
+      "MissionsCount": 13,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 120.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 134,
+        "IsFree": false,
+        "PanelId": 14,
+        "Position": 1945.0,
+        "Priority": 134,
+        "Side": "Back"
+      },
+      "CellId": 134,
+      "Code": "003",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.85624999999999,
+      "Id": 3,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 7,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 120.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 14,
+        "IsFree": false,
+        "PanelId": 2,
+        "Position": 445.0,
+        "Priority": 14,
+        "Side": "Back"
+      },
+      "CellId": 14,
+      "Code": "004",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 4,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 9,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -106,12 +106,12 @@
       "CellId": 38,
       "Code": "005",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
+      "Height": 124.67499999999998,
       "Id": 5,
-      "IsInFullTest": false,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 7,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -129,9 +129,32 @@
       "CellId": 50,
       "Code": "006",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
+      "Height": 124.49375,
       "Id": 6,
-      "IsInFullTest": false,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 10,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 27,
+        "IsFree": false,
+        "PanelId": 3,
+        "Position": 2320.0,
+        "Priority": 27,
+        "Side": "Front"
+      },
+      "CellId": 27,
+      "Code": "007",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 7,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 3,
@@ -142,65 +165,433 @@
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 205,
+        "Id": 182,
         "IsFree": false,
-        "PanelId": 21,
-        "Position": 4545.0,
-        "Priority": 205,
-        "Side": "Front"
-      },
-      "CellId": 205,
-      "Code": "007",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 7,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 37,
-        "IsFree": false,
-        "PanelId": 3,
-        "Position": 2445.0,
-        "Priority": 37,
-        "Side": "Front"
-      },
-      "CellId": 37,
-      "Code": "008",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 8,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 62,
-        "IsFree": false,
-        "PanelId": 8,
-        "Position": 1045.0,
-        "Priority": 62,
+        "PanelId": 20,
+        "Position": 2545.0,
+        "Priority": 182,
         "Side": "Back"
       },
-      "CellId": 62,
+      "CellId": 182,
+      "Code": "008",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.85624999999999,
+      "Id": 8,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 9,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 74,
+        "IsFree": false,
+        "PanelId": 8,
+        "Position": 1195.0,
+        "Priority": 74,
+        "Side": "Back"
+      },
+      "CellId": 74,
       "Code": "009",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
+      "Height": 124.85624999999999,
       "Id": 9,
-      "IsInFullTest": false,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 5,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 26,
+        "IsFree": false,
+        "PanelId": 4,
+        "Position": 595.0,
+        "Priority": 26,
+        "Side": "Back"
+      },
+      "CellId": 26,
+      "Code": "010",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.49375,
+      "Id": 10,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 6,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 39,
+        "IsFree": false,
+        "PanelId": 3,
+        "Position": 2470.0,
+        "Priority": 39,
+        "Side": "Front"
+      },
+      "CellId": 39,
+      "Code": "011",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 11,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 86,
+        "IsFree": false,
+        "PanelId": 10,
+        "Position": 1345.0,
+        "Priority": 86,
+        "Side": "Back"
+      },
+      "CellId": 86,
+      "Code": "012",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 12,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 51,
+        "IsFree": false,
+        "PanelId": 5,
+        "Position": 2620.0,
+        "Priority": 51,
+        "Side": "Front"
+      },
+      "CellId": 51,
+      "Code": "013",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 13,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 98,
+        "IsFree": false,
+        "PanelId": 10,
+        "Position": 1495.0,
+        "Priority": 98,
+        "Side": "Back"
+      },
+      "CellId": 98,
+      "Code": "014",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 14,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 63,
+        "IsFree": false,
+        "PanelId": 7,
+        "Position": 2770.0,
+        "Priority": 63,
+        "Side": "Front"
+      },
+      "CellId": 63,
+      "Code": "015",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 15,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 110,
+        "IsFree": false,
+        "PanelId": 12,
+        "Position": 1645.0,
+        "Priority": 110,
+        "Side": "Back"
+      },
+      "CellId": 110,
+      "Code": "016",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 16,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 75,
+        "IsFree": false,
+        "PanelId": 7,
+        "Position": 2920.0,
+        "Priority": 75,
+        "Side": "Front"
+      },
+      "CellId": 75,
+      "Code": "017",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 17,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 122,
+        "IsFree": false,
+        "PanelId": 14,
+        "Position": 1795.0,
+        "Priority": 122,
+        "Side": "Back"
+      },
+      "CellId": 122,
+      "Code": "018",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 18,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 87,
+        "IsFree": false,
+        "PanelId": 9,
+        "Position": 3070.0,
+        "Priority": 87,
+        "Side": "Front"
+      },
+      "CellId": 87,
+      "Code": "019",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 19,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 159,
+        "IsFree": false,
+        "PanelId": 15,
+        "Position": 3970.0,
+        "Priority": 159,
+        "Side": "Front"
+      },
+      "CellId": 159,
+      "Code": "020",
+      "GrossWeight": 559.70076800000015,
+      "Height": 366.4625,
+      "Id": 20,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 17,
+      "NetWeight": 434.70076800000015,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 99,
+        "IsFree": false,
+        "PanelId": 9,
+        "Position": 3220.0,
+        "Priority": 99,
+        "Side": "Front"
+      },
+      "CellId": 99,
+      "Code": "021",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 21,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 146,
+        "IsFree": false,
+        "PanelId": 16,
+        "Position": 2095.0,
+        "Priority": 146,
+        "Side": "Back"
+      },
+      "CellId": 146,
+      "Code": "022",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 22,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 111,
+        "IsFree": false,
+        "PanelId": 11,
+        "Position": 3370.0,
+        "Priority": 111,
+        "Side": "Front"
+      },
+      "CellId": 111,
+      "Code": "023",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 23,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 158,
+        "IsFree": false,
+        "PanelId": 16,
+        "Position": 2245.0,
+        "Priority": 158,
+        "Side": "Back"
+      },
+      "CellId": 158,
+      "Code": "024",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 24,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 1,
+        "IsFree": false,
+        "PanelId": 1,
+        "Position": 1995.0,
+        "Priority": 1,
+        "Side": "Front"
+      },
+      "CellId": 1,
+      "Code": "025",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.85624999999999,
+      "Id": 25,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 16,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 314,
+        "IsFree": false,
+        "PanelId": 32,
+        "Position": 4195.0,
+        "Priority": 314,
+        "Side": "Back"
+      },
+      "CellId": 314,
+      "Code": "026",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.49375,
+      "Id": 26,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 3,
@@ -219,382 +610,14 @@
         "Side": "Back"
       },
       "CellId": 302,
-      "Code": "010",
+      "Code": "027",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 10,
-      "IsInFullTest": false,
+      "Height": 124.13125,
+      "Id": 27,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 3,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 74,
-        "IsFree": false,
-        "PanelId": 8,
-        "Position": 1195.0,
-        "Priority": 74,
-        "Side": "Back"
-      },
-      "CellId": 74,
-      "Code": "011",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 11,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 61,
-        "IsFree": false,
-        "PanelId": 7,
-        "Position": 2745.0,
-        "Priority": 61,
-        "Side": "Front"
-      },
-      "CellId": 61,
-      "Code": "012",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 12,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 86,
-        "IsFree": false,
-        "PanelId": 10,
-        "Position": 1345.0,
-        "Priority": 86,
-        "Side": "Back"
-      },
-      "CellId": 86,
-      "Code": "013",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 13,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 73,
-        "IsFree": false,
-        "PanelId": 7,
-        "Position": 2895.0,
-        "Priority": 73,
-        "Side": "Front"
-      },
-      "CellId": 73,
-      "Code": "014",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 14,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 98,
-        "IsFree": false,
-        "PanelId": 10,
-        "Position": 1495.0,
-        "Priority": 98,
-        "Side": "Back"
-      },
-      "CellId": 98,
-      "Code": "015",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 15,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 85,
-        "IsFree": false,
-        "PanelId": 9,
-        "Position": 3045.0,
-        "Priority": 85,
-        "Side": "Front"
-      },
-      "CellId": 85,
-      "Code": "016",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 16,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 110,
-        "IsFree": false,
-        "PanelId": 12,
-        "Position": 1645.0,
-        "Priority": 110,
-        "Side": "Back"
-      },
-      "CellId": 110,
-      "Code": "017",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 17,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 97,
-        "IsFree": false,
-        "PanelId": 9,
-        "Position": 3195.0,
-        "Priority": 97,
-        "Side": "Front"
-      },
-      "CellId": 97,
-      "Code": "018",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 18,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 122,
-        "IsFree": false,
-        "PanelId": 14,
-        "Position": 1795.0,
-        "Priority": 122,
-        "Side": "Back"
-      },
-      "CellId": 122,
-      "Code": "019",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 19,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 109,
-        "IsFree": false,
-        "PanelId": 11,
-        "Position": 3345.0,
-        "Priority": 109,
-        "Side": "Front"
-      },
-      "CellId": 109,
-      "Code": "020",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 20,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 134,
-        "IsFree": false,
-        "PanelId": 14,
-        "Position": 1945.0,
-        "Priority": 134,
-        "Side": "Back"
-      },
-      "CellId": 134,
-      "Code": "021",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 21,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 121,
-        "IsFree": false,
-        "PanelId": 13,
-        "Position": 3495.0,
-        "Priority": 121,
-        "Side": "Front"
-      },
-      "CellId": 121,
-      "Code": "022",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 22,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 146,
-        "IsFree": false,
-        "PanelId": 16,
-        "Position": 2095.0,
-        "Priority": 146,
-        "Side": "Back"
-      },
-      "CellId": 146,
-      "Code": "023",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 23,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 133,
-        "IsFree": false,
-        "PanelId": 13,
-        "Position": 3645.0,
-        "Priority": 133,
-        "Side": "Front"
-      },
-      "CellId": 133,
-      "Code": "024",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 24,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 158,
-        "IsFree": false,
-        "PanelId": 16,
-        "Position": 2245.0,
-        "Priority": 158,
-        "Side": "Back"
-      },
-      "CellId": 158,
-      "Code": "025",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 25,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 145,
-        "IsFree": false,
-        "PanelId": 15,
-        "Position": 3795.0,
-        "Priority": 145,
-        "Side": "Front"
-      },
-      "CellId": 145,
-      "Code": "026",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 26,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 22,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -610,60 +633,14 @@
         "Side": "Back"
       },
       "CellId": 170,
-      "Code": "027",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 27,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 157,
-        "IsFree": false,
-        "PanelId": 15,
-        "Position": 3945.0,
-        "Priority": 157,
-        "Side": "Front"
-      },
-      "CellId": 157,
       "Code": "028",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
+      "Height": 124.67499999999998,
       "Id": 28,
-      "IsInFullTest": false,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
-      "Status": "InLocation",
-      "Tare": 125.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 182,
-        "IsFree": false,
-        "PanelId": 20,
-        "Position": 2545.0,
-        "Priority": 182,
-        "Side": "Back"
-      },
-      "CellId": 182,
-      "Code": "029",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 29,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
+      "MissionsCount": 7,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -679,14 +656,14 @@
         "Side": "Back"
       },
       "CellId": 290,
-      "Code": "030",
+      "Code": "029",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.41874999999999,
-      "Id": 30,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 29,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
+      "MissionsCount": 4,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -702,14 +679,14 @@
         "Side": "Back"
       },
       "CellId": 194,
-      "Code": "031",
+      "Code": "030",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 31,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 30,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 3,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -725,14 +702,14 @@
         "Side": "Back"
       },
       "CellId": 218,
-      "Code": "032",
+      "Code": "031",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 32,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 31,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 4,
+      "MissionsCount": 2,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -748,14 +725,14 @@
         "Side": "Back"
       },
       "CellId": 206,
-      "Code": "033",
+      "Code": "032",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 33,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 32,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 3,
+      "MissionsCount": 5,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -771,11 +748,11 @@
         "Side": "Back"
       },
       "CellId": 230,
-      "Code": "034",
+      "Code": "033",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 34,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 33,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 4,
@@ -794,14 +771,14 @@
         "Side": "Back"
       },
       "CellId": 266,
-      "Code": "035",
+      "Code": "034",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 35,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 34,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 7,
+      "MissionsCount": 5,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -809,46 +786,46 @@
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 253,
+        "Id": 147,
         "IsFree": false,
-        "PanelId": 25,
-        "Position": 5145.0,
-        "Priority": 253,
+        "PanelId": 15,
+        "Position": 3820.0,
+        "Priority": 147,
         "Side": "Front"
       },
-      "CellId": 253,
-      "Code": "036",
-      "GrossWeight": 871.80432500000006,
-      "Height": 365.56875,
-      "Id": 36,
-      "IsInFullTest": false,
+      "CellId": 147,
+      "Code": "035",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 35,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 21,
-      "NetWeight": 746.80432500000006,
+      "MissionsCount": 8,
+      "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
     },
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 169,
+        "Id": 243,
         "IsFree": false,
-        "PanelId": 17,
-        "Position": 4095.0,
-        "Priority": 169,
+        "PanelId": 25,
+        "Position": 5020.0,
+        "Priority": 243,
         "Side": "Front"
       },
-      "CellId": 169,
-      "Code": "037",
-      "GrossWeight": 474.46223699999996,
-      "Height": 268.871875,
-      "Id": 37,
-      "IsInFullTest": false,
+      "CellId": 243,
+      "Code": "036",
+      "GrossWeight": 904.84782799999994,
+      "Height": 390.93125,
+      "Id": 36,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 35,
-      "NetWeight": 349.46223699999996,
+      "MissionsCount": 52,
+      "NetWeight": 779.84782799999994,
       "Status": "InLocation",
       "Tare": 125.0
     },
@@ -863,15 +840,15 @@
         "Side": "Front"
       },
       "CellId": 217,
-      "Code": "038",
-      "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 38,
-      "IsInFullTest": false,
+      "Code": "037",
+      "GrossWeight": 474.46223699999996,
+      "Height": 294.05312499999997,
+      "Id": 37,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 0.0,
+      "MissionsCount": 79,
+      "NetWeight": 349.46223699999996,
       "Status": "InLocation",
       "Tare": 125.0
     },
@@ -886,11 +863,11 @@
         "Side": "Back"
       },
       "CellId": 242,
-      "Code": "039",
+      "Code": "038",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.59999999999997,
-      "Id": 39,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 38,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 2,
@@ -901,19 +878,19 @@
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 229,
+        "Id": 326,
         "IsFree": false,
-        "PanelId": 23,
-        "Position": 4845.0,
-        "Priority": 229,
-        "Side": "Front"
+        "PanelId": 34,
+        "Position": 4345.0,
+        "Priority": 326,
+        "Side": "Back"
       },
-      "CellId": 229,
-      "Code": "040",
+      "CellId": 326,
+      "Code": "039",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.41874999999999,
-      "Id": 40,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 39,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
       "MissionsCount": 3,
@@ -932,14 +909,14 @@
         "Side": "Back"
       },
       "CellId": 254,
-      "Code": "041",
+      "Code": "040",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.96249999999998,
-      "Id": 41,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 40,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 4,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
@@ -947,27 +924,50 @@
     {
       "Cell": {
         "BlockLevel": "None",
-        "Id": 241,
+        "Id": 193,
         "IsFree": false,
-        "PanelId": 25,
-        "Position": 4995.0,
-        "Priority": 241,
+        "PanelId": 19,
+        "Position": 4395.0,
+        "Priority": 193,
         "Side": "Front"
       },
-      "CellId": 241,
-      "Code": "042",
+      "CellId": 193,
+      "Code": "041",
       "GrossWeight": 88.993316999999934,
-      "Height": 123.78125,
-      "Id": 42,
-      "IsInFullTest": false,
+      "Height": 124.67499999999998,
+      "Id": 41,
+      "IsInFullTest": true,
       "IsIntoMachine": true,
       "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
+      "MissionsCount": 2,
       "NetWeight": 0.0,
       "Status": "InLocation",
       "Tare": 125.0
-        }
-    ],
+    },
+    {
+      "Cell": {
+        "BlockLevel": "None",
+        "Id": 205,
+        "IsFree": false,
+        "PanelId": 21,
+        "Position": 4545.0,
+        "Priority": 205,
+        "Side": "Front"
+      },
+      "CellId": 205,
+      "Code": "042",
+      "GrossWeight": 88.993316999999934,
+      "Height": 124.67499999999998,
+      "Id": 42,
+      "IsInFullTest": true,
+      "IsIntoMachine": true,
+      "MaxNetWeight": 800.0,
+      "MissionsCount": 2,
+      "NetWeight": 0.0,
+      "Status": "InLocation",
+      "Tare": 125.0
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -980,7 +980,7 @@
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 22.0,
           "Id": 1,
-          "LastIdealPosition": 888.41978568801164,
+          "LastIdealPosition": 888.37927637888936,
           "ManualMovements": {
             "FeedRate": 0.1,
             "Id": 2
@@ -1003,6 +1003,7 @@
         "Inverter": {
           "Id": 1,
           "Index": "Slave3",
+          "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
@@ -1036,7 +1037,7 @@
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 395.0,
-            "ProfileOffset": 25.0
+            "ProfileOffset": 50.0
           }
         ],
         "Resolution": 296.2282068,
@@ -1055,6 +1056,7 @@
           "Inverter": {
             "Id": 2,
             "Index": "Slave2",
+            "Parameters": [],
             "TcpPort": 0,
             "Type": "Agl"
           },
@@ -1104,10 +1106,11 @@
             "Id": 3,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
+            "Parameters": [],
             "TcpPort": 17221,
             "Type": "Ang"
           },
-          "LastIdealPosition": 4095.0,
+          "LastIdealPosition": 895.0,
           "LowerBound": 442.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -1159,7 +1162,7 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "Id": 2,
-          "LastIdealPosition": -2432.0,
+          "LastIdealPosition": 0.0,
           "LowerBound": 0.0,
           "ManualMovements": {
             "FeedRate": 0.04,
@@ -1180,7 +1183,8 @@
               "Steps": [
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 19,
                   "Number": 0,
@@ -1188,26 +1192,29 @@
                   "Speed": 200.0
                 },
                 {
-                  "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 18,
                   "Number": 1,
-                  "Position": 350.0,
-                  "Speed": 200.0
+                  "Position": 300.0,
+                  "Speed": 650.0
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 17,
                   "Number": 2,
-                  "Position": 700.0,
+                  "Position": 740.0,
                   "Speed": 650.0
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 25,
                   "Number": 3,
@@ -1216,7 +1223,8 @@
                 },
                 {
                   "Acceleration": 3000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 15,
                   "Number": 4,
@@ -1231,44 +1239,49 @@
               "Name": "LongPickup",
               "Steps": [
                 {
-                  "Acceleration": 5000.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 8,
                   "Number": 0,
-                  "Position": 100.0,
-                  "Speed": 500.0
+                  "Position": 140.0,
+                  "Speed": 550.0
                 },
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 14,
                   "Number": 1,
-                  "Position": 350.0,
-                  "Speed": 150.0
+                  "Position": 300.0,
+                  "Speed": 100.0
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 13,
                   "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 12,
+                  "Number": 3,
                   "Position": 900.0,
                   "Speed": 650.0
                 },
                 {
-                  "Acceleration": 1700.0,
-                  "AdjustByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 12,
-                  "Number": 3,
-                  "Position": 1050.0,
-                  "Speed": 400.0
-                },
-                {
-                  "Acceleration": 1700.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 1000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 11,
                   "Number": 4,
@@ -1283,44 +1296,49 @@
               "Name": "ShortPickup",
               "Steps": [
                 {
-                  "Acceleration": 5000.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 23,
                   "Number": 0,
-                  "Position": 100.0,
-                  "Speed": 500.0
+                  "Position": 140.0,
+                  "Speed": 550.0
                 },
                 {
                   "Acceleration": 5000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 22,
                   "Number": 1,
-                  "Position": 350.0,
-                  "Speed": 150.0
+                  "Position": 300.0,
+                  "Speed": 100.0
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 21,
                   "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 16,
+                  "Number": 3,
                   "Position": 900.0,
                   "Speed": 650.0
                 },
                 {
-                  "Acceleration": 1700.0,
-                  "AdjustByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 16,
-                  "Number": 3,
-                  "Position": 1050.0,
-                  "Speed": 400.0
-                },
-                {
-                  "Acceleration": 1700.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 1000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 20,
                   "Number": 4,
@@ -1336,7 +1354,8 @@
               "Steps": [
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 10,
                   "Number": 0,
@@ -1344,26 +1363,29 @@
                   "Speed": 200.0
                 },
                 {
-                  "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 9,
                   "Number": 1,
-                  "Position": 350.0,
-                  "Speed": 200.0
+                  "Position": 300.0,
+                  "Speed": 650.0
                 },
                 {
                   "Acceleration": 2000.0,
-                  "AdjustByWeight": true,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
                   "Id": 7,
                   "Number": 2,
-                  "Position": 700.0,
+                  "Position": 740.0,
                   "Speed": 650.0
                 },
                 {
                   "Acceleration": 1000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 24,
                   "Number": 3,
@@ -1372,7 +1394,8 @@
                 },
                 {
                   "Acceleration": 3000.0,
-                  "AdjustByWeight": false,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 26,
                   "Number": 4,
@@ -1413,7 +1436,7 @@
           {
             "BlockLevel": "None",
             "Id": 1,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 1995.0,
             "Priority": 1,
@@ -1422,7 +1445,7 @@
           {
             "BlockLevel": "None",
             "Id": 3,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2020.0,
             "Priority": 3,
@@ -1431,7 +1454,7 @@
           {
             "BlockLevel": "None",
             "Id": 5,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2045.0,
             "Priority": 5,
@@ -1440,7 +1463,7 @@
           {
             "BlockLevel": "None",
             "Id": 7,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2070.0,
             "Priority": 7,
@@ -1449,7 +1472,7 @@
           {
             "BlockLevel": "None",
             "Id": 9,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2095.0,
             "Priority": 9,
@@ -1458,7 +1481,7 @@
           {
             "BlockLevel": "None",
             "Id": 11,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 1,
             "Position": 2120.0,
             "Priority": 11,
@@ -1467,7 +1490,7 @@
           {
             "BlockLevel": "None",
             "Id": 13,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2145.0,
             "Priority": 13,
@@ -1476,7 +1499,7 @@
           {
             "BlockLevel": "None",
             "Id": 15,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2170.0,
             "Priority": 15,
@@ -1485,7 +1508,7 @@
           {
             "BlockLevel": "None",
             "Id": 17,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2195.0,
             "Priority": 17,
@@ -1494,7 +1517,7 @@
           {
             "BlockLevel": "None",
             "Id": 19,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2220.0,
             "Priority": 19,
@@ -1502,7 +1525,7 @@
           }
         ],
         "Id": 1,
-        "IsChecked": false,
+        "IsChecked": true,
         "Side": "Front"
       },
       {
@@ -1607,7 +1630,7 @@
           {
             "BlockLevel": "None",
             "Id": 21,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
             "Position": 2245.0,
             "Priority": 21,
@@ -1616,7 +1639,7 @@
           {
             "BlockLevel": "None",
             "Id": 23,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
             "Position": 2270.0,
             "Priority": 23,
@@ -1634,7 +1657,7 @@
           {
             "BlockLevel": "None",
             "Id": 27,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2320.0,
             "Priority": 27,
@@ -1643,7 +1666,7 @@
           {
             "BlockLevel": "None",
             "Id": 29,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2345.0,
             "Priority": 29,
@@ -1652,7 +1675,7 @@
           {
             "BlockLevel": "None",
             "Id": 31,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2370.0,
             "Priority": 31,
@@ -1661,7 +1684,7 @@
           {
             "BlockLevel": "None",
             "Id": 33,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2395.0,
             "Priority": 33,
@@ -1670,7 +1693,7 @@
           {
             "BlockLevel": "None",
             "Id": 35,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 3,
             "Position": 2420.0,
             "Priority": 35,
@@ -1837,7 +1860,7 @@
           {
             "BlockLevel": "None",
             "Id": 49,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2595.0,
             "Priority": 49,
@@ -1846,7 +1869,7 @@
           {
             "BlockLevel": "None",
             "Id": 51,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2620.0,
             "Priority": 51,
@@ -1855,7 +1878,7 @@
           {
             "BlockLevel": "None",
             "Id": 53,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2645.0,
             "Priority": 53,
@@ -1864,7 +1887,7 @@
           {
             "BlockLevel": "None",
             "Id": 55,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2670.0,
             "Priority": 55,
@@ -1873,7 +1896,7 @@
           {
             "BlockLevel": "None",
             "Id": 57,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2695.0,
             "Priority": 57,
@@ -1882,7 +1905,7 @@
           {
             "BlockLevel": "None",
             "Id": 59,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 5,
             "Position": 2720.0,
             "Priority": 59,
@@ -2586,7 +2609,7 @@
           {
             "BlockLevel": "None",
             "Id": 123,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3520.0,
             "Priority": 123,
@@ -2595,7 +2618,7 @@
           {
             "BlockLevel": "None",
             "Id": 125,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3545.0,
             "Priority": 125,
@@ -2604,7 +2627,7 @@
           {
             "BlockLevel": "None",
             "Id": 127,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3570.0,
             "Priority": 127,
@@ -2613,7 +2636,7 @@
           {
             "BlockLevel": "None",
             "Id": 129,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3595.0,
             "Priority": 129,
@@ -2622,7 +2645,7 @@
           {
             "BlockLevel": "None",
             "Id": 131,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3620.0,
             "Priority": 131,
@@ -2631,7 +2654,7 @@
           {
             "BlockLevel": "None",
             "Id": 133,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3645.0,
             "Priority": 133,
@@ -2640,7 +2663,7 @@
           {
             "BlockLevel": "None",
             "Id": 135,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3670.0,
             "Priority": 135,
@@ -2649,7 +2672,7 @@
           {
             "BlockLevel": "None",
             "Id": 137,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3695.0,
             "Priority": 137,
@@ -2658,7 +2681,7 @@
           {
             "BlockLevel": "None",
             "Id": 139,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 13,
             "Position": 3720.0,
             "Priority": 139,
@@ -2771,7 +2794,7 @@
           {
             "BlockLevel": "None",
             "Id": 141,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 15,
             "Position": 3745.0,
             "Priority": 141,
@@ -2780,7 +2803,7 @@
           {
             "BlockLevel": "None",
             "Id": 143,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 15,
             "Position": 3770.0,
             "Priority": 143,
@@ -2789,7 +2812,7 @@
           {
             "BlockLevel": "None",
             "Id": 145,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 15,
             "Position": 3795.0,
             "Priority": 145,
@@ -3204,7 +3227,7 @@
           {
             "BlockLevel": "None",
             "Id": 191,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 19,
             "Position": 4370.0,
             "Priority": 191,
@@ -3213,7 +3236,7 @@
           {
             "BlockLevel": "None",
             "Id": 193,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4395.0,
             "Priority": 193,
@@ -3222,7 +3245,7 @@
           {
             "BlockLevel": "None",
             "Id": 195,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4420.0,
             "Priority": 195,
@@ -3231,7 +3254,7 @@
           {
             "BlockLevel": "None",
             "Id": 197,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4445.0,
             "Priority": 197,
@@ -3240,7 +3263,7 @@
           {
             "BlockLevel": "None",
             "Id": 199,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 19,
             "Position": 4470.0,
             "Priority": 199,
@@ -3353,7 +3376,7 @@
           {
             "BlockLevel": "None",
             "Id": 201,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4495.0,
             "Priority": 201,
@@ -3362,7 +3385,7 @@
           {
             "BlockLevel": "None",
             "Id": 203,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 21,
             "Position": 4520.0,
             "Priority": 203,
@@ -4007,7 +4030,7 @@
           {
             "BlockLevel": "None",
             "Id": 277,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 27,
             "Position": 5445.0,
             "Priority": 277,
@@ -4016,7 +4039,7 @@
           {
             "BlockLevel": "None",
             "Id": 279,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 27,
             "Position": 5470.0,
             "Priority": 279,
@@ -4129,7 +4152,7 @@
           {
             "BlockLevel": "None",
             "Id": 281,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 29,
             "Position": 5495.0,
             "Priority": 281,
@@ -4138,7 +4161,7 @@
           {
             "BlockLevel": "None",
             "Id": 283,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 29,
             "Position": 5520.0,
             "Priority": 283,
@@ -4474,7 +4497,7 @@
           {
             "BlockLevel": "None",
             "Id": 314,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4195.0,
             "Priority": 314,
@@ -4483,7 +4506,7 @@
           {
             "BlockLevel": "None",
             "Id": 316,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4220.0,
             "Priority": 316,
@@ -4492,7 +4515,7 @@
           {
             "BlockLevel": "None",
             "Id": 318,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4245.0,
             "Priority": 318,
@@ -4501,7 +4524,7 @@
           {
             "BlockLevel": "None",
             "Id": 320,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 32,
             "Position": 4270.0,
             "Priority": 320,
@@ -4614,7 +4637,7 @@
           {
             "BlockLevel": "None",
             "Id": 322,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4295.0,
             "Priority": 322,
@@ -4623,7 +4646,7 @@
           {
             "BlockLevel": "None",
             "Id": 324,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4320.0,
             "Priority": 324,
@@ -4632,7 +4655,7 @@
           {
             "BlockLevel": "None",
             "Id": 326,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4345.0,
             "Priority": 326,
@@ -4641,7 +4664,7 @@
           {
             "BlockLevel": "None",
             "Id": 328,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4370.0,
             "Priority": 328,
@@ -4650,7 +4673,7 @@
           {
             "BlockLevel": "None",
             "Id": 330,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4395.0,
             "Priority": 330,
@@ -4659,7 +4682,7 @@
           {
             "BlockLevel": "None",
             "Id": 332,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4420.0,
             "Priority": 332,
@@ -4668,7 +4691,7 @@
           {
             "BlockLevel": "None",
             "Id": 334,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4445.0,
             "Priority": 334,
@@ -4677,7 +4700,7 @@
           {
             "BlockLevel": "None",
             "Id": 336,
-            "IsFree": true,
+            "IsFree": false,
             "PanelId": 34,
             "Position": 4470.0,
             "Priority": 336,
@@ -5757,34 +5780,33 @@
       }
     ],
     "SerialNumber": "MV20-0003",
-    "Simulation": false
+    "Simulation": true
   },
   "MachineStatistics": {
     "AutomaticTimePercentage": 0.0,
     "Id": -1,
     "TotalAutomaticTime": "00:00:00",
-    "TotalBayChainKilometers1": 0.46794644476357738,
+    "TotalBayChainKilometers1": 0.53607541061868147,
     "TotalBayChainKilometers2": 0.0,
     "TotalBayChainKilometers3": 0.0,
-    "TotalHorizontalAxisCycles": 512,
-    "TotalHorizontalAxisKilometers": 0.62517642705166077,
-    "TotalLoadUnitsInBay1": 146,
+    "TotalHorizontalAxisCycles": 1405,
+    "TotalHorizontalAxisKilometers": 1.7102984403702266,
+    "TotalLoadUnitsInBay1": 373,
     "TotalLoadUnitsInBay2": 0,
     "TotalLoadUnitsInBay3": 0,
-    "TotalMissionTime": "02:57:48.2825625",
+    "TotalMissionTime": "09:23:19.1606149",
     "TotalPowerOnTime": "00:00:00",
-    "TotalVerticalAxisCycles": 397,
-    "TotalVerticalAxisKilometers": 0.8640729875310007,
-    "TotalWeightBack": 2224.8329249999983,
-    "TotalWeightFront": 2694.542007999999,
+    "TotalVerticalAxisCycles": 1039,
+    "TotalVerticalAxisKilometers": 1.9581622479129528,
+    "TotalWeightBack": 2402.8195589999982,
+    "TotalWeightFront": 3006.9306369999995,
     "UsageTimePercentage": 0.0,
-    "WeightCapacityPercentage": 8.3709818997056118
+    "WeightCapacityPercentage": 9.2054217434954939
   },
   "ServicingInfo": [],
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
       "FeedRate": 0.9,
-      "Id": 31,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": true,
@@ -5793,28 +5815,24 @@
     },
     "Bay1FullTest": {
       "FeedRate": 1.0,
-      "Id": 30,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
+      "IsCompleted": true,
+      "PerformedCycles": 3,
+      "RequiredCycles": 3
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 20,
       "IsBypassed": false,
       "IsCompleted": true
     },
     "Bay1Laser": {
       "FeedRate": 1.0,
-      "Id": 28,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay1ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 27,
       "IsBypassed": true,
       "IsCompleted": false,
       "ProfileCorrectDistance": 124.0,
@@ -5823,16 +5841,14 @@
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 26,
-      "InProgress": false,
+      "InProgress": true,
       "IsBypassed": false,
-      "IsCompleted": true,
-      "PerformedCycles": 20,
+      "IsCompleted": false,
+      "PerformedCycles": 7,
       "RequiredCycles": 20
     },
     "Bay2CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 25,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5841,7 +5857,6 @@
     },
     "Bay2FullTest": {
       "FeedRate": 1.0,
-      "Id": 24,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5850,19 +5865,16 @@
     },
     "Bay2HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 23,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay2Laser": {
       "FeedRate": 1.0,
-      "Id": 22,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay2ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 21,
       "IsBypassed": false,
       "IsCompleted": false,
       "ProfileCorrectDistance": 124.0,
@@ -5871,7 +5883,6 @@
     },
     "Bay2ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 32,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5880,7 +5891,6 @@
     },
     "Bay3CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 19,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5889,7 +5899,6 @@
     },
     "Bay3FullTest": {
       "FeedRate": 1.0,
-      "Id": 5,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5898,19 +5907,16 @@
     },
     "Bay3HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 6,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay3Laser": {
       "FeedRate": 1.0,
-      "Id": 7,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay3ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 8,
       "IsBypassed": false,
       "IsCompleted": false,
       "ProfileCorrectDistance": 150.0,
@@ -5919,40 +5925,29 @@
     },
     "Bay3ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 9,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 0,
       "RequiredCycles": 20
     },
-    "BayHeightCheck": {
-      "FeedRate": 0.1,
-      "Step": 0.5
-    },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
-      "Id": 10,
       "InProgress": true,
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 12,
       "RequiredCycles": 200
     },
-    "CarouselManualMovements": {
-      "FeedRate": 0.04
-    },
     "CellPanelsCheck": {
       "FeedRate": 0.2,
-      "Id": 11,
-      "InProgress": false,
+      "InProgress": true,
       "IsBypassed": false,
       "IsCompleted": false,
       "Step": 0.5
     },
     "CellsHeightCheck": {
       "FeedRate": 0.2,
-      "Id": 18,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5960,7 +5955,6 @@
     },
     "DepositAndPickUpTest": {
       "FeedRate": 1.0,
-      "Id": 12,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -5969,14 +5963,12 @@
     },
     "HorizontalChainCalibration": {
       "FeedRate": 1.0,
-      "Id": 14,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Id": 1,
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2,
-      "Id": 15,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": true,
@@ -5984,16 +5976,11 @@
     },
     "ShutterHeightCheck": {
       "FeedRate": 1.0,
-      "Id": 13,
       "IsBypassed": false,
       "IsCompleted": false
     },
-    "ShutterTest": {
-      "RequiredCycles": 200
-    },
     "VerticalOffsetCalibration": {
       "FeedRate": 0.2,
-      "Id": 17,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -6002,14 +5989,12 @@
     },
     "VerticalOriginCalibration": {
       "FeedRate": 1.0,
-      "Id": 16,
       "IsBypassed": false,
       "IsCompleted": true
     },
     "VerticalResolutionCalibration": {
       "FeedRate": 0.2,
       "FinalPosition": 5500.0,
-      "Id": 29,
       "InitialPosition": 1000.0,
       "IsBypassed": false,
       "IsCompleted": true,
@@ -6017,7 +6002,6 @@
     },
     "WeightMeasurement": {
       "FeedRate": 1.0,
-      "Id": 33,
       "IsBypassed": false,
       "IsCompleted": false
     }
@@ -6027,7 +6011,7 @@
     "IsEnabled": false,
     "IsTimeSyncEnabled": false,
     "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
-    "ServiceUrl": "http://127.0.0.1:10000/",
+    "ServiceUrl": "http://192.168.1.22:10000/",
     "TimeSyncIntervalMilliseconds": 10000
   }
 }

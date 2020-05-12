@@ -54,8 +54,9 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:General.SerialNumber}, FallbackValue='SerialNumber'}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+            </TextBlock>
 
         </StackPanel>
 
@@ -78,7 +79,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <controls:PpcMenuButton Title="{x:Static res:MaintenanceMenu.Maintenance}"
+            <controls:PpcMenuButton Title="{res:Loc MaintenanceMenu.Maintenance}"
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Width="400"
@@ -86,14 +87,14 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="{x:Static res:MaintenanceMenu.MaintenanceAbbreviation}"
+                                    Abbreviation="{res:Loc MaintenanceMenu.MaintenanceAbbreviation}"
                                     Command="{Binding MenuMaintenanceCommand}"
-                                    Description="{x:Static res:MaintenanceMenu.MaintenanceDescription}"
+                                    Description="{res:Loc MaintenanceMenu.MaintenanceDescription}"
                                     Kind="SettingsOutline"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.1" />
 
-            <controls:PpcMenuButton Title="{x:Static res:MaintenanceMenu.Compaction}"
+            <controls:PpcMenuButton Title="{res:Loc MaintenanceMenu.Compaction}"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Width="400"
@@ -101,14 +102,14 @@
                                     Margin="15"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="{x:Static res:MaintenanceMenu.CompactionAbbreviation}"
+                                    Abbreviation="{res:Loc MaintenanceMenu.CompactionAbbreviation}"
                                     Command="{Binding MenuCompactionCommand}"
-                                    Description="{x:Static res:MaintenanceMenu.CompactionDescription}"
+                                    Description="{res:Loc MaintenanceMenu.CompactionDescription}"
                                     Kind="FileCompare"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.3" />
 
-            <controls:PpcMenuButton Title="{x:Static res:MaintenanceMenu.Updating}"
+            <controls:PpcMenuButton Title="{res:Loc MaintenanceMenu.Updating}"
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Width="400"
@@ -116,9 +117,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Abbreviation="{x:Static res:MaintenanceMenu.UpdatingAbbreviation}"
+                                    Abbreviation="{res:Loc MaintenanceMenu.UpdatingAbbreviation}"
                                     Command="{Binding MenuUpdateCommand}"
-                                    Description="{x:Static res:MaintenanceMenu.UpdatingDescription}"
+                                    Description="{res:Loc MaintenanceMenu.UpdatingDescription}"
                                     Kind="Update"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.2" />

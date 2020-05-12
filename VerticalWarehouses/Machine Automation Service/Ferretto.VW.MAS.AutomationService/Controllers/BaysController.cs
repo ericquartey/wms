@@ -135,6 +135,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("accessories/alpha-numeric-bar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<BayAccessories> SetAlphaNumericBar(bool isEnabled, string ipAddress, int port)
+        {
+            this.baysDataProvider.SetAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port);
+
+            return this.Ok();
+        }
+
         [HttpPost("set-light")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

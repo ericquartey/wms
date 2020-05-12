@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = true;
 
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.SureToApplyConfiguration, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = dialogService.ShowMessage(Localized.Get("InstallationApp.SureToApplyConfiguration"), Localized.Get("InstallationApp.ConfirmRestore"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult != DialogResult.Yes)
                 {
                     return;
@@ -116,7 +116,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineConfigurationWebService.ImportAsync(this.configuration);
 
-                this.ShowNotification(InstallationApp.RestoreSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.RestoreSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

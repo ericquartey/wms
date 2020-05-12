@@ -33,58 +33,43 @@
                        Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitOutBay}}" />
         </StackPanel>
 
-        <Grid Grid.Row="1"
-              Grid.Column="0"
-              Visibility="{Binding Reasons, Converter={StaticResource RTVIC}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0,0,15,0"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="0">
+            <Grid Margin="20">
 
-            <Border Grid.Row="0"
-                    Margin="0,0,0,0"
-                    Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}"
-                    CornerRadius="0">
-                <Grid Margin="20">
+                <Border Grid.Row="1"
+                        Margin="50"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{StaticResource PpcBackground}"
+                        BorderBrush="{StaticResource PpcBorderBrush}"
+                        BorderThickness="{StaticResource PpcBorderThickness}"
+                        CornerRadius="2,0,0,2">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Vertical">
+                        <TextBlock Margin="20"
+                                   HorizontalAlignment="Center"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitIdInfo}}" />
+                        <TextBlock Margin="20,0"
+                                   HorizontalAlignment="Center"
+                                   Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
+                            <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
+                            <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
+                            <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
+                            <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
+                        </TextBlock>
+                    </StackPanel>
 
-                    <Border Grid.Row="1"
-                            Margin="50"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{StaticResource PpcBackground}"
-                            BorderBrush="{StaticResource PpcBorderBrush}"
-                            BorderThickness="{StaticResource PpcBorderThickness}"
-                            CornerRadius="2,0,0,2">
-                        <StackPanel HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Orientation="Vertical">
-                            <TextBlock Margin="20"
-                                       HorizontalAlignment="Center"
-                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitIdInfo}}" />
-                            <TextBlock Margin="20,0"
-                                       HorizontalAlignment="Center"
-                                       Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
-                                <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
-                                <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
-                            </TextBlock>
-                        </StackPanel>
+                </Border>
+            </Grid>
 
-                    </Border>
-                </Grid>
-
-            </Border>
-            <controls:PpcButton Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="15,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding MoveToLoadingUnitCommand}"
-                                Content="Vai a movimenti cassetti" />
-        </Grid>
+        </Border>
     </Grid>
 </ctrls:View>

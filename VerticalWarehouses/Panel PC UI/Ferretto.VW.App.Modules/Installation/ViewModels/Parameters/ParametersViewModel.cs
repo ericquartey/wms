@@ -173,7 +173,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
-                this.ShowNotification(Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
 
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
@@ -234,15 +234,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 int count = importables.Count;
                 CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-                string message = string.Format(culture, Resources.InstallationApp.MultipleConfigurationsDetected, count);
+                string message = string.Format(culture, Resources.Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(culture, Resources.InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
+                        message = string.Format(culture, Resources.Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(importables[0].Name));
                         break;
 
                     case 0:
-                        message = Resources.InstallationApp.ExportableDeviceDetected;
+                        message = Resources.Localized.Get("InstallationApp.ExportableDeviceDetected");
                         break;
                 }
 

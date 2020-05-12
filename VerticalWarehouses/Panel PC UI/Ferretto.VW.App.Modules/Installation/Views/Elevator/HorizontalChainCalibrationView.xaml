@@ -43,11 +43,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
+                        <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -56,7 +56,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding TuningChainCommand}"
-                                    Content="{x:Static res:InstallationApp.ChainCalibration}"
+                                    Content="{res:Loc InstallationApp.ChainCalibration}"
                                     IsBusy="{Binding IsTuningChain}"
                                     Style="{StaticResource WizardIntoButton}" />
 
@@ -64,7 +64,7 @@
                                     Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     Command="{Binding ClosedShutterCommand}"
-                                    Content="{x:Static res:InstallationApp.GateClose}">
+                                    Content="{res:Loc InstallationApp.GateClose}">
                     <controls:PpcButton.Style>
                         <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                                TargetType="{x:Type controls:PpcButton}">
@@ -85,7 +85,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToGoToBayCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
 
@@ -109,11 +109,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.HorizzontalChainCalibrationGoToBay}" /><Run Text="." />
+                        <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationGoToBay}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -122,7 +122,7 @@
                                     Grid.ColumnSpan="2"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToBayPositionCommand}"
-                                    Content="{x:Static res:InstallationApp.GoToBay}"
+                                    Content="{res:Loc InstallationApp.GoToBay}"
                                     IsBusy="{Binding IsElevatorMovingToBay}"
                                     Style="{StaticResource WizardIntoButton}" />
 
@@ -132,7 +132,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToStartCalibrationCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -155,11 +155,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.HorizzontalChainCalibrationGateOpen}" /><Run Text="." />
+                        <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationGateOpen}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -168,12 +168,12 @@
                                     Grid.ColumnSpan="2"
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
-                                    Content="{x:Static res:InstallationApp.GateOpen}" />
+                                    Content="{res:Loc InstallationApp.GateOpen}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-                    <Run Text="{x:Static res:InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
+                    <Run Text="{res:Loc InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
 
                 </TextBlock>
 
@@ -182,7 +182,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding StartCalibrationCommand}"
-                                    Content="{x:Static res:InstallationApp.Start}"
+                                    Content="{res:Loc InstallationApp.Start}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -205,11 +205,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.Calibration}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.Calibration}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.CarouselCalibrationDescription}" />
+                        <Run Text="{res:Loc InstallationApp.CarouselCalibrationDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -220,11 +220,11 @@
                             VerticalAlignment="Center">
 
                     <TextBlock Style="{StaticResource VWAPP_ViewProcedureTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.CalibrationInProgress}"
+                               Text="{res:Loc InstallationApp.CalibrationInProgress}"
                                Visibility="{Binding IsExecutingProcedure, Converter={StaticResource BTVC}}" />
 
                     <TextBlock Style="{StaticResource VWAPP_ViewProcedureTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.StopInProgress}"
+                               Text="{res:Loc InstallationApp.StopInProgress}"
                                Visibility="{Binding IsExecutingStopInPhase, Converter={StaticResource BTVC}}" />
 
                 </StackPanel>
@@ -238,7 +238,7 @@
                                    VerticalAlignment="Bottom"
                                    EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
                                    IsEnabled="False"
-                                   LabelText="{x:Static res:InstallationApp.RemainingTime}"
+                                   LabelText="{res:Loc InstallationApp.RemainingTime}"
                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="3"
@@ -247,7 +247,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding StopInPhaseCommand}"
-                                    Content="{x:Static res:InstallationApp.StopProcedure}"
+                                    Content="{res:Loc InstallationApp.StopProcedure}"
                                     Style="{StaticResource WizardConfirmButton}"
                                     Visibility="Collapsed" />
             </Grid>
@@ -271,7 +271,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDone}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.MisurationDone}" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -279,7 +279,7 @@
                             Grid.ColumnSpan="2"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.MisurationDoneDescription}" />
+                        <Run Text="{res:Loc InstallationApp.MisurationDoneDescription}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -293,7 +293,7 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding Measured, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="{x:Static res:InstallationApp.Measured}"
+                                       LabelText="{res:Loc InstallationApp.Measured}"
                                        Visibility="Visible" />
                     <ctrls:PpcSpinEdit Width="180"
                                        Height="90"
@@ -301,7 +301,7 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding ProfileCalibrateDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="{x:Static res:InstallationApp.ProfileCalibrateDistance}"
+                                       LabelText="{res:Loc InstallationApp.ProfileCalibrateDistance}"
                                        Visibility="Visible" />
                     <ctrls:PpcSpinEdit Width="180"
                                        Height="90"
@@ -309,7 +309,7 @@
                                        HorizontalAlignment="Center"
                                        EditValue="{Binding ProfileStartDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="{x:Static res:InstallationApp.ProfileStartDistance}"
+                                       LabelText="{res:Loc InstallationApp.ProfileStartDistance}"
                                        Visibility="Visible" />
                 </StackPanel>
 
@@ -319,7 +319,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding ReturnCalibration}"
-                                    Content="{x:Static res:InstallationApp.RetryProcedure}"
+                                    Content="{res:Loc InstallationApp.RetryProcedure}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
                 <controls:PpcButton Grid.Row="3"
@@ -328,7 +328,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding ConfirmCalibration}"
-                                    Content="{x:Static res:InstallationApp.ConfirmProcedure}"
+                                    Content="{res:Loc InstallationApp.ConfirmProcedure}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
                 <!--<StackPanel Grid.ColumnSpan="2"
@@ -501,7 +501,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.HorizontalChainCalibration}" />
+                       Text="{res:Loc InstallationApp.HorizontalChainCalibration}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -512,7 +512,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.HorizontalChainCalibratioDescription}" />
+                   Text="{res:Loc InstallationApp.HorizontalChainCalibratioDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -571,7 +571,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource Text_Foreground}"
-                               Text="{x:Static res:InstallationApp.CurrentResolution}" />
+                               Text="{res:Loc InstallationApp.CurrentResolution}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -614,7 +614,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource Text_Foreground}"
-                               Text="{x:Static res:InstallationApp.Interaxle}" />
+                               Text="{res:Loc InstallationApp.Interaxle}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -658,7 +658,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource Text_Foreground}"
-                               Text="{x:Static res:InstallationApp.RaisingsPerformed}" />
+                               Text="{res:Loc InstallationApp.RaisingsPerformed}" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -705,7 +705,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

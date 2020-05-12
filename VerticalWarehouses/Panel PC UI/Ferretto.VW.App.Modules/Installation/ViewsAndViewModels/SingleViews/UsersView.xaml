@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.UserManagement}" />
+                   Text="{res:Loc InstallationApp.UserManagement}" />
 
         <Grid Grid.Row="1"
               Grid.Column="1" />

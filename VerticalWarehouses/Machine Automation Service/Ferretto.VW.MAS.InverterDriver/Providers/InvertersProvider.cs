@@ -89,18 +89,21 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// </summary>
         /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
         /// <returns>The vertical position displacement, in millimeters.</returns>
-        public double ComputeDisplacement(double targetPosition)
+        public double ComputeDisplacement(double targetPosition, out double weight)
         {
+            weight = 0;
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnit is null)
+            if (loadingUnit is null
+                || loadingUnit.GrossWeight <= loadingUnit.Tare
+                )
             {
                 return 0;
             }
-
+            weight = loadingUnit.GrossWeight;
             var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
-            return beltElongation + shaftTorsion;
+            return Math.Ceiling(beltElongation + shaftTorsion);
         }
 
         public int ComputePositioningValues(
@@ -135,8 +138,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     if (positioningData.ComputeElongation)
                     {
-                        var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
-                        this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
+                        var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition, out var weight);
+                        this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
                         position += beltDisplacement;
                         if (axis.VerticalDepositOffset.HasValue)
                         {

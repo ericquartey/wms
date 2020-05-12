@@ -223,6 +223,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
+        /// </summary>
+        public static string ElevatorOverrunDetected {
+            get {
+                return ResourceManager.GetString("ElevatorOverrunDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The external bay is empty.
         /// </summary>
         public static string ExternalBayEmpty {
@@ -259,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration.
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {
             get {
@@ -268,11 +277,29 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed.
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration.
+        /// </summary>
+        public static string InvalidAxisAccelerationRange {
+            get {
+                return ResourceManager.GetString("InvalidAxisAccelerationRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed.
         /// </summary>
         public static string InvalidAxisSpeedConfiguration {
             get {
                 return ResourceManager.GetString("InvalidAxisSpeedConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed.
+        /// </summary>
+        public static string InvalidAxisSpeedRange {
+            get {
+                return ResourceManager.GetString("InvalidAxisSpeedRange", resourceCulture);
             }
         }
         
@@ -745,15 +772,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
-        /// </summary>
-        public static string OverrunElevatorDetected {
-            get {
-                return ResourceManager.GetString("OverrunElevatorDetected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The picking confirmation command is not valid.
         /// </summary>
         public static string ResumeCommandNotValid {
@@ -867,6 +885,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string WarehouseNotEmpty {
             get {
                 return ResourceManager.GetString("WarehouseNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The WMS system has answerd with an error code.
+        /// </summary>
+        public static string WmsError {
+            get {
+                return ResourceManager.GetString("WmsError", resourceCulture);
             }
         }
         

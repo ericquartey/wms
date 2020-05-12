@@ -37,7 +37,7 @@
         /// <summary>
         /// S6IND-Extracorsa elevatore
         /// </summary>
-        ANG_OverrunElevatorSensor = 5,
+        ANG_ElevatorOverrunSensor = 5,
 
         /// <summary>
         /// S7IND-STO (hardware)

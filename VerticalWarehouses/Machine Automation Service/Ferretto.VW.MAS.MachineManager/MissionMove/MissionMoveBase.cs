@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 transaction.Rollback();
                                 this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay, ex.Message);
                                 throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                         }
@@ -325,7 +325,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             transaction.Rollback();
                             this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay, ex.Message);
                             throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                     }

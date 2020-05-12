@@ -90,8 +90,9 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                FontSize="{DynamicResource FontSize_High}"
-                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                               Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber, StringFormat={x:Static res:General.SerialNumber}}" />
+                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                                        <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+                                    </TextBlock>
 
                                 </StackPanel>
                             </Border>
@@ -176,7 +177,7 @@
                                 </ComboBox>
 
                                 <Label Content="{Binding UserLogin.SupportToken}"
-                                       ContentStringFormat="{x:Static res:LoadLogin.TempKey}"
+                                       ContentStringFormat="{res:Loc LoadLogin.TempKey}"
                                        FontFamily="{DynamicResource VWAPP_TitleFont}"
                                        FontSize="22"
                                        FontWeight="Light"
@@ -199,7 +200,7 @@
                                                      FontSize="22"
                                                      FontWeight="Light"
                                                      MouseDoubleClick="OnKeyboardOpenHandler"
-                                                     NullText="{x:Static res:LoadLogin.PasswordEnter}"
+                                                     NullText="{res:Loc LoadLogin.PasswordEnter}"
                                                      Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                      TouchUp="OnKeyboardOpenHandler" />
 
@@ -208,7 +209,7 @@
                                         HorizontalContentAlignment="Center"
                                         BorderThickness="0"
                                         Command="{Binding LoginCommand}"
-                                        Content="{x:Static res:General.Login}"
+                                        Content="{res:Loc General.Login}"
                                         FontFamily="{DynamicResource VWAPP_TitleFont}"
                                         FontSize="20"
                                         FontWeight="Light">
@@ -249,13 +250,12 @@
 
                             </StackPanel>
 
-                            <ctrls:PpcBadge Grid.RowSpan="3"
+                            <ctrls:PpcBayBadge Grid.RowSpan="3"
                                             Grid.ColumnSpan="2"
                                             Margin="0,0,20,20"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
-                                            BayNumber="{Binding BayNumber, Mode=OneWay}"
-                                            TextBadge="{Binding BayNumber, StringFormat={x:Static res:General.BayNumber}}" />
+                                            BayNumber="{Binding BayNumber, Mode=OneWay}" />
 
                         </Grid>
                     </Border>

@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.ClearNotifications();
 
-            this.RestoreInfo = InstallationApp.RestoreInProgress;
+            this.RestoreInfo = Localized.Get("InstallationApp.RestoreInProgress");
 
             this.isCurrentOperationValid = true;
             this.IsEnabled = false;
@@ -196,12 +196,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (this.isCurrentOperationValid)
             {
-                this.ShowNotification(InstallationApp.UpdateSuccessfullyCompleted, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.UpdateSuccessfullyCompleted"), Services.Models.NotificationSeverity.Success);
             }
             else
             {
-                this.RestoreInfo = InstallationApp.RestoreEndedWithErrors;
-                this.ShowNotification(InstallationApp.ErrorOnInitialPhaseUpdate, Services.Models.NotificationSeverity.Error);
+                this.RestoreInfo = Localized.Get("InstallationApp.RestoreEndedWithErrors");
+                this.ShowNotification(Localized.Get("InstallationApp.ErrorOnInitialPhaseUpdate"), Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -229,11 +229,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (this.isCurrentOperationValid)
             {
-                this.ShowNotification(InstallationApp.UpdateSuccessfullyCompleted, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.UpdateSuccessfullyCompleted"), Services.Models.NotificationSeverity.Success);
             }
             else
             {
-                this.ShowNotification(InstallationApp.ErrorOnInitialPhaseUpdate, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Localized.Get("InstallationApp.ErrorOnInitialPhaseUpdate"), Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -269,14 +269,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var filePath = $"{this.updateExchangeTemp}{Path.DirectorySeparatorChar}{this.updateZipChecksumFileName}{CSVEXTENSION}";
 
-                this.AppendLine(string.Format(InstallationApp.StartChecksum, filePath));
+                this.AppendLine(string.Format(Localized.Get("InstallationApp.StartChecksum"), filePath));
 
                 var csvFilesToCheck = File.ReadLines(filePath).Select(a => a.Split(';').First())?.Skip(1);
 
                 if (csvFilesToCheck is null)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine(string.Format(InstallationApp.ErrorChecksumNotFound, filePath));
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.ErrorChecksumNotFound"), filePath));
                     return;
                 }
 
@@ -288,8 +288,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     var checksumFilePath = fileCheck[1].Trim('"');
                     if (this.GeMD5FromFile(absoluteFilePath) != checksumFilePath)
                     {
-                        this.AppendLine(InstallationApp.OperationAborted);
-                        this.AppendLine(string.Format(InstallationApp.ErrorCheckFile, fileName));
+                        this.AppendLine(Localized.Get("InstallationApp.OperationAborted"));
+                        this.AppendLine(string.Format(Localized.Get("InstallationApp.ErrorCheckFile"), fileName));
                         this.isCurrentOperationValid = false;
                         break;
                     }
@@ -297,13 +297,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.isCurrentOperationValid)
                 {
-                    this.AppendLine(InstallationApp.ChecksumCompleted);
+                    this.AppendLine(Localized.Get("InstallationApp.ChecksumCompleted"));
                 }
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine(InstallationApp.ErrorChecksum);
+                this.AppendLine(Localized.Get("InstallationApp.ErrorChecksum"));
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
@@ -321,7 +321,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 try
                 {
-                    this.AppendLine(string.Format(InstallationApp.ClearTempFolder, this.updateExchangeTemp));
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.ClearTempFolder"), this.updateExchangeTemp));
                     if (Directory.Exists(this.updateExchangeTemp))
                     {
                         Directory.Delete(this.updateExchangeTemp, true);
@@ -330,7 +330,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine(InstallationApp.ErrorClearTempFolder);
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorClearTempFolder"));
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -370,7 +370,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 try
                 {
                     var snapshtoFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.snapshotFileName}";
-                    this.AppendLine(string.Format(InstallationApp.DeleteSnapshotFile, snapshtoFilePath));
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.DeleteSnapshotFile"), snapshtoFilePath));
                     if (File.Exists(snapshtoFilePath))
                     {
                         Directory.Delete(snapshtoFilePath, true);
@@ -379,7 +379,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine(InstallationApp.ErrorDeleteSnapshotFile);
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorDeleteSnapshotFile"));
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -399,14 +399,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 try
                 {
-                    this.AppendLine(string.Format(InstallationApp.StartExtractingFiles, fileName));
+                    this.AppendLine(string.Format(Localized.Get("InstallationApp.StartExtractingFiles"), fileName));
                     ZipFile.ExtractToDirectory(fileName, this.updateExchangeTemp);
-                    this.AppendLine(InstallationApp.ExtractingFilesCompleted);
+                    this.AppendLine(Localized.Get("InstallationApp.ExtractingFilesCompleted"));
                 }
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine(InstallationApp.ErrorExtractingFiles);
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorExtractingFiles"));
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -466,7 +466,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
 
-                this.AppendLine(string.Format(InstallationApp.StartingApplication, installerFilePath));
+                this.AppendLine(string.Format(Localized.Get("InstallationApp.StartingApplication"), installerFilePath));
 
                 var process = new Process
                 {
@@ -483,18 +483,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (exitCode == 0)
                 {
-                    this.AppendLine(InstallationApp.InstallerAppStartedSuccessfully);
+                    this.AppendLine(Localized.Get("InstallationApp.InstallerAppStartedSuccessfully"));
                 }
                 else
                 {
-                    this.AppendLine(InstallationApp.ErrorExecutingInstallerApp);
+                    this.AppendLine(Localized.Get("InstallationApp.ErrorExecutingInstallerApp"));
                     this.isCurrentOperationValid = false;
                 }
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine(InstallationApp.ErrorOnStarting);
+                this.AppendLine(Localized.Get("InstallationApp.ErrorOnStarting"));
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
@@ -513,8 +513,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task UpdateAsync()
         {
-            var msg = string.Format(InstallationApp.ConfirmUpdateVer, Environment.NewLine, this.selectedUpdate.ProductVersion);
-            var messageBoxResult = this.dialogService.ShowMessage(msg, InstallationApp.ConfirmUpdate, DialogType.Question, DialogButtons.YesNo);
+            var msg = string.Format(Localized.Get("InstallationApp.ConfirmUpdateVer"), Environment.NewLine, this.selectedUpdate.ProductVersion);
+            var messageBoxResult = this.dialogService.ShowMessage(msg, Localized.Get("InstallationApp.ConfirmUpdate"), DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

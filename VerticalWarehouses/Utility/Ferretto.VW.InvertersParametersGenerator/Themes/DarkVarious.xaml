@@ -1,0 +1,94 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <SolidColorBrush x:Key="VWAPP_ErrorTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoRed}" />
+    <SolidColorBrush x:Key="VWAPP_ViewBodyTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_CCLabelTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_SSTitleViewTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_SSSubtitleTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_ViewTitleViewTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_HelpTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="VWAPP_HelpStepTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="VWAPP_CCInput_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_CCInput_Highlighted_Normal"
+                     Color="{DynamicResource ColorFerrettoRed}" />
+    <SolidColorBrush x:Key="IAPP_CCInput_NotHighlighted_Normal"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <Color x:Key="VWAPP_ShadowEffect_Color">#FFFFFF</Color>
+
+    <SolidColorBrush x:Key="PpcBackground"
+                     Color="{DynamicResource EDBGrayC}" />
+    <SolidColorBrush x:Key="PpcBorderBrush"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="PpcForeground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+
+    <SolidColorBrush x:Key="RadioButtonBaseColor"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="RadioButtonDisabledColor"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="IPAddressDotColor"
+                     Color="{DynamicResource ColorFerrettoWhiteGray}" />
+
+    <SolidColorBrush x:Key="PpcHeaderButtonColor"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="PcpButtonUnknownStateColor"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="AccentKeyboardButtonColor"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="KeyboardBackground"
+                     Opacity=".5"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderForeground"
+                     Opacity="1"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="KeyboardHeaderBackground"
+                     Opacity=".1"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ProgresBarBackground"
+                     Color="#424A50" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedBackground"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderIsSelectedForeground"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextEnabled"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+
+    <SolidColorBrush x:Key="ScaffolderTextDisabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+        <GradientStop Offset="0" Color="{DynamicResource EDBGrayA}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayA}" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayA1}" />
+        <GradientStop Offset="1" Color="{DynamicResource EDBGrayA1}" />
+    </LinearGradientBrush>
+
+    <sys:Double x:Key="ImageOpacity">0.7</sys:Double>
+
+</ResourceDictionary>

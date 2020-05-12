@@ -270,9 +270,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 && !machineProvider.StopTest
                 )
             {
-                missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
-                machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
-                machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                try
+                {
+                    missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
+                    machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
+                    machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber, ex.Message);
+                }
             }
             else
             {
@@ -584,6 +591,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     newStep.OnEnter(null);
                 }
             }
+
+            foreach (var bay in bayProvider.GetAll().Where(w => w.CurrentMission != null))
+            {
+                if (!missions.Any(m => m.Id == bay.CurrentMission.Id && m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted))
+                {
+                    bayProvider.ClearMission(bay.Number);
+                }
+            }
         }
 
         private bool GenerateHoming(IBaysDataProvider bayProvider)
@@ -611,7 +626,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
                         Calibration.FindSensor,
                         loadingUnitId: null,
-                        showErrors: false);
+                        showErrors: true);
 
                     this.EventAggregator
                         .GetEvent<CommandEvent>()
@@ -688,6 +703,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.SwitchingToFirstTest:
                 case MachineMode.SwitchingToFullTest:
                     {
+                        var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                        if (errorsProvider.GetCurrent() != null)
+                        {
+                            this.Logger.LogError($"Scheduling Machine status switched to {MachineMode.Manual} from {this.machineVolatileDataProvider.Mode}: no error is allowed!");
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            break;
+                        }
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
