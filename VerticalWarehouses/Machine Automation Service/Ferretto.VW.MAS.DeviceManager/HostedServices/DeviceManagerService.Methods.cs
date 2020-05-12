@@ -634,7 +634,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 return;
             }
 
-            // Check the stopTest message for the Positioning state machine (see carousel)
+            // Check the stopTest message for the Positioning state machine
             stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
             if (stateMachines.Any())
             {

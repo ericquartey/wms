@@ -461,6 +461,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
                 this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
+                this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
 
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
@@ -545,7 +546,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 this.moveExtBayTowardMachinePolicy?.IsAllowed == true;
-            //return true;
         }
 
         private bool CanMoveExtBayTowardOperator()
@@ -554,7 +554,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 this.moveExtBayTowardOperatorPolicy?.IsAllowed == true;
-            //return true;
         }
 
         private bool CanMoveToBayPosition()

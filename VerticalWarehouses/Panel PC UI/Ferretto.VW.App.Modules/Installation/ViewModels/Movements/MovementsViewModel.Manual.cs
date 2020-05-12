@@ -793,6 +793,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorMovingToLoadingUnit = false;
             this.IsTuningBay = false;
             this.IsTuningChain = false;
+            this.IsTuningExtBay = false;
             this.IsBusyLoadingFromBay = false;
             this.IsBusyLoadingFromCell = false;
             this.IsBusyUnloadingToBay = false;

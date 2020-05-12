@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             else
             {
                 if (this.machineData.MessageData.AxisMovement is Axis.BayChain &&
-                    this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+                    this.machineData.MessageData.MovementMode == MovementMode.ExtBayChain)
                 {
                     this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
                 }

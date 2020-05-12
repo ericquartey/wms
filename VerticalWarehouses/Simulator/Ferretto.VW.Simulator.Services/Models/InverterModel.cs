@@ -264,6 +264,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer shutterTimer;
 
+        private readonly double target0_extBay = 0.0d;
+
         private readonly Timer targetTimer;
 
         private InverterCalibrationMode calibrationMode;
@@ -293,8 +295,6 @@ namespace Ferretto.VW.Simulator.Services.Models
         private bool shutterTimerActive;
 
         private int statusWord;
-
-        private double target0_extBay = 0.0d;
 
         private double targetRace_extBay = 1100.0d;
 
@@ -638,18 +638,22 @@ namespace Ferretto.VW.Simulator.Services.Models
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null);
                             this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null && x.IsExternal);
+                            this.targetRace_extBay = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.External?.Race ?? this.targetRace_extBay;
                             break;
 
                         case InverterRole.Bay2:
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null);
                             this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null && x.IsExternal);
+                            this.targetRace_extBay = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.External?.Race ?? this.targetRace_extBay;
+
                             break;
 
                         case InverterRole.Bay3:
                             this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null);
                             this.IsExternal = this.machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null && x.IsExternal);
+                            this.targetRace_extBay = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.External?.Race ?? this.targetRace_extBay;
                             break;
                     }
                 }

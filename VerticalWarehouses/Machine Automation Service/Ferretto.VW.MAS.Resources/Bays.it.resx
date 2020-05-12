@@ -144,4 +144,7 @@
   <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
     <value>La baia contiene un cassetto nella sua posizione esterna</value>
   </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>La baia specificata non è una baia esterna</value>
+  </data>
 </root>

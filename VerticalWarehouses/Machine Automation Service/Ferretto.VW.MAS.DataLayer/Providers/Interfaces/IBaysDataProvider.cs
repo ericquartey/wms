@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
 
+        ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber);
+
         ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);
 
         BayNumber GetByAxis(IHomingMessageData data);
@@ -83,6 +85,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber);
 
+        ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber);
+
         ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 
         /// <summary>
@@ -128,6 +132,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
+
+        void UpdateRace(BayNumber bayNumber, double race);
 
         #endregion
     }

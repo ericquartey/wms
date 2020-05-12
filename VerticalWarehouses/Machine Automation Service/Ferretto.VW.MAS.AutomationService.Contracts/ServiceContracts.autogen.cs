@@ -1874,6 +1874,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("EmptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("External", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public External External { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("FullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
     
@@ -2902,6 +2905,57 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static MovementParameters FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class External : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ExternalBayManualParameters AssistedMovements { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingCreepSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HomingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingFastSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double LastIdealPosition { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ExternalBayManualParameters ManualMovements { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Race", Required = Newtonsoft.Json.Required.Always)]
+        public double Race { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static External FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<External>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ExternalBayManualParameters : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
+        public double FeedRate { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static ExternalBayManualParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ExternalBayManualParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

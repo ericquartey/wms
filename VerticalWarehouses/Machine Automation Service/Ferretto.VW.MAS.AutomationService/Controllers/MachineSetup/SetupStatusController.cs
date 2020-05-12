@@ -47,6 +47,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        //[HttpPost("bay-external-calibration-bypass")]
+        //public IActionResult BayExternalCalibrationBypass()
+        //{
+        //    this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber), true);
+        //    return this.Ok();
+        //}
+
         [HttpPost("bay-height-check-bypass")]
         public IActionResult BayHeightCheckBypass()
         {

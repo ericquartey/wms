@@ -44,6 +44,21 @@
     "Machine": {
         "Bays": [
             {
+                "External": {
+                    "AssistedMovements": {
+                        "FeedRate": 1.0,
+                        "Id": 1
+                    },
+                    "Race": 1100.0,
+                    "HomingCreepSpeed": 5.0,
+                    "HomingFastSpeed": 22.0,
+                    "Id": 1,
+                    "LastIdealPosition": 0,
+                    "ManualMovements": {
+                        "FeedRate": 0.1,
+                        "Id": 2
+                    }
+                },
                 "ChainOffset": 0.0,
                 "EmptyLoadMovement": {
                     "Acceleration": 200.0,
@@ -59,7 +74,6 @@
                 },
                 "Id": 1,
                 "Inverter": {
-                    "Id": 1,
                     "Index": "Slave3",
                     "TcpPort": 0,
                     "Type": "Acu"
@@ -95,7 +109,6 @@
                     "Id": 1,
                     "Inverter": {
                         "Index": "Slave2",
-                        "Id": 2,
                         "TcpPort": 0,
                         "Type": "Agl"
                     },
