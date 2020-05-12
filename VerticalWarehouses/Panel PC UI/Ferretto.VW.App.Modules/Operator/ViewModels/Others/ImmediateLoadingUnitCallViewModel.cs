@@ -277,11 +277,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (!this.pressMinus)
                 {
-                    this.currentItemIndex++;
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) + 1;
                 }
                 else
                 {
-                    this.currentItemIndex--;
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) - 1;
                 }
 
                 this.SelectLoadingUnit();
