@@ -50,12 +50,12 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:Menu.CellsMenuName}" />
+                       Text="{res:Loc Menu.CellsMenuName}" />
 
             <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CellManagerMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CellManagerMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.1"
@@ -64,47 +64,47 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CheckCellDimensionMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CheckCellDimensionMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellPanelsCheckCommand}"
-                                        Content="{x:Static res:InstallationApp.CheckCellDimensionMenuDescription}"
+                                        Content="{res:Loc InstallationApp.CheckCellDimensionMenuDescription}"
                                         IsBypassed="{Binding IsCellPanelsCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellPanelsCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CheckCellDimensionObsoleteMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CheckCellDimensionObsoleteMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsHeightCheckCommand}"
-                                        Content="{x:Static res:InstallationApp.CheckCellDimensionObsoleteMenuDescription}"
+                                        Content="{res:Loc InstallationApp.CheckCellDimensionObsoleteMenuDescription}"
                                         IsBypassed="{Binding IsCellsHeightCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellsHeightCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.ChangeCellBlockObsoleteMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.ChangeCellBlockObsoleteMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsBlockTuningCommand}"
-                                        Content="{x:Static res:InstallationApp.ChangeCellBlockObsoleteMenuDescription}"
+                                        Content="{res:Loc InstallationApp.ChangeCellBlockObsoleteMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CellTestMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CellTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BayFirstLoadingUnitCommand}"
-                                        Content="{x:Static res:InstallationApp.CellTestMenuDescription}"
+                                        Content="{res:Loc InstallationApp.CellTestMenuDescription}"
                                         IsBypassed="{Binding IsBayFirstLoadingUnitProcedureBypassed}"
                                         IsCompleted="{Binding IsBayFirstLoadingUnitProcedure}"
                                         Kind="Account"

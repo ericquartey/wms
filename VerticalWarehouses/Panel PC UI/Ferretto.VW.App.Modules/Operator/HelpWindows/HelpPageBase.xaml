@@ -32,7 +32,7 @@
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                Width="180"
                                                ContentText="125,36"
-                                               LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
+                                               LabelText="{res:Loc InstallationApp.CurrentResolution}"/>
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
@@ -40,12 +40,12 @@
                      Text="{res:Loc HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,120,0,0"
-                  Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
+                  Content="{res:Loc OperatorApp.NavigationMainMenuDrawerOperation}"
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,190,0,0"
-                  Content="{x:Static res:OperatorApp.NavigationMainMenuItems}"
+                  Content="{res:Loc OperatorApp.NavigationMainMenuItems}"
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
@@ -53,7 +53,7 @@
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
-                                                     LabelText="{x:Static res:InstallationApp.InitialPosition}"
+                                                     LabelText="{res:Loc InstallationApp.InitialPosition}"
                                                       />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
