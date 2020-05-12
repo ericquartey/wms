@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
+                   Text="{res:Loc InstallationApp.PanelsControlDescription}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMTotalPanels}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMTotalPanels}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -46,7 +46,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMNextPanel}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMNextPanel}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,140,0,0"
@@ -130,7 +130,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMActualPanel}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMActualPanel}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -138,7 +138,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMSelectedCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMSelectedCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -146,7 +146,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMSelectedCellPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMSelectedCellPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -154,7 +154,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMActualPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMActualPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -162,7 +162,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMStepValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMStepValue}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -170,7 +170,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMCorrectionValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMCorrectionValue}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -178,7 +178,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMGoToCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMGoToCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -186,7 +186,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMStepPiu}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMStepPiu}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -194,7 +194,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMStepMeno}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMStepMeno}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -202,7 +202,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMApplyCorrection}" />
+                   Text="{res:Loc HelpDescriptions.HelpVPPMApplyCorrection}" />
 
     </Grid>
 </UserControl>

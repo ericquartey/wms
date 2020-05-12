@@ -48,7 +48,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static resources:HelpDescriptions.HelpDrawerActivityInventoryDetailDescription}"
+                   Text="{resources:Loc HelpDescriptions.HelpDrawerActivityInventoryDetailDescription}"
                    TextWrapping="Wrap" />
 
         <Border Grid.Row="2"

@@ -23,17 +23,17 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDrawer}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDrawer}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailFragmentRemaining}" />
+                     Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailFragmentRemaining}" />
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
             ContentText="201"
             LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailSourceCell}"/>
@@ -64,31 +64,31 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailSourceCell}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailSourceCell}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDestinationCell}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDestinationCell}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,330,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailCurrentStep}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailCurrentStep}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,400,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailVerticalPosition}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailVerticalPosition}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,470,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailOrizzontalPosition}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailOrizzontalPosition}" />
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailRecoveredSpace}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailRecoveredSpace}" />
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailSpaceToRecover}" />
+            Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailSpaceToRecover}" />
 
     </Grid>
 </UserControl>

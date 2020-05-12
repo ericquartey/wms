@@ -161,7 +161,7 @@
                    VerticalAlignment="Top"
                    FontSize="13"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVPPMDescription}"
+                   Text="{res:Loc HelpDescriptions.HelpVPPMDescription}"
                    TextWrapping="Wrap" />
         <!--#endregion-->
 

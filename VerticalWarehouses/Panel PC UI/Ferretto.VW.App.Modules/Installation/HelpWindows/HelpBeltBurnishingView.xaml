@@ -78,7 +78,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingFunctionDescription}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -87,7 +87,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingUpLimit}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -96,7 +96,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingDownLimit}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingDownLimit}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -105,7 +105,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingActualPosition}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingActualPosition}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -114,7 +114,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingRequiredCycles}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingRequiredCycles}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -123,7 +123,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingCompletedCycles}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingCompletedCycles}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -132,7 +132,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingStartCycle}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingStartCycle}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -141,7 +141,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingStopCycle}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingStopCycle}" />
 
 
 

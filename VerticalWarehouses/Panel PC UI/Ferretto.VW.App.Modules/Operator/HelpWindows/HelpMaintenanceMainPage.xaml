@@ -23,16 +23,16 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpOpMainPageDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpOpMainPageDescription}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageLastMaintenance}" />
+                     Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageLastMaintenance}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                     Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
@@ -41,7 +41,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageGridKit}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageGridKit}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
@@ -94,57 +94,57 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageGridDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageGridDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageGridState}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageGridState}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageGridRequest}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageGridRequest}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,460,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageModel}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageModel}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,530,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageSerial}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageSerial}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,600,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageInstallation}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageInstallation}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageNextMaintenance}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageNextMaintenance}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageMachineStatus}" />
+                    Text="{res:Loc HelpDescriptions.HelpMaintenanceMainPageMachineStatus}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonDetail}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonDetail}" />
 
     </Grid>
 </UserControl>

@@ -17,17 +17,17 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpOpMainPageHeadr}" />
+                    Text="{res:Loc HelpDescriptions.HelpOpMainPageHeadr}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpOpMainPageDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpOpMainPageDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                    Text="{res:Loc HelpDescriptions.BeltBurnishingUpLimit}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                Width="180"
@@ -37,7 +37,7 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+                     Text="{res:Loc HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,120,0,0"
                   Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
@@ -58,7 +58,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                    Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
@@ -67,7 +67,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                    Text="{res:Loc HelpDescriptions.BeltBurnishingUpLimit}" />
 
     </Grid>
 </UserControl>

@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDDescription}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,140,0,0"
@@ -85,7 +85,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDTotalCells}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDTotalCells}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -93,7 +93,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDTestedCells}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDTestedCells}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -101,7 +101,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDCellInTest}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDCellInTest}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -109,7 +109,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDDrawerNumber}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDDrawerNumber}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -117,7 +117,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDMaxLoad}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDMaxLoad}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -125,7 +125,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDInsertDrawer}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDInsertDrawer}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -133,7 +133,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDRecallDrawer}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDRecallDrawer}" />
 
     </Grid>
 </UserControl>

@@ -45,7 +45,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpInstallationStateDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpInstallationStateDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -53,7 +53,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpInstallationStateToDo}" />
+                   Text="{res:Loc HelpDescriptions.HelpInstallationStateToDo}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -61,7 +61,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpInstallationStateDone}" />
+                   Text="{res:Loc HelpDescriptions.HelpInstallationStateDone}" />
 
     </Grid>
 </UserControl>

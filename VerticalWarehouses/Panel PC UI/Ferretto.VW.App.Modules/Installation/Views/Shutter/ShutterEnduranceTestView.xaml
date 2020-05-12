@@ -45,7 +45,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpMachineStatisticsShutter}" />
+                   Text="{res:Loc HelpDescriptions.HelpMachineStatisticsShutter}" />
 
         <controls:CardSensorShutter Grid.Row="2"
                                     Grid.Column="0"

@@ -32,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -40,14 +40,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsTot}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsCellsTot}" />
 
         <TextBlock Width="260"
                    Margin="220,120,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock Width="180"
                    Margin="20,150,0,0"
@@ -62,7 +62,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridStatus}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsGridStatus}" />
 
         <TextBlock Width="180"
                    Margin="20,220,0,0"
@@ -131,7 +131,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotAnt}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsGridTotAnt}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -139,7 +139,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotAnt}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsGridPercTotAnt}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -147,7 +147,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotPost}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsGridTotPost}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -155,7 +155,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotPost}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsGridPercTotPost}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -163,7 +163,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsAnt}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsCellsAnt}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -171,7 +171,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsPost}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsCellsPost}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -179,7 +179,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsTotalOccupiedCells}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsTotalOccupiedCells}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -187,7 +187,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsButtonOther}" />
+                   Text="{res:Loc HelpDescriptions.HelpCellsStatisticsButtonOther}" />
 
     </Grid>
 </UserControl>

@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
+                   Text="{res:Loc HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingUpLimit}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,165,0,0"
@@ -62,14 +62,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+                   Text="{res:Loc HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
 
         <TextBlock Width="300"
                    Margin="220,125,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
+                   Text="{res:Loc HelpDescriptions.VerticalResolutionCalibrationStep1}" />
 
     </Grid>
 </UserControl>
