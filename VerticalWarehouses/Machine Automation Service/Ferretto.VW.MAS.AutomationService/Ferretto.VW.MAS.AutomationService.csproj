@@ -10,6 +10,7 @@
     <ServerGarbageCollection>False</ServerGarbageCollection>
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
     <AssemblyName>Ferretto.VW.MAS.AutomationService</AssemblyName>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'!='Release'">

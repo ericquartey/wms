@@ -54,8 +54,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand CorrectCommand =>
-            this.correctCommand
+                    this.correctCommand
             ??
             (this.correctCommand = new DelegateCommand(
                 async () => await this.CorrectCommandAsync(),
@@ -137,18 +149,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set
             {
                 if (this.SetProperty(ref this.stepValue, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }

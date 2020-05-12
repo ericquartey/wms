@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net471;netcoreapp2.2</TargetFrameworks>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

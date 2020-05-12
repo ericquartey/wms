@@ -3,6 +3,7 @@
     <PropertyGroup>
         <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
         <TargetFramework>net471</TargetFramework>
+        <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     </PropertyGroup>
 
     <ItemGroup>

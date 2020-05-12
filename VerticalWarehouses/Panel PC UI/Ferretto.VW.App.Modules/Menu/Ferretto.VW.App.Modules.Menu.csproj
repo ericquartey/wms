@@ -8,6 +8,7 @@
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

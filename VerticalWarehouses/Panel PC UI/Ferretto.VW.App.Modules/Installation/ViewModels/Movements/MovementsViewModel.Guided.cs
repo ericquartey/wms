@@ -391,7 +391,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected void OnGuidedRaiseCanExecuteChanged()
+        private void OnGuidedRaiseCanExecuteChanged()
         {
             this.CanInputLoadingUnitId =
                 this.CanBaseExecute() &&

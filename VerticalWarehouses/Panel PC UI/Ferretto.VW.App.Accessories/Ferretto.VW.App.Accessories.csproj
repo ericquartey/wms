@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

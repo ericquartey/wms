@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
         <NeutralLanguage>en-US</NeutralLanguage>
+        <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     </PropertyGroup>
 
   <ItemGroup>
