@@ -136,7 +136,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
-        public bool IsExtraVertical => this.sensors.OverrunElevator;
+        public bool IsExtraVertical => this.sensors.ElevatorOverrun;
 
         public bool IsHorizontalInconsistentBothHigh => (this.IsZeroChain && this.IsLoadingUnitOnElevator);
 

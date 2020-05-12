@@ -94,7 +94,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         /// <summary>
         /// S6IND-Encoder canale Z
         /// </summary>
-        ANG_OverrunElevatorSensor = 5,
+        ANG_ElevatorOverrunSensor = 5,
 
         /// <summary>
         /// MF3IND-Extracorsa elevatore
@@ -321,7 +321,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 case InverterType.Ang:
                     // Remove overrun signal
-                    this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+                    this.digitalIO[(int)InverterSensors.ANG_ElevatorOverrunSensor].Value = true;
                     break;
 
                 case InverterType.Agl:
@@ -444,6 +444,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.inverterType = value;
         }
 
+        public bool IsElevatorOverrun
+        {
+            get => !this.digitalIO[(int)InverterSensors.ANG_ElevatorOverrunSensor].Value;
+        }
+
         public bool IsFault
         {
             get => (this.statusWord & 0x0008) > 0;
@@ -479,11 +484,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.StatusWord &= ~0x0004;
                 }
             }
-        }
-
-        public bool IsOverrunElevator
-        {
-            get => !this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value;
         }
 
         public bool IsQuickStopTrue

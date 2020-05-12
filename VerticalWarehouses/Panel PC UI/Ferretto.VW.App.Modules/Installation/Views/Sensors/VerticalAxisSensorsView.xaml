@@ -33,7 +33,7 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.VerticalAxis}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.OverrunElevator}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ElevatorOverrun}"
                                            Text="{x:Static res:InstallationApp.EmergencyEndRun}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroVerticalSensor}"

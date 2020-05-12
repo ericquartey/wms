@@ -100,6 +100,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerPartiallyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
+        public bool IsElevatorOverrun => this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun];
+
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
@@ -120,8 +122,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool IsMushroomEmergencyButtonBay2 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2];
 
         public bool IsMushroomEmergencyButtonBay3 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3];
-
-        public bool IsOverrunElevator => this.sensorStatus[(int)IOMachineSensors.OverrunElevator];
 
         public bool IsProfileCalibratedBay1 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay1];
 
@@ -474,11 +474,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
-                                if (this.sensorStatus[(int)IOMachineSensors.OverrunElevator] != newSensorStatus[(int)InverterSensors.ANG_OverrunElevatorSensor]
-                                    && newSensorStatus[(int)InverterSensors.ANG_OverrunElevatorSensor]
+                                if (this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] != newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                    && newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
                                     )
                                 {
-                                    var errorCode = MachineErrorCode.OverrunElevatorDetected;
+                                    var errorCode = MachineErrorCode.ElevatorOverrunDetected;
                                     using (var scope = this.serviceScopeFactory.CreateScope())
                                     {
                                         scope.ServiceProvider

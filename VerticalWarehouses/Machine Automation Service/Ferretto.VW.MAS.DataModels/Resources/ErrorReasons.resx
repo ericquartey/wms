@@ -387,7 +387,7 @@
   <data name="InvalidPositionBay" xml:space="preserve">
     <value>The selected bay position is invalid</value>
   </data>
-  <data name="OverrunElevatorDetected" xml:space="preserve">
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
     <value>The elevator is positioned on the overrun sensor.</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
