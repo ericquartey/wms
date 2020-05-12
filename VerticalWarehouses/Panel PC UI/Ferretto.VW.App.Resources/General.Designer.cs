@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay {0}.
+        ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string BayNumber {
             get {

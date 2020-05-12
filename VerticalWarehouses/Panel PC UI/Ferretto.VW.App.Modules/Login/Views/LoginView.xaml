@@ -250,13 +250,12 @@
 
                             </StackPanel>
 
-                            <ctrls:PpcBadge Grid.RowSpan="3"
+                            <ctrls:PpcBayBadge Grid.RowSpan="3"
                                             Grid.ColumnSpan="2"
                                             Margin="0,0,20,20"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
-                                            BayNumber="{Binding BayNumber, Mode=OneWay}"
-                                            TextBadge="{Binding BayNumber, StringFormat={x:Static res:General.BayNumber}}" />
+                                            BayNumber="{Binding BayNumber, Mode=OneWay}" />
 
                         </Grid>
                     </Border>

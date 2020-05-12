@@ -53,8 +53,9 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:General.SerialNumber}, FallbackValue='SerialNumber'}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+            </TextBlock>
 
         </StackPanel>
 
@@ -76,7 +77,7 @@
                             Stretch="UniformToFill" />
             </Grid.Background>
 
-            <controls:PpcMenuButton Title="{x:Static res:MainMenu.Operation}"
+            <controls:PpcMenuButton Title="{res:Loc MainMenu.Operation}"
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Width="400"
@@ -84,14 +85,14 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="{x:Static res:MainMenu.OperationAbbreviation}"
+                                    Abbreviation="{res:Loc MainMenu.OperationAbbreviation}"
                                     Command="{Binding MenuOperationCommand}"
-                                    Description="{x:Static res:MainMenu.OperationDescription}"
+                                    Description="{res:Loc MainMenu.OperationDescription}"
                                     Kind="Account"
                                     MenuBrush="{StaticResource FerrettoBlue}"
                                     Number="01" />
 
-            <controls:PpcMenuButton Title="{x:Static res:MainMenu.About}"
+            <controls:PpcMenuButton Title="{res:Loc MainMenu.About}"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Width="400"
@@ -99,14 +100,14 @@
                                     Margin="15"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
-                                    Abbreviation="{x:Static res:MainMenu.AboutAbbreviation}"
+                                    Abbreviation="{res:Loc MainMenu.AboutAbbreviation}"
                                     Command="{Binding MenuAboutCommand}"
-                                    Description="{x:Static res:MainMenu.AboutDescription}"
+                                    Description="{res:Loc MainMenu.AboutDescription}"
                                     Kind="Blur"
                                     MenuBrush="{StaticResource FerrettoGreen}"
                                     Number="03" />
 
-            <controls:PpcMenuButton Title="{x:Static res:MainMenu.Maintenance}"
+            <controls:PpcMenuButton Title="{res:Loc MainMenu.Maintenance}"
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Width="400"
@@ -114,14 +115,14 @@
                                     Margin="15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Abbreviation="{x:Static res:MainMenu.MaintenanceAbbreviation}"
+                                    Abbreviation="{res:Loc MainMenu.MaintenanceAbbreviation}"
                                     Command="{Binding MenuMaintenanceCommand}"
-                                    Description="{x:Static res:MainMenu.MaintenanceDescription}"
+                                    Description="{res:Loc MainMenu.MaintenanceDescription}"
                                     Kind="Settings"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="02" />
 
-            <controls:PpcMenuButton Title="{x:Static res:MainMenu.Installation}"
+            <controls:PpcMenuButton Title="{res:Loc MainMenu.Installation}"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Width="400"
@@ -129,9 +130,9 @@
                                     Margin="15"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Abbreviation="{x:Static res:MainMenu.InstallationAbbreviation}"
+                                    Abbreviation="{res:Loc MainMenu.InstallationAbbreviation}"
                                     Command="{Binding MenuInstalationCommand}"
-                                    Description="{x:Static res:MainMenu.InstallationDescription}"
+                                    Description="{res:Loc MainMenu.InstallationDescription}"
                                     Kind="Creation"
                                     MenuBrush="{StaticResource FerrettoRed}"
                                     Number="04"
@@ -139,13 +140,13 @@
 
         </Grid>
 
-        <controls:PpcBadge Grid.RowSpan="2"
+        <controls:PpcBayBadge x:Name="BayBadge"
+            Grid.RowSpan="2"
                            Grid.ColumnSpan="2"
                            Margin="15,15,30,-47"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
-                           Tag="{Binding BayNumber}"
-                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:General.BayNumber}}" />
+                           BayNumber="{Binding BayNumber}" />
 
     </Grid>
 </ctrls:View>
