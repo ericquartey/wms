@@ -396,7 +396,7 @@
   <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
     <value>Invalid {0} Axis movement Speed configuration</value>
   </data>
-  <data name="OverrunElevatorDetected" xml:space="preserve">
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
     <value>Positioning error at top or bottom side</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">

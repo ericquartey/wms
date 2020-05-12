@@ -274,7 +274,7 @@
     <value>Automatico</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Baia {0}</value>
+    <value>Baia</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0:0} giorni fa</value>

@@ -60,12 +60,12 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.Password):
                     if (string.IsNullOrEmpty(this.Password))
                     {
-                        return Resources.LoadLogin.PasswordMustBeSpecified;
+                        return Resources.Localized.Get("LoadLogin.PasswordMustBeSpecified");
                     }
 
                     if (this.Password.Length < MinimumPasswordLength)
                     {
-                        return Resources.LoadLogin.PasswordIsTooShort;
+                        return Resources.Localized.Get("LoadLogin.PasswordIsTooShort");
                     }
 
                     break;
@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.UserName):
                     if (string.IsNullOrWhiteSpace(this.UserName))
                     {
-                        return Resources.LoadLogin.UserNameMustBeSpecified;
+                        return Resources.Localized.Get("LoadLogin.UserNameMustBeSpecified");
                     }
 
                     break;

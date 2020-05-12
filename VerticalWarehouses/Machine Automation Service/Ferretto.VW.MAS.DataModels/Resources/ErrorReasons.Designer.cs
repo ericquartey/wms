@@ -223,6 +223,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
+        /// </summary>
+        public static string ElevatorOverrunDetected {
+            get {
+                return ResourceManager.GetString("ElevatorOverrunDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The external bay is empty.
         /// </summary>
         public static string ExternalBayEmpty {
@@ -759,15 +768,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string NoLoadUnitInSource {
             get {
                 return ResourceManager.GetString("NoLoadUnitInSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
-        /// </summary>
-        public static string OverrunElevatorDetected {
-            get {
-                return ResourceManager.GetString("OverrunElevatorDetected", resourceCulture);
             }
         }
         

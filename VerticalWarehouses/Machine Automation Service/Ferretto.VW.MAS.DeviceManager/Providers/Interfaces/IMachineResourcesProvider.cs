@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerPartiallyOnCradle { get; }
 
+        bool IsElevatorOverrun { get; }
+
         bool IsMachineInEmergencyState { get; }
 
         bool IsMachineInFaultState { get; }
@@ -59,8 +61,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         bool IsMushroomEmergencyButtonBay2 { get; }
 
         bool IsMushroomEmergencyButtonBay3 { get; }
-
-        bool IsOverrunElevator { get; }
 
         bool IsSensorZeroOnBay1 { get; }
 

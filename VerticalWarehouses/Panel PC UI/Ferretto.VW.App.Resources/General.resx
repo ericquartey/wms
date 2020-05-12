@@ -291,7 +291,7 @@
     <comment>Information</comment>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Bay {0}</value>
+    <value>Bay</value>
     <comment>Information</comment>
   </data>
   <data name="DaysAgo" xml:space="preserve">

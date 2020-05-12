@@ -6,6 +6,9 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
+        [Column(Order = (int)InverterSensors.ANG_ElevatorOverrunSensor)]
+        bool ANG_ElevatorOverrunSensor { get; }
+
         [Column(Order = (int)InverterSensors.ANG_EncoderChannelACradle)]
         bool ANG_EncoderChannelACradle { get; }
 
@@ -17,9 +20,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         [Column(Order = (int)InverterSensors.ANG_HardwareSensorSTO)]
         bool ANG_HardwareSensorSTO { get; }
-
-        [Column(Order = (int)InverterSensors.ANG_OverrunElevatorSensor)]
-        bool ANG_OverrunElevatorSensor { get; }
 
         [Column(Order = (int)InverterSensors.ANG_ZeroCradleSensor)]
         bool ANG_ZeroCradleSensor { get; }

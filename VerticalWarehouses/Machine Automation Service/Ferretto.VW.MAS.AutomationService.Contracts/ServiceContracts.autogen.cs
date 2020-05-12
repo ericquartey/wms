@@ -2677,7 +2677,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         InvalidPositionBay = 73,
     
-        OverrunElevatorDetected = 74,
+        ElevatorOverrunDetected = 74,
     
         ExternalBayEmpty = 75,
     

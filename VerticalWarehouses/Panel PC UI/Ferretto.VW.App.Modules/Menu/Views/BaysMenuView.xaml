@@ -50,67 +50,67 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:Menu.BaysMenuName}" />
+                       Text="{res:Loc Menu.BaysMenuName}" />
 
             <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.BayControlMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.BayControlMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.1"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayControlCommand}"
-                                        Content="{x:Static res:InstallationApp.BayControlMenuDescription}"
+                                        Content="{res:Loc InstallationApp.BayControlMenuDescription}"
                                         IsBypassed="{Binding IsBayControlBypassed}"
                                         IsCompleted="{Binding IsBayControlCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.BarrierCalibrationMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.BarrierCalibrationMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
-                                        Content="{x:Static res:InstallationApp.BarrierCalibrationMenuDescription}"
+                                        Content="{res:Loc InstallationApp.BarrierCalibrationMenuDescription}"
                                         IsBypassed="{Binding IsBayProfileBypassed}"
                                         IsCompleted="{Binding IsBayProfileCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CarouselCalibrationMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CarouselCalibrationMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CarouselCalibrationCommand}"
-                                        Content="{x:Static res:InstallationApp.CarouselCalibrationMenuDescription}"
+                                        Content="{res:Loc InstallationApp.CarouselCalibrationMenuDescription}"
                                         IsBypassed="{Binding IsCarouselCalibrationBypassed}"
                                         IsCompleted="{Binding IsCarouselCalibrationCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsCarouselCalibrationVisible, Converter={StaticResource BTVC}}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.GateTestMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.GateTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.4"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestShutterCommand}"
-                                        Content="{x:Static res:InstallationApp.GateTestMenuDescription}"
+                                        Content="{res:Loc InstallationApp.GateTestMenuDescription}"
                                         IsBypassed="{Binding IsTestShutterBypassed}"
                                         IsCompleted="{Binding IsTestShutterCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.BayTestMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.BayTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestBayCommand}"
-                                        Content="{x:Static res:InstallationApp.BayTestMenuDescription}"
+                                        Content="{res:Loc InstallationApp.BayTestMenuDescription}"
                                         IsBypassed="False"
                                         IsCompleted="False"
                                         IsEnabled="False"

@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Login
                     $"{Utils.Modules.Layout.REGION_MAINCONTENT}",
                     typeof(LoaderView));
 
-            this.logger.Trace(Resources.LoadLogin.ModuleLoaded);
+            this.logger.Trace(Resources.Localized.Get("LoadLogin.ModuleLoaded"));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

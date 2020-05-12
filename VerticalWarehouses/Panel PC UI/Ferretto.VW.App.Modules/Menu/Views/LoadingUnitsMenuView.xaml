@@ -50,13 +50,13 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:Menu.UnitsMenuName}" />
+                       Text="{res:Loc Menu.UnitsMenuName}" />
 
             <Grid Grid.Row="1"
                   Grid.RowSpan="2">
                 <WrapPanel>
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.UnitManageMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.UnitManageMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.1"
@@ -65,47 +65,47 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.InsertMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.InsertMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding InsertionLoadingUnitsCommand}"
-                                        Content="{x:Static res:InstallationApp.InsertMenuDescription}"
+                                        Content="{res:Loc InstallationApp.InsertMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.RemoveMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.RemoveMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding ExtractionLoadingUnitsCommand}"
-                                        Content="{x:Static res:InstallationApp.RemoveMenuDescription}"
+                                        Content="{res:Loc InstallationApp.RemoveMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.MoveCellToCellMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.MoveCellToCellMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding MoveLoadingUnitsCommand}"
-                                        Content="{x:Static res:InstallationApp.MoveCellToCellMenuDescription}"
+                                        Content="{res:Loc InstallationApp.MoveCellToCellMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.MoveBayToBayMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.MoveBayToBayMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.5"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding LoadingUnitsBayToBayCommand}"
-                                        Content="{x:Static res:InstallationApp.MoveBayToBayMenuDescription}"
+                                        Content="{res:Loc InstallationApp.MoveBayToBayMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{x:Static res:InstallationApp.CompleteTestMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.CompleteTestMenuTitle}"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.6"

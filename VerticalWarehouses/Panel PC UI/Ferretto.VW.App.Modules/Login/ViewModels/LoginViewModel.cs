@@ -151,7 +151,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     catch (Exception ex)
                     {
                         this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
-                        this.ShowNotification(Resources.LoadLogin.UnableToAuthenticateWithTheBarcode);
+                        this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"));
                     }
                 }
             }
@@ -221,7 +221,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowNotification(Resources.LoadLogin.ConnectionLost, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionLost"), Services.Models.NotificationSeverity.Error);
                 this.RaiseCanExecuteChanged();
             }
         }
@@ -267,7 +267,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(Ferretto.VW.App.Resources.LoadLogin.InvalidCredentials, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Ferretto.VW.App.Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
             finally
             {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowNotification(Resources.LoadLogin.InvalidCredentials, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
         }
 

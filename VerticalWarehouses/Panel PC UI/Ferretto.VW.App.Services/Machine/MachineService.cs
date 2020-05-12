@@ -1350,7 +1350,7 @@ namespace Ferretto.VW.App.Services
 
                     if (dataElevatorPosition.CellId != null)
                     {
-                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.Localized.Get("InstallationApp.CellWithNumber"), dataElevatorPosition.CellId);
 
                         var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
                         if (cell != null)
@@ -1376,15 +1376,15 @@ namespace Ferretto.VW.App.Services
                     {
                         var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == dataElevatorPosition.BayPositionId));
 
-                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.Localized.Get("InstallationApp.InBayWithNumber"), (int)bay.Number);
 
                         if (dataElevatorPosition?.BayPositionUpper ?? false)
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.InstallationApp.PositionOnTop);
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnTop"));
                         }
                         else
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.InstallationApp.PositionOnBotton);
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnBotton"));
                         }
 
                         this.MachineStatus.LogicalPositionId = (int)bay.Number;
@@ -1528,15 +1528,15 @@ namespace Ferretto.VW.App.Services
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {
-                            this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted, NotificationSeverity.Info);
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
                         {
-                            this.ShowNotification(VW.App.Resources.InstallationApp.VerticalHomingStarted, NotificationSeverity.Info);
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.BayChain])
                         {
-                            this.ShowNotification(VW.App.Resources.InstallationApp.BayHomingStarted, NotificationSeverity.Info);
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (!this.isBayHoming[this.bay.Number])
                         {

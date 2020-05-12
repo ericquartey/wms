@@ -126,15 +126,15 @@ namespace Ferretto.VW.App.Services
 
             if (this.Open)
             {
-                this.Status = Resources.InstallationApp.Open;
+                this.Status = Resources.Localized.Get("InstallationApp.Open");
             }
             else if (this.MidWay)
             {
-                this.Status = Resources.InstallationApp.ShutterMidWay;
+                this.Status = Resources.Localized.Get("InstallationApp.ShutterMidWay");
             }
             else if (this.Closed)
             {
-                this.Status = Resources.InstallationApp.Closed;
+                this.Status = Resources.Localized.Get("InstallationApp.Closed");
             }
             else
             {
