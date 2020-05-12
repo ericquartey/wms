@@ -326,14 +326,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (!this.DestinationPosition1.HasValue)
                             {
-                                this.currentError = InstallationApp.DestinationPositionRequired;
+                                this.currentError = Localized.Get("InstallationApp.DestinationPositionRequired");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
 
                             if (this.DestinationPosition1.Value < 0)
                             {
-                                this.currentError = InstallationApp.DestinationPositionMustBePositive;
+                                this.currentError = Localized.Get("InstallationApp.DestinationPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -341,7 +341,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             if (this.DestinationPosition1.Value < this.axisLowerBound ||
                                 this.DestinationPosition1.Value > this.axisUpperBound)
                             {
-                                this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                                this.currentError = string.Format(Localized.Get("InstallationApp.DestinationPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -358,7 +358,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition1.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
                             {
-                                this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                                this.currentError = string.Format(Localized.Get("InstallationApp.MeasuredPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -372,7 +372,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (this.StartPosition < 0)
                             {
-                                this.currentError = InstallationApp.StartPositionMustBePositive;
+                                this.currentError = Localized.Get("InstallationApp.StartPositionMustBePositive");
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -382,7 +382,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = string.Format(InstallationApp.StartPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                                this.currentError = string.Format(Localized.Get("InstallationApp.StartPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -399,14 +399,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             {
                                 if (!this.DestinationPosition2.HasValue)
                                 {
-                                    this.currentError = InstallationApp.DestinationPositionRequired;
+                                    this.currentError = Localized.Get("InstallationApp.DestinationPositionRequired");
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
 
                                 if (this.DestinationPosition2.Value < 0)
                                 {
-                                    this.currentError = InstallationApp.DestinationPositionMustBePositive;
+                                    this.currentError = Localized.Get("InstallationApp.DestinationPositionMustBePositive");
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
@@ -414,7 +414,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 if (this.DestinationPosition2.Value < this.axisLowerBound ||
                                     this.DestinationPosition2.Value > this.axisUpperBound)
                                 {
-                                    this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                                    this.currentError = string.Format(Localized.Get("InstallationApp.DestinationPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
@@ -425,7 +425,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition2.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value))
                             {
-                                this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                                this.currentError = string.Format(Localized.Get("InstallationApp.MeasuredPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound);
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -601,7 +601,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentStep = CalibrationStep.PositionMeter;
 
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                    VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                     Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();

@@ -5,10 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -20,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
 
@@ -41,15 +47,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand upSelectionCommand;
 
+        private SubscriptionToken receiveHomingUpdateToken;
+
+        private SubscriptionToken positioningMessageReceivedToken;
+
         #endregion
 
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
             IMachineService machineService,
+            IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base(PresentationMode.Operator)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
@@ -138,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (!this.loadingUnitId.HasValue)
             {
-                this.ShowNotification(Resources.Errors.IdLoadingUnitNotExists, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
@@ -185,6 +197,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.SubscribeToEvents();
 
             this.IsBackNavigationAllowed = true;
 
@@ -263,11 +277,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (!this.pressMinus)
                 {
-                    this.currentItemIndex++;
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) + 1;
                 }
                 else
                 {
-                    this.currentItemIndex--;
+                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) - 1;
                 }
 
                 this.SelectLoadingUnit();
@@ -291,6 +305,51 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void SelectLoadingUnit()
         {
             this.SelectedLoadingUnit = this.loadingUnits.ElementAtOrDefault(this.currentItemIndex);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+               ??
+               this.eventAggregator
+                   .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                   .Subscribe(
+                       this.OnPositioningMessageReceived,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.receiveHomingUpdateToken = this.receiveHomingUpdateToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                    this.OnHomingProcedureStatusChanged,
+                        ThreadOption.UIThread,
+                    false);
+        }
+
+        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.CarouselCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+
+            if (message.Data?.MovementMode == MovementMode.HorizontalCalibration)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.HorizontalCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+        }
+
+        private async void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            if (message.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical)
+            {
+                if (message.Status == MessageStatus.OperationStart)
+                {
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), Services.Models.NotificationSeverity.Info);
+                }
+            }
         }
 
         #endregion

@@ -10,15 +10,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const int CheckDelayTime = 300;
-
         private readonly Axis axisToCalibrate;
 
         private readonly Calibration calibration;
 
-        private readonly DateTime startTime;
+        private int CheckDelayTime = 300;
 
         private DateTime enableTime;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
-            this.startTime = DateTime.UtcNow;
-            this.enableTime = DateTime.MinValue;
         }
 
         #endregion
@@ -45,6 +43,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.Logger.LogDebug($"1:Axis to calibrate={this.axisToCalibrate}");
+
+            this.startTime = DateTime.UtcNow;
+            this.enableTime = DateTime.MinValue;
+            if (this.axisToCalibrate == Axis.Vertical)
+            {
+                this.CheckDelayTime *= 4;
+            }
 
             this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal);
 
@@ -101,7 +106,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                     {
                         this.enableTime = DateTime.UtcNow;
                     }
-                    else if (DateTime.UtcNow.Subtract(this.enableTime).TotalMilliseconds > CheckDelayTime)
+                    else if (DateTime.UtcNow.Subtract(this.enableTime).TotalMilliseconds > this.CheckDelayTime)
                     {
                         this.ParentStateMachine.ChangeState(
                             new CalibrateAxisStartHomingState(

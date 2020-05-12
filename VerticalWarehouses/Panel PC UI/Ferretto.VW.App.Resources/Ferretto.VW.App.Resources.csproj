@@ -13,11 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Errors.Designer.cs">
-      <DependentUpon>Errors.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ErrorsApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -91,10 +93,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Errors.resx">
-      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="ErrorsApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorsApp.Designer.cs</LastGenOutput>

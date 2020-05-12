@@ -72,13 +72,13 @@
 
                 <controls:PpcButton Grid.Column="0"
                                     Command="{Binding GoToMovementsGuidedCommand}"
-                                    Content="{x:Static res:InstallationApp.MovementsGuided}"
+                                    Content="{res:Loc InstallationApp.MovementsGuided}"
                                     IsActive="{Binding IsMovementsGuided}"
                                     Style="{DynamicResource PpcButtonMovementsGuidedTabStyle}" />
 
                 <controls:PpcButton Grid.Column="1"
                                     Command="{Binding GoToMovementsManualCommand}"
-                                    Content="{x:Static res:InstallationApp.MovementsManual}"
+                                    Content="{res:Loc InstallationApp.MovementsManual}"
                                     IsActive="{Binding IsMovementsManual}"
                                     Style="{DynamicResource PpcButtonMovementsManualTabStyle}" />
             </Grid>
@@ -164,7 +164,7 @@
                                               Margin="5"
                                               HorizontalAlignment="Left"
                                               IsChecked="{Binding IsUseWeightControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              LabelText="{x:Static res:InstallationApp.UseWeightControl}" />
+                                              LabelText="{res:Loc InstallationApp.UseWeightControl}" />
 
                     </Grid>
 
@@ -193,7 +193,7 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding MoveToBayPositionCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToBay}"
+                                            Content="{res:Loc InstallationApp.GoToBay}"
                                             IsBusy="{Binding IsElevatorMovingToBay}" />
 
                         <Grid Grid.Column="2"
@@ -209,7 +209,7 @@
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 Command="{Binding SelectBayPositionDownCommand}"
-                                                Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                                Content="{res:Loc InstallationApp.BayPositionDown}"
                                                 IsActive="{Binding IsPositionDownSelected}"
                                                 IsEnabled="{Binding IsPositionUpSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
@@ -219,7 +219,7 @@
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 Command="{Binding SelectBayPositionUpCommand}"
-                                                Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                                Content="{res:Loc InstallationApp.BayPositionUp}"
                                                 IsActive="{Binding IsPositionUpSelected}"
                                                 IsEnabled="{Binding IsPositionDownSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
@@ -260,7 +260,7 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding UnloadToBayCommand}"
-                                            Content="{x:Static res:InstallationApp.UnloadToBay}"
+                                            Content="{res:Loc InstallationApp.UnloadToBay}"
                                             IsBusy="{Binding IsBusyUnloadingToBay}"
                                             Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
@@ -268,7 +268,7 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding UnloadToCellCommand}"
-                                            Content="{x:Static res:InstallationApp.UnloadToCell}"
+                                            Content="{res:Loc InstallationApp.UnloadToCell}"
                                             IsBusy="{Binding IsBusyUnloadingToCell}"
                                             Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
 
@@ -276,7 +276,7 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding LoadFromBayCommand}"
-                                            Content="{x:Static res:InstallationApp.LoadFromBay}"
+                                            Content="{res:Loc InstallationApp.LoadFromBay}"
                                             IsBusy="{Binding IsBusyLoadingFromBay}"
                                             Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
@@ -284,7 +284,7 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding LoadFromCellCommand}"
-                                            Content="{x:Static res:InstallationApp.LoadFromCell}"
+                                            Content="{res:Loc InstallationApp.LoadFromCell}"
                                             IsBusy="{Binding IsBusyLoadingFromCell}"
                                             Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
                     </Grid>
@@ -314,14 +314,14 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding TuningChainCommand}"
-                                            Content="{x:Static res:InstallationApp.ChainCalibration}"
+                                            Content="{res:Loc InstallationApp.ChainCalibration}"
                                             IsBusy="{Binding IsTuningChain}" />
 
                         <controls:PpcButton Grid.Column="2"
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding TuningBayCommand}"
-                                            Content="{x:Static res:InstallationApp.BayCalibration}"
+                                            Content="{res:Loc InstallationApp.BayCalibration}"
                                             IsBusy="{Binding IsTuningBay}"
                                             Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
@@ -368,20 +368,20 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding OpenShutterCommand}"
-                                            Content="{x:Static res:InstallationApp.GateOpen}" />
+                                            Content="{res:Loc InstallationApp.GateOpen}" />
 
                         <controls:PpcButton Grid.Column="2"
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding IntermediateShutterCommand}"
-                                            Content="{x:Static res:InstallationApp.ShutterMidWay}"
+                                            Content="{res:Loc InstallationApp.ShutterMidWay}"
                                             Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcButton Grid.Column="3"
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding ClosedShutterCommand}"
-                                            Content="{x:Static res:InstallationApp.GateClose}">
+                                            Content="{res:Loc InstallationApp.GateClose}">
                             <controls:PpcButton.Style>
                                 <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                                        TargetType="{x:Type controls:PpcButton}">
@@ -423,13 +423,13 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding CarouselUpCommand}"
-                                            Content="{x:Static res:InstallationApp.CarouselUp}" />
+                                            Content="{res:Loc InstallationApp.CarouselUp}" />
 
                         <controls:PpcButton Grid.Column="2"
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding CarouselDownCommand}"
-                                            Content="{x:Static res:InstallationApp.CarouselDown}"
+                                            Content="{res:Loc InstallationApp.CarouselDown}"
                                             Visibility="Collapsed" />
                     </Grid>
 
@@ -525,7 +525,7 @@
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
                                             Command="{Binding MoveToCellHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToCell}"
+                                            Content="{res:Loc InstallationApp.GoToCell}"
                                             IsBusy="{Binding IsElevatorMovingToCell}" />
 
 
@@ -550,7 +550,7 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             Command="{Binding MoveToHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToPosition}"
+                                            Content="{res:Loc InstallationApp.GoToPosition}"
                                             IsBusy="{Binding IsElevatorMovingToHeight}" />
 
                         <ctrls:PpcSpinEdit Grid.Row="1"
@@ -593,7 +593,7 @@
                                                            Grid.Column="1"
                                                            Margin="5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ElevatorUp}"
+                                                           Content="{res:Loc InstallationApp.ElevatorUp}"
                                                            IsEnabled="{Binding CanMoveElevatorUp}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveElevatorUpCommand}"
@@ -603,7 +603,7 @@
                                                            Grid.Column="1"
                                                            Margin="5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ElevatorDown}"
+                                                           Content="{res:Loc InstallationApp.ElevatorDown}"
                                                            IsEnabled="{Binding CanMoveElevatorDown}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding MoveElevatorDownCommand}"
@@ -614,7 +614,7 @@
                                                            Grid.Column="0"
                                                            Margin="5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ElevatorBack}"
+                                                           Content="{res:Loc InstallationApp.ElevatorBack}"
                                                            IsEnabled="{Binding CanMoveElevatorBackwards}"
                                                            Kind="ArrowLeft"
                                                            PressCommand="{Binding MoveElevatorBackwardsCommand}"
@@ -625,7 +625,7 @@
                                                            Grid.Column="2"
                                                            Margin="5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ElevatorForwards}"
+                                                           Content="{res:Loc InstallationApp.ElevatorForwards}"
                                                            IsEnabled="{Binding CanMoveElevatorForwards}"
                                                            Kind="ArrowRight"
                                                            PressCommand="{Binding MoveElevatorForwardsCommand}"
@@ -656,7 +656,7 @@
                                                            Grid.Column="0"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ShutterUp}"
+                                                           Content="{res:Loc InstallationApp.ShutterUp}"
                                                            IsEnabled="{Binding CanShutterMoveUpCommand}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding ShutterMoveUpCommand}"
@@ -667,7 +667,7 @@
                                                            Grid.Column="1"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.CarouselUp}"
+                                                           Content="{res:Loc InstallationApp.CarouselUp}"
                                                            IsEnabled="{Binding CanMoveCarouselOpenCommand}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveCarouselOpenCommand}"
@@ -678,7 +678,7 @@
                                                            Grid.Column="2"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ExtBayTowardOperator}"
+                                                           Content="{res:Loc InstallationApp.ExtBayTowardOperator}"
                                                            IsEnabled="{Binding CanMoveManualExternalBayTowardOperatorCommand}"
                                                            Kind="ArrowRight"
                                                            PressCommand="{Binding MoveExternalBayTowardOperatorManualCommand}"
@@ -689,7 +689,7 @@
                                                            Grid.Column="0"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ShutterDown}"
+                                                           Content="{res:Loc InstallationApp.ShutterDown}"
                                                            IsEnabled="{Binding CanShutterMoveDownCommand}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding ShutterMoveDownCommand}"
@@ -700,7 +700,7 @@
                                                            Grid.Column="1"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.CarouselDown}"
+                                                           Content="{res:Loc InstallationApp.CarouselDown}"
                                                            IsEnabled="{Binding CanMoveCarouselCloseCommand}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding MoveCarouselCloseCommand}"
@@ -711,7 +711,7 @@
                                                            Grid.Column="2"
                                                            Margin="30,5"
                                                            HorizontalAlignment="Left"
-                                                           Content="{x:Static res:InstallationApp.ExtBayTowardMachine}"
+                                                           Content="{res:Loc InstallationApp.ExtBayTowardMachine}"
                                                            IsEnabled="{Binding CanMoveManualExternalBayTowardMachineCommand}"
                                                            Kind="ArrowLeft"
                                                            PressCommand="{Binding MoveExternalBayTowardMachineManualCommand}"
@@ -737,7 +737,7 @@
                                         Margin="5,0,0,0"
                                         HorizontalAlignment="Left"
                                         Command="{Binding ResetCommand}"
-                                        Content="{x:Static res:InstallationApp.ResetMachine}" />
+                                        Content="{res:Loc InstallationApp.ResetMachine}" />
 
                     <controls:PpcButton Grid.Row="6"
                                         Grid.Column="1"
@@ -745,7 +745,7 @@
                                         Margin="0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding StopMovingCommand}"
-                                        Content="{x:Static res:InstallationApp.Stop}" />
+                                        Content="{res:Loc InstallationApp.Stop}" />
 
 
 

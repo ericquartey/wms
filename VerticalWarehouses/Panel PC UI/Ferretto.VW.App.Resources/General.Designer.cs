@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The area of the machine is unknown.
+        /// </summary>
+        public static string AreaMachineUnknow {
+            get {
+                return ResourceManager.GetString("AreaMachineUnknow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic.
         /// </summary>
         public static string Automatic {
@@ -250,6 +259,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToVisibilityType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
         public static string CreationDate {
@@ -259,11 +277,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0:dd.MM.yyyy HH:mm}.
+        ///   Looks up a localized string similar to {0:yyyy.MM.dd HH:mm}.
         /// </summary>
-        public static string DateFormat {
+        public static string DateFormatComplete {
             get {
-                return ResourceManager.GetString("DateFormat", resourceCulture);
+                return ResourceManager.GetString("DateFormatComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0: yyyy.MM.dd}.
+        /// </summary>
+        public static string DateFormatDayNumber {
+            get {
+                return ResourceManager.GetString("DateFormatDayNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0: HH:mm}.
+        /// </summary>
+        public static string DateFormatHourMinutes {
+            get {
+                return ResourceManager.GetString("DateFormatHourMinutes", resourceCulture);
             }
         }
         
@@ -439,6 +475,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id loading unit does not exists..
+        /// </summary>
+        public static string IdLoadingUnitNotExists {
+            get {
+                return ResourceManager.GetString("IdLoadingUnitNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverter.
         /// </summary>
         public static string Inverter {
@@ -471,6 +516,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; property of the &apos;{1}&apos; view model shall contain a valid loading unit identifier..
+        /// </summary>
+        public static string LoadingUnitViewModelPropertyIdentifier {
+            get {
+                return ResourceManager.GetString("LoadingUnitViewModelPropertyIdentifier", resourceCulture);
             }
         }
         
@@ -525,6 +579,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ManualMode {
             get {
                 return ResourceManager.GetString("ManualMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
+        /// </summary>
+        public static string MarkupNameOfSyntax {
+            get {
+                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
             }
         }
         
@@ -619,6 +682,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter cannot be null or empty..
+        /// </summary>
+        public static string ParameterCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string PasswordLogin {
@@ -682,7 +754,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Serial Number: {0}.
+        ///   Looks up a localized string similar to Serial Number:.
         /// </summary>
         public static string SerialNumber {
             get {

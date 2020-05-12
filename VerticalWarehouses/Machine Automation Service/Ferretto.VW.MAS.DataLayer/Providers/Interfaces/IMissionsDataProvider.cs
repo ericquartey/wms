@@ -33,6 +33,10 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <returns>The list of new or executing missions, ordered by priority, allocated to the specified bay.</returns>
         IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber);
 
+        List<int> GetAllActiveUnitGoBay();
+
+        List<int> GetAllActiveUnitGoCell();
+
         IEnumerable<Mission> GetAllExecutingMissions();
 
         IEnumerable<Mission> GetAllMissions();

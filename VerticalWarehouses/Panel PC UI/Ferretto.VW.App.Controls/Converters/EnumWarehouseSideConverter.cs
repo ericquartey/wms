@@ -14,10 +14,10 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case WarehouseSide.Back:
-                    return Resources.General.WarehouseSide_Back;
+                    return Resources.Localized.Get("General.WarehouseSide_Back");
 
                 case WarehouseSide.Front:
-                    return Resources.General.WarehouseSide_Front;
+                    return Resources.Localized.Get("General.WarehouseSide_Front");
             }
 
             return string.Empty;

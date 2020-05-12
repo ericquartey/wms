@@ -103,7 +103,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineRun, General.MachineRun, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Resources.Localized.Get("General.ConfirmMachineRun"), Resources.Localized.Get("General.MachineRun"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();

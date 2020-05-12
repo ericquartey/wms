@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<LoadingUnitsController> logger;
@@ -39,6 +41,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
+            IErrorsProvider errorsProvider,
             ILogger<LoadingUnitsController> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -46,6 +49,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -102,16 +106,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
-        [HttpGet("get-all-test-units")]
-        public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllTestUnits()
-        {
-            return this.Ok(this.loadingUnitsDataProvider.GetAllTestUnits());
-        }
-
         [HttpGet("get-all-not-test-units")]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllNotTestUnits()
         {
             return this.Ok(this.loadingUnitsDataProvider.GetAllNotTestUnits());
+        }
+
+        [HttpGet("get-all-test-units")]
+        public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllTestUnits()
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetAllTestUnits());
         }
 
         [HttpGet("{id}/compartments")]
@@ -274,7 +278,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             else
             {
                 this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
-                this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber, MissionType.OUT);
+                try
+                {
+                    this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber, MissionType.OUT);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, this.BayNumber, ex.Message);
+                }
             }
 
             return this.Accepted();

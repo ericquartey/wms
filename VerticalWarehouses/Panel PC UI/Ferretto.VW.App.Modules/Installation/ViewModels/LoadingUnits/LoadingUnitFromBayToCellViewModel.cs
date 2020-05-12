@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InvalidSourceChoiceType"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

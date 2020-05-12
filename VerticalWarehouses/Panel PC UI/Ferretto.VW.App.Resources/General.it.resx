@@ -310,7 +310,7 @@
     <value>Password</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale: {0}</value>
+    <value>Numero Seriale:</value>
   </data>
   <data name="UserLogin" xml:space="preserve">
     <value>Nome Utente</value>
@@ -390,7 +390,28 @@
   <data name="WmsEnabled" xml:space="preserve">
     <value>Abilitato</value>
   </data>
-  <data name="DateFormat" xml:space="preserve">
+  <data name="DateFormatComplete" xml:space="preserve">
     <value>{0:dd.MM.yyyy HH:mm}</value>
+  </data>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>L'area della macchina è sconosciuta.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>L'identificativo del cassetto non esiste.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>La proprietà '{0}' del modello di vista '{1}' deve contenere un identificativo cassetto valido.</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Il parametro non può essere nullo o vuoto.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: dd.MM.yyyy}</value>
+  </data>
+  <data name="DateFormatHourMinutes" xml:space="preserve">
+    <value>{0: HH:mm}</value>
   </data>
 </root>

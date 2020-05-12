@@ -140,8 +140,8 @@
     </UserControl.Resources>
 
     <Grid Name="Grid"
-          Visibility="{Binding ElementName=UserControl, Path=VisibilityPermission}"
-          HorizontalAlignment="Stretch">
+          HorizontalAlignment="Stretch"
+          Visibility="{Binding ElementName=UserControl, Path=VisibilityPermission}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />

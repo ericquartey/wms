@@ -33,6 +33,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly int DELAY_HEARTBEAT = 800;
 
+        private readonly TcpListener listenerAlphaNumericBar1 = new TcpListener(IPAddress.Any, 2020);
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -46,6 +48,10 @@ namespace Ferretto.VW.Simulator.Services
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
+
+        private string alphaNumericBar1Message = "";
+
+        private int alphaNumericBar1Offset = 0;
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -202,7 +208,10 @@ namespace Ferretto.VW.Simulator.Services
             {
                 this.listenerIoDriver3.Start();
             }
+
             this.listenerLaser1.Start();
+
+            this.listenerAlphaNumericBar1.Start();
 
             _ = Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             if (this.RemoteIOs01.Enabled)
@@ -221,6 +230,8 @@ namespace Ferretto.VW.Simulator.Services
             }
 
             _ = Task.Run(() => this.AcceptClient(this.listenerLaser1, this.cts.Token, (client, message) => this.ReplyLaser(client, message, 1)));
+
+            _ = Task.Run(() => this.AcceptClient(this.listenerAlphaNumericBar1, this.cts.Token, (client, message) => this.ReplyAlphaNumericBar1(client, message, 1)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -507,6 +518,39 @@ namespace Ferretto.VW.Simulator.Services
                     }
                 }
             }
+        }
+
+        private void ReplyAlphaNumericBar1(TcpClient client, byte[] message, int index)
+        {
+            var messageReceived = Encoding.ASCII.GetString(message).Trim();
+            var messageResponse = "OK";
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 receive <-- '{messageReceived}'");
+
+            if (messageReceived.StartsWith("TEST ON", StringComparison.Ordinal))
+            {
+                messageResponse = "TEST ON OK";
+            }
+            else if (messageReceived.StartsWith("TEST OFF", StringComparison.Ordinal))
+            {
+                messageResponse = "TEST OFF OK";
+            }
+            else if (messageReceived.StartsWith("SET ", StringComparison.Ordinal))
+            {
+                var subStr = messageReceived.Split(' ');
+                if (subStr.Length > 1)
+                {
+                    this.alphaNumericBar1Offset = int.Parse(subStr[1]);
+                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1]) + subStr[1].Length).Trim();
+                }
+            }
+            else if (messageReceived.StartsWith("GET ", StringComparison.Ordinal))
+            {
+                messageResponse = "GET " + this.alphaNumericBar1Message;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
+            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + "\r\n"));
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)

@@ -114,7 +114,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer.Core", "Installer\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj", "{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.Devices.AlphaNumericBar", "Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj", "{8CFE771A-2001-4128-9521-57FBBDC7349A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.AlphaNumericBar", "Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj", "{8CFE771A-2001-4128-9521-57FBBDC7349A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{B2AEC582-DA8A-4112-9644-474DC00A74BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.InvertersParametersGenerator", "Utility\Ferretto.VW.InvertersParametersGenerator\Ferretto.VW.InvertersParametersGenerator.csproj", "{1A8D956D-3935-45D8-917D-476F15E3985E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -903,6 +907,24 @@ Global
 		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x64.Build.0 = Release|Any CPU
 		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x86.ActiveCfg = Release|Any CPU
 		{8CFE771A-2001-4128-9521-57FBBDC7349A}.Release|x86.Build.0 = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|x64.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Debug|x86.Build.0 = Debug|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|x64.ActiveCfg = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|x64.Build.0 = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A8D956D-3935-45D8-917D-476F15E3985E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -952,6 +974,7 @@ Global
 		{61D69668-A410-4498-854C-3869D705EF56} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
 		{2F5B858D-64A9-4156-8E69-2A88FAE5EA2C} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
 		{8CFE771A-2001-4128-9521-57FBBDC7349A} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
+		{1A8D956D-3935-45D8-917D-476F15E3985E} = {B2AEC582-DA8A-4112-9644-474DC00A74BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

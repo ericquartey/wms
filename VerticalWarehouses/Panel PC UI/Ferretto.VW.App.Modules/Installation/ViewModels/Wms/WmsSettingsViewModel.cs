@@ -244,7 +244,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl);
-                this.ShowNotification(VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 
                 this.IsWaitingForResponse = false;
@@ -268,29 +268,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.isCheckingEndpoint)
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusCheckInProgress;
+                this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusCheckInProgress");
                 this.WmsServicesStatusBrush = Brushes.Gray;
             }
             else if (this.healthStatus is HealthStatus.Healthy)
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOnline;
+                this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOnline");
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else if (this.healthStatus is HealthStatus.Degraded)
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOnline;
+                this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOnline");
                 this.WmsServicesStatusBrush = Brushes.Gold;
             }
             else if (this.healthStatus is HealthStatus.Unhealthy)
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.WmsStatusOffline;
+                this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
                 this.WmsServicesStatusBrush = Brushes.Red;
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.WmsOffline, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.WmsOffline"), Services.Models.NotificationSeverity.Warning);
             }
             else
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.InstallationApp.Unknown;
+                this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.Unknown");
                 this.WmsServicesStatusBrush = Brushes.Gray;
             }
         }

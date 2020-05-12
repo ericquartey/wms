@@ -33,7 +33,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -41,14 +41,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsTotalDrawersNoError}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsTotalDrawersNoError}" />
 
         <TextBlock Width="260"
                    Margin="220,120,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock Width="180"
                    Margin="20,150,0,0"
@@ -63,7 +63,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsGridError}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsGridError}" />
 
         <TextBlock Width="180"
                    Margin="20,220,0,0"
@@ -85,7 +85,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsGridTotal}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsGridTotal}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -93,7 +93,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsGridPercTotal}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsGridPercTotal}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,120,0,0"
@@ -146,7 +146,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsReliability}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsReliability}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -154,7 +154,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonUp}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -162,7 +162,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonDown}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -170,7 +170,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsTotalDrawersMoved}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsTotalDrawersMoved}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -178,7 +178,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsTotaleErrors}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsTotaleErrors}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -186,7 +186,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpErrorsStatisticsErrorDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpErrorsStatisticsErrorDescription}" />
 
     </Grid>
 </UserControl>

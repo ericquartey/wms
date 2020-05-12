@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 else
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay, ex.Message);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -375,7 +375,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (restore)
             {
                 var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);
+                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition) + bay.ChainOffset;
                 try
                 {
                     this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, requestingBay, sender);
@@ -402,7 +402,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+            try
+            {
+                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, requestingBay, ex.Message);
+                throw new StateMachineException(ex.Message, requestingBay, sender);
+            }
             if (moveShutter != ShutterPosition.NotSpecified)
             {
                 try
@@ -411,7 +419,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, requestingBay, ex.Message);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -520,7 +528,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, requestingBay, ex.Message);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -567,7 +575,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             catch (InvalidOperationException ex)
             {
-                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, requestingBay);
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, requestingBay, ex.Message);
                 throw new StateMachineException(ex.Message, requestingBay, sender);
             }
         }

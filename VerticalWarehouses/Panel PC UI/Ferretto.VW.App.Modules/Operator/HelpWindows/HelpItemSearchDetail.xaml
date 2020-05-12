@@ -32,7 +32,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -40,7 +40,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonItem}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -48,7 +48,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailCategory}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailCategory}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,120,0,0"
@@ -112,7 +112,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpCommonItemDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -120,7 +120,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMangementType}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailMangementType}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -128,7 +128,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailFifoPeriod}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailFifoPeriod}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -136,7 +136,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailClasse}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailClasse}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -144,7 +144,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMeasurementUnit}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailMeasurementUnit}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -152,7 +152,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailAverageWeight}" />
+                   Text="{res:Loc HelpDescriptions.HelpItemSearchDetailAverageWeight}" />
 
     </Grid>
 </UserControl>

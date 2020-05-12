@@ -35,7 +35,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Update}" />
+                   Text="{res:Loc InstallationApp.Update}" />
 
 
         <Border Grid.Row="1"
@@ -63,28 +63,28 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding SystemInfo}"
-                                         LabelText="{x:Static res:InstallationApp.PanelPcCurrentVersion}" />
+                                         LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
 
                 <controls:PpcLabeledText Grid.Row="1"
                                          Margin="0,15,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding SharedFolderInfo}"
-                                         LabelText="{x:Static res:InstallationApp.SharedFolder}" />
+                                         LabelText="{res:Loc InstallationApp.SharedFolder}" />
 
                 <controls:PpcLabeledText Grid.Row="2"
                                          Margin="0,15,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding DeviceInfo}"
-                                         LabelText="{x:Static res:InstallationApp.DeviceStatus}" />
+                                         LabelText="{res:Loc InstallationApp.DeviceStatus}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
                                          Margin="0,15,0,15"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding InstallationFilesInfo}"
-                                         LabelText="{x:Static res:InstallationApp.Updates}" />
+                                         LabelText="{res:Loc InstallationApp.Updates}" />
 
             </Grid>
         </Border>
@@ -101,7 +101,7 @@
                        gif:ImageBehavior.AutoStart="true" />
                 <TextBlock HorizontalAlignment="Center"
                            Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.Wait}" />
+                           Text="{res:Loc InstallationApp.Wait}" />
 
             </StackPanel>
         </Grid>
@@ -114,7 +114,7 @@
             <controls:PpcButton HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding RestoreCommand}"
-                                Content="{x:Static res:InstallationApp.Restoration}" />
+                                Content="{res:Loc InstallationApp.Restoration}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="1"
@@ -122,7 +122,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding NextCommand}"
-                                Content="{x:Static res:InstallationApp.Next}" />
+                                Content="{res:Loc InstallationApp.Next}" />
         </StackPanel>
     </Grid>
 </ctrls:View>

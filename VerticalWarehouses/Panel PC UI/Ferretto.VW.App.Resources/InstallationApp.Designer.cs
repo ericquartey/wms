@@ -115,6 +115,51 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Large.
+        /// </summary>
+        public static string AlphaNumericBarSizeL {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        public static string AlphaNumericBarSizeM {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        public static string AlphaNumericBarSizeS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra large.
+        /// </summary>
+        public static string AlphaNumericBarSizeXL {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra small.
+        /// </summary>
+        public static string AlphaNumericBarSizeXS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samples the current values ​​for weight acquisition.
         /// </summary>
         public static string AnalysisWeightProfileMenuDescription {
@@ -399,6 +444,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayHeightCheckSelectedPosition {
             get {
                 return ResourceManager.GetString("BayHeightCheckSelectedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay chain homing started.
+        /// </summary>
+        public static string BayHomingStarted {
+            get {
+                return ResourceManager.GetString("BayHomingStarted", resourceCulture);
             }
         }
         
@@ -1596,6 +1650,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default configuration loaded.
+        /// </summary>
+        public static string DefaultConfigurationLoaded {
+            get {
+                return ResourceManager.GetString("DefaultConfigurationLoaded", resourceCulture);
             }
         }
         
@@ -2896,6 +2959,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import configuration file .
+        /// </summary>
+        public static string ImportConfigurationFile {
+            get {
+                return ResourceManager.GetString("ImportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import successful.
+        /// </summary>
+        public static string ImportSuccessful {
+            get {
+                return ResourceManager.GetString("ImportSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to in Bay.
         /// </summary>
         public static string InBay {
@@ -3630,6 +3711,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadedTray {
             get {
                 return ResourceManager.GetString("LoadedTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load file.
+        /// </summary>
+        public static string LoadFile {
+            get {
+                return ResourceManager.GetString("LoadFile", resourceCulture);
             }
         }
         

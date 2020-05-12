@@ -10,6 +10,7 @@ using System.Windows;
 using System.Xml.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -198,6 +199,23 @@ namespace Ferretto.VW.App
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
             }
+
+            // Setup resource manager
+            Localized.Instance.AddResourceManager(ErrorsApp.ResourceManager);
+            Localized.Instance.AddResourceManager(EventArgsMissionChanged.ResourceManager);
+            Localized.Instance.AddResourceManager(General.ResourceManager);
+            Localized.Instance.AddResourceManager(HelpDescriptions.ResourceManager);
+            Localized.Instance.AddResourceManager(InstallationApp.ResourceManager);
+            Localized.Instance.AddResourceManager(LoadLogin.ResourceManager);
+            Localized.Instance.AddResourceManager(MainMenu.ResourceManager);
+            Localized.Instance.AddResourceManager(MaintenanceMenu.ResourceManager);
+            Localized.Instance.AddResourceManager(Menu.ResourceManager);
+            Localized.Instance.AddResourceManager(OperatorApp.ResourceManager);
+            Localized.Instance.AddResourceManager(SensorCard.ResourceManager);
+            Localized.Instance.AddResourceManager(ServiceHealthProbe.ResourceManager);
+            Localized.Instance.AddResourceManager(ServiceMachine.ResourceManager);
+
+            Localized.Instance.CurrentCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion

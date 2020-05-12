@@ -112,6 +112,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
+        void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port);
+
         Bay SetBayActive(BayNumber bayNumber, bool active);
 
         void SetChainPosition(BayNumber bayNumber, double value);

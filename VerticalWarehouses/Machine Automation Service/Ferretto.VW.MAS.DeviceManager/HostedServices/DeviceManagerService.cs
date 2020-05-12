@@ -276,6 +276,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.PowerEnable:
                             case MessageType.InverterFaultReset:
                             case MessageType.ResetSecurity:
+                            case MessageType.InverterProgramming:
                             case MessageType.InverterPowerEnable:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
@@ -813,6 +814,23 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,
                                     MessageType.Positioning,
+                                    bayNumber,
+                                    bayNumber,
+                                    receivedMessage.Status));
+
+                        break;
+
+                    case FieldMessageType.InverterProgramming when receivedMessage.Source is FieldMessageActor.InverterDriver:
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage(
+                                    null,
+                                    receivedMessage.Description,
+                                    MessageActor.Any,
+                                    MessageActor.DeviceManager,
+                                    MessageType.InverterProgramming,
                                     bayNumber,
                                     bayNumber,
                                     receivedMessage.Status));

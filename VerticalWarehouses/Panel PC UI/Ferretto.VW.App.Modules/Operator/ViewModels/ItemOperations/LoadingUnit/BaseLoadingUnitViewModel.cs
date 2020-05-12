@@ -340,7 +340,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             else
             {
-                throw new Exception(string.Format(Resources.Errors.LoadingUnitViewModelPropertyIdentifier, nameof(this.Data), this.GetType().Name));
+                throw new Exception(string.Format(Resources.Localized.Get("General.LoadingUnitViewModelPropertyIdentifier"), nameof(this.Data), this.GetType().Name));
             }
 
             this.missionOperationToken = this.eventAggregator
@@ -379,23 +379,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadCompartmentsAsync();
 
             var lastCompartmentId = this.SelectedItemCompartment?.Id;
-            if (lastCompartmentId != null)
+            try
             {
-                this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
+                if (lastCompartmentId != null)
+                {
+                    this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
+                }
+                else if (this.Compartments.Count() == 1)
+                {
+                    this.SelectedCompartment = this.Compartments.First();
+                }
             }
-            else if (this.Compartments.Count() == 1)
+            catch (Exception ex)
             {
-                this.SelectedCompartment = this.Compartments.First();
             }
 
             var lastItemId = this.SelectedItemCompartment?.ItemId;
-            if (lastItemId != null)
+            try
             {
-                this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+                if (lastItemId != null)
+                {
+                    this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+                }
+                else if (this.Items.Count() == 1)
+                {
+                    this.SelectedItem = this.Items.First();
+                }
             }
-            else if (this.Items.Count() == 1)
+            catch (Exception ex)
             {
-                this.SelectedItem = this.Items.First();
             }
 
             await base.OnDataRefreshAsync();

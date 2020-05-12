@@ -13,15 +13,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Id(4)]
+            [Id(5)]
             [Unit("mm/s²")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Acceleration))]
             public double Acceleration { get; set; }
 
-            [Id(5)]
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.StepMovementParameters_AdjustByWeight))]
-            public bool AdjustByWeight { get; set; }
+            [Id(6)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.StepMovementParameters_AdjustAccelerationByWeight))]
+            public bool AdjustAccelerationByWeight { get; set; }
+
+            [Id(4)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.StepMovementParameters_AdjustSpeedByWeight))]
+            public bool AdjustSpeedByWeight { get; set; }
 
             [Id(1)]
             [Editable(false)]

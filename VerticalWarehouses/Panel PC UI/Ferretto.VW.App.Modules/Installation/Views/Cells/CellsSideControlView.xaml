@@ -29,7 +29,7 @@
         <TextBlock Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.CellsSideControlDescription}" />
+                   Text="{res:Loc InstallationApp.CellsSideControlDescription}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="0"
@@ -37,7 +37,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Top"
                              InputText="{Binding InputFormCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlInitialCell}" />
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
@@ -45,7 +45,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Top"
                              InputText="{Binding InputToCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlFinalCell}" />
 
 
         <controls:PpcTextBox Grid.Row="1"
@@ -54,7 +54,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
+                             LabelText="{res:Loc InstallationApp.CellsSideControlCorrection}" />
 
         <StackPanel Grid.Row="2"
                     Grid.Column="0"
@@ -63,7 +63,7 @@
 
             <controls:PpcLabeledText HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
-                                     LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}" />
+                                     LabelText="{res:Loc InstallationApp.CellsSideControlSelectedSide}" />
 
             <StackPanel Orientation="Horizontal">
 
@@ -72,14 +72,14 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Command="{Binding SideFrontCommand}"
-                                    Content="{x:Static res:InstallationApp.Front}"
+                                    Content="{res:Loc InstallationApp.Front}"
                                     IsActive="{Binding IsFrontActive}" />
 
                 <controls:PpcButton Width="110"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Command="{Binding SideBackCommand}"
-                                    Content="{x:Static res:InstallationApp.Rear}"
+                                    Content="{res:Loc InstallationApp.Rear}"
                                     IsActive="{Binding IsBackActive}" />
             </StackPanel>
 
@@ -91,7 +91,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding CorrectCommand}"
-                            Content="{x:Static res:InstallationApp.Correct}" />
+                            Content="{res:Loc InstallationApp.Correct}" />
 
     </Grid>
 </ctrls:View>

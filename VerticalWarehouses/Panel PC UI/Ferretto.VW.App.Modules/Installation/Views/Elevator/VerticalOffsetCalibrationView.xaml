@@ -40,13 +40,13 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.PlaceMeter}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.PlaceMeter}" /><Run Text=":" />
 
                     </TextBlock>
 
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.MoveElevatorToPlaceMeter}" />
+                               Text="{res:Loc InstallationApp.MoveElevatorToPlaceMeter}" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
@@ -54,7 +54,7 @@
                                     Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartPositionCommand}"
-                                    Content="{x:Static res:InstallationApp.MoveToQuote}"
+                                    Content="{res:Loc InstallationApp.MoveToQuote}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
@@ -64,19 +64,19 @@
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="{x:Static res:InstallationApp.StartQuote}"
+                                   LabelText="{res:Loc InstallationApp.StartQuote}"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.RemoveCarterRestore}" />
+                           Text="{res:Loc InstallationApp.RemoveCarterRestore}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
                                     Command="{Binding MoveToCellPositioningCommand}"
-                                    Content="{x:Static res:InstallationApp.Forwards}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
@@ -96,10 +96,10 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteCellMeasurement}" />
+                               Text="{res:Loc InstallationApp.ExecuteCellMeasurement}" />
 
                     <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteElevatorCellPositioning}" />
+                               Text="{res:Loc InstallationApp.ExecuteElevatorCellPositioning}" />
                 </StackPanel>
 
                 <Border Grid.Row="1"
@@ -136,7 +136,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{x:Static res:InstallationApp.CurrentCell}"
+                                           Text="{res:Loc InstallationApp.CurrentCell}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -171,7 +171,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{x:Static res:InstallationApp.InitialPosition}"
+                                           Text="{res:Loc InstallationApp.InitialPosition}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -206,7 +206,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{x:Static res:InstallationApp.CellSide}" />
+                                           Text="{res:Loc InstallationApp.CellSide}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -238,7 +238,7 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{x:Static res:InstallationApp.Displacement}"
+                                           Text="{res:Loc InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -270,7 +270,7 @@
                                        VerticalAlignment="Center"
                                        EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        IsEnabled="{Binding IsCanStartPosition}"
-                                       LabelText="{x:Static res:InstallationApp.SelectedCell}"
+                                       LabelText="{res:Loc InstallationApp.SelectedCell}"
                                        MaxValue="999"
                                        MinValue="1" />
 
@@ -280,7 +280,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToCellCommand}"
-                                        Content="{x:Static res:InstallationApp.MoveToQuote}"
+                                        Content="{res:Loc InstallationApp.MoveToQuote}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                 </Grid>
@@ -288,7 +288,7 @@
                 <TextBlock Grid.Row="3"
                            Margin="0,20,0,0"
                            Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.CorrectElevatorPositionNext}" />
+                           Text="{res:Loc InstallationApp.CorrectElevatorPositionNext}" />
 
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
@@ -304,7 +304,7 @@
                                        VerticalAlignment="Center"
                                        EditValue="{Binding StepValue, Mode=TwoWay}"
                                        IsEnabled="{Binding IsCanStepValue}"
-                                       LabelText="{x:Static res:InstallationApp.StepValue}"
+                                       LabelText="{res:Loc InstallationApp.StepValue}"
                                        Mask="###0.0" />
 
                     <controls:PpcButton Grid.Column="1"
@@ -312,7 +312,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Command="{Binding DisplacementCommand}"
-                                        Content="{x:Static res:InstallationApp.MoveElevator}"
+                                        Content="{res:Loc InstallationApp.MoveElevator}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Column="2"
@@ -320,7 +320,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToConfirmCommand}"
-                                        Content="{x:Static res:InstallationApp.NextLarge}"
+                                        Content="{res:Loc InstallationApp.NextLarge}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </Grid>
 
@@ -339,12 +339,12 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{x:Static res:InstallationApp.ConfirmNewOffset}" /><Run Text=":" />
+                        <Run Text="{res:Loc InstallationApp.ConfirmNewOffset}" /><Run Text=":" />
                     </TextBlock>
 
 
                     <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.VerifyConfirmWarn}" />
+                               Text="{res:Loc InstallationApp.VerifyConfirmWarn}" />
                 </StackPanel>
 
 
@@ -362,7 +362,7 @@
 
                         <TextBlock Margin="8,4"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static res:InstallationApp.NewOffset}" />
+                                   Text="{res:Loc InstallationApp.NewOffset}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="8,4"
@@ -377,7 +377,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding ApplyCorrectionCommand}"
-                                    Content="{x:Static res:General.Save}"
+                                    Content="{res:Loc General.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -396,11 +396,11 @@
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.ExecuteOriginCalibration}" />
+                               Text="{res:Loc InstallationApp.ExecuteOriginCalibration}" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{x:Static res:InstallationApp.RepeatOriginCalibration}" />
+                               Text="{res:Loc InstallationApp.RepeatOriginCalibration}" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
@@ -408,7 +408,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding StartOriginCalibrationCommand}"
-                                    Content="{x:Static res:InstallationApp.Start}"
+                                    Content="{res:Loc InstallationApp.Start}"
                                     IsBusy="{Binding IsExecutingProcedure}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
@@ -457,7 +457,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
+                       Text="{res:Loc InstallationApp.VerticalOffsetCalibration}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -468,7 +468,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
@@ -515,7 +515,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Style="{DynamicResource VWAPP_CardSensor}"
-                               Text="{x:Static res:InstallationApp.CurrentOffset}" />
+                               Text="{res:Loc InstallationApp.CurrentOffset}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -534,7 +534,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

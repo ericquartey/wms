@@ -139,7 +139,7 @@
                                            FontSize="{DynamicResource FontSize_Very_High}"
                                            FontWeight="Light"
                                            Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
-                                           Text="{x:Static res:General.NoRows}" />
+                                           Text="{res:Loc General.NoRows}" />
                             </StackPanel>
                         </Border>
                     </Grid>

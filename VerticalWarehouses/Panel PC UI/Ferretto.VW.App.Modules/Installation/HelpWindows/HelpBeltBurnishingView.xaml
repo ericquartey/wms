@@ -23,35 +23,35 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BeltBurnishing}" />
+                   Text="{res:Loc InstallationApp.BeltBurnishing}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,140,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="4500"
-                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
+                                 LabelText="{res:Loc InstallationApp.UpperBound}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,210,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="500"
-                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
+                                 LabelText="{res:Loc InstallationApp.LowerBound}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,280,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="3500"
-                                 LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="4500"
-                                 LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
+                                 LabelText="{res:Loc InstallationApp.PerformedCyclesThisSession}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,350,0,0"
@@ -59,17 +59,17 @@
                              VerticalAlignment="Top"
                              Highlighted="True"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+                             LabelText="{res:Loc InstallationApp.RequiredCycles}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{res:Loc InstallationApp.Start}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{res:Loc InstallationApp.Stop}" />
 
         <TextBlock Grid.Row="0"
                    Width="670"
@@ -78,7 +78,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingFunctionDescription}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -87,7 +87,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingUpLimit}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -96,7 +96,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingDownLimit}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingDownLimit}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -105,7 +105,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingActualPosition}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingActualPosition}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -114,7 +114,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingRequiredCycles}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingRequiredCycles}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -123,7 +123,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingCompletedCycles}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingCompletedCycles}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -132,7 +132,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingStartCycle}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingStartCycle}" />
 
         <TextBlock Grid.Row="0"
                    Width="260"
@@ -141,7 +141,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.BeltBurnishingStopCycle}" />
+                   Text="{res:Loc HelpDescriptions.BeltBurnishingStopCycle}" />
 
 
 

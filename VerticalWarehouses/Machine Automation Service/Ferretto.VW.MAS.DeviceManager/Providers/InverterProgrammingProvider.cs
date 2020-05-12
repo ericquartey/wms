@@ -24,6 +24,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public IEnumerable<InverterParametersData> GetInvertersParametersData(IEnumerable<Inverter> inverters)
+        {
+            var invertersParametersData = new List<InverterParametersData>();
+
+            foreach (var inv in inverters)
+            {
+                invertersParametersData.Add(new InverterParametersData((byte)inv.Index, this.GetShortInverterDescription(inv.Type, inv.IpAddress, inv.TcpPort), inv.Parameters));
+            }
+
+            return invertersParametersData;
+        }
+
         public void Start(VertimagConfiguration vertimagConfiguration, BayNumber requestingBay, MessageActor sender)
         {
             var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
@@ -105,7 +117,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
         {
-            return $"{type.ToString()} {ipAddress?.ToString()}:{tcpPort.ToString()}";
+            var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
+            var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
+            var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
+
+            return $"{type.ToString()} {ipPort}";
         }
 
         #endregion

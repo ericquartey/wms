@@ -28,7 +28,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WeightControl}" />
+                   Text="{res:Loc InstallationApp.WeightControl}" />
 
         <ctrls:PpcStepsMenu Grid.Row="1"
                             Grid.ColumnSpan="2"
@@ -40,7 +40,7 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  ContentText="{Binding WeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
+                                 LabelText="{res:Loc InstallationApp.AcceptableWeightTolerance}" />
 
         <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="1"
@@ -48,7 +48,7 @@
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              InputText="{Binding InputWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+                             LabelText="{res:Loc InstallationApp.InsertedWeight}" />
 
         <controls:PpcTextBox Grid.Row="3"
                              Grid.Column="0"
@@ -56,7 +56,7 @@
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              InputText="{Binding TestToRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.TestRun}" />
+                             LabelText="{res:Loc InstallationApp.TestRun}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
@@ -64,14 +64,14 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  ContentText="{Binding MeasuredWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.MeasuredWeight}" />
+                                 LabelText="{res:Loc InstallationApp.MeasuredWeight}" />
 
         <controls:PpcButton Grid.Row="4"
                             Margin="0,50,0,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding StopWeightCheckCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
+                            Content="{res:Loc InstallationApp.Stop}"
                             IsEnabled="{Binding IsSetStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <controls:PpcButton Grid.Row="4"
@@ -80,7 +80,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding StartWeightCheckCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
+                            Content="{res:Loc InstallationApp.Start}"
                             IsEnabled="{Binding IsSetBeginButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <controls:PpcLabeledText Grid.Row="5"
@@ -89,7 +89,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Output}" />
+                                 LabelText="{res:Loc InstallationApp.Output}" />
 
 
     </Grid>

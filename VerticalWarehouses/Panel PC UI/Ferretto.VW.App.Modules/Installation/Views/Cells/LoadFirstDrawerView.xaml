@@ -38,7 +38,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LoadFirstDrawerPageHeader}" />
+                       Text="{res:Loc InstallationApp.LoadFirstDrawerPageHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -47,7 +47,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpLFDDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -144,7 +144,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding LoadUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.LoadingUnitId}"
+                           LabelText="{res:Loc InstallationApp.LoadingUnitId}"
                            MaxValue="999"
                            MinValue="1" />
 
@@ -159,13 +159,13 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:General.Start}" />
+                                Content="{res:Loc General.Start}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:General.Stop}"
+                                Content="{res:Loc General.Stop}"
                                 IsBusy="{Binding IsStopPressed}" />
         </StackPanel>
 

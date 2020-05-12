@@ -23,17 +23,17 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDescription}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSide}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingSide}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactFront}" />
+                     Text="{res:Loc HelpDescriptions.HelpDrawerCompactingCompactFront}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
                   Content="{x:Static res:OperatorApp.DrawerCompactingAntCompact}"
@@ -61,22 +61,22 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingFragment}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingFragment}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSpaceRecoverable}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingSpaceRecoverable}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSpaceToRecover}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingSpaceToRecover}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactRear}" />
+                    Text="{res:Loc HelpDescriptions.HelpDrawerCompactingCompactRear}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                     Style="{StaticResource VWAPP_GeneralTextBlockStyle}"

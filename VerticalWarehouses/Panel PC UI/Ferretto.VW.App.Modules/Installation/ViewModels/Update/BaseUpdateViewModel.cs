@@ -101,15 +101,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.installations.Count == 0)
                 {
-                    return InstallationApp.NoInstallationFileFound;
+                    return Localized.Get("InstallationApp.NoInstallationFileFound");
                 }
 
                 if (this.installations.Count == 1)
                 {
-                    return InstallationApp.OneInstallationFileFound;
+                    return Localized.Get("InstallationApp.OneInstallationFileFound");
                 }
 
-                return string.Format(InstallationApp.InstallationFileFound, this.installations.Count);
+                return string.Format(Localized.Get("InstallationApp.InstallationFileFound"), this.installations.Count);
             }
         }
 

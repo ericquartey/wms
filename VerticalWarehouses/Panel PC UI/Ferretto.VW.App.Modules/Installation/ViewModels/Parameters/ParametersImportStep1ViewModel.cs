@@ -36,10 +36,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (string.IsNullOrEmpty(this.ExistingPath))
                 {
-                    return string.Format(InstallationApp.InsertDeviceWithFileConfiguration, this.FileName);
+                    return string.Format(Localized.Get("InstallationApp.InsertDeviceWithFileConfiguration"), this.FileName);
                 }
 
-                return InstallationApp.DeviceFileFound;
+                return Localized.Get("InstallationApp.DeviceFileFound");
             }
         }
 
@@ -81,7 +81,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (configuration is null)
                 {
-                    this.ShowNotification(InstallationApp.FileReadError, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Localized.Get("InstallationApp.FileReadError"), Services.Models.NotificationSeverity.Error);
                     this.IsBusy = false;
                     return;
                 }

@@ -38,7 +38,7 @@
             <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.MoveLoadingUnitFromCellToBay}" />
+                       Text="{res:Loc InstallationApp.MoveLoadingUnitFromCellToBay}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -47,7 +47,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.MoveLoadingUnitFromCellToBayDescription}" />
+                   Text="{res:Loc InstallationApp.MoveLoadingUnitFromCellToBayDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -118,7 +118,7 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}"
+                           LabelText="{res:Loc InstallationApp.InsertDesiredLoadingUnitId}"
                            MinValue="1" />
 
         <TextBlock Grid.Row="4"
@@ -128,7 +128,7 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
-                   Text="{x:Static res:InstallationApp.MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition}"
+                   Text="{res:Loc InstallationApp.MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition}"
                    TextWrapping="Wrap">
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
@@ -175,14 +175,14 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionDownCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                Content="{res:Loc InstallationApp.BayPositionDown}"
                                 IsActive="{Binding IsPositionDownSelected}" />
 
             <controls:PpcButton Margin="0,0,15,15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionUpCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                Content="{res:Loc InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}"
                                 Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
@@ -194,7 +194,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Command="{Binding LoadingUnitsCommand}"
-                            Content="{x:Static res:InstallationApp.MoveLoadingUnitFromCellToBayDrawerManagement}" />
+                            Content="{res:Loc InstallationApp.MoveLoadingUnitFromCellToBayDrawerManagement}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="1"
@@ -207,19 +207,19 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmEjectLoadingUnitCommand}"
-                                Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}" />
+                                Content="{res:Loc InstallationApp.ConfirmEjectLoadingUnit}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}" />
+                                Content="{res:Loc InstallationApp.Start}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}"
+                                Content="{res:Loc InstallationApp.Stop}"
                                 IsBusy="{Binding IsStopping}" />
 
         </StackPanel>

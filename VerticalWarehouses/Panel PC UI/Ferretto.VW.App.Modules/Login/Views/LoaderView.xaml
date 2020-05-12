@@ -19,7 +19,7 @@
                    gif:ImageBehavior.AutoStart="true" />
             <TextBlock HorizontalAlignment="Center"
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.InitializingWithEllipsis}" />
+                       Text="{res:Loc InstallationApp.InitializingWithEllipsis}" />
 
             <TextBlock Margin="0,60,0,0"
                        HorizontalAlignment="Center"

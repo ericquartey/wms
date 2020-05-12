@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
+                   Text="{res:Loc InstallationApp.VerticalOffsetCalibration}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -30,7 +30,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCDescription}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCSelectedCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCSelectedCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -46,7 +46,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCGoToCell}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCGoToCell}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,210,0,0"
@@ -55,14 +55,14 @@
                              Highlighted="True"
                              InputText="1025,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
+                             LabelText="{res:Loc InstallationApp.ReferenceCellHeight}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1023,5"
-                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentHeight}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,280,0,0"
@@ -71,14 +71,14 @@
                              Highlighted="True"
                              InputText="0,5"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.StepValue}" />
+                             LabelText="{res:Loc InstallationApp.StepValue}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="145,0"
-                                 LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentOffset}" />
 
         <controls:PpcTextBox Width="180"
                              Margin="20,490,0,0"
@@ -87,30 +87,30 @@
                              Highlighted="True"
                              InputText="148,0"
                              IsEnabled="True"
-                             LabelText="{x:Static res:InstallationApp.CorrectOffset}" />
+                             LabelText="{res:Loc InstallationApp.CorrectOffset}" />
 
         <controls:PpcButton Margin="530,140,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                            Content="{res:Loc InstallationApp.GoToInitialPosition}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Up}"
+                            Content="{res:Loc InstallationApp.Up}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,280,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.Down}"
+                            Content="{res:Loc InstallationApp.Down}"
                             IsEnabled="True" />
 
         <controls:PpcButton Margin="530,350,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.DoCorrectOffset}"
+                            Content="{res:Loc InstallationApp.DoCorrectOffset}"
                             IsEnabled="True" />
 
         <controls:PpcLabeledText Width="180"
@@ -118,7 +118,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="12"
-                                 LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+                                 LabelText="{res:Loc InstallationApp.CurrentCell}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -126,7 +126,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCCellPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCCellPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -134,7 +134,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCStepValue}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCStepValue}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -142,7 +142,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCActualPosition}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCActualPosition}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -150,7 +150,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCActualOffset}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCActualOffset}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -158,7 +158,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCAdjustedOffset}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCAdjustedOffset}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -166,7 +166,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCStepPiu}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCStepPiu}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -174,7 +174,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCStepMeno}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCStepMeno}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -182,7 +182,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpVOCApplyCorrection}" />
+                   Text="{res:Loc HelpDescriptions.HelpVOCApplyCorrection}" />
 
     </Grid>
 </UserControl>

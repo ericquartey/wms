@@ -270,9 +270,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 && !machineProvider.StopTest
                 )
             {
-                missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
-                machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
-                machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                try
+                {
+                    missionSchedulingProvider.QueueBayMission(loadUnitId.Value, machineProvider.BayTestNumber, MissionType.FullTestOUT);
+                    machineProvider.ExecutedCycles = machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value];
+                    machineProvider.LoadUnitsExecutedCycles[loadUnitId.Value]++;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber, ex.Message);
+                }
             }
             else
             {
@@ -584,6 +591,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     newStep.OnEnter(null);
                 }
             }
+
+            foreach (var bay in bayProvider.GetAll().Where(w => w.CurrentMission != null))
+            {
+                if (!missions.Any(m => m.Id == bay.CurrentMission.Id && m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted))
+                {
+                    bayProvider.ClearMission(bay.Number);
+                }
+            }
         }
 
         private bool GenerateHoming(IBaysDataProvider bayProvider)
@@ -608,7 +623,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 if (bayNumber != BayNumber.None)
                 {
-                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
+                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
+                        Calibration.FindSensor,
+                        loadingUnitId: null,
+                        showErrors: true);
 
                     this.EventAggregator
                         .GetEvent<CommandEvent>()
@@ -627,7 +645,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!generated && !this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
             {
-                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
+                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
+                    Calibration.FindSensor,
+                    loadingUnitId: null,
+                    showErrors: true);
 
                 this.EventAggregator
                     .GetEvent<CommandEvent>()
@@ -967,14 +988,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (message.Status == MessageStatus.OperationError)
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
+
                     if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                     {
-                        this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; //MachineMode.Automatic;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                     else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                     {
-                        this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; // MachineMode.LoadUnitOperations;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                 }

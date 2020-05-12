@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="code">The error code id.</param>
         /// <param name="bayNumber">The bay number.</param>
         /// <returns></returns>
-        public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
+        public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null)
         {
             var newError = new MachineError
             {
@@ -134,7 +134,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 OccurrenceDate = DateTime.Now,
                 InverterIndex = 0,
                 DetailCode = 0,
-                BayNumber = bayNumber
+                BayNumber = bayNumber,
+                AdditionalText = additionalText
             };
 
             lock (this.dataContext)

@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (this.HasFilenameConflict && this.OverwriteTargetFile)
                 {
                     var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                    var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmFileOverwrite, InstallationApp.FileIsAlreadyPresent, DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmFileOverwrite"), Localized.Get("InstallationApp.FileIsAlreadyPresent"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult != DialogResult.Yes)
                     {
                         return;
@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;
-                this.ShowNotification(InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("InstallationApp.ExportSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             if (!drives.Any())
             {
-                this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
 
                 // no need to await for this
                 this.NavigationService.GoBackSafelyAsync();

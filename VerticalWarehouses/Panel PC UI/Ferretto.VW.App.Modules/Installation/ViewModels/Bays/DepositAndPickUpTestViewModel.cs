@@ -404,17 +404,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.NewErrorValue):
                         if (!this.NewErrorValue.HasValue)
                         {
-                            return InstallationApp.MissValue;
+                            return Localized.Get("InstallationApp.MissValue");
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
                         {
-                            return InstallationApp.DataBePositive;
+                            return Localized.Get("InstallationApp.DataBePositive");
                         }
 
                         if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
                         {
-                            return InstallationApp.MaxValue9;
+                            return Localized.Get("InstallationApp.MaxValue9");
                         }
 
                         break;
@@ -424,7 +424,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
-                            return VW.App.Resources.InstallationApp.InvalidDrawerSelected;
+                            return VW.App.Resources.Localized.Get("InstallationApp.InvalidDrawerSelected");
                         }
 
                         break;
@@ -805,13 +805,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmCalibrationProcedure, InstallationApp.EmbarkDisembarkMenuTitle, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.EmbarkDisembarkMenuTitle"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineElevatorWebService.SetDepositAndPickUpTestCompletedAsync();
 
                     this.ShowNotification(
-                            VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                            VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                             Services.Models.NotificationSeverity.Success);
                 }
 
@@ -839,7 +839,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.IsErrored())
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
                 this.IsExecutingProcedure = false;
             }
 
@@ -864,7 +864,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Status == MessageStatus.OperationEnd &&
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
-                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;
 
@@ -949,7 +949,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (totalCyclesToPerform <= 0)
                 {
                     this.isCompleted = true;
-                    this.ShowNotification(InstallationApp.RequiredCyclesCompleted, Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.RequiredCyclesCompleted"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

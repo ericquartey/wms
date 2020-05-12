@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,9 +66,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public ActionResult<IEnumerable<Inverter>> GetParameters()
+        public ActionResult<IEnumerable<InverterParametersData>> GetParameters()
         {
-            return this.Ok(this.inverterProvider.GetAllParameters());
+            return this.Ok(this.inverterStateProvider.GetInvertersParametersData(this.inverterProvider.GetAllParameters()));
         }
 
         [HttpPost("inverters/program")]

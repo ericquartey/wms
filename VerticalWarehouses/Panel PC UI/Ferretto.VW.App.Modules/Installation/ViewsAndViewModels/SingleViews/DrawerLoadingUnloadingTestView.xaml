@@ -17,54 +17,54 @@
         <TextBlock Margin="200,30,0,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.DLUTestHeader}" />
+                   Text="{res:Loc InstallationApp.DLUTestHeader}" />
 
         <controls:PpcTextBox Margin="200,270,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0,5'}"
-                             LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
+                             LabelText="{res:Loc InstallationApp.DLUTestFeedRate}" />
 
 
         <controls:PpcLabeledText Margin="420,370,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="12"
-                                 LabelText="{x:Static res:InstallationApp.DLUTestCompletedCycles}" />
+                                 LabelText="{res:Loc InstallationApp.DLUTestCompletedCycles}" />
         <!--  ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
         <controls:PpcLabeledText Margin="200,370,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
+                                 LabelText="{res:Loc InstallationApp.DLUTestActualposition}" />
 
         <controls:PpcTextBox Margin="420,270,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}" />
+                             LabelText="{res:Loc InstallationApp.DLUTestCycleRequired}" />
 
         <controls:PpcButton Margin="640,120,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.MoveToPosition}" />
+                            Content="{res:Loc InstallationApp.MoveToPosition}" />
 
         <controls:PpcButton Margin="420,510,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.DLUTestStop}" />
+                            Content="{res:Loc InstallationApp.DLUTestStop}" />
 
         <controls:PpcButton Margin="640,510,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:InstallationApp.DLUTestStart}" />
+                            Content="{res:Loc InstallationApp.DLUTestStart}" />
 
         <controls:PpcTextBox Margin="420,120,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.BayHeightCheckSelectedPosition}" />
+                             LabelText="{res:Loc InstallationApp.BayHeightCheckSelectedPosition}" />
 
     </Grid>
 </ctrls:View>

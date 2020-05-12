@@ -29,12 +29,12 @@
             <StackPanel>
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ToggleThemeCommand}"
-                                    Content="{x:Static res:General.ChangeTheme}"
+                                    Content="{res:Loc General.ChangeTheme}"
                                     Visibility="Collapsed" />
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding LogOutCommand}"
-                                    Content="{x:Static res:InstallationApp.LogOff}" />
+                                    Content="{res:Loc InstallationApp.LogOff}" />
             </StackPanel>
         </Popup>
     </Grid>

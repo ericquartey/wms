@@ -49,7 +49,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
+                   Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
@@ -244,7 +244,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding CompactingStopCommand}"
-                                Content="{x:Static Resources:General.Stop}"
+                                Content="{Resources:Loc General.Stop}"
                                 IsBusy="{Binding IsStopPressed}" />
         </StackPanel>
 
