@@ -154,14 +154,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
-                    this.ShowNotification(Resources.LoadLogin.ServiceInitialization);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ServiceInitialization"));
 
                     break;
 
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
 
-                    this.ShowNotification(Resources.LoadLogin.ConnectionEstablished, Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionEstablished"), Services.Models.NotificationSeverity.Success);
 
                     try
                     {
@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowNotification(Resources.LoadLogin.ConnectionNotPossible, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionNotPossible"), Services.Models.NotificationSeverity.Error);
                     break;
             }
         }
