@@ -384,47 +384,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            switch (this.CurrentStep)
-            {
-                case CellPanelsCheckStep.Inizialize:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = CellPanelsCheckStep.Measured;
-                    }
-
-                    break;
-
-                case CellPanelsCheckStep.Measured:
-                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
-                    {
-                        this.CurrentPanelNumber++;
-
-                        this.RaiseCanExecuteChanged();
-                    }
-                    else if (e.Back && this.CurrentPanelNumber > 1)
-                    {
-                        this.CurrentPanelNumber--;
-
-                        this.RaiseCanExecuteChanged();
-                    }
-                    else if (e.Back && this.CurrentPanelNumber == 1)
-                    {
-                        this.CurrentStep = CellPanelsCheckStep.Inizialize;
-                    }
-
-                    this.Displacement = 0;
-
-                    break;
-
-                default:
-                    break;
-            }
-
-            this.RaiseCanExecuteChanged();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -552,6 +511,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CurrentCell = this.CurrentPanel?.Cells
                 .Where(w => w.BlockLevel.Equals(BlockLevel.None))
                 .FirstOrDefault(f => f.Id == this.currentCellId);
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                    }
+
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber > 1)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber == 1)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Inizialize;
+                    }
+
+                    this.Displacement = 0;
+
+                    break;
+
+                default:
+                    break;
+            }
+
             this.RaiseCanExecuteChanged();
         }
 

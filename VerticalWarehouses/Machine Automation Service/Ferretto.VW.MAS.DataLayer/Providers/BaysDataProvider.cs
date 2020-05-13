@@ -902,7 +902,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.AlphaNumericBar)
                         .Single(b => b.Number == bayNumber);
 
-                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled ? "true" : "false";
+                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled;
                 barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
 
@@ -999,6 +999,28 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
+        }
+
+        public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
+        {
+            if (portName is null)
+            {
+                throw new ArgumentNullException(nameof(portName));
+            }
+
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.BarcodeReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.PortName = portName;
+
+                this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void UpdateELevatorDistance(BayNumber bayNumber, double distance)

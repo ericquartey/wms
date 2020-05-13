@@ -40,35 +40,37 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             get
             {
-                if (this.dataLayerService.IsReady)
+                if (!this.dataLayerService.IsReady)
                 {
-                    lock (this.dataContext)
-                    {
-                        return this.dataContext.WmsSettings.Single().IsEnabled;
-                    }
+                    return false;
                 }
 
-                return false;
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.Single().IsEnabled;
+                }
             }
             set
             {
-                if (this.dataLayerService.IsReady)
+                if (!this.dataLayerService.IsReady)
                 {
-                    lock (this.dataContext)
-                    {
-                        var settings = this.dataContext.WmsSettings.Single();
+                    return;
+                }
 
-                        settings.IsEnabled = value;
-                        if (this.dataContext.SaveChanges() > 0)
-                        {
-                            this.eventAggregator
-                                .GetEvent<NotificationEvent>()
-                                .Publish(
-                                    new CommonUtils.Messages.NotificationMessage
-                                    {
-                                        Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
-                                    });
-                        }
+                lock (this.dataContext)
+                {
+                    var settings = this.dataContext.WmsSettings.Single();
+
+                    settings.IsEnabled = value;
+                    if (this.dataContext.SaveChanges() > 0)
+                    {
+                        this.eventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new CommonUtils.Messages.NotificationMessage
+                                {
+                                    Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
+                                });
                     }
                 }
             }

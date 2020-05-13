@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
-            return Math.Ceiling(beltElongation + shaftTorsion);
+            return beltElongation + shaftTorsion;
         }
 
         public int ComputePositioningValues(
@@ -363,10 +363,15 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var targetPositionMeters = targetPosition / 1000.0;
 
+            var rigidityMeters = properties.BeltRigidity / 1000.0;
+
             return
-                  5000.0 * grossWeight
-                /
-                ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
+                grossWeight /
+                (2 * (
+                    (rigidityMeters / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters + 0.504))
+                        + (rigidityMeters / (10 * targetPositionMeters))
+                    )
+                );
         }
 
         /// <summary>

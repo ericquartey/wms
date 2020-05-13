@@ -1,0 +1,135 @@
+<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.BarcodeReaderConfigurationView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            UseLayoutRounding="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="30,0,15,0">
+
+        <Grid.Resources>
+            <DataTemplate x:Key="BarcodeItemTemplate">
+                <StackPanel Margin="0,0,0,30"
+                            Orientation="Horizontal">
+                    <Border Width="40"
+                            Height="40"
+                            Margin="15"
+                            Background="{StaticResource FerrettoBlue}"
+                            CornerRadius="20">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   FontWeight="DemiBold"
+                                   Foreground="White"
+                                   Text="{Binding Number}" />
+                    </Border>
+                    <Border Padding="20,20,20,5"
+                            Background="White">
+                        <StackPanel Orientation="Vertical">
+                            <Image Width="280"
+                                   Source="{Binding Barcode}" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="DemiBold"
+                                       Text="{Binding Title}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="Title"
+                           Height="Auto" />
+            <RowDefinition x:Name="Instructions"
+                           Height="Auto" />
+            <RowDefinition x:Name="SystemPortsTitle"
+                           Height="Auto" />
+            <RowDefinition x:Name="SystemPorts"
+                           Height="*" />
+            <RowDefinition x:Name="Refresh" />
+
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}"
+                   TextWrapping="WrapWithOverflow" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Margin="0,0,0,15"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
+
+        <ListView Grid.Row="2"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Focusable="False"
+                  ItemTemplate="{StaticResource BarcodeItemTemplate}"
+                  ItemsSource="{Binding BarcodeSteps}" />
+
+
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1">
+            <StackPanel Height="140"
+                        Margin="0,0,0,30"
+                        Orientation="Horizontal">
+                <Border Width="40"
+                        Height="40"
+                        Margin="15"
+                        Background="{StaticResource FerrettoBlue}"
+                        CornerRadius="20">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="DemiBold"
+                               Foreground="White"
+                               Text="4" />
+                </Border>
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                           Text="Refresh System Ports" />
+                <controls:PpcButton Margin="40,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding RefreshSystemPortsCommand}"
+                                    Content="{x:Static res:General.Refresh}" />
+            </StackPanel>
+
+            <ListView Grid.Row="3"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      Focusable="False"
+                      ItemsSource="{Binding PortNames}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="10"
+                                Background="Gray"
+                                CornerRadius="5">
+                            <TextBlock Text="{Binding .}" />
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+    </Grid>
+</ctrls:View>

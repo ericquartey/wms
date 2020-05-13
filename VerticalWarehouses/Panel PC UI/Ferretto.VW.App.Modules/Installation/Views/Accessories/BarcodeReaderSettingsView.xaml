@@ -1,0 +1,139 @@
+<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.BarcodeReaderSettingsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            UseLayoutRounding="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="30,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="Title"
+                           Height="100" />
+            <RowDefinition x:Name="DeviceInfo1" />
+            <RowDefinition x:Name="DeviceInfo2" />
+            <RowDefinition x:Name="EnableAndPort"
+                           Height="100" />
+            <RowDefinition x:Name="SystemPortsTitle"
+                           Height="Auto" />
+            <RowDefinition x:Name="SystemPorts"
+                           Height="*" />
+            <RowDefinition x:Name="Configure"
+                           Height="Auto" />
+            <RowDefinition x:Name="Save"
+                           Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 ContentText="{Binding FirmwareVersion}"
+                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 ContentText="{Binding ModelNumber}"
+                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 ContentText="{Binding ManufactureDate}"
+                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 ContentText="{Binding SerialNumber}"
+                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal">
+            <controls:PpcCheckBox Margin="0,0,70,0"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding IsAccessoryEnabled}"
+                                  LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+
+            <controls:PpcTextBox VerticalAlignment="Center"
+                                 InputText="{Binding PortName, Mode=TwoWay}"
+                                 LabelText="{x:Static res:InstallationApp.SerialPortName}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="4"
+                   Margin="0,0,0,15"
+                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.SystemPorts}" />
+
+        <StackPanel Grid.Row="5"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVIC}}">
+            <icon:PackIconMaterial Width="24"
+                                   Height="24"
+                                   Margin="0,0,15,0"
+                                   Foreground="Gold"
+                                   Kind="Alert" />
+            <TextBlock FontSize="18"
+                       Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.NoSerialPortDetected}" />
+        </StackPanel>
+
+        <ItemsControl Grid.Row="5"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding PortNames}"
+                      Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVC}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="5"
+                            Background="Gray"
+                            CornerRadius="5">
+                        <TextBlock Text="{Binding .}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="2"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ConfigureDeviceCommand}"
+                            Content="{x:Static res:InstallationApp.ConfigureDevice}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+
+
+        <TextBlock Grid.Row="6"
+                   Grid.ColumnSpan="2"
+                   VerticalAlignment="Center"
+                   FontSize="18"
+                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.ConfigureBarcodeReaderHint}" />
+
+        <controls:PpcButton Grid.Row="7"
+                            Grid.Column="2"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding SaveCommand}"
+                            Content="{x:Static res:General.Save}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+    </Grid>
+</ctrls:View>

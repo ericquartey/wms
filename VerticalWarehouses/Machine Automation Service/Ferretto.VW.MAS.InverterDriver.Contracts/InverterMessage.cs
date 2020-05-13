@@ -107,6 +107,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.heartbeatMessage = false;
         }
 
+        public InverterMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
+        {
+            this.BuildWriteMessage(systemIndex, parameterId, payload, dataSetIndex, sendDelay);
+        }
+
         public InverterMessage(byte systemIndex, short parameterId, object payload, InverterDataset dataSetIndex = InverterDataset.ActualDataset, int sendDelay = 0)
         {
             this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);

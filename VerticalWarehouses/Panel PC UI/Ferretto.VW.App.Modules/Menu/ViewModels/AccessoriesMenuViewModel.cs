@@ -51,6 +51,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public bool IsAlphaNumericBarAvailable
         {
             get => this.isAlphaNumericBarAvailable;

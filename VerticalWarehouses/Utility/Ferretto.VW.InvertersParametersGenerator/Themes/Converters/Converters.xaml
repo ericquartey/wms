@@ -12,5 +12,6 @@
     <conv:BooleanNegationConverter x:Key="BNC" />
     <conv:BusyToCursorConverter x:Key="BTCC" />
     <conv:BusyToCursorConverter x:Key="BTCIC" Invert="True" />
+    <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
 
 </ResourceDictionary>

@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Windows.Documents;
+using System.IO;
 using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Properties;
+using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
@@ -12,11 +15,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly bool isSuccessful;
+        private RelayCommand exportCommand;
 
-        private RelayCommand endCommand;
-
-        private FlowDocument selectedStepLog = new FlowDocument();
+        private string vertimagConfigurationFilePath;
 
         #endregion
 
@@ -31,31 +32,51 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Properties
 
-        public ICommand EndCommand =>
-            this.endCommand
-            ??
-            (this.endCommand = new RelayCommand(this.Export, this.CanClose));
+        public ICommand ExportCommand =>
+                        this.exportCommand
+                        ??
+                        (this.exportCommand = new RelayCommand(this.Export));
 
-        public bool IsSuccessful => this.isSuccessful;
+        public bool IsSuccessful => true;
 
-        public FlowDocument SelectedStepLog
+        public string VertimagConfigurationFilePath
         {
-            get => this.selectedStepLog;
-            set => this.SetProperty(ref this.selectedStepLog, value);
+            get => this.vertimagConfigurationFilePath;
+            set => this.SetProperty(ref this.vertimagConfigurationFilePath, value);
         }
 
         #endregion
 
         #region Methods
 
-        private bool CanClose()
-        {
-            return true;
-        }
-
         private void Export()
         {
-            this.configurationService.Export();
+            try
+            {
+                var resultFile = DialogService.SaveFile(Resources.SaveFileConfiguration, this.vertimagConfigurationFilePath, "json", Resources.ConfigurationFile);
+
+                if (!string.IsNullOrEmpty(resultFile))
+                {
+                    var settings = new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented,
+                        ContractResolver = new Models.OrderedContractResolver(),
+                        Converters = new JsonConverter[]
+                        {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        },
+                    };
+                    var json = JsonConvert.SerializeObject(this.configurationService.VertimagConfiguration, settings);
+
+                    File.WriteAllText(resultFile, json);
+                    this.configurationService.ShowNotification(Resources.ExportedSuccessfully);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.configurationService.ShowNotification(ex);
+            }
         }
 
         #endregion

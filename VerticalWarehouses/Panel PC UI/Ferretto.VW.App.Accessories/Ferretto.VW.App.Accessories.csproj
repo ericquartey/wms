@@ -3,7 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Barcode\Resources\*.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -13,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -27,6 +32,10 @@
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.BarcodeReader.Newland\Ferretto.VW.Devices.BarcodeReader.Newland.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Barcode\Resources\*.png" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

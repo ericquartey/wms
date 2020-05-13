@@ -7,6 +7,7 @@
     <StartupObject>Ferretto.VW.Simulator.App</StartupObject>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
   </ItemGroup>

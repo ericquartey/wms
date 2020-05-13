@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -13,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.Devices\Ferretto.VW.Devices.csproj" />
   </ItemGroup>
 
 </Project>

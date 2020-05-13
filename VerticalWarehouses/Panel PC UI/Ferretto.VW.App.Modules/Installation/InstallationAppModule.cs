@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Installation
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<AlphaNumericBarSettingsView>();
+            containerRegistry.RegisterForNavigation<BarcodeReaderSettingsView>();
+            containerRegistry.RegisterForNavigation<BarcodeReaderConfigurationView>();
 
             containerRegistry.RegisterForNavigation<BayCheckView>();
             containerRegistry.RegisterForNavigation<DepositAndPickUpTestView>();

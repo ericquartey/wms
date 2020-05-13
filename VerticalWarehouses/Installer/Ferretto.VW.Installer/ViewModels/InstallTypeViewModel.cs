@@ -123,10 +123,6 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public virtual string Title { get; set; }
 
-        //protected IOpenFileDialogService OpenFileDialogService { get { return this.ServiceContainer.GetService<IOpenFileDialogService>(); } }
-
-        //protected ISaveFileDialogService SaveFileDialogService { get { return this.ServiceContainer.GetService<ISaveFileDialogService>(); } }
-
         #endregion
 
         #region Methods

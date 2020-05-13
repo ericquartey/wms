@@ -129,6 +129,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
 
+        void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName);
+
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);

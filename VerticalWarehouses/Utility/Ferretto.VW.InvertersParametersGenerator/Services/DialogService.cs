@@ -93,6 +93,38 @@ namespace Ferretto.VW.InvertersParametersGenerator.Service
             return null;
         }
 
+        public static string SaveFile(string title, string fineName, string defaultExtension, string extDescription)
+        {
+            Filters<string, string> extFilters = null;
+
+            if (string.IsNullOrEmpty(defaultExtension))
+            {
+                defaultExtension = "*";
+            }
+
+            if (extDescription != null)
+            {
+                extFilters = new Filters<string, string>();
+                extFilters.Add(defaultExtension, extDescription);
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.Title = title;
+            //dialog.FileName = fineName; // "Document"; // Default file name
+            //dialog.DefaultExt = extension; // ".txt"; // Default file extension
+            //dialog.Filter = filter; //"Text documents (.txt)|*.txt"; // Filter files by extension
+
+            SetDialogProperties(dialog, defaultExtension, fineName, extFilters);
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                return dialog.FileName;
+            }
+
+            return null;
+        }
+
         private static string GetExtension(string extension)
         {
             extension = extension.Trim();

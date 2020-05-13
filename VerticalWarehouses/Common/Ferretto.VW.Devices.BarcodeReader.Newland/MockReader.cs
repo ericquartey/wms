@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public class MockReader : IBarcodeReaderDriver, IDisposable
+    public class MockReader : IBarcodeReaderDriver, IQueryableDevice, IDisposable
     {
         #region Fields
 
@@ -51,6 +51,18 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
         #region Events
 
         public event EventHandler<ActionEventArgs> BarcodeReceived;
+
+        #endregion
+
+        #region Properties
+
+        public DeviceInformation Information => new DeviceInformation
+        {
+            FirmwareVersion = "0.0.0.1-Mock",
+            ModelNumber = "Newland 1553",
+            ManufactureDate = DateTime.Now.Subtract(TimeSpan.FromDays(95)),
+            SerialNumber = "1023841985"
+        };
 
         #endregion
 

@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                     this.currentParametersPosition++;
                     var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
 
-                    var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
+                    var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (byte)parameter.DataSet);
                     _ = data.ToBytes();
 
                     this.ParentStateMachine.EnqueueCommandMessage(data);
