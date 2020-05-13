@@ -145,4 +145,47 @@
   <data name="Test" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>No parameters files found</value>
+    <comment>Description</comment>
+  </data>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Inverter {0} type {0} parameters configuration</value>
+    <comment>Title</comment>
+  </data>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>Total parameters {0}</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Type</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Value</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Is readonly</value>
+    <comment>Column header text</comment>
+  </data>
+  <data name="EsportConfigurationFile" xml:space="preserve">
+    <value>Export configuration file</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Export File</value>
+  </data>
 </root>

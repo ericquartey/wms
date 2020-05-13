@@ -798,6 +798,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 77,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -917,7 +922,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Type");
 
-                    b.Property<int>("Value");
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 

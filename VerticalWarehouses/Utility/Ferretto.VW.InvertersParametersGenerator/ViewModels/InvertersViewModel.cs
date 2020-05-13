@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Windows.Input;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
@@ -19,7 +18,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly bool isSuccessful;
 
-        private IEnumerable<InverterParametersData> invertersParameters;
+        private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         private bool isBusy;
 
@@ -34,14 +33,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         public InvertersViewModel(ConfigurationService installationService)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
-            this.LoadCOnfiguration();
+            this.LoadConfiguration();
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<InverterParametersData> InvertersParameters => this.invertersParameters;
+        public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
 
         public bool IsBusy
         {
@@ -78,15 +77,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return !this.IsBusy;
         }
 
-        private IEnumerable<InverterParametersData> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
+        private IEnumerable<InverterParametersDataInfo> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
         {
-            var inverterParametersData = new List<InverterParametersData>();
+            var inverterParametersData = new List<InverterParametersDataInfo>();
 
             foreach (var axe in vertimagConfiguration.Machine.Elevator.Axes)
             {
                 if (!(axe.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersData((byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(axe.Inverter.Type, (byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
                 }
             }
 
@@ -94,7 +93,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 if (!(bay.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersData((byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
                 }
             }
 
@@ -114,7 +113,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return $"{type.ToString()} {ipPort}";
         }
 
-        private void LoadCOnfiguration()
+        private void LoadConfiguration()
         {
             try
             {
@@ -139,6 +138,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void Next()
         {
+            this.configurationService.SetInvertersConfiguration(this.invertersParameters);
             this.configurationService.SetWizard(WizardMode.Parameters);
         }
 

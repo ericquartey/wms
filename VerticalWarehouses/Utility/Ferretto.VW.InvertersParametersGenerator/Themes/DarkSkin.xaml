@@ -2,8 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/Dark/DarkTheme.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/DarkVarious.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/DarkSkinGeneral.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/Dark/DarkTheme.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/Styles/Palette.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/Styles/LightSkinGeneral.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.InvertersParametersGenerator;Component/Themes/Styles/General.xaml" />
