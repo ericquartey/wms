@@ -28,7 +28,7 @@
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="WindowStyle" Value="SingleBorderWindow" />
     </Style>
 
     <Style x:Key="TextBoxConsoleStyle"

@@ -93,9 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             weight = 0;
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnit is null
-                || loadingUnit.GrossWeight <= loadingUnit.Tare
-                )
+            if (loadingUnit is null)
             {
                 return 0;
             }
@@ -103,7 +101,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var shaftTorsion = this.ComputeShaftTorsion(loadingUnit.GrossWeight);
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
-            return Math.Ceiling(beltElongation + shaftTorsion);
+            return beltElongation + shaftTorsion;
         }
 
         public int ComputePositioningValues(
@@ -342,10 +340,15 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var targetPositionMeters = targetPosition / 1000.0;
 
+            var rigidityKgMeters = properties.BeltRigidity / 10000.0;
+
             return
-                  5000.0 * grossWeight
-                /
-                ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
+                grossWeight /
+                (2 * (
+                    (rigidityKgMeters / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters + 0.504))
+                        + (rigidityKgMeters / (10 * targetPositionMeters))
+                    )
+                );
         }
 
         /// <summary>

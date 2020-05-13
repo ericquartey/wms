@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200511124656_DeviceInfo")]
+    partial class DeviceInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<bool>("IsConfigured");
+                    b.Property<string>("IsConfigured");
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<string>("IsEnabled");
 
                     b.HasKey("Id");
 
@@ -798,11 +800,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 77,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -922,7 +919,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Type");
 
-                    b.Property<string>("Value");
+                    b.Property<int>("Value");
 
                     b.HasKey("Id");
 
@@ -1069,8 +1066,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AdditionalText");
 
                     b.Property<int>("BayNumber");
 
@@ -1660,9 +1655,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
-                    b.Property<bool>("AdjustAccelerationByWeight");
-
-                    b.Property<bool>("AdjustSpeedByWeight");
+                    b.Property<bool>("AdjustByWeight");
 
                     b.Property<int?>("MovementProfileId");
 
