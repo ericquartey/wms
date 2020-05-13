@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.MAS.DataModels;
 using FileHelpers;
@@ -31,6 +31,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         private WizardMode wizardMode;
 
+        private IEnumerable<InverterParametersDataInfo> invertersParameters;
+
         #endregion
 
         #region Constructors
@@ -46,6 +48,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
         public static ConfigurationService GetInstance => new ConfigurationService();
 
         public VertimagConfiguration VertimagConfiguration => this.vertimagConfiguration;
+        public string InvertersParametersFolder => this.invertersParametersFolder;
+        
+
+        public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
 
         public WizardMode WizardMode
         {
@@ -57,72 +63,16 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         #region Methods
 
-        public static IEnumerable<InverterParameterField> ReadTextFile(string filename)
+
+   
+        internal void ShowNotification(string info)
         {
-            try
-            {
-                //var inverterFileName = "ACU_giostra_800kg_INV20200305.txt";
-                var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{filename}";
-
-                var engine = new FileHelperEngine<InverterParameterField>();
-                engine.ErrorManager.ErrorMode = ErrorMode.IgnoreAndContinue;
-                return engine.ReadFileAsList(parmsDir);
-            }
-            catch (Exception ex)
-            {
-                ConfigurationService.GetInstance.ShowNotification(ex);
-            }
-
-            return null;
+            
         }
 
-        public bool IsOneTonMachine()
-        {
-            var elevatorInvertersCount = this.vertimagConfiguration.Machine.Elevator.Axes
-                .Where(a => a.Inverter != null)
-                .Select(a => a.Inverter.Id)
-                .Distinct()
-                .Count();
+ 
 
-            return elevatorInvertersCount > 1;
-        }
 
-        public IEnumerable<ParameterInfo> LoadParametersList()
-        {
-            var parameters = new List<ParameterInfo>();
-            try
-            {
-                var inverterFileName = "Para_list_ACU.xlsx";
-                var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
-                var fileInfo = new FileInfo(parmsDir);
-
-                using (var package = new ExcelPackage(fileInfo))
-                {
-                    var workbook = package.Workbook;
-                    var worksheet = workbook.Worksheets.First();
-
-                    var start = worksheet.Dimension.Start;
-                    var end = worksheet.Dimension.End;
-
-                    var list = new List<ParameterInfo>();
-
-                    for (int row = start.Row + 3; row <= end.Row; row++)
-                    {
-                        var code = worksheet.Cells[row, 1].Text;
-                        var description = worksheet.Cells[row, 3].Text;
-                        var type = worksheet.Cells[row, 4].Text;
-                        var access = worksheet.Cells[row, 8].Text;
-                        list.Add(new ParameterInfo(code, description, type, access == "r_only"));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-
-            return parameters;
-        }
 
         public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
         {
@@ -142,6 +92,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
         {
             this.invertersParametersFolder = invertersParametersFolder;
             this.vertimagConfiguration = vertimagConfiguration;
+        }
+
+        public void SetInvertersConfiguration(IEnumerable<InverterParametersDataInfo> invertersParameters)
+        {
+            this.invertersParameters = invertersParameters;
         }
 
         public void SetWizard(WizardMode nMode)
