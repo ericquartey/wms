@@ -104,7 +104,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
                     var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                    this.Logger.LogDebug($"BEGIN ==> External Position: {this.machineResourcesProvider.IsDrawerInBayExternalPosition(bay.Number)} - Internal Position: {machineResourcesProvider.IsDrawerInBayInternalPosition(bay.Number)}");
 
                     this.ChangeState(new ExtBayPositioningStartState(stateData));
                 }
