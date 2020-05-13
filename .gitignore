@@ -341,4 +341,3 @@ ASALocalRun/
 *.zip
 internal-nlog.txt
 /VerticalWarehouses/Machine Automation Service/clean.cmd
-**/*.designer.cs
