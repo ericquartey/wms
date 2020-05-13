@@ -142,9 +142,6 @@
     <value>Inverters parameters file generator</value>
     <comment>Title</comment>
   </data>
-  <data name="Test" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
   </data>
@@ -187,5 +184,17 @@
   </data>
   <data name="ExportFile" xml:space="preserve">
     <value>Export File</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>No Rows</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Export successfully completed.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Save file configuration</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Configuration file</value>
   </data>
 </root>

@@ -174,4 +174,16 @@
   <data name="ExportFile" xml:space="preserve">
     <value>Esporta file</value>
   </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Nessuna riga</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Esportazione completata con successo.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Salva file di configurazione</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>File di configurazione</value>
+  </data>
 </root>

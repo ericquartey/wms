@@ -70,11 +70,29 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration file.
+        /// </summary>
+        public static string ConfigurationFile {
+            get {
+                return ResourceManager.GetString("ConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export configuration file.
         /// </summary>
         public static string EsportConfigurationFile {
             get {
                 return ResourceManager.GetString("EsportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export successfully completed..
+        /// </summary>
+        public static string ExportedSuccessfully {
+            get {
+                return ResourceManager.GetString("ExportedSuccessfully", resourceCulture);
             }
         }
         
@@ -196,6 +214,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Rows.
+        /// </summary>
+        public static string NoRows {
+            get {
+                return ResourceManager.GetString("NoRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opend file.
         /// </summary>
         public static string OpenFile {
@@ -214,11 +241,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to Save file configuration.
         /// </summary>
-        public static string Test {
+        public static string SaveFileConfiguration {
             get {
-                return ResourceManager.GetString("Test", resourceCulture);
+                return ResourceManager.GetString("SaveFileConfiguration", resourceCulture);
             }
         }
         

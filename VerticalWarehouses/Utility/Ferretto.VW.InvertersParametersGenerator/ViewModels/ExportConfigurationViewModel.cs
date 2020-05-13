@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Newtonsoft.Json;
@@ -15,8 +14,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         #region Fields
 
         private readonly ConfigurationService configurationService;
-
-        private readonly bool isSuccessful;
 
         private RelayCommand exportCommand;
 
@@ -36,11 +33,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         #region Properties
 
         public ICommand ExportCommand =>
-            this.exportCommand
-            ??
-            (this.exportCommand = new RelayCommand(this.Export));
+                        this.exportCommand
+                        ??
+                        (this.exportCommand = new RelayCommand(this.Export));
 
-        public bool IsSuccessful => this.isSuccessful;
+        public bool IsSuccessful => true;
 
         public string VertimagConfigurationFilePath
         {
@@ -54,18 +51,31 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void Export()
         {
-            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione");
-
-            if ((resultFiles?.Length == 1) == false)
+            try
             {
-                this.VertimagConfigurationFilePath = string.Empty;
+                var resultFile = DialogService.SaveFile(Resources.SaveFileConfiguration, this.vertimagConfigurationFilePath, "json", Resources.ConfigurationFile);
+
+                if (!string.IsNullOrEmpty(resultFile))
+                {
+                    var settings = new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented,
+                        ContractResolver = new Models.OrderedContractResolver(),
+                        Converters = new JsonConverter[]
+                        {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        },
+                    };
+                    var json = JsonConvert.SerializeObject(this.configurationService.VertimagConfiguration, settings);
+
+                    File.WriteAllText(resultFile, json);
+                    this.configurationService.ShowNotification(Resources.ExportedSuccessfully);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.VertimagConfigurationFilePath = resultFiles.First();
-
-                string json = JsonConvert.SerializeObject(this.configurationService.VertimagConfiguration, Formatting.Indented);
-                File.WriteAllText(this.VertimagConfigurationFilePath, json);
+                this.configurationService.ShowNotification(ex);
             }
         }
 

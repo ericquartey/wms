@@ -3,6 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:res="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Properties"
+             xmlns:viewmodels="clr-namespace:Ferretto.VW.InvertersParametersGenerator.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ExportConfigurationViewModel,
+                                             IsDesignTimeCreatable=False}"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Controls"
              mc:Ignorable="d">
 
@@ -73,7 +76,7 @@
             <Setter Property="SnapsToDevicePixels" Value="True" />
         </Style>
 
-        <!--<Style TargetType="{x:Type ListView}">
+        <Style TargetType="{x:Type ListView}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.PanningMode" Value="Both" />
             <Setter Property="Background" Value="{x:Null}" />
@@ -83,7 +86,7 @@
                 <Setter.Value>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Margin" Value="0" />
-                        <Setter Property="Height" Value="54" />
+                        <Setter Property="Height" Value="100" />
                         <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
                         <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
@@ -122,7 +125,9 @@
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsSelected" Value="True" />
-                                    --><!--<Condition Property="Selector.IsSelectionActive" Value="true" />--><!--
+                                    
+        <Condition Property="Selector.IsSelectionActive" Value="true" />
+        
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
                                 <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
@@ -173,16 +178,16 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>-->
+        </Style>
 
     </UserControl.Resources>
-    
+
     <Grid Margin="30">
         <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -211,7 +216,7 @@
                       ItemsSource="{Binding ConfigurationFiles}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="400"
+                        <GridViewColumn Width="300"
                                         Header="File">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -227,6 +232,7 @@
                                 <DataTemplate>
                                     <Border Style="{StaticResource CellBorderStyle}">
                                         <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   TextWrapping="WrapWithOverflow"
                                                    FontStyle="Italic"
                                                    Text="{Binding Path=FullName}" />
                                     </Border>
@@ -247,41 +253,41 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                   HorizontalAlignment="Left"                   
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding TotalParameters}" />
 
+                <TextBlock
+                   HorizontalAlignment="Right"                   
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding TotalParameters}" />
+            </StackPanel>
+
             <DataGrid Grid.Row="1"
                   Name="DataGrid"
-                  Width="auto"
-                  Height="auto"
-                  AutoGenerateColumns="False"
-                  Background="{DynamicResource VWAPP_BACKGROUND}"
+                  Width="auto"                  
+                  Height="400"
+                  AutoGenerateColumns="False"                  
                   BorderThickness="0"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
                   FontSize="{StaticResource FontSize_High}"
-                  HeadersVisibility="Column"
-                  HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                  HeadersVisibility="Column"               
                   IsReadOnly="True"
                   ItemsSource="{Binding InverterParameters}"                      
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  RowHeight="30"
-                  SelectedItem="{Binding SelectedItem}"
-                  SelectionMode="Single"
-                  VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                  RowHeight="30"                  
+                  SelectionMode="Single"                 
                   VerticalScrollBarVisibility="Auto">
 
                 <DataGrid.Template>
                     <ControlTemplate TargetType="{x:Type DataGrid}">
                         <Border Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
+                            
                             SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="DG_ScrollViewer"
                                       Focusable="false">
@@ -343,57 +349,7 @@
                         </Border>
                     </ControlTemplate>
                 </DataGrid.Template>
-
-                <DataGrid.Style>
-                    <Style TargetType="DataGrid">
-                        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                        <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
-                    </Style>
-                </DataGrid.Style>
-
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Style.Resources>
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                        </Style.Resources>
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Style.Resources>
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
-                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
-                        </Style.Resources>
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                    </Style>
-                </DataGrid.RowStyle>
-
+                
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
@@ -401,12 +357,10 @@
                                     Header="{x:Static res:Resources.InverterParametersId}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 <Setter Property="Height" Value="40" />
                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                                <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
                         <DataGridTextColumn.CellStyle>
@@ -500,57 +454,28 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-
-                    <DataGridTextColumn x:Name="Column5"
-                                    Width="1*"
-                                    Binding="{Binding Path=IsReadOnly}"
-                                    Header="{x:Static res:Resources.IsReadOnly}">
-                        <DataGridTextColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="BorderThickness" Value="0,0,0,1" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                                <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            </Style>
-                        </DataGridTextColumn.HeaderStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-
-        <!--IsBusy="{Binding IsBusy}"-->
-        <Button Grid.Row="2" Grid.Column="1"                                
+        
+        <controls:PpcButton Grid.Row="2"                                
                                 HorizontalAlignment="Right"
-                                 Width="100"
-                        Height="60"
+                                Margin="0,9,15,6"
+                                Width="150"
+                                Height="60"
                                 Command="{Binding LoadFileCommand}"                                
                                 Content="{x:Static res:Resources.Import}"
-                  Style="{StaticResource ButtonStyle}"
-                                 />
+                                Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}"
+                                IsBusy="{Binding IsBusy}"/>
 
-        <Button Grid.Row="3"                        
+        <controls:PpcButton Grid.Row="3"                        
                         Margin="15,15,15,0"
-                        Width="100"
+                        Width="150"
                         Height="60"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        FontSize="18"                        
+                        VerticalAlignment="Bottom"                        
                         Command="{Binding NextCommand}"
                         Content="{x:Static res:Resources.Next}"
-                  Style="{StaticResource ButtonStyle}"
-                        />
+                        IsBusy="{Binding IsBusy}"/>
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
 
         [FieldOrder(1)]
         [FieldFixedLength(7)]
+        [FieldTrim(TrimMode.Both)]
         public string Code;
 
         [FieldOrder(4)]
