@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race : -race;
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race : /*-race*/0;
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
 
@@ -273,7 +273,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Relative,  // .Absolute MODIFY THIS!!!
+                MovementType.Absolute,  //.Relative,
                 MovementMode.ExtBayChain,
                 targetPosition,
                 speed,
@@ -316,14 +316,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var targetPosition = bay.External.Race;
-            // Check the module of distance to be moved
-            if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset))
-            {
-                targetPosition = distance;
-            }
+            //var targetPosition = bay.External.Race;    // USE for .Relative
+            //// Check the module of distance to be moved
+            //if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset))
+            //{
+            //    targetPosition = distance;
+            //}
 
-            targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
+            //targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
+
+            // Use this for .Absolute
+            const double EXT_RACE_FOR_EXTRACTION = 250.0d;
+            const double INTERNAL_LIMIT = -150.0d;
+            var targetPosition = (direction is ExternalBayMovementDirection.TowardOperator) ?
+                bay.External.Race + EXT_RACE_FOR_EXTRACTION :
+                INTERNAL_LIMIT;
 
             var procedureParameters = this.baysDataProvider.GetManualMovementsExternalBay(bayNumber);
 
@@ -334,7 +341,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Relative,
+                MovementType.Absolute,    //.Relative,
                 MovementMode.ExtBayChainManual,
                 targetPosition,
                 speed,

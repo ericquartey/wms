@@ -192,15 +192,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 else
                                 {
                                     // Handle the external bay
-                                    double speedExtBayHomingFast = 22.0d;
-                                    if (/*bay.External.HomingFastSpeed*/ speedExtBayHomingFast >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)   // bay.External.HomingFastSpeed
+                                    if (bay.External.HomingFastSpeed >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)
                                     {
                                         isCommandToSend = false;
-                                        this.Logger.LogError($"Homing Fast Speed parameter={/*bay.External.HomingFastSpeed*/speedExtBayHomingFast} mm/s is too high! for Bay={bayNumber}");
+                                        this.Logger.LogError($"Homing Fast Speed parameter={bay.External.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
                                         this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                                     }
 
-                                    speedValue = speedExtBayHomingFast; /*bay.External.HomingFastSpeed;*/
+                                    speedValue = bay.External.HomingFastSpeed;
                                     fastSpeed = (int)(speedValue *
                                         this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
                                 }
@@ -317,15 +316,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 else
                                 {
                                     // Handle the external bay
-                                    double speedExtBayHomingCreep = 5.0d;
-                                    if (/*bay.External.HomingCreepSpeed*/ speedExtBayHomingCreep >= 2 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
+                                    if (bay.External.HomingCreepSpeed >= 2 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
                                     {
                                         isCommandToSend = false;
-                                        this.Logger.LogError($"Homing Creep Speed parameter={/*bay.External.HomingCreepSpeed*/speedExtBayHomingCreep} mm/s is too high! for Bay={bayNumber}");
+                                        this.Logger.LogError($"Homing Creep Speed parameter={bay.External.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
                                         this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                                     }
 
-                                    speedValue = speedExtBayHomingCreep; /*bay.External.HomingCreepSpeed;*/
+                                    speedValue = bay.External.HomingCreepSpeed;
                                     creepSpeed = (int)(speedValue *
                                         this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
                                 }
