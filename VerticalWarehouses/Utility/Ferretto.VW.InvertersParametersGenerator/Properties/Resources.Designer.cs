@@ -70,6 +70,78 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export configuration file.
+        /// </summary>
+        public static string EsportConfigurationFile {
+            get {
+                return ResourceManager.GetString("EsportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export File.
+        /// </summary>
+        public static string ExportFile {
+            get {
+                return ResourceManager.GetString("ExportFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string ImportConfigurationFile {
+            get {
+                return ResourceManager.GetString("ImportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dataset.
+        /// </summary>
+        public static string InverterParametersDataset {
+            get {
+                return ResourceManager.GetString("InverterParametersDataset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string InverterParametersId {
+            get {
+                return ResourceManager.GetString("InverterParametersId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string InverterParametersType {
+            get {
+                return ResourceManager.GetString("InverterParametersType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string InverterParametersValue {
+            get {
+                return ResourceManager.GetString("InverterParametersValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverters folder.
         /// </summary>
         public static string InvertersFolder {
@@ -88,11 +160,38 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter {0} type {0} parameters configuration.
+        /// </summary>
+        public static string InverterTypeParametersConfiguration {
+            get {
+                return ResourceManager.GetString("InverterTypeParametersConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is readonly.
+        /// </summary>
+        public static string IsReadOnly {
+            get {
+                return ResourceManager.GetString("IsReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameters files found.
+        /// </summary>
+        public static string NoParametersFilesFound {
+            get {
+                return ResourceManager.GetString("NoParametersFilesFound", resourceCulture);
             }
         }
         
@@ -120,6 +219,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total parameters {0}.
+        /// </summary>
+        public static string TotalParameters {
+            get {
+                return ResourceManager.GetString("TotalParameters", resourceCulture);
             }
         }
         

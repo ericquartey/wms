@@ -138,4 +138,40 @@
   <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
     <value>File di generazione parametri Inverters</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Nessun file di parametri trovato</value>
+  </data>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Inverter {0} tipo {0} configurazione parametri</value>
+  </data>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>Totale parametri {0}</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Valore</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Sola lettura</value>
+  </data>
+  <data name="EsportConfigurationFile" xml:space="preserve">
+    <value>Esportazione file di configurazione</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Esporta file</value>
+  </data>
 </root>
