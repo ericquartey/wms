@@ -10,12 +10,12 @@ namespace Ferretto.VW.App.Services
         {
             if (wmsMission != null && machineMission is null)
             {
-                throw new System.ArgumentException(Resources.EventArgsMissionChanged.WmsMissionWithoutMachineMission);
+                throw new System.ArgumentException(Resources.Localized.Get("EventArgsMissionChanged.WmsMissionWithoutMachineMission"));
             }
 
             if (wmsMission is null && wmsOperation != null)
             {
-                throw new System.ArgumentException(Resources.EventArgsMissionChanged.WmsOperationWithoutWmsMission);
+                throw new System.ArgumentException(Resources.Localized.Get("EventArgsMissionChanged.WmsOperationWithoutWmsMission"));
             }
 
             this.MachineMission = machineMission;
