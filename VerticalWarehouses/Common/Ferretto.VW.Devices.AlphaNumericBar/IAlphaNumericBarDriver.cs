@@ -30,6 +30,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> SetAndWriteMessageScrollAsync(string message, int offset, int scrollEnd, bool forceClear = true);
 
+        Task<bool> SetCustomCharacterAsync(int index, int offset, bool forceClear = true);
+
         Task<bool> SetDimAsync(int dimension);
 
         Task<bool> SetEnabledAsync(bool value);

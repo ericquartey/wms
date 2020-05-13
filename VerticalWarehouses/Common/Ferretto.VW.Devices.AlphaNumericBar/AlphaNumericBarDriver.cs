@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Ferretto.VW.MAS.DataModels;
@@ -126,10 +128,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public async Task<bool> ClearAsync()
         {
             this.messagesToBeSendQueue.Clear();
-            if (!this.barEnabled)
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);
-            }
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -180,10 +178,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public async Task<bool> SetAndWriteArrowAsync(int arrowPosition, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
-            if (!this.barEnabled)
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);
-            }
 
             if (forceClear)
             {
@@ -204,20 +198,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public async Task<bool> SetAndWriteMessageAsync(string message, int offset = 0, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
-            if (!this.barEnabled)
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);
-            }
+
+            //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
             if (forceClear)
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             }
 
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_OFF, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true); ;
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
         /// <summary>
@@ -231,10 +224,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public async Task<bool> SetAndWriteMessageScrollAsync(string message, int offset = 0, int scrollEnd = 0, bool forceClear = true)
         {
             this.messagesToBeSendQueue.Clear();
-            if (!this.barEnabled)
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);
-            }
+            //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
             if (forceClear)
             {
@@ -243,6 +233,26 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_ON, message, offset, scrollEnd);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="offset"></param>
+        /// <param name="forceClear"></param>
+        /// <returns></returns>
+        public async Task<bool> SetCustomCharacterAsync(int index, int offset, bool forceClear = true)
+        {
+            this.messagesToBeSendQueue.Clear();
+
+            if (forceClear)
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
+            }
+
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.CSTSET, null, offset, index);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
@@ -260,6 +270,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         /// <summary>
         /// Send a ENABLE command.
+        ///
+        /// N.B. Not use enable=true, because duplicate message
         /// </summary>
         /// <param name="enable"></param>
         /// <returns></returns>
@@ -269,7 +281,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             if (enable)
             {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);     // deprecated, not use
             }
             else
             {
@@ -388,14 +400,32 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
+        /// Return the offset to put the row in the middel position
+        /// </summary>
+        /// <returns></returns>
+        private int CalculateOffsetArrowMiddlePosition(int delta = 1)
+        {
+            var result = (((((int)this.size) * 8) - 8) / 2) + delta;
+
+            if (result < 0)
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Encode a trinh into the HTPP protocol.
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         private string Encode(string str)
         {
-            //HttpUtility.UrlEncode(str, Encoding.UTF8);
-            return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
+            //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString(" ") : Uri.EscapeDataString(str);
+            return string.IsNullOrEmpty(str) ? Uri.EscapeDataString("+") : Uri.EscapeDataString(str).Replace("%20", "+");
+            //return string.IsNullOrEmpty(str) ? HttpUtility.UrlEncode(" ", Encoding.UTF8) : HttpUtility.UrlEncode(str, Encoding.UTF8);
+            //return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
         }
 
         /// <summary>
@@ -407,8 +437,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <param name="offset"></param>
         /// <param name="scrollEnd"></param>
         /// <returns></returns>
-        private string EnqueueCommand(AlphaNumericBarCommands.Command command, string message = null, int offset = 0, int scrollEnd = 0)
+        private bool EnqueueCommand(AlphaNumericBarCommands.Command command, string message = null, int offset = 0, int scrollEnd = 0)
         {
+            var result = false;
             var strCommand = command.ToString();
 
             switch (command)
@@ -423,7 +454,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     this.barEnabled = false;
                     break;
 
-                case AlphaNumericBarCommands.Command.TEST_ON:
+                case AlphaNumericBarCommands.Command.TEST_ON:                   // deprecated, not use
                     strCommand = "TEST ON";
                     break;
 
@@ -475,13 +506,17 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 case AlphaNumericBarCommands.Command.SET_LUM:
                     strCommand = "SETLUM " + offset;
                     break;
+
+                default:
+                    return result;
             }
 
             strCommand += Environment.NewLine;
 
             this.messagesToBeSendQueue.Enqueue(strCommand);
+            result = true;
 
-            return strCommand;
+            return result;
         }
 
         /// <summary>
@@ -493,20 +528,26 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             var result = false;
             try
             {
-                using (var client = new TcpClient())
-                {
-                    this.messagesReceivedQueue.Clear();
-                    client.SendTimeout = this.tcpTimeout;
-                    await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
-                    var stream = client.GetStream();
+                this.messagesReceivedQueue.Clear();
+                var client = new TcpClient();
+                NetworkStream stream = null;
 
-                    foreach (string sendMessage in this.messagesToBeSendQueue)
+                foreach (string sendMessage in this.messagesToBeSendQueue)
+                {
+                    try
                     {
+                        if (!client.Connected)
+                        {
+                            client.SendTimeout = this.tcpTimeout;
+                            await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                            stream = client.GetStream();
+                        }
+
                         var data = Encoding.ASCII.GetBytes(sendMessage);
                         stream = client.GetStream();
                         stream.ReadTimeout = this.tcpTimeout;
                         stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Sent: {0}", sendMessage);
+                        System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
 
                         if (this.IsWaitResponse(sendMessage))
                         {
@@ -515,22 +556,26 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                             this.messagesReceivedQueue.Enqueue(responseMessage);
-                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Received: {0}", responseMessage);
+                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
                             if (!this.IsResponseOk(sendMessage, responseMessage))
                             {
                                 System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
-                                //throw new System.ArgumentException($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                             }
                         }
                         else
                         {
+                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait{sendMessage}");
                             this.messagesReceivedQueue.Enqueue("");
                         }
                     }
-
-                    stream.Close();
-                    client.Close();
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                    }
                 }
+
+                stream?.Close();
+                client?.Close();
 
                 result = true;
             }
@@ -605,7 +650,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 return false;
             }
 
-            if (message.StartsWith("CLEAN", StringComparison.Ordinal) || message.StartsWith("ENABLE OFF", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
+            if (message.StartsWith("CLEAR", StringComparison.Ordinal) || message.StartsWith("ENABLE", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
             {
                 result = false;
             }
