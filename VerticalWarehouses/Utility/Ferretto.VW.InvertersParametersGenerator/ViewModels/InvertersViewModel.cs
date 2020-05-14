@@ -87,7 +87,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 if (!(axe.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersDataInfo(axe.Inverter.Type, (byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(axe.Inverter.Type, (byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
                 }
             }
 
@@ -95,7 +95,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 if (!(bay.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
                 }
             }
 
@@ -107,12 +107,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return inverterParametersData;
         }
 
-        private string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
+        private string GetShortInverterDescription(IPAddress ipAddress, int tcpPort)
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
-            var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
-            return $"{type.ToString()} {ipPort}";
+            return  (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";            
         }
 
         private void LoadConfiguration()

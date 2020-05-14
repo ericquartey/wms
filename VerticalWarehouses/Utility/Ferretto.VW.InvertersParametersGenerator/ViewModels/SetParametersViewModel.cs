@@ -103,7 +103,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type);
+        public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type.ToString());
 
         public string TotalParameters
         {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 this.inverterParameters.Clear();
                 var lastParameterCode = string.Empty;
                 var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
-                var parameters = GetParametersFromFile(this.selectedFile.FullName);
+                var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
                 foreach (var parameter in parameters)
                 {
                     if (string.IsNullOrEmpty(parameter.Writable))

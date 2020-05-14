@@ -150,7 +150,7 @@
     <comment>Description</comment>
   </data>
   <data name="InverterTypeParametersConfiguration" xml:space="preserve">
-    <value>Inverter {0} type {0} parameters configuration</value>
+    <value>Inverter [{0}] type '{1}' parameters configuration</value>
     <comment>Title</comment>
   </data>
   <data name="TotalParameters" xml:space="preserve">
@@ -203,5 +203,8 @@
   </data>
   <data name="ImportConfiguration" xml:space="preserve">
     <value>Import configuration</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Select file</value>
   </data>
 </root>
