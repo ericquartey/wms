@@ -252,7 +252,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}" >
-                                 <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}"/> <Run Text="{Binding SelectedItem.MeasureUnit}"/>
+                                 <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}"/> <Run Text="{Binding SelectedItem.MeasureUnit, Mode=OneWay}"/>
                             </TextBlock>
 
                             <TextBlock Grid.Row="1"
