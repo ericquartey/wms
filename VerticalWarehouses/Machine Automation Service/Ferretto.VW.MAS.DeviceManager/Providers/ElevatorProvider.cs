@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (cellId != null)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheCellIsNotFree };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheCellIsNotFree", CommonUtils.Culture.Actual) };
             }
 
             // check #2: a loading unit must not be present in the bay position
@@ -269,7 +269,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             if (cell.Position < verticalAxis.LowerBound || cell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var targetCell = this.cellsProvider.GetById(cellId);
             if (targetCell.Position < verticalAxis.LowerBound || targetCell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -485,7 +485,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             if (elevatorCell.Position < verticalAxis.LowerBound || elevatorCell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -1227,14 +1227,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
             if (upperBoundPosition <= lowerBoundPosition)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition", CommonUtils.Culture.Actual));
             }
 
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
@@ -1243,14 +1243,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionOutOfRange", CommonUtils.Culture.Actual));
             }
 
             if (lowerBoundPosition < verticalAxis.LowerBound)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("LowerBoundPositionOutOfRange", CommonUtils.Culture.Actual));
             }
 
             var sensors = this.sensorsProvider.GetAll();
