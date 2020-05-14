@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             if (cellId < 0)
             {
-                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
             this.logger.LogInformation($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
             return cellId;
@@ -206,7 +206,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"TotalWeightFront {machineStatistics.TotalWeightFront}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack}; " +
                     $"MaxGrossWeight {machine.MaxGrossWeight} ");
-                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
             var preferredSide = WarehouseSide.NotSpecified;
             if (machineStatistics.TotalWeightFront + loadUnit.GrossWeight < machineStatistics.TotalWeightBack)
@@ -309,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         this.logger.LogTrace($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadUnitHeight:0.00}; side {loadUnit.Cell.Side}; position {loadUnit.Cell.Position}; total cells {cells.Count}; ");
                     }
-                    throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+                    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
                 }
 
                 // start from lower cells
@@ -553,12 +553,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != loadingUnit.Id)
                         {
-                            throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                            throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellUnexpectedlyContainsAnotherLoadingUnit", CommonUtils.Culture.Actual));
                         }
 
                         if (occupiedCell.IsFree)
                         {
-                            throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
+                            throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellIsUnexpectedlyFree", CommonUtils.Culture.Actual));
                         }
 
                         occupiedCell.IsFree = true;
@@ -569,17 +569,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (cell.BlockLevel == BlockLevel.SpaceOnly)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheTargetCellIsSpaceOnly);
+                        throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheTargetCellIsSpaceOnly", CommonUtils.Culture.Actual));
                     }
 
                     if (cell.BlockLevel == BlockLevel.Blocked)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheTargetCellIsBlocked);
+                        throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheTargetCellIsBlocked", CommonUtils.Culture.Actual));
                     }
 
                     if (cell.LoadingUnit != null)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheCellAlreadyContainsAnotherLoadingUnit);
+                        throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellAlreadyContainsAnotherLoadingUnit", CommonUtils.Culture.Actual));
                     }
 
                     if (cell.BlockLevel == BlockLevel.NeedsTest)
@@ -596,7 +596,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     if (loadingUnit.CellId != null)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheLoadingUnitIsAlreadyLocatedInAnotherCell);
+                        throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheLoadingUnitIsAlreadyLocatedInAnotherCell", CommonUtils.Culture.Actual));
                     }
 
                     var freeCells = this.dataContext.Cells
@@ -614,12 +614,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         freeCell.IsFree = false;
                         if (freeCell.LoadingUnit != null)
                         {
-                            throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                            throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellUnexpectedlyContainsAnotherLoadingUnit", CommonUtils.Culture.Actual));
                         }
 
                         if (freeCell.BlockLevel == BlockLevel.Blocked)
                         {
-                            throw new InvalidOperationException(Resources.Cells.TheLoadingCannotOccupyABlockedCell);
+                            throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheLoadingCannotOccupyABlockedCell", CommonUtils.Culture.Actual));
                         }
                     }
 
@@ -711,7 +711,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 else
                 {
                     throw new ArgumentOutOfRangeException(
-                        Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
+                        Resources.Cells.ResourceManager.GetString("TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights", CommonUtils.Culture.Actual));
                 }
 
                 return this.dataContext.Cells
