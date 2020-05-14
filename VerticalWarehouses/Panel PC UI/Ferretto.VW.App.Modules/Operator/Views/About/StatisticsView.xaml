@@ -23,8 +23,6 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -38,6 +36,8 @@
         <Border Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,15,15,0"
+                VerticalAlignment="Top"
+                Height="150"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -195,9 +195,6 @@
         </Border>
 
         <views:AboutMenuNavigationView Grid.RowSpan="2" />
-
-        <Grid Grid.Row="1"
-              Grid.Column="1" />
-
+        
     </Grid>
 </ctrls:View>

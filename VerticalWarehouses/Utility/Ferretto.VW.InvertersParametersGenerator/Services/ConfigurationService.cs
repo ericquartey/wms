@@ -13,14 +13,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
     {
         #region Fields
 
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Newtonsoft.Json.Formatting.Indented
-        };
-
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         private string invertersParametersFolder;
@@ -75,17 +67,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             this.WizardMode = nMode;
         }
 
-        public void ShowNotification(Exception ex)
-        {
-        }
-
         public void Start()
         {
             this.WizardMode = WizardMode.ImportConfiguration;
-        }
-
-        internal void ShowNotification(string info)
-        {
         }
 
         #endregion

@@ -58,11 +58,10 @@
                 <converters:NotificationSeverityToForegroundConverter x:Key="NSTFC" />
                 <converters:NotificationSeverityToIconNameConverter x:Key="NSTINC" />
             </Grid.Resources>
-
             <Border Margin="0,0,0,0"
                 Padding="15,5"
-                Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}"
-                Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}">
+                Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}"
+                Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
