@@ -14,9 +14,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsReadOnly { get; set; }
 
+        public string StringValue { get; set; }
+
         public string Type { get; set; }
 
-        public string Value { get; set; }
+        public int Value { get; set; }
 
         #endregion
     }

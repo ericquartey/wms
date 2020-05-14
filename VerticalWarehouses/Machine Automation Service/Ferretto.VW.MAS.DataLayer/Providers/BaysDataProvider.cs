@@ -619,7 +619,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
+                                    throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", CommonUtils.Culture.Actual));
                             }
 
                             break;
@@ -902,7 +902,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.AlphaNumericBar)
                         .Single(b => b.Number == bayNumber);
 
-                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled;
+                barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
                 barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
 
@@ -1015,7 +1015,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.BarcodeReader)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.IsEnabledNew = isEnabled;
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
@@ -1094,14 +1094,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.GetByNumber(bayNumber);
                 if (positionIndex < 1 || positionIndex > bay.Positions.Count())
                 {
-                    throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
+                    throw new ArgumentOutOfRangeException(Resources.Bays.ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", CommonUtils.Culture.Actual));
                 }
 
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
                 if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
                 {
                     throw new ArgumentOutOfRangeException(
-                        string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, verticalAxis.LowerBound, verticalAxis.UpperBound));
+                        string.Format(Resources.Bays.ResourceManager.GetString("TheBayHeightMustBeInRange", CommonUtils.Culture.Actual), height, verticalAxis.LowerBound, verticalAxis.UpperBound));
                 }
 
                 BayPosition position = null;

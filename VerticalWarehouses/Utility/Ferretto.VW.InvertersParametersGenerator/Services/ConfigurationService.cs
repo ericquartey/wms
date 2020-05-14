@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.MAS.DataModels;
-using FileHelpers;
 using Newtonsoft.Json;
 using NLog;
-using OfficeOpenXml;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.Services
@@ -25,13 +21,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private IEnumerable<InverterParametersDataInfo> invertersParameters;
+
         private string invertersParametersFolder;
 
         private VertimagConfiguration vertimagConfiguration;
 
         private WizardMode wizardMode;
-
-        private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         #endregion
 
@@ -47,11 +43,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         public static ConfigurationService GetInstance => new ConfigurationService();
 
-        public VertimagConfiguration VertimagConfiguration => this.vertimagConfiguration;
-        public string InvertersParametersFolder => this.invertersParametersFolder;
-        
-
         public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
+
+        public string InvertersParametersFolder => this.invertersParametersFolder;
+
+        public VertimagConfiguration VertimagConfiguration => this.vertimagConfiguration;
 
         public WizardMode WizardMode
         {
@@ -62,31 +58,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
         #endregion
 
         #region Methods
-
-
-   
-        internal void ShowNotification(string info)
-        {
-            
-        }
-
- 
-
-
-
-        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
-        {
-            try
-            {
-                File.WriteAllText(configurationFilePath, fileContents);
-            }
-            catch (Exception ex)
-            {
-                var msg = $" Error wrting configuration file \"{configurationFilePath}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
-        }
 
         public void SetConfiguration(string invertersParametersFolder, VertimagConfiguration vertimagConfiguration)
         {
@@ -113,9 +84,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             this.WizardMode = WizardMode.ImportConfiguration;
         }
 
-        internal void Export()
+        internal void ShowNotification(string info)
         {
-            throw new NotImplementedException();
         }
 
         #endregion

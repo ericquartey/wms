@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.alphaNumericBarDriver = new AlphaNumericBarDriver();
                 }
 
-                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabled;
+                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabledNew;
                 this.IpAddress = accessories.AlphaNumericBar.IpAddress;
                 this.Port = accessories.AlphaNumericBar.TcpPort;
                 this.Size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size;

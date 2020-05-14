@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.Data is BayAccessories bayAccessories)
                 {
-                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabled;
+                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew;
                     this.PortName = bayAccessories.BarcodeReader.PortName;
                 }
                 else

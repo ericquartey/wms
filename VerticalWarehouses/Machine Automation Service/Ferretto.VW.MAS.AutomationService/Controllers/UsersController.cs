@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -125,6 +126,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.logger.LogInformation($"Get token: {token}");
 
             return this.Ok(token);
+        }
+
+        [HttpPost("culture")]
+        public void SetMASCulture(CultureInfo culture)
+        {
+            CommonUtils.Culture.Actual = culture;
+
+            this.logger.LogInformation("Change culture to " + culture.ToString());
         }
 
         #endregion

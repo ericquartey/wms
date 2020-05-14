@@ -26,9 +26,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<bool>("IsConfigured");
+                    b.Property<string>("IsConfigured");
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<bool>("IsConfiguredNew");
+
+                    b.Property<string>("IsEnabled");
+
+                    b.Property<bool>("IsEnabledNew");
 
                     b.HasKey("Id");
 
@@ -962,9 +966,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsReadOnly");
 
+                    b.Property<string>("StringValue");
+
                     b.Property<string>("Type");
 
-                    b.Property<string>("Value");
+                    b.Property<int>("Value");
 
                     b.HasKey("Id");
 
