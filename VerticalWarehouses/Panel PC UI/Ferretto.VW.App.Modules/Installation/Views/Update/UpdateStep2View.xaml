@@ -62,14 +62,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonUp}" />
+                                Content="{Resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonDown}" />
+                                Content="{Resources:Loc OperatorApp.CommonDown}" />
 
         </Grid>
 
@@ -99,6 +99,6 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding UpdateCommand}"
-                            Content="{x:Static Resources:OperatorApp.StartUpdate}" />
+                            Content="{Resources:Loc OperatorApp.StartUpdate}" />
     </Grid>
 </ctrls:View>

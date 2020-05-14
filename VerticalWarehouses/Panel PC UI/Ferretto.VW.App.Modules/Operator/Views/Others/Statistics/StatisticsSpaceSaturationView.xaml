@@ -36,7 +36,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.DrawerSpaceSaturazionHeader}" />
+                   Text="{resources:Loc OperatorApp.DrawerSpaceSaturazionHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -52,7 +52,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding TotalLoadingUnits}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
@@ -60,7 +60,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Dimension}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
 
         </Grid>
 
@@ -100,14 +100,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonUp}" />
+                                Content="{resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonDown}" />
+                                Content="{resources:Loc OperatorApp.CommonDown}" />
 
         </Grid>
 
@@ -116,7 +116,7 @@
                                            Margin="0,15,20,0"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
+                                           LabelText="{resources:Loc OperatorApp.DrawerSpaceSaturazionFillingMachine}"
                                            ProgressionValue="{Binding FillPercentage, StringFormat={}{0:N1} %}" />
 
     </Grid>

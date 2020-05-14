@@ -47,28 +47,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.OtherNavigationImmediateDrawerCall,
+                    VW.App.Resources.Localized.Get("OperatorApp.OtherNavigationImmediateDrawerCall"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.OtherNavigationCompaction,
+                    VW.App.Resources.Localized.Get("OperatorApp.OtherNavigationCompaction"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.NAVIGATION,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.OtherNavigationStatistics,
+                    VW.App.Resources.Localized.Get("OperatorApp.OtherNavigationStatistics"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Maintenance.MAIN,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.OtherNavigationMaintenance,
+                    VW.App.Resources.Localized.Get("OperatorApp.OtherNavigationMaintenance"),
                     trackCurrentView: true));
         }
 

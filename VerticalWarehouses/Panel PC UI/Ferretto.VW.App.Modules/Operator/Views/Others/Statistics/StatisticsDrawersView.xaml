@@ -28,7 +28,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.DrawerCompactingHeader}" />
+                   Text="{resources:Loc OperatorApp.DrawerCompactingHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0"
@@ -52,73 +52,73 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                       Text="{x:Static resources:OperatorApp.DrawerCompactingFront}" />
+                       Text="{resources:Loc OperatorApp.DrawerCompactingFront}" />
 
             <TextBlock Grid.Column="1"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                       Text="{x:Static resources:OperatorApp.DrawerCompactingRear}" />
+                       Text="{resources:Loc OperatorApp.DrawerCompactingRear}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="8"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingFragmentNumber}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingFragmentNumber}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="6"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingFragmentNumber}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingFragmentNumber}" />
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="200"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="150"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
 
             <controls:PpcTextBox Grid.Row="3"
                                  Grid.Column="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 LabelText="{x:Static resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
+                                 LabelText="{resources:Loc OperatorApp.DrawerCompactingSpaceToRecover}" />
 
             <controls:PpcTextBox Grid.Row="3"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 LabelText="{x:Static resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
+                                 LabelText="{resources:Loc OperatorApp.DrawerCompactingSpaceToRecover}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{x:Static resources:OperatorApp.CompactionInProgres}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingProcedureStatus}" />
+                                     ContentText="{resources:Loc OperatorApp.CompactionInProgres}"
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingProcedureStatus}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{x:Static resources:OperatorApp.Waiting}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerCompactingProcedureStatus}" />
+                                     ContentText="{resources:Loc OperatorApp.Waiting}"
+                                     LabelText="{resources:Loc OperatorApp.DrawerCompactingProcedureStatus}" />
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="{x:Static resources:OperatorApp.DrawerCompactingAntStop}"
+                                Content="{resources:Loc OperatorApp.DrawerCompactingAntStop}"
                                 IsEnabled="False" />
 
 
@@ -126,7 +126,7 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="{x:Static resources:OperatorApp.DrawerCompactingRearCompact}"
+                                Content="{resources:Loc OperatorApp.DrawerCompactingRearCompact}"
                                 IsEnabled="False" />
 
         </Grid>
@@ -137,7 +137,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding DrawerCompactingDetailButtonCommand}"
-                            Content="{x:Static resources:OperatorApp.CommonButtonDetail}"
+                            Content="{resources:Loc OperatorApp.CommonButtonDetail}"
                             IsEnabled="True" />
 
     </Grid>

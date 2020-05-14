@@ -33,7 +33,7 @@
             <DataGridTextColumn x:Name="Column1"
                                 Width="1*"
                                 Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderType}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="{x:Type DataGridCell}">
                         <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -50,7 +50,7 @@
             <DataGridTextColumn x:Name="Column2"
                                 Width="1*"
                                 Binding="{Binding Code}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderList}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -61,7 +61,7 @@
             <DataGridTextColumn x:Name="Column3"
                                 Width="3*"
                                 Binding="{Binding Description}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderDescription}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -72,7 +72,7 @@
             </DataGridTextColumn>
             <DataGridTemplateColumn x:Name="Column4"
                                     Width="100"
-                                    Header="{x:Static Resources:OperatorApp.ListAvailable}">
+                                    Header="{Resources:Loc OperatorApp.ListAvailable}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <dxga:StateIndicatorControl x:Name="stateIndicatorControl1"

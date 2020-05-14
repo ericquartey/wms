@@ -42,7 +42,7 @@
                        Margin="10,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
+                       Text="{Resources:Loc OperatorApp.ImmediateDrawerCallHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -51,7 +51,7 @@
                    Margin="0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static Resources:HelpDescriptions.HelpImmediateDrawerCallDescription}" />
+                   Text="{Resources:Loc HelpDescriptions.HelpImmediateDrawerCallDescription}" />
 
         <Border Grid.Row="2"
                 Margin="0,15,0,0"
@@ -78,7 +78,7 @@
                                VerticalAlignment="Center"
                                FontSize="{DynamicResource FontSize_High}"
                                Foreground="{DynamicResource FerrettoPureWhite}">
-                        <Run Text="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                        <Run Text="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                         <Run Text=":" />
                     </TextBlock>
 
@@ -90,7 +90,7 @@
                         <i:Interaction.Behaviors>
                             <behaviors:TextBoxAutoSelectBehavior />
                             <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                                     KeyboardLabel="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                                                                     KeyboardLabel="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
 
@@ -187,14 +187,14 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{x:Static Resources:OperatorApp.CommonNote}" />
+                                   Text="{Resources:Loc OperatorApp.CommonNote}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}" />
+                                   Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}" />
 
                     </Grid>
                 </Border>
@@ -205,7 +205,7 @@
                                Height="90"
                                Margin="15,15,15,0"
                                EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}"
+                               LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
                                MinValue="0" />
 
             <controls:PpcButton Grid.Row="2"
@@ -221,7 +221,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding LoadingUnitCallCommand}"
-                                Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
+                                Content="{Resources:Loc OperatorApp.ImmediateDrawerCallDrawerCall}"
                                 Style="{StaticResource ConfirmButton}" />
 
         </Grid>

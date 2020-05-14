@@ -45,7 +45,7 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:OperatorApp.NoItemOnSelectedCompartment}"
+                           Text="{res:Loc OperatorApp.NoItemOnSelectedCompartment}"
                            Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
 
                 <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVC}}">
@@ -61,7 +61,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:OperatorApp.SelectCompartment}"
+                       Text="{res:Loc OperatorApp.SelectCompartment}"
                        Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}" />
         </Grid>
 

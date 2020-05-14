@@ -61,28 +61,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.MACHINE,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.StatisticsNavigationMachine,
+                    VW.App.Resources.Localized.Get("OperatorApp.StatisticsNavigationMachine"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.Drawers.WEIGHTSATURATION,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.StatisticsNavigationDrawers,
+                    VW.App.Resources.Localized.Get("OperatorApp.StatisticsNavigationDrawers"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.CELLS,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.StatisticsNavigationCells,
+                    VW.App.Resources.Localized.Get("OperatorApp.StatisticsNavigationCells"),
                     trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.ERRORS,
                     nameof(Utils.Modules.Operator),
-                    VW.App.Resources.OperatorApp.StatisticsNavigationErrors,
+                    VW.App.Resources.Localized.Get("OperatorApp.StatisticsNavigationErrors"),
                     trackCurrentView: true));
         }
 

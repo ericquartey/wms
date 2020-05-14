@@ -82,7 +82,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=Element}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderElement}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDetailDataGridHeaderElement}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -109,7 +109,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="4*"
                                     Binding="{Binding Path=Description}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderDescription}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDetailDataGridHeaderDescription}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -135,7 +135,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=Quantity}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderQuantity}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDetailDataGridHeaderQuantity}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

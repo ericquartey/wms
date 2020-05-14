@@ -206,12 +206,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (wmsHealthStatus is HealthStatus.Healthy || wmsHealthStatus is HealthStatus.Degraded)
             {
-                this.WmsServicesStatusDescription = Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = Resources.Localized.Get("OperatorApp.WmsServicesOnline");
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = Resources.Localized.Get("OperatorApp.WmsServicesOffline");
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }

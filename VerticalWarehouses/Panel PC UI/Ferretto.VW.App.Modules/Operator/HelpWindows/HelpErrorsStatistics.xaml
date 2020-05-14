@@ -25,7 +25,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.ErrorsStatisticsHeader}" />
+                   Text="{res:Loc OperatorApp.ErrorsStatisticsHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -100,45 +100,45 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1.827"
-                                 LabelText="{x:Static res:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
+                                 LabelText="{res:Loc OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,390,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="21.924"
-                                 LabelText="{x:Static res:OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
+                                 LabelText="{res:Loc OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
 
         <controls:PpcButton Margin="530,260,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.CommonUp}" />
+                            Content="{res:Loc OperatorApp.CommonUp}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,460,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="12"
-                                 LabelText="{x:Static res:OperatorApp.ErrorsStatisticsTotErrors}" />
+                                 LabelText="{res:Loc OperatorApp.ErrorsStatisticsTotErrors}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,530,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Errore di imbarco"
-                                 LabelText="{x:Static res:OperatorApp.ErrorsStatisticsErrorDescription}" />
+                                 LabelText="{res:Loc OperatorApp.ErrorsStatisticsErrorDescription}" />
 
         <controls:PpcButton Margin="530,330,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.CommonDown}" />
+                            Content="{res:Loc OperatorApp.CommonDown}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="99,9987"
-                                 LabelText="{x:Static res:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
+                                 LabelText="{res:Loc OperatorApp.ErrorsStatisticsReliabilityIndex}" />
 
         <TextBlock Width="260"
                    Height="70"

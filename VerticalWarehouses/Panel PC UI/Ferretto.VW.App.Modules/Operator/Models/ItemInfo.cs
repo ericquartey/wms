@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         public string MachinesInfo { get; }
 
-        public string MeasureUnit => this.MeasureUnitDescription.ToLowerInvariant() ?? Resources.OperatorApp.Pieces;
+        public string MeasureUnit => this.MeasureUnitDescription.ToLowerInvariant() ?? Resources.Localized.Get("OperatorApp.Pieces");
 
         public double PickIncrement => this.PickTolerance.HasValue ? System.Math.Pow(10, -this.PickTolerance.Value) : 1;
 

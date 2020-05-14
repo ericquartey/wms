@@ -1139,7 +1139,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Non definito</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Cassetto {0} in baia</value>
+    <value>in baia</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Rientro Cassetto</value>
@@ -1193,7 +1193,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Giacenza</value>
   </data>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
-    <value>Cassetto presente {0}</value>
+    <value>Cassetto presente</value>
   </data>
   <data name="SelectCompartment" xml:space="preserve">
     <value>Seleziona uno scomparto</value>
@@ -1349,16 +1349,16 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Utenti</value>
   </data>
   <data name="LoadingUnitOutBay" xml:space="preserve">
-    <value>Cassetto {0} in uscita da baia</value>
+    <value>in uscita da baia</value>
   </data>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
-    <value>Cassetto {0}</value>
+    <value>Cassetto</value>
   </data>
   <data name="AdditionalText" xml:space="preserve">
     <value>Informazioni Aggiuntive</value>
   </data>
   <data name="UnitId" xml:space="preserve">
-    <value>Cassetto n.{0}</value>
+    <value>Cassetto n.</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Altezza:</value>
@@ -1374,5 +1374,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Calibrazione orizzontale in corso</value>
+  </data>
+  <data name="AvailablesQuantity1" xml:space="preserve">
+    <value>Quantità disponibile</value>
   </data>
 </root>

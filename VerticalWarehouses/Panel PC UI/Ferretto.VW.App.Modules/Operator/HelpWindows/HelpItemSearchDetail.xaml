@@ -24,7 +24,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.ItemDetailHeader}" />
+                   Text="{res:Loc OperatorApp.ItemDetailHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -55,56 +55,56 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1258445984"
-                                 LabelText="{x:Static res:OperatorApp.CommonItemCode}" />
+                                 LabelText="{res:Loc OperatorApp.CommonItemCode}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="FIFO"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailManagement}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailManagement}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Ingranaggio a denti"
-                                 LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
+                                 LabelText="{res:Loc OperatorApp.CommonItemDescription}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,330,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="60"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailPeriod}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailPeriod}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,120,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Ingranaggi"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailCategory}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailCategory}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="B"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailClasse}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailClasse}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Pezzi"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailMeasurementUnity}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailMeasurementUnity}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,330,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="275,5"
-                                 LabelText="{x:Static res:OperatorApp.ItemDetailWeight}" />
+                                 LabelText="{res:Loc OperatorApp.ItemDetailWeight}" />
 
         <TextBlock Width="260"
                    Height="70"

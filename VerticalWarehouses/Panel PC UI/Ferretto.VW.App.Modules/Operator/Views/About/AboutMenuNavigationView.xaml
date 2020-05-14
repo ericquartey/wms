@@ -28,7 +28,7 @@
                             Abbrevation="3.1"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding GeneralCommand}"
-                            Content="{x:Static resources:OperatorApp.General}"
+                            Content="{resources:Loc OperatorApp.General}"
                             IsActive="{Binding IsGeneralActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -39,7 +39,7 @@
                             Abbrevation="3.2"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding StatisticsCommand}"
-                            Content="{x:Static resources:OperatorApp.Statistics}"
+                            Content="{resources:Loc OperatorApp.Statistics}"
                             IsActive="{Binding IsStatisticsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -50,7 +50,7 @@
                             Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding AlarmCommand}"
-                            Content="{x:Static resources:OperatorApp.Alarms}"
+                            Content="{resources:Loc OperatorApp.Alarms}"
                             IsActive="{Binding IsAlarmActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -61,7 +61,7 @@
                             Abbrevation="3.4"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding DiagnosticsCommand}"
-                            Content="{x:Static resources:OperatorApp.Diagnostics}"
+                            Content="{resources:Loc OperatorApp.Diagnostics}"
                             IsActive="{Binding IsDiagnosticsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />

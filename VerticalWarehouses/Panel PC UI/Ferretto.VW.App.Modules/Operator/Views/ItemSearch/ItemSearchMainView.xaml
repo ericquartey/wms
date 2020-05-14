@@ -35,7 +35,7 @@
                        Margin="10,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
+                       Text="{Resources:Loc OperatorApp.ItemSearchHeader}" />
         </StackPanel>
 
         <Grid Grid.Row="1"              
@@ -86,7 +86,7 @@
                                VerticalAlignment="Center"
                                FontSize="{DynamicResource FontSize_High}"
                                Foreground="{DynamicResource FerrettoPureWhite}">
-                        <Run Text="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                        <Run Text="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                         <Run Text=":" />
                         </TextBlock>
 
@@ -98,7 +98,7 @@
                             <i:Interaction.Behaviors>
                                 <behaviors:TextBoxAutoSelectBehavior />
                                 <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                                     KeyboardLabel="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                                                                     KeyboardLabel="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                             </i:Interaction.Behaviors>
                         </TextBox>
 
@@ -173,13 +173,13 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
                     <CheckBox Margin="15,0,0,15"
-                          Content="{x:Static Resources:OperatorApp.Lot}"
+                          Content="{Resources:Loc OperatorApp.Lot}"
                           Foreground="{DynamicResource CheckBoxDescription}"
                           IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
                           IsEnabled="{Binding IsGroupbyLotEnabled}"
                           Style="{StaticResource PpcCheckBoxStyle}" />
                     <CheckBox Margin="15,0,15,15"
-                          Content="{x:Static Resources:OperatorApp.SerialNumber}"
+                          Content="{Resources:Loc OperatorApp.SerialNumber}"
                           Foreground="{DynamicResource CheckBoxDescription}"
                           IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
                           IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
@@ -211,7 +211,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static Resources:OperatorApp.ItemMachinesAvailability}" />
+                                   Text="{Resources:Loc OperatorApp.ItemMachinesAvailability}" />
 
                             <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -219,7 +219,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding SelectedItem.MachinesInfo, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                   Text="{Binding SelectedItem.MachinesInfo, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                         </Grid>
@@ -251,8 +251,9 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
+                                   Foreground="{DynamicResource Text_Foreground}" >
+                                 <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}"/> <Run Text="{Binding SelectedItem.MeasureUnit}"/>
+                            </TextBlock>
 
                             <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -260,7 +261,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                   Text="{Binding AvailableQuantity, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                         </Grid>
@@ -273,7 +274,7 @@
                                HorizontalAlignment="Stretch"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding SelectedItem.PickIncrement}"
-                               LabelText="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.RequestedQuantity}}"
+                               LabelText="{Binding SelectedItemTxt}"
                                Mask="{Binding SelectedItem.PickTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 
@@ -285,13 +286,13 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding ItemDetailButtonCommand}"
-                                    Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                                    Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
 
                     <controls:PpcButton Margin="15,15,15,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding RequestItemPickCommand}"
-                                    Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                                    Content="{Resources:Loc OperatorApp.ItemSearchCall}"
                                     IsBusy="{Binding IsBusyRequestingItemPick}"
                                     Style="{StaticResource ConfirmButton}" />
                 </StackPanel>
