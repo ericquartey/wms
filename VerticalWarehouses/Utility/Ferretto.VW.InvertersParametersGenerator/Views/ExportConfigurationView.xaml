@@ -28,7 +28,7 @@
                    VerticalAlignment="Top"
                    FontSize="36"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:Resources.EsportConfigurationFile}" />
+                   Text="{x:Static res:Resources.EsportConfiguration}" />
 
 
         <Grid Grid.Row="1"

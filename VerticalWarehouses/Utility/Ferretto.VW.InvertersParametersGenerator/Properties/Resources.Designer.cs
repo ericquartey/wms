@@ -79,11 +79,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export configuration file.
+        ///   Looks up a localized string similar to Export configuration.
         /// </summary>
-        public static string EsportConfigurationFile {
+        public static string EsportConfiguration {
             get {
-                return ResourceManager.GetString("EsportConfigurationFile", resourceCulture);
+                return ResourceManager.GetString("EsportConfiguration", resourceCulture);
             }
         }
         

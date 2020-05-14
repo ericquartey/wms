@@ -139,7 +139,7 @@
     <value>File di generazione parametri Inverters</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import</value>
+    <value>Importa</value>
   </data>
   <data name="NoParametersFilesFound" xml:space="preserve">
     <value>Nessun file di parametri trovato</value>
@@ -168,8 +168,8 @@
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
-  <data name="EsportConfigurationFile" xml:space="preserve">
-    <value>Esportazione file di configurazione</value>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Esportazione configurazione</value>
   </data>
   <data name="ExportFile" xml:space="preserve">
     <value>Esporta file</value>

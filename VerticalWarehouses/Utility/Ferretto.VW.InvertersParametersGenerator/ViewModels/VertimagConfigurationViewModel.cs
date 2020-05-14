@@ -21,7 +21,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+        private readonly IParentActionChanged parentActionChanged;
 
         private bool canNext;
 
@@ -49,10 +49,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public VertimagConfigurationViewModel(ConfigurationService configurationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
+        public VertimagConfigurationViewModel(ConfigurationService configurationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
+            this.parentActionChanged = parentActionChanged;
             this.Inistialize();
         }
 
@@ -80,11 +80,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public bool IsSuccessful => this.isSuccessful;
 
-        //public ICommand NextCommand =>
-        //                this.nextCommand
-        //        ??
-        //        (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
-
         public ICommand OpenInvertersParametersFolderCommand =>
                         this.openInvertersParametersFolderCommand
                 ??
@@ -96,11 +91,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                  (this.openVertimagConfigurationFileCommand = new DelegateCommand(this.OpenVertimagConfigurationFile));
 
         public virtual bool OverwritePrompt { get; set; }
-
-        //public ICommand PreviuosCommand =>
-        //        this.previousCommand
-        //        ??
-        //        (this.previousCommand = new RelayCommand(this.Previous, this.CanPrevious));
 
         public string ResultInvertersFolder
         {
@@ -235,7 +225,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         #endregion
