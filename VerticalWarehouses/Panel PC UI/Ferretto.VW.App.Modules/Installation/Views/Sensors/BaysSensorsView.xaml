@@ -39,6 +39,7 @@
                        Text="{x:Static res:InstallationApp.Bays}" />-->
 
             <StackPanel Grid.Row="1"
+                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVIC}}"
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -50,6 +51,41 @@
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
                                            Text="{res:Loc InstallationApp.UnitLowPosition}"
                                            Visibility="{Binding IsBay1PositionDownPresent, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUInBottomPosition}"
+                                           Text="{res:Loc InstallationApp.UnitExternalPosition}"
+                                           Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay1}"
+                                           Text="{res:Loc InstallationApp.BarrierCalibration}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay1}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorA}"
+                                           Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay1}"
+                                           Text="{res:Loc InstallationApp.ShutterSensorB}"
+                                           Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay1S3IND}"
+                                           Text="{res:Loc InstallationApp.ZeroChain}"
+                                           Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVC}}"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{res:Loc InstallationApp.ExternalBay}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay1}"
+                                           Text="{res:Loc InstallationApp.UnitExternalPosition}"
+                                           Visibility="{Binding IsBay1PositionUpPresent, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
+                                           Text="{res:Loc InstallationApp.UnitInternalPosition}"
+                                           Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay1}"
                                            Text="{res:Loc InstallationApp.BarrierCalibration}" />
