@@ -992,7 +992,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
-                else if (message.Status == MessageStatus.OperationError)
+                else if (message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationRunningStop
+                    )
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
 

@@ -1696,4 +1696,13 @@ Please put back any moved pieces in their original position.</value>
   <data name="AvailablesQuantity" xml:space="preserve">
     <value>Available quantity</value>
   </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Items filtered by code.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>The barcode '{0}' does not contain the item code.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>The barcode '{0}' does not contain the item quantity.</value>
+  </data>
 </root>

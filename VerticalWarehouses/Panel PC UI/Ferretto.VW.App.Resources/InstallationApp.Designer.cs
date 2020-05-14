@@ -6750,11 +6750,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit in external position.
+        /// </summary>
+        public static string UnitExternalPosition {
+            get {
+                return ResourceManager.GetString("UnitExternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit in high position.
         /// </summary>
         public static string UnitHightPosition {
             get {
                 return ResourceManager.GetString("UnitHightPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit in internal position.
+        /// </summary>
+        public static string UnitInternalPosition {
+            get {
+                return ResourceManager.GetString("UnitInternalPosition", resourceCulture);
             }
         }
         

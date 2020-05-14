@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new ArgumentOutOfRangeException(
                         nameof(heightDifference),
-                        Resources.Cells.TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels);
+                        Resources.Cells.ResourceManager.GetString("TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels", CommonUtils.Culture.Actual));
                 }
 
                 if (cellPanel != null && heightDifference != 0)

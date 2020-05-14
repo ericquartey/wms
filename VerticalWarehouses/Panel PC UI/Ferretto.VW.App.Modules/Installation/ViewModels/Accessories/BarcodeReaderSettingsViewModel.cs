@@ -192,6 +192,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful);
                 this.Logger.Debug("Barcode reader settings saved.");
+
+                if (this.IsAccessoryEnabled)
+                {
+                    await this.barcodeReaderService.StartAsync();
+                }
+                else
+                {
+                    this.barcodeReaderService.Disable();
+                }
             }
             catch (Exception ex)
             {

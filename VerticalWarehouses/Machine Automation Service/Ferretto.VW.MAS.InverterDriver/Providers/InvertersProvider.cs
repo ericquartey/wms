@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var targetPositionMeters = targetPosition / 1000.0;
 
-            var rigidityKgMeters = properties.BeltRigidity / 10000.0;
+            var rigidityKgMeters = properties.BeltRigidity / (9.81 * 1000.0);
 
             return
                 grossWeight /
