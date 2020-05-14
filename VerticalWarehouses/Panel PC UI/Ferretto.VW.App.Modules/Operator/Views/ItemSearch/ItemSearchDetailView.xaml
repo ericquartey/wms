@@ -181,7 +181,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding Item.Code, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
+                                   Text="{Binding Item.Code, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
@@ -223,7 +223,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding Item.AvailableQuantity, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
+                                   Text="{Binding Item.AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
