@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition,
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual),
                     ReasonType = ReasonType.ElevatorInPosition
                 };
             }
@@ -175,14 +175,14 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
                 else if (!isElevatorFull)
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
             }
