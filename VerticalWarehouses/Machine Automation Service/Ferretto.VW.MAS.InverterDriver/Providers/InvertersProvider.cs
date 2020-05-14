@@ -366,7 +366,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             return
                 grossWeight /
                 (2 * (
-                    (rigidityKgMeters / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters + 0.504))
+                    (rigidityKgMeters / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters + ElevatorStructuralProperties.PulleyCircleMeters))
                         + (rigidityKgMeters / (10 * targetPositionMeters))
                     )
                 );
