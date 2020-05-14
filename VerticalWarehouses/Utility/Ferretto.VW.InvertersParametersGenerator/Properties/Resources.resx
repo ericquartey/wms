@@ -122,7 +122,7 @@
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
-    <comment>Button test</comment>
+    <comment>Button text</comment>
   </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>Open folder</value>
@@ -154,7 +154,7 @@
     <comment>Title</comment>
   </data>
   <data name="TotalParameters" xml:space="preserve">
-    <value>Total parameters {0}</value>
+    <value>total parameters {0}</value>
   </data>
   <data name="InverterParametersId" xml:space="preserve">
     <value>Id</value>
@@ -196,5 +196,12 @@
   </data>
   <data name="ConfigurationFile" xml:space="preserve">
     <value>Configuration file</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Import configuration</value>
   </data>
 </root>

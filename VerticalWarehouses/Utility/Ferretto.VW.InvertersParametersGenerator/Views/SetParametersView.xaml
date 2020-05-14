@@ -182,7 +182,7 @@
 
     </UserControl.Resources>
 
-    <Grid Margin="30">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -255,12 +255,13 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock
+                   Margin="0 0 0 0"
                    HorizontalAlignment="Left"                   
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding TotalParameters}" />
+                   Text="{Binding SelectedFile.Name}" />
 
                 <TextBlock
-                   HorizontalAlignment="Right"                   
+                   Margin="20 0 0 0"                    
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding TotalParameters}" />
             </StackPanel>
@@ -457,25 +458,15 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        
+
         <controls:PpcButton Grid.Row="2"                                
                                 HorizontalAlignment="Right"
-                                Margin="0,9,15,6"
-                                Width="150"
+                                Margin="0, 0, 30,0"
+                                Width="130"
                                 Height="60"
                                 Command="{Binding LoadFileCommand}"                                
                                 Content="{x:Static res:Resources.Import}"
                                 Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}"
                                 IsBusy="{Binding IsBusy}"/>
-
-        <controls:PpcButton Grid.Row="3"                        
-                        Margin="15,15,15,0"
-                        Width="150"
-                        Height="60"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"                        
-                        Command="{Binding NextCommand}"
-                        Content="{x:Static res:Resources.Next}"
-                        IsBusy="{Binding IsBusy}"/>
     </Grid>
 </UserControl>
