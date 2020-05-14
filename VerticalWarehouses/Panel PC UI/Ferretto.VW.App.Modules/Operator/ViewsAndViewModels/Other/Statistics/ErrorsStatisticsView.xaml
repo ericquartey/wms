@@ -15,14 +15,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
+                   Text="{Resources:Loc OperatorApp.ErrorsStatisticsHeader}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="510,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalLoadingUnitsBetweenErrors}"
-                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
+                                              LabelText="{Resources:Loc OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
 
         <ContentControl Width="450"
                         Height="310"
@@ -36,13 +36,13 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalLoadingUnits}"
-                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
+                                              LabelText="{Resources:Loc OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
 
         <controls:PpcButton  Margin="0,240,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                Content="{Resources:Loc OperatorApp.CommonUp}"
                  />
 
         <controls:PpcLabeledText MaxWidth="300"
@@ -50,20 +50,20 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalErrors}"
-                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}" />
+                                              LabelText="{Resources:Loc OperatorApp.ErrorsStatisticsTotErrors}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="280,520,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding DataGridViewModel.SelectedCell.Description}"
-                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}" />
+                                              LabelText="{Resources:Loc OperatorApp.ErrorsStatisticsErrorDescription}" />
 
         <controls:PpcButton  Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                Content="{Resources:Loc OperatorApp.CommonDown}"
                  />
 
         <controls:PpcLabeledText MaxWidth="300"
@@ -71,7 +71,7 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.ReliabilityPercentage, StringFormat={}{0:N3} %}"
-                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
+                                              LabelText="{Resources:Loc OperatorApp.ErrorsStatisticsReliabilityIndex}" />
 
     </Grid>
 </UserControl>

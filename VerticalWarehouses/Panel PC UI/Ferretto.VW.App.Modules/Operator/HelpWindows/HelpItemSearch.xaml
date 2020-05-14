@@ -19,7 +19,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.ItemSearchHeader}" />
+                    Text="{res:Loc OperatorApp.ItemSearchHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -47,36 +47,36 @@
                      Text="{x:Static Resources:OperatorApp.ItemSearchGridItem}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
-                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Content="{res:Loc OperatorApp.CommonUp}"
                    />
 
         <controls:PpcTextBox
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="12"
-                                                    LabelText="{x:Static res:OperatorApp.RequestedQuantity}" />
+                                                    LabelText="{res:Loc OperatorApp.RequestedQuantity}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="14"
-                                               LabelText="{x:Static res:OperatorApp.AvailableQuantity}"/>
+                                               LabelText="{res:Loc OperatorApp.AvailableQuantity}"/>
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
-                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Content="{res:Loc OperatorApp.CommonDown}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                  Content="{x:Static res:OperatorApp.ItemSearchCall}"
+                  Content="{res:Loc OperatorApp.ItemSearchCall}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
-                  Content="{x:Static res:OperatorApp.CommonButtonDetail}"
+                  Content="{res:Loc OperatorApp.CommonButtonDetail}"
                    />
 
         <controls:PpcTextBox
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="25CF"
-                                                    LabelText="{x:Static res:OperatorApp.ItemSearchKeySearch}" />
+                                                    LabelText="{res:Loc OperatorApp.ItemSearchKeySearch}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
                      Width="180"

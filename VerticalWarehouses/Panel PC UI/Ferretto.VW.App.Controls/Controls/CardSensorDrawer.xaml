@@ -12,10 +12,10 @@
     <local:CardSensor Grid.Row="1"
                       CardBadge1="{Binding NetWeight, StringFormat={}{0:F2}}"
                       CardBadge2="{Binding Height, StringFormat={}{0:F2}}"
-                      CardBadgeLabel1="{x:Static res:SensorCard.NetWeight}"
-                      CardBadgeLabel2="{x:Static res:SensorCard.Height}"
+                      CardBadgeLabel1="{res:Loc SensorCard.NetWeight}"
+                      CardBadgeLabel2="{res:Loc SensorCard.Height}"
                       CardDescription="{Binding Position}"
-                      CardText="{x:Static res:SensorCard.Drawer}"
+                      CardText="{res:Loc SensorCard.Drawer}"
                       Type="Drawer" />
 
 </UserControl>

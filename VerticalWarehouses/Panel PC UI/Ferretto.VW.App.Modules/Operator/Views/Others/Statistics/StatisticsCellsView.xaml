@@ -35,7 +35,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.CellsStatisticsHeader}" />
+                   Text="{resources:Loc OperatorApp.CellsStatisticsHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -58,7 +58,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding CellStatistics.TotalCells}"
-                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsCellsTotal}" />
+                                     LabelText="{resources:Loc OperatorApp.CellsStatisticsCellsTotal}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
@@ -66,7 +66,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding CellStatistics.TotalFrontCells}"
-                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsFrontCellsTotal}" />
+                                     LabelText="{resources:Loc OperatorApp.CellsStatisticsFrontCellsTotal}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
@@ -74,7 +74,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding CellStatistics.TotalBackCells}"
-                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsRearCellsTotal}" />
+                                     LabelText="{resources:Loc OperatorApp.CellsStatisticsRearCellsTotal}" />
 
             <ContentControl Grid.Row="2"
                             Grid.ColumnSpan="2"
@@ -93,7 +93,7 @@
                                                Margin="0,15,0,0"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                               LabelText="{resources:Loc OperatorApp.CellsStatisticsTotalUsedCells}"
                                                ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
@@ -101,7 +101,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding DrawerCompactingButtonCommand}"
-                            Content="{x:Static resources:OperatorApp.CellsStatisticsOther}" />
+                            Content="{resources:Loc OperatorApp.CellsStatisticsOther}" />
 
     </Grid>
 </ctrls:View>

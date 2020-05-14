@@ -25,7 +25,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.DrawerWeightSaturationHeader}" />
+                   Text="{res:Loc OperatorApp.DrawerWeightSaturationHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -55,7 +55,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -70,45 +70,45 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="55"
-                                 LabelText="{x:Static res:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
         <controls:PpcButton Margin="530,470,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.CommonUp}" />
+                            Content="{res:Loc OperatorApp.CommonUp}" />
 
         <controls:PpcButton Margin="530,540,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.CommonDown}" />
+                            Content="{res:Loc OperatorApp.CommonDown}" />
 
         <TextBlock Width="180"
                    Margin="20,220,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" />
 
         <TextBlock Width="180"
                    Margin="20,290,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" />
 
         <TextBlock Width="180"
                    Margin="20,360,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
 
         <TextBlock Width="180"
                    Margin="20,430,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -171,34 +171,34 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="38.000"
-                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,120,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="70.000"
-                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,330,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="36.000"
-                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="65.000"
-                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxNetRange}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerWeightSaturationMaxNetRange}" />
 
         <controls:CustomProgressBarControl Width="180"
                                            Margin="530,400,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"
+                                           LabelText="{res:Loc OperatorApp.DrawerWeightSaturationNetLoadedWeight}"
                                            ProgressionValue="65" />
 
         <TextBlock Width="180"
@@ -206,7 +206,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" />
+                   Text="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" />
 
         <TextBlock Width="260"
                    Height="70"

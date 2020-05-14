@@ -14,13 +14,13 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case ItemManagementType.FIFO:
-                    return Resources.OperatorApp.ItemManagementType_FIFO;
+                    return Resources.Localized.Get("OperatorApp.ItemManagementType_FIFO");
 
                 case ItemManagementType.Volume:
-                    return Resources.OperatorApp.ItemManagementType_Volume;
+                    return Resources.Localized.Get("OperatorApp.ItemManagementType_Volume");
 
                 case ItemManagementType.NotSpecified:
-                    return Resources.OperatorApp.ItemManagementType_NotSpecified;
+                    return Resources.Localized.Get("OperatorApp.ItemManagementType_NotSpecified");
             }
 
             return string.Empty;

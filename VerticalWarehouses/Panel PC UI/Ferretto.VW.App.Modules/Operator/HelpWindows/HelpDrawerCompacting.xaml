@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerCompactingHeader}" />
+                    Text="{res:Loc OperatorApp.DrawerCompactingHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -36,19 +36,19 @@
                      Text="{res:Loc HelpDescriptions.HelpDrawerCompactingCompactFront}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
-                  Content="{x:Static res:OperatorApp.DrawerCompactingAntCompact}"
+                  Content="{res:Loc OperatorApp.DrawerCompactingAntCompact}"
                    />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="8"
-                                               LabelText="{x:Static res:OperatorApp.DrawerCompactingFragmentNumber}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerCompactingFragmentNumber}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="450"
-                                               LabelText="{x:Static res:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
-                  Content="{x:Static res:OperatorApp.DrawerCompactingRearCompact}"
+                  Content="{res:Loc OperatorApp.DrawerCompactingRearCompact}"
                    />
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
@@ -56,7 +56,7 @@
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="450"
 
-                                                    LabelText="{x:Static res:OperatorApp.DrawerCompactingSpaceToRecover}" />
+                                                    LabelText="{res:Loc OperatorApp.DrawerCompactingSpaceToRecover}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
                     Width="260" Height="70"
@@ -80,7 +80,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                     Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerCompactingFront}" />
+                    Text="{res:Loc OperatorApp.DrawerCompactingFront}" />
 
     </Grid>
 </UserControl>

@@ -29,8 +29,9 @@
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitOutBay}}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}"/> <Run Text="{Binding LoadingUnit.Id}"/> <Run Text="{res:Loc OperatorApp.LoadingUnitOutBay}"/>
+            </TextBlock>
         </StackPanel>
 
         <Border Grid.Row="1"
@@ -55,14 +56,15 @@
                                 Orientation="Vertical">
                         <TextBlock Margin="20"
                                    HorizontalAlignment="Center"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitIdInfo}}" />
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                            <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}"/> <Run Text="{Binding LoadingUnit.Id}"/>
+                        </TextBlock>
                         <TextBlock Margin="20,0"
                                    HorizontalAlignment="Center"
                                    Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
-                            <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
+                            <Run Text="(" /><Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
                             <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
-                            <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
+                            <Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
                             <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
                         </TextBlock>
                     </StackPanel>

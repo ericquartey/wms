@@ -42,7 +42,7 @@
                        Margin="10,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.ListsInWaitHeader}" />
+                       Text="{Resources:Loc OperatorApp.ListsInWaitHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -80,7 +80,7 @@
                                VerticalAlignment="Center"
                                FontSize="{DynamicResource FontSize_High}"
                                Foreground="{DynamicResource FerrettoPureWhite}">
-                        <Run Text="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                        <Run Text="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                         <Run Text=":" />
                     </TextBlock>
 
@@ -92,7 +92,7 @@
                         <i:Interaction.Behaviors>
                             <behaviors:TextBoxAutoSelectBehavior />
                             <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                                     KeyboardLabel="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
+                                                                     KeyboardLabel="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
 
@@ -191,7 +191,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static Resources:OperatorApp.Machines}" />
+                                   Text="{Resources:Loc OperatorApp.Machines}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -199,7 +199,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding SelectedList.MachinesInfo, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                   Text="{Binding SelectedList.MachinesInfo, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
@@ -211,14 +211,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ListDetailButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                                Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ListExecuteCommand}"
-                                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                                Content="{Resources:Loc OperatorApp.ListsInWaitExecute}"
                                 IsBusy="{Binding IsWaitingForResponse}"
                                 Style="{StaticResource ConfirmButton}" />
 

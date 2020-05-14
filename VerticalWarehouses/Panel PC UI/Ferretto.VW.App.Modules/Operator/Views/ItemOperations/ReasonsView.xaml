@@ -222,7 +222,7 @@
                          Text="{Binding ReasonsNotes, Mode=TwoWay}" MinHeight="100"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Margin="0,15,0,0">
-                    <cctrls:PpcButton Content="{x:Static res:OperatorApp.Confirm}" Command="{Binding ConfirmReasonCommand}"/>                                
+                    <cctrls:PpcButton Content="{res:Loc OperatorApp.Confirm}" Command="{Binding ConfirmReasonCommand}"/>                                
                     <cctrls:PpcButton Margin="15 0 0 0" Content="{res:Loc General.Cancel}" Command="{Binding CancelReasonCommand}"/>
                 </StackPanel>
 

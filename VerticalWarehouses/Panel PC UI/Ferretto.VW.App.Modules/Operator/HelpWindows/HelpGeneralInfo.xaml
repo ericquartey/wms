@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.GeneralInfoHeader}" />
+                    Text="{res:Loc OperatorApp.GeneralInfoHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -37,35 +37,35 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoModel}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoModel}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="2017-02-12"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoInstallationDate}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoInstallationDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="54"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoTotDrawers}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoTotDrawers}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="VW_190012"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoSerial}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoSerial}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="180"
                                                ContentText="1.1.01 Beta"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoSwRelease}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoSwRelease}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="2019-03-05"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoNextMaintenanceDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
                                                ContentText="2018-03-05"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoLastMaintenanceDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoOperativeStatus}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoOperativeStatus}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"
@@ -118,28 +118,28 @@
                     Text="{res:Loc HelpDescriptions.HelpGeneralInfoButtonMaintenance}" />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
-                 Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}"
+                 Content="{res:Loc OperatorApp.OtherNavigationImmediateDrawerCall}"
                  IsEnabled="True"
                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
-                Content="{x:Static res:OperatorApp.OtherNavigationCompaction}"
+                Content="{res:Loc OperatorApp.OtherNavigationCompaction}"
                 IsEnabled="True"
                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
         <controls:PpcButton  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
-                Content="{x:Static res:OperatorApp.OtherNavigationStatistics}"
+                Content="{res:Loc OperatorApp.OtherNavigationStatistics}"
                 IsEnabled="True"
                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
         <controls:PpcButton  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
-                Content="{x:Static res:OperatorApp.OtherNavigationMaintenance}"
+                Content="{res:Loc OperatorApp.OtherNavigationMaintenance}"
                 IsEnabled="True"
                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="WMS in linea."
-                                               LabelText="{x:Static res:OperatorApp.GeneralInfoWmsStatus}"/>
+                                               LabelText="{res:Loc OperatorApp.GeneralInfoWmsStatus}"/>
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"

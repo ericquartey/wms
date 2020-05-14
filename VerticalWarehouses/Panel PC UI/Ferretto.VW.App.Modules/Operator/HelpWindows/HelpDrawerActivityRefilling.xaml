@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerActivityRefillingHeader}" />
+                    Text="{res:Loc OperatorApp.DrawerActivityRefillingHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -37,48 +37,48 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                                                ContentText="V-02541"
-                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListCode}"/>
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-                  Content="{x:Static res:OperatorApp.CommonButtonConfirm}"
+                  Content="{res:Loc OperatorApp.CommonButtonConfirm}"
                    />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="108510025"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonItemCode}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
                                                ContentText="H-5"
-                                               LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonCompartmentPosition}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="Scatola cambio"
-                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListDescription}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
                                                ContentText="Ingranaggio Z=45"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonItemDescription}"/>
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True" InputText="12"
 
-                                                    LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingQtyRefilled}"  />
+                                                    LabelText="{res:Loc OperatorApp.DrawerActivityRefillingQtyRefilled}"  />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                 Content="{x:Static res:OperatorApp.CommonButtonDetail}"
+                 Content="{res:Loc OperatorApp.CommonButtonDetail}"
                   />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
-                 Content="{x:Static res:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
+                 Content="{res:Loc OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
                   />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="12"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingQtyToRefill}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityRefillingQtyToRefill}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
                                                ContentText="Note inserite ad uso"
-                                               LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonNote}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
                     Width="260" Height="70"

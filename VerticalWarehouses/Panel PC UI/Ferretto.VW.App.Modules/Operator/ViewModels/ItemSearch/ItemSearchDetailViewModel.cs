@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemInfo item;
 
+        private string itemTxt;
+
         private int? reasonId;
 
         private string reasonNotes;
@@ -111,6 +113,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.reasonNotes;
             set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public string ItemTxt
+        {
+            get => this.itemTxt;
+            set => this.SetProperty(ref this.itemTxt, value);
         }
 
         public IEnumerable<OperationReason> Reasons
@@ -207,7 +215,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(
                     string.Format(
-                        Resources.OperatorApp.PickRequestWasAccepted,
+                        Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
                         this.Item.Code,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
@@ -233,6 +241,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.Item = this.Data as ItemInfo;
+
+            this.ItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.Item.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.ItemTxt));
 
             this.InputQuantity = null;
         }

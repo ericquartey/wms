@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -52,6 +53,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = null;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
         protected override void ShowOperationDetails()

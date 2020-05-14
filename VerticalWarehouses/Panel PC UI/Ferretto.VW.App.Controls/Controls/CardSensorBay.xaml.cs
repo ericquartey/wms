@@ -172,7 +172,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
             if (this.machineService.HasBayWithInverter)
             {
-                this.CardSensorLabel1 = SensorCard.Zero;
+                this.CardSensorLabel1 = Localized.Get("SensorCard.Zero");
             }
             else
             {
