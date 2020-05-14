@@ -99,7 +99,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=Code}"
-                                    Header="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderDrawerId}">
+                                    Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderDrawerId}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -125,8 +125,8 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
-                                    Binding="{Binding Path=MissionsCount, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                    Header="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderMissions}"
+                                    Binding="{Binding Path=MissionsCount, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderMissions}"
                                     TextBlock.TextAlignment="Center">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -152,8 +152,8 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=CompartmentsCount, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                    Header="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
+                                    Binding="{Binding Path=CompartmentsCount, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -177,7 +177,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Width="1.5*"
-                                        Header="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderFilling}">
+                                        Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderFilling}">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -196,8 +196,8 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=AreaFillPercentage, StringFormat={}{0:N1} %, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                    Header="{x:Static res:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
+                                    Binding="{Binding Path=AreaFillPercentage, StringFormat={}{0:N1} %, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />

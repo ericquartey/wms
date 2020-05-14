@@ -31,7 +31,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.GeneralInformations}" />
+                   Text="{Resources:Loc OperatorApp.GeneralInformations}" />
 
         <views:AboutMenuNavigationView Grid.RowSpan="2" />
 
@@ -95,7 +95,7 @@
                         <TextBlock Margin="10,10,5,5"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoModel}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoModel}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Column="1"
                                    Margin="5,10,5,5"
@@ -107,7 +107,7 @@
                                    Margin="10,5,5,10"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.Serial}"
+                                   Text="{Resources:Loc OperatorApp.Serial}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
@@ -140,7 +140,7 @@
                         <TextBlock Margin="10"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoSwRelease}"
                                    TextAlignment="Right" />
 
                         <TextBlock Grid.Column="1"
@@ -173,7 +173,7 @@
                         <TextBlock Margin="10,5"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoInstallationDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Column="1"
                                    Style="{DynamicResource VWAPP_ViewInformationMediumTitleTextBlockStyle}"
@@ -183,7 +183,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoNextMaintenanceDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
@@ -194,7 +194,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoLastMaintenanceDate}"
                                    TextAlignment="Right" />
                         <TextBlock Grid.Row="2"
                                    Grid.Column="1"
@@ -223,7 +223,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Bottom"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.MachineNumber}"
+                                   Text="{Resources:Loc OperatorApp.MachineNumber}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
@@ -256,7 +256,7 @@
                         <TextBlock Margin="10,5"
                                    VerticalAlignment="Bottom"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoOperativeStatus}"
                                    TextAlignment="Right" />
                         <StackPanel Grid.Column="1"
                                     VerticalAlignment="Bottom"
@@ -275,7 +275,7 @@
                                    Margin="10,5"
                                    VerticalAlignment="Top"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{x:Static Resources:OperatorApp.GeneralInfoWmsStatus}"
+                                   Text="{Resources:Loc OperatorApp.GeneralInfoWmsStatus}"
                                    TextAlignment="Right" />
                         <StackPanel Grid.Row="1"
                                     Grid.Column="1"
@@ -329,7 +329,7 @@
 
                             <TextBlock Margin="0,20,0,0"
                                        Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                       Text="{x:Static Resources:OperatorApp.TotalUnits}"
+                                       Text="{Resources:Loc OperatorApp.TotalUnits}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"
@@ -361,7 +361,7 @@
 
                             <TextBlock Margin="0,20,0,0"
                                        Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                       Text="{x:Static Resources:OperatorApp.TotalMissions}" />
+                                       Text="{Resources:Loc OperatorApp.TotalMissions}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="0"
@@ -392,7 +392,7 @@
 
                             <TextBlock Margin="0,20,0,0"
                                        Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                       Text="{x:Static Resources:OperatorApp.TotalKm}"
+                                       Text="{Resources:Loc OperatorApp.TotalKm}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"
@@ -421,7 +421,7 @@
 
                             <TextBlock Margin="0,20,0,0"
                                        Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                       Text="{x:Static Resources:OperatorApp.TotalMachineWeight}"
+                                       Text="{Resources:Loc OperatorApp.TotalMachineWeight}"
                                        TextAlignment="Left" />
 
                             <TextBlock Grid.Row="1"

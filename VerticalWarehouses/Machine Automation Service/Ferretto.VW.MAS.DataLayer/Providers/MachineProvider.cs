@@ -54,6 +54,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.Carousel)
                             .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
+                        .ThenInclude(b => b.External)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.External)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
                         .ThenInclude(b => b.Inverter)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.IoDevice)
@@ -211,6 +217,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
             context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
             context.Carousels.RemoveRange(context.Carousels);
+            context.Externals.RemoveRange(context.Externals);
             context.CellPanels.RemoveRange(context.CellPanels);
             context.Shutters.RemoveRange(context.Shutters);
             context.WeightMeasurements.RemoveRange(context.WeightMeasurements);
@@ -307,6 +314,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External?.ManualMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.EmptyLoadMovement, (e) => e.Id);
                 dataContext.AddOrUpdate(b.FullLoadMovement, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);

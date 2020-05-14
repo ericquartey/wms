@@ -57,7 +57,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemDescription}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
+                                     LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
@@ -65,7 +65,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListCode}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
+                                     LabelText="{resources:Loc OperatorApp.CommonListCode}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
@@ -73,7 +73,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListRowCode}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListRow}" />
+                                     LabelText="{resources:Loc OperatorApp.CommonListRow}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="2"
@@ -81,7 +81,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemLot}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonLot}" />
+                                     LabelText="{resources:Loc OperatorApp.CommonLot}" />
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
@@ -90,7 +90,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListDescription}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
+                                     LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
 
         </Grid>
 
@@ -102,7 +102,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemNotes}"
-                                 LabelText="{x:Static resources:OperatorApp.CommonNote}" />
+                                 LabelText="{resources:Loc OperatorApp.CommonNote}" />
 
     </Grid>
 </UserControl>

@@ -95,7 +95,7 @@
                                              HorizontalAlignment="Left"
                                              VerticalAlignment="Top"
                                              ContentText="{Binding SelectedItemCompartment.ItemDescription}"
-                                             LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
+                                             LabelText="{res:Loc OperatorApp.CommonItemDescription}" />
 
                     <Grid Grid.Row="1"
                           Grid.Column="2">
@@ -109,14 +109,14 @@
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  ContentText="{Binding SelectedItemCompartment.Stock}"
-                                                 LabelText="{x:Static res:OperatorApp.ItemStock}"
+                                                 LabelText="{res:Loc OperatorApp.ItemStock}"
                                                  Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcLabeledText Margin="10,10,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  ContentText="{Binding SelectedItemCompartment.Lot}"
-                                                 LabelText="{x:Static res:OperatorApp.Lot}" />
+                                                 LabelText="{res:Loc OperatorApp.Lot}" />
                     </Grid>
 
                     <Grid Grid.Row="2"

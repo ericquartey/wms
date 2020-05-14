@@ -303,50 +303,50 @@
             <CheckBox Grid.Row="0"
                       Grid.Column="0"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.Id}"
+                      Content="{res:Loc OperatorApp.Id}"
                       IsChecked="{Binding IncludeID, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="0"
                       Grid.Column="1"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.BayNumber}"
+                      Content="{res:Loc OperatorApp.BayNumber}"
                       IsChecked="{Binding IncludeBayNumber, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="0"
                       Grid.Column="2"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.Code}"
+                      Content="{res:Loc OperatorApp.Code}"
                       IsChecked="{Binding IncludeCode, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="0"
                       Grid.Column="3"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.Description}"
+                      Content="{res:Loc OperatorApp.Description}"
                       IsChecked="{Binding IncludeDescription, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
 
             <CheckBox Grid.Row="1"
                       Grid.Column="0"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.DetailCode}"
+                      Content="{res:Loc OperatorApp.DetailCode}"
                       IsChecked="{Binding IncludeDetailCode, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="1"
                       Grid.Column="1"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.InverterIndex}"
+                      Content="{res:Loc OperatorApp.InverterIndex}"
                       IsChecked="{Binding IncludeInverterIndex, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="1"
                       Grid.Column="2"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.OccurrenceDate}"
+                      Content="{res:Loc OperatorApp.OccurrenceDate}"
                       IsChecked="{Binding IncludeOccurenceDate, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
             <CheckBox Grid.Row="1"
                       Grid.Column="3"
                       Margin="0,15,0,0"
-                      Content="{x:Static res:OperatorApp.ResolutionDate}"
+                      Content="{res:Loc OperatorApp.ResolutionDate}"
                       IsChecked="{Binding IncludeResolutionDate, Mode=TwoWay}"
                       Style="{StaticResource PpcCheckBoxStyle}" />
         </Grid>

@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         private readonly IExtBayPositioningMachineData machineData;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        private readonly IBaysDataProvider baysDataProvider;
+
         #endregion
 
         #region Constructors
@@ -39,8 +43,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
-
-            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - MovementType = {messageData.MovementType}");
+            this.baysDataProvider = baysDataProvider;
+            this.machineResourcesProvider = machineResourcesProvider;
 
             this.machineData = new ExtBayPositioningMachineData(
                 requester,
@@ -99,6 +103,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 if (this.machineData.MessageData.BypassConditions ||
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
+                    var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+
                     this.ChangeState(new ExtBayPositioningStartState(stateData));
                 }
                 else

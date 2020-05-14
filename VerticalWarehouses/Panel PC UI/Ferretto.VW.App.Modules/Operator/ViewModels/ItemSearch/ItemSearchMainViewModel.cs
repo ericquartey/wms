@@ -88,6 +88,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemInfo selectedItem;
 
+        private string selectedItemTxt;
+
         private DelegateCommand showItemDetailsCommand;
 
         private CancellationTokenSource tokenSource;
@@ -190,6 +192,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
+        public string SelectedItemTxt
+        {
+            get => this.selectedItemTxt;
+            set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
+        }
+
         public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -272,6 +280,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = null;
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
+                this.selectedItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
+                this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();
             }
@@ -367,7 +377,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(
                     string.Format(
-                        Resources.OperatorApp.PickRequestWasAccepted,
+                        Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
                         this.SelectedItem.Code,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
@@ -684,7 +694,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else
                     {
-                        this.ShowNotification(string.Format(Ferretto.VW.App.Resources.OperatorApp.NoItemWithCodeIsAvailable, itemCode), Services.Models.NotificationSeverity.Warning);
+                        this.ShowNotification(string.Format(Ferretto.VW.App.Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                     }
                 }
                 catch (Exception ex)

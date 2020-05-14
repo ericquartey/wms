@@ -88,7 +88,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
                                     Binding="{Binding Path=Status, Converter={StaticResource ECSC}}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderState}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsCellsDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -115,7 +115,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
                                     Binding="{Binding Path=TotalFrontCells}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFront}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsCellsDataGridHeaderFront}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -141,7 +141,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=RatioFrontCells, StringFormat={}{0:N1}}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -167,7 +167,7 @@
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
                                     Binding="{Binding Path=TotalBackCells}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBack}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsCellsDataGridHeaderBack}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -193,7 +193,7 @@
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
                                     Binding="{Binding Path=RatioBackCells, StringFormat={}{0:N1}}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />

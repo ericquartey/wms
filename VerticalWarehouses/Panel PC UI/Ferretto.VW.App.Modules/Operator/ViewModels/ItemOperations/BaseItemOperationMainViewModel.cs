@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 if (canComplete)
                 {
-                    this.ShowNotification(OperatorApp.OperationConfirmed);
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = true;
                 this.ClearNotifications();
 
-                this.ShowNotification(OperatorApp.OperationCancelledConfirmed);
+                this.ShowNotification(Localized.Get("OperatorApp.OperationCancelledConfirmed"));
 
                 // ?????????????? this.NavigationService.GoBack();
                 // this.MissionOperation = null;
@@ -305,7 +305,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsOperationConfirmed = false;
 
             var msg = this.GetNoLongerOperationMessageByType();
-            this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled, DialogType.Error, DialogButtons.OK);
+            this.DialogService.ShowMessage(msg, Localized.Get("OperatorApp.OperationCancelled"), DialogType.Error, DialogButtons.OK);
             this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
             this.HideNavigationBack();
         }
@@ -352,7 +352,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var alphaNumericBar = accessories.AlphaNumericBar;
-                if (alphaNumericBar.IsEnabled)
+                if (alphaNumericBar.IsEnabledNew)
                 {
                     this.alphaNumericBarDriver = new AlphaNumericBarDriver();
 
@@ -453,15 +453,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (this.MissionOperation.Type)
             {
                 case MissionOperationType.Pick:
-                    noLongerOperationMsg = OperatorApp.IfPickedItemsPutThemBackInTheOriginalCompartment;
+                    noLongerOperationMsg = Localized.Get("OperatorApp.IfPickedItemsPutThemBackInTheOriginalCompartment");
                     break;
 
                 case MissionOperationType.Put:
-                    noLongerOperationMsg = OperatorApp.RemoveAnySpilledItemsFromCompartment;
+                    noLongerOperationMsg = Localized.Get("OperatorApp.RemoveAnySpilledItemsFromCompartment");
                     break;
 
                 case MissionOperationType.Inventory:
-                    noLongerOperationMsg = OperatorApp.InventoryOperationCancelled;
+                    noLongerOperationMsg = Localized.Get("OperatorApp.InventoryOperationCancelled");
                     break;
 
                 default:

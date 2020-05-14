@@ -100,7 +100,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=Code}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -127,7 +127,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
                                     Binding="{Binding Path=Height}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -144,7 +144,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=MaxNetWeight}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -161,7 +161,7 @@
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
                                     Binding="{Binding Path=Tare}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -176,7 +176,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Width="2*"
-                                        Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}">
+                                        Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -206,7 +206,7 @@
                 <DataGridTextColumn x:Name="Column6"
                                     Width="1*"
                                     Binding="{Binding Path=MaxWeightPercentage, StringFormat={}{0:N1}}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />

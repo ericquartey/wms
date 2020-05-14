@@ -23,7 +23,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.MachineStatisticsHeader}" />
+                   Text="{res:Loc OperatorApp.MachineStatisticsHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -54,91 +54,91 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="10.684"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalVerticalAxisCycles}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatistics_TotalVerticalAxisCycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,220,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="39.562"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,150,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="7.235"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionHorizontalTotalCycles}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatisticsSectionHorizontalTotalCycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,420,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="6.136"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter2Cycles}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatistics_TotalShutter2Cycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,350,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="3.235"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter1Cycles}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatistics_TotalShutter1Cycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,490,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="475"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalShutter3Cycles}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatistics_TotalShutter3Cycles}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,340,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="980"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay2}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatisticsSectionBaysBay2}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,270,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="2.235"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay1}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatisticsSectionBaysBay1}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,410,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1.058"
-                                 LabelText="{x:Static res:OperatorApp.MachineStatisticsSectionBaysBay3}" />
+                                 LabelText="{res:Loc OperatorApp.MachineStatisticsSectionBaysBay3}" />
 
         <TextBlock Width="260"
                    Margin="220,120,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.MachineStatisticsSectionVertical}" />
+                   Text="{res:Loc OperatorApp.MachineStatisticsSectionVertical}" />
 
         <TextBlock Width="260"
                    Margin="220,310,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.MachineStatisticsSectionShutters}" />
+                   Text="{res:Loc OperatorApp.MachineStatisticsSectionShutters}" />
 
         <TextBlock Width="260"
                    Margin="730,120,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.MachineStatisticsSectionHorizontal}" />
+                   Text="{res:Loc OperatorApp.MachineStatisticsSectionHorizontal}" />
 
         <TextBlock Width="260"
                    Margin="730,240,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.MachineStatisticsSectionBays}" />
+                   Text="{res:Loc OperatorApp.MachineStatisticsSectionBays}" />
 
         <TextBlock Width="260"
                    Height="70"

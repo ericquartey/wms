@@ -49,77 +49,77 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="V-00147"
-                                 LabelText="{x:Static res:OperatorApp.CommonListCode}" />
+                                 LabelText="{res:Loc OperatorApp.CommonListCode}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,330,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="1258445984"
-                                 LabelText="{x:Static res:OperatorApp.CommonItemCode}" />
+                                 LabelText="{res:Loc OperatorApp.CommonItemCode}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,120,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="F-3"
-                                 LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}" />
+                                 LabelText="{res:Loc OperatorApp.CommonCompartmentPosition}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Gruppo riduzione"
-                                 LabelText="{x:Static res:OperatorApp.CommonListDescription}" />
+                                 LabelText="{res:Loc OperatorApp.CommonListDescription}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,400,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Ingranaggio a denti"
-                                 LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
+                                 LabelText="{res:Loc OperatorApp.CommonItemDescription}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="4"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailListRow}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerActivityRefillingDetailListRow}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,470,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="2019-02-12"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailProductionDate}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerActivityRefillingDetailProductionDate}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,540,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Collaudato"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerActivityRefillingDetailMaterialStatus}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="045-25"
-                                 LabelText="{x:Static res:OperatorApp.Lot}" />
+                                 LabelText="{res:Loc OperatorApp.Lot}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Boxed"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailPackagingType}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerActivityRefillingDetailPackagingType}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,330,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="8"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -196,7 +196,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
+                   Text="{res:Loc OperatorApp.DrawerActivityRefillingDetailHeader}" />
 
     </Grid>
 </UserControl>

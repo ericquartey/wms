@@ -153,4 +153,7 @@
   <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
     <value>The bay contains a Loading Unit in its external position</value>
   </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>The specified bay is not an external bay</value>
+  </data>
 </root>

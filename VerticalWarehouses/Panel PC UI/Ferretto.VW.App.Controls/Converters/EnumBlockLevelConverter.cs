@@ -14,19 +14,19 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case BlockLevel.None:
-                    return Resources.OperatorApp.BlockLevelNone;
+                    return Resources.Localized.Get("OperatorApp.BlockLevelNone");
 
                 case BlockLevel.Undefined:
-                    return Resources.OperatorApp.BlockLevelUndefined;
+                    return Resources.Localized.Get("OperatorApp.BlockLevelUndefined");
 
                 case BlockLevel.SpaceOnly:
-                    return Resources.OperatorApp.BlockLevelSpaceOnly;
+                    return Resources.Localized.Get("OperatorApp.BlockLevelSpaceOnly");
 
                 case BlockLevel.Blocked:
-                    return Resources.OperatorApp.BlockLevelBlocked;
+                    return Resources.Localized.Get("OperatorApp.BlockLevelBlocked");
 
                 case BlockLevel.NeedsTest:
-                    return Resources.OperatorApp.BlockLevelNeedsTest;
+                    return Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest");
 
                 default:
                     return ((BlockLevel)value).ToString();

@@ -36,7 +36,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.ErrorsStatisticsHeader}" />
+                   Text="{resources:Loc OperatorApp.ErrorsStatisticsHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -57,7 +57,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalLoadingUnits}"
-                                     LabelText="{x:Static resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
+                                     LabelText="{resources:Loc OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
@@ -65,7 +65,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalLoadingUnitsBetweenErrors}"
-                                     LabelText="{x:Static resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
+                                     LabelText="{resources:Loc OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
@@ -73,7 +73,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalErrors}"
-                                     LabelText="{x:Static resources:OperatorApp.ErrorsStatisticsTotErrors}" />
+                                     LabelText="{resources:Loc OperatorApp.ErrorsStatisticsTotErrors}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
@@ -81,7 +81,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.ReliabilityPercentage, StringFormat={}{0:N3} %}"
-                                     LabelText="{x:Static resources:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
+                                     LabelText="{resources:Loc OperatorApp.ErrorsStatisticsReliabilityIndex}" />
 
         </Grid>
 
@@ -122,14 +122,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonUp}" />
+                                Content="{resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonDown}" />
+                                Content="{resources:Loc OperatorApp.CommonDown}" />
 
         </Grid>
 
@@ -139,7 +139,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DataGridViewModel.SelectedCell.Description}"
-                                 LabelText="{x:Static resources:OperatorApp.ErrorsStatisticsErrorDescription}" />
+                                 LabelText="{resources:Loc OperatorApp.ErrorsStatisticsErrorDescription}" />
 
     </Grid>
 </ctrls:View>

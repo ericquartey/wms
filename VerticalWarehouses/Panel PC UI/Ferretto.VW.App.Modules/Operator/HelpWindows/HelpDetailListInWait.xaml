@@ -19,7 +19,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DetailListInWaitHeader}" />
+                    Text="{res:Loc OperatorApp.DetailListInWaitHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -46,15 +46,15 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="E' possibile eseguire"
-                                               LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonNote}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="1256"
-                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListCode}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Lista in attesa"
-                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListDescription}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
@@ -94,15 +94,15 @@
                     Text="{res:Loc HelpDescriptions.HelpCommonNote}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Content="{res:Loc OperatorApp.CommonUp}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Content="{res:Loc OperatorApp.CommonDown}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0"
-                  Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
+                  Content="{res:Loc OperatorApp.ListsInWaitExecute}"
                    />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
@@ -131,7 +131,7 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="Prelievo"
-                                               LabelText="{x:Static res:OperatorApp.CommonListType}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListType}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,530,0,0"
                     Width="260" Height="70"

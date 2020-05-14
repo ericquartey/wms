@@ -10,12 +10,12 @@
              mc:Ignorable="d">
 
     <local:CardSensor CardBadge1="{Binding EmbarkedLoadingUnit.Id}"
-                      CardBadgeLabel1="{x:Static res:SensorCard.Drawer}"
+                      CardBadgeLabel1="{res:Loc SensorCard.Drawer}"
                       CardDescription="{Binding VerticalDescription}"
-                      CardSensorLabel1="{x:Static res:SensorCard.Zero}"
-                      CardSensorLabel2="{x:Static res:SensorCard.Extra}"
+                      CardSensorLabel1="{res:Loc SensorCard.Zero}"
+                      CardSensorLabel2="{res:Loc SensorCard.Extra}"
                       CardSensorLabel3="{x:Null}"
-                      CardText="{x:Static res:SensorCard.Vertical}"
+                      CardText="{res:Loc SensorCard.Vertical}"
                       CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
                       LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
                       LuWeight="{Binding EmbarkedLoadingUnit.NetWeight, StringFormat={}{0:F2}}"

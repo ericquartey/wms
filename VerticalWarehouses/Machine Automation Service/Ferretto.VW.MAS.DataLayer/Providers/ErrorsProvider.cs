@@ -181,6 +181,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     errorStatistics.TotalErrors++;
                     this.dataContext.ErrorStatistics.Update(errorStatistics);
                 }
+                else
+                {
+                    this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
+                }
 
                 this.dataContext.SaveChanges();
             }
@@ -236,6 +240,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     errorStatistics.TotalErrors++;
                     this.dataContext.ErrorStatistics.Update(errorStatistics);
+                }
+                else
+                {
+                    this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
                 }
 
                 this.dataContext.SaveChanges();

@@ -318,7 +318,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         Code = short.Parse(code),
                         DataSet = this.GetDatasetIndex(parameter),
                         Type = parameterInfo.Type,
-                        Value = ExtractNumber(parameter.Value)
+                        // Value = ExtractNumber(parameter.Value) // Giovanni to check
                     };
 
                     this.inverterParameters.Add(inverterParameter);

@@ -31,7 +31,7 @@
                             Abbrevation="4.1"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuInstallatorCommand}"
-                            Content="{x:Static res:Menu.Installation}"
+                            Content="{res:Loc Menu.Installation}"
                             IsActive="{Binding IsGeneralActive}"
                             Kind="Magnify"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -42,7 +42,7 @@
                             Abbrevation="4.2"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuElevatorCommand}"
-                            Content="{x:Static res:Menu.MenuElevator}"
+                            Content="{res:Loc Menu.MenuElevator}"
                             IsActive="{Binding IsElevatorActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -53,7 +53,7 @@
                             Abbrevation="4.3"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuBaysCommand}"
-                            Content="{x:Static res:Menu.Bay}"
+                            Content="{res:Loc Menu.Bay}"
                             IsActive="{Binding IsBaysActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -64,7 +64,7 @@
                             Abbrevation="4.4"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuCellsCommand}"
-                            Content="{x:Static res:Menu.MenuCells}"
+                            Content="{res:Loc Menu.MenuCells}"
                             IsActive="{Binding IsCellsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -75,7 +75,7 @@
                             Abbrevation="4.5"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuLoadingUnitsCommand}"
-                            Content="{x:Static res:Menu.MenuLoadingUnits}"
+                            Content="{res:Loc Menu.MenuLoadingUnits}"
                             IsActive="{Binding IsLoadingUnitsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -86,7 +86,7 @@
                             Abbrevation="4.6"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuAccessoriesCommand}"
-                            Content="{x:Static res:Menu.MenuAccessories}"
+                            Content="{res:Loc Menu.MenuAccessories}"
                             IsActive="{Binding IsAccessoriesActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
@@ -97,7 +97,7 @@
                             Abbrevation="4.7"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuOtherCommand}"
-                            Content="{x:Static res:Menu.Other}"
+                            Content="{res:Loc Menu.Other}"
                             IsActive="{Binding IsOtherActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />

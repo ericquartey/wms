@@ -14,16 +14,16 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case ItemListType.Inventory:
-                    return Resources.OperatorApp.ItemListType_Inventory;
+                    return Resources.Localized.Get("OperatorApp.ItemListType_Inventory");
 
                 case ItemListType.Pick:
-                    return Resources.OperatorApp.ItemListType_Pick;
+                    return Resources.Localized.Get("OperatorApp.ItemListType_Pick");
 
                 case ItemListType.Put:
-                    return Resources.OperatorApp.ItemListType_Put;
+                    return Resources.Localized.Get("OperatorApp.ItemListType_Put");
 
                 default:
-                    return Resources.OperatorApp.ItemListType_NotSpecified;
+                    return Resources.Localized.Get("OperatorApp.ItemListType_NotSpecified");
             }
         }
 

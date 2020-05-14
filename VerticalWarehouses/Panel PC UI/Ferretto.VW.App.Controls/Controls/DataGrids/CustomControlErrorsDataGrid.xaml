@@ -83,7 +83,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
                                     Binding="{Binding Path=Code}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsErrorDataGridHeaderError }">
+                                    Header="{Resources:Loc OperatorApp.StatisticsErrorDataGridHeaderError }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -110,7 +110,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
                                     Binding="{Binding Path=Total}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsErrorDataGridHeaderTotal}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsErrorDataGridHeaderTotal}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -136,7 +136,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=RatioTotal, StringFormat={}{0:N1}}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsErrorDataGridHeaderTotalPercentage}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsErrorDataGridHeaderTotalPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

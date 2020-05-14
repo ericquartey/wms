@@ -82,7 +82,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
                                     Binding="{Binding Path=Kit}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderKit }">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDataGridHeaderKit }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -109,7 +109,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="4*"
                                     Binding="{Binding Path=Description}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderDescription}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDataGridHeaderDescription}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -135,7 +135,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=State}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderState}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -161,7 +161,7 @@
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
                                     Binding="{Binding Path=Request}"
-                                    Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderRequest}">
+                                    Header="{Resources:Loc OperatorApp.StatisticsMaintenanceDataGridHeaderRequest}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

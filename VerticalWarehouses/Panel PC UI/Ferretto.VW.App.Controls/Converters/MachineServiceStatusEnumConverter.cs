@@ -14,16 +14,16 @@ namespace Ferretto.VW.App.Controls.Converters
             switch (value)
             {
                 case MachineServiceStatus.Expired:
-                    return Resources.OperatorApp.MachineServiceStatus_Expired;
+                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expired");
 
                 case MachineServiceStatus.Expiring:
-                    return Resources.OperatorApp.MachineServiceStatus_Expiring;
+                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expiring");
 
                 case MachineServiceStatus.Valid:
-                    return Resources.OperatorApp.MachineServiceStatus_Valid;
+                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Valid");
 
                 default:
-                    return Resources.OperatorApp.MachineServiceStatus_Unknown;
+                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Unknown");
             }
         }
 
