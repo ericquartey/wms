@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (bay.External is null)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayIsNotAnExternalBay };
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", CommonUtils.Culture.Actual) };
             }
 
             // Always allow the manual movements
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardMachine:
                     if (isLoadingUnitInInternalPosition)
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                     }
 
                     break;
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         bay.Positions.FirstOrDefault().LoadingUnit != null
                         )
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsExternalPosition };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
                     }
 
                     break;

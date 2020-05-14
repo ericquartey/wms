@@ -619,7 +619,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
+                                    throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", CommonUtils.Culture.Actual));
                             }
 
                             break;
@@ -1094,14 +1094,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.GetByNumber(bayNumber);
                 if (positionIndex < 1 || positionIndex > bay.Positions.Count())
                 {
-                    throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
+                    throw new ArgumentOutOfRangeException(Resources.Bays.ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", CommonUtils.Culture.Actual));
                 }
 
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
                 if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
                 {
                     throw new ArgumentOutOfRangeException(
-                        string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, verticalAxis.LowerBound, verticalAxis.UpperBound));
+                        string.Format(Resources.Bays.ResourceManager.GetString("TheBayHeightMustBeInRange", CommonUtils.Culture.Actual), height, verticalAxis.LowerBound, verticalAxis.UpperBound));
                 }
 
                 BayPosition position = null;
