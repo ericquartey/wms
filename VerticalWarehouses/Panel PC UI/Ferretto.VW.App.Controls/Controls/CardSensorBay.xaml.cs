@@ -180,6 +180,11 @@ namespace Ferretto.VW.App.Controls.Controls
                     this.CardSensorLabel2 = null;
                     this.CardSensorLabel3 = "Baia";
                 }
+                if (this.machineService.Bays.Any(f => f.IsExternal))
+                {
+                    this.CardSensorLabel2 = "Int";
+                    this.CardSensorLabel3 = "Ext";
+                }
             }
 
             if (this.machineService.HasBayWithInverter)
@@ -189,22 +194,6 @@ namespace Ferretto.VW.App.Controls.Controls
             else
             {
                 this.CardSensorLabel1 = string.Empty;
-            }
-
-            if (this.machineService.Bays.Any(f => f.IsExternal))
-            {
-                if (this.machineService.Bay.IsExternal == true)
-                {
-                    this.CardBayPosition = "Ext";
-                }
-                else
-                {
-                    this.CardBayPosition = "Int";
-                }
-            }
-            else
-            {
-                this.CardBayPosition = null;
             }
         }
 
