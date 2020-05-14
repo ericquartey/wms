@@ -17,6 +17,8 @@ namespace Ferretto.VW.Simulator
 
         private const string ConfigurationArgumentKey = "--configuration";
 
+        private const string MinimizedArgumentKey = "--minimized";
+
         #endregion
 
         #region Methods
@@ -57,7 +59,13 @@ namespace Ferretto.VW.Simulator
             var application = Application.Current as App;
             application.MainWindow.DataContext = mainWindowViewModel;
 
-            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals(ConfigurationArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
+            var commandLineArgs = System.Environment.GetCommandLineArgs();
+            if (commandLineArgs.Any(a => a.Equals(MinimizedArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            }
+
+            if (commandLineArgs.Any(a => a.Equals(ConfigurationArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 var filePath = System.Environment
                     .GetCommandLineArgs()
@@ -68,7 +76,7 @@ namespace Ferretto.VW.Simulator
                 mainWindowViewModel.LoadConfiguration(filePath);
             }
 
-            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals(AutostartArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
+            if (commandLineArgs.Any(a => a.Equals(AutostartArgumentKey, System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 mainWindowViewModel.StartSimulatorCommand.Execute(null);
             }
