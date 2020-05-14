@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Windows.Media.TextFormatting;
 using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
@@ -15,7 +16,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+        private readonly IParentActionChanged parentActionChanged;
 
         private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
@@ -27,10 +28,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public InvertersViewModel(ConfigurationService installationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
+        public InvertersViewModel(ConfigurationService installationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
-            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
+            this.parentActionChanged = parentActionChanged;
             this.LoadConfiguration();
         }
 
@@ -129,7 +130,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
             catch (Exception ex)
             {
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
             finally
             {
@@ -139,7 +140,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         #endregion

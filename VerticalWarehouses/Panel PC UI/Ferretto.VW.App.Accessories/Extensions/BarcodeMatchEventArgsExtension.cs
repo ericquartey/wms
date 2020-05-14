@@ -49,6 +49,24 @@
             return null;
         }
 
+        public static double? GetItemQuantity(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemQuantity.ToString(), out var itemQuantityString))
+            {
+                if (double.TryParse(itemQuantityString, out var itemQuantity))
+                {
+                    return itemQuantity;
+                }
+            }
+
+            return null;
+        }
+
         public static int? GetListId(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)

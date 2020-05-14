@@ -18,7 +18,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+        private readonly IParentActionChanged parentActionChanged;
 
         private readonly string vertimagExportConfigurationPath;
 
@@ -32,14 +32,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public ExportConfigurationViewModel(ConfigurationService installationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
+        public ExportConfigurationViewModel(ConfigurationService installationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
-            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
+            this.parentActionChanged = parentActionChanged;
 
             this.VertimagConfigurationFilePath = this.vertimagExportConfigurationPath = ConfigurationManager.AppSettings.GetVertimagExportConfigurationRootPath();
             this.ResultVertimagConfiguration = "File not saved";
-            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         public bool CanPrevious => true;
 
         public ICommand ExportCommand =>
-                                        this.exportCommand
+                        this.exportCommand
                         ??
                         (this.exportCommand = new RelayCommand(this.Export));
 
@@ -104,7 +104,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     File.WriteAllText(resultFile, json);
                     this.VertimagConfigurationFilePath = resultFile;
                     this.ResultVertimagConfiguration = null;
-                    this.configurationService.ShowNotification(Resources.ExportedSuccessfully);
+                    this.parentActionChanged.Notify(Resources.ExportedSuccessfully, NotificationSeverity.Success);
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
             catch (Exception ex)
             {
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
         }
 

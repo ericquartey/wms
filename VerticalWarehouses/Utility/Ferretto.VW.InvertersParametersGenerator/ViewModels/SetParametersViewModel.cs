@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly List<InverterParameter> inverterParameters;
 
-        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+        private readonly IParentActionChanged parentActionChanged;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
@@ -47,10 +48,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public SetParametersViewModel(ConfigurationService configurationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
+        public SetParametersViewModel(ConfigurationService configurationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
+            this.parentActionChanged = parentActionChanged;
             this.inverterParameters = new List<InverterParameter>();
             this.SelectedFile = null;
             this.InitializeData();
@@ -125,7 +126,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return number != null ? number.Value : string.Empty;
         }
 
-        public static IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
+        public IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
         {
             try
             {
@@ -135,7 +136,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
             catch (Exception ex)
             {
-                ConfigurationService.GetInstance.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             return null;
@@ -223,12 +224,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
                 if (!this.configurationFiles.Any())
                 {
-                    this.configurationService.ShowNotification(Resources.NoParametersFilesFound);
+                    this.parentActionChanged.Notify(Resources.NoParametersFilesFound, NotificationSeverity.Warning);
                 }
             }
             catch (Exception ex)
             {
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
                 this.configurationFiles = null;
             }
 
@@ -318,7 +319,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         Code = short.Parse(code),
                         DataSet = this.GetDatasetIndex(parameter),
                         Type = parameterInfo.Type,
-                        // Value = ExtractNumber(parameter.Value) // Giovanni to check
+                        StringValue = ExtractNumber(parameter.Value)
                     };
 
                     this.inverterParameters.Add(inverterParameter);
@@ -330,7 +331,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             catch (Exception ex)
             {
                 this.IsParametersSet = false;
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             this.TotalParameters = string.Format(Resources.TotalParameters, this.inverterParameters.Count);
@@ -341,7 +342,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private void RaiseCanExecuteChanged()
         {
             this.loadFileCommand?.RaiseCanExecuteChanged();
-            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         private void SaveInverterParameters()
