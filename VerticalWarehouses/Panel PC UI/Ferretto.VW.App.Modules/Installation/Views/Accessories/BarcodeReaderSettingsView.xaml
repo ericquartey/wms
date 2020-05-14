@@ -41,7 +41,7 @@
         <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}" />
+                   Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}" />
 
         <controls:PpcLabeledText Grid.Row="1"
                                  ContentText="{Binding FirmwareVersion}"
