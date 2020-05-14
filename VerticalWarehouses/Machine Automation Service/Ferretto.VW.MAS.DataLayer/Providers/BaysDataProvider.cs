@@ -883,7 +883,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.AlphaNumericBar)
                         .Single(b => b.Number == bayNumber);
 
-                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled;
+                barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
                 barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
 
@@ -996,7 +996,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.BarcodeReader)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.IsEnabledNew = isEnabled;
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);

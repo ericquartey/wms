@@ -352,7 +352,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var alphaNumericBar = accessories.AlphaNumericBar;
-                if (alphaNumericBar.IsEnabled)
+                if (alphaNumericBar.IsEnabledNew)
                 {
                     this.alphaNumericBarDriver = new AlphaNumericBarDriver();
 

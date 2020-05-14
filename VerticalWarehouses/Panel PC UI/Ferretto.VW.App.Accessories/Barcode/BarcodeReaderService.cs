@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Accessories
 
                 var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
 
-                if (accessories.BarcodeReader?.IsEnabled == true)
+                if (accessories.BarcodeReader?.IsEnabledNew == true)
                 {
                     this.reader.Connect(
                         new ConfigurationOptions

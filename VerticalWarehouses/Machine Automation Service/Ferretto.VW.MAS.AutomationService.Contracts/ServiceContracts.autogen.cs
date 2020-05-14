@@ -2118,11 +2118,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DeviceInformation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public DeviceInformation DeviceInformation { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsConfigured", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsConfigured { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsConfigured", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IsConfigured { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsEnabled", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsEnabled { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsConfiguredNew", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsConfiguredNew { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEnabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string IsEnabled { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEnabledNew", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsEnabledNew { get; set; }
     
         public string ToJson() 
         {
@@ -3033,11 +3039,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("StringValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StringValue { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
+        public int Value { get; set; }
     
         public string ToJson() 
         {
