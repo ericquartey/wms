@@ -191,13 +191,20 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.CardSensorLabel1 = string.Empty;
             }
 
-            if (this.machineService.Bay.IsExternal == true)
+            if (this.machineService.Bays.Any(f => f.IsExternal))
             {
-                this.CardBayPosition = "Ext";
+                if (this.machineService.Bay.IsExternal == true)
+                {
+                    this.CardBayPosition = "Ext";
+                }
+                else
+                {
+                    this.CardBayPosition = "Int";
+                }
             }
             else
             {
-                this.CardBayPosition = "Int";
+                this.CardBayPosition = null;
             }
         }
 
