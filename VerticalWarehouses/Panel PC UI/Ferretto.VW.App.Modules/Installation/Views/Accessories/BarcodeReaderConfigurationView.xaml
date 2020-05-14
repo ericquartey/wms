@@ -66,7 +66,7 @@
         <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}"
+                   Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}"
                    TextWrapping="WrapWithOverflow" />
 
         <TextBlock Grid.Row="1"
@@ -76,7 +76,7 @@
                    VerticalAlignment="Center"
                    FontSize="16"
                    Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
+                   Text="{res:Loc InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
 
         <ListView Grid.Row="2"
                   Background="Transparent"
@@ -111,7 +111,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding RefreshSystemPortsCommand}"
-                                    Content="{x:Static res:General.Refresh}" />
+                                    Content="{res:Loc General.Refresh}" />
             </StackPanel>
 
             <ListView Grid.Row="3"

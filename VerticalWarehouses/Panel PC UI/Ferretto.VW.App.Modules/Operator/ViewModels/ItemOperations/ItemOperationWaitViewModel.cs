@@ -226,16 +226,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 //this.isGridVisible = false;
 
-                return OperatorApp.NoLoadingUnitsToMove;
+                return Localized.Get("OperatorApp.NoLoadingUnitsToMove");
             }
             else if (this.loadingUnitsMovements == 1)
             {
                 //this.isGridVisible = true;
 
-                return OperatorApp.LoadingUnitSendToBay;
+                return Localized.Get("OperatorApp.LoadingUnitSendToBay");
             }
 
-            return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
+            return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.loadingUnitsMovements);
         }
 
         #endregion

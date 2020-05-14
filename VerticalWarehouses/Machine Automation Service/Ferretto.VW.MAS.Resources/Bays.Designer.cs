@@ -160,6 +160,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified bay is not an external bay.
+        /// </summary>
+        public static string TheSpecifiedBayIsNotAnExternalBay {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified bay position is not valid..
         /// </summary>
         public static string TheSpecifiedBayPositionIsNotValid {

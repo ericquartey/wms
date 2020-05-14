@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken missionOperationToken;
 
-        private string recallLoadingUnitInfo = OperatorApp.RecallDrawer;
+        private string recallLoadingUnitInfo = Localized.Get("OperatorApp.RecallDrawer");
 
         private TrayControlCompartment selectedCompartment;
 
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.compartments, value, this.RaiseCanExecuteChanged);
         }
 
-        public string ConfirmOperationInfo => this.isNewOperationAvailable ? OperatorApp.ConfirmAndNewOperationsAvailable : OperatorApp.Confirm;
+        public string ConfirmOperationInfo => this.isNewOperationAvailable ? Localized.Get("OperatorApp.ConfirmAndNewOperationsAvailable") : Localized.Get("OperatorApp.Confirm");
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -142,8 +142,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.isNewOperationAvailable, value))
                 {
                     this.RecallLoadingUnitInfo = value
-                        ? OperatorApp.NewOperationsAvailable
-                        : OperatorApp.RecallDrawer;
+                        ? Localized.Get("OperatorApp.NewOperationsAvailable")
+                        : Localized.Get("OperatorApp.RecallDrawer");
                 }
             }
         }

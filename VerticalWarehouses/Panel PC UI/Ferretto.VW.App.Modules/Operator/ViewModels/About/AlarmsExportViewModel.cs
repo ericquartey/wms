@@ -247,14 +247,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //create intestation
                 string intestation = "";
-                intestation += this.IncludeID ? OperatorApp.Id + this.separator : string.Empty;
-                intestation += this.IncludeBayNumber ? OperatorApp.BayNumber + this.separator : string.Empty;
-                intestation += this.IncludeCode ? OperatorApp.Code + this.separator : string.Empty;
-                intestation += this.IncludeDescription ? OperatorApp.Description + this.separator : string.Empty;
-                intestation += this.IncludeDetailCode ? OperatorApp.DetailCode + this.separator : string.Empty;
-                intestation += this.IncludeInverterIndex ? OperatorApp.InverterIndex + this.separator : string.Empty;
-                intestation += this.IncludeOccurenceDate ? OperatorApp.OccurrenceDate + this.separator : string.Empty;
-                intestation += this.IncludeResolutionDate ? OperatorApp.ResolutionDate + this.separator : string.Empty;
+                intestation += this.IncludeID ? Localized.Get("OperatorApp.Id") + this.separator : string.Empty;
+                intestation += this.IncludeBayNumber ? Localized.Get("OperatorApp.BayNumber") + this.separator : string.Empty;
+                intestation += this.IncludeCode ? Localized.Get("OperatorApp.Code") + this.separator : string.Empty;
+                intestation += this.IncludeDescription ? Localized.Get("OperatorApp.Description") + this.separator : string.Empty;
+                intestation += this.IncludeDetailCode ? Localized.Get("OperatorApp.DetailCode") + this.separator : string.Empty;
+                intestation += this.IncludeInverterIndex ? Localized.Get("OperatorApp.InverterIndex") + this.separator : string.Empty;
+                intestation += this.IncludeOccurenceDate ? Localized.Get("OperatorApp.OccurrenceDate") + this.separator : string.Empty;
+                intestation += this.IncludeResolutionDate ? Localized.Get("OperatorApp.ResolutionDate") + this.separator : string.Empty;
 
                 File.WriteAllText(fullPath, intestation + "\n");
 

@@ -29,7 +29,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.StatisticsGeneralDataHeader}" />
+                   Text="{resources:Loc OperatorApp.StatisticsGeneralDataHeader}" />
 
         <views:StatisticsMenuNavigationView Grid.Row="1" />
 
@@ -53,20 +53,20 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.TotalMovedTrays}"
-                                     LabelText="{x:Static resources:OperatorApp.MachineStatistics_TotalMovedTrays}" />
+                                     LabelText="{resources:Loc OperatorApp.MachineStatistics_TotalMovedTrays}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.TotalPowerOnTime.TotalHours}"
-                                     LabelText="{x:Static resources:OperatorApp.MachineStatistics_TotalPowerOnTime}" />
+                                     LabelText="{resources:Loc OperatorApp.MachineStatistics_TotalPowerOnTime}" />
 
             <controls:CustomProgressBarControl Grid.Row="1"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.MachineStatistics_AreaFillPercentage}"
+                                               LabelText="{resources:Loc OperatorApp.MachineStatistics_AreaFillPercentage}"
                                                ProgressionValue="{Binding Model.AreaFillPercentage}" />
 
 
@@ -74,21 +74,21 @@
                                                Grid.Column="1"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.MachineStatistics_AutomaticTimePercentage}"
+                                               LabelText="{resources:Loc OperatorApp.MachineStatistics_AutomaticTimePercentage}"
                                                ProgressionValue="{Binding Model.AutomaticTimePercentage}" />
 
             <controls:CustomProgressBarControl Grid.Row="2"
                                                Grid.Column="0"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.MachineStatistics_WeightCapacityPercentage}"
+                                               LabelText="{resources:Loc OperatorApp.MachineStatistics_WeightCapacityPercentage}"
                                                ProgressionValue="{Binding Model.WeightCapacityPercentage}" />
 
             <controls:CustomProgressBarControl Grid.Row="2"
                                                Grid.Column="1"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.MachineStatistics_UsageTimePercentage}"
+                                               LabelText="{resources:Loc OperatorApp.MachineStatistics_UsageTimePercentage}"
                                                ProgressionValue="{Binding Model.UsageTimePercentage}" />
 
         </Grid>

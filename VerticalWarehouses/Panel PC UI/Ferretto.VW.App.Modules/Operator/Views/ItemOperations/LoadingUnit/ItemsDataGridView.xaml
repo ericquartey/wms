@@ -10,7 +10,7 @@
             <DataGridTextColumn x:Name="Column1"
                                 Width="100"
                                 Binding="{Binding Path=ItemCode}"
-                                Header="{x:Static Resources:OperatorApp.ItemSearchGridItem}">
+                                Header="{Resources:Loc OperatorApp.ItemSearchGridItem}">
 
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell">
@@ -28,7 +28,7 @@
             <DataGridTextColumn x:Name="Column2"
                                 Width="*"
                                 Binding="{Binding Path=ItemDescription}"
-                                Header="{x:Static Resources:OperatorApp.ItemSearchGridDescription}">
+                                Header="{Resources:Loc OperatorApp.ItemSearchGridDescription}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -39,7 +39,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="StockColumn"
                                 Width="110"
-                                Header="{x:Static Resources:OperatorApp.CompartmentStock}">
+                                Header="{Resources:Loc OperatorApp.CompartmentStock}">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0} {1}">
                         <Binding Path="Stock" />

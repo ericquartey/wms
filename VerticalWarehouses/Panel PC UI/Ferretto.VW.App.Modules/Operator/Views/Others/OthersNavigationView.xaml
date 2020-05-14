@@ -34,7 +34,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.GeneralInfoHeader}" />
+                   Text="{Resources:Loc OperatorApp.GeneralInfoHeader}" />
 
         <views:MenuNavigationView Grid.Row="1" />
 
@@ -62,49 +62,49 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.ModelName}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoModel}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoModel}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.SerialNumber}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoSerial}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoSerial}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.TrayCount}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoTotDrawers}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoTotDrawers}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding SoftwareVersion}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoSwRelease}" />
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.InstallationDate}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoInstallationDate}" />
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.NextServiceDate}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoNextMaintenanceDate}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Model.LastServiceDate}"
-                                     LabelText="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.GeneralInfoLastMaintenanceDate}" />
 
             <Grid Grid.Row="4"
                   Grid.Column="1">
@@ -124,7 +124,7 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Model.ServiceStatus, Converter={StaticResource MSSEC}}"
-                                         LabelText="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}" />
+                                         LabelText="{Resources:Loc OperatorApp.GeneralInfoOperativeStatus}" />
             </Grid>
 
             <Grid Grid.Row="5"
@@ -146,7 +146,7 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding WmsServicesStatusDescription}"
-                                         LabelText="{x:Static Resources:OperatorApp.GeneralInfoWmsStatus}" />
+                                         LabelText="{Resources:Loc OperatorApp.GeneralInfoWmsStatus}" />
             </Grid>
 
         </Grid>

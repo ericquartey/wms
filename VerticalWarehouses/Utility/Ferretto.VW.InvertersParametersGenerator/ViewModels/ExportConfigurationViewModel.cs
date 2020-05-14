@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
+using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
@@ -15,7 +18,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
+        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+
+        private readonly string vertimagExportConfigurationPath;
+
         private RelayCommand exportCommand;
+
+        private string resultVertimagConfiguration;
 
         private string vertimagConfigurationFilePath;
 
@@ -23,21 +32,34 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public ExportConfigurationViewModel(ConfigurationService installationService)
+        public ExportConfigurationViewModel(ConfigurationService installationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
+
+            this.VertimagConfigurationFilePath = this.vertimagExportConfigurationPath = ConfigurationManager.AppSettings.GetVertimagExportConfigurationRootPath();
+            this.ResultVertimagConfiguration = "File not saved";
+            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
         }
 
         #endregion
 
         #region Properties
 
+        public bool CanNext => false;
+
+        public bool CanPrevious => true;
+
         public ICommand ExportCommand =>
-                        this.exportCommand
+                                        this.exportCommand
                         ??
                         (this.exportCommand = new RelayCommand(this.Export));
 
-        public bool IsSuccessful => true;
+        public string ResultVertimagConfiguration
+        {
+            get => this.resultVertimagConfiguration;
+            set => this.SetProperty(ref this.resultVertimagConfiguration, value);
+        }
 
         public string VertimagConfigurationFilePath
         {
@@ -49,11 +71,21 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Methods
 
+        public bool Next()
+        {
+            return true;
+        }
+
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.Parameters);
+        }
+
         private void Export()
         {
             try
             {
-                var resultFile = DialogService.SaveFile(Resources.SaveFileConfiguration, this.vertimagConfigurationFilePath, "json", Resources.ConfigurationFile);
+                var resultFile = DialogService.SaveFile(Resources.SaveFileConfiguration, this.vertimagConfigurationFilePath, "json", Resources.ConfigurationFile, this.vertimagExportConfigurationPath);
 
                 if (!string.IsNullOrEmpty(resultFile))
                 {
@@ -70,7 +102,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     var json = JsonConvert.SerializeObject(this.configurationService.VertimagConfiguration, settings);
 
                     File.WriteAllText(resultFile, json);
+                    this.VertimagConfigurationFilePath = resultFile;
+                    this.ResultVertimagConfiguration = null;
                     this.configurationService.ShowNotification(Resources.ExportedSuccessfully);
+                }
+                else
+                {
+                    this.ResultVertimagConfiguration = "file not valid or o not inserted";
                 }
             }
             catch (Exception ex)

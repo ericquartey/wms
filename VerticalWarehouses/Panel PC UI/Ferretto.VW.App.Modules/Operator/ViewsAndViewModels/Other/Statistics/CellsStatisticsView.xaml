@@ -15,14 +15,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.CellsStatisticsHeader}" />
+                   Text="{Resources:Loc OperatorApp.CellsStatisticsHeader}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="490,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CellStatistics.TotalFrontCells}"
-                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}" />
+                                              LabelText="{Resources:Loc OperatorApp.CellsStatisticsFrontCellsTotal}" />
 
         <ContentControl HorizontalAlignment="Left"
                         Height="160"
@@ -37,13 +37,13 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CellStatistics.TotalCells}"
-                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsCellsTotal}" />
+                                              LabelText="{Resources:Loc OperatorApp.CellsStatisticsCellsTotal}" />
 
         <controls:PpcButton  Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding DrawerCompactingButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
+                Content="{Resources:Loc OperatorApp.CellsStatisticsOther}"
                  />
 
         <controls:PpcLabeledText MaxWidth="300"
@@ -51,13 +51,13 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CellStatistics.TotalBackCells}"
-                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}" />
+                                              LabelText="{Resources:Loc OperatorApp.CellsStatisticsRearCellsTotal}" />
 
         <controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="560,410,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                           LabelText="{Resources:Loc OperatorApp.CellsStatisticsTotalUsedCells}"
                                            ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
 
     </Grid>

@@ -621,23 +621,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.InputQuantity = null;
                     this.IsPickVisible = !this.IsPickVisible;
-                    this.InputQuantityInfo = string.Format(OperatorApp.PickingQuantity, this.MeasureUnit);
+                    this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PickingQuantity"), this.MeasureUnit);
                 }
                 else if (operationType == OperatorApp.Put)
                 {
                     this.InputQuantity = null;
                     this.IsPutVisible = !this.IsPutVisible;
-                    this.InputQuantityInfo = string.Format(OperatorApp.PutQuantity, this.MeasureUnit);
+                    this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PutQuantity"), this.MeasureUnit);
                 }
                 else if (operationType == OperatorApp.Adjustment)
                 {
                     this.InputQuantity = this.SelectedItemCompartment.Stock;
                     this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
-                    this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
+                    this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.AdjustmentQuantity"), this.MeasureUnit);
                 }
                 else
                 {
-                    this.ShowNotification(string.Format(OperatorApp.InvalidOperation, operationType));
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), operationType));
                     return;
                 }
 

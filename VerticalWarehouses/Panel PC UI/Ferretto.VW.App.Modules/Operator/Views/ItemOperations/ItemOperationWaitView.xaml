@@ -32,7 +32,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.NavigationMainMenuDrawerOperation}" />
+                       Text="{Resources:Loc OperatorApp.NavigationMainMenuDrawerOperation}" />
         </StackPanel>
 
         <StackPanel Grid.Row="1"
@@ -72,7 +72,7 @@
                             <DataGridTextColumn x:Name="Column10"
                                                 Width="1*"
                                                 Binding="{Binding Path=Code}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderDrawer}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
                                 <DataGridTextColumn.CellStyle>
                                     <Style TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -89,7 +89,7 @@
                             <DataGridTextColumn x:Name="Column20"
                                                 Width="1*"
                                                 Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -100,7 +100,7 @@
                             <DataGridTextColumn x:Name="Column30"
                                                 Width="1*"
                                                 Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderWeight}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -111,7 +111,7 @@
                             <DataGridTextColumn x:Name="Column40"
                                                 Width="1*"
                                                 Binding="{Binding Path=Status}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderState}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -137,7 +137,7 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static Resources:OperatorApp.DrawerActivityLocalCallGoBack}"
+                           Text="{Resources:Loc OperatorApp.DrawerActivityLocalCallGoBack}"
                            TextWrapping="Wrap" />
 
                 <Border Grid.Row="2"
@@ -158,7 +158,7 @@
                             <DataGridTextColumn x:Name="Column1"
                                                 Width="1*"
                                                 Binding="{Binding Path=Code}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderDrawer}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
                                 <DataGridTextColumn.CellStyle>
                                     <Style TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -175,7 +175,7 @@
                             <DataGridTextColumn x:Name="Column2"
                                                 Width="1*"
                                                 Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -186,7 +186,7 @@
                             <DataGridTextColumn x:Name="Column3"
                                                 Width="1*"
                                                 Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderWeight}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -197,7 +197,7 @@
                             <DataGridTextColumn x:Name="Column4"
                                                 Width="1*"
                                                 Binding="{Binding Path=Status}"
-                                                Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderState}">
+                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />

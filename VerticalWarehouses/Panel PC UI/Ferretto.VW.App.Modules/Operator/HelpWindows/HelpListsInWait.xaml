@@ -19,7 +19,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.ListsInWaitHeader}" />
+                    Text="{res:Loc OperatorApp.ListsInWaitHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -42,29 +42,29 @@
                      Text="{res:Loc HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
-                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Content="{res:Loc OperatorApp.CommonUp}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
-                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Content="{res:Loc OperatorApp.CommonDown}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
-                  Content="{x:Static res:OperatorApp.ListsInWaitDetail}"
+                  Content="{res:Loc OperatorApp.ListsInWaitDetail}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                  Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
+                  Content="{res:Loc OperatorApp.ListsInWaitExecute}"
                    />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="Lista non eseguibile"
-                                               LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonNote}"/>
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static res:OperatorApp.WaitingListDataGridHeaderType }" />
+                     Text="{res:Loc OperatorApp.WaitingListDataGridHeaderType }" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
                      Width="180"

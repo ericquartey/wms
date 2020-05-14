@@ -133,6 +133,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available quantity.
+        /// </summary>
+        public static string AvailablesQuantity {
+            get {
+                return ResourceManager.GetString("AvailablesQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -2078,7 +2087,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit {0}.
+        ///   Looks up a localized string similar to Unit.
         /// </summary>
         public static string LoadingUnitIdInfo {
             get {
@@ -2087,7 +2096,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit {0} in bay.
+        ///   Looks up a localized string similar to in bay.
         /// </summary>
         public static string LoadingUnitInBay {
             get {
@@ -2096,7 +2105,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit {0} out of the bay.
+        ///   Looks up a localized string similar to out of the bay.
         /// </summary>
         public static string LoadingUnitOutBay {
             get {
@@ -2105,7 +2114,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit present {0}.
+        ///   Looks up a localized string similar to Loading unit present.
         /// </summary>
         public static string LoadingUnitPresenceId {
             get {
@@ -3680,7 +3689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit n.{0}.
+        ///   Looks up a localized string similar to Unit n..
         /// </summary>
         public static string UnitId {
             get {

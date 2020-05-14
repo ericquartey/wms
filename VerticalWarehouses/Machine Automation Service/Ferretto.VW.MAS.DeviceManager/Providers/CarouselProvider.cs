@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             if (bay.Carousel is null)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheSpecifiedBayHasNoCarousel", CommonUtils.Culture.Actual) };
             }
 
             var isLoadingUnitInLowerPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         || (isLoadingUnitInUpperPosition && movementCategory != MovementCategory.Manual)
                         )
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                     }
 
                     break;
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null
                         )
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsUpperPosition", CommonUtils.Culture.Actual) };
                     }
 
                     break;
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) && movementCategory != MovementCategory.Manual)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;

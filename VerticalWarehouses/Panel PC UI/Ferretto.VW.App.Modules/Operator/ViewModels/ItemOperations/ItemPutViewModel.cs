@@ -62,6 +62,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.fullOperationCommand.RaiseCanExecuteChanged();
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
+        }
+
         protected override void ShowOperationDetails()
         {
             this.NavigationService.Appear(

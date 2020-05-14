@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Accessories
 
                 var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
 
-                if (accessories.BarcodeReader?.IsEnabled == true)
+                if (accessories.BarcodeReader?.IsEnabledNew == true)
                 {
                     this.reader.Connect(
                         new ConfigurationOptions
@@ -224,7 +224,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.eventAggregator
                    .GetEvent<PresentationNotificationPubSubEvent>()
-                   .Publish(new PresentationNotificationMessage(string.Format(Resources.OperatorApp.CurrentPageDoesNotSupportBarcodeScanning, code), Services.Models.NotificationSeverity.Warning));
+                   .Publish(new PresentationNotificationMessage(string.Format(Resources.Localized.Get("OperatorApp.CurrentPageDoesNotSupportBarcodeScanning"), code), Services.Models.NotificationSeverity.Warning));
 
                 System.Diagnostics.Debug.WriteLine($"Current view model does not specify an operational context.");
                 return;
@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.eventAggregator
                    .GetEvent<PresentationNotificationPubSubEvent>()
-                   .Publish(new PresentationNotificationMessage(string.Format(Resources.OperatorApp.BarcodeNotRecognized, code), Services.Models.NotificationSeverity.Warning));
+                   .Publish(new PresentationNotificationMessage(string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code), Services.Models.NotificationSeverity.Warning));
 
                 System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} does not match any rule.");
             }

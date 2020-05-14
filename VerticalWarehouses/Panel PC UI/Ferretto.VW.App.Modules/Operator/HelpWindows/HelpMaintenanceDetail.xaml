@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.MaintenanceDetailHeader}" />
+                    Text="{res:Loc OperatorApp.MaintenanceDetailHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -44,11 +44,11 @@
                     Text="{res:Loc HelpDescriptions.HelpMaintenanceDetailGridElement}" />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Content="{res:Loc OperatorApp.CommonUp}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Content="{res:Loc OperatorApp.CommonDown}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0"
@@ -115,27 +115,27 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailElementStatus}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailElementStatus}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="3"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailStopRequired}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailStopRequired}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,390,0,0" Width="180"
                                                ContentText="30.235"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailTotalCycles}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailTotalCycles}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="15.000"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="15.235"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="NO"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceDetailPlatformRequired}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceDetailPlatformRequired}"/>
 
 
     </Grid>

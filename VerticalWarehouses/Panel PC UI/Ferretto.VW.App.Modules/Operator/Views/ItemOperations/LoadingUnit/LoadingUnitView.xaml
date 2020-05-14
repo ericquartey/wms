@@ -29,8 +29,9 @@
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitInBay}}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc OperatorApp.LoadingUnit}"/> <Run Text="{Binding LoadingUnit.Id}"/> <Run Text="{res:Loc OperatorApp.LoadingUnitInBay}"/>
+            </TextBlock>
         </StackPanel>
 
         <Grid Grid.Row="1"
@@ -61,14 +62,15 @@
                                     VerticalAlignment="Center"
                                     Orientation="Vertical">
                             <TextBlock Margin="20"
-                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
+                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                                <Run Text="{res:Loc OperatorApp.LoadingUnitPresenceId}"/> <Run Text="{Binding LoadingUnit.Id}"/>
+                            </TextBlock>
                             <TextBlock Margin="20,0"
                                        HorizontalAlignment="Center"
                                        Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
-                                <Run Text="(" /><Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
+                                <Run Text="(" /><Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
                                 <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
-                                <Run Text="{x:Static res:OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
+                                <Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
                                 <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
                             </TextBlock>
                         </StackPanel>
@@ -97,7 +99,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Command="{Binding ChangeModeLoadingUnitCommand}"
-                                        Content="{x:Static res:OperatorApp.LoadingUnit}"
+                                        Content="{res:Loc OperatorApp.LoadingUnit}"
                                         Foreground="{DynamicResource FerrettoPureWhite}"
                                         Kind="Grid"
                                         TextBlock.TextAlignment="Center"
@@ -107,7 +109,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Command="{Binding ChangeModeListCommand}"
-                                        Content="{x:Static res:OperatorApp.List}"
+                                        Content="{res:Loc OperatorApp.List}"
                                         Foreground="{DynamicResource FerrettoPureWhite}"
                                         Kind="Table"
                                         TextBlock.TextAlignment="Center"
@@ -143,8 +145,9 @@
 
                             <TextBlock Margin="4,0"
                                        VerticalAlignment="Center"
-                                       Style="{DynamicResource VWAPP_CardSensor}"
-                                       Text="{Binding UnitNumber, StringFormat={x:Static res:OperatorApp.UnitId}}" />
+                                       Style="{DynamicResource VWAPP_CardSensor}" >
+                                <Run Text="{res:Loc OperatorApp.UnitId}"/><Run Text="{Binding UnitNumber}"/>
+                            </TextBlock>
 
                             <Grid Grid.Row="1"
                                   Grid.RowSpan="2"
@@ -167,7 +170,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Small}"
                                            Foreground="{DynamicResource PpcForeground}"
-                                           Text="{x:Static res:OperatorApp.Weight}" />
+                                           Text="{res:Loc OperatorApp.Weight}" />
 
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
@@ -184,7 +187,7 @@
                                            VerticalAlignment="Center"
                                            FontSize="{StaticResource FontSize_Small}"
                                            Foreground="{DynamicResource PpcForeground}"
-                                           Text="{x:Static res:OperatorApp.Height}" />
+                                           Text="{res:Loc OperatorApp.Height}" />
 
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="1"
@@ -203,7 +206,7 @@
                                         VerticalAlignment="Top"
                                         BorderBrush="{StaticResource FerrettoBlue}"
                                         Command="{Binding OperationCommand}"
-                                        CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                        CommandParameter="{res:Loc OperatorApp.Adjustment}"
                                         Content="{x:Static res:OperatorApp.Adjustment}"
                                         IsActive="{Binding IsAdjustmentVisible}"
                                         Style="{DynamicResource PpcButtonMarkStyle}" />
@@ -213,7 +216,7 @@
                                         VerticalAlignment="Top"
                                         BorderBrush="{StaticResource FerrettoBlue}"
                                         Command="{Binding OperationCommand}"
-                                        CommandParameter="{x:Static res:OperatorApp.Pick}"
+                                        CommandParameter="{res:Loc OperatorApp.Pick}"
                                         Content="{x:Static res:OperatorApp.Pick}"
                                         IsActive="{Binding IsPickVisible}"
                                         Style="{DynamicResource PpcButtonMarkStyle}" />
@@ -223,7 +226,7 @@
                                         VerticalAlignment="Top"
                                         BorderBrush="{StaticResource FerrettoBlue}"
                                         Command="{Binding OperationCommand}"
-                                        CommandParameter="{x:Static res:OperatorApp.Put}"
+                                        CommandParameter="{res:Loc OperatorApp.Put}"
                                         Content="{x:Static res:OperatorApp.Put}"
                                         IsActive="{Binding IsPutVisible}"
                                         Style="{DynamicResource PpcButtonMarkStyle}" />

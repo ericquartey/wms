@@ -1432,7 +1432,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Not defined</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Loading unit {0} in bay</value>
+    <value>in bay</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Recall Drawer</value>
@@ -1501,7 +1501,7 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label text</comment>
   </data>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
-    <value>Loading unit present {0}</value>
+    <value>Loading unit present</value>
     <comment>Label text</comment>
   </data>
   <data name="SelectCompartment" xml:space="preserve">
@@ -1664,16 +1664,16 @@ Please put back any moved pieces in their original position.</value>
     <value>Users</value>
   </data>
   <data name="LoadingUnitOutBay" xml:space="preserve">
-    <value>Unit {0} out of the bay</value>
+    <value>out of the bay</value>
   </data>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
-    <value>Unit {0}</value>
+    <value>Unit</value>
   </data>
   <data name="AdditionalText" xml:space="preserve">
     <value>Additional Information</value>
   </data>
   <data name="UnitId" xml:space="preserve">
-    <value>Unit n.{0}</value>
+    <value>Unit n.</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Height:</value>
@@ -1692,5 +1692,8 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Horizontal calibration in progress</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Available quantity</value>
   </data>
 </root>

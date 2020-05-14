@@ -224,7 +224,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Column="1"
@@ -282,18 +281,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <Button Grid.Row="3"
-                Grid.ColumnSpan="3"
-                Margin="15,15,15,0"
-                Width="100"
-                Height="60"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                FontSize="18"
-                Style="{StaticResource ButtonStyle}"
-                Command="{Binding NextCommand}"
-                Content="Next" />
 
         </Grid>
 

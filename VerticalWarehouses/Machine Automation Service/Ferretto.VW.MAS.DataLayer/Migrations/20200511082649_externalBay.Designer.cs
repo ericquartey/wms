@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200513071153_change_value_type_on_InverterParameter")]
-    partial class change_value_type_on_InverterParameter
+    [Migration("20200511082649_externalBay")]
+    partial class externalBay
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,18 +23,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("DeviceInformationId");
-
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<bool>("IsConfigured");
+                    b.Property<string>("IsConfigured");
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<string>("IsEnabled");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeviceInformationId");
 
                     b.ToTable("Accessories");
 
@@ -55,6 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("CurrentMissionId");
 
                     b.Property<int?>("EmptyLoadMovementId");
+
+                    b.Property<int?>("ExternalId");
 
                     b.Property<int?>("FullLoadMovementId");
 
@@ -87,6 +85,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("CurrentMissionId");
 
                     b.HasIndex("EmptyLoadMovementId");
+
+                    b.HasIndex("ExternalId");
 
                     b.HasIndex("FullLoadMovementId");
 
@@ -248,24 +248,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("MachineId");
 
                     b.ToTable("CellPanels");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.DeviceInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirmwareVersion");
-
-                    b.Property<DateTime?>("ManufactureDate");
-
-                    b.Property<string>("ModelNumber");
-
-                    b.Property<string>("SerialNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeviceInformation");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
@@ -800,11 +782,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 77,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -885,6 +862,44 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.External", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AssistedMovementsId");
+
+                    b.Property<double>("HomingCreepSpeed");
+
+                    b.Property<double>("HomingFastSpeed");
+
+                    b.Property<double>("LastIdealPosition");
+
+                    b.Property<int?>("ManualMovementsId");
+
+                    b.Property<double>("Race");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssistedMovementsId");
+
+                    b.HasIndex("ManualMovementsId");
+
+                    b.ToTable("Externals");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ExternalBayManualParameters", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("FeedRate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExternalBayManualParameters");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
                 {
                     b.Property<int>("Id")
@@ -924,7 +939,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Type");
 
-                    b.Property<string>("Value");
+                    b.Property<int>("Value");
 
                     b.HasKey("Id");
 
@@ -1071,8 +1086,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AdditionalText");
 
                     b.Property<int>("BayNumber");
 
@@ -1662,9 +1675,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
-                    b.Property<bool>("AdjustAccelerationByWeight");
-
-                    b.Property<bool>("AdjustSpeedByWeight");
+                    b.Property<bool>("AdjustByWeight");
 
                     b.Property<int?>("MovementProfileId");
 
@@ -1766,13 +1777,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("OffsetCalibrationProcedure");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Accessory", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.DeviceInformation", "DeviceInformation")
-                        .WithMany()
-                        .HasForeignKey("DeviceInformationId");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.BayAccessories", "Accessories")
@@ -1790,6 +1794,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
                         .WithMany()
                         .HasForeignKey("EmptyLoadMovementId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.External", "External")
+                        .WithMany()
+                        .HasForeignKey("ExternalId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
                         .WithMany()
@@ -1928,6 +1936,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement", "WeightMeasurement")
                         .WithMany()
                         .HasForeignKey("WeightMeasurementId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.External", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ExternalBayManualParameters", "AssistedMovements")
+                        .WithMany()
+                        .HasForeignKey("AssistedMovementsId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ExternalBayManualParameters", "ManualMovements")
+                        .WithMany()
+                        .HasForeignKey("ManualMovementsId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>

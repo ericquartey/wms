@@ -19,7 +19,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.StatisticsGeneralDataHeader}" />
+                    Text="{res:Loc OperatorApp.StatisticsGeneralDataHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -38,27 +38,27 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="12.235"
-                                               LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalMovedTrays}"/>
+                                               LabelText="{res:Loc OperatorApp.MachineStatistics_TotalMovedTrays}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="9.684"
-                                               LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalPowerOnTime}"/>
+                                               LabelText="{res:Loc OperatorApp.MachineStatistics_TotalPowerOnTime}"/>
 
         <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="200"
                                             ProgressionValue="65"
-                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_AreaFillPercentage}"/>
+                                            LabelText="{res:Loc OperatorApp.MachineStatistics_AreaFillPercentage}"/>
 
         <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="200"
                                             ProgressionValue="72"
-                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_WeightCapacityPercentage}"/>
+                                            LabelText="{res:Loc OperatorApp.MachineStatistics_WeightCapacityPercentage}"/>
 
         <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="200"
                                             ProgressionValue="87"
-                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_AutomaticTimePercentage}"/>
+                                            LabelText="{res:Loc OperatorApp.MachineStatistics_AutomaticTimePercentage}"/>
 
         <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="200"
                                             ProgressionValue="61"
-                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_UsageTimePercentage}"/>
+                                            LabelText="{res:Loc OperatorApp.MachineStatistics_UsageTimePercentage}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"
@@ -81,22 +81,22 @@
                     Text="{res:Loc HelpDescriptions.HelpStatisticsGeneralDataUseRatio}" />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
-                 Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
+                 Content="{res:Loc OperatorApp.StatisticsNavigationMachine}"
                  IsEnabled="True"
                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
-                 Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
+                 Content="{res:Loc OperatorApp.StatisticsNavigationDrawers}"
                  IsEnabled="True"
                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
-                 Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
+                 Content="{res:Loc OperatorApp.StatisticsNavigationCells}"
                  IsEnabled="True"
                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
-                 Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
+                 Content="{res:Loc OperatorApp.StatisticsNavigationErrors}"
                  IsEnabled="True"
                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
 

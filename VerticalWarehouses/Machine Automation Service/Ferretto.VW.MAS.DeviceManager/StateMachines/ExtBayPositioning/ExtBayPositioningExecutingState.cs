@@ -44,12 +44,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IExtBayPositioningStateData stateData;
 
-        //private bool beltBurnishingMovingToInitialPosition;
-
-        //private bool beltBurnishingMovingUpwards;
-
-        //private int countProfileCalibrated;
-
         private Timer delayTimer;
 
         private HorizontalCalibrationStep findZeroStep;
@@ -58,23 +52,9 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private bool isDisposed;
 
-        //private bool isTestStopped;
-
-        //private int performedCycles;
-
-        //private IPositioningFieldMessageData positioningDownFieldMessageData;
-
-        //private IPositioningFieldMessageData positioningUpFieldMessageData;
-
-        //private double? profileCalibratePosition = null;
-
-        //private double? profileStartPosition = null;
-
         private double targetPosition;
 
         #endregion
-
-        //private double verticalStartingPosition;
 
         #region Constructors
 
@@ -83,16 +63,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
-
-            //if (this.machineData?.MessageData.MovementMode == MovementMode.Position
-            //    &&
-            //    this.machineData?.MessageData.MovementType == MovementType.TableTarget)
-            //{
-            //    this.firstPosition = this.machineData.MessageData.SwitchPosition[1]
-            //                        + (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 2;
-            //    this.secondPosition = this.machineData.MessageData.SwitchPosition[2]
-            //                        + (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 2;
-            //}
 
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
 
@@ -180,13 +150,9 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
             switch (this.machineData.MessageData.MovementMode)
             {
-                //case MovementMode.Position:
-                //case MovementMode.PositionAndMeasureWeight:
-                //case MovementMode.PositionAndMeasureProfile:
-                //case MovementMode.BayChain:
-                //case MovementMode.BayChainManual:
-                //case MovementMode.BayTest:
+                //case MovementMode.ExtBayTest:
                 case MovementMode.ExtBayChain:
+                case MovementMode.ExtBayChainManual:
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
@@ -197,121 +163,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                             FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
-
-                        //if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                        //{
-                        //    this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-                        //}
-                        //else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                        //{
-                        //    this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
-                        //}
-
-                        /*
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
-                        {
-                            var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
-                            var ioCommandMessage = new FieldCommandMessage(
-                                ioCommandMessageData,
-                                $"Measure Profile Start ",
-                                FieldMessageActor.IoDriver,
-                                FieldMessageActor.DeviceManager,
-                                FieldMessageType.MeasureProfile,
-                                (byte)this.baysDataProvider.GetIoDevice(this.machineData.RequestingBay));
-
-                            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
-                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-                        }
-                        else*/
-
-                        //if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
-                        //{
-                        //    var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);
-                        //    this.performedCycles = procedure.PerformedCycles;
-                        //    this.Logger.LogInformation($"Start BayTest {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
-                        //}
                     }
                     break;
-
-                //case MovementMode.TorqueCurrentSampling:
-                //    {
-                //        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                //        statusWordPollingInterval = 500;
-                //        commandMessage = new FieldCommandMessage(
-                //            positioningFieldMessageData,
-                //            $"Start torque current sampling",
-                //            FieldMessageActor.InverterDriver,
-                //            FieldMessageActor.DeviceManager,
-                //            FieldMessageType.Positioning,
-                //            inverterIndex);
-                //    }
-                //    break;
-
-                //case MovementMode.ProfileCalibration:
-                //    {
-                //        this.profileCalibratePosition = null;
-                //        this.profileStartPosition = null;
-                //        this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-
-                //        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                //        this.targetPosition = axis.ProfileCalibrateLength;
-
-                //        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                //        statusWordPollingInterval = 500;
-                //        commandMessage = new FieldCommandMessage(
-                //            positioningFieldMessageData,
-                //            $"Start profile calibration",
-                //            FieldMessageActor.InverterDriver,
-                //            FieldMessageActor.DeviceManager,
-                //            FieldMessageType.Positioning,
-                //            inverterIndex);
-
-                //        var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
-                //        var ioCommandMessage = new FieldCommandMessage(
-                //            ioCommandMessageData,
-                //            $"Measure Profile Start ",
-                //            FieldMessageActor.IoDriver,
-                //            FieldMessageActor.DeviceManager,
-                //            FieldMessageType.MeasureProfile,
-                //            (byte)this.baysDataProvider.GetIoDevice(this.machineData.RequestingBay));
-
-                //        this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
-                //        this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-                //    }
-                //    break;
-
-                //case MovementMode.BeltBurnishing:
-                //    {
-                //        // upwards movement message
-                //        this.positioningUpFieldMessageData = new PositioningFieldMessageData(
-                //            new PositioningMessageData(this.machineData.MessageData)
-                //            {
-                //                TargetPosition = this.machineData.MessageData.UpperBound
-                //            }, this.machineData.RequestingBay);
-
-                //        // downwards movement message
-                //        this.positioningDownFieldMessageData = new PositioningFieldMessageData(
-                //            new PositioningMessageData(this.machineData.MessageData)
-                //            {
-                //                TargetPosition = this.machineData.MessageData.LowerBound
-                //            }, this.machineData.RequestingBay);
-
-                //        var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
-                //        this.performedCycles = procedure.PerformedCycles;
-
-                //        // start by moving to lower position
-                //        this.beltBurnishingMovingToInitialPosition = true;
-                //        commandMessage = new FieldCommandMessage(
-                //            this.positioningDownFieldMessageData,
-                //            "Belt Burninshing Started",
-                //            FieldMessageActor.InverterDriver,
-                //            FieldMessageActor.DeviceManager,
-                //            FieldMessageType.Positioning,
-                //            inverterIndex);
-                //    }
-                //    break;
 
                 case MovementMode.HorizontalCalibration:
                     {
@@ -361,25 +214,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
-
-            //this.machineData.ExecutedSteps = this.performedCycles;
-            //if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
-            //    || this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
-            //    )
-            //{
-            //    var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
-            //    var ioCommandMessage = new FieldCommandMessage(
-            //        ioCommandMessageData,
-            //        $"Measure Profile Stop ",
-            //        FieldMessageActor.IoDriver,
-            //        FieldMessageActor.DeviceManager,
-            //        FieldMessageType.MeasureProfile,
-            //        (byte)this.baysDataProvider.GetIoDevice(this.machineData.RequestingBay));
-
-            //    this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
-            //    this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-            //}
 
             if (reason == StopRequestReason.Error)
             {
@@ -826,17 +660,19 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
                         }
 
-                        if (!this.machineData.MessageData.BypassConditions &&
-                            this.IsBracketSensorError())
-                        {
-                            this.Logger.LogError($"Bracket sensor error");
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
-                            this.Stop(StopRequestReason.Stop);
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
-                        }
+                        //if (!this.machineData.MessageData.BypassConditions &&
+                        //    this.IsBracketSensorError())
+                        //{
+                        //    this.Logger.LogError($"Bracket sensor error");
+                        //    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                        //    this.Stop(StopRequestReason.Stop);
+                        //}
+                        //else
+                        //{
+                        //    this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                        //}
+
+                        this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
                     }
                     break;
 

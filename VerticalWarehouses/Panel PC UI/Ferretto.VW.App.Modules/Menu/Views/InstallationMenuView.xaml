@@ -60,7 +60,7 @@
                     <TextBlock HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{x:Static res:Menu.InstallationStatus}" />
+                               Text="{res:Loc Menu.InstallationStatus}" />
 
                     <TextBlock Margin="0,0,0,0"
                                HorizontalAlignment="Left"

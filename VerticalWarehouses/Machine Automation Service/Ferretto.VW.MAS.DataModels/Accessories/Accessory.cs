@@ -1,3 +1,5 @@
+using System;
+
 namespace Ferretto.VW.MAS.DataModels
 {
     public class Accessory : DataModel
@@ -14,9 +16,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public DeviceInformation DeviceInformation { get; set; }
 
-        public bool IsConfigured { get; set; }
+        [Obsolete("Use the IsConfiguredNew field instead.")]
+        public string IsConfigured { get; set; } = "Obsolete";
 
-        public bool IsEnabled { get; set; }
+        public bool IsConfiguredNew { get; set; }
+
+        [Obsolete("Use the IsEnabledNew field instead.")]
+        public string IsEnabled { get; set; } = "Obsolete";
+
+        public bool IsEnabledNew { get; set; }
 
         #endregion
     }

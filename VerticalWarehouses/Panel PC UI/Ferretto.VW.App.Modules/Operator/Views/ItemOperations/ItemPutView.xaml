@@ -45,7 +45,7 @@
                        Margin="10,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
+                       Text="{resources:Loc OperatorApp.DrawerActivityRefillingHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -133,7 +133,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static resources:OperatorApp.ItemCode}" />
+                                   Text="{resources:Loc OperatorApp.ItemCode}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -141,7 +141,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                                   Text="{Binding MissionOperation.ItemCode, TargetNullValue={resources:Loc General.TargetNullValue}, FallbackValue={resources:Loc General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
@@ -175,7 +175,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
+                                   Text="{resources:Loc OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -196,7 +196,7 @@
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
+                               LabelText="{Binding MeasureUnitDescription}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                MaxValue="{Binding MissionOperation.RequestedQuantity}"
                                MinValue="0" />
@@ -206,7 +206,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding ShowDetailsCommand}"
-                                Content="{x:Static resources:OperatorApp.Details}"
+                                Content="{resources:Loc OperatorApp.Details}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="4"
@@ -214,7 +214,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding FullOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
+                                Content="{resources:Loc OperatorApp.ConfirmOnFull}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
@@ -223,7 +223,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.Confirm}"
+                                Content="{resources:Loc OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
@@ -233,7 +233,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCanceledCommand}"
-                                Content="{x:Static resources:OperatorApp.CancelPut}"
+                                Content="{resources:Loc OperatorApp.CancelPut}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
