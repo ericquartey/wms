@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -15,17 +16,26 @@ namespace Ferretto.VW.MAS.DataModels
 
             this.Severity = severity;
 
-            this.Description = descriptionResourceType
-                .GetProperty(
-                    propertyName,
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)?
-                .GetValue(null) as string;
+            try
+            {
+                this.Description = Resources.ErrorDescriptions.ResourceManager.GetString(propertyName, CommonUtils.Culture.Actual);
 
-            this.Reason = reasonResourceType
-                .GetProperty(
-                    propertyName,
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)?
-                .GetValue(null) as string;
+                this.Reason = Resources.ErrorReasons.ResourceManager.GetString(propertyName, CommonUtils.Culture.Actual);
+            }
+            catch (Exception ex)
+            {
+                this.Description = descriptionResourceType
+                    .GetProperty(
+                        propertyName,
+                        System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)?
+                    .GetValue(null) as string;
+
+                this.Reason = reasonResourceType
+                    .GetProperty(
+                        propertyName,
+                        System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)?
+                    .GetValue(null) as string;
+            }
         }
 
         #endregion
