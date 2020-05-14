@@ -151,6 +151,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The barcode &apos;{0}&apos; does not contain the item code..
+        /// </summary>
+        public static string BarcodeDoesNotContainTheItemCode {
+            get {
+                return ResourceManager.GetString("BarcodeDoesNotContainTheItemCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The barcode &apos;{0}&apos; does not contain the item quantity..
+        /// </summary>
+        public static string BarcodeDoesNotContainTheItemQuantity {
+            get {
+                return ResourceManager.GetString("BarcodeDoesNotContainTheItemQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Barcode &apos;{0}&apos; not recognized..
         /// </summary>
         public static string BarcodeNotRecognized {

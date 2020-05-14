@@ -1381,4 +1381,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ItemsFilteredByCode" xml:space="preserve">
     <value>Articoli filtrati per codice.</value>
   </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Il codice a barre '{0}' non contiene un codice articolo.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Il codice a barre '{0}' non contiene la quantità dell'articolo.</value>
+  </data>
 </root>
