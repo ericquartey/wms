@@ -14,6 +14,7 @@
     <conv:BusyToCursorConverter x:Key="BTCIC" Invert="True" />
     <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
     <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <conv:ReferenceToVisibilityConverter x:Key="RTVIC" Invert="True" />
     <conv:NotificationSeverityToBrushConverter x:Key="NSTBC" />
 
 </ResourceDictionary>

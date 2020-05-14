@@ -145,7 +145,7 @@
     <value>Nessun file di parametri trovato</value>
   </data>
   <data name="InverterTypeParametersConfiguration" xml:space="preserve">
-    <value>Inverter {0} tipo {0} configurazione parametri</value>
+    <value>Inverter [{0}] tipo '{1}' configurazione parametri</value>
   </data>
   <data name="TotalParameters" xml:space="preserve">
     <value>totale parametri {0}</value>
@@ -191,5 +191,8 @@
   </data>
   <data name="ImportConfiguration" xml:space="preserve">
     <value>Importazione configurazione</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Seleziona un file</value>
   </data>
 </root>

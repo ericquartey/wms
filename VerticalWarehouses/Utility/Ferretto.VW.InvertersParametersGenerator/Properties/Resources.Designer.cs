@@ -187,7 +187,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inverter {0} type {0} parameters configuration.
+        ///   Looks up a localized string similar to Inverter [{0}] type &apos;{1}&apos; parameters configuration.
         /// </summary>
         public static string InverterTypeParametersConfiguration {
             get {
@@ -264,6 +264,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         public static string SaveFileConfiguration {
             get {
                 return ResourceManager.GetString("SaveFileConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select file.
+        /// </summary>
+        public static string SelectFile {
+            get {
+                return ResourceManager.GetString("SelectFile", resourceCulture);
             }
         }
         

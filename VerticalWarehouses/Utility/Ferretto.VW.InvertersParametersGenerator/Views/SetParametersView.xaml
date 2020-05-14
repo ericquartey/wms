@@ -125,9 +125,7 @@
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsSelected" Value="True" />
-                                    
-        <Condition Property="Selector.IsSelectionActive" Value="true" />
-        
+                                    <Condition Property="Selector.IsSelectionActive" Value="true" />
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
                                 <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
@@ -193,6 +191,7 @@
         <TextBlock
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
+                   FontSize="36"                                              
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding Title}" />
 
@@ -209,6 +208,15 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
+                   Text="{x:Static res:Resources.SelectFile}" />
+
+
+            <TextBlock
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile.Name, Converter={StaticResource RTVC}}"
                    Text="{Binding SelectedFile.Name}" />
 
             <ListView Grid.Row="1"
