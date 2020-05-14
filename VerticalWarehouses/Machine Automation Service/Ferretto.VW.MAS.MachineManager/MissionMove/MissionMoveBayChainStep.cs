@@ -78,13 +78,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
                 )
             {
-                if (this.Mission.ErrorCode != MachineErrorCode.NoError)
-                {
-                    this.Mission.ErrorCode = MachineErrorCode.NoError;
-                    this.MissionsDataProvider.Update(this.Mission);
-                }
                 this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, bay.Number);
-                throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, bay.Number, MessageActor.MachineManager);
+
+                this.Mission.ErrorCode = MachineErrorCode.NoError;
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+                return true;
             }
             try
             {
@@ -285,7 +288,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, bay.Number);
-                    throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, bay.Number, MessageActor.MachineManager);
+
+                    this.Mission.ErrorCode = MachineErrorCode.NoError;
+                    this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                    return;
                 }
                 try
                 {
