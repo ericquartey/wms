@@ -8,6 +8,7 @@ using CommonServiceLocator;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -24,6 +25,10 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(BayNumber), typeof(string), typeof(CardSensorBay));
 
         [Browsable(false)]
+        public static readonly DependencyProperty CardBayPositionProperty =
+            DependencyProperty.Register(nameof(CardBayPosition), typeof(string), typeof(CardSensorBay), new PropertyMetadata(string.Empty));
+
+        [Browsable(false)]
         public static readonly DependencyProperty CardSensorLabel1Property =
             DependencyProperty.Register(nameof(CardSensorLabel1), typeof(string), typeof(CardSensorBay));
 
@@ -37,7 +42,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         [Browsable(false)]
         public static readonly DependencyProperty MachineStatusProperty =
-            DependencyProperty.Register(nameof(MachineStatus), typeof(MachineStatus), typeof(CardSensorBay));
+            DependencyProperty.Register(nameof(MachineStatus), typeof(App.Services.Models.MachineStatus), typeof(CardSensorBay));
 
         [Browsable(false)]
         public static readonly DependencyProperty SensorsServiceProperty =
@@ -57,6 +62,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public CardSensorBay()
         {
+
             this.InitializeComponent();
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -68,7 +74,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
             this.Loaded += (s, e) =>
             {
-                this.OnAppeared();
+                this.OnAppearedAsync();
             };
             this.Unloaded += (s, e) =>
             {
@@ -84,6 +90,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(BayNumberProperty);
             set => this.SetValue(BayNumberProperty, value);
+        }
+
+        public string CardBayPosition
+        {
+            get => (string)this.GetValue(CardBayPositionProperty);
+            set => this.SetValue(CardBayPositionProperty, value);
         }
 
         public string CardSensorLabel1
@@ -104,9 +116,9 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardSensorLabel3Property, value);
         }
 
-        public MachineStatus MachineStatus
+        public App.Services.Models.MachineStatus MachineStatus
         {
-            get => (MachineStatus)this.GetValue(MachineStatusProperty);
+            get => (App.Services.Models.MachineStatus)this.GetValue(MachineStatusProperty);
             set => this.SetValue(MachineStatusProperty, value);
         }
 
@@ -137,14 +149,14 @@ namespace Ferretto.VW.App.Controls.Controls
             this.machineService = null;
         }
 
-        protected void OnAppeared()
+        protected void OnAppearedAsync()
         {
             this.SubscribeToEvents();
 
-            this.OnDataRefresh();
+            this.OnDataRefreshAsync();
         }
 
-        protected void OnDataRefresh()
+        protected void OnDataRefreshAsync()
         {
             this.SensorsService = this.sensorsService;
             this.MachineStatus = this.machineService.MachineStatus;
@@ -178,11 +190,20 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.CardSensorLabel1 = string.Empty;
             }
+
+            if (this.machineService.Bay.IsExternal == true)
+            {
+                this.CardBayPosition = "Ext";
+            }
+            else
+            {
+                this.CardBayPosition = "Int";
+            }
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
-            this.OnDataRefresh();
+            this.OnDataRefreshAsync();
             return Task.CompletedTask;
         }
 

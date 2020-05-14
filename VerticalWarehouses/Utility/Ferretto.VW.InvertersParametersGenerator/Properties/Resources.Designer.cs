@@ -115,6 +115,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import configuration.
+        /// </summary>
+        public static string ImportConfiguration {
+            get {
+                return ResourceManager.GetString("ImportConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         public static string ImportConfigurationFile {
@@ -241,6 +250,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save file configuration.
         /// </summary>
         public static string SaveFileConfiguration {
@@ -250,7 +268,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total parameters {0}.
+        ///   Looks up a localized string similar to total parameters {0}.
         /// </summary>
         public static string TotalParameters {
             get {

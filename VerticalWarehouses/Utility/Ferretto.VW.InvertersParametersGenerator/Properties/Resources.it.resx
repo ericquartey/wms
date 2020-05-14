@@ -148,7 +148,7 @@
     <value>Inverter {0} tipo {0} configurazione parametri</value>
   </data>
   <data name="TotalParameters" xml:space="preserve">
-    <value>Totale parametri {0}</value>
+    <value>totale parametri {0}</value>
   </data>
   <data name="InverterParametersId" xml:space="preserve">
     <value>Id</value>
@@ -185,5 +185,11 @@
   </data>
   <data name="ConfigurationFile" xml:space="preserve">
     <value>File di configurazione</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Importazione configurazione</value>
   </data>
 </root>

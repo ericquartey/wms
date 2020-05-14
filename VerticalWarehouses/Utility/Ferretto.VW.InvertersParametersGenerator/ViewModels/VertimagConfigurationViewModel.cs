@@ -3,12 +3,14 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
@@ -19,6 +21,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
+        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
+
         private bool canNext;
 
         private string invertersParametersFolder;
@@ -27,11 +31,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private bool isVertimagConfigurationValid;
 
-        private RelayCommand nextCommand;
+        private DelegateCommand openInvertersParametersFolderCommand;
 
-        private RelayCommand openInvertersParametersFolderCommand;
-
-        private RelayCommand openVertimagConfigurationFileCommand;
+        private DelegateCommand openVertimagConfigurationFileCommand;
 
         private string resultInvertersFolder;
 
@@ -41,20 +43,26 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string vertimagConfigurationFilePath;
 
+        private string vertimagConfigurationPath;
+
         #endregion
 
         #region Constructors
 
-        public VertimagConfigurationViewModel(ConfigurationService configurationService)
+        public VertimagConfigurationViewModel(ConfigurationService configurationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-
+            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
             this.Inistialize();
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanNext => this.canNext;
+
+        public bool CanPrevious => false;
 
         public virtual string DefaultExt { get; set; }
 
@@ -72,22 +80,27 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public bool IsSuccessful => this.isSuccessful;
 
-        public ICommand NextCommand =>
-                        this.nextCommand
-                ??
-                (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
+        //public ICommand NextCommand =>
+        //                this.nextCommand
+        //        ??
+        //        (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
 
         public ICommand OpenInvertersParametersFolderCommand =>
                         this.openInvertersParametersFolderCommand
                 ??
-                (this.openInvertersParametersFolderCommand = new RelayCommand(this.OpenInvertersParametersFolder));
+                (this.openInvertersParametersFolderCommand = new DelegateCommand(this.OpenInvertersParametersFolder));
 
         public ICommand OpenVertimagConfigurationFileCommand =>
-                                        this.openVertimagConfigurationFileCommand
-                        ??
-                        (this.openVertimagConfigurationFileCommand = new RelayCommand(this.OpenVertimagConfigurationFile));
+                       this.openVertimagConfigurationFileCommand
+                ??
+                 (this.openVertimagConfigurationFileCommand = new DelegateCommand(this.OpenVertimagConfigurationFile));
 
         public virtual bool OverwritePrompt { get; set; }
+
+        //public ICommand PreviuosCommand =>
+        //        this.previousCommand
+        //        ??
+        //        (this.previousCommand = new RelayCommand(this.Previous, this.CanPrevious));
 
         public string ResultInvertersFolder
         {
@@ -113,6 +126,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Methods
 
+        public bool Next()
+        {
+            this.configurationService.SetConfiguration(this.invertersParametersFolder, this.vertimagConfiguration);
+            this.configurationService.SetWizard(WizardMode.Inverters);
+            return true;
+        }
+
         public void OpenInvertersParametersFolder()
         {
             var parametersFolder = DialogService.BrowseFolder("Inverters parameters folder", ConfigurationManager.AppSettings.GetInvertersParametersRootPath());
@@ -127,11 +147,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public void OpenVertimagConfigurationFile()
         {
-            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione");
+            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione", this.vertimagConfigurationPath);
 
             if ((resultFiles?.Length == 1) == false)
             {
-                this.VertimagConfigurationFilePath = string.Empty;
                 this.isVertimagConfigurationValid = false;
             }
             else
@@ -147,14 +166,19 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.EvaluateCanNext();
         }
 
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.None);
+        }
+
         public void Save()
         {
             this.isSuccessful = true;
         }
 
-        private bool CanNext()
+        private bool CanPreviuos()
         {
-            return this.canNext;
+            return false;
         }
 
         private void EvaluateCanNext()
@@ -184,7 +208,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void Inistialize()
         {
-            this.VertimagConfigurationFilePath = ConfigurationManager.AppSettings.GetVertimagConfigurationRootPath();
+            this.vertimagConfigurationPath = this.VertimagConfigurationFilePath = ConfigurationManager.AppSettings.GetVertimagConfigurationRootPath();
             this.InvertersParametersFolder = ConfigurationManager.AppSettings.GetInvertersParametersRootPath();
             this.EvaluateCanNext();
         }
@@ -209,16 +233,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return false;
         }
 
-        private void Next()
-        {
-            this.configurationService.SetConfiguration(this.invertersParametersFolder, this.vertimagConfiguration);
-
-            this.configurationService.SetWizard(WizardMode.Inverters);
-        }
-
         private void RaiseCanExecuteChanged()
         {
-            this.nextCommand?.RaiseCanExecuteChanged();
+            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
         }
 
         #endregion

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
-using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
@@ -16,13 +15,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly bool isSuccessful;
+        private readonly IRaiseExecuteChanged parentRaiseExecuteChanged;
 
         private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         private bool isBusy;
-
-        private DelegateCommand nextCommand;
 
         private string selectedFileConfigurationName;
 
@@ -30,15 +27,20 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public InvertersViewModel(ConfigurationService installationService)
+        public InvertersViewModel(ConfigurationService installationService, IRaiseExecuteChanged parentRaiseExecuteChanged)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            this.parentRaiseExecuteChanged = parentRaiseExecuteChanged;
             this.LoadConfiguration();
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanNext => true;
+
+        public bool CanPrevious => true;
 
         public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
 
@@ -54,14 +56,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        public bool IsSuccessful => this.isSuccessful;
-
-        public ICommand NextCommand =>
-                   this.nextCommand
-               ??
-               (this.nextCommand = new DelegateCommand(
-                this.Next));
-
         public string SelectedFileConfigurationName
         {
             get => this.selectedFileConfigurationName;
@@ -72,9 +66,16 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Methods
 
-        private bool CanSave()
+        public bool Next()
         {
-            return !this.IsBusy;
+            this.configurationService.SetInvertersConfiguration(this.invertersParameters);
+            this.configurationService.SetWizard(WizardMode.Parameters);
+            return true;
+        }
+
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.ImportConfiguration);
         }
 
         private IEnumerable<InverterParametersDataInfo> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
@@ -136,15 +137,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        private void Next()
-        {
-            this.configurationService.SetInvertersConfiguration(this.invertersParameters);
-            this.configurationService.SetWizard(WizardMode.Parameters);
-        }
-
         private void RaiseCanExecuteChanged()
         {
-            this.nextCommand?.RaiseCanExecuteChanged();
+            this.parentRaiseExecuteChanged.RaiseCanExecuteChanged();
         }
 
         #endregion

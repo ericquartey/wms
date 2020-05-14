@@ -47,6 +47,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBay1PositionUpPresent;
 
+        private bool isBayExternalPresent;
+
         private bool isBay2PositionDownPresent;
 
         private bool isBay2PositionUpPresent;
@@ -99,6 +101,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay1PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
 
         public bool IsBay1PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
+
+        public bool IsBayExternalPresent { get => this.isBayExternalPresent; private set => this.SetProperty(ref this.isBayExternalPresent, value); }
 
         public bool IsBay2PositionDownPresent { get => this.isBay2PositionDownPresent; private set => this.SetProperty(ref this.isBay2PositionDownPresent, value); }
 
@@ -176,6 +180,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBay1PositionDownPresent = (bay1?.IsDouble ?? false) || (!bay1?.Positions?.Any(o => o.IsUpper) ?? false);
             this.IsBay1PositionUpPresent = (bay1?.IsDouble ?? false) || (bay1?.Positions?.Any(o => o.IsUpper) ?? false);
+
+            if (bays.Any(f => f.IsExternal == true))
+            {
+                this.IsBayExternalPresent = true;
+            }
+            else
+            {
+                this.IsBayExternalPresent = false;
+            }
 
             this.IsBay2PositionDownPresent = (bay2?.IsDouble ?? false) || (!bay2?.Positions?.Any(o => o.IsUpper) ?? false);
             this.IsBay2PositionUpPresent = (bay2?.IsDouble ?? false) || (bay2?.Positions?.Any(o => o.IsUpper) ?? false);
