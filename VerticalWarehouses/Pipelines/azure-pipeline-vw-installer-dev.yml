@@ -13,7 +13,5 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- template: azure-pipeline-vw-installer-template.yml
-  parameters:                
-    RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'    
+- template: azure-pipeline-vw-installer-template.yml    
     
