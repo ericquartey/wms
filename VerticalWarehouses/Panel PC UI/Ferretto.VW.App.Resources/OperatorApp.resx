@@ -1696,4 +1696,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="AvailablesQuantity" xml:space="preserve">
     <value>Available quantity</value>
   </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Items filtered by code.</value>
+  </data>
 </root>

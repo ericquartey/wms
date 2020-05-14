@@ -192,12 +192,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
-        public string SelectedItemTxt
-        {
-            get => this.selectedItemTxt;
-            set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
-        }
-
         public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -215,7 +209,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showItemDetailsCommand
             ??
             (this.showItemDetailsCommand = new DelegateCommand(
-                this.ShowItemDetails,
+                () => this.ShowItemDetails(this.SelectedItem),
                 this.CanShowItemDetails));
 
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
@@ -285,6 +279,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();
             }
+        }
+
+        public string SelectedItemTxt
+        {
+            get => this.selectedItemTxt;
+            set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -663,44 +663,55 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
         }
 
-        private void ShowItemDetails()
+        private void ShowItemDetails(ItemInfo item)
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                this.SelectedItem,
+                item,
                 trackCurrentView: true);
         }
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemCode = e.GetItemCode();
-            if (itemCode != null)
+            if (itemCode is null)
             {
-                try
-                {
-                    var items = await this.areasWebService.GetProductsAsync(
-                        this.areaId.Value,
-                        0,
-                        1,
-                        itemCode,
-                        false,
-                        false);
+                return;
+            }
 
-                    if (items.Any())
+            try
+            {
+                this.ClearNotifications();
+
+                var items = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    1,
+                    itemCode,
+                    false,
+                    false);
+
+                if (items.Any())
+                {
+                    if (items.Count() == 1)
                     {
-                        this.ClearNotifications();
-                        this.SearchItem = itemCode;
+                        this.ShowItemDetails(new ItemInfo(items.First(), this.bayManager.Identity.Id));
                     }
                     else
                     {
-                        this.ShowNotification(string.Format(Ferretto.VW.App.Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                        this.SearchItem = itemCode;
+                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    this.ShowNotification(ex);
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

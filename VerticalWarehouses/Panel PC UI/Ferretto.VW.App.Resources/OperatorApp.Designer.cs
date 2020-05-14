@@ -1961,6 +1961,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Items filtered by code..
+        /// </summary>
+        public static string ItemsFilteredByCode {
+            get {
+                return ResourceManager.GetString("ItemsFilteredByCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stock.
         /// </summary>
         public static string ItemStock {

@@ -1378,4 +1378,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="AvailablesQuantity1" xml:space="preserve">
     <value>Quantità disponibile</value>
   </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Articoli filtrati per codice.</value>
+  </data>
 </root>
