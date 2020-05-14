@@ -125,7 +125,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
-                                    Binding="{Binding Path=MissionsCount, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Binding="{Binding Path=MissionsCount, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                     Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderMissions}"
                                     TextBlock.TextAlignment="Center">
                     <DataGridTextColumn.HeaderStyle>
@@ -152,7 +152,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=CompartmentsCount, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Binding="{Binding Path=CompartmentsCount, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                     Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -196,7 +196,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=AreaFillPercentage, StringFormat={}{0:N1} %, TargetNullValue={res:Loc General.TargetNullValue}}"
+                                    Binding="{Binding Path=AreaFillPercentage, StringFormat={}{0:N1} %, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                     Header="{res:Loc OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">

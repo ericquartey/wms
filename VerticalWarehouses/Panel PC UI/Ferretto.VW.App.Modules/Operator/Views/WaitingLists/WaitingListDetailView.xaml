@@ -119,7 +119,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding List.ItemListType, Converter={StaticResource ILTEC}, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
+                                   Text="{Binding List.ItemListType, Converter={StaticResource ILTEC}, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
@@ -161,7 +161,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding List.Code, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
+                                   Text="{Binding List.Code, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
@@ -203,7 +203,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding List.Description, TargetNullValue={Resources:Loc General.TargetNullValue}, FallbackValue={Resources:Loc General.TargetNullValue}}"
+                                   Text="{Binding List.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
 
                     </Grid>
