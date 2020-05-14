@@ -38,6 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .Include(b => b.CurrentMission));
@@ -58,6 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.Positions)
                     .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
                     .OrderBy(o => cell.Position - o.Positions.First().Height)
@@ -77,6 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
@@ -88,6 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      .Include(b => b.Shutter)
                         .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
+                     .Include(b => b.External)
                      .Include(b => b.Positions)
                         .ThenInclude(t => t.LoadingUnit)
                      .Include(b => b.CurrentMission)
@@ -127,6 +131,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Carousel)
                         .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.External)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.External)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber));
@@ -137,6 +145,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                 .Include(b => b.Bay)
                     .ThenInclude(i => i.Carousel)
+                .Include(b => b.Bay)
+                    .ThenInclude(i => i.External)
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(p => p.Location == location));
 
@@ -341,6 +351,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
+
+        public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;
 
         public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
 
@@ -644,6 +656,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;
 
+                        case MovementMode.ExtBayChain:
+                        case MovementMode.ExtBayChainManual:
+                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            break;
+
                         default:
                             break;
                     }
@@ -744,6 +761,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.ManualMovements;
+
+        public ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.ManualMovements;
 
         public ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.ManualMovements;
 
@@ -1022,16 +1041,49 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Carousel)
-                    .SingleOrDefault(b => b.Number == bayNumber);
-                if (bay is null)
+                //var bay = this.dataContext.Bays
+                //    .Include(b => b.Carousel)
+                //    .SingleOrDefault(b => b.Number == bayNumber);
+                //if (bay is null)
+                //{
+                //    throw new EntityNotFoundException(bayNumber.ToString());
+                //}
+
+                //bay.Carousel.LastIdealPosition = position;
+                //this.dataContext.SaveChanges();
+
+                // Retrieve type of bay
+                var currBay = this.GetByNumber(bayNumber);
+
+                if (currBay.Carousel != null)
                 {
-                    throw new EntityNotFoundException(bayNumber.ToString());
+                    // Handle the carousel
+                    var bay = this.dataContext.Bays
+                        .Include(b => b.Carousel)
+                        .SingleOrDefault(b => b.Number == bayNumber);
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+
+                    bay.Carousel.LastIdealPosition = position;
+                    this.dataContext.SaveChanges();
                 }
 
-                bay.Carousel.LastIdealPosition = position;
-                this.dataContext.SaveChanges();
+                if (currBay.External != null)
+                {
+                    // Handle the external bay
+                    var bay = this.dataContext.Bays
+                        .Include(b => b.External)
+                        .SingleOrDefault(b => b.Number == bayNumber);
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+
+                    bay.External.LastIdealPosition = position;
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 
@@ -1073,6 +1125,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);
+            }
+        }
+
+        public void UpdateRace(BayNumber bayNumber, double race)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+                if (bay.External != null)
+                {
+                    bay.External.Race = race;
+                    this.dataContext.AddOrUpdate(bay.External, f => f.Id);
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 

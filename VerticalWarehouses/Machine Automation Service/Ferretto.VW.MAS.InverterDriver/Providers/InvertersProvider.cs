@@ -116,40 +116,61 @@ namespace Ferretto.VW.MAS.InverterDriver
             var position = positioningData.TargetPosition;
             if (positioningData.MovementType == MovementType.Absolute)
             {
-                var axis = positioningData.AxisMovement == Axis.Horizontal
-                    ? this.elevatorDataProvider.GetAxis(Orientation.Horizontal)
-                    : this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+                if (positioningData.AxisMovement != Axis.BayChain)  // REMOVE
+                {                                                   // REMOVE
+                    var axis = positioningData.AxisMovement == Axis.Horizontal
+                        ? this.elevatorDataProvider.GetAxis(Orientation.Horizontal)
+                        : this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-                if (position < axis.LowerBound)
-                {
-                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the axis lower bound ({axis.LowerBound:0.00}).");
-                }
-                if (position > axis.UpperBound)
-                {
-                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the axis upper bound ({axis.UpperBound}:0.00).");
-                }
-
-                position -= axis.Offset;
-                if (axis.Orientation == Orientation.Vertical)
-                {
-                    if (positioningData.ComputeElongation)
+                    if (position < axis.LowerBound)
                     {
-                        var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition, out var weight);
-                        this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
-                        position += beltDisplacement;
-                        if (axis.VerticalDepositOffset.HasValue)
+                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                        throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the axis lower bound ({axis.LowerBound:0.00}).");
+                    }
+                    if (position > axis.UpperBound)
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                        throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the axis upper bound ({axis.UpperBound}:0.00).");
+                    }
+
+                    position -= axis.Offset;
+                    if (axis.Orientation == Orientation.Vertical)
+                    {
+                        if (positioningData.ComputeElongation)
                         {
-                            position += axis.VerticalDepositOffset.Value;
+                            var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition, out var weight);
+                            this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
+                            position += beltDisplacement;
+                            if (axis.VerticalDepositOffset.HasValue)
+                            {
+                                position += axis.VerticalDepositOffset.Value;
+                            }
+                        }
+                        else if (positioningData.IsPickupMission
+                            && axis.VerticalPickupOffset.HasValue
+                            )
+                        {
+                            this.logger.LogInformation($"Vertical positioning for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
+                            position += axis.VerticalPickupOffset.Value;
                         }
                     }
-                    else if (positioningData.IsPickupMission
-                        && axis.VerticalPickupOffset.HasValue
-                        )
+                } // REMOVE
+
+                if (positioningData.AxisMovement == Axis.BayChain)  // ADD THIS SNIPPET CODE
+                {
+                    // Check lower position (Absolute scale)
+                    const double INTERNAL_LIMIT = -150.0d;
+                    if (position < INTERNAL_LIMIT)
                     {
-                        this.logger.LogInformation($"Vertical positioning for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
-                        position += axis.VerticalPickupOffset.Value;
+                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                        throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the bay internal limit ({INTERNAL_LIMIT:0.00}).");
+                    }
+                    // Check upper position
+                    const double EXTERNAL_MAX_LIMIT = 1350.0d;
+                    if (position > EXTERNAL_MAX_LIMIT)
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                        throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the bay external limit ({EXTERNAL_MAX_LIMIT}:0.00).");
                     }
                 }
             }
