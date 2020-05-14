@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200511082649_externalBay")]
+    partial class externalBay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,22 +23,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("DeviceInformationId");
-
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
                     b.Property<string>("IsConfigured");
 
-                    b.Property<bool>("IsConfiguredNew");
-
                     b.Property<string>("IsEnabled");
 
-                    b.Property<bool>("IsEnabledNew");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("DeviceInformationId");
 
                     b.ToTable("Accessories");
 
@@ -254,24 +248,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("MachineId");
 
                     b.ToTable("CellPanels");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.DeviceInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirmwareVersion");
-
-                    b.Property<DateTime?>("ManufactureDate");
-
-                    b.Property<string>("ModelNumber");
-
-                    b.Property<string>("SerialNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeviceInformation");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
@@ -806,11 +782,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 77,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -966,8 +937,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsReadOnly");
 
-                    b.Property<string>("StringValue");
-
                     b.Property<string>("Type");
 
                     b.Property<int>("Value");
@@ -1117,8 +1086,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AdditionalText");
 
                     b.Property<int>("BayNumber");
 
@@ -1708,9 +1675,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
-                    b.Property<bool>("AdjustAccelerationByWeight");
-
-                    b.Property<bool>("AdjustSpeedByWeight");
+                    b.Property<bool>("AdjustByWeight");
 
                     b.Property<int?>("MovementProfileId");
 
@@ -1810,13 +1775,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ReferenceCellId");
 
                     b.HasDiscriminator().HasValue("OffsetCalibrationProcedure");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Accessory", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.DeviceInformation", "DeviceInformation")
-                        .WithMany()
-                        .HasForeignKey("DeviceInformationId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>

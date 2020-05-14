@@ -2484,6 +2484,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Muovi verso elevatore</value>
+  </data>
   <data name="AccessoryEnabled" xml:space="preserve">
     <value>Abilitato</value>
   </data>
@@ -2526,8 +2529,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AlphaNumericBarSizeL" xml:space="preserve">
     <value>Lunga</value>
   </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Muovi verso operatore</value>
+  </data>
   <data name="AlphaNumericBarSizeM" xml:space="preserve">
     <value>Media</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Taratura baia esterna</value>
   </data>
   <data name="AlphaNumericBarSizeS" xml:space="preserve">
     <value>Corta</value>

@@ -15,16 +15,28 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         // Creep speed default values
         private const int CREEP_SPEED_CAROUSEL_DEFAULT = 5;        // [mm/s]
 
-        private const int CREEP_SPEED_ELEVATOR_HORIZ_DEFAULT = 6;  // [mm/s]
+        private const int CREEP_SPEED_ELEVATOR_HORIZ_DEFAULT = 6;
 
-        private const int CREEP_SPEED_ELEVATOR_VERT_DEFAULT = 6;   // [mm/s]
+        private const int CREEP_SPEED_ELEVATOR_VERT_DEFAULT = 6;
+
+        private const int CREEP_SPEED_EXTERNALBAY_DEFAULT = 5;     // [mm/s]
+
+        // [mm/s]
+
+        // [mm/s]
 
         // Fast speed default values
         private const int FAST_SPEED_CAROUSEL_DEFAULT = 22;        // [mm/s]
 
-        private const int FAST_SPEED_ELEVATOR_HORIZ_DEFAULT = 25;  // [mm/s]
+        private const int FAST_SPEED_ELEVATOR_HORIZ_DEFAULT = 25;
 
-        private const int FAST_SPEED_ELEVATOR_VERT_DEFAULT = 25;   // [mm/s]
+        private const int FAST_SPEED_ELEVATOR_VERT_DEFAULT = 25;
+
+        private const int FAST_SPEED_EXTERNALBAY_DEFAULT = 22;     // [mm/s]
+
+        // [mm/s]
+
+        // [mm/s]
 
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID - elevator chain zero sensor
 
@@ -163,16 +175,34 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
                                 var bay = bayProvider.GetByNumber(bayNumber);
 
-                                if (bay.Carousel.HomingFastSpeed >= 2 * FAST_SPEED_CAROUSEL_DEFAULT)
+                                if (!bay.IsExternal && bay.Carousel != null)
                                 {
-                                    isCommandToSend = false;
-                                    this.Logger.LogError($"Homing Fast Speed parameter={bay.Carousel.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
-                                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                                }
+                                    // Handle the carousel
+                                    if (bay.Carousel.HomingFastSpeed >= 2 * FAST_SPEED_CAROUSEL_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Fast Speed parameter={bay.Carousel.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
 
-                                speedValue = bay.Carousel.HomingFastSpeed;
-                                fastSpeed = (int)(speedValue *
-                                    this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                    speedValue = bay.Carousel.HomingFastSpeed;
+                                    fastSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
+                                else
+                                {
+                                    // Handle the external bay
+                                    if (bay.External.HomingFastSpeed >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Fast Speed parameter={bay.External.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
+
+                                    speedValue = bay.External.HomingFastSpeed;
+                                    fastSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
                             }
                             else
                             {
@@ -269,16 +299,34 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
                                 var bay = bayProvider.GetByNumber(bayNumber);
 
-                                if (bay.Carousel.HomingCreepSpeed >= 2 * CREEP_SPEED_CAROUSEL_DEFAULT)
+                                if (!bay.IsExternal && bay.Carousel != null)
                                 {
-                                    isCommandToSend = false;
-                                    this.Logger.LogError($"Homing Creep Speed parameter={bay.Carousel.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
-                                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                                }
+                                    // Handle the carousel
+                                    if (bay.Carousel.HomingCreepSpeed >= 2 * CREEP_SPEED_CAROUSEL_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Creep Speed parameter={bay.Carousel.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
 
-                                speedValue = bay.Carousel.HomingCreepSpeed;
-                                creepSpeed = (int)(speedValue *
-                                    this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                    speedValue = bay.Carousel.HomingCreepSpeed;
+                                    creepSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
+                                else
+                                {
+                                    // Handle the external bay
+                                    if (bay.External.HomingCreepSpeed >= 2 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Creep Speed parameter={bay.External.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
+
+                                    speedValue = bay.External.HomingCreepSpeed;
+                                    creepSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
                             }
                             else
                             {

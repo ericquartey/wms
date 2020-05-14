@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Services
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), Resources.ServiceHealthProbe.ValueCannotNegative);
+                    throw new ArgumentOutOfRangeException(nameof(value), Resources.Localized.Get("ServiceHealthProbe.ValueCannotNegative"));
                 }
 
                 this.pollInterval = value;

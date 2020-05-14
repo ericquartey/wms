@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MovementParameters EmptyLoadMovement { get; set; }
 
+        public External External { get; set; }
+
         public MovementParameters FullLoadMovement { get; set; }
 
         public Inverter Inverter { get; set; }
@@ -107,6 +109,11 @@ namespace Ferretto.VW.MAS.DataModels
             if (this.Carousel != null && positionsCount != 2)
             {
                 throw new Exception($"Baia {this.Number}: la giostra è definita, ma la baia non ha due posizioni.");
+            }
+
+            if (this.External != null && positionsCount != 1)
+            {
+                throw new Exception($"Baia {this.Number}: la baia esterna è definita, ma la baia deve avere una posizione.");
             }
 
             if (this.IoDevice is null)
