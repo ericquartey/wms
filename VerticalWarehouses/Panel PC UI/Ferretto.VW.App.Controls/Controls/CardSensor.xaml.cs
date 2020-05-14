@@ -59,6 +59,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty CardSensorLabel3Property =
             DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty CardBayPositionProperty =
+            DependencyProperty.Register(nameof(CardBayPosition), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
         public static readonly DependencyProperty CardTextProperty =
             DependencyProperty.Register(nameof(CardText), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
@@ -197,6 +200,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(CardSensorLabel3Property);
             set => this.SetValue(CardSensorLabel3Property, value);
+        }
+
+        public string CardBayPosition
+        {
+            get => (string)this.GetValue(CardBayPositionProperty);
+            set => this.SetValue(CardBayPositionProperty, value);
         }
 
         public string CardText

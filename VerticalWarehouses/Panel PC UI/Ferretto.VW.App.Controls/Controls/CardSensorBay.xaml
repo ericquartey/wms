@@ -20,6 +20,7 @@
                       Sensor1="{Binding SensorsService.BayZeroChain}"
                       Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"
                       Sensor3="{Binding SensorsService.IsLoadingUnitInMiddleBottomBay}"
+                      CardBayPosition="{Binding CardBayPosition}"
                       Type="Bay" />
-
+    
 </UserControl>
