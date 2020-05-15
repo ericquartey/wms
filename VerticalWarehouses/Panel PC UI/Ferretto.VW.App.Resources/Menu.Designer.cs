@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commands.
+        ///   Looks up a localized string similar to Test.
         /// </summary>
         public static string AccessoriesAlphaNumBarMenuSection2 {
             get {
@@ -93,6 +93,60 @@ namespace Ferretto.VW.App.Resources {
         public static string AccessoriesAlphaNumBarMenuTitle {
             get {
                 return ResourceManager.GetString("AccessoriesAlphaNumBarMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arrow.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestArrow {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Led.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestLed {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestLed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestMessage {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ferretto Group - Test message -.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestMessageDefault {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestMessageDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestOffset {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        public static string AccessoriesAlphaNumBarTestText {
+            get {
+                return ResourceManager.GetString("AccessoriesAlphaNumBarTestText", resourceCulture);
             }
         }
         
@@ -187,15 +241,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Luminosity.
-        /// </summary>
-        public static string AccessoriesLuminosity {
-            get {
-                return ResourceManager.GetString("AccessoriesLuminosity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Accessories Menu.
         /// </summary>
         public static string AccessoriesMenuName {
@@ -237,15 +282,6 @@ namespace Ferretto.VW.App.Resources {
         public static string AccessoriesSize {
             get {
                 return ResourceManager.GetString("AccessoriesSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Switch on.
-        /// </summary>
-        public static string AccessoriesSwitchOn {
-            get {
-                return ResourceManager.GetString("AccessoriesSwitchOn", resourceCulture);
             }
         }
         

@@ -124,10 +124,28 @@
     <value>Configuration parameters</value>
   </data>
   <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
-    <value>Commands</value>
+    <value>Test</value>
   </data>
   <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
     <value>Alphanumeric Bar</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Arrow</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - Test message -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Text</value>
   </data>
   <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
     <value>Configuration and test of the barcode reader</value>
@@ -159,9 +177,6 @@
   <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
     <value>Laser Pointer</value>
   </data>
-  <data name="AccessoriesLuminosity" xml:space="preserve">
-    <value>Luminosity</value>
-  </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Accessories Menu</value>
   </data>
@@ -176,9 +191,6 @@
   </data>
   <data name="AccessoriesSize" xml:space="preserve">
     <value>Size</value>
-  </data>
-  <data name="AccessoriesSwitchOn" xml:space="preserve">
-    <value>Switch on</value>
   </data>
   <data name="AccessoriesTest" xml:space="preserve">
     <value>Test</value>

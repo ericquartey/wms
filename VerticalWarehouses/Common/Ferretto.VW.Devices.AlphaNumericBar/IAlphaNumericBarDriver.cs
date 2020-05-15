@@ -16,6 +16,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         int CalculateOffset(int offset, string message);
 
+        int CalculateOffsetArrowMiddlePosition(int delta = 1);
+
         Task<bool> ClearAsync();
 
         bool Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size);

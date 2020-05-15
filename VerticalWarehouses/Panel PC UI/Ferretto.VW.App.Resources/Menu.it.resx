@@ -124,10 +124,28 @@
     <value>Parametri di configurazione</value>
   </data>
   <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
-    <value>Comandi</value>
+    <value>Test</value>
   </data>
   <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
     <value>Barra Alfanumerica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Freccia</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Messaggio</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - messaggio di prova -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Testo</value>
   </data>
   <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
     <value>Configurazione e verifica del lettore di codici a barre</value>
@@ -159,9 +177,6 @@
   <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
     <value>Puntatore Laser</value>
   </data>
-  <data name="AccessoriesLuminosity" xml:space="preserve">
-    <value>Luminosità</value>
-  </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Menu Accessori</value>
   </data>
@@ -176,9 +191,6 @@
   </data>
   <data name="AccessoriesSize" xml:space="preserve">
     <value>Dimensione</value>
-  </data>
-  <data name="AccessoriesSwitchOn" xml:space="preserve">
-    <value>Accensione</value>
   </data>
   <data name="AccessoriesTest" xml:space="preserve">
     <value>Test</value>

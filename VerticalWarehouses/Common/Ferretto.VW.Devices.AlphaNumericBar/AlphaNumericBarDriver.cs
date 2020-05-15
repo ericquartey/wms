@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Net;
-using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using Ferretto.VW.MAS.DataModels;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
 
@@ -17,8 +14,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         #region Fields
 
         public const int PORT_DEFAULT = 2020;
-
-        public const int TCP_RECEIVE_MESSAGE_BUFFER = 2;
 
         private readonly Queue messagesReceivedQueue;
 
@@ -33,6 +28,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private int port = PORT_DEFAULT;
 
         private AlphaNumericBarSize size = AlphaNumericBarSize.Medium;
+
+        private bool testEnabled = false;
+
+        private bool testScrollEnabled = false;
 
         #endregion
 
@@ -60,6 +59,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public AlphaNumericBarSize Size => this.size;
 
         public double StepLedBar { get; set; }
+
+        public bool TestEnabled => this.testEnabled;
+
+        public bool TestScrollEnabled => this.testScrollEnabled;
 
         #endregion
 
@@ -116,6 +119,22 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 {
                     result = -2;
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Return the offset to put the row in the middel position
+        /// </summary>
+        /// <returns></returns>
+        public int CalculateOffsetArrowMiddlePosition(int delta = 1)
+        {
+            var result = (((((int)this.size) * 8) - 8) / 2) + delta;
+
+            if (result < 0)
+            {
+                result = 0;
             }
 
             return result;
@@ -400,22 +419,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Return the offset to put the row in the middel position
-        /// </summary>
-        /// <returns></returns>
-        private int CalculateOffsetArrowMiddlePosition(int delta = 1)
-        {
-            var result = (((((int)this.size) * 8) - 8) / 2) + delta;
-
-            if (result < 0)
-            {
-                result = 0;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Encode a trinh into the HTPP protocol.
         /// </summary>
         /// <param name="str"></param>
@@ -456,18 +459,22 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                 case AlphaNumericBarCommands.Command.TEST_ON:                   // deprecated, not use
                     strCommand = "TEST ON";
+                    this.testEnabled = true;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_OFF:
                     strCommand = "TEST OFF";
+                    this.testEnabled = false;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_SCROLL_ON:
                     strCommand = "TESTSCROLL ON";
+                    this.testScrollEnabled = true;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_SCROLL_OFF:
                     strCommand = "TESTSCROLL OFF";
+                    this.testScrollEnabled = false;
                     break;
 
                 case AlphaNumericBarCommands.Command.DIM:                     // DIM <valueX>
@@ -506,9 +513,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 case AlphaNumericBarCommands.Command.SET_LUM:
                     strCommand = "SETLUM " + offset;
                     break;
-
-                default:
-                    return result;
             }
 
             strCommand += Environment.NewLine;
@@ -547,7 +551,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                         stream = client.GetStream();
                         stream.ReadTimeout = this.tcpTimeout;
                         stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
+                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
 
                         if (this.IsWaitResponse(sendMessage))
                         {
@@ -556,32 +560,31 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                             this.messagesReceivedQueue.Enqueue(responseMessage);
-                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
+                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
                             if (!this.IsResponseOk(sendMessage, responseMessage))
                             {
-                                System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                             }
                         }
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine($"AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait{sendMessage}");
+                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
                             this.messagesReceivedQueue.Enqueue("");
                         }
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
                     }
                 }
 
                 stream?.Close();
                 client?.Close();
-
                 result = true;
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
             }
 
             return result;

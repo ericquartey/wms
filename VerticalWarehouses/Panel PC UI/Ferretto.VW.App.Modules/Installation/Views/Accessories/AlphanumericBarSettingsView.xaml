@@ -49,7 +49,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuTitle}" />
+                       Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuTitle}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -58,7 +58,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{res:Loc HelpDescriptions.HelpAlphaNumericDescription}" />
+                   Text="{x:Static res:HelpDescriptions.HelpAlphaNumericDescription}" />
 
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="2"
@@ -71,14 +71,14 @@
                        Margin="0,10,10,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                       Text="{res:Loc Menu.AccessoriesEnable}" />
+                       Text="{x:Static res:Menu.AccessoriesEnable}" />
 
             <RadioButton Margin="10"
                          GroupName="RadioButtonGroupEnable">
                 <RadioButton.Content>
                     <TextBlock Margin="0,5,0,0"
                                Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{res:Loc Menu.AccessoriesOff}" />
+                               Text="{x:Static res:Menu.AccessoriesOff}"/>
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton Margin="10"
@@ -87,7 +87,7 @@
                 <RadioButton.Content>
                     <TextBlock Margin="0,5,0,0"
                                Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{res:Loc Menu.AccessoriesOn}" />
+                               Text="{x:Static res:Menu.AccessoriesOn}" />
                 </RadioButton.Content>
             </RadioButton>
         </StackPanel>
@@ -114,7 +114,7 @@
                            Margin="0,0,0,0"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection1}" />
+                           Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection1}" />
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -123,7 +123,7 @@
                             VerticalAlignment="Top">
                     <TextBlock Margin="5,0,5,0"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{res:Loc Menu.AccessoriesIpAddress}" />
+                               Text="{x:Static res:Menu.AccessoriesIpAddress}" />
                     <ctrlssc:IPAddressBox Margin="5,4,5,5"
                                           IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding IsEnabledEditing}" />
@@ -136,22 +136,28 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{res:Loc Menu.AccessoriesPort}" />
+                                     LabelText="{x:Static res:Menu.AccessoriesPort}" />
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="2"
                             Margin="0,5,5,5"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Top">
+                    
                     <TextBlock Margin="15,0,5,0"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{res:Loc Menu.AccessoriesSize}" />
-
+                               Text="{x:Static res:Menu.AccessoriesSize}" />
+                    <Border Margin="6"
+                            CornerRadius="4" Background="{DynamicResource FerrettoGreen}">
                     <TextBlock Grid.Row="0"
-                               Margin="15,12,5,5"
+                               Margin="5,10,5,5"
                                VerticalAlignment="Top"
+                               HorizontalAlignment="Center"
+                               FontSize="12"
                                Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
                                Text="{Binding Size, Converter={StaticResource ANBSEC}}" />
+
+                    </Border>
                 </StackPanel>
             </Grid>
         </Border>
@@ -171,101 +177,91 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Margin="0,0,0,10"
+                           Margin="0,5,10,0"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection2}" />
+                           Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection2}" />
 
-                <TextBlock x:Name="Luminosity"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                           Margin="0,0,10,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc Menu.AccessoriesLuminosity}" />
-
-                <Slider Name="SliderLuminosity"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Margin="0,0,0,10"
-                        IsSnapToTickEnabled="True"
-                        Maximum="15"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="BottomRight"
-                        Value="{Binding Luminosity, Mode=TwoWay}" />
-
-                <TextBlock x:Name="RadioBoxSwitchOn"
-                           Grid.Row="2"
-                           Grid.Column="0"
-                           Margin="0,0,10,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc Menu.AccessoriesSwitchOn}" />
-
-                <RadioButton Grid.Row="2"
-                             Grid.Column="1"
-                             Margin="5"
-                             GroupName="RadioBoxGroupSwitchOn">
+                <RadioButton Grid.Row="0" Grid.Column="1"
+                    Margin="5"
+                    IsChecked="{Binding TestOffIsChecked, Mode=TwoWay}"
+                    GroupName="RadioBoxGroupTestMode">
                     <RadioButton.Content>
                         <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{res:Loc Menu.AccessoriesOff}" />
+                            Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Text="{x:Static res:Menu.AccessoriesOff}" />
                     </RadioButton.Content>
                 </RadioButton>
 
-                <RadioButton Grid.Row="2"
-                             Grid.Column="2"
-                             Margin="5"
-                             GroupName="RadioBoxGroupSwitchOn"
-                             IsChecked="{Binding SwitchOnIsChecked, Mode=TwoWay}">
+                <RadioButton Grid.Row="1" Grid.Column="1"
+                    Margin="5"
+                    IsChecked="{Binding TestLedIsChecked, Mode=TwoWay}"
+                    GroupName="RadioBoxGroupTestMode">
                     <RadioButton.Content>
-                        <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{res:Loc Menu.AccessoriesOn}" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestLed}" />
                     </RadioButton.Content>
                 </RadioButton>
 
-                <TextBlock x:Name="RadioBoxTest"
-                           Grid.Row="3"
-                           Grid.Column="0"
-                           Margin="0,0,10,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc Menu.AccessoriesTest}" />
-
-                <RadioButton Grid.Row="3"
-                             Grid.Column="1"
-                             Margin="5"
-                             GroupName="RadioBoxGroupTest">
+                <RadioButton Grid.Row="2" Grid.Column="1"
+                    Margin="5,5,0,0"
+                    IsChecked="{Binding TestMessageIsChecked, Mode=TwoWay}"
+                    GroupName="RadioBoxGroupTestMode">
                     <RadioButton.Content>
-                        <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{res:Loc Menu.AccessoriesOff}" />
+                        <TextBlock
+                            Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestMessage}" />
                     </RadioButton.Content>
                 </RadioButton>
 
-                <RadioButton Grid.Row="3"
-                             Grid.Column="2"
-                             Margin="5"
-                             GroupName="RadioBoxGroupTest"
-                             IsChecked="{Binding TestIsChecked, Mode=TwoWay}">
+                <controls:PpcTextBox Grid.Row="2" Grid.Column="2"
+                    Margin="0,5,0,0"
+                    MaxWidth="80"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    InputText="{Binding TestMessageOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsEnabledEditing}"
+                    LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestOffset}"/>
+
+                <controls:PpcTextBox Grid.Row="2" Grid.Column="3"
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"                                     
+                    InputText="{Binding TestMessageText, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsEnabledEditing}"
+                    LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestText}"/>
+
+                <RadioButton Grid.Row="3" Grid.Column="1"
+                    Margin="5,0,0,0"
+                    IsChecked="{Binding TestArrowIsChecked, Mode=TwoWay}"
+                    GroupName="RadioBoxGroupTestMode">
                     <RadioButton.Content>
-                        <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{res:Loc Menu.AccessoriesOn}" />
+                        <TextBlock
+                            Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestArrow}" />
                     </RadioButton.Content>
                 </RadioButton>
+
+                <controls:PpcTextBox Grid.Row="3" Grid.Column="2"
+                    MaxWidth="80"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    InputText="{Binding TestArrowOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsEnabledEditing}"
+                    LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestOffset}"/>
             </Grid>
         </Border>
 
@@ -274,7 +270,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SaveCommand}"
-                            Content="{res:Loc General.Save}"
+                            Content="{x:Static res:General.Save}"
                             IsBusy="{Binding IsWaitingForResponse}" />
 
     </Grid>
