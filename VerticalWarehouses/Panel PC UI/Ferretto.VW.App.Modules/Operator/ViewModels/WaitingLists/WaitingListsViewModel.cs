@@ -70,13 +70,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand ListDetailButtonCommand =>
             this.listDetailButtonCommand
             ??
-            (this.listDetailButtonCommand = new DelegateCommand(this.ShowDetails, this.CanShowDetailCommand));
+            (this.listDetailButtonCommand = new DelegateCommand(
+                () => this.ShowDetails(this.selectedList),
+                this.CanShowDetailCommand));
 
         public ICommand ListExecuteCommand =>
             this.listExecuteCommand
             ??
             (this.listExecuteCommand = new DelegateCommand(
-                async () => await this.ExecuteListAsync(),
+                async () => await this.ExecuteListAsync(this.selectedList),
                 this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
@@ -132,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task ExecuteListAsync()
+        public async Task ExecuteListAsync(ItemListExecution itemList)
         {
             try
             {
@@ -142,12 +144,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
+                    Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(Resources.Localized.Get("OperatorApp.CannotExecuteList"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(
+                    Resources.Localized.Get("OperatorApp.CannotExecuteList"),
+                    Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -205,12 +212,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
-                await this.ExecuteListAsync();
+                await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch
             {
-                this.ShowNotification(ex);
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+                    Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -229,12 +237,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
-                this.ShowDetails();
+
+                this.ShowDetails(new ItemListExecution(list, this.bayManager.Identity.Id));
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch
             {
-                this.ShowNotification(ex);
+                this.ShowNotification(
+                  string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
+                  Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -311,7 +321,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private void ShowDetails()
+        private void ShowDetails(ItemListExecution list)
         {
             this.IsWaitingForResponse = true;
 
@@ -320,7 +330,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
                     Utils.Modules.Operator.WaitingLists.DETAIL,
-                    this.selectedList,
+                    list,
                     trackCurrentView: true);
             }
             catch (Exception ex)
