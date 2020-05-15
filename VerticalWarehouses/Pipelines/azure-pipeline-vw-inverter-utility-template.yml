@@ -1,7 +1,7 @@
 parameters:
   BuildConfiguration: 'debug'
   BuildPlatform: 'any cpu'   
-  RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'  
+  RestoreBuildProjects: '**/Ferretto.VW.InvertersParametersGenerator.csproj'  
   TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
@@ -40,14 +40,14 @@ steps:
   displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/**'
+    Contents: 'VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: installer'
+  displayName: 'Publish Artifact: inverter_parameters_utility'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
-    ArtifactName: 'inverter'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
+    ArtifactName: 'inverter_parameters_utility'
 
 

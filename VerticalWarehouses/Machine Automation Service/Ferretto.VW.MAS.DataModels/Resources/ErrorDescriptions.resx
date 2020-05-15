@@ -337,7 +337,7 @@
     <value>The mission type is not valid</value>
   </data>
   <data name="MoveBayChainNotAllowed" xml:space="preserve">
-    <value>Move Bay chain not allowed. Wait for another resume.</value>
+    <value>Move Bay chain not allowed: the load unit is too heavy to be moved by the bay chain</value>
   </data>
   <data name="ResumeCommandNotValid" xml:space="preserve">
     <value>The picking confirmation command is not valid</value>

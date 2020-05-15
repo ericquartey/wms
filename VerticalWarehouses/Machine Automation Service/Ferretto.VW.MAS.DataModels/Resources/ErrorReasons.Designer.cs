@@ -745,7 +745,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move Bay chain not allowed. Wait for another resume..
+        ///   Looks up a localized string similar to Please remove the excess weight. Then close the error..
         /// </summary>
         public static string MoveBayChainNotAllowed {
             get {

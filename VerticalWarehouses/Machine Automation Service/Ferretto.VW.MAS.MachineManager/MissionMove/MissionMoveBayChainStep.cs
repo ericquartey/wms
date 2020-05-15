@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveBayChainStep : MissionMoveBase
     {
+        private const double LoadUnitMaxNetWeightBayChainPercent = 1.1;
+
         #region Constructors
 
         public MissionMoveBayChainStep(Mission mission,
@@ -67,6 +69,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, bay.Number);
                 throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, bay.Number, MessageActor.MachineManager);
             }
+            var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+            if (position != null
+                && position.LoadingUnit != null
+                && position.LoadingUnit.Id == this.Mission.LoadUnitId
+                && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
+                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                )
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, bay.Number);
+
+                this.Mission.ErrorCode = MachineErrorCode.NoError;
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+                return true;
+            }
             try
             {
                 if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
@@ -87,7 +109,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             catch (StateMachineException ex)
             {
-                var description = $"Move Bay chain not possible in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
+                var description = $"Move Bay chain not allowed at the moment in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
                 // we don't want any exception here because this is the normal procedure:
                 // send a second LU in lower position while operator is working on upper position
                 this.Logger.LogInformation(description);
@@ -258,6 +280,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 )
 #endif
             {
+                var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                if (position != null
+                    && position.LoadingUnit != null
+                    && position.LoadingUnit.Id == this.Mission.LoadUnitId
+                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                    )
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, bay.Number);
+
+                    this.Mission.ErrorCode = MachineErrorCode.NoError;
+                    this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                    return;
+                }
                 try
                 {
                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -288,7 +328,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     //this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
                     //throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                    this.Logger.LogInformation(ErrorDescriptions.MoveBayChainNotAllowed);
+                    this.Logger.LogInformation($"Move Bay chain not allowed at the moment. Wait for another resume.");
                 }
             }
 #if CHECK_BAY_SENSOR
