@@ -191,7 +191,7 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
-                bool condition = false;
+                var condition = false;
                 switch (this.Permission)
                 {
                     case UserAccessLevel.Operator:

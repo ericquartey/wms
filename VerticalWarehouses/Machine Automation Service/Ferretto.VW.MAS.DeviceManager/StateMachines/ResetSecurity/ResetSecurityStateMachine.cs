@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
         public override void Start()
         {
             var stateData = new ResetSecurityStateData(this, this.machineData);
-            this.ChangeState(new ResetSecurityStartState(stateData));
+            this.ChangeState(new ResetSecurityStartState(stateData, this.Logger));
         }
 
         public override void Stop(StopRequestReason reason)

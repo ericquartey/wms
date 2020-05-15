@@ -232,9 +232,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (e.Attached.Any())
             {
-                int count = importables.Count;
-                CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-                string message = string.Format(culture, Resources.Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
+                var count = importables.Count;
+                var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                var message = string.Format(culture, Resources.Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:

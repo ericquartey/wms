@@ -37,8 +37,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         #region Constructors
 
-        public RepetitiveHorizontalMovementsOnElevatorState(IRepetitiveHorizontalMovementsStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public RepetitiveHorizontalMovementsOnElevatorState(IRepetitiveHorizontalMovementsStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IRepetitiveHorizontalMovementsMachineData;
@@ -88,12 +88,12 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                             this.Logger.LogInformation($"LoadingUnit Id:{this.elevatorDataProvider.GetLoadingUnitOnBoard().Id} gross weight: {this.elevatorDataProvider.GetLoadingUnitOnBoard().GrossWeight} kg");
                             this.machineData.AcquiredWeight = true;
 
-                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsPositionBayQuoteState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsPositionBayQuoteState(this.stateData, this.Logger));
                             break;
                         }
                     case MessageStatus.OperationError:
                         {
-                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData, this.Logger));
                             break;
                         }
                 }
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             var policy = this.CanMoveToBayPosition(bayPosition.Id);
             if (!policy.IsAllowed)
             {
-                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData, this.Logger));
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsEndState(this.stateData, this.Logger));
         }
 
         /// <summary>

@@ -45,11 +45,11 @@ namespace Ferretto.VW.MAS.AutomationService
             if (this.dataLayerService.IsReady && this.machineVolatileDataProvider.IsAutomationServiceReady)
             {
                 return Task.FromResult(
-                    HealthCheckResult.Healthy(Resources.General.ServiceStartupSequenceCompleted));
+                    HealthCheckResult.Healthy(Resources.General.ResourceManager.GetString("ServiceStartupSequenceCompleted", CommonUtils.Culture.Actual)));
             }
 
             return Task.FromResult(
-                HealthCheckResult.Unhealthy(Resources.General.ServiceIsInitializing));
+                HealthCheckResult.Unhealthy(Resources.General.ResourceManager.GetString("ServiceIsInitializing", CommonUtils.Culture.Actual)));
         }
 
         #endregion

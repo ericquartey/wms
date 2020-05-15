@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
-
 namespace Ferretto.VW.MAS.DeviceManager.Template.Models
 {
     internal class TemplateMachineData : ITemplateMachineData
@@ -18,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template.Models
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.EventAggregator = eventAggregator;
-            this.Logger = logger;
+            //this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
 
             this.Message = "Template Data";
@@ -31,8 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template.Models
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         public IEventAggregator EventAggregator { get; }
 
-        [Obsolete("Replace this reference with DI or ServiceProvider.")]
-        public ILogger Logger { get; }
+        /*  [Obsolete("Replace this reference with DI or ServiceProvider.")]
+          public ILogger Logger { get; }*/
 
         public string Message { get; }
 

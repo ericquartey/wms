@@ -441,7 +441,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded))
             {
 #if DEBUG
-                StackTrace stackTrace = new StackTrace();
+                var stackTrace = new StackTrace();
                 var method1 = stackTrace.GetFrame(1).GetMethod().Name;
                 var method2 = stackTrace.GetFrame(2).GetMethod().Name;
                 var method3 = stackTrace.GetFrame(3).GetMethod().Name;

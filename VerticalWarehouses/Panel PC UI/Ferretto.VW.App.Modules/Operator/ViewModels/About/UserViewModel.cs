@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using DevExpress.CodeParser;
-using DevExpress.Xpf.Bars.Themes;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -36,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public UserViewModel(ILocalizationService localizationService) : base()
+        public UserViewModel(ILocalizationService localizationService)
         {
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
@@ -155,21 +149,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         internal bool CanExecuteCommand()
         {
             return true;
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            try
-            {
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         protected override void RaiseCanExecuteChanged()

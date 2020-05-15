@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (shutterPosition != ShutterPosition.Opened)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                 }
             }
 
@@ -195,14 +195,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (shutterPosition != ShutterPosition.Closed)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyClosed", CommonUtils.Culture.Actual) };
                     }
                 }
                 else
                 {
                     if (shutterPosition != ShutterPosition.Opened)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                     }
                 }
             }
@@ -408,14 +408,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (shutterPosition != ShutterPosition.Closed)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyClosed", CommonUtils.Culture.Actual) };
                     }
                 }
                 else
                 {
                     if (shutterPosition != ShutterPosition.Opened)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                     }
                 }
             }
@@ -974,7 +974,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
         {
-            int cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
+            var cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
             var policy = this.CanMoveToCell(cellId);
             if (!policy.IsAllowed)
             {

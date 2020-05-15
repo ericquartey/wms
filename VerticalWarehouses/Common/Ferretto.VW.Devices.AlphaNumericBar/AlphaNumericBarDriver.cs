@@ -493,7 +493,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private bool IsWaitResponse(string message)
         {
-            bool result = true;
+            var result = true;
 
             if (message.StartsWith("CLEAN", StringComparison.Ordinal) || message.StartsWith("ENABLE OFF", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
             {

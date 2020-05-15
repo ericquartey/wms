@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CarouselCalibrationStep value = (CarouselCalibrationStep)(item ?? CarouselCalibrationStep.StartCalibration);
+            var value = (CarouselCalibrationStep)(item ?? CarouselCalibrationStep.StartCalibration);
             switch (value)
             {
                 case CarouselCalibrationStep.StartCalibration:

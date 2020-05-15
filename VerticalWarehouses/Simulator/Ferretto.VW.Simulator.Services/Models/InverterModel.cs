@@ -829,13 +829,13 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public double Impulses2millimeters(int value)
         {
-            double resolution = this.ImpulsesEncoderPerRound;
+            var resolution = this.ImpulsesEncoderPerRound;
             return value / resolution;
         }
 
         public int Millimeters2Impulses(double value)
         {
-            double resolution = this.ImpulsesEncoderPerRound;
+            var resolution = this.ImpulsesEncoderPerRound;
             return (int)Math.Round(value * resolution);
         }
 

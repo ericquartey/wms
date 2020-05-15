@@ -20,8 +20,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         #region Constructors
 
-        public InverterProgrammingEndState(IInverterProgrammingStateData stateData)
-                    : base(stateData?.ParentMachine, stateData?.MachineData?.Logger)
+        public InverterProgrammingEndState(IInverterProgrammingStateData stateData, ILogger logger)
+            : base(stateData?.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData?.MachineData as IInverterPowerEnableMachineData;
@@ -39,7 +39,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
         {
         }
 
-        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
         }
@@ -63,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug($"Stop with reason: {reason}");
+            this.Logger.LogDebug("Stop with reason: {reason}", reason);
         }
 
         #endregion

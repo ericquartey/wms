@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
-using System.Windows.Data;
+using System.Linq;
 using System.Resources;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xaml;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Ferretto.VW.App.Resources
 {
@@ -36,7 +35,7 @@ namespace Ferretto.VW.App.Resources
         public CultureInfo CurrentCulture
 
         {
-            get { return this.currentCulture; }
+            get => this.currentCulture;
 
             set
 
@@ -96,7 +95,7 @@ namespace Ferretto.VW.App.Resources
                 }
                 return translation ?? key;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return key;
             }
@@ -105,7 +104,12 @@ namespace Ferretto.VW.App.Resources
         public static (string baseName, string stringName) SplitName(string name)
 
         {
-            int idx = name.LastIndexOf('.');
+            if (name is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var idx = name.LastIndexOf('.');
 
             return (name.Substring(0, idx), name.Substring(idx + 1));
         }
@@ -113,9 +117,14 @@ namespace Ferretto.VW.App.Resources
         // WPF bindings register PropertyChanged event if the object supports it and update themselves when it is raised
         public void AddResourceManager(ResourceManager resourceManager)
         {
+            if (resourceManager is null)
+            {
+                throw new ArgumentNullException(nameof(resourceManager));
+            }
+
             try
             {
-                string name = resourceManager.BaseName.Split('.').Last();
+                var name = resourceManager.BaseName.Split('.').Last();
 
                 if (!this.resourceManagerDictionary.ContainsKey(name))
 
@@ -123,7 +132,7 @@ namespace Ferretto.VW.App.Resources
                     this.resourceManagerDictionary.Add(name, resourceManager);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -159,20 +168,20 @@ namespace Ferretto.VW.App.Resources
             {
                 // targetObject is the control that is using the LocExtension
 
-                object targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
+                var targetObject = (serviceProvider as IProvideValueTarget)?.TargetObject;
 
                 if (targetObject?.GetType().Name == "SharedDp") // is extension used in a control template?
                 {
                     return targetObject; // required for template re-binding
                 }
-                string baseName = this.GetResourceManager(targetObject)?.BaseName ?? string.Empty;
+                var baseName = this.GetResourceManager(targetObject)?.BaseName ?? string.Empty;
 
                 if (string.IsNullOrEmpty(baseName))
 
                 {
                     // rootObject is the root control of the visual tree (the top parent of targetObject)
 
-                    object rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
+                    var rootObject = (serviceProvider as IRootObjectProvider)?.RootObject;
 
                     baseName = this.GetResourceManager(rootObject)?.BaseName ?? string.Empty;
                 }
@@ -187,7 +196,7 @@ namespace Ferretto.VW.App.Resources
                     }
                 }
 
-                Binding binding = new Binding
+                var binding = new Binding
 
                 {
                     Mode = BindingMode.OneWay,
@@ -201,27 +210,23 @@ namespace Ferretto.VW.App.Resources
 
                 return binding.ProvideValue(serviceProvider);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return new object();
             }
         }
 
         private ResourceManager GetResourceManager(object control)
-
         {
             if (control is DependencyObject dependencyObject)
-
             {
-                object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
+                var localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
 
                 // does this control have a "Translation.ResourceManager" attached property with a set value?
 
                 if (localValue != DependencyProperty.UnsetValue)
-
                 {
                     if (localValue is ResourceManager resourceManager)
-
                     {
                         Localized.Instance.AddResourceManager(resourceManager);
 
@@ -237,7 +242,6 @@ namespace Ferretto.VW.App.Resources
     }
 
     public class Translation : DependencyObject
-
     {
         #region Fields
 
@@ -250,14 +254,22 @@ namespace Ferretto.VW.App.Resources
         #region Methods
 
         public static ResourceManager GetResourceManager(DependencyObject dependencyObject)
-
         {
+            if (dependencyObject is null)
+            {
+                throw new ArgumentNullException(nameof(dependencyObject));
+            }
+
             return (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
         }
 
         public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value)
-
         {
+            if (dependencyObject is null)
+            {
+                throw new ArgumentNullException(nameof(dependencyObject));
+            }
+
             dependencyObject.SetValue(ResourceManagerProperty, value);
         }
 

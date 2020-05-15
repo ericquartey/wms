@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Template
 {
     internal class TemplateEndState : StateBase
@@ -20,8 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
 
         #region Constructors
 
-        public TemplateEndState(ITemplateStateData stateData)
-                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public TemplateEndState(ITemplateStateData stateData, ILogger logger)
+                    : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;

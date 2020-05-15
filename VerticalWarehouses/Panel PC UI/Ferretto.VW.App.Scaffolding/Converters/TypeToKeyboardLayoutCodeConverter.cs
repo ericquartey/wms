@@ -19,14 +19,14 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 var metadata = entity.Metadata;
 
                 // 1. UI hints?
-                UIHintAttribute uiHint = metadata.OfType<UIHintAttribute>().FirstOrDefault();
+                var uiHint = metadata.OfType<UIHintAttribute>().FirstOrDefault();
                 if (uiHint != null)
                 {
                     // TODO: custom stuff
                 }
 
                 // 2. data-type specified?
-                DataTypeAttribute dataType = metadata.OfType<DataTypeAttribute>().FirstOrDefault();
+                var dataType = metadata.OfType<DataTypeAttribute>().FirstOrDefault();
                 if (dataType != null)
                 {
                     switch (dataType.DataType)
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 }
 
                 // 3. try with very type
-                Type type = entity.Property.PropertyType;
+                var type = entity.Property.PropertyType;
                 if (type == typeof(System.Net.IPAddress))
                 {
                     return KeyboardLayoutCodes.Numpad;

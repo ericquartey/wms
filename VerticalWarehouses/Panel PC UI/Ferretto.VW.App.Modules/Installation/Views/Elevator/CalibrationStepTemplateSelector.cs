@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CalibrationStep value = (CalibrationStep)(item ?? CalibrationStep.PositionMeter);
+            var value = (CalibrationStep)(item ?? CalibrationStep.PositionMeter);
             switch (value)
             {
                 case CalibrationStep.PositionMeter:

@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get
             {
-                int val = (int)this.GetValue(BayNumberProperty);
+                var val = (int)this.GetValue(BayNumberProperty);
                 this.PpcBadge_TextBlock.Text = Localized.Get("General.BayNumber") + " " + val.ToString();
                 return val;
             }

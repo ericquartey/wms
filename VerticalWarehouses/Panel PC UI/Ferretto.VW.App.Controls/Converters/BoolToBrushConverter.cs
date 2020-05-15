@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Controls.Converters
             {
                 resource = Application.Current.FindResource(this.FalseColor);
             }
-            catch (ResourceReferenceKeyNotFoundException ex)
+            catch (ResourceReferenceKeyNotFoundException)
             {
                 throw new InvalidOperationException(nameof(this.FalseColor));
             }

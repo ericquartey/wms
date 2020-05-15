@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DataModels
 
                 this.Reason = Resources.ErrorReasons.ResourceManager.GetString(propertyName, CommonUtils.Culture.Actual);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.Description = descriptionResourceType
                     .GetProperty(

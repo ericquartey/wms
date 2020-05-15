@@ -328,7 +328,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (e is null)
             {
-                throw new ArgumentNullException(nameof(e));
+                return;
             }
 
             if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
@@ -662,7 +662,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void Scroll(object parameter)
         {
-            ScrollChangedEventArgs scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
+            var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
             if (scrollChangedEventArgs != null)
             {
                 var last = (int)scrollChangedEventArgs.VerticalOffset + (int)scrollChangedEventArgs.ViewportHeight;
@@ -723,7 +723,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (itemCode is null)
             {
                 this.ShowNotification(
-                    "The item code does not appear in the barcode.",
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
                     Services.Models.NotificationSeverity.Warning);
 
                 return;

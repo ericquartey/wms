@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DataLayer
                          && x.Position < loadingUnit.Cell.Position)
                 .OrderByDescending(o => o.Position)
                 .ToList();
-            int cellId = -1;
+            var cellId = -1;
             foreach (var cell in cells)
             {
                 if (cell.BlockLevel == BlockLevel.Blocked
@@ -265,7 +265,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
                         var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
-                        bool firstFree = true;
+                        var firstFree = true;
                         if (compactingType == CompactingType.ExactMatchCompacting || compactingType == CompactingType.AnySpaceCompacting)
                         {
                             // in these compacting types the cell must be the first empty cell
@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var count = 0;
 
                 // find all border cells: the first and last cell by side and cells near not available cells
-                for (int iCell = 0; iCell < cells.Length; iCell++)
+                for (var iCell = 0; iCell < cells.Length; iCell++)
                 {
                     var cell = cells[iCell];
                     if (cell.BlockLevel == BlockLevel.None)
@@ -722,13 +722,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out double freeCells)
         {
-            int count = 0;
+            var count = 0;
             freeCells = 0;
             var cellsBySide = cellsWithSide.Where(c => c.Side == side)
                 .OrderBy(o => o.Position)
                 .ToArray();
 
-            for (int i = 0; i < cellsBySide.Length; i++)
+            for (var i = 0; i < cellsBySide.Length; i++)
             {
                 if (cellsBySide[i].IsFree
                     && cellsBySide[i].BlockLevel == BlockLevel.None

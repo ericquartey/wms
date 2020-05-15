@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Keyboards.Serialization
         {
             if (value.HasValue)
             {
-                string output = this._converter.ConvertToString(null, CultureInfo.InvariantCulture, value.Value);
+                var output = this._converter.ConvertToString(null, CultureInfo.InvariantCulture, value.Value);
                 writer.WriteValue(output);
             }
             else

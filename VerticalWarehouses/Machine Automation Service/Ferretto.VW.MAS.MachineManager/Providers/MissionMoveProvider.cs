@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }

@@ -13,9 +13,6 @@ namespace Ferretto.VW.MAS.DeviceManager
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         IEventAggregator EventAggregator { get; }
 
-        [Obsolete("Replace this reference with DI or ServiceProvider.")]
-        ILogger Logger { get; }
-
         BayNumber RequestingBay { get; }
 
         [Obsolete("Replace this reference with DI or ServiceProvider.")]

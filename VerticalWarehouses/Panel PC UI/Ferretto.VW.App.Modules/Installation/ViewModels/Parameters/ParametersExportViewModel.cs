@@ -100,7 +100,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.drive;
             set
             {
-                DriveInfo old = this.drive;
+                var old = this.drive;
                 if (this.SetProperty(ref this.drive, value))
                 {
                     this.OnSelectedDriveChanged(old, value);
@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task ExportAsync()
         {
-            bool goback = false;
+            var goback = false;
             try
             {
                 if (this.HasFilenameConflict && this.OverwriteTargetFile)
@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 };
                 var json = JsonConvert.SerializeObject(output, settings);
 
-                string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
+                var fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;
@@ -212,13 +212,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void OnSelectedDriveChanged(DriveInfo old, DriveInfo value)
         {
-            bool hasConflict = false;
+            var hasConflict = false;
             if (value != null)
             {
                 try
                 {
                     var vertimag = this.Data as VertimagConfiguration;
-                    string fullPath = vertimag.Filename(value, false);// this.GetFullPath(value, vertimag.Machine.SerialNumber);
+                    var fullPath = vertimag.Filename(value, false);// this.GetFullPath(value, vertimag.Machine.SerialNumber);
                     hasConflict = File.Exists(fullPath);
                 }
                 catch (Exception exc)

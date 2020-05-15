@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         public void SelectCategory(object sender, EventArgs e)
         {
-            Models.ScaffoldedStructure context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
+            var context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
             this.SetValue(FocusStructureProperty, context);
         }
 
@@ -254,11 +254,11 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             var entity = this.EditingEntity;
             if (entity != null)
             {
-                object value = entity.Property.GetValue(entity.Instance);
+                var value = entity.Property.GetValue(entity.Instance);
                 if (value != e.Value && (value?.Equals(e.Value) != true))
                 {
-                    Type t = Nullable.GetUnderlyingType(entity.Property.PropertyType) ?? entity.Property.PropertyType;
-                    object safeValue = (e.Value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
+                    var t = Nullable.GetUnderlyingType(entity.Property.PropertyType) ?? entity.Property.PropertyType;
+                    var safeValue = (e.Value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
                     entity.Property.SetValue(entity.Instance, safeValue);
 
                     // trigger property change
@@ -299,7 +299,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnCommit(EventArgs e)
         {
             this.Commit?.Invoke(this, e);
-            object argument = this.CommandParameter ?? this.Model;
+            var argument = this.CommandParameter ?? this.Model;
             if (this.Command != null && this.Command.CanExecute(argument))
             {
                 this.Command.Execute(argument);
@@ -308,12 +308,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
         {
-            Models.ScaffoldedStructure current = e.NewValue as Models.ScaffoldedStructure;
+            var current = e.NewValue as Models.ScaffoldedStructure;
             this.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? Array.Empty<Models.ScaffoldedEntity>());
             this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? Array.Empty<Models.ScaffoldedStructure>());
 
             // navigating? (aka: deeper than the root?)
-            bool navigating = this.IsNavigating = current != this._navigationRoot;
+            var navigating = this.IsNavigating = current != this._navigationRoot;
 
             // breadcrumb
             if (!navigating)
@@ -322,14 +322,14 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
             else
             {
-                int ndx = this.Breadcrumb.IndexOf(current);
+                var ndx = this.Breadcrumb.IndexOf(current);
                 if (ndx == -1)
                 {
                     this.Breadcrumb.Add(current);
                 }
                 else
                 {
-                    for (int j = this.Breadcrumb.Count - 1; j > ndx; j--)
+                    for (var j = this.Breadcrumb.Count - 1; j > ndx; j--)
                     {
                         this.Breadcrumb.RemoveAt(j);
                     }
@@ -340,14 +340,14 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnModelChanged(DependencyPropertyChangedEventArgs e)
         {
             this.SearchText = default;
-            object model = e.NewValue;
+            var model = e.NewValue;
 
 
             this._model = model?.Scaffold();
 
             // save the current breadcrumb to avoid towards-root navigation.
             // try to stay in the current node.
-            int[] currentBreadcrumb = (this.Breadcrumb?.Select(c => c.Id) ?? Array.Empty<int>()).ToArray();
+            var currentBreadcrumb = (this.Breadcrumb?.Select(c => c.Id) ?? Array.Empty<int>()).ToArray();
 
             // now clear the breadcrumb.
             this.Breadcrumb.Clear();
@@ -396,10 +396,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void OnSearchTextChanged(DependencyPropertyChangedEventArgs e)
         {
-            string searchText = (string)e.NewValue;
+            var searchText = (string)e.NewValue;
 
-            bool wasAlreadySearching = !string.IsNullOrEmpty((string)e.OldValue);
-            bool isStillSearching = !string.IsNullOrEmpty(searchText);
+            var wasAlreadySearching = !string.IsNullOrEmpty((string)e.OldValue);
+            var isStillSearching = !string.IsNullOrEmpty(searchText);
 
             if (isStillSearching)
             {
@@ -408,7 +408,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                     .Join(this._elasticDataTable, entity => entity.Id, tableItem => tableItem.Id, (_, t) => t)
                     .Where(i =>
                     {
-                        if (int.TryParse(searchText, out int id))
+                        if (int.TryParse(searchText, out var id))
                         {
                             return i.Id == id;
                         }

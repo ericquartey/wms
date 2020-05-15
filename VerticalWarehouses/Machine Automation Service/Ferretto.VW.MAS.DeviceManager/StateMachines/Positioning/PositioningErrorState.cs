@@ -27,8 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Constructors
 
-        public PositioningErrorState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PositioningErrorState(IPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;

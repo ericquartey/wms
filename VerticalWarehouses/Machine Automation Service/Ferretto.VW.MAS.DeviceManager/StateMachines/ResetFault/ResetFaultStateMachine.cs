@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
         public override void Start()
         {
             var stateData = new ResetFaultStateData(this, this.machineData);
-            this.ChangeState(new ResetFaultStartState(stateData));
+            this.ChangeState(new ResetFaultStartState(stateData, this.Logger));
         }
 
         public override void Stop(StopRequestReason reason)
