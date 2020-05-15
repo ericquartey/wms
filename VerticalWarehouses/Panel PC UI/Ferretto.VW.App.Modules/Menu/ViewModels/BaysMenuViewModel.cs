@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand bayHeightCommand;
 
         private DelegateCommand carouselCalibrationCommand;
+
+        private DelegateCommand externalBayCalibrationCommand;
 
         private DelegateCommand testShutterCommand;
 
@@ -51,6 +54,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             CarouselCalibration,
 
+            ExternalBayCalibration,
+
             TestShutter,
         }
 
@@ -78,11 +83,23 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
 
+        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();  //to fix
+
         public ICommand CarouselCalibrationCommand =>
                     this.carouselCalibrationCommand
             ??
             (this.carouselCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CarouselCalibration),
+                () => this.CanExecuteCommand() &&
+               //this.MachineModeService.MachineMode == MachineMode.Manual &&
+               (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
+
+        public ICommand ExternalBayCalibrationCommand =>
+                    this.externalBayCalibrationCommand
+            ??
+            (this.externalBayCalibrationCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.ExternalBayCalibration),
                 () => this.CanExecuteCommand() &&
                //this.MachineModeService.MachineMode == MachineMode.Manual &&
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
@@ -101,6 +118,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public bool IsCarouselCalibrationBypassed => this.CarouselCalibration.IsBypassed;
 
         public bool IsCarouselCalibrationCompleted => this.CarouselCalibration.IsCompleted && !this.CarouselCalibration.IsBypassed;
+
+        public bool IsExternalBayCalibrationBypassed => this.ExternalBayCalibration.IsBypassed;
+
+        public bool IsExternalBayCalibrationCompleted => this.ExternalBayCalibration.IsCompleted && !this.ExternalBayCalibration.IsBypassed;
+
+        public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal);
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
@@ -170,6 +193,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
 
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationVisible));
 
             await base.OnAppearedAsync();
         }
@@ -193,6 +217,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.bayHeightCommand?.RaiseCanExecuteChanged();
             this.testShutterCommand?.RaiseCanExecuteChanged();
             this.carouselCalibrationCommand?.RaiseCanExecuteChanged();
+            this.externalBayCalibrationCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -219,6 +244,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.CAROUSELCALIBRATION,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.ExternalBayCalibration:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.EXTERNALBAYCALIBRATION,
                         data: null,
                         trackCurrentView: true);
                     break;
