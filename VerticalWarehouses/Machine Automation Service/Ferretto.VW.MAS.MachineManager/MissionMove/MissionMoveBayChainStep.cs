@@ -97,6 +97,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 this.Mission.Status = MissionStatus.Executing;
                 this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                this.Mission.LoadUnitDestination = destination.Location;
 
                 var shutterInverter = bay.Shutter.Inverter.Index;
                 if (bay.Shutter.Type == ShutterType.ThreeSensors
@@ -164,7 +165,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                                     transaction.Commit();
                                 }
-                                this.Mission.LoadUnitDestination = destination.Location;
 
                                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                                 this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
@@ -264,6 +264,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                if (!this.CheckMissionShowError())
+                {
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                }
                 var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
@@ -312,11 +316,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.OpenShutterPosition = ShutterPosition.Half;
                     }
                     this.Mission.Status = MissionStatus.Executing;
+
+                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
+                    this.Mission.LoadUnitDestination = destination.Location;
                     this.Mission.StepTime = DateTime.UtcNow;
                     this.MissionsDataProvider.Update(this.Mission);
                     this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
                     this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
 
                     if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
