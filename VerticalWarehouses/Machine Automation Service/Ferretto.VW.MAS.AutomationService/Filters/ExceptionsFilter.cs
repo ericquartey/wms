@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.BadRequestTitle,
+                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     });
                 }
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new NotFoundObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.NotFoundTitle,
+                        Title = Resources.General.ResourceManager.GetString("NotFoundTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     });
                 }
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.BadRequestTitle,
+                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     });
                 }
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new UnprocessableEntityObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.UnprocessableEntityTitle,
+                        Title = Resources.General.ResourceManager.GetString("UnprocessableEntityTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     });
                 }
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new ObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.InternalServerErrorTitle,
+                        Title = Resources.General.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     })
                     {
