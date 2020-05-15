@@ -171,24 +171,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
-        public bool WaitingHeartbeatAck
-        {
-            get
-            {
-                lock (this)
-                {
-                    return this.waitingHeartbeatAck;
-                }
-            }
-            set
-            {
-                lock (this)
-                {
-                    this.waitingHeartbeatAck = value;
-                }
-            }
-        }
-
         #endregion
 
         #region Methods

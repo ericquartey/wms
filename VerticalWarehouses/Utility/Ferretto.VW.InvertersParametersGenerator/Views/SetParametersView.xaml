@@ -224,7 +224,7 @@
                       ItemsSource="{Binding ConfigurationFiles}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="300"
+                        <GridViewColumn Width="350"
                                         Header="File">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -277,7 +277,7 @@
             <DataGrid Grid.Row="1"
                   Name="DataGrid"
                   Width="auto"                  
-                  Height="400"
+                  Height="370"
                   AutoGenerateColumns="False"                  
                   BorderThickness="0"
                   CanUserReorderColumns="False"
@@ -439,7 +439,7 @@
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=Value}"
+                                    Binding="{Binding Path=StringValue}"
                                     Header="{x:Static res:Resources.InverterParametersValue}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
