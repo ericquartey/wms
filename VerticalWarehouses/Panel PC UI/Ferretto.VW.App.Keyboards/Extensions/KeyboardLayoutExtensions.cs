@@ -61,12 +61,12 @@ namespace Ferretto.VW.App.Keyboards
                 Thickness? keyMargin = set.KeyMargin ?? keyboard.KeyMargin,
                     keyPadding = set.KeyPadding ?? keyboard.KeyPadding;
 
-                double? rowKeyMinWidth = set.KeyMinWidth ?? keyboard.KeyMinWidth;
+                var rowKeyMinWidth = set.KeyMinWidth ?? keyboard.KeyMinWidth;
 
-                string rowStyleResource = set.KeyStyleResource ?? keyboard.KeyStyleResource;
+                var rowStyleResource = set.KeyStyleResource ?? keyboard.KeyStyleResource;
 
-                KeyboardCell[] cells = set.Cells?.ToArray() ?? Array.Empty<KeyboardCell>();
-                int cellCount = cells.Length;
+                var cells = set.Cells?.ToArray() ?? Array.Empty<KeyboardCell>();
+                var cellCount = cells.Length;
 
                 var setGrid = new Grid
                 {
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Keyboards
 
                 grid.Children.Add(setGrid);
 
-                for (int j = 0; j < cellCount; j++)
+                for (var j = 0; j < cellCount; j++)
                 {
                     var cell = cells[j];
                     setGrid.ColumnDefinitions.Add(new ColumnDefinition
@@ -95,14 +95,14 @@ namespace Ferretto.VW.App.Keyboards
                     Thickness padding = cell.KeyPadding ?? keyPadding ?? default,
                         margin = cell.KeyMargin ?? keyMargin ?? default;
 
-                    string styleResource = cell.KeyStyleResource ?? rowStyleResource;
+                    var styleResource = cell.KeyStyleResource ?? rowStyleResource;
 
-                    double minWidth = cell.KeyMinWidth ?? rowKeyMinWidth ?? default;
-                    double minHeight = cell.KeyMinHeight ?? default;
+                    var minWidth = cell.KeyMinWidth ?? rowKeyMinWidth ?? default;
+                    var minHeight = cell.KeyMinHeight ?? default;
 
                     if (key != null)
                     {
-                        KeyboardButton btn = new KeyboardButton
+                        var btn = new KeyboardButton
                         {
                             Padding = padding,
                             VerticalAlignment = VerticalAlignment.Stretch,
@@ -120,7 +120,7 @@ namespace Ferretto.VW.App.Keyboards
                     }
                     else
                     {
-                        Border brd = new Border
+                        var brd = new Border
                         {
                             Padding = padding,
                             Margin = margin,

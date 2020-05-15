@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     break;
                                 }
                             }
-                            int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                            var loadUnitId = this.machineData.MessageData.LoadingUnitId;
                             if (!loadUnitId.HasValue)
                             {
                                 var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();

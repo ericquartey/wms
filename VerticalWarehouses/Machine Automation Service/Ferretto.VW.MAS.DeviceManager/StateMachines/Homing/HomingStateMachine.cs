@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
-                            double distance = Math.Abs(elevatorProvider.VerticalPosition - this.machineData.VerticalStartingPosition);
+                            var distance = Math.Abs(elevatorProvider.VerticalPosition - this.machineData.VerticalStartingPosition);
                             if (distance > 50)
                             {
                                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();

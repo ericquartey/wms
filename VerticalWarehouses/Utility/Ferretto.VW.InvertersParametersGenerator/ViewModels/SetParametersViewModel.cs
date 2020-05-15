@@ -176,7 +176,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 var start = worksheet.Dimension.Start;
                 var end = worksheet.Dimension.End;
 
-                for (int row = start.Row + 3; row <= end.Row; row++)
+                for (var row = start.Row + 3; row <= end.Row; row++)
                 {
                     var code = worksheet.Cells[row, 1].Text;
                     var description = worksheet.Cells[row, 3].Text;

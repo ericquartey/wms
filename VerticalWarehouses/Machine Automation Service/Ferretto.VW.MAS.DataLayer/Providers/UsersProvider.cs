@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var window = new VerificationWindow(previous: 1, future: 1);
 
                 // Execute validation
-                bool verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
+                var verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
                 return verification;
             }
         }

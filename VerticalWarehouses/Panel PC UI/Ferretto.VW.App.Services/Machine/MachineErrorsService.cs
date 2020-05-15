@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Services
             this.sensorsToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                     .Subscribe(
-                        async (m) => this.OnSensorsChanged(m),
+                        this.OnSensorsChanged,
                         ThreadOption.UIThread,
                         false,
                         m => m.Data != null);
@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Services
 
         private string GetViewDescription(int activeErrorCode)
         {
-            string viewDesc = Utils.Modules.Errors.ERRORDETAILSVIEW;
+            var viewDesc = Utils.Modules.Errors.ERRORDETAILSVIEW;
 
             if ((activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnElevator) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitMissingOnBay))
@@ -204,7 +204,7 @@ namespace Ferretto.VW.App.Services
             }
             else
             {
-                string viewRequest = this.GetViewDescription(this.ActiveError.Code);
+                var viewRequest = this.GetViewDescription(this.ActiveError.Code);
 
                 this.logger.Debug("Received alarm code: " + this.ActiveError.Code.ToString());
 

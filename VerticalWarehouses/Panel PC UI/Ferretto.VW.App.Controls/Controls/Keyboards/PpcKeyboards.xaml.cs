@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
             if (value is string)
             {
-                string v = Convert.ToString(value);
+                var v = Convert.ToString(value);
                 if (string.IsNullOrWhiteSpace(v))
                 {
                     return false;
@@ -105,7 +105,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
                 }
             }
 
-            IConvertible convertible = value as IConvertible;
+            var convertible = value as IConvertible;
             if (convertible == null)
             {
                 return false;

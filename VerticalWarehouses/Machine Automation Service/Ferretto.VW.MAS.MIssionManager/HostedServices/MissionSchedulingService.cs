@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         moveLoadingUnitProvider.EjectFromCell(MissionType.FirstTest, this.loadUnitSource, loadUnitId.Value, machineProvider.BayTestNumber, MessageActor.MissionManager);
                         returnValue = true;
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         // no more testing is possible. Exit from test mode
                         //this.logger.LogError(e, e.Message);

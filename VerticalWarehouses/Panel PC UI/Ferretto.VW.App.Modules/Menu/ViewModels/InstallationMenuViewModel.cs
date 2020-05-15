@@ -443,8 +443,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 var activeOtherBaysNumber = this.MachineService.Bays.Where(b => b.Number != this.MachineService.Bay.Number && b.Number != BayNumber.ElevatorBay).Select(b => b.Number);
 
-                bool otherBaysSetupCompleted = true;
-                foreach (BayNumber bayNumber in activeOtherBaysNumber)
+                var otherBaysSetupCompleted = true;
+                foreach (var bayNumber in activeOtherBaysNumber)
                 {
                     switch (bayNumber)
                     {
@@ -563,7 +563,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
                         Bypassed = false,
-                        Command = new DelegateCommand(async () =>
+                        Command = new DelegateCommand(() =>
                         {
                         }),
                     });

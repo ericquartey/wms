@@ -187,7 +187,7 @@ namespace Ferretto.VW.App
         {
             try
             {
-                string language = System.Configuration.ConfigurationManager.AppSettings["Language"];
+                var language = System.Configuration.ConfigurationManager.AppSettings["Language"];
 
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(language);
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(language);

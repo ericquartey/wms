@@ -66,14 +66,14 @@ namespace Ferretto.VW.App
 
         public static string Filename(this VertimagConfiguration source, DriveInfo drive, bool unique)
         {
-            string serial = source?.Machine?.SerialNumber;
+            var serial = source?.Machine?.SerialNumber;
             if (string.IsNullOrEmpty(nameof(serial)))
             {
                 throw new ArgumentException("Cannot retrieve a serial code from the configuration.", nameof(source));
             }
-            string name = Regex.Replace(serial, @"[^\w\.-]", string.Empty);
+            var name = Regex.Replace(serial, @"[^\w\.-]", string.Empty);
             string tick = default, filename = default;
-            int incremental = 0;
+            var incremental = 0;
 
             do
             {

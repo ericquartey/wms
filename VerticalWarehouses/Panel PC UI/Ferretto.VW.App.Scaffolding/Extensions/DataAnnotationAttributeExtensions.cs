@@ -15,8 +15,8 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 
         private static string Localize<T>(this T attribute) where T : Attribute, ILocalizableString
         {
-            Type resx = attribute.ResourceType;
-            string resxName = attribute.ResourceName;
+            var resx = attribute.ResourceType;
+            var resxName = attribute.ResourceName;
             if (resx != null && !string.IsNullOrEmpty(resxName))
             {
                 var mngr = new System.Resources.ResourceManager(resx);

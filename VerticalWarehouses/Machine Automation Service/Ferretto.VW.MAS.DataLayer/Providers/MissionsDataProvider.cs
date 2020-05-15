@@ -296,7 +296,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> GetAllActiveUnitGoBay()
         {
-            List<int> UnitGoBay = new List<int>();
+            var UnitGoBay = new List<int>();
 
             lock (this.dataContext)
             {
@@ -320,7 +320,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> GetAllActiveUnitGoCell()
         {
-            List<int> UnitGoBay = new List<int>();
+            var UnitGoBay = new List<int>();
 
             lock (this.dataContext)
             {

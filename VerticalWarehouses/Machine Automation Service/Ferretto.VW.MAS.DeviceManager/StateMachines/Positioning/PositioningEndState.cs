@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     this.Logger.LogError($"Measure Profile error {profileHeight}!");
                                     break;
                                 }
-                                int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                                var loadUnitId = this.machineData.MessageData.LoadingUnitId;
                                 if (!loadUnitId.HasValue)
                                 {
                                     var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
 
-                bool isChanged = false;
+                var isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
                     if (this.machineData.MessageData.AxisMovement is Axis.BayChain)

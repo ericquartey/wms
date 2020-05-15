@@ -814,7 +814,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.machineData.ExecutedSteps = this.performedCycles;
 
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = 0.0;
+                        var distance = 0.0;
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             distance = Math.Abs(this.elevatorProvider.HorizontalPosition - this.horizontalStartingPosition);
@@ -945,7 +945,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                         }
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.elevatorProvider.VerticalPosition - this.verticalStartingPosition);
+                        var distance = Math.Abs(this.elevatorProvider.VerticalPosition - this.verticalStartingPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateVerticalAxisStatistics(distance);
@@ -978,7 +978,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                         this.machineData.ExecutedSteps = this.performedCycles;
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = 0.0;
+                        var distance = 0.0;
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             distance = Math.Abs(this.elevatorProvider.HorizontalPosition - this.horizontalStartingPosition);
@@ -1017,7 +1017,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BayChain:
                     {
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var distance = Math.Abs(this.machineData.MessageData.TargetPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
@@ -1045,7 +1045,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BayTest:
                     {
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var distance = Math.Abs(this.machineData.MessageData.TargetPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);

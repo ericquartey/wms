@@ -654,7 +654,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 case MovementMode.ExtBayChain:
                     {
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var distance = Math.Abs(this.machineData.MessageData.TargetPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);

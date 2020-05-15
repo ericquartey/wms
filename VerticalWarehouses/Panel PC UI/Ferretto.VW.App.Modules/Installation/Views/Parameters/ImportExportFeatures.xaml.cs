@@ -208,8 +208,8 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
         private void CoercePropertyValue(DependencyProperty hasProperty, DependencyProperty includeProperty)
         {
-            object has = this.GetValue(hasProperty);
-            object include = this.GetValue(includeProperty);
+            var has = this.GetValue(hasProperty);
+            var include = this.GetValue(includeProperty);
             if (!true.Equals(has))
             {
                 this.SetValue(includeProperty, false);
@@ -224,7 +224,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             if (configuration != null && (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits || this.IncludeStatistics))
             {
                 // clone to avoid unwanted references' collisions.
-                VertimagConfiguration output = this.CloneInput(configuration);
+                var output = this.CloneInput(configuration);
                 outputObject = output;
 
                 if (!this.IncludeLoadingUnits)
@@ -271,7 +271,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
                         var jobject = Newtonsoft.Json.Linq.JObject.FromObject(output);
                         var machineProp = typeof(VertimagConfiguration).GetProperty(nameof(VertimagConfiguration.Machine));
-                        string machinePropJsonName = machineProp.JsonPropertyName();
+                        var machinePropJsonName = machineProp.JsonPropertyName();
 
                         // preserve value-type stuff
                         // by removing unwanted properties...
@@ -279,7 +279,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                         {
                             if (prop.PropertyType.IsValueType)
                             {
-                                string name = prop.JsonPropertyName();
+                                var name = prop.JsonPropertyName();
                                 var token = (Newtonsoft.Json.Linq.JObject)jobject[machinePropJsonName];
                                 token.Remove(name);
                             }
@@ -296,11 +296,11 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
         private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
         {
-            bool cellPanels = configuration?.Machine?.Panels?.Any() == true;
-            bool loadingUnits = configuration?.LoadingUnits?.Any() == true;
-            bool setup = configuration?.SetupProcedures != null;
-            bool parameters = configuration?.HasParameters() == true;
-            bool statistics = configuration?.MachineStatistics != null;
+            var cellPanels = configuration?.Machine?.Panels?.Any() == true;
+            var loadingUnits = configuration?.LoadingUnits?.Any() == true;
+            var setup = configuration?.SetupProcedures != null;
+            var parameters = configuration?.HasParameters() == true;
+            var statistics = configuration?.MachineStatistics != null;
 
             this.SetValue(IncludeCellPanelsProperty, cellPanels);
             this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);

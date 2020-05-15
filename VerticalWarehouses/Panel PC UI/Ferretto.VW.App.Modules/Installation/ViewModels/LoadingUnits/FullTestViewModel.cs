@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -22,8 +19,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     internal sealed class FullTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
-
-        private readonly Services.IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -75,7 +70,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public FullTestViewModel(IMachineFullTestWebService machineFullTestWebService,
+        public FullTestViewModel(
+            IMachineFullTestWebService machineFullTestWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Installer)
@@ -163,14 +159,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.resetSessionCommand
             ??
             (this.resetSessionCommand = new DelegateCommand(
-                async () => await this.ResetSessionAsync(),
+                this.ResetSession,
                 this.CanResetSession));
 
         public ICommand ResetTotalCommand =>
             this.resetTotalCommand
             ??
             (this.resetTotalCommand = new DelegateCommand(
-                async () => await this.ResetTotalAsync(),
+                this.ResetTotal,
                 this.CanResetTotal));
 
         public LoadingUnit SelectedLU
@@ -228,17 +224,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Indexers
 
-        public string this[string columnName]
-        {
-            get
-            {
-                switch (columnName)
-                {
-                }
-
-                return null;
-            }
-        }
+        public string this[string columnName] => null;
 
         #endregion
 
@@ -352,10 +338,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 throw;
             }
-            finally
-            {
-                //
-            }
         }
 
         private bool CanAddAllUnit()
@@ -430,8 +412,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (message.Status == MessageStatus.OperationEnd &&
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
-                //this.isCompleted = true;
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                 this.IsExecutingProcedure = false;
             }
         }
@@ -485,19 +466,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 throw;
             }
-            finally
-            {
-                //
-            }
         }
 
-        private async Task ResetSessionAsync()
+        private void ResetSession()
         {
             this.PerformedCyclesThisSession = 0;
             this.CyclesPercent = 0;
         }
 
-        private async Task ResetTotalAsync()
+        private void ResetTotal()
         {
             this.TotalCycles = 0;
         }
@@ -533,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                this.MachineService.StopMovingByAllAsync();
+                await this.MachineService.StopMovingByAllAsync();
 
                 this.IsExecutingProcedure = false;
             }

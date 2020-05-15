@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels.Bays
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            DepositAndPickUpStep value = (DepositAndPickUpStep)(item ?? DepositAndPickUpStep.CallUnit);
+            var value = (DepositAndPickUpStep)(item ?? DepositAndPickUpStep.CallUnit);
             switch (value)
             {
                 case DepositAndPickUpStep.EndTest:

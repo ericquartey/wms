@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.destinationCellId;
             set
             {
-                int? old = this.destinationCellId;
+                var old = this.destinationCellId;
                 if (this.SetProperty(ref this.destinationCellId, value))
                 {
                     if (this.axisBounds != null)
@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         }
                         else
                         {
-                            bool increment = !old.HasValue || old < this.destinationCellId;
+                            var increment = !old.HasValue || old < this.destinationCellId;
                             if (increment)
                             {
                                 var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&

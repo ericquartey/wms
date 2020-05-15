@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.BlockDefinition:
-                        object[] blockValues = new object[]
+                        var blockValues = new object[]
                         {
                             this.data.TargetPosition,
                             this.data.TargetSpeed[0],

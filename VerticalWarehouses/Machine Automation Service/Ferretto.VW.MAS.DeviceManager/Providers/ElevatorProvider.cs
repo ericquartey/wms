@@ -974,7 +974,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
         {
-            int cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
+            var cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
             var policy = this.CanMoveToCell(cellId);
             if (!policy.IsAllowed)
             {

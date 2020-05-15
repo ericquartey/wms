@@ -88,18 +88,18 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     throw new ArgumentException($"Type mismatch: '{ instance.GetType() }' does not match '{ type }'.");
                 }
                 var modelType = type.GetCustomAttribute<Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataTypeAttribute>()?.MetadataClassType ?? type;
-                Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
+                var dict = new Dictionary<string, List<Type>>();
 
                 foreach (var prop in GetMemberInfos(modelType).Where(x => !branch.ExclusionList?.Contains(x.Name) ?? true))
                 {
-                    PropertyInfo actualProp = type.GetProperty(prop.Name);
+                    var actualProp = type.GetProperty(prop.Name);
                     if (actualProp is null)
                     {
                         // configuration error
                         continue;
                     }
-                    Type propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
-                    ScaffoldedStructureInternal target = branch;
+                    var propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
+                    var target = branch;
 
                     // skip non-scaffoldable
                     if (prop.TryGetCustomAttribute<ScaffoldColumnAttribute>(out var scaffold) && !scaffold.Scaffold)
@@ -116,24 +116,24 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     }
 
                     // categorization?
-                    bool hasCategory = prop.TryGetCustomAttribute<CategoryAttribute>(out var categoryAttr);
+                    var hasCategory = prop.TryGetCustomAttribute<CategoryAttribute>(out var categoryAttr);
                     var categoryParameters = prop.GetCustomAttributes<CategoryParameterAttribute>();
-                    bool hasCategoryParameters = categoryParameters.Any();
-                    bool isSimpleType = IsSimpleType(propertyType);
+                    var hasCategoryParameters = categoryParameters.Any();
+                    var isSimpleType = IsSimpleType(propertyType);
 
-                    int id = 0;
+                    var id = 0;
                     if (prop.TryGetCustomAttribute<IdAttribute>(out var idAttribute))
                     {
                         id = idAttribute.Id;
                     }
 
-                    int offset = 0;
+                    var offset = 0;
                     if (prop.TryGetCustomAttribute<OffsetAttribute>(out var offsetAttribute))
                     {
                         offset = offsetAttribute.Offset;
                     }
 
-                    List<string> exclusionList = new List<string>();
+                    var exclusionList = new List<string>();
                     if (prop.TryGetCustomAttribute<HidePropertiesAttribute>(out var hidePropertiesAttribute))
                     {
                         exclusionList = hidePropertiesAttribute.PropertyList;
@@ -154,7 +154,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         {
                             throw new ScaffoldingException($"Cannot find at least one {nameof(CategoryParameterAttribute)} on the enumerable property {prop.Name} ({modelType}).");
                         }
-                        Type elementType = propertyType.GetElementType() ?? propertyType.GetGenericArguments().Single();
+                        var elementType = propertyType.GetElementType() ?? propertyType.GetGenericArguments().Single();
 
                         if (instance == null)
                         {
@@ -164,7 +164,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                         if (actualProp.GetValue(instance) is System.Collections.IEnumerable collection)
                         {
-                            string format = categoryAttr.Category();
+                            var format = categoryAttr.Category();
                             foreach (var item in collection)
                             {
                                 if (item == null)
@@ -174,7 +174,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 }
 
                                 var category = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
-                                string categoryDescription = GetCategoryDescription(prop);
+                                var categoryDescription = GetCategoryDescription(prop);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == category.Name);
                                 if (newBranch != null)
                                 {
@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 }
 
                                 // find to index
-                                int index = 0;
+                                var index = 0;
                                 foreach (var i in collection)
                                 {
                                     if (item.Equals(i))
@@ -217,7 +217,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         if (hasCategory)
                         {
                             var category = GetCategoryName(prop, instance, this._culture);
-                            string categoryDescription = GetCategoryDescription(prop);
+                            var categoryDescription = GetCategoryDescription(prop);
                             var tget = target.Children.FirstOrDefault(c => c.Category == category.Name);
                             if (filterAttributes.Length > 0)
                             {
@@ -242,7 +242,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                         if (isSimpleType)
                         {
-                            int newId = target.Id + id;
+                            var newId = target.Id + id;
                             if (unfoldingBranch)
                             {
                                 if (porpParent.TryGetCustomAttribute<IdAttribute>(out var parent))
@@ -263,8 +263,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         }
                         else if (instance != null)
                         {
-                            object propertyValue = actualProp.GetValue(instance);
-                            bool unfold = prop.GetCustomAttribute<UnfoldAttribute>() != null || unfoldingBranch;
+                            var propertyValue = actualProp.GetValue(instance);
+                            var unfold = prop.GetCustomAttribute<UnfoldAttribute>() != null || unfoldingBranch;
                             // unfold complex type?
                             this.ScaffoldTypeInternal(propertyType, propertyValue, target, root, prop, unfold);
                         }
@@ -288,7 +288,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
             {
                 if (member.TryGetCustomAttribute<CategoryAttribute>(out var category))
                 {
-                    object[] categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
+                    var categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
                     {
                         if (instance == null)
                         {
@@ -298,7 +298,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
                         if (subPropInfo != null)
                         {
-                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
+                            var subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
                             if (subValue != null)
                             {
                                 return GetUnderlyingType(subPropInfo.GetValue(subValue), culture);
@@ -326,14 +326,14 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 {
                     throw new ArgumentNullException(nameof(propertyReferences));
                 }
-                object[] categoryProperties = propertyReferences.Select(p =>
+                var categoryProperties = propertyReferences.Select(p =>
                 {
                     if (item == null)
                     {
                         return null;
                     }
                     var subPropInfo = itemtype.GetProperty(p.PropertyReference);
-                    object itemValue = subPropInfo.GetValue(item);
+                    var itemValue = subPropInfo.GetValue(item);
                     if (p.ValueStringifierType != null)
                     {
                         try
@@ -379,7 +379,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
             {
                 if (obj is Enum @enum)
                 {
-                    Type baseType = Enum.GetUnderlyingType(@enum.GetType());
+                    var baseType = Enum.GetUnderlyingType(@enum.GetType());
                     return System.Convert.ChangeType(obj, baseType, culture);
                 }
                 return obj;

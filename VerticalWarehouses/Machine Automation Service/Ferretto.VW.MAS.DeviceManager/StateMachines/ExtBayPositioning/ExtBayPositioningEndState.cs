@@ -239,7 +239,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
                 var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
 
-                bool isChanged = false;
+                var isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
                     if (this.machineData.MessageData.AxisMovement is Axis.BayChain)

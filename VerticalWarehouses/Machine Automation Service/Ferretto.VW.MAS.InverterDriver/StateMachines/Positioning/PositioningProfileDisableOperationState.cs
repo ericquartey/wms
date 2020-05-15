@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 if (!this.Inverter.PositionStatusWord.SetPointAcknowledge)
                 {
                     // change target position to go back to starting position
-                    int currentPosition = 0;
+                    var currentPosition = 0;
                     if (this.Inverter is AngInverterStatus angInverter)
                     {
                         currentPosition = angInverter.CurrentPositionAxisHorizontal;

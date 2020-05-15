@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                 throw new ArgumentNullException(nameof(messageEndPattern));
             }
 
-            int startIndex = 0;
+            var startIndex = 0;
 
-            bool useStartPattern = false;
+            var useStartPattern = false;
             if (messageStartPattern != null)
             {
                 useStartPattern = messageStartPattern.Any();
@@ -93,17 +93,17 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
                     if (!useStartPattern || (startIndex != -1 && receiveBuffer.Length >= (startIndex + messageStartPattern.Length)))
                     {
-                        int endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
+                        var endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
                         if (endIndex != -1)
                         {
                             // Cut message from raw buffer and enqueue it
-                            byte[] message = new byte[endIndex - startIndex - messageStartPattern.Length];
+                            var message = new byte[endIndex - startIndex - messageStartPattern.Length];
                             Array.Copy(receiveBuffer, startIndex + messageStartPattern.Length, message, 0, message.Length);
                             messages.Add(Encoding.ASCII.GetString(message));
 
                             // Remove message from raw buffer
-                            int count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
-                            byte[] newarray = new byte[count];
+                            var count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
+                            var newarray = new byte[count];
                             Buffer.BlockCopy(receiveBuffer, endIndex + messageEndPattern.Length, newarray, 0, count);
                             receiveBuffer = newarray;
                             startIndex = 0;

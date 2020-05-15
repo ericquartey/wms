@@ -46,9 +46,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
             // do nothing
+            return Task.CompletedTask;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
         public override void OnMisionOperationRetrieved()
@@ -60,15 +70,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
             this.fullOperationCommand.RaiseCanExecuteChanged();
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
-
-            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
         protected override void ShowOperationDetails()

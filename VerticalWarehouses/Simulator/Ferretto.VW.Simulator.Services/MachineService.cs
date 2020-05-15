@@ -413,7 +413,7 @@ namespace Ferretto.VW.Simulator.Services
                 foreach (var bay in bays)
                 {
                     // check if shutter is closed
-                    bool isShutterClosed = false;
+                    var isShutterClosed = false;
                     if (bay.Shutter != null)
                     {
                         switch ((int)bay.Shutter.Inverter.Index)
@@ -435,8 +435,8 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         continue;
                     }
-                    bool isCarousel = bay.Carousel != null;
-                    bool isExternal = bay.IsExternal;
+                    var isCarousel = bay.Carousel != null;
+                    var isExternal = bay.IsExternal;
 
                     // Retrieve bay position (upper/lower position)
                     var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
@@ -748,7 +748,7 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.ProfileInput:
                     // simulate measure profile height
-                    this.GetProfileRange(inverter, out int minProfileHeight, out int maxProfileHeight);
+                    this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
                     result = client.Client.Send(profileMessage);
                     break;

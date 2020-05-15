@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Scaffolding
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 FileName = "layout.json",
             };

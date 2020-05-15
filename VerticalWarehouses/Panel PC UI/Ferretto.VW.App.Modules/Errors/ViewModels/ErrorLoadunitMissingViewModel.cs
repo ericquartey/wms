@@ -624,8 +624,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             this.SubscribeToEvents();
 
-            int row = 0;
-
             this.UpdateStatusButtonFooter();
 
             await base.OnAppearedAsync();
@@ -642,7 +640,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     await this.MarkAsResolvedAsync();
                 }
 
-                int stepValue = 2;
+                var stepValue = 2;
 
                 this.ElevatorStepVisible = false;
                 this.Bay1StepVisible = false;
@@ -754,189 +752,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             await base.OnMachineStatusChangedAsync(e);
-            this.RaiseCanExecuteChanged();
-        }
-
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            if (this.CurrentStep is ErrorLoadunitMissingStepStart)
-            {
-                if (e.Next)
-                {
-                    if (this.SensorsService.IsLoadingUnitOnElevator)
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
-                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
-                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
-                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                    }
-                }
-            }
-            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnElevator)
-            {
-                if (e.Next)
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
-                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
-                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
-                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                    }
-                }
-                else
-                {
-                    this.CurrentStep = default(ErrorLoadunitMissingStepStart);
-                }
-            }
-            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay1)
-            {
-                if (e.Next)
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
-                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
-                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                    }
-                }
-                else
-                {
-                    if (this.SensorsService.IsLoadingUnitOnElevator)
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
-                    }
-                }
-            }
-            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay2)
-            {
-                if (e.Next)
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
-                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                    }
-                }
-                else
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
-                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
-                    }
-                    else if (this.SensorsService.IsLoadingUnitOnElevator)
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
-                    }
-                }
-            }
-            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay3)
-            {
-                if (e.Next)
-                {
-                    this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                }
-                else
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
-                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
-                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
-                    }
-                    else if (this.SensorsService.IsLoadingUnitOnElevator)
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
-                    }
-                }
-            }
-            else if (this.CurrentStep is ErrorLoadunitMissingStepAutomaticMode)
-            {
-                if (!e.Next)
-                {
-                    if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
-                        (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
-                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
-                    }
-                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
-                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
-                    }
-                    else if (this.SensorsService.IsLoadingUnitOnElevator)
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
-                    }
-                    else
-                    {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
-                    }
-                }
-            }
-
             this.RaiseCanExecuteChanged();
         }
 
@@ -1146,6 +961,189 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.ErrorTime = string.Format(Localized.Get("General.DaysAgo"), elapsedTime.TotalDays);
             }
+        }
+
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            if (this.CurrentStep is ErrorLoadunitMissingStepStart)
+            {
+                if (e.Next)
+                {
+                    if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    }
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnElevator)
+            {
+                if (e.Next)
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    }
+                }
+                else
+                {
+                    this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay1)
+            {
+                if (e.Next)
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    }
+                }
+                else
+                {
+                    if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                    }
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay2)
+            {
+                if (e.Next)
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                             (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    }
+                }
+                else
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                    }
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay3)
+            {
+                if (e.Next)
+                {
+                    this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                }
+                else
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                    }
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepAutomaticMode)
+            {
+                if (!e.Next)
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                        (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                    }
+                }
+            }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task StopAsync()

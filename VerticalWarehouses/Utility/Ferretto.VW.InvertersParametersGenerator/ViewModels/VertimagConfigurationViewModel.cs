@@ -137,7 +137,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public void OpenVertimagConfigurationFile()
         {
-            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione", this.vertimagConfigurationPath);
+            var resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione", this.vertimagConfigurationPath);
 
             if ((resultFiles?.Length == 1) == false)
             {
