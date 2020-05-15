@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 {
     internal class ResetSecurityStartState : StateBase
@@ -22,8 +21,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityStartState(IResetSecurityStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ResetSecurityStartState(IResetSecurityStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IResetSecurityMachineData;
@@ -47,19 +46,19 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
             else if (message.Type == FieldMessageType.IoDriverException)
             {
                 this.stateData.FieldMessage = message;
-                this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.stateData, this.Logger));
             }
         }
 
@@ -104,7 +103,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData, this.Logger));
         }
 
         #endregion

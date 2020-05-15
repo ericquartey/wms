@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingErrorState : StateBase
@@ -22,8 +21,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #region Constructors
 
-        public HomingErrorState(IHomingStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public HomingErrorState(IHomingStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;

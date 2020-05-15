@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #region Constructors
 
-        public HomingSwitchAxisDoneState(IHomingStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public HomingSwitchAxisDoneState(IHomingStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
@@ -62,13 +62,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.stateData, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.Logger.LogDebug($"{this.GetType().Name} Stop: {reason}");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
         }
 
         #endregion

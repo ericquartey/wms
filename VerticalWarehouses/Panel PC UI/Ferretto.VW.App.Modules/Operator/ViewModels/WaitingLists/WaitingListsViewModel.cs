@@ -112,7 +112,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (e is null)
             {
-                throw new ArgumentNullException(nameof(e));
+                return;
             }
 
             if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
@@ -120,44 +120,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 switch (userAction)
                 {
                     case UserAction.FilterLists:
-                        {
-                            var listId = e.GetListId();
-                            if (listId.HasValue)
-                            {
-                                try
-                                {
-                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                                    this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
-                                    this.ShowDetails();
-                                }
-                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                                {
-                                    this.ShowNotification(ex);
-                                }
-                            }
 
-                            break;
-                        }
+                        await this.FilterListsByBarcodeAsync(e);
+                        break;
 
                     case UserAction.ExecuteList:
-                        {
-                            var listId = e.GetListId();
-                            if (listId.HasValue)
-                            {
-                                try
-                                {
-                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                                    this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
-                                    await this.ExecuteListAsync();
-                                }
-                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                                {
-                                    this.ShowNotification(ex);
-                                }
-                            }
 
-                            break;
-                        }
+                        await this.ExecuteListByBarcodeAsync(e);
+                        break;
                 }
             }
         }
@@ -222,6 +192,50 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanShowDetailCommand()
         {
             return this.SelectedList != null;
+        }
+
+        private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
+        {
+            var listId = e.GetListId();
+            if (!listId.HasValue)
+            {
+                return;
+            }
+
+            try
+            {
+                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+                this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
+                await this.ExecuteListAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task FilterListsByBarcodeAsync(UserActionEventArgs e)
+        {
+            var listId = e.GetListId();
+            if (!listId.HasValue)
+            {
+                this.ShowNotification(
+                   string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
+                   Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            try
+            {
+                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+                this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
+                this.ShowDetails();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private async Task LoadListsAsync()

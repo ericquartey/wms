@@ -129,7 +129,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenFileAsync()
         {
-            string[] resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "File di configuirazione");
+            var resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "File di configuirazione");
 
             if ((resultFiles?.Length == 1) == false)
             {

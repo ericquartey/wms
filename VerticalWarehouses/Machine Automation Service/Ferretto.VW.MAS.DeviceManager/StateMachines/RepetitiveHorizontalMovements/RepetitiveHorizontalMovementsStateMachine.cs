@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
                 if (this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    this.ChangeState(new RepetitiveHorizontalMovementsStartState(stateData));
+                    this.ChangeState(new RepetitiveHorizontalMovementsStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                     this.PublishNotificationMessage(notificationMessage);
 
                     // Change state
-                    this.ChangeState(new RepetitiveHorizontalMovementsErrorState(stateData));
+                    this.ChangeState(new RepetitiveHorizontalMovementsErrorState(stateData, this.Logger));
                 }
             }
         }

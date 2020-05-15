@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         protected override void PrepareItem(ListViewItem item)
         {
             // double availWidth = item.ActualWidth;
-            foreach (GridViewColumn column in this.Columns)
+            foreach (var column in this.Columns)
             {
                 // Setting NaN for the column width automatically determines the required
                 // width enough to hold the content completely.

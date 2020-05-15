@@ -79,7 +79,7 @@ namespace Ferretto.VW.Installer.Core
             var col = (PSDataCollection<PSObject>)snd;
             var rsl = col.ReadAll();
 
-            foreach (PSObject r in rsl)
+            foreach (var r in rsl)
             {
                 this.LogInformation(r.ToString());
             }

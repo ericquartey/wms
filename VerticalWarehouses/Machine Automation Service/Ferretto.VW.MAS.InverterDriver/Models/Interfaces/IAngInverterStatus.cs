@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         [Column(Order = (int)InverterSensors.ANG_ZeroElevatorSensor)]
         bool ANG_ZeroElevatorSensor { get; }
 
-        bool WaitingHeartbeatAck { get; set; }
-
         #endregion
 
         //bool ANG_BarrierCalibration { get; }

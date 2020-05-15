@@ -44,6 +44,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Vertimag.resx</DependentUpon>
     </Compile>
+    <Compile Update="Metadata\Resources\Vertimag.IT.Designer.cs">
+      <DependentUpon>Vertimag.It.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +59,10 @@
     <EmbeddedResource Update="Metadata\Resources\Vertimag.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Vertimag.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Metadata\Resources\Vertimag.It.resx">
+      <LastGenOutput>Vertimag.IT.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

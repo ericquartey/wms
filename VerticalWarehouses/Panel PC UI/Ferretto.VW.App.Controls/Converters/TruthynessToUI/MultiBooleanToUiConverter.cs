@@ -10,13 +10,13 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            string logicalOperaror = System.Convert.ToString(parameter, culture) ?? "And";
-            bool isLogicOr = string.Equals(logicalOperaror, "Or", StringComparison.OrdinalIgnoreCase);
+            var logicalOperaror = System.Convert.ToString(parameter, culture) ?? "And";
+            var isLogicOr = string.Equals(logicalOperaror, "Or", StringComparison.OrdinalIgnoreCase);
 
             // choose the value that better fits the least-probable result:
             // 'Or' means: 'at least 1 true' (start with false and check for a true that breaks the loop)
             // 'And' means: 'Not even 1 false' (start with true and check for a false that breaks the loop)
-            bool finalValue = isLogicOr ? false : true;
+            var finalValue = isLogicOr ? false : true;
             if (values != null)
             {
                 foreach (var value in values)

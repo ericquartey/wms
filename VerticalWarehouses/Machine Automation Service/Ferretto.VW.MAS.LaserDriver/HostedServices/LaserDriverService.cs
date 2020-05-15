@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                 notification.Destination == FieldMessageActor.Any;
         }
 
-        protected override async Task OnCommandReceivedAsync(FieldCommandMessage command, IServiceProvider serviceProvider)
+        protected override Task OnCommandReceivedAsync(FieldCommandMessage command, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace($"1:Command received: {command.Type}, destination: {command.Destination}, source: {command.Source}");
 
@@ -67,13 +67,13 @@ namespace Ferretto.VW.MAS.LaserDriver
 
             if (this.lasers is null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             if (!this.lasers.ContainsKey(laserKey))
             {
                 this.Logger.LogError($"Laser Driver received a command for unknown device: {laserKey}");
-                return;
+                return Task.CompletedTask;
             }
 
             try
@@ -99,6 +99,8 @@ namespace Ferretto.VW.MAS.LaserDriver
             {
                 this.Logger.LogError(ex, "Received invalid command");
             }
+
+            return Task.CompletedTask;
         }
 
         protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage message, IServiceProvider serviceProvider)

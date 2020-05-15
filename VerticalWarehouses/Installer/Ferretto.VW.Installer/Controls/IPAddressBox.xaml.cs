@@ -48,7 +48,7 @@ namespace Ferretto.VW.Installer.Controls
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            TextBox box = sender as TextBox;
+            var box = sender as TextBox;
             int start = box.CaretIndex,
                 end = start;
             if (box.SelectionLength > 0)
@@ -56,9 +56,9 @@ namespace Ferretto.VW.Installer.Controls
                 start = box.SelectionStart;
                 end = start + box.SelectionLength;
             }
-            string actualText = box.Text;
-            string previewText = string.Concat(actualText.Substring(0, start), e.Text, actualText.Substring(end));
-            bool accept = byte.TryParse(previewText, out byte _);
+            var actualText = box.Text;
+            var previewText = string.Concat(actualText.Substring(0, start), e.Text, actualText.Substring(end));
+            var accept = byte.TryParse(previewText, out var _);
             e.Handled = !accept;
         }
 

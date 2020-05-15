@@ -415,7 +415,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                         return;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         return;
                     }

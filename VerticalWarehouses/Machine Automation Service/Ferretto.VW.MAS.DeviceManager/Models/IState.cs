@@ -7,12 +7,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 {
     internal interface IState
     {
-        #region Properties
-
-        ILogger Logger { get; }
-
-        #endregion
-
         #region Methods
 
         /// <summary>

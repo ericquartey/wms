@@ -121,7 +121,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         protected void OnDataRefresh()
         {
-            LoadingUnit lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
+            var lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
             this.Position = Localized.Get("SensorCard.Elevator");
             if (lu is null)
             {

@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            BayCheckStep value = (BayCheckStep)(item ?? BayCheckStep.PositionUp);
+            var value = (BayCheckStep)(item ?? BayCheckStep.PositionUp);
             switch (value)
             {
                 case BayCheckStep.PositionUp:

@@ -390,8 +390,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SelectedCompartment = this.Compartments.First();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                // do nothing
             }
 
             var lastItemId = this.SelectedItemCompartment?.ItemId;
@@ -406,8 +407,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SelectedItem = this.Items.First();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+               // do nothing
             }
 
             await base.OnDataRefreshAsync();

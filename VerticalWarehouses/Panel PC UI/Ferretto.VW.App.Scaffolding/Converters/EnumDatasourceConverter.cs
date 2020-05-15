@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             if (value is Models.ScaffoldedEntity entity)
             {
-                Type enumType = entity.Metadata.OfType<EnumDataTypeAttribute>().Select(a => a.EnumType).FirstOrDefault() ?? entity.Property.PropertyType;
+                var enumType = entity.Metadata.OfType<EnumDataTypeAttribute>().Select(a => a.EnumType).FirstOrDefault() ?? entity.Property.PropertyType;
                 // permissive behavior
                 if (enumType.IsEnum)
                 {

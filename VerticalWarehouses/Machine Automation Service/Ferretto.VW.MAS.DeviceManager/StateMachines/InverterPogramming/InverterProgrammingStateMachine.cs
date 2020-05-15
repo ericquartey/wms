@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
             lock (this.CurrentState)
             {
                 var stateData = new InverterProgrammingStateData(this, this.machineData);
-                this.ChangeState(new InverterProgrammingStartState(stateData));
+                this.ChangeState(new InverterProgrammingStartState(stateData, this.Logger));
             }
         }
 

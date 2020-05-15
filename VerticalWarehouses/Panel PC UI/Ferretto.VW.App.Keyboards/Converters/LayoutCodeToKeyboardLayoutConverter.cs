@@ -17,20 +17,20 @@ namespace Ferretto.VW.App.Keyboards.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string resourceName = string.Concat(culture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
-            Assembly assembly = Assembly.GetAssembly(this.GetType());
-            string assemblyName = assembly.GetName().Name;
-            Uri jsonUri = new Uri(string.Concat($"pack://application:,,,/{ assemblyName };component/Resources/", resourceName));
+            var resourceName = string.Concat(culture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
+            var assembly = Assembly.GetAssembly(this.GetType());
+            var assemblyName = assembly.GetName().Name;
+            var jsonUri = new Uri(string.Concat($"pack://application:,,,/{ assemblyName };component/Resources/", resourceName));
             try
             {
                 var sri = Application.GetResourceStream(jsonUri);
                 using (var stream = new StreamReader(sri.Stream))
                 {
-                    string json = stream.ReadToEnd();
+                    var json = stream.ReadToEnd();
                     return KeyboardLayout.FromJson(json);
                 }
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return null;
             }

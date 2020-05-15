@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public int TotalDrawers
         {
             get => this.totalDrawers;
-            protected set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion

@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CardSensor.CardType value = (CardSensor.CardType)(item ?? CardSensor.CardType.Axis);
+            var value = (CardSensor.CardType)(item ?? CardSensor.CardType.Axis);
             switch (value)
             {
                 case CardSensor.CardType.Axis:

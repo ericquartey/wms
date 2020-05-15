@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.DeviceManager.ResetFault.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 {
     internal class ResetFaultErrorState : StateBase
@@ -19,8 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         #region Constructors
 
-        public ResetFaultErrorState(IResetFaultStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ResetFaultErrorState(IResetFaultStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IResetFaultMachineData;

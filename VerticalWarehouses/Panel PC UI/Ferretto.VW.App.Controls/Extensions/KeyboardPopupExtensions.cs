@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
         {
             // show keyboard
             var dialog = new PpcKeyboards(ctrl, dependencyProperty, outputType);
-            object value = ctrl.GetValue(dependencyProperty);
+            var value = ctrl.GetValue(dependencyProperty);
             dialog.DataContext = new PpcKeyboardsViewModel(layoutCode)
             {
                 InputText = Convert.ToString(value, System.Globalization.CultureInfo.CurrentCulture),

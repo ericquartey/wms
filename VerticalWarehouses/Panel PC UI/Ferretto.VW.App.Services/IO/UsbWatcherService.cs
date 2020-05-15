@@ -68,8 +68,8 @@ namespace Ferretto.VW.App.Services.IO
         private void ReloadDriveInfos()
         {
             var driveInfos = DriveInfo.GetDrives().Where(drive => drive.DriveType == DriveType.Removable);
-            List<DriveInfo> attached = driveInfos.Where(d => !this._state.Any(d0 => d.Name.Equals(d0.Name, StringComparison.OrdinalIgnoreCase))).ToList();
-            List<DriveInfo> detached = this._state.Where(d0 => !driveInfos.Any(d => d0.Name.Equals(d.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+            var attached = driveInfos.Where(d => !this._state.Any(d0 => d.Name.Equals(d0.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+            var detached = this._state.Where(d0 => !driveInfos.Any(d => d0.Name.Equals(d.Name, StringComparison.OrdinalIgnoreCase))).ToList();
 
             if (attached.Any() || detached.Any())
             {
