@@ -71,6 +71,9 @@
     <Compile Update="Views\ErrorLoadunitMissingView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\ErrorLoadUnitErrorsView.xaml.cs">
+      <DependentUpon>ErrorLoadUnitErrorsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
