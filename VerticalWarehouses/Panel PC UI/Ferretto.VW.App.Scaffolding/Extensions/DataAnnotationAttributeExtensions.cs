@@ -5,39 +5,37 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Scaffolding.Models;
 
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     public static class DataAnnotationAttributeExtensions
     {
-        #region Localization
-
-        private static string Localize<T>(this T attribute) where T : Attribute, ILocalizableString
-        {
-            Type resx = attribute.ResourceType;
-            string resxName = attribute.ResourceName;
-            if (resx != null && !string.IsNullOrEmpty(resxName))
-            {
-                var mngr = new System.Resources.ResourceManager(resx);
-                return mngr.GetString(resxName, Thread.CurrentThread.CurrentUICulture);
-            }
-
-            return attribute.DefaultValue;
-        }
+        #region Methods
 
         public static string Category(this CategoryAttribute attribute)
             => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
 
+        public static object DefaultValue(this IEnumerable<Attribute> metadata)
+        {
+            if (metadata == null)
+            {
+                throw new ArgumentNullException(nameof(metadata));
+            }
+            var defaultAttr = metadata.OfType<DefaultValueAttribute>().FirstOrDefault();
+            if (defaultAttr != null)
+            {
+                return defaultAttr.Value;
+            }
+            return null;
+        }
+
+        public static object DefaultValue(this ScaffoldedEntity entity)
+            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.DefaultValue();
+
         public static string Description(this CategoryDescriptionAttribute attribute)
             => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
-
-        public static string Tag(this TagAttribute attribute)
-            => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
-
-        #endregion Localization
-
-        #region Display name
 
         public static string DisplayName(this ScaffoldedEntity entity)
         {
@@ -69,9 +67,28 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             return property.Name;
         }
 
-        #endregion Display name
-
-        #region Editable
+        public static IEnumerable<ValidationRule> ExtractValidationRules(this ScaffoldedEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            var metadata = entity.Metadata;
+            var instance = entity.Instance;
+            if (metadata != null)
+            {
+                foreach (var attr in metadata)
+                {
+                    if (attr is ValidationAttribute validationAttr)
+                    {
+                        yield return new App.Scaffolding.ValidationRules.AttributeValidationRule(
+                            validationAttr,
+                            instance,
+                            entity.Property.DisplayName(metadata));
+                    }
+                }
+            }
+        }
 
         public static bool IsEditable(this ScaffoldedEntity entity)
         {
@@ -99,26 +116,20 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             return true;
         }
 
-        #endregion Editable
+        public static object RangeMax(this IEnumerable<Attribute> metadata)
+            => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Maximum;
 
-        #region Default value/unit/Range min/max
+        public static object RangeMax(this ScaffoldedEntity entity)
+            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMax();
 
-        public static object DefaultValue(this IEnumerable<Attribute> metadata)
-        {
-            if (metadata == null)
-            {
-                throw new ArgumentNullException(nameof(metadata));
-            }
-            var defaultAttr = metadata.OfType<DefaultValueAttribute>().FirstOrDefault();
-            if (defaultAttr != null)
-            {
-                return defaultAttr.Value;
-            }
-            return null;
-        }
+        public static object RangeMin(this IEnumerable<Attribute> metadata)
+            => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Minimum;
 
-        public static object DefaultValue(this ScaffoldedEntity entity)
-            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.DefaultValue();
+        public static object RangeMin(this ScaffoldedEntity entity)
+            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMin();
+
+        public static string Tag(this TagAttribute attribute)
+            => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
 
         public static string UnitOfMeasure(this IEnumerable<Attribute> metadata)
         {
@@ -137,45 +148,19 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
         public static string UnitOfMeasure(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.UnitOfMeasure();
 
-        public static object RangeMin(this IEnumerable<Attribute> metadata)
-            => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Minimum;
-
-        public static object RangeMin(this ScaffoldedEntity entity)
-            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMin();
-
-        public static object RangeMax(this IEnumerable<Attribute> metadata)
-            => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Maximum;
-
-        public static object RangeMax(this ScaffoldedEntity entity)
-            => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMax();
-
-        #endregion Default value/unit/Range min/max
-
-        #region Validation
-
-        public static IEnumerable<ValidationRule> ExtractValidationRules(this ScaffoldedEntity entity)
+        private static string Localize<T>(this T attribute) where T : Attribute, ILocalizableString
         {
-            if (entity == null)
+            Type resx = attribute.ResourceType;
+            string resxName = attribute.ResourceName;
+            if (resx != null && !string.IsNullOrEmpty(resxName))
             {
-                throw new ArgumentNullException(nameof(entity));
+                var mngr = new System.Resources.ResourceManager(resx);
+                return mngr.GetString(resxName, Localized.Instance.CurrentCulture);
             }
-            var metadata = entity.Metadata;
-            var instance = entity.Instance;
-            if (metadata != null)
-            {
-                foreach (var attr in metadata)
-                {
-                    if (attr is ValidationAttribute validationAttr)
-                    {
-                        yield return new App.Scaffolding.ValidationRules.AttributeValidationRule(
-                            validationAttr,
-                            instance,
-                            entity.Property.DisplayName(metadata));
-                    }
-                }
-            }
+
+            return attribute.DefaultValue;
         }
 
-        #endregion Validation
+        #endregion
     }
 }

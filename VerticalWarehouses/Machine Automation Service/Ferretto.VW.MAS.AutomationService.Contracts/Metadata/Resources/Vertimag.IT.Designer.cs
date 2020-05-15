@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources.Vertimag", typeof(Vertimag).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Vertimag", typeof(Vertimag).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acceleration.
+        ///   Looks up a localized string similar to Accelerazione.
         /// </summary>
         public static string Acceleration {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assited Movements.
+        ///   Looks up a localized string similar to Movimenti guidati.
         /// </summary>
         public static string AssistedMovements {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay {0}.
+        ///   Looks up a localized string similar to Baia {0}.
         /// </summary>
         public static string Bay {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows to modify the parameters and devices of the bay..
+        ///   Looks up a localized string similar to Permette di modificare i parametri e i dispositivi della baia..
         /// </summary>
         public static string Bay_CategoryDescription {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zero Chain Offset.
+        ///   Looks up a localized string similar to Offset zero catena.
         /// </summary>
         public static string Bay_ChainOffset {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows you to change the parameters of the elevator and the two associated axes..
+        ///   Looks up a localized string similar to Permette di modificare i parametri dell&apos;elevatore e dei due assi ad esso associati..
         /// </summary>
         public static string Elevator_CategoryDescription {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevator Axis {0}.
+        ///   Looks up a localized string similar to Asse elevatore {0}.
         /// </summary>
         public static string ElevatorAxis {
             get {
