@@ -229,7 +229,7 @@
     <value>Il tipo di missione non è valido</value>
   </data>
   <data name="MoveBayChainNotAllowed" xml:space="preserve">
-    <value>Movimento della catena della baia non permesso. In attesa di una nuova conferma.</value>
+    <value>Movimento della catena della baia non permesso: il cassetto è troppo pesante.</value>
   </data>
   <data name="ResumeCommandNotValid" xml:space="preserve">
     <value>Il comando di rientro da picking non è valido</value>

@@ -38,7 +38,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.parentActionChanged = parentActionChanged;
 
             this.VertimagConfigurationFilePath = this.vertimagExportConfigurationPath = ConfigurationManager.AppSettings.GetVertimagExportConfigurationRootPath();
-            this.ResultVertimagConfiguration = "File not saved";
+            this.ResultVertimagConfiguration = Resources.FileNotSaved;
             this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
@@ -108,7 +108,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 }
                 else
                 {
-                    this.ResultVertimagConfiguration = "file not valid or o not inserted";
+                    this.ResultVertimagConfiguration = Resources.FileNotValidOrNotInserted;
                 }
             }
             catch (Exception ex)

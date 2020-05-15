@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
+using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
@@ -125,7 +126,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public void OpenInvertersParametersFolder()
         {
-            var parametersFolder = DialogService.BrowseFolder("Inverters parameters folder", ConfigurationManager.AppSettings.GetInvertersParametersRootPath());
+            var parametersFolder = DialogService.BrowseFolder(Resources.InvertersFolder, ConfigurationManager.AppSettings.GetInvertersParametersRootPath());
 
             if (!string.IsNullOrEmpty(parametersFolder))
             {
@@ -137,7 +138,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public void OpenVertimagConfigurationFile()
         {
-            var resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "Cartella di configurazione", this.vertimagConfigurationPath);
+            var resultFiles = DialogService.BrowseFile(Resources.ChooseConfigurationFile, string.Empty, "json", Resources.ConfigurationFolder, this.vertimagConfigurationPath);
 
             if ((resultFiles?.Length == 1) == false)
             {
@@ -147,10 +148,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 this.VertimagConfigurationFilePath = resultFiles.First();
 
-                var sr = new StreamReader(this.VertimagConfigurationFilePath);
-                var fileContents = sr.ReadToEnd();
-
-                this.isVertimagConfigurationValid = this.LoadConfiguration(fileContents);
+                using (var sr = new StreamReader(this.VertimagConfigurationFilePath))
+                {
+                    var fileContents = sr.ReadToEnd();
+                    this.isVertimagConfigurationValid = this.LoadConfiguration(fileContents);
+                }
             }
 
             this.EvaluateCanNext();
@@ -182,13 +184,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             if (!Directory.Exists(this.InvertersParametersFolder))
             {
                 isInvertersFolderValid = false;
-                this.ResultInvertersFolder = "Folders does not exist";
+                this.ResultInvertersFolder = Resources.FoldersDoesNotExist;
             }
 
             this.canNext = this.isVertimagConfigurationValid;
             if (!this.isVertimagConfigurationValid)
             {
-                this.ResultVertimagConfiguration = "file not valid or o not inserted";
+                this.ResultVertimagConfiguration = Resources.FileNotValidOrNotInserted;
             }
 
             this.canNext = isInvertersFolderValid && this.isVertimagConfigurationValid;

@@ -5,6 +5,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -55,9 +56,30 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private bool refreshTargetTable = false;
 
+        private DateTime timePeriodElapsed = DateTime.UtcNow;
+
         #endregion
 
         #region Methods
+
+        private void CheckTimePeriodElapsed()
+        {
+            if (DateTime.UtcNow.Subtract(this.timePeriodElapsed).TotalMinutes >= 60)
+            {
+                this.timePeriodElapsed = DateTime.UtcNow;
+                var notificationMessage = new NotificationMessage(
+                    null,
+                    $"Time period elapsed",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.TimePeriodElapsed,
+                    BayNumber.None,
+                    BayNumber.None,
+                    MessageStatus.OperationStart);
+
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+        }
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
@@ -403,13 +425,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogTrace("2:Evaluate Control word");
 
                 var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
-
-                if (mainInverter.WaitingHeartbeatAck)
-                {
-                    mainInverter.WaitingHeartbeatAck = false;
-                    this.Logger.LogTrace("5:Reset Heartbeat flag");
-                    return;
-                }
             }
 
             if (currentStateMachine?.ValidateCommandMessage(message) ?? false)
@@ -1101,6 +1116,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                     //this.Logger.LogTrace($"2.RequestHeartBeat={heartBeatMessage}");
 
                     this.isHeartBeatOn = !this.isHeartBeatOn;
+
+                    this.CheckTimePeriodElapsed();
                 }
             }
         }

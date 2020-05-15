@@ -1090,6 +1090,27 @@ namespace Ferretto.VW.MAS.MissionManager
             this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
         }
 
+        /// <summary>
+        /// we get this message every hour
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        private async Task OnTimePeriodElapsed(IServiceProvider serviceProvider)
+        {
+            // at midnight it is time do do some housework
+            if (DateTime.UtcNow.Hour == 0)
+            {
+                this.Logger.LogInformation($"OnTimePeriodElapsed");
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+                // clean missions
+                missionsDataProvider.PurgeWmsMissions();
+
+                // elevator homing every new day
+                this.machineVolatileDataProvider.IsHomingExecuted = false;
+            }
+        }
+
         private void RestoreFullTest(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();

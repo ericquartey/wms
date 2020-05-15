@@ -118,6 +118,11 @@
 
         /// Repetitive horizontal movements on a specified bay.
         /// </summary>
-        RepetitiveHorizontalMovements
+        RepetitiveHorizontalMovements,
+
+        /// <summary>
+        /// Low level driver generates this message to have a convenient slow clock for cleanup activities
+        /// </summary>
+        TimePeriodElapsed
     }
 }

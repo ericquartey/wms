@@ -6,10 +6,12 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
+        public const double PulleyCircleMeters = 0.504;
+
         /// <summary>
         /// The sum of the distances, in millimeters, between the belt pulleys and the top and bottom parts of the machine.
         /// </summary>
-        public const double PulleysMargin = 300;
+        public const double PulleysMargin = 308;
 
         private int beltRigidity;
 

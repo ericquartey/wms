@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
@@ -44,8 +43,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.ResolutionCalibrationProcedure.MeasuredDistanceMustBeStrictlyPositive,
+                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                        Detail = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("MeasuredDistanceMustBeStrictlyPositive", CommonUtils.Culture.Actual),
                     });
             }
 
@@ -54,8 +53,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Title = Resources.General.BadRequestTitle,
-                        Detail = Resources.ResolutionCalibrationProcedure.ExpectedDistanceMustBeStrictlyPositive,
+                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                        Detail = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ExpectedDistanceMustBeStrictlyPositive", CommonUtils.Culture.Actual),
                     });
             }
 
