@@ -320,7 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
                 if (this.alphaNumericBarDriver.TestEnabled)
                 {
-                    await this.alphaNumericBarDriver.SetTestAsync(false);
+                    await this.alphaNumericBarDriver.TestAsync(false);
                 }
 
                 return await this.alphaNumericBarDriver.SetCustomCharacterAsync(0, offset, true);
@@ -343,7 +343,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                return await this.alphaNumericBarDriver.SetTestAsync(enable);
+                return await this.alphaNumericBarDriver.TestAsync(enable);
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -365,7 +365,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
                 if (this.alphaNumericBarDriver.TestEnabled)
                 {
-                    await this.alphaNumericBarDriver.SetTestAsync(false);
+                    await this.alphaNumericBarDriver.TestAsync(false);
                 }
 
                 return await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, true);

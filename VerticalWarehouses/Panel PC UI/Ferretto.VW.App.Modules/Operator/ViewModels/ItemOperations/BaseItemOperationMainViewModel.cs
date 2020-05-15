@@ -564,7 +564,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.MissionOperation is null)
                 {
-                    await this.alphaNumericBarDriver.SetEnabledAsync(false); // no mission, then switch off the alpha numeric bar
+                    await this.alphaNumericBarDriver.EnabledAsync(false); // no mission, then switch off the alpha numeric bar
                 }
                 else
                 {

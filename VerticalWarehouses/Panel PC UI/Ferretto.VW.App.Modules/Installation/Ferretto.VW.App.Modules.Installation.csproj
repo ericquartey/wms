@@ -72,6 +72,7 @@
     <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
     <None Remove="Views\Accessories\BarcodeReaderConfigurationView.xaml" />
     <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
+    <None Remove="Views\Accessories\LaserPointerSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />

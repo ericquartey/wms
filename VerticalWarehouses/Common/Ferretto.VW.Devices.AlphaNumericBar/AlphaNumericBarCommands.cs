@@ -10,10 +10,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public const string OK = "OK";
 
-        public const string TEST_OFF_OK = "TEST_OFF_OK";
-
-        public const string TEST_ON_OK = "TEST_ON_OK";
-
         #endregion
 
         #region Enums

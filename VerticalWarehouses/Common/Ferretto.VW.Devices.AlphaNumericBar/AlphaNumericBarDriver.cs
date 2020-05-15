@@ -178,6 +178,41 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
+        /// Send a DIM command.
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
+        public async Task<bool> DimAsync(int dimension)
+        {
+            this.messagesToBeSendQueue.Clear();
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
+        /// Send a ENABLE command.
+        ///
+        /// N.B. Not use enable=true, because duplicate message
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
+        public async Task<bool> EnabledAsync(bool enable)
+        {
+            this.messagesToBeSendQueue.Clear();
+
+            if (enable)
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);     // deprecated, not use
+            }
+            else
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
+            }
+
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
         /// Send a HELP command.
         /// </summary>
         /// <returns></returns>
@@ -185,6 +220,51 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.messagesToBeSendQueue.Clear();
             this.EnqueueCommand(AlphaNumericBarCommands.Command.HELP);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
+        /// Send a LUM (luminosity) command.
+        /// </summary>
+        /// <param name="luminosity"></param>
+        /// <returns></returns>
+        public async Task<bool> LuminosityAsync(int luminosity)
+        {
+            this.messagesToBeSendQueue.Clear();
+            if (luminosity > 15)
+            {
+                luminosity = 15;
+            }
+            else if (luminosity < 0)
+            {
+                luminosity = 0;
+            }
+
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_LUM, AlphaNumericBarCommands.Command.SET_LUM.ToString(), luminosity);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public async Task<bool> ScrollDirAsync(ScrollDirection direction)
+        {
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_DIR, null, (int)direction);
+
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        /// <summary>
+        /// Send a scroll speed command.
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <returns></returns>
+        public async Task<bool> ScrollSpeedAsync(int speed)
+        {
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_SPEED, null, speed);
+
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
@@ -276,74 +356,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Send a DIM command.
-        /// </summary>
-        /// <param name="dimension"></param>
-        /// <returns></returns>
-        public async Task<bool> SetDimAsync(int dimension)
-        {
-            this.messagesToBeSendQueue.Clear();
-            this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
-        }
-
-        /// <summary>
-        /// Send a ENABLE command.
-        ///
-        /// N.B. Not use enable=true, because duplicate message
-        /// </summary>
-        /// <param name="enable"></param>
-        /// <returns></returns>
-        public async Task<bool> SetEnabledAsync(bool enable)
-        {
-            this.messagesToBeSendQueue.Clear();
-
-            if (enable)
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_ON);     // deprecated, not use
-            }
-            else
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
-            }
-
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
-        }
-
-        /// <summary>
-        /// Send a LUM (luminosity) command.
-        /// </summary>
-        /// <param name="luminosity"></param>
-        /// <returns></returns>
-        public async Task<bool> SetLuminosityAsync(int luminosity)
-        {
-            this.messagesToBeSendQueue.Clear();
-            if (luminosity > 15)
-            {
-                luminosity = 15;
-            }
-            else if (luminosity < 0)
-            {
-                luminosity = 0;
-            }
-
-            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_LUM, AlphaNumericBarCommands.Command.SET_LUM.ToString(), luminosity);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        public async Task<bool> SetScrollDirAsync(ScrollDirection direction)
-        {
-            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_DIR, null, (int)direction);
-
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="enable"></param>
@@ -365,23 +377,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Send a scroll speed command.
-        /// </summary>
-        /// <param name="speed"></param>
-        /// <returns></returns>
-        public async Task<bool> SetScrollSpeedAsync(int speed)
-        {
-            this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_SPEED, null, speed);
-
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
-        }
-
-        /// <summary>
         /// Send a TEST command.
         /// </summary>
         /// <param name="enable"></param>
         /// <returns></returns>
-        public async Task<bool> SetTestAsync(bool enable)
+        public async Task<bool> TestAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
 
@@ -402,7 +402,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// </summary>
         /// <param name="enable"></param>
         /// <returns></returns>
-        public async Task<bool> SetTestScrollAsync(bool enable)
+        public async Task<bool> TestScrollAsync(bool enable)
         {
             this.messagesToBeSendQueue.Clear();
 
