@@ -195,4 +195,22 @@
   <data name="SelectFile" xml:space="preserve">
     <value>Seleziona un file</value>
   </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Cartella parametri inverters</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Scegli file di configurazione</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Cartella di configurazione</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Cartella non esiste</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>File non valido o non inserito</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>File non salvato</value>
+  </data>
 </root>
