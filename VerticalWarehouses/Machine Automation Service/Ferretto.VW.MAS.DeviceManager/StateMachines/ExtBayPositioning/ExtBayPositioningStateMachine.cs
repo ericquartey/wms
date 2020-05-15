@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 {
                     var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
 
-                    this.ChangeState(new ExtBayPositioningStartState(stateData));
+                    this.ChangeState(new ExtBayPositioningStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                         MessageStatus.OperationStart);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.ChangeState(new ExtBayPositioningErrorState(stateData));
+                    this.ChangeState(new ExtBayPositioningErrorState(stateData, this.Logger));
                 }
             }
         }

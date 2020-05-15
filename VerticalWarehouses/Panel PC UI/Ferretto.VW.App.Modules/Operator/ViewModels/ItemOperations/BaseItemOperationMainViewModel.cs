@@ -334,7 +334,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         YPosition = c.YPosition.Value,
                     });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Array.Empty<TrayControlCompartment>();
             }

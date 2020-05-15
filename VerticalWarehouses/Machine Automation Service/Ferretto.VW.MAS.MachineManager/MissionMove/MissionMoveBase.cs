@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry)
         {
-            bool returnValue = false;
+            var returnValue = false;
             canRetry = false;
 #if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public bool DepositUnitChangePosition()
         {
-            bool bayShutter = false;
+            var bayShutter = false;
             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
             {
                 this.ElevatorDataProvider.SetLoadingUnit(null);
@@ -559,7 +559,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public bool UpdateResponseList(MessageType type)
         {
-            bool update = false;
+            var update = false;
             switch (type)
             {
                 case MessageType.Positioning:

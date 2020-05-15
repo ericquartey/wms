@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Services
             {
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
-                string key = this.GetLanguageKey(userAccessLevel);
+                var key = this.GetLanguageKey(userAccessLevel);
                 if (settings.Count == 0 | settings[key] == null)
                 {
                     ;
@@ -79,9 +79,9 @@ namespace Ferretto.VW.App.Services
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
-            catch (ConfigurationErrorsException exc)
+            catch (ConfigurationErrorsException)
             {
-                //Logger.WriteLog(exc.Message, LoggingLevel.Error);
+                // do nothing
             }
         }
 
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Services
             {
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
-                string key = this.GetLanguageKey(userAccessLevel);
+                var key = this.GetLanguageKey(userAccessLevel);
                 if (settings.Count == 0 | settings[key] == null)
                 {
                     ;
@@ -114,15 +114,15 @@ namespace Ferretto.VW.App.Services
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
-            catch (ConfigurationErrorsException exc)
+            catch (ConfigurationErrorsException)
             {
-                //Logger.WriteLog(exc.Message, LoggingLevel.Error);
+                // do nothing
             }
         }
 
         private string GetLanguageKey(UserAccessLevel userAccessLevel)
         {
-            string key = "";
+            var key = "";
             if (userAccessLevel == UserAccessLevel.Admin)
             { key = adminLanguageKey; }
             else if (userAccessLevel == UserAccessLevel.Installer)

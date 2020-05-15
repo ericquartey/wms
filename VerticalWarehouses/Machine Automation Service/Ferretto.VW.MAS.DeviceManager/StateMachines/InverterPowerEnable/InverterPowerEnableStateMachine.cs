@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             this.Logger.LogTrace($"Start with requested state: {this.machineData?.Enable}");
 
             var stateData = new InverterPowerEnableStateData(this, this.machineData);
-            this.ChangeState(new InverterPowerEnableStartState(stateData));
+            this.ChangeState(new InverterPowerEnableStartState(stateData, this.Logger));
         }
 
         public override void Stop(StopRequestReason reason)

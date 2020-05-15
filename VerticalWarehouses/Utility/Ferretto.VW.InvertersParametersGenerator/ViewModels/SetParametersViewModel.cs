@@ -26,17 +26,21 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private const string DATASETZERO = "[*]";
 
+        private const short MASTERINVERTERCODE = 924;
+
+        private const short SLAVEINVERTERCODE = 925;
+
         private const string STRINGTYPE = "String";
 
         private readonly ConfigurationService configurationService;
-
-        private readonly List<InverterParameter> inverterParameters;
 
         private readonly IParentActionChanged parentActionChanged;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
         private InverterParametersDataInfo currentInverterParameters;
+
+        private List<InverterParameter> inverterParameters;
 
         private List<InverterParametersDataInfo> inverters;
 
@@ -62,7 +66,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
             this.parentActionChanged = parentActionChanged;
-            this.inverterParameters = new List<InverterParameter>();
             this.SelectedFile = null;
             this.InitializeData();
         }
@@ -173,8 +176,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
             if (!this.GotoNextInverterParametersSet())
             {
-                this.configurationService.SetWizard(WizardMode.ExportConfiguration);
-                return true;
+                if (this.AdjustInvertConfigurationNodes())
+                {
+                    this.configurationService.SetWizard(WizardMode.ExportConfiguration);
+                    return true;
+                }
             }
 
             return false;
@@ -201,7 +207,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 var start = worksheet.Dimension.Start;
                 var end = worksheet.Dimension.End;
 
-                for (int row = start.Row + 3; row <= end.Row; row++)
+                for (var row = start.Row + 3; row <= end.Row; row++)
                 {
                     var code = worksheet.Cells[row, 1].Text;
                     var description = worksheet.Cells[row, 3].Text;
@@ -212,6 +218,26 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
 
             return parameters;
+        }
+
+        private bool AdjustInvertConfigurationNodes()
+        {
+            if (this.configurationService.VertimagConfiguration.Machine.Bays.FirstOrDefault(b => b.Inverter != null) is Bay bay)
+            {
+                if (bay.Inverter.Parameters.FirstOrDefault(p => p.Code == SLAVEINVERTERCODE) is InverterParameter firstBayInverterParameter)
+                {
+                    if (this.configurationService.VertimagConfiguration.Machine.Elevator.Axes.FirstOrDefault(axe => axe.Inverter != null) is ElevatorAxis elevatorAxis)
+                    {
+                        if (elevatorAxis.Inverter.Parameters.FirstOrDefault(p => p.Code == MASTERINVERTERCODE) is InverterParameter mainInverterParameter)
+                        {
+                            mainInverterParameter.StringValue = firstBayInverterParameter.StringValue;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            throw new ArgumentException($"Set paramter on mainInverter for confifgure first node failed");
         }
 
         private bool CanImport()
@@ -237,7 +263,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 }
             }
 
-            throw new InvalidDataException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
+            throw new ArgumentException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
         }
 
         private void GetInverterParametersFiles()
@@ -314,7 +340,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.IsBusy = true;
             try
             {
-                this.inverterParameters.Clear();
+                this.inverterParameters = new List<InverterParameter>();
+                this.RaisePropertyChanged(nameof(this.InverterParameters));
                 var lastParameterCode = string.Empty;
                 var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
                 var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
@@ -333,7 +360,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     var parameterInfo = parametersInfo.FirstOrDefault(pi => pi.Code == code);
                     if (parameterInfo is null)
                     {
-                        throw new InvalidDataException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
+                        throw new ArgumentException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
                     }
 
                     if (string.IsNullOrEmpty(parameter.Writable))
@@ -344,7 +371,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     {
                         if (parameterInfo.IsReadOnly)
                         {
-                            throw new InvalidDataException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
+                            throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
                         }
                     }
 

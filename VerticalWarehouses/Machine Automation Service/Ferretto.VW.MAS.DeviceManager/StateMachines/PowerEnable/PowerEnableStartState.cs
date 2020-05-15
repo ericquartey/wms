@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 {
     internal class PowerEnableStartState : StateBase
@@ -22,8 +21,8 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         #region Constructors
 
-        public PowerEnableStartState(IPowerEnableStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PowerEnableStartState(IPowerEnableStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPowerEnableMachineData;
@@ -47,12 +46,12 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -60,7 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             if (message.Type == FieldMessageType.IoDriverException)
             {
                 this.stateData.FieldMessage = message;
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.stateData, this.Logger));
             }
         }
 
@@ -107,7 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.stateData, this.Logger));
         }
 
         #endregion

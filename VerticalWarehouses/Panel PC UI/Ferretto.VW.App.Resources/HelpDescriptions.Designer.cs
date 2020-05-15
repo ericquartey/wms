@@ -142,6 +142,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The external bay calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion..
+        /// </summary>
+        public static string ExternalBayCalibrationFunctionDescription {
+            get {
+                return ResourceManager.GetString("ExternalBayCalibrationFunctionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration mask of the alphanumeric bar parameters..
         /// </summary>
         public static string HelpAlphaNumericDescription {

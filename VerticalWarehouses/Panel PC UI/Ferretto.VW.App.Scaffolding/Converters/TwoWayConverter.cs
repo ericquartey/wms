@@ -19,15 +19,15 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            object value = values[0];
-            object entity = values.Length > 1 ? values[1] : parameter;
+            var value = values[0];
+            var entity = values.Length > 1 ? values[1] : parameter;
             if (value is PropertyInfo pinfo && entity != null)
             {
                 // 0. PropertyInfo
                 // 1. Instance
                 this._pinfo = pinfo;
                 this._entity = entity;
-                object retval = pinfo.GetValue(entity);
+                var retval = pinfo.GetValue(entity);
                 if (targetType == typeof(string))
                 {
                     return System.Convert.ToString(retval, culture);

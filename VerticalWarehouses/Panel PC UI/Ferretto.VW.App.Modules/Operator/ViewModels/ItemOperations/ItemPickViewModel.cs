@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand emptyOperationCommand;
 
+        private string measureUnitTxt;
+
         #endregion
 
         #region Constructors
@@ -53,6 +55,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public string MeasureUnitTxt
+        {
+            get => this.measureUnitTxt;
+            set => this.SetProperty(ref this.measureUnitTxt, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
@@ -68,6 +76,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Compartments = null;
             this.SelectedCompartment = null;
 
+            this.MeasureUnitTxt = String.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+
             return base.OnAppearedAsync();
         }
 
@@ -79,6 +89,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.MeasureUnitTxt = String.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+
             this.emptyOperationCommand.RaiseCanExecuteChanged();
         }
 

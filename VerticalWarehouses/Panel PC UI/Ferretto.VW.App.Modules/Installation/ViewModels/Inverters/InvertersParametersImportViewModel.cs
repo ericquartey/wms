@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.selectedFile;
             set
             {
-                FileInfo old = this.selectedFile;
+                var old = this.selectedFile;
                 if (this.SetProperty(ref this.selectedFile, value))
                 {
                     this.OnSelectedFileChanged(old, value);
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void FindConfigurationFiles()
         {
             this.IsBusy = true;
-            UsbWatcherService usb = this._usbWatcher;
+            var usb = this._usbWatcher;
             IEnumerable<FileInfo> configurationFiles = null;
 
             configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();

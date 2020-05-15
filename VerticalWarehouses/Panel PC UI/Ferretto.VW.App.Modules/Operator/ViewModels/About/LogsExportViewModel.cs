@@ -123,7 +123,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.drive;
             set
             {
-                DriveInfo old = this.drive;
+                var old = this.drive;
                 if (this.SetProperty(ref this.drive, value))
                 {
                     this.OnSelectedDriveChanged(old, value);
@@ -170,7 +170,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ExportAsync()
         {
-            bool goback = false;
+            var goback = false;
             try
             {
                 this.ClearNotifications();
@@ -190,17 +190,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged();
 
                 // get actual executing location
-                string filepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                var filepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 filepath += "\\" + "Logs";
 
                 // Create path to export log
-                string logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + "\\";
-                string folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
+                var logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + "\\";
+                var folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
                 //
                 System.IO.Directory.CreateDirectory(folderPath);
 
-                DirectoryInfo d = new DirectoryInfo(filepath);
+                var d = new DirectoryInfo(filepath);
                 foreach (var file in d.GetFiles("*.log"))
                 {
                     File.Copy(file.FullName, folderPath + file.Name, true);
@@ -232,14 +232,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnSelectedDriveChanged(DriveInfo old, DriveInfo value)
         {
-            bool hasConflict = false;
+            var hasConflict = false;
             if (value != null)
             {
                 try
                 {
                     // Create path
-                    string logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day;
-                    string folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
+                    var logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day;
+                    var folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
                     hasConflict = Directory.Exists(folderPath);
                 }

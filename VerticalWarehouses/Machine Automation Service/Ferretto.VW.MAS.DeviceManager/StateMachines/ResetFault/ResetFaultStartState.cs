@@ -9,7 +9,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 {
     internal class ResetFaultStartState : StateBase
@@ -26,8 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         #region Constructors
 
-        public ResetFaultStartState(IResetFaultStateData stateData)
-            : base(stateData?.ParentMachine, stateData?.MachineData?.Logger)
+        public ResetFaultStartState(IResetFaultStateData stateData, ILogger logger)
+            : base(stateData?.ParentMachine, logger)
         {
             this.stateData = stateData ?? throw new ArgumentNullException(nameof(stateData));
             this.machineData = stateData.MachineData as IResetFaultMachineData ?? throw new ArgumentNullException(nameof(stateData));
@@ -70,11 +69,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
                 if (this.inverterResponses.Values.Any(r => r != MessageStatus.OperationEnd))
                 {
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ResetFaultErrorState(this.stateData, this.Logger));
                 }
                 else
                 {
-                    this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData, this.Logger));
                 }
             }
         }
@@ -120,7 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
         {
             this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData, this.Logger));
         }
 
         #endregion

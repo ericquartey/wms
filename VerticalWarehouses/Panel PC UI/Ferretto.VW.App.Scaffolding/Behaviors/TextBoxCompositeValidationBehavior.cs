@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             var rules = this.CompositeValidator?.Rules;
             if (rules != null)
             {
-                CultureInfo culture = this.GetTextBinding()?.ConverterCulture ?? CultureInfo.CurrentCulture;
+                var culture = this.GetTextBinding()?.ConverterCulture ?? CultureInfo.CurrentCulture;
                 foreach (var rule in rules)
                 {
                     if (!rule.Validate(text, culture).IsValid)

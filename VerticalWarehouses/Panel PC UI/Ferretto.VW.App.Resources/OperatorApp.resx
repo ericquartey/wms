@@ -119,7 +119,7 @@
   </resheader>
   <data name="Availability" xml:space="preserve">
     <value>Availability [units]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
@@ -143,71 +143,71 @@
   </data>
   <data name="InstantArticle" xml:space="preserve">
     <value>Instant Article</value>
-    <comment>View Title</comment>
+    <comment>Label</comment>
   </data>
   <data name="LIFOPeriod" xml:space="preserve">
     <value>LIFO time span</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="List" xml:space="preserve">
     <value>List</value>
-    <comment>Grid label</comment>
+    <comment>Label</comment>
   </data>
   <data name="ListDescription" xml:space="preserve">
     <value>List description</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Lists" xml:space="preserve">
     <value>Lists</value>
-    <comment>Button - Title text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
-    <comment>Grid label</comment>
+    <comment>Label</comment>
   </data>
   <data name="Machines" xml:space="preserve">
     <value>Machines</value>
-    <comment>Grid label</comment>
+    <comment>Label</comment>
   </data>
   <data name="Management" xml:space="preserve">
     <value>Management</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="PackagingType" xml:space="preserve">
     <value>Packaging type</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Picking" xml:space="preserve">
     <value>Picking</value>
-    <comment>Button - Title text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Position</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ProductionDate" xml:space="preserve">
     <value>Production date</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>Quantity</value>
-    <comment>Grid label</comment>
+    <comment>Label</comment>
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
     <value>Requested quantity  [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="SearchCode" xml:space="preserve">
     <value>Search by code</value>
-    <comment>Label text</comment>
+    <comment>Action</comment>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
-    <comment>Button text</comment>
+    <comment>Action</comment>
   </data>
   <data name="ExecutableListsRows" xml:space="preserve">
     <value>Executable Lists' Rows</value>
@@ -215,19 +215,19 @@
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
     <value>Drawer operations</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuLists" xml:space="preserve">
     <value>Waiting lists</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuItems" xml:space="preserve">
     <value>Search item</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
     <value>Other</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Picking operations</value>
@@ -271,74 +271,74 @@
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
     <value>Waiting for execution lists</value>
-    <comment>Page header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ListsInWaitNote" xml:space="preserve">
     <value>Note</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>List details</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ListsInWaitExecute" xml:space="preserve">
     <value>Execute list</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchHeader" xml:space="preserve">
     <value>Search item by code or description</value>
-    <comment>Page Header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchKeySearch" xml:space="preserve">
     <value>Search</value>
-    <comment>Label text</comment>
+    <comment>Action</comment>
   </data>
   <data name="ItemSearchSearch" xml:space="preserve">
     <value>Search item</value>
-    <comment>Button text</comment>
+    <comment>Action</comment>
   </data>
   <data name="AvailableQuantity" xml:space="preserve">
     <value>Available quantity  [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
-    <value>Item detail</value>
-    <comment>Button text</comment>
+    <value>Show Details</value>
+    <comment>Action</comment>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
-    <value>Item call</value>
-    <comment>Button text</comment>
+    <value>Call Item</value>
+    <comment>Action</comment>
   </data>
   <data name="ItemDetailHeader" xml:space="preserve">
     <value>Item detail</value>
-    <comment>Page Header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemDetailManagement" xml:space="preserve">
-    <value>Managing type:</value>
-    <comment>Label text</comment>
+    <value>Managing type</value>
+    <comment>Label</comment>
   </data>
   <data name="ItemDetailPeriod" xml:space="preserve">
     <value>FIFO time span</value>
-    <comment>Labet text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
     <value>Immediate drawer call</value>
-    <comment>Page Header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
-    <value>Drawer call</value>
-    <comment>Button text</comment>
+    <value>Call Drawer</value>
+    <comment>Action</comment>
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Requested tray</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerActivityPickingRowList" xml:space="preserve">
     <value>List row</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
-    <value>General informations</value>
+    <value>General information</value>
     <comment>Page Header</comment>
   </data>
   <data name="GeneralInfoModel" xml:space="preserve">
@@ -403,50 +403,51 @@
   </data>
   <data name="OtherNavigationCompaction" xml:space="preserve">
     <value>Compaction</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationStatistics" xml:space="preserve">
     <value>Statistics</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationMaintenance" xml:space="preserve">
     <value>Maintenance</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationErrorSimulation" xml:space="preserve">
     <value>Error Simulation</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>StatisticsGeneralDataHeader</value>
-    <comment>Page Header</comment>
+    <comment>Label</comment>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
+    <comment>Action</comment>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>MachineStatistics_TotalMovedTrays</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
     <value>MachineStatistics_TotalPowerOnTime</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
     <value>MachineStatistics_AreaFillPercentage</value>
-    <comment>Progress bar label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
     <value>MachineStatistics_WeightCapacityPercentage</value>
-    <comment>Progress bar labet text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
     <value>MachineStatistics_AutomaticTimePercentage</value>
-    <comment>Progress bar label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
     <value>MachineStatistics_UsageTimePercentage</value>
-    <comment>Progress bar label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
     <value>DrawerSpaceSaturazionHeader</value>
@@ -550,87 +551,83 @@
   </data>
   <data name="MaintenanceMainPageHeader" xml:space="preserve">
     <value>MaintenanceMainPageHeader</value>
-    <comment>Page header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageModel" xml:space="preserve">
     <value>MaintenanceMainPageModel</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageSerial" xml:space="preserve">
     <value>MaintenanceMainPageSerial</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
     <value>MaintenanceMainPageInstallationDate</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
     <value>MaintenanceMainPageLastMaintenanceDate</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
     <value>MaintenanceNextMaintenanceDate</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
     <value>MaintenanceMainPageStateMachine</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="MaintenanceMainPageDetail" xml:space="preserve">
-    <value>MaintenanceMainPageDetail</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailHeader" xml:space="preserve">
     <value>MaintenanceDetailHeader</value>
-    <comment>Page header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
     <value>MaintenanceDetailTotalCycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
     <value>MaintenanceDetailCyclesBetweenTwoMaintenance</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
     <value>MaintenanceDetailCyclesFromLastMaintenance</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailElementStatus" xml:space="preserve">
     <value>MaintenanceDetailElementStatus</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailStopRequired" xml:space="preserve">
     <value>MaintenanceDetailStopRequired</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
     <value>MaintenanceDetailPlatformRequired</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailContactRequired" xml:space="preserve">
     <value>MaintenanceDetailContactRequired</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Drawer Call</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationItems" xml:space="preserve">
     <value>StatisticsNavigationItems</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
     <value>StatisticsNavigationDrawers</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationCells" xml:space="preserve">
     <value>StatisticsNavigationCells</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationErrors" xml:space="preserve">
     <value>StatisticsNavigationErrors</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Refilling operation</value>
@@ -662,7 +659,7 @@
   </data>
   <data name="Lot" xml:space="preserve">
     <value>Lot</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
     <value>Material status</value>
@@ -745,40 +742,40 @@
     <comment>Page header</comment>
   </data>
   <data name="ItemDetailCategory" xml:space="preserve">
-    <value>ItemDetailCategory</value>
-    <comment>Label text</comment>
+    <value>Category</value>
+    <comment>Label</comment>
   </data>
   <data name="ItemDetailClasse" xml:space="preserve">
-    <value>ItemDetailClasse</value>
-    <comment>Label text</comment>
+    <value>Class</value>
+    <comment>Label</comment>
   </data>
   <data name="ItemDetailMeasurementUnity" xml:space="preserve">
     <value>ItemDetailMeasurementUnity</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
     <value>ItemDetailWeight</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
     <value>Tot Back</value>
-    <comment>Tot Post</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
     <value>Tot Back %</value>
-    <comment>Tot Post %</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
     <value>Tot Front</value>
-    <comment>Tot Ant</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
     <value>Tot Front %</value>
-    <comment>Tot Ant %</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
     <value>State</value>
-    <comment>Stato</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
     <value>Compartments</value>
@@ -802,203 +799,203 @@
   </data>
   <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
     <value>Cell</value>
-    <comment>Cella</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
     <value>Drawer</value>
-    <comment>Cassetto</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
     <value>Height</value>
-    <comment>Altezza</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
     <value>Side</value>
-    <comment>Lato</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
     <value>State</value>
-    <comment>Stato</comment>
+    <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
     <value>Weight</value>
-    <comment>Peso</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
     <value>Error</value>
-    <comment>Errore</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
     <value>Total</value>
-    <comment>Totale</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
     <value>Total %</value>
-    <comment>Totale %</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
     <value>Description</value>
-    <comment>Descrizione</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDataGridHeaderList" xml:space="preserve">
     <value>List</value>
-    <comment>Lista</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
     <value>Machines</value>
-    <comment>Macchine</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDataGridHeaderType" xml:space="preserve">
     <value>Type</value>
-    <comment>Tipo</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
     <value>Description</value>
-    <comment>Descrizione</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
     <value>Kit</value>
-    <comment>Kit</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
     <value>Request</value>
-    <comment>Richiesta</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
     <value>State</value>
-    <comment>Stato</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
     <value>Current weight</value>
-    <comment>Peso lordo corrente</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
     <value>Drawer</value>
-    <comment>Cassetto</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
     <value>Height</value>
-    <comment>Altezza</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
     <value>Max %</value>
-    <comment>Max %</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
     <value>Max weight</value>
-    <comment>Peso massimo</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
     <value>Tare</value>
-    <comment>Tara</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
     <value>Description</value>
-    <comment>Descrizione</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
     <value>Element</value>
-    <comment>Elemento</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
     <value>Quantity</value>
-    <comment>Quantità</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
     <value>Description</value>
-    <comment>Descrizione</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
     <value>Item</value>
-    <comment>Articolo</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
     <value>Machine</value>
-    <comment>Macchina</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
     <value>Quantity</value>
-    <comment>Quantità</comment>
+    <comment>Label</comment>
   </data>
   <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
     <value>Row</value>
-    <comment>Riga</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
     <value>Class</value>
-    <comment>Classe</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>StatisticsNavigationMachine</value>
-    <comment>Button text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsHeader" xml:space="preserve">
     <value>MachineStatisticsHeader</value>
-    <comment>Page header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionVertical" xml:space="preserve">
     <value>MachineStatisticsSectionVertical</value>
-    <comment>Section header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
     <value>MachineStatistics_TotalVerticalAxisKilometers</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
     <value>MachineStatistics_TotalVerticalAxisCycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
     <value>MachineStatisticsSectionShutters</value>
-    <comment>Section header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
     <value>MachineStatistics_TotalShutter1Cycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
     <value>MachineStatistics_TotalShutter2Cycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
     <value>MachineStatistics_TotalShutter3Cycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
     <value>MachineStatisticsSectionHorizontal</value>
-    <comment>Section header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
     <value>MachineStatisticsSectionHorizontalTotalCycles</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">
     <value>MachineStatisticsSectionBays</value>
-    <comment>Section header</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
     <value>MachineStatisticsSectionBaysBay1</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
     <value>MachineStatisticsSectionBaysBay2</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
     <value>MachineStatisticsSectionBaysBay3</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchGridItem" xml:space="preserve">
     <value>Item</value>
-    <comment>Grid header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchGridDescription" xml:space="preserve">
     <value>ItemSearchGridDescription</value>
-    <comment>Grid header</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemSearchGridMachine" xml:space="preserve">
     <value>ItemSearchGridMachine</value>
-    <comment>Grid header</comment>
+    <comment>Label</comment>
   </data>
   <data name="DrawerCompactingRear" xml:space="preserve">
     <value>DrawerCompactingFront</value>
@@ -1006,7 +1003,7 @@
   </data>
   <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
     <value>MaintenanceDetailHeaderKit</value>
-    <comment>Page header object</comment>
+    <comment>Label</comment>
   </data>
   <data name="CommonListType" xml:space="preserve">
     <value>CommonListType</value>
@@ -1106,21 +1103,27 @@
   </data>
   <data name="WmsServicesOffline" xml:space="preserve">
     <value>WMS Services offline</value>
+    <comment>Label</comment>
   </data>
   <data name="WmsServicesOnline" xml:space="preserve">
     <value>WMS Services online</value>
+    <comment>Label</comment>
   </data>
   <data name="MachineServiceStatus_Expired" xml:space="preserve">
     <value>Expired</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MachineServiceStatus_Expiring" xml:space="preserve">
     <value>Expiring</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MachineServiceStatus_Unknown" xml:space="preserve">
     <value>Unknown</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MachineServiceStatus_Valid" xml:space="preserve">
     <value>Valid</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
     <value>DrawerActivityLocalCallMaxCapacity</value>
@@ -1140,60 +1143,67 @@
   </data>
   <data name="ItemManagementType_FIFO" xml:space="preserve">
     <value>FIFO</value>
-    <comment>enum ItemManagementType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemManagementType_Volume" xml:space="preserve">
     <value>Volume</value>
-    <comment>enum ItemManagementType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemManagementType_NotSpecified" xml:space="preserve">
     <value>Not specified</value>
-    <comment>enum ItemManagementType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemListType_Inventory" xml:space="preserve">
     <value>Inventory</value>
-    <comment>enum ItemListType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemListType_Pick" xml:space="preserve">
     <value>Pick</value>
-    <comment>enum ItemListType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemListType_Put" xml:space="preserve">
     <value>Put</value>
-    <comment>enum ItemListType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="ItemListType_NotSpecified" xml:space="preserve">
     <value>NotSpecified</value>
-    <comment>enum ItemListType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="Abort" xml:space="preserve">
     <value>Abort</value>
+    <comment>Action</comment>
   </data>
   <data name="QuantityToPick" xml:space="preserve">
     <value>Quantity to pick</value>
+    <comment>Label</comment>
   </data>
   <data name="QuantityToPut" xml:space="preserve">
     <value>Quantity to put</value>
+    <comment>Label</comment>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Picked quantity [{0}]</value>
+    <comment>Label</comment>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Material status</value>
+    <comment>Label</comment>
   </data>
   <data name="InventoryOperation" xml:space="preserve">
     <value>Inventory Operation.</value>
-    <comment>Header txt</comment>
+    <comment>Label</comment>
   </data>
   <data name="InventoryQuantityDetected" xml:space="preserve">
     <value>Detected quantity [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>Pick request for item {0} (q.ty {1}) was accepted.</value>
+    <comment>Information Message</comment>
   </data>
   <data name="ListAvailable" xml:space="preserve">
     <value>Available</value>
+    <comment>Label</comment>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Empty</value>
@@ -1207,24 +1217,26 @@
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
     <value>Loading unit Id</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitWidth" xml:space="preserve">
     <value>Width</value>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitDepth" xml:space="preserve">
     <value>Depth</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Loading unit</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="CompleteCheck" xml:space="preserve">
     <value>Complete Check</value>
   </data>
   <data name="LoadingUnitCheck" xml:space="preserve">
     <value>Loading unit check</value>
+    <comment>Label</comment>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Confirm on empty</value>
@@ -1234,37 +1246,39 @@
   </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Machines availabiility</value>
+    <comment>Label</comment>
   </data>
   <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
     <value>The current operation was remotely cancelled.
 Please put back any moved pieces in their original position.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
-    <value>Operation cancelled</value>
+    <value>Operation cancelled.</value>
+    <comment>Information Message</comment>
   </data>
   <data name="OperationConfirmed" xml:space="preserve">
     <value>Operation confirmed.</value>
-    <comment>Notification</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
     <value>No loading units to move</value>
-    <comment>Description text</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
     <value>There are {0} loading units send to bay</value>
-    <comment>Description text</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
     <value>There is 1 loading unit send to bay</value>
-    <comment>Description text</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>Remove any spilled items from the compartment.</value>
-    <comment>Description text</comment>
+    <comment>Prompt Message</comment>
   </data>
   <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
     <value>If you have picked up items, put them back in the original compartment.</value>
-    <comment>DEscription text</comment>
+    <comment>Prompt Message</comment>
   </data>
   <data name="CancelPut" xml:space="preserve">
     <value>Cancel put</value>
@@ -1273,26 +1287,27 @@ Please put back any moved pieces in their original position.</value>
     <value>Cancel pick</value>
   </data>
   <data name="OperationCancelledConfirmed" xml:space="preserve">
-    <value>Operation cancelled confirmed</value>
+    <value>Operation cancellation confirmed.</value>
+    <comment>Information Message</comment>
   </data>
   <data name="InventoryOperationCancelled" xml:space="preserve">
     <value>Inventory operation cancelled.</value>
-    <comment>Description text</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="Missions" xml:space="preserve">
     <value>Missions</value>
-    <comment>Title text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MissionsList" xml:space="preserve">
     <value>Missions list</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="CreationDate" xml:space="preserve">
     <value>Date</value>
   </data>
   <data name="MissionStep" xml:space="preserve">
     <value>Step</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Bay</value>
@@ -1300,157 +1315,163 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="BayNumberAll" xml:space="preserve">
     <value>All</value>
-    <comment>description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="BayNumberElevatorBay" xml:space="preserve">
     <value>Elevator bay</value>
-    <comment>Description text</comment>
+    <comment>Description texLabelt</comment>
   </data>
   <data name="BayNumberBayThree" xml:space="preserve">
     <value>Bay three</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="BayNumberBayTwo" xml:space="preserve">
     <value>Bay two</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="BayNumberBayNone" xml:space="preserve">
     <value>No bay</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusExecuting" xml:space="preserve">
     <value>Executing</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusNew" xml:space="preserve">
     <value>New</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusWaiting" xml:space="preserve">
     <value>Waiting</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusCompleted" xml:space="preserve">
     <value>Completed</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusAborted" xml:space="preserve">
     <value>Aborted</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="StatusCompleting" xml:space="preserve">
     <value>Completing</value>
+    <comment>Label</comment>
   </data>
   <data name="BayNumberBayOne" xml:space="preserve">
     <value>Bay one</value>
-    <comment>Description text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MissionType" xml:space="preserve">
     <value>Mission type</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="MissionStatus" xml:space="preserve">
     <value>Status</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="BayTarget" xml:space="preserve">
     <value>Bay</value>
+    <comment>Label</comment>
   </data>
   <data name="MissionStateNotDefined" xml:space="preserve">
     <value>Not defined</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateNew" xml:space="preserve">
     <value>New</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateStart" xml:space="preserve">
     <value>Start</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateLoadElevator" xml:space="preserve">
     <value>Load elevator</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateToTarget" xml:space="preserve">
     <value>To target</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
     <value>Deposit unit</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitPick" xml:space="preserve">
     <value>Wait operator action</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateBayChain" xml:space="preserve">
     <value>Bay chain</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateCloseShutter" xml:space="preserve">
     <value>Close shutter</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateEnd" xml:space="preserve">
     <value>End</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateError" xml:space="preserve">
     <value>Error</value>
-    <comment>Enum for MissionState</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeNoType" xml:space="preserve">
     <value>No type</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeManual" xml:space="preserve">
     <value>Manual</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeWms" xml:space="preserve">
     <value>Wms</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeIn" xml:space="preserve">
     <value>In</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeOut" xml:space="preserve">
     <value>Out</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeFullTest" xml:space="preserve">
     <value>Full test</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Compact</value>
-    <comment>enum MIssionType</comment>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MisionStateNotDefined" xml:space="preserve">
     <value>Not defined</value>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
     <value>in bay</value>
+    <comment>Label</comment>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Recall Drawer</value>
+    <comment>Action</comment>
   </data>
   <data name="Pieces" xml:space="preserve">
     <value>pcs</value>
+    <comment>Label</comment>
   </data>
   <data name="Pick" xml:space="preserve">
     <value>Pick</value>
-    <comment>Button content</comment>
+    <comment>Action</comment>
   </data>
   <data name="Put" xml:space="preserve">
     <value>Put</value>
-    <comment>Button content</comment>
+    <comment>Action</comment>
   </data>
   <data name="Adjustment" xml:space="preserve">
     <value>Adjustment</value>
-    <comment>Button content</comment>
+    <comment>Action</comment>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
     <value>Width</value>
@@ -1466,11 +1487,11 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="ItemDescription" xml:space="preserve">
     <value>Item description</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Item code</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="Compartment" xml:space="preserve">
     <value>Compartment</value>
@@ -1478,19 +1499,19 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
     <value>Adjustment quantity [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="PutQuantity" xml:space="preserve">
     <value>Put quantity [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="PickingQuantity" xml:space="preserve">
     <value>Picking quantity [{0}]</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="NewOperationsAvailable" xml:space="preserve">
     <value>New operations available</value>
-    <comment>Button text</comment>
+    <comment>Information Message</comment>
   </data>
   <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
     <value>Confirm and new operations available</value>
@@ -1498,39 +1519,47 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="ItemStock" xml:space="preserve">
     <value>Stock</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
     <value>Loading unit present</value>
-    <comment>Label text</comment>
+    <comment>Label</comment>
   </data>
   <data name="SelectCompartment" xml:space="preserve">
     <value>Select compartment</value>
-    <comment>Title test</comment>
+    <comment>Action</comment>
   </data>
   <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
     <value>PICK</value>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
     <value>Picking</value>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
     <value>ITEM</value>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
     <value>Search and request articles</value>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
     <value>LIST</value>
+    <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuListsDescription" xml:space="preserve">
     <value>Execution / suspension of lists</value>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
     <value>DRAW</value>
+    <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Drawer operations</value>
+    <comment>Label</comment>
   </data>
   <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
     <value>Back free space</value>
@@ -1550,18 +1579,22 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="BarcodeNotRecognized" xml:space="preserve">
     <value>Barcode '{0}' not recognized.</value>
+    <comment>Error Message</comment>
   </data>
   <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
     <value>The current page does not support barcode scanning.</value>
   </data>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>No item with code '{0}' is available</value>
+    <comment>Error Message</comment>
   </data>
   <data name="StartUpdate" xml:space="preserve">
     <value>Start Update</value>
+    <comment>Action</comment>
   </data>
   <data name="Alarms" xml:space="preserve">
     <value>Alarms</value>
+    <comment>Label</comment>
   </data>
   <data name="CompactionInProgres" xml:space="preserve">
     <value>Compaction in progress</value>
@@ -1573,58 +1606,73 @@ Please put back any moved pieces in their original position.</value>
     <value>General</value>
   </data>
   <data name="GeneralInformations" xml:space="preserve">
-    <value>General informations</value>
+    <value>General information</value>
   </data>
   <data name="MachineNumber" xml:space="preserve">
     <value>Machine number</value>
+    <comment>Label</comment>
   </data>
   <data name="Serial" xml:space="preserve">
     <value>Serial</value>
+    <comment>Label</comment>
   </data>
   <data name="Statistics" xml:space="preserve">
     <value>Statistics</value>
+    <comment>Label</comment>
   </data>
   <data name="TotalKm" xml:space="preserve">
     <value>Total km traveled</value>
+    <comment>Label</comment>
   </data>
   <data name="TotalMachineWeight" xml:space="preserve">
     <value>Total machine weight</value>
+    <comment>Label</comment>
   </data>
   <data name="TotalMissions" xml:space="preserve">
     <value>Total missions</value>
+    <comment>Label</comment>
   </data>
   <data name="TotalUnits" xml:space="preserve">
     <value>Total units</value>
+    <comment>Label</comment>
   </data>
   <data name="Waiting" xml:space="preserve">
     <value>Waiting</value>
+    <comment>Label</comment>
   </data>
   <data name="Counters" xml:space="preserve">
     <value>Counters</value>
   </data>
   <data name="NoItemOnSelectedCompartment" xml:space="preserve">
     <value>No item on selected compartment.</value>
+    <comment>Error Message</comment>
   </data>
   <data name="MissionTypeFirstTest" xml:space="preserve">
     <value>First Test</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeFullTestIN" xml:space="preserve">
     <value>Full Test IN</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeFullTestOUT" xml:space="preserve">
     <value>Full Test OUT</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
     <value>Load Unit Operation</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="CommonLot" xml:space="preserve">
     <value>Lot</value>
   </data>
   <data name="AlarmsDescription" xml:space="preserve">
     <value>List of machine alarms</value>
+    <comment>Label</comment>
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Bay number</value>
+    <comment>Label</comment>
   </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Detail code</value>
@@ -1634,16 +1682,19 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="InverterIndex" xml:space="preserve">
     <value>Inverter index</value>
+    <comment>Label</comment>
   </data>
   <data name="OccurrenceDate" xml:space="preserve">
     <value>Occurrence date</value>
+    <comment>Label</comment>
   </data>
   <data name="ResolutionDate" xml:space="preserve">
     <value>Resolution date</value>
+    <comment>Label</comment>
   </data>
   <data name="SerialNumber" xml:space="preserve">
     <value>Serial</value>
-    <comment>Header text</comment>
+    <comment>Label</comment>
   </data>
   <data name="FragmentBack" xml:space="preserve">
     <value>Fragment back</value>
@@ -1659,30 +1710,34 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="InvalidOperation" xml:space="preserve">
     <value>Invalid operation {0}</value>
+    <comment>Error Message</comment>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Users</value>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitOutBay" xml:space="preserve">
     <value>out of the bay</value>
+    <comment>Label</comment>
   </data>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
     <value>Unit</value>
+    <comment>Label</comment>
   </data>
   <data name="AdditionalText" xml:space="preserve">
     <value>Additional Information</value>
+    <comment>Label</comment>
   </data>
   <data name="UnitId" xml:space="preserve">
     <value>Unit n.</value>
+    <comment>Label</comment>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Height:</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+    <value>Height</value>
   </data>
   <data name="Weight" xml:space="preserve">
-    <value>Weight:</value>
+    <value>Weight</value>
+    <comment>Label</comment>
   </data>
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>Fragmentation total above 25%</value>
@@ -1695,14 +1750,44 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="AvailablesQuantity" xml:space="preserve">
     <value>Available quantity</value>
+    <comment>Label</comment>
   </data>
   <data name="ItemsFilteredByCode" xml:space="preserve">
     <value>Items filtered by code.</value>
+    <comment>Label</comment>
   </data>
   <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
     <value>The barcode '{0}' does not contain the item code.</value>
+    <comment>Error Message</comment>
   </data>
   <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
     <value>The barcode '{0}' does not contain the item quantity.</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>The barcode '{0}' does not contain the list identifier.</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="GoToCellHeight" xml:space="preserve">
+    <value>Go to Cell Height</value>
+  </data>
+  <data name="LowerBayPosition" xml:space="preserve">
+    <value>Lower bay position</value>
+    <comment>Label</comment>
+  </data>
+  <data name="MaintenanceMainPageDetail" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="UpperBayPosition" xml:space="preserve">
+    <value>Upper Position</value>
+    <comment>Label</comment>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>No list with identifier '{0}' was found.</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>Execution of list '{0}' was accepted.</value>
+    <comment>Information Message</comment>
   </data>
 </root>

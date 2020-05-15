@@ -330,7 +330,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, false);
                     }
                 }
-                catch (StateMachineException ex)
+                catch (StateMachineException)
                 {
                     //this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
                     //throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);

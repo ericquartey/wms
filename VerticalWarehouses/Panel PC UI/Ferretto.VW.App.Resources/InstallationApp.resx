@@ -910,7 +910,7 @@
     <value>Bay 3</value>
   </data>
   <data name="ShutterEnduranceTestTitle" xml:space="preserve">
-    <value>Shutter Endurance Test for Bay {0}</value>
+    <value>Shutter Endurance Test for Bay</value>
   </data>
   <data name="ShutterClosed" xml:space="preserve">
     <value>Closed</value>
@@ -2653,5 +2653,20 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="UnitInternalPosition" xml:space="preserve">
     <value>Unit in internal position</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Calibrate the external bay</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>External bay calibration</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Perform the bay calibration procedure for positioning in correspondence with the sensor</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Movements performed</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Run (mm)</value>
   </data>
 </root>

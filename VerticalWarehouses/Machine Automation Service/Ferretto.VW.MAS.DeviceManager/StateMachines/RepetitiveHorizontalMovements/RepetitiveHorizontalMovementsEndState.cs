@@ -29,8 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         #region Constructors
 
-        public RepetitiveHorizontalMovementsEndState(IRepetitiveHorizontalMovementsStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public RepetitiveHorizontalMovementsEndState(IRepetitiveHorizontalMovementsStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IRepetitiveHorizontalMovementsMachineData;

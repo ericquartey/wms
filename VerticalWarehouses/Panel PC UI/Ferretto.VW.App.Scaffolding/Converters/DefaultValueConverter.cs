@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 
             if (value is IEnumerable<Attribute> metadata)
             {
-                string output = System.Convert.ToString(parameter, culture)?.ToLowerInvariant();
+                var output = System.Convert.ToString(parameter, culture)?.ToLowerInvariant();
                 switch (output)
                 {
                     case "min":

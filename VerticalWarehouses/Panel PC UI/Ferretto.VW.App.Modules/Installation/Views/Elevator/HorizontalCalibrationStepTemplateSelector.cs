@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            HorizontalChainCalibrationStep value = (HorizontalChainCalibrationStep)(item ?? HorizontalChainCalibrationStep.StartCalibration);
+            var value = (HorizontalChainCalibrationStep)(item ?? HorizontalChainCalibrationStep.StartCalibration);
             switch (value)
             {
                 case HorizontalChainCalibrationStep.StartCalibration:

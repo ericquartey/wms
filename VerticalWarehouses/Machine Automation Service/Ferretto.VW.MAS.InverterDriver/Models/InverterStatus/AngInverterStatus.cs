@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private int currentPositionAxisVertical;
 
-        private bool waitingHeartbeatAck;
-
         #endregion
 
         #region Constructors

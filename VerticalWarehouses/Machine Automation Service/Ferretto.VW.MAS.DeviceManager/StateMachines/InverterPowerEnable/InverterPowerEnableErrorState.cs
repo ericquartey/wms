@@ -18,8 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         #region Constructors
 
-        public InverterPowerEnableErrorState(IInverterPowerEnableStateData stateData)
-                    : base(stateData?.ParentMachine, stateData?.MachineData?.Logger)
+        public InverterPowerEnableErrorState(IInverterPowerEnableStateData stateData, ILogger logger)
+            : base(stateData?.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData?.MachineData as IInverterPowerEnableMachineData;
