@@ -207,4 +207,22 @@
   <data name="SelectFile" xml:space="preserve">
     <value>Select file</value>
   </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Inverters parameters folder</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Choose configuration file</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Configuration folder</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Folders does not exist</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>File not valid or not inserted</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>File not saved</value>
+  </data>
 </root>
