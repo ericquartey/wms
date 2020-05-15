@@ -81,8 +81,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Constructors
 
-        public PositioningExecutingState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PositioningExecutingState(IPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.stateData.FieldMessage = message;
                     // stop timers
                     this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                     break;
             }
         }
@@ -381,11 +381,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (reason == StopRequestReason.Error)
             {
-                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
             }
             else
             {
-                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
             }
         }
 
@@ -758,7 +758,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 && Math.Abs(chainPosition.Value - this.horizontalStartingPosition) >= this.targetPosition
                                 )
                             {
-                                if(this.countProfileCalibrated < 2)
+                                if (this.countProfileCalibrated < 2)
                                 {
                                     this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
                                 }
@@ -881,7 +881,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                 if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
                                 {
-                                    this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData));
+                                    this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData, this.Logger));
                                 }
                                 else
                                 {
@@ -923,14 +923,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                     this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                                 }
                             }
                             else
                             {
                                 // stop timers
                                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                             }
                         }
                     }
@@ -957,7 +957,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             this.Logger.LogDebug("FSM Finished Executing State");
                             this.machineData.ExecutedSteps = this.performedCycles;
-                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                         }
                         else
                         {
@@ -1010,7 +1010,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                     }
                     break;
 
@@ -1033,13 +1033,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                         }
                     }
                     break;
 
                 case MovementMode.BayChainManual:
-                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                     break;
 
                 case MovementMode.BayTest:
@@ -1078,7 +1078,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.Logger.LogDebug("FSM Finished Executing State");
                                 this.machineData.ExecutedSteps = this.performedCycles;
                                 this.machineData.MessageData.IsTestStopped = this.isTestStopped;
-                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                                 break;
                             }
                             else
@@ -1136,7 +1136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.machineData.ExecutedSteps = this.performedCycles;
                 // stop timers
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
             }
         }
 

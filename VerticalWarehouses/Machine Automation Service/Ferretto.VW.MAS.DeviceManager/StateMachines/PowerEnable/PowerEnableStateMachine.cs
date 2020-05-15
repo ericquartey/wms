@@ -99,16 +99,16 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
                         this.Logger.LogError(errorText);
 
-                        this.ChangeState(new PowerEnableErrorState(stateData));
+                        this.ChangeState(new PowerEnableErrorState(stateData, this.Logger));
                     }
                     else
                     {
-                        this.ChangeState(new PowerEnableStartState(stateData));
+                        this.ChangeState(new PowerEnableStartState(stateData, this.Logger));
                     }
                 }
                 else
                 {
-                    this.ChangeState(new PowerEnableStartState(stateData));
+                    this.ChangeState(new PowerEnableStartState(stateData, this.Logger));
                 }
             }
         }

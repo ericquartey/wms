@@ -29,8 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         #region Constructors
 
-        public InverterProgrammingStartState(IInverterProgrammingStateData stateData)
-                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public InverterProgrammingStartState(IInverterProgrammingStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IInverterProgrammingMachineData;
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData, this.Logger));
                             var notificationEndMessage = new NotificationMessage(
                                               null,
                                       $"Starting inverter Programming state on inverters",
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
             if (message.Type == FieldMessageType.IoDriverException)
             {
                 this.stateData.FieldMessage = message;
-                this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData, this.Logger));
             }
         }
 
@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
             this.Logger.LogDebug($"Stop with reason: {reason}");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData, this.Logger));
         }
 
         #endregion

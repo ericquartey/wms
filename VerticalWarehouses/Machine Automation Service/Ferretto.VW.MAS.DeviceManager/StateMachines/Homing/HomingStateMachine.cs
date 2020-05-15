@@ -234,11 +234,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
 
-                    this.ChangeState(new HomingErrorState(stateData));
+                    this.ChangeState(new HomingErrorState(stateData, this.Logger));
                 }
                 else
                 {
-                    this.ChangeState(new HomingStartState(stateData));
+                    this.ChangeState(new HomingStartState(stateData, this.Logger));
                 }
             }
         }

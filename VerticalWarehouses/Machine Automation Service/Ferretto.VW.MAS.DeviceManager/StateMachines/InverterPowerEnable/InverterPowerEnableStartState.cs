@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 {
     internal class InverterPowerEnableStartState : StateBase
@@ -28,8 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         #region Constructors
 
-        public InverterPowerEnableStartState(IInverterPowerEnableStateData stateData)
-                    : base(stateData?.ParentMachine, stateData?.MachineData?.Logger)
+        public InverterPowerEnableStartState(IInverterPowerEnableStateData stateData, ILogger logger)
+            : base(stateData?.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData?.MachineData as IInverterPowerEnableMachineData;
@@ -75,7 +74,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 if (this.inverterResponses.Values.Any(r => r != MessageStatus.OperationEnd))
                 {
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new InverterPowerEnableErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new InverterPowerEnableErrorState(this.stateData, this.Logger));
                 }
                 else
                 {
@@ -83,7 +82,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                         && this.machineData.TargetBay == BayNumber.ElevatorBay
                         && this.machineData.BayInverters.Count() == 1)
                     {
-                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEncoderState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEncoderState(this.stateData, this.Logger));
                     }
                     else
                     {
@@ -103,7 +102,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
                         }
 
-                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData, this.Logger));
                     }
                 }
             }
@@ -151,7 +150,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             this.Logger.LogDebug($"Stop with reason: {reason}");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData, this.Logger));
         }
 
         #endregion

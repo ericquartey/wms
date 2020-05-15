@@ -41,8 +41,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         #region Constructors
 
-        public ExtBayPositioningEndState(IExtBayPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ExtBayPositioningEndState(IExtBayPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
                         case MessageStatus.OperationError:
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
-                            this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                             break;
                     }
                     break;

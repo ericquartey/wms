@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingCalibrateAxisDoneState : StateBase
@@ -33,8 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #region Constructors
 
-        public HomingCalibrateAxisDoneState(IHomingStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public HomingCalibrateAxisDoneState(IHomingStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
@@ -66,7 +65,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceError, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -81,7 +80,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -97,7 +96,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -106,11 +105,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps)
                 {
-                    this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
                 }
                 else
                 {
-                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.stateData, this.Logger));
                 }
             }
         }
@@ -177,7 +176,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
         }
 
         #endregion

@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Template
 {
     internal class TemplateStartState : StateBase
@@ -21,8 +20,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
 
         #region Constructors
 
-        public TemplateStartState(ITemplateStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public TemplateStartState(ITemplateStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;
@@ -43,12 +42,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -87,7 +86,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         {
             this.Logger.LogDebug("1:Stop Method Start");
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new TemplateEndState(this.stateData, this.Logger));
         }
 
         #endregion
