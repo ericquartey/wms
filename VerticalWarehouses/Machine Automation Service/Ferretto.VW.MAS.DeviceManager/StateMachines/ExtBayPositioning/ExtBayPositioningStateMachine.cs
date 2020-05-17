@@ -154,7 +154,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayChain)
+            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayChain ||
+                this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
             {
 #if CHECK_BAY_SENSOR
                 var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
@@ -172,13 +173,16 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 else
 #endif
                 {
-                    // TODO: Check the zero bay sensor condition (??)
-                    //ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
-                    //if (!ok)
-                    //{
-                    //    errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
-                    //    errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
-                    //}
+                    if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+                    {
+                        // Check the zero bay sensor condition
+                        ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                        if (!ok)
+                        {
+                            errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
+                            errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                        }
+                    }
                 }
             }
             return ok;
