@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStartState(IShutterPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ShutterPositioningStartState(IShutterPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                 else if (messageData.ShutterPosition != ShutterPosition.Opened)
                                 {
                                     this.Logger.LogError($"Shutter not in Opened position before Test Loop: {messageData.ShutterPosition}");
-                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                                 }
                                 else
                                 {
@@ -129,12 +129,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                                     this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-                                    this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.stateData));
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.stateData, this.Logger));
                                 }
                             }
                             else
                             {
-                                this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData, this.Logger));
                             }
                         }
                         break;
@@ -142,13 +142,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     case MessageStatus.OperationStart:
                         if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition)
                         {
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.stateData, this.Logger));
                         }
                         break;
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate))
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before absolute positioning");
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                     return;
                 }
                 messageData = new ShutterPositioningFieldMessageData(this.machineData.PositioningMessageData);
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     )
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                     return;
                 }
                 this.machineVolatileDataProvider.Mode = MachineMode.Test;
@@ -266,7 +266,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 this.machineData.RequestingBay,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"5:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace(
+                "5:Publishing Automation Notification Message {0} Destination {1} Status {2}",
+                notificationMessage.Type,
+                notificationMessage.Destination,
+                notificationMessage.Status);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
@@ -276,7 +280,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData, this.Logger));
         }
 
         #endregion

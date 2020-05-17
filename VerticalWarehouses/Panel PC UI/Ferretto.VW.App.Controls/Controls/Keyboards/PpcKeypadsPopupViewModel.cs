@@ -156,7 +156,7 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         private void MinPlusCommandExecute()
         {
-            string v = this.ScreenText;
+            var v = this.ScreenText;
             if (v.Substring(0, 1) == "-")
             {
                 this.ScreenText = v.Replace("-", "");

@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            VerticalOffsetCalibrationStep value = (VerticalOffsetCalibrationStep)(item ?? VerticalOffsetCalibrationStep.Start);
+            var value = (VerticalOffsetCalibrationStep)(item ?? VerticalOffsetCalibrationStep.Start);
             switch (value)
             {
                 case VerticalOffsetCalibrationStep.Start:

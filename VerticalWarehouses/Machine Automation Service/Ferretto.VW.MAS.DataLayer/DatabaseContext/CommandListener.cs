@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.DataLayer
 #if DEBUG
             var stackTrace = new System.Diagnostics.StackTrace();
             var methods = new List<string>();
-            for (int i = 1; i < stackTrace.FrameCount && methods.Count < 4; i++)
+            for (var i = 1; i < stackTrace.FrameCount && methods.Count < 4; i++)
             {
                 var frame = stackTrace.GetFrame(i);
                 var method = frame.GetMethod();

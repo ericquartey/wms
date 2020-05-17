@@ -66,9 +66,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 if (originalValue != null)
                 {
                     // deep copy
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
-                        BinaryFormatter formatter = new BinaryFormatter();
+                        var formatter = new BinaryFormatter();
                         formatter.Serialize(ms, originalValue);
                         ms.Position = 0;
                         this.Value = formatter.Deserialize(ms);

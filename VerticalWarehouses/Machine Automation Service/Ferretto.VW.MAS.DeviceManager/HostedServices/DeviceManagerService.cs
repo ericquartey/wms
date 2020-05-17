@@ -540,7 +540,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (receivedMessage.Status == MessageStatus.OperationUpdateData)
             {
-                string s = string.Empty;
+                var s = string.Empty;
             }
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();

@@ -101,6 +101,9 @@
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Bays\ExternalBayCalibrationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Inverters\InvertersParametersImportView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

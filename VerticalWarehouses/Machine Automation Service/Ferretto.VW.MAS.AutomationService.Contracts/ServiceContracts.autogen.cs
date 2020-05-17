@@ -2904,11 +2904,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         CloseShutter = 8,
     
-        BackToTarget = 9,
+        BackToBay = 9,
     
-        WaitDeposit = 10,
+        WaitChain = 10,
     
-        End = 11,
+        WaitDeposit = 11,
+    
+        End = 12,
     
         Error = 101,
     

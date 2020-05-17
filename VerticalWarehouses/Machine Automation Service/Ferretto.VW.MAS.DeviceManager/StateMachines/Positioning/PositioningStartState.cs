@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Constructors
 
-        public PositioningStartState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PositioningStartState(IPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceError, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -99,14 +99,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.stateData));
+                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.stateData, this.Logger));
             }
         }
 
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
         }
 
         #endregion

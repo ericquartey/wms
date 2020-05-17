@@ -32,12 +32,12 @@ namespace Ferretto.VW.App.Keyboards
             Match layoutCmdMatch, convertCmdMatch;
             if ((layoutCmdMatch = Regex.Match(command.CommandText, CmdPattern))?.Success == true)
             {
-                string layoutCode = layoutCmdMatch.Groups["Cmd"].Value;
+                var layoutCode = layoutCmdMatch.Groups["Cmd"].Value;
                 button.FindKeyboard()?.RequestLayoutChange(layoutCode);
             }
             else if ((convertCmdMatch = Regex.Match(command.CommandText, ConvertPattern))?.Success == true)
             {
-                string recourceKey = convertCmdMatch.Groups["Converter"].Value;
+                var recourceKey = convertCmdMatch.Groups["Converter"].Value;
                 if (button.TryFindResource(recourceKey) is System.Windows.Data.IValueConverter converter)
                 {
                     var target = System.Windows.Input.Keyboard.FocusedElement;
@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Keyboards
             }
             else
             {
-                command.SendKeys(out System.Windows.Input.Key key, out string text);
+                command.SendKeys(out var key, out var text);
                 if (key != System.Windows.Input.Key.None || !string.IsNullOrEmpty(text))
                 {
                     button.FindKeyboard()?.FireKeyboardCommand(key, text);
@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Keyboards
             => button.FindAncestor<Keyboard>();
 
         public static void SendKeys(this KeyboardKeyCommand command)
-            => command.SendKeys(out System.Windows.Input.Key _0, out string _1);
+            => command.SendKeys(out var _0, out var _1);
 
         private static T FindAncestor<T>(this DependencyObject child) where T : DependencyObject
         {
@@ -96,10 +96,10 @@ namespace Ferretto.VW.App.Keyboards
 
             key = System.Windows.Input.Key.None;
             text = default;
-            string txt = command.CommandText;
+            var txt = command.CommandText;
             if (Regex.IsMatch(txt, KeyPattern))
             {
-                string cmd = txt.Substring(1, txt.Length - 2);
+                var cmd = txt.Substring(1, txt.Length - 2);
                 if (Enum.TryParse<System.Windows.Input.Key>(cmd, out key))
                 {
                     Ferretto.VW.App.Keyboards.SendKeys.Send(key);

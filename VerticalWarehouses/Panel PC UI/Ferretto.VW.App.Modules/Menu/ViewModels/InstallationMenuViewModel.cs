@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand horizontalChainCalibrationTestBypassCommand;
 
+        private DelegateCommand externalBayCalibrationTestBypassCommand;
+
         private int proceduresCompleted;
 
         private int proceduresCompletedPercent;
@@ -97,6 +99,34 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
+
+                        await this.UpdateSetupStatusAsync();
+                    }
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsExecutingProcedure = false;
+                }
+            }));
+
+        public ICommand ExternalBayCalibrationBypassCommand =>
+        this.externalBayCalibrationTestBypassCommand
+        ??
+        (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
+            async () =>
+            {
+                try
+                {
+                    this.IsExecutingProcedure = true;
+
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync(); ///to change
 
                         await this.UpdateSetupStatusAsync();
                     }
@@ -443,8 +473,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 var activeOtherBaysNumber = this.MachineService.Bays.Where(b => b.Number != this.MachineService.Bay.Number && b.Number != BayNumber.ElevatorBay).Select(b => b.Number);
 
-                bool otherBaysSetupCompleted = true;
-                foreach (BayNumber bayNumber in activeOtherBaysNumber)
+                var otherBaysSetupCompleted = true;
+                foreach (var bayNumber in activeOtherBaysNumber)
                 {
                     switch (bayNumber)
                     {
@@ -527,10 +557,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.source.Add(new ItemListSetupProcedure()
                     {
                         Text = Localized.Get("InstallationApp.TestExternalBay"),
-                        Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = false,
-                        Bypassed = false,
-                        Command = null,
+                        Status = bayStatus.CarouselCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,  //to change
+                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted,  //to change
+                        Bypassed = bayStatus.CarouselCalibration.IsBypassed,  //to change
+                        Command = this.ExternalBayCalibrationBypassCommand,
                     });
                 }
 
@@ -563,7 +593,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
                         Bypassed = false,
-                        Command = new DelegateCommand(async () =>
+                        Command = new DelegateCommand(() =>
                         {
                         }),
                     });

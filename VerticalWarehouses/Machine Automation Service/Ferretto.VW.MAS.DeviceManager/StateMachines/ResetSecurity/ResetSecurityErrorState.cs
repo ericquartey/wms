@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 {
     internal class ResetSecurityErrorState : StateBase
@@ -21,8 +20,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityErrorState(IResetSecurityStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ResetSecurityErrorState(IResetSecurityStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IResetSecurityMachineData;

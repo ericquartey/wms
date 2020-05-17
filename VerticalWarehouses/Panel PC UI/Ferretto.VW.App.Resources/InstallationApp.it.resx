@@ -846,7 +846,7 @@
     <value>Baia 3</value>
   </data>
   <data name="ShutterEnduranceTestTitle" xml:space="preserve">
-    <value>Test Serranda della Baia {0}</value>
+    <value>Test Serranda della Baia</value>
   </data>
   <data name="ShutterClosed" xml:space="preserve">
     <value>Chiusa</value>
@@ -2567,5 +2567,20 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="UnitInternalPosition" xml:space="preserve">
     <value>Cassetto in posizione interna</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della baia esterna</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione baia esterna</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Esegui la procedura di taratura della baia per il posizionamento in corrispondenza del sensore</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Movimenti eseguiti</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Corsa (mm)</value>
   </data>
 </root>

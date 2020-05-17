@@ -17,8 +17,8 @@ namespace Ferretto.VW.App.Controls.Converters
             {
                 if (TruthyAssertor.IsTruthy(value))
                 {
-                    Assembly assembly = Assembly.GetAssembly(this.GetType());
-                    string assemblyName = assembly.GetName().Name;
+                    var assembly = Assembly.GetAssembly(this.GetType());
+                    var assemblyName = assembly.GetName().Name;
                     //Uri baseUri = new Uri($"pack://application:,,,/{ assemblyName };component/Fonts/");
                     return new FontFamily(new Uri("pack://application:,,,/"), $"./{assemblyName};component/Fonts/#Password");
                 }

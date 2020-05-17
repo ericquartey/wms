@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                int lu = 0;
+                var lu = 0;
 
                 if (this.IsPositionUpSelected)
                 {

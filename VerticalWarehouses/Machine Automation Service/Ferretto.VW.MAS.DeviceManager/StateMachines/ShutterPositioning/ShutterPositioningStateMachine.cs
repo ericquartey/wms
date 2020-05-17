@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                 if (this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    this.ChangeState(new ShutterPositioningStartState(stateData));
+                    this.ChangeState(new ShutterPositioningStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                     this.Logger.LogError(errorText);
 
-                    this.ChangeState(new ShutterPositioningErrorState(stateData));
+                    this.ChangeState(new ShutterPositioningErrorState(stateData, this.Logger));
                 }
             }
         }

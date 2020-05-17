@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
 
                 string resourceKey = default;
 
-                UIHintAttribute uiHint = metadata.OfType<UIHintAttribute>().FirstOrDefault();
+                var uiHint = metadata.OfType<UIHintAttribute>().FirstOrDefault();
                 if (uiHint != null)
                 {
                     // TODO: custom stuff
@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                 // try with datatype
                 if (string.IsNullOrEmpty(resourceKey))
                 {
-                    DataTypeAttribute dataType = metadata.OfType<DataTypeAttribute>().FirstOrDefault();
+                    var dataType = metadata.OfType<DataTypeAttribute>().FirstOrDefault();
                     if (dataType != null)
                     {
                         switch (dataType.DataType)
@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                 // try with very type
                 if (string.IsNullOrEmpty(resourceKey))
                 {
-                    Type type = entity.Property.PropertyType;
+                    var type = entity.Property.PropertyType;
                     if (type == typeof(System.Net.IPAddress))
                     {
                         resourceKey = "IPAddressDataTemplate";

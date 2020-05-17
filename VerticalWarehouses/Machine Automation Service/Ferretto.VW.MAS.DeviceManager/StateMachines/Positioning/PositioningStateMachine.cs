@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     || this.CheckConditions(out var errorText, out var errorCode)
                     )
                 {
-                    this.ChangeState(new PositioningStartState(stateData));
+                    this.ChangeState(new PositioningStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         MessageStatus.OperationStart);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.ChangeState(new PositioningErrorState(stateData));
+                    this.ChangeState(new PositioningErrorState(stateData, this.Logger));
                 }
             }
         }

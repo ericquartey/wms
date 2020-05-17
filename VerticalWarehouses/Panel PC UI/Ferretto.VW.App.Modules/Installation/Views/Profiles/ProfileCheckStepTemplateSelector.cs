@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            ProfileCheckStep value = (ProfileCheckStep)(item ?? ProfileCheckStep.Initialize);
+            var value = (ProfileCheckStep)(item ?? ProfileCheckStep.Initialize);
             switch (value)
             {
                 case ProfileCheckStep.Initialize:

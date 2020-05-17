@@ -8,6 +8,7 @@ using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
@@ -22,7 +23,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly string vertimagExportConfigurationPath;
 
-        private RelayCommand exportCommand;
+        private DelegateCommand exportCommand;
 
         private string resultVertimagConfiguration;
 
@@ -53,7 +54,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         public ICommand ExportCommand =>
                         this.exportCommand
                         ??
-                        (this.exportCommand = new RelayCommand(this.Export));
+                        (this.exportCommand = new DelegateCommand(this.Export));
 
         public string ResultVertimagConfiguration
         {

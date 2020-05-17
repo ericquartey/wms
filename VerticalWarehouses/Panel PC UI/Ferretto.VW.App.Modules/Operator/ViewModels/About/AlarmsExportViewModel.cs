@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
-        private List<MachineError> machineErrors;
+        private readonly string separator = ";";
 
         private readonly UsbWatcherService usbWatcherService;
 
@@ -34,14 +34,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool hasNameConflict = false;
 
-        private bool isBusy = false;
-
-        private bool overwrite = false;
-
-        private readonly string separator = ";";
-
-        private bool includeID = true;
-
         private bool includeBayNumber = true;
 
         private bool includeCode = true;
@@ -50,11 +42,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool includeDetailCode = true;
 
+        private bool includeID = true;
+
         private bool includeInverterIndex = true;
 
         private bool includeOccurenceDate = true;
 
         private bool includeResolutionDate = true;
+
+        private bool isBusy = false;
+
+        private IEnumerable<MachineError> machineErrors;
+
+        private bool overwrite = false;
 
         #endregion
 
@@ -78,40 +78,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand ExportCommand =>
             this.exportCommand ??
             (this.exportCommand = new DelegateCommand(
-            async () => await this.ExportAsync(), this.CanExport));
-
-        public List<MachineError> MachineErrors
-        {
-            get => this.machineErrors;
-            set
-            {
-                if (this.SetProperty(ref this.machineErrors, value))
-                {
-                    this.exportCommand?.RaiseCanExecuteChanged();
-                }
-            }
-        }
+            this.Export, this.CanExport));
 
         public bool HasFilenameConflict => this.hasNameConflict;
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.exportCommand?.RaiseCanExecuteChanged();
-                    this.IsBackNavigationAllowed = !this.isBusy;
-                }
-            }
-        }
-
-        public bool IncludeID
-        {
-            get => this.includeID;
-            set => this.SetProperty(ref this.includeID, value);
-        }
 
         public bool IncludeBayNumber
         {
@@ -137,6 +106,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.includeDetailCode, value);
         }
 
+        public bool IncludeID
+        {
+            get => this.includeID;
+            set => this.SetProperty(ref this.includeID, value);
+        }
+
         public bool IncludeInverterIndex
         {
             get => this.includeInverterIndex;
@@ -155,6 +130,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.includeResolutionDate, value);
         }
 
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.exportCommand?.RaiseCanExecuteChanged();
+                    this.IsBackNavigationAllowed = !this.isBusy;
+                }
+            }
+        }
+
+        public IEnumerable<MachineError> MachineErrors
+        {
+            get => this.machineErrors;
+            private set
+            {
+                if (this.SetProperty(ref this.machineErrors, value))
+                {
+                    this.exportCommand?.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool OverwriteTargetFile
         {
             get => this.overwrite;
@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.drive;
             set
             {
-                DriveInfo old = this.drive;
+                var old = this.drive;
                 if (this.SetProperty(ref this.drive, value))
                 {
                     this.OnSelectedDriveChanged(old, value);
@@ -216,9 +216,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    this.SelectedDrive != null;
         }
 
-        private async Task ExportAsync()
+        private void Export()
         {
-            bool goback = false;
+            var goback = false;
             try
             {
                 this.ClearNotifications();
@@ -232,6 +232,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         return;
                     }
                 }
+
                 this.IsBusy = true;
                 this.IsBackNavigationAllowed = false;
 
@@ -242,11 +243,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MachineErrors = lst.OrderBy(o => o.OccurrenceDate).ToList();
 
                 // Create filename and full path
-                string filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
-                string fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
+                var filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
+                var fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
 
-                //create intestation
-                string intestation = "";
+                // create intestation
+                var intestation = string.Empty;
                 intestation += this.IncludeID ? Localized.Get("OperatorApp.Id") + this.separator : string.Empty;
                 intestation += this.IncludeBayNumber ? Localized.Get("OperatorApp.BayNumber") + this.separator : string.Empty;
                 intestation += this.IncludeCode ? Localized.Get("OperatorApp.Code") + this.separator : string.Empty;
@@ -260,7 +261,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 File.AppendAllLines(fullPath, this.MachineErrors.Select(e =>
                    {
-                       string line = "";
+                       var line = string.Empty;
 
                        line += this.IncludeID ? e.Id + this.separator : string.Empty;
                        line += this.IncludeBayNumber ? e.BayNumber + this.separator : string.Empty;
@@ -296,14 +297,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnSelectedDriveChanged(DriveInfo old, DriveInfo value)
         {
-            bool hasConflict = false;
+            var hasConflict = false;
             if (value != null)
             {
                 try
                 {
                     // Create filename and full path
-                    string filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
-                    string fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
+                    var filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
+                    var fullPath = Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
 
                     hasConflict = File.Exists(fullPath);
                 }
@@ -312,6 +313,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(exc);
                 }
             }
+
             this.hasNameConflict = this.overwrite = hasConflict;
             this.RaisePropertyChanged(nameof(this.HasFilenameConflict));
             this.RaisePropertyChanged(nameof(this.OverwriteTargetFile));
@@ -324,6 +326,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var drives = this.availableDrives = ((UsbWatcherService)sender).Drives ?? Array.Empty<DriveInfo>();
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
+
             if (!drives.Any())
             {
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);

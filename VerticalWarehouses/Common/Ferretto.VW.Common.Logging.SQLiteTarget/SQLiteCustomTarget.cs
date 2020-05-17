@@ -46,27 +46,34 @@ namespace Ferretto.VW.Common.Logging.SQLiteTarget
 
         protected override void Write(LogEventInfo logEvent)
         {
-            if (this.logConnection == null)
+            if (logEvent is null)
+            {
+                throw new ArgumentNullException(nameof(logEvent));
+            }
+
+            if (this.logConnection is null)
             {
                 this.ConfigureDatabase();
             }
 
             // Insert a record
             var insertSql = @"INSERT INTO LogEntries (TimeStamp, Message, LoggerName, Level, Exception) values (@timestamp, @message, @loggername, @level, @exception)";
-            var insertCom = new SQLiteCommand(insertSql, this.logConnection);
-            insertCom.Parameters.Add(new SQLiteParameter("@timestamp") { Value = DateTime.Now });
-            insertCom.Parameters.Add(new SQLiteParameter("@loggername") { Value = logEvent.LoggerName });
-            insertCom.Parameters.Add(new SQLiteParameter("@level") { Value = logEvent.Level });
-            insertCom.Parameters.Add(new SQLiteParameter("@message") { Value = logEvent.Message });
-            insertCom.Parameters.Add(new SQLiteParameter("@exception") { Value = logEvent.Exception });
+            using (var insertCom = new SQLiteCommand(insertSql, this.logConnection))
+            {
+                insertCom.Parameters.Add(new SQLiteParameter("@timestamp") { Value = DateTime.Now });
+                insertCom.Parameters.Add(new SQLiteParameter("@loggername") { Value = logEvent.LoggerName });
+                insertCom.Parameters.Add(new SQLiteParameter("@level") { Value = logEvent.Level });
+                insertCom.Parameters.Add(new SQLiteParameter("@message") { Value = logEvent.Message });
+                insertCom.Parameters.Add(new SQLiteParameter("@exception") { Value = logEvent.Exception });
 
-            try
-            {
-                insertCom.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                // TODO fix db migration issue
+                try
+                {
+                    insertCom.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    // TODO fix db migration issue
+                }
             }
         }
 
@@ -79,8 +86,10 @@ namespace Ferretto.VW.Common.Logging.SQLiteTarget
             object checkResult = null;
             try
             {
-                var checkCommand = new SQLiteCommand(sqlQuery, this.logConnection);
-                checkResult = checkCommand.ExecuteScalar();
+                using (var checkCommand = new SQLiteCommand(sqlQuery, this.logConnection))
+                {
+                    checkResult = checkCommand.ExecuteScalar();
+                }
             }
             catch (Exception)
             {
@@ -94,8 +103,10 @@ namespace Ferretto.VW.Common.Logging.SQLiteTarget
                     @"CREATE TABLE 'LogEntries' ( 'Exception' TEXT NULL, 'Level' TEXT NULL, 'LogEntryID' INTEGER NOT NULL CONSTRAINT 'PK_LogEntries' PRIMARY KEY AUTOINCREMENT, 'LoggerName' TEXT NULL, 'Message' TEXT NULL, 'TimeStamp' TEXT NOT NULL)";
                 try
                 {
-                    var createTableCommand = new SQLiteCommand(sqlCommand, this.logConnection);
-                    createTableCommand.ExecuteNonQuery();
+                    using (var createTableCommand = new SQLiteCommand(sqlCommand, this.logConnection))
+                    {
+                        createTableCommand.ExecuteNonQuery();
+                    }
                 }
                 catch (Exception)
                 {

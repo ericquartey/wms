@@ -35,7 +35,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
 
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.CurrentState.ProcessCommandMessage(message);
@@ -46,17 +45,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
             this.CurrentState.ProcessFieldNotificationMessage(message);
         }
 
-        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.CurrentState.ProcessNotificationMessage(message);
         }
 
-        /// <inheritdoc/>
         public override void Start()
         {
             var stateData = new TemplateStateData(this, this.machineData);
-            this.ChangeState(new TemplateStartState(stateData));
+            this.ChangeState(new TemplateStartState(stateData, this.Logger));
         }
 
         public override void Stop(StopRequestReason reason)

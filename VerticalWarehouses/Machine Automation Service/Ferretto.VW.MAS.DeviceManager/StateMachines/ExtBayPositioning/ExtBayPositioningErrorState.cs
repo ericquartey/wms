@@ -28,8 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         #region Constructors
 
-        public ExtBayPositioningErrorState(IExtBayPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ExtBayPositioningErrorState(IExtBayPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;

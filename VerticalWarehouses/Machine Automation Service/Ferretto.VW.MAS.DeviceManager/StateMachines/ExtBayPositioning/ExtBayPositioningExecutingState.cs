@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly Timer delayTimer;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IErrorsProvider errorsProvider;
@@ -44,8 +46,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IExtBayPositioningStateData stateData;
 
-        private Timer delayTimer;
-
         private HorizontalCalibrationStep findZeroStep;
 
         private double horizontalStartingPosition;
@@ -62,8 +62,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         #region Constructors
 
-        public ExtBayPositioningExecutingState(IExtBayPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ExtBayPositioningExecutingState(IExtBayPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                     this.stateData.FieldMessage = message;
                     // stop timers
                     this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                    this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                     break;
             }
         }
@@ -228,11 +228,11 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
             if (reason == StopRequestReason.Error)
             {
-                this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData));
+                this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
             }
             else
             {
-                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
             }
         }
 
@@ -698,7 +698,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 case MovementMode.ExtBayChain:
                     {
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var distance = Math.Abs(this.machineData.MessageData.TargetPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
@@ -716,13 +716,13 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         //    this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
                         //}
 
-                        this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
                     }
                     break;
 
                 case MovementMode.BayChainManual:
                 case MovementMode.ExtBayChainManual:
-                    this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
                     break;
 
                 case MovementMode.BayTest:
@@ -850,7 +850,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
                 // stop timers
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
             }
         }
 

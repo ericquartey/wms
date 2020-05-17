@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry)
         {
-            bool returnValue = false;
+            var returnValue = false;
             canRetry = false;
 #if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public bool DepositUnitChangePosition()
         {
-            bool bayShutter = false;
+            var bayShutter = false;
             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
             {
                 this.ElevatorDataProvider.SetLoadingUnit(null);
@@ -248,15 +248,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if (this.Mission.ErrorCode != MachineErrorCode.NoError)
-                    {
-                        this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
-
-                        this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
-                        this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                    }
-
                     if (bay == null
                         || bay.Positions.Count() == 1
                         || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
@@ -271,7 +262,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                            if (!this.CheckMissionShowError())
+                            {
+                                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                            }
                             newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                     }
@@ -282,6 +276,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
             newStep.OnEnter(null);
+        }
+
+        public bool CheckMissionShowError()
+        {
+            if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
+                    this.Mission.TargetBay,
+                    string.Format(Resources.Missions.ErrorMissionDetails,
+                        this.Mission.LoadUnitId,
+                        loadUnit.GrossWeight - loadUnit.Tare,
+                        loadUnit.Height,
+                        this.Mission.WmsId ?? 0));
+
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                return true;
+            }
+            return false;
         }
 
         public bool EnterErrorState(MissionStep errorState)
@@ -406,7 +421,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
         }
@@ -544,7 +559,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public bool UpdateResponseList(MessageType type)
         {
-            bool update = false;
+            var update = false;
             switch (type)
             {
                 case MessageType.Positioning:

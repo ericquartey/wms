@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         if (!this.isPositionDefined)
                         {
                             this.isBlockDefined = true;
-                            object[] blockValues = new object[]
+                            var blockValues = new object[]
                             {
                                 (short)this.tableIndex,
                                 this.data.TargetSpeed[this.stepId],
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         }
                         else
                         {
-                            object[] blockValues = new object[]
+                            var blockValues = new object[]
                             {
                                 (short)InverterTableIndex.TableTravelP1,
                                 this.data.SwitchPosition[0],
@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 }
                 else
                 {
-                    object[] blockValues = new object[]
+                    var blockValues = new object[]
                     {
                         (short)this.tableIndex,
                         this.data.TargetSpeed[this.stepId],

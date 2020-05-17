@@ -14,8 +14,8 @@ namespace Ferretto.VW.InvertersParametersGenerator
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool invert = TruthyAssertor.IsInverting(parameter);
-            bool finalValue = invert ^ TruthyAssertor.IsTruthy(value);
+            var invert = TruthyAssertor.IsInverting(parameter);
+            var finalValue = invert ^ TruthyAssertor.IsTruthy(value);
 
             return TruthyAssertor.Convert(finalValue, targetType, parameter);
         }

@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Installation.Views
 
         private void ViewModel_NavigatingBack(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            bool isEditing = this.scaffolder.EditingEntity != null;
+            var isEditing = this.scaffolder.EditingEntity != null;
             if (e.Cancel = this.scaffolder.IsNavigating || isEditing)
             {
                 if (isEditing)

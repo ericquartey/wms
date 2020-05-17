@@ -33,13 +33,13 @@ namespace Ferretto.VW.App.Controls.Extensions
 
         private static void DataGridOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            DataGrid dataGrid = sender as DataGrid;
+            var dataGrid = sender as DataGrid;
             if (dataGrid == null)
             {
                 return;
             }
 
-            ScrollViewer scrollViewer = UIHelper.FindChildren<ScrollViewer>(dataGrid).FirstOrDefault();
+            var scrollViewer = UIHelper.FindChildren<ScrollViewer>(dataGrid).FirstOrDefault();
             if (scrollViewer != null)
             {
                 scrollViewer.ScrollChanged += ScrollViewerOnScrollChanged;
@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Controls.Extensions
 
         private static void OnScrollChangedCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataGrid dataGrid = d as DataGrid;
+            var dataGrid = d as DataGrid;
             if (dataGrid == null)
             {
                 return;
@@ -66,10 +66,10 @@ namespace Ferretto.VW.App.Controls.Extensions
 
         private static void ScrollViewerOnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            DataGrid dataGrid = UIHelper.FindParent<DataGrid>(sender as ScrollViewer);
+            var dataGrid = UIHelper.FindParent<DataGrid>(sender as ScrollViewer);
             if (dataGrid != null)
             {
-                ICommand command = GetScrollChangedCommand(dataGrid);
+                var command = GetScrollChangedCommand(dataGrid);
                 command.Execute(e);
             }
         }

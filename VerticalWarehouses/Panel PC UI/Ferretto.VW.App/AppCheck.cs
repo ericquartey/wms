@@ -1,9 +1,11 @@
-﻿using System;
+﻿#if !DEBUG
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
+#endif
 
 namespace Ferretto.VW.App
 {
@@ -11,9 +13,12 @@ namespace Ferretto.VW.App
     {
         #region Fields
 
+#if !DEBUG
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static Mutex appMutex;
+
+#endif
 
         #endregion
 
@@ -21,7 +26,9 @@ namespace Ferretto.VW.App
 
         public static void End()
         {
+#if !DEBUG
             appMutex?.Close();
+#endif
         }
 
         public static bool Start()
@@ -61,9 +68,13 @@ namespace Ferretto.VW.App
             return canStart;
         }
 
+#if !DEBUG
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+#endif
 
         #endregion
     }

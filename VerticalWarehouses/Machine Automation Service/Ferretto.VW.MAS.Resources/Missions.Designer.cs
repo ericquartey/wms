@@ -79,6 +79,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load unit {0},  weight {1}, height {2}, WmsId {3}.
+        /// </summary>
+        public static string ErrorMissionDetails {
+            get {
+                return ResourceManager.GetString("ErrorMissionDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A recall mission for load unit {0} already exists..
         /// </summary>
         public static string RecallMissionForLoadingUnit {
