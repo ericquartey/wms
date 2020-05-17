@@ -398,16 +398,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            //var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(bayNumber);   // .GetBayExternalCaibration(bayNumber);
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(bayNumber);
 
             var targetPosition = bay.External.Race;
 
-            var speed = new[] { bay.FullLoadMovement.Speed * 1.0 /*procedureParameters.FeedRate*/ };
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
             var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
-
-            var requiredCycles = 2;
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
@@ -417,7 +415,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                /*procedureParameters.RequiredCycles*/ requiredCycles,
+                procedureParameters.RequiredCycles,
                 lowerBound: 0,
                 upperBound: 0,
                 delay: 0,
@@ -428,7 +426,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"Start External Bay Calibration Test " +
                 $"bayNumber: {bayNumber}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"feedrate: {/*procedureParameters.FeedRate*/1.0f}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
                 $"deceleration: {deceleration[0]:0.00};");

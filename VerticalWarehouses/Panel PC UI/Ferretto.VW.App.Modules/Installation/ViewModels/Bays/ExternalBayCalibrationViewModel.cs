@@ -38,15 +38,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IMachineCarouselWebService machineCarouselWebService;
-
-        private readonly IMachineExternalBayWebService machineExternalBayWebMachine;
+        //private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
+
+        private readonly IMachineExternalBayWebService machineExternalBayWebMachine;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private DelegateCommand applyCommand;
+
+        private DelegateCommand callLoadUnitToBayCommand;
+
+        private bool canLoadingUnitId;
 
         private DelegateCommand completeCommand;
 
@@ -78,15 +82,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTuningBay;
 
+        private int? loadingUnitId = 0;
+
+        private DelegateCommand moveToStartCalibrationCommand;
+
         private int? newErrorValue;
 
         private int oldPerformedCycle = 0;
 
         private int performedCycles;
-
-        private bool canLoadingUnitId;
-
-        private int? loadingUnitId = 0;
 
         private SubscriptionToken positioningMessageReceivedToken;
 
@@ -114,10 +118,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken themeChangedToken;
 
-        private DelegateCommand callLoadUnitToBayCommand;
-
-        private DelegateCommand moveToStartCalibrationCommand;
-
         private DelegateCommand tuningBayCommand;
 
         #endregion
@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
-            IMachineCarouselWebService machineCarouselWebService,
+            //IMachineCarouselWebService machineCarouselWebService,
             IMachineBaysWebService machineBaysWebService)
           : base(PresentationMode.Installer)
         {
@@ -138,7 +138,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            //this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineExternalBayWebMachine = machineExternalBayWebMachine ?? throw new ArgumentNullException(nameof(machineExternalBayWebMachine));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
@@ -149,20 +149,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand CallLoadUnitToBayCommand =>
-            this.callLoadUnitToBayCommand
-            ??
-            (this.callLoadUnitToBayCommand = new DelegateCommand(
-                async () => await this.CallLoadUnitToBayCommandAsync(),
-                this.CanCallLoadUnitToBay));
-
         public ICommand ApplyCommand =>
             this.applyCommand
             ??
             (this.applyCommand = new DelegateCommand(
                 async () => await this.ApplyCorrectionAsync(), this.CanApply));
 
-        public double? ChainOffset => Math.Abs(this.MachineService.Bay.ChainOffset);
+        public ICommand CallLoadUnitToBayCommand =>
+                    this.callLoadUnitToBayCommand
+            ??
+            (this.callLoadUnitToBayCommand = new DelegateCommand(
+                async () => await this.CallLoadUnitToBayCommandAsync(),
+                this.CanCallLoadUnitToBay));
 
         public bool CanLoadingUnitId
         {
@@ -170,18 +168,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canLoadingUnitId, value);
         }
 
-        public int? LoadingUnitId
-        {
-            get => this.loadingUnitId;
-            set => this.SetProperty(ref this.loadingUnitId, value, this.RaiseCanExecuteChanged);
-        }
-
-        public ICommand MoveToStartCalibration =>
-                           this.moveToStartCalibrationCommand
-           ??
-           (this.moveToStartCalibrationCommand = new DelegateCommand(
-               () => this.CurrentStep = ExternalBayCalibrationStep.StartCalibration,
-               this.CanMoveToStartCalibration));
+        public double? ChainOffset => Math.Abs(this.MachineService.Bay.ChainOffset);
 
         public ICommand CompleteCommand =>
                     this.completeCommand
@@ -218,13 +205,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this[nameof(this.CurrentResolution)],
             this[nameof(this.NewErrorValue)]);
 
+        public bool HasStepCallUnit => this.currentStep is ExternalBayCalibrationStep.CallUnit;
+
         public bool HasStepConfirmAdjustment => this.currentStep is ExternalBayCalibrationStep.ConfirmAdjustment;
 
         public bool HasStepRunningCalibration => this.currentStep is ExternalBayCalibrationStep.RunningCalibration;
 
         public bool HasStepStartCalibration => this.currentStep is ExternalBayCalibrationStep.StartCalibration;
-
-        public bool HasStepCallUnit => this.currentStep is ExternalBayCalibrationStep.CallUnit;
 
         public bool IsCalibrationCompletedOrStopped
         {
@@ -313,6 +300,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.isTuningBay;
             private set => this.SetProperty(ref this.isTuningBay, value);
         }
+
+        public int? LoadingUnitId
+        {
+            get => this.loadingUnitId;
+            set => this.SetProperty(ref this.loadingUnitId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand MoveToStartCalibration =>
+                           this.moveToStartCalibrationCommand
+           ??
+           (this.moveToStartCalibrationCommand = new DelegateCommand(
+               () => this.CurrentStep = ExternalBayCalibrationStep.StartCalibration,
+               this.CanMoveToStartCalibration));
 
         public int? NewErrorValue
         {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.TuneBayAsync(),
                 this.CanTuneBay));
 
-        protected Carousel ProcedureParameters { get; private set; }
+        protected External ProcedureParameters { get; private set; }
 
         #endregion
 
@@ -641,32 +641,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 
-        private async Task CallLoadUnitToBayCommandAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.MachineService.GetBayPositionSourceByDestination(false), this.LoadingUnitId.Value);
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private bool CanCallLoadUnitToBay()
-        {
-            return this.CanBaseExecute() &&
-                !this.MachineService.Loadunits.DrawerInBay() &&
-                this.MachineService.Loadunits.DrawerExists(this.loadingUnitId.Value) &&
-                   !this.SensorsService.IsLoadingUnitInBay;
-        }
-
         private async Task ApplyCorrectionAsync()
         {
             this.IsWaitingForResponse = true;
@@ -713,6 +687,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task CallLoadUnitToBayCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.MachineService.GetBayPositionSourceByDestination(false), this.LoadingUnitId.Value);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private bool CanApply()
         {
             return this.CanBaseExecute();
@@ -726,9 +718,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
+        private bool CanCallLoadUnitToBay()
+        {
+            return this.CanBaseExecute() &&
+                !this.MachineService.Loadunits.DrawerInBay() &&
+                this.MachineService.Loadunits.DrawerExists(this.loadingUnitId.Value) &&
+                   !this.SensorsService.IsLoadingUnitInBay;
+        }
+
         private bool CanComplete()
         {
             return this.CanBaseExecute();
+        }
+
+        private bool CanMoveToStartCalibration()
+        {
+            return this.CanBaseExecute() &&
+                   this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private bool CanRepeat()
@@ -767,12 +773,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.MachineStatus.LoadingUnitPositionUpInBay is null &&
                    this.SensorsService.BayZeroChain
                    ;
-        }
-
-        private bool CanMoveToStartCalibration()
-        {
-            return this.CanBaseExecute() &&
-                   this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private async Task CompleteAsync()
@@ -940,7 +940,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
-                    await this.machineCarouselWebService.StartCalibrationAsync();
+                    await this.machineExternalBayWebMachine.StartCalibrationAsync(); // machineCarouselWebService.StartCalibrationAsync();
 
                     this.CurrentStep = ExternalBayCalibrationStep.RunningCalibration;
                 }

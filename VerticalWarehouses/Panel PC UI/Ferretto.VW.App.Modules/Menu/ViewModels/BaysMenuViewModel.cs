@@ -83,8 +83,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
 
-        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();  //to fix
-
         public ICommand CarouselCalibrationCommand =>
                     this.carouselCalibrationCommand
             ??
@@ -95,6 +93,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration /*CarouselCalibration*/ ?? new SetupStepStatus();  //to fix
+
         public ICommand ExternalBayCalibrationCommand =>
                     this.externalBayCalibrationCommand
             ??
@@ -104,8 +106,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                //this.MachineModeService.MachineMode == MachineMode.Manual &&
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
-
-        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBayControlBypassed => this.BayControl.IsBypassed;
 
@@ -119,13 +119,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsCarouselCalibrationCompleted => this.CarouselCalibration.IsCompleted && !this.CarouselCalibration.IsBypassed;
 
+        public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
+
         public bool IsExternalBayCalibrationBypassed => this.ExternalBayCalibration.IsBypassed;
 
         public bool IsExternalBayCalibrationCompleted => this.ExternalBayCalibration.IsCompleted && !this.ExternalBayCalibration.IsBypassed;
 
         public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal);
-
-        public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
         public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
 

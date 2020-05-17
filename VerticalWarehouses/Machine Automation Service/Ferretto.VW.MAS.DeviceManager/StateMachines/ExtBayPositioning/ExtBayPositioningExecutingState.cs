@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
                         if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
                         {
-                            var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);      // .GetBayExternalCalibration(this.machineData.RequestingBay);
+                            var procedure = this.setupProceduresDataProvider.GetBayExternalCalibration(this.machineData.RequestingBay);
                             this.performedCycles = procedure.PerformedCycles;
                             this.Logger.LogInformation($"Start External Bay Calibration Test {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
                         }
@@ -282,7 +282,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 case ExternalBayMovementDirection.TowardMachine:
                     {
                         failed = !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay) &&
-                            !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.RequestingBay);
+                            !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.RequestingBay);
                         break;
                     }
             }
@@ -743,7 +743,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         }
 
                         // Update the setup procedure data
-                        var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);   // .GetBayExternalCalibration(this.machineData.RequestingBay);
+                        var procedure = this.setupProceduresDataProvider.GetBayExternalCalibration(this.machineData.RequestingBay);
                         this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
@@ -764,7 +764,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 this.machineData.ExecutedSteps = this.performedCycles;
                                 this.machineData.MessageData.IsTestStopped = this.isTestStopped;
 
-                                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
                                 break;
                             }
                             else
