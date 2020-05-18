@@ -14,6 +14,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:resx="clr-namespace:Ferretto.VW.App.Scaffolding.Resources"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
@@ -168,7 +169,7 @@
                                     IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}">
                     <cctrls:PpcCheckBox.IsChecked>
                         <Binding Converter="{StaticResource TwoWayConverter}"
-                                 ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                                 ConverterCulture="{x:Static res:UILoc.UICulture}"
                                  Mode="TwoWay"
                                  Path="Value"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
@@ -196,7 +197,7 @@
                     </ctrls:PpcSpinEdit.Resources>
                     <ctrls:PpcSpinEdit.EditValue>
                         <Binding Converter="{StaticResource TwoWayConverter}"
-                                 ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                                 ConverterCulture="{x:Static res:UILoc.UICulture}"
                                  Mode="TwoWay"
                                  Path="Value"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
@@ -234,7 +235,7 @@
                     </ctrls:PpcSpinEdit.Resources>
                     <ctrls:PpcSpinEdit.EditValue>
                         <Binding Converter="{StaticResource TwoWayConverter}"
-                                 ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                                 ConverterCulture="{x:Static res:UILoc.UICulture}"
                                  Mode="TwoWay"
                                  Path="Value"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
@@ -272,7 +273,7 @@
                     </TextBox.Resources>
                     <TextBox.Text>
                         <Binding Converter="{StaticResource TwoWayConverter}"
-                                 ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                                 ConverterCulture="{x:Static res:UILoc.UICulture}"
                                  Mode="TwoWay"
                                  Path="Value"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
