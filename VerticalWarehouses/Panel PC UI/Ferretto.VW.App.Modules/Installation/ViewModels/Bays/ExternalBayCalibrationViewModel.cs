@@ -808,7 +808,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Data?.MovementMode != MovementMode.BayTest)
+            if (message.Data?.MovementMode != MovementMode.ExtBayTest)
             {
                 return;
             }
@@ -852,6 +852,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.RequiredCycles = message.Data.RequiredCycles;
                 }
+
                 this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
