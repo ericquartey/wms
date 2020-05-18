@@ -113,6 +113,34 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
             }));
 
+        public ICommand ExternalBayCalibrationBypassCommand =>
+        this.externalBayCalibrationTestBypassCommand
+        ??
+        (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
+            async () =>
+            {
+                try
+                {
+                    this.IsExecutingProcedure = true;
+
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync();
+
+                        await this.UpdateSetupStatusAsync();
+                    }
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsExecutingProcedure = false;
+                }
+            }));
+
         public ICommand BayFirstLoadingUnitBypassCommand =>
             this.bayFirstLoadingUnitBypassCommand
             ??
@@ -277,34 +305,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }));
 
         public override bool ConfirmSetupVisible => (this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure && this.IsGeneralActive);
-
-        public ICommand ExternalBayCalibrationBypassCommand =>
-            this.externalBayCalibrationTestBypassCommand
-            ??
-            (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
-            async () =>
-                {
-                    try
-                    {
-                        this.IsExecutingProcedure = true;
-
-                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExtBayCalibration"), DialogType.Question, DialogButtons.YesNo);
-                        if (messageBoxResult == DialogResult.Yes)
-                        {
-                            await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync(); ///to change
-
-                            await this.UpdateSetupStatusAsync();
-                        }
-                    }
-                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                    {
-                        this.ShowNotification(ex);
-                    }
-                    finally
-                    {
-                        this.IsExecutingProcedure = false;
-                    }
-                }));
 
         public ICommand HorizontalChainCalibrationTestBypassCommand =>
             this.horizontalChainCalibrationTestBypassCommand

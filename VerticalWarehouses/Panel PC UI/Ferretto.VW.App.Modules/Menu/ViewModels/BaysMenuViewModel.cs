@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -95,7 +95,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration /*CarouselCalibration*/ ?? new SetupStepStatus();  //to fix
+        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration ?? new SetupStepStatus();
 
         public ICommand ExternalBayCalibrationCommand =>
                     this.externalBayCalibrationCommand

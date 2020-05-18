@@ -6300,6 +6300,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press on START to begin the procedure.
+        /// </summary>
+        public static string StartProcedure {
+            get {
+                return ResourceManager.GetString("StartProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You want to start the procedure.
         /// </summary>
         public static string StartProcedureMessage {
