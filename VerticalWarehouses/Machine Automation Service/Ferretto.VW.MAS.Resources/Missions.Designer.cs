@@ -95,5 +95,14 @@ namespace Ferretto.VW.MAS.Resources {
                 return ResourceManager.GetString("RecallMissionForLoadingUnit", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please remove at least {0} kg from load unit {1}, weight {2}.
+        /// </summary>
+        public static string RemoveMaterialFromLoadUnit {
+            get {
+                return ResourceManager.GetString("RemoveMaterialFromLoadUnit", resourceCulture);
+            }
+        }
     }
 }

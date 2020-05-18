@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Services
                 viewDesc = Utils.Modules.Errors.ERRORINVERTERFAULT;
             }
             if ((activeErrorCode == (int)MachineErrorCode.MoveBayChainNotAllowed) ||
-                (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightExceeded) ||
+                (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightFromBayExceeded) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitWeightExceeded))
             {
                 viewDesc = Utils.Modules.Errors.ERRORLOADUNITERRORS;

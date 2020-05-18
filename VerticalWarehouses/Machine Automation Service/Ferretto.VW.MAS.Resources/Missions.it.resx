@@ -129,4 +129,7 @@
   <data name="RecallMissionForLoadingUnit" xml:space="preserve">
     <value>Esiste già una missione di richiamo per il cassetto {0}.</value>
   </data>
+  <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
+    <value>Please remove at least {0} kg from load unit {1}, weight {2}</value>
+  </data>
 </root>

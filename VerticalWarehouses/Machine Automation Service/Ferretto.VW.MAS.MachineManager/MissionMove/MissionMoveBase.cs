@@ -103,11 +103,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var machine = this.MachineProvider.Get();
                 if (unitToMove.Height > machine.LoadUnitMaxHeight + tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height < bayPosition.MaxSingleHeight + tolerance)
                 {
@@ -129,25 +129,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                         canRetry = true;
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 if (returnValue
                     && mission.MissionType == MissionType.FirstTest
                     && unitToMove.Height > machine.LoadUnitMinHeight + tolerance)
                 {
                     returnValue = false;
-                    this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.02} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
             }
 #else
@@ -387,7 +387,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     )
                 {
-                    this.Mission.ErrorCode = MachineErrorCode.LoadUnitHeightExceeded;
+                    this.Mission.ErrorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                     this.MoveBackToBay();
                     return;
                 }

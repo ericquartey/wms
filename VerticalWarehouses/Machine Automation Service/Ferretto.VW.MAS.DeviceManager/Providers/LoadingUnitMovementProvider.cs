@@ -78,6 +78,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (message.Type == MessageType.Positioning
                 || message.Type == MessageType.Homing
+                || message.Type == MessageType.ShutterPositioning
                 )
             {
                 return message.Status;

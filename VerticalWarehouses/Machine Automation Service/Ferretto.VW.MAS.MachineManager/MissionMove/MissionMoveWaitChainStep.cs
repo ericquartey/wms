@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
-using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -65,18 +63,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
-                if (this.Mission.CloseShutterBayNumber != BayNumber.None)
-                {
-                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
-                    var shutterInverter = bay.Shutter.Inverter.Index;
-                    if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
-                    {
-                        this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
-                        this.Mission.CloseShutterBayNumber = BayNumber.None;
-                    }
-                }
-                var waitContinue = (this.Mission.CloseShutterBayNumber != BayNumber.None && !bay.IsExternal);
                 LoadingUnit lowerUnit = null;
                 if (bay.Carousel != null
                     && (lowerUnit = bay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
@@ -86,10 +72,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (lowerMission != null)
                     {
                         this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
-                        if (waitContinue)
-                        {
-                            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
-                        }
                         this.LoadingUnitMovementProvider.ResumeOperation(
                             lowerMission.Id,
                             lowerMission.LoadUnitSource,
@@ -120,24 +102,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.ShutterPositioning
-                            || notification.RequestingBay == this.Mission.TargetBay)
+                    if (notification.RequestingBay == this.Mission.TargetBay
+                        && notification.Type == MessageType.Positioning)
                     {
-                        if (this.UpdateResponseList(notification.Type))
-                        {
-                            if (notification.Type == MessageType.ShutterPositioning)
-                            {
-                                this.Mission.CloseShutterBayNumber = BayNumber.None;
-                            }
-                            this.MissionsDataProvider.Update(this.Mission);
-                            if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
-                                && this.Mission.CloseShutterBayNumber == BayNumber.None
-                                )
-                            {
-                                var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
-                            }
-                        }
+                        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
                     }
                     break;
 
