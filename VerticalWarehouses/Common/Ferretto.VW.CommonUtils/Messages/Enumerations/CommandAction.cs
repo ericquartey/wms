@@ -12,8 +12,6 @@
 
         Abort,
 
-        Test,
-
         Stop,
     }
 }

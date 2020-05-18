@@ -2497,9 +2497,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Abort = 4,
     
-        Test = 5,
-    
-        Stop = 6,
+        Stop = 5,
     
     }
     

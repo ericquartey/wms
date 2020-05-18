@@ -356,9 +356,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed,
                 bay.Number,
                 string.Format(Resources.Missions.RemoveMaterialFromLoadUnit,
-                    (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent),
+                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)),
                     this.Mission.LoadUnitId,
-                    position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare));
+                    Math.Round(position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare)));
 
             this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");

@@ -10,6 +10,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -401,7 +402,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // Adds error related to the InverterFaultDetected
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                         var idx = (int)message.SystemIndex + 1; // it has the systemIndex on base 1
-                        errorsProvider.RecordNew(idx, error, bayNumber);
+                        errorsProvider.RecordNew(idx, error, bayNumber, InverterFaultCodes.GetErrorByCode(error));
                     }
                 }
             }

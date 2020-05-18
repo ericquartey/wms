@@ -287,8 +287,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.TargetBay,
                     string.Format(Resources.Missions.ErrorMissionDetails,
                         this.Mission.LoadUnitId,
-                        loadUnit.GrossWeight - loadUnit.Tare,
-                        loadUnit.Height,
+                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                        Math.Round(loadUnit.Height),
                         this.Mission.WmsId ?? 0));
 
                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
