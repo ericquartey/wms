@@ -123,6 +123,9 @@
   <data name="ActiveMissionForWMS" xml:space="preserve">
     <value>An active mission for WMS mission {0} already exists.</value>
   </data>
+  <data name="ErrorMissionDetails" xml:space="preserve">
+    <value>Load unit {0},  weight {1}, height {2}, WmsId {3}</value>
+  </data>
   <data name="RecallMissionForLoadingUnit" xml:space="preserve">
     <value>A recall mission for load unit {0} already exists.</value>
   </data>

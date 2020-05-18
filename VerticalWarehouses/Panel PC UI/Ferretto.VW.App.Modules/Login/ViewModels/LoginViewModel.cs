@@ -151,7 +151,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     catch (Exception ex)
                     {
                         this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
-                        this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"));
+                        this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"), Services.Models.NotificationSeverity.Warning);
                     }
                 }
             }

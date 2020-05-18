@@ -63,8 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<RepeatedTestProcedure> GetParameters()
         {
-            // TODO: Implementation
-            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);  // .GetBayExternalCalibration(this.BayNumber)
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber);
 
             return this.Ok(procedureParameters);
         }
@@ -136,8 +135,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult ResetCalibration()
         {
-            //var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);  // .GetBayExternalCalibration(this.BayNumber)
-            //this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber);
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
 
             return this.Accepted();
         }
@@ -145,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("set-completed")]
         public IActionResult SetCalibrationCompleted()
         {
-            //this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), false);  // .GetBayExternalCalibration(this.BayNumber)
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber), false);
             return this.Ok();
         }
 

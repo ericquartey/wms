@@ -1452,16 +1452,19 @@
             "title": "The Setupprocedures Schema",
             "required": [
                 "Bay1CarouselCalibration",
+                "Bay1ExternalCalibration",
                 "Bay1HeightCheck",
                 "Bay1Laser",
                 "Bay1ProfileCheck",
                 "Bay1ShutterTest",
                 "Bay2CarouselCalibration",
+                "Bay2ExternalCalibration",
                 "Bay2HeightCheck",
                 "Bay2Laser",
                 "Bay2ProfileCheck",
                 "Bay2ShutterTest",
                 "Bay3CarouselCalibration",
+                "Bay3ExternalCalibration",
                 "Bay3HeightCheck",
                 "Bay3Laser",
                 "Bay3ProfileCheck",
@@ -1525,6 +1528,57 @@
                         },
                         "RequiredCycles": {
                             "id": "#/properties/SetupProcedures/properties/Bay1CarouselCalibration/properties/RequiredCycles",
+                            "type": "integer",
+                            "title": "The Requiredcycles Schema"
+                        }
+                    }
+                },
+                "Bay1ExternalCalibration": {
+                    "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration",
+                    "type": "object",
+                    "title": "The Bay1externalcalibration Schema",
+                    "required": [
+                        "FeedRate",
+                        "Id",
+                        "InProgress",
+                        "IsBypassed",
+                        "IsCompleted",
+                        "PerformedCycles",
+                        "RequiredCycles"
+                    ],
+                    "properties": {
+                        "FeedRate": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/FeedRate",
+                            "type": "number",
+                            "title": "The Feedrate Schema"
+                        },
+                        "Id": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/Id",
+                            "type": "integer",
+                            "title": "The Id Schema"
+                        },
+                        "InProgress": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/InProgress",
+                            "type": "boolean",
+                            "title": "The Inprogress Schema"
+                        },
+                        "IsBypassed": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/IsBypassed",
+                            "type": "boolean",
+                            "title": "The Isbypassed Schema"
+                        },
+                        "IsCompleted": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/IsCompleted",
+                            "type": "boolean",
+                            "title": "The Iscompleted Schema"
+                        },
+                        "PerformedCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/PerformedCycles",
+                            "type": "integer",
+                            "title": "The Performedcycles Schema"
+                        },
+                        "RequiredCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay1ExternalCalibration/properties/RequiredCycles",
                             "type": "integer",
                             "title": "The Requiredcycles Schema"
                         }
@@ -1749,6 +1803,57 @@
                         }
                     }
                 },
+                "Bay2ExternalCalibration": {
+                    "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration",
+                    "type": "object",
+                    "title": "The Bay2externalcalibration Schema",
+                    "required": [
+                        "FeedRate",
+                        "Id",
+                        "InProgress",
+                        "IsBypassed",
+                        "IsCompleted",
+                        "PerformedCycles",
+                        "RequiredCycles"
+                    ],
+                    "properties": {
+                        "FeedRate": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/FeedRate",
+                            "type": "number",
+                            "title": "The Feedrate Schema"
+                        },
+                        "Id": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/Id",
+                            "type": "integer",
+                            "title": "The Id Schema"
+                        },
+                        "InProgress": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/InProgress",
+                            "type": "boolean",
+                            "title": "The Inprogress Schema"
+                        },
+                        "IsBypassed": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/IsBypassed",
+                            "type": "boolean",
+                            "title": "The Isbypassed Schema"
+                        },
+                        "IsCompleted": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/IsCompleted",
+                            "type": "boolean",
+                            "title": "The Iscompleted Schema"
+                        },
+                        "PerformedCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/PerformedCycles",
+                            "type": "integer",
+                            "title": "The Performedcycles Schema"
+                        },
+                        "RequiredCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay2ExternalCalibration/properties/RequiredCycles",
+                            "type": "integer",
+                            "title": "The Requiredcycles Schema"
+                        }
+                    }
+                },
                 "Bay2HeightCheck": {
                     "id": "#/properties/SetupProcedures/properties/Bay2HeightCheck",
                     "type": "object",
@@ -1963,6 +2068,57 @@
                         },
                         "RequiredCycles": {
                             "id": "#/properties/SetupProcedures/properties/Bay3CarouselCalibration/properties/RequiredCycles",
+                            "type": "integer",
+                            "title": "The Requiredcycles Schema"
+                        }
+                    }
+                },
+                "Bay3ExternalCalibration": {
+                    "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration",
+                    "type": "object",
+                    "title": "The Bay3externalcalibration Schema",
+                    "required": [
+                        "FeedRate",
+                        "Id",
+                        "InProgress",
+                        "IsBypassed",
+                        "IsCompleted",
+                        "PerformedCycles",
+                        "RequiredCycles"
+                    ],
+                    "properties": {
+                        "FeedRate": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/FeedRate",
+                            "type": "number",
+                            "title": "The Feedrate Schema"
+                        },
+                        "Id": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/Id",
+                            "type": "integer",
+                            "title": "The Id Schema"
+                        },
+                        "InProgress": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/InProgress",
+                            "type": "boolean",
+                            "title": "The Inprogress Schema"
+                        },
+                        "IsBypassed": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/IsBypassed",
+                            "type": "boolean",
+                            "title": "The Isbypassed Schema"
+                        },
+                        "IsCompleted": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/IsCompleted",
+                            "type": "boolean",
+                            "title": "The Iscompleted Schema"
+                        },
+                        "PerformedCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/PerformedCycles",
+                            "type": "integer",
+                            "title": "The Performedcycles Schema"
+                        },
+                        "RequiredCycles": {
+                            "id": "#/properties/SetupProcedures/properties/Bay3ExternalCalibration/properties/RequiredCycles",
                             "type": "integer",
                             "title": "The Requiredcycles Schema"
                         }

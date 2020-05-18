@@ -35,8 +35,9 @@
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding BayNumber, StringFormat={res:Loc InstallationApp.ShutterEnduranceTestTitle}}" />
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
+                <Run Text="{res:Loc InstallationApp.ShutterEnduranceTestTitle}"/> <Run Text="{Binding BayNumber, Mode=OneWay}"/>
+            </TextBlock>
         </StackPanel>
 
         <TextBlock Grid.Row="1"

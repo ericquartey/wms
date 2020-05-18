@@ -169,6 +169,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The barcode &apos;{0}&apos; does not contain the list identifier..
+        /// </summary>
+        public static string BarcodeDoesNotContainTheListId {
+            get {
+                return ResourceManager.GetString("BarcodeDoesNotContainTheListId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Barcode &apos;{0}&apos; not recognized..
         /// </summary>
         public static string BarcodeNotRecognized {
@@ -1484,6 +1493,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execution of list &apos;{0}&apos; was accepted..
+        /// </summary>
+        public static string ExecutionOfListAccepted {
+            get {
+                return ResourceManager.GetString("ExecutionOfListAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO time span.
         /// </summary>
         public static string FIFOPeriod {
@@ -1538,7 +1556,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General informations.
+        ///   Looks up a localized string similar to General information.
         /// </summary>
         public static string GeneralInfoHeader {
             get {
@@ -1592,7 +1610,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General informations.
+        ///   Looks up a localized string similar to General information.
         /// </summary>
         public static string GeneralInformations {
             get {
@@ -1637,7 +1655,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height:.
+        ///   Looks up a localized string similar to Go to Cell Height.
+        /// </summary>
+        public static string GoToCellHeight {
+            get {
+                return ResourceManager.GetString("GoToCellHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Height {
             get {
@@ -1673,7 +1700,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer call.
+        ///   Looks up a localized string similar to Call Drawer.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
             get {
@@ -1772,7 +1799,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemDetailCategory.
+        ///   Looks up a localized string similar to Category.
         /// </summary>
         public static string ItemDetailCategory {
             get {
@@ -1781,7 +1808,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemDetailClasse.
+        ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ItemDetailClasse {
             get {
@@ -1799,7 +1826,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Managing type:.
+        ///   Looks up a localized string similar to Managing type.
         /// </summary>
         public static string ItemDetailManagement {
             get {
@@ -1907,7 +1934,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item call.
+        ///   Looks up a localized string similar to Call Item.
         /// </summary>
         public static string ItemSearchCall {
             get {
@@ -1916,7 +1943,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item detail.
+        ///   Looks up a localized string similar to Show Details.
         /// </summary>
         public static string ItemSearchDetail {
             get {
@@ -2182,6 +2209,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Lot {
             get {
                 return ResourceManager.GetString("Lot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lower bay position.
+        /// </summary>
+        public static string LowerBayPosition {
+            get {
+                return ResourceManager.GetString("LowerBayPosition", resourceCulture);
             }
         }
         
@@ -2510,7 +2546,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageDetail.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string MaintenanceMainPageDetail {
             get {
@@ -2969,6 +3005,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No list with identifier &apos;{0}&apos; was found..
+        /// </summary>
+        public static string NoListWithIdWasFound {
+            get {
+                return ResourceManager.GetString("NoListWithIdWasFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No loading units to move.
         /// </summary>
         public static string NoLoadingUnitsToMove {
@@ -2996,7 +3041,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation cancelled.
+        ///   Looks up a localized string similar to Operation cancelled..
         /// </summary>
         public static string OperationCancelled {
             get {
@@ -3005,7 +3050,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation cancelled confirmed.
+        ///   Looks up a localized string similar to Operation cancellation confirmed..
         /// </summary>
         public static string OperationCancelledConfirmed {
             get {
@@ -3671,15 +3716,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total km traveled.
         /// </summary>
         public static string TotalKm {
@@ -3721,6 +3757,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitId {
             get {
                 return ResourceManager.GetString("UnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper Position.
+        /// </summary>
+        public static string UpperBayPosition {
+            get {
+                return ResourceManager.GetString("UpperBayPosition", resourceCulture);
             }
         }
         
@@ -3824,7 +3869,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weight:.
+        ///   Looks up a localized string similar to Weight.
         /// </summary>
         public static string Weight {
             get {

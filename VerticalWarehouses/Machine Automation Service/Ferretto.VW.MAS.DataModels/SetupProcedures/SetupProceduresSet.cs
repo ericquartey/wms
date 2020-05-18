@@ -6,6 +6,8 @@
 
         public RepeatedTestProcedure Bay1CarouselCalibration { get; set; }
 
+        public RepeatedTestProcedure Bay1ExternalCalibration { get; set; }
+
         public SetupProcedure Bay1FirstLoadingUnit { get; set; }
 
         public RepeatedTestProcedure Bay1FullTest { get; set; }
@@ -20,6 +22,8 @@
 
         public RepeatedTestProcedure Bay2CarouselCalibration { get; set; }
 
+        public RepeatedTestProcedure Bay2ExternalCalibration { get; set; }
+
         public SetupProcedure Bay2FirstLoadingUnit { get; set; }
 
         public RepeatedTestProcedure Bay2FullTest { get; set; }
@@ -33,6 +37,8 @@
         public RepeatedTestProcedure Bay2ShutterTest { get; set; }
 
         public RepeatedTestProcedure Bay3CarouselCalibration { get; set; }
+
+        public RepeatedTestProcedure Bay3ExternalCalibration { get; set; }
 
         public SetupProcedure Bay3FirstLoadingUnit { get; set; }
 

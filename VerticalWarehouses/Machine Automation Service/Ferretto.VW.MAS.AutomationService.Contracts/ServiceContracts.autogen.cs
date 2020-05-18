@@ -1188,6 +1188,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> BayCarouselCalibrationBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayExternalCalibrationBypassAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayExternalCalibrationBypassAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> BayHeightCheckBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2904,11 +2911,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         CloseShutter = 8,
     
-        BackToTarget = 9,
+        BackToBay = 9,
     
-        WaitDeposit = 10,
+        WaitChain = 10,
     
-        End = 11,
+        WaitDeposit = 11,
+    
+        End = 12,
     
         Error = 101,
     
@@ -3099,6 +3108,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Payload { get; set; }
     
         [Newtonsoft.Json.JsonProperty("StringValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StringValue { get; set; }
@@ -4206,6 +4218,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Bay1CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay1CarouselCalibration { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Bay1ExternalCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay1ExternalCalibration { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Bay1FirstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure Bay1FirstLoadingUnit { get; set; }
     
@@ -4227,6 +4242,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Bay2CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay2CarouselCalibration { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Bay2ExternalCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay2ExternalCalibration { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Bay2FirstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure Bay2FirstLoadingUnit { get; set; }
     
@@ -4247,6 +4265,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Bay3CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay3CarouselCalibration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Bay3ExternalCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay3ExternalCalibration { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Bay3FirstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure Bay3FirstLoadingUnit { get; set; }
@@ -5276,6 +5297,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Check", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Check { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ExternalBayCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupStepStatus ExternalBayCalibration { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsAllTestCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAllTestCompleted { get; set; }
