@@ -130,7 +130,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
-            //IMachineCarouselWebService machineCarouselWebService,
             IMachineBaysWebService machineBaysWebService)
           : base(PresentationMode.Installer)
         {
@@ -138,7 +137,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            //this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineExternalBayWebMachine = machineExternalBayWebMachine ?? throw new ArgumentNullException(nameof(machineExternalBayWebMachine));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
@@ -524,6 +522,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
+                this.CyclesPercent = (this.PerformedCycles / this.RequiredCycles) * 100;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -633,6 +632,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.RemainingTime));
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
+            this.RaisePropertyChanged(nameof(this.CyclesPercent));
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
             this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
@@ -788,9 +788,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineExternalBayWebMachine.SetCalibrationCompletedAsync();
 
-                    //this.ShowNotification(
-                    //        VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
-                    //        Services.Models.NotificationSeverity.Success);
                     this.ShowNotification(
                         VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"),
                         Services.Models.NotificationSeverity.Success);

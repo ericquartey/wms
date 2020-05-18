@@ -2583,4 +2583,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Run" xml:space="preserve">
     <value>Corsa (mm)</value>
   </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Premi su INIZIA per avviare la procedura</value>
+  </data>
 </root>

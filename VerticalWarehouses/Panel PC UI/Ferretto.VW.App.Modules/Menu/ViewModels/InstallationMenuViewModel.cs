@@ -123,10 +123,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.IsExecutingProcedure = true;
 
-                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.Yes)
                     {
-                        await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync(); ///to change
+                        await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync();
 
                         await this.UpdateSetupStatusAsync();
                     }
@@ -558,8 +558,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         Text = Localized.Get("InstallationApp.TestExternalBay"),
                         Status = bayStatus.CarouselCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,  //to change
-                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted,  //to change
-                        Bypassed = bayStatus.CarouselCalibration.IsBypassed,  //to change
+                        Bypassable = !bayStatus.ExternalBayCalibration.IsCompleted,
+                        Bypassed = bayStatus.ExternalBayCalibration.IsBypassed,
                         Command = this.ExternalBayCalibrationBypassCommand,
                     });
                 }
