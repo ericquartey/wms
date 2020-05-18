@@ -133,26 +133,28 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             if (e is null)
             {
-                throw new ArgumentNullException(nameof(e));
+                return;
             }
 
             if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
             {
-                if (userAction is UserAction.LoginUser)
-                {
-                    try
-                    {
-                        this.ClearNotifications();
-                        var bearerToken = e.GetBearerToken();
-                        var claims = await this.authenticationService.LogInAsync(bearerToken);
+                return;
+            }
 
-                        await this.NavigateToMainMenuAsync(claims);
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
-                        this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"), Services.Models.NotificationSeverity.Warning);
-                    }
+            if (userAction is UserAction.LoginUser)
+            {
+                try
+                {
+                    this.ClearNotifications();
+                    var bearerToken = e.GetBearerToken();
+                    var claims = await this.authenticationService.LogInAsync(bearerToken);
+
+                    await this.NavigateToMainMenuAsync(claims);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
+                    this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"), Services.Models.NotificationSeverity.Warning);
                 }
             }
         }

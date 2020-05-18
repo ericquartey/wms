@@ -119,18 +119,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
             {
-                switch (userAction)
-                {
-                    case UserAction.FilterLists:
+                return;
+            }
 
-                        await this.FilterListsByBarcodeAsync(e);
-                        break;
+            switch (userAction)
+            {
+                case UserAction.FilterLists:
 
-                    case UserAction.ExecuteList:
+                    await this.FilterListsByBarcodeAsync(e);
+                    break;
 
-                        await this.ExecuteListByBarcodeAsync(e);
-                        break;
-                }
+                case UserAction.ExecuteList:
+
+                    await this.ExecuteListByBarcodeAsync(e);
+                    break;
             }
         }
 

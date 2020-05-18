@@ -540,7 +540,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
             {
@@ -559,7 +559,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.OnManualPositioningOperationChanged(message);
-            await this.OnGuidedPositioningOperationChangedAsync(message);
+            this.OnGuidedPositioningOperationChanged(message);
         }
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -796,7 +796,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        async m => await this.OnPositioningOperationChangedAsync(m),
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);

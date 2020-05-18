@@ -203,26 +203,26 @@
       {
         "Accessories": {
           "AlphaNumericBar": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "IpAddress": "127.0.0.1",
             "TcpPort": 1234,
             "Size": "Medium"
           },
           "LabelPrinter": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "IpAddress": "127.0.0.1",
             "TcpPort": 12020
           },
           "BarcodeReader": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "PortName": "COM4"
           },
           "WeightingScale": {
-            "IsEnabled": true,
+            "IsEnabledNew": true
           }
         },
         "Carousel": {

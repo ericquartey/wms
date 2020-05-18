@@ -331,20 +331,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
             {
-                switch (userAction)
-                {
-                    case UserAction.FilterItems:
-                        await this.ShowItemDetailsByBarcodeAsync(e);
+                return;
+            }
 
-                        break;
+            switch (userAction)
+            {
+                case UserAction.FilterItems:
+                    await this.ShowItemDetailsByBarcodeAsync(e);
 
-                    case UserAction.PickItem:
-                        await this.PickItemByBarcodeAsync(e);
+                    break;
 
-                        break;
-                }
+                case UserAction.PickItem:
+                    await this.PickItemByBarcodeAsync(e);
+
+                    break;
             }
         }
 

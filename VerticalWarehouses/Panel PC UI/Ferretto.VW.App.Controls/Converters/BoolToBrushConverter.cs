@@ -12,9 +12,22 @@ namespace Ferretto.VW.App.Controls.Converters
     {
         #region Properties
 
-        public string FalseColor { get; set; }
+        /// <summary>
+        /// Gets or sets the brush associated to the <c>False</c> value.
+        /// </summary>
+        public Brush FalseBrush { get; set; }
 
-        public SolidColorBrush TrueColor { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the brush resource associated to the <c>False</c> value.
+        /// </summary>
+        /// <remarks>
+        /// The value is ignored it the <see cref="FalseBrush"/> property is specified.</remarks>
+        public string FalseBrushResourceName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brush associated to the <c>True</c> value.
+        /// </summary>
+        public Brush TrueBrush { get; set; }
 
         #endregion
 
@@ -22,40 +35,27 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            #region Validation
-
             if (targetType != typeof(Brush))
             {
-                throw new InvalidOperationException(nameof(targetType));
-            }
-
-            if (!(this.TrueColor is SolidColorBrush))
-            {
-                throw new InvalidOperationException(nameof(this.TrueColor));
-            }
-
-            //if (!(this.FalseColor is SolidColorBrush))
-            //{
-            //    throw new InvalidOperationException(nameof(this.FalseColor));
-            //}
-            object resource = null;
-            try
-            {
-                resource = Application.Current.FindResource(this.FalseColor);
-            }
-            catch (ResourceReferenceKeyNotFoundException)
-            {
-                throw new InvalidOperationException(nameof(this.FalseColor));
+                throw new InvalidOperationException($"The target type for this converter must be of type {nameof(Brush)}");
             }
 
             if (!(value is bool condition))
             {
-                throw new InvalidOperationException(nameof(value));
+                throw new InvalidOperationException($"The source type for this converter must be of type {nameof(Boolean)}");
             }
 
-            #endregion
+            var falseBrush = this.FalseBrush;
+            if (falseBrush is null)
+            {
+                falseBrush = Application.Current.FindResource(this.FalseBrushResourceName) as Brush;
+                if (falseBrush is null)
+                {
+                    throw new InvalidOperationException($"The resource '{this.FalseBrushResourceName}' is not of type {nameof(Brush)}.");
+                }
+            }
 
-            return condition ? this.TrueColor : resource;
+            return condition ? this.TrueBrush : falseBrush;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

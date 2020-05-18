@@ -11,7 +11,7 @@
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.BearerToken.ToString(), out var bearerToken))
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.BearerToken.ToString(), out var bearerToken))
             {
                 return bearerToken;
             }
@@ -26,7 +26,7 @@
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemBarcode.ToString(), out var itemBarcode))
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ItemBarcode.ToString(), out var itemBarcode))
             {
                 return itemBarcode;
             }
@@ -41,9 +41,24 @@
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemCode.ToString(), out var itemBarcode))
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ItemCode.ToString(), out var code))
             {
-                return itemBarcode;
+                return code;
+            }
+
+            return null;
+        }
+
+        public static string GetItemLot(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ItemLot.ToString(), out var lot))
+            {
+                return lot;
             }
 
             return null;
@@ -56,12 +71,27 @@
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemQuantity.ToString(), out var itemQuantityString))
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ItemQuantity.ToString(), out var itemQuantityString))
             {
                 if (double.TryParse(itemQuantityString, out var itemQuantity))
                 {
                     return itemQuantity;
                 }
+            }
+
+            return null;
+        }
+
+        public static string GetItemSerialNumber(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ItemSerialNumber.ToString(), out var serialNumber))
+            {
+                return serialNumber;
             }
 
             return null;
@@ -74,7 +104,7 @@
                 throw new System.ArgumentNullException(nameof(eventArgs));
             }
 
-            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ListId.ToString(), out var listIdString)
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ListId.ToString(), out var listIdString)
                 &&
                 int.TryParse(listIdString, out var listId))
             {

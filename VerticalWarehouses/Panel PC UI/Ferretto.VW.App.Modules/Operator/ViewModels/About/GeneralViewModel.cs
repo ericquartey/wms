@@ -71,7 +71,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.model, value);
         }
 
-        public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
+        public string SoftwareVersion => System.Reflection.Assembly
+            .GetEntryAssembly()
+            .GetName()
+            .Version
+            .ToString();
 
         public MachineStatistics Statistics
         {

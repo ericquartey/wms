@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.App.Accessories
 {
-    public enum BarcodeTokens
+    public enum BarcodeToken
     {
         ListId,
 
@@ -11,5 +11,9 @@
         ItemBarcode,
 
         BearerToken,
+
+        ItemSerialNumber,
+
+        ItemLot,
     }
 }

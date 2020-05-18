@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.CodeParser;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -18,7 +19,7 @@ using Prism.Events;
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel
+    public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel, IDataErrorInfo, IOperationalContextViewModel
     {
         #region Fields
 
@@ -26,7 +27,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private AlphaNumericBarDriver alphaNumericBarDriver;
 
-        private MAS.AutomationService.Contracts.Bay bay;
+        private Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
@@ -34,11 +35,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmOperationCommand;
 
+        private string inputItemCode;
+
+        private string inputLot;
+
         private double? inputQuantity;
+
+        private string inputSerialNumber;
 
         private bool isBusyAbortingOperation;
 
         private bool isBusyConfirmingOperation;
+
+        private bool isInputQuantityValid;
+
+        private bool isItemCodeValid;
+
+        private bool isItemLotValid;
+
+        private bool isItemSerialNumberValid;
 
         private bool isOperationCanceled;
 
@@ -68,12 +83,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
 
-            _ = this.AlphaNumericBarConfigureAsync();
+            _ = this.AlphaNumericBarConfigureAsync(); // TODO: async calls should be performed in the OnAppearAsync() method
         }
 
         #endregion
 
         #region Properties
+
+        public abstract string ActiveContextName { get; }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -99,10 +116,51 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public string Error => string.Join(
+                    Environment.NewLine,
+                    this[nameof(this.InputQuantity)],
+                    this[nameof(this.InputLot)],
+                    this[nameof(this.InputItemCode)],
+                    this[nameof(this.InputSerialNumber)]);
+
+        public string InputItemCode
+        {
+            get => this.inputItemCode;
+            protected set => this.SetProperty(
+                ref this.inputItemCode,
+                value,
+                () => this.IsItemCodeValid = this[nameof(this.InputItemCode)] is null);
+        }
+
+        public string InputLot
+        {
+            get => this.inputLot;
+            protected set => this.SetProperty(
+                ref this.inputLot,
+                value,
+                () => this.IsItemLotValid = this[nameof(this.InputLot)] is null);
+        }
+
         public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(
+                ref this.inputQuantity,
+                value,
+                () =>
+                {
+                    this.IsInputQuantityValid = this[nameof(this.InputQuantity)] is null;
+                    this.RaiseCanExecuteChanged();
+                });
+        }
+
+        public string InputSerialNumber
+        {
+            get => this.inputSerialNumber;
+            protected set => this.SetProperty(
+                ref this.inputSerialNumber,
+                value,
+                () => this.IsItemSerialNumberValid = this[nameof(this.InputSerialNumber)] is null);
         }
 
         public bool IsBaySideBack => this.bay?.Side == MAS.AutomationService.Contracts.WarehouseSide.Back;
@@ -117,6 +175,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyConfirmingOperation;
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsInputQuantityValid
+        {
+            get => this.isInputQuantityValid;
+            protected set => this.SetProperty(ref this.isInputQuantityValid, value);
+        }
+
+        public bool IsItemCodeValid
+        {
+            get => this.isItemCodeValid;
+            protected set => this.SetProperty(ref this.isItemCodeValid, value);
+        }
+
+        public bool IsItemLotValid
+        {
+            get => this.isItemLotValid;
+            protected set => this.SetProperty(ref this.isItemLotValid, value);
+        }
+
+        public bool IsItemSerialNumberValid
+        {
+            get => this.isItemSerialNumberValid;
+            protected set => this.SetProperty(ref this.isItemSerialNumberValid, value);
         }
 
         public bool IsOperationCanceled
@@ -152,6 +234,69 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputLot):
+                        {
+                            if (this.InputLot != null && this.InputLot != this.MissionOperation?.Lot)
+                            {
+                                return columnName;
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.InputQuantity):
+                        {
+                            if (this.InputQuantity != null && this.InputQuantity != this.MissionOperation?.RequestedQuantity)
+                            {
+                                return columnName;
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.InputItemCode):
+                        {
+                            if (this.InputItemCode != null
+                                &&
+                                this.MissionOperation?.ItemCode != null
+                                &&
+                                this.InputItemCode != this.MissionOperation.ItemCode)
+                            {
+                                return columnName;
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.InputSerialNumber):
+                        {
+                            if (this.InputSerialNumber != null
+                                &&
+                                this.MissionOperation?.SerialNumber != null
+                                &&
+                                this.InputSerialNumber != this.MissionOperation.SerialNumber)
+                            {
+                                return columnName;
+                            }
+
+                            break;
+                        }
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         public virtual bool CanConfirmOperation()
@@ -184,6 +329,47 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsOperationConfirmed
                 &&
                 this.isOperationCanceled;
+        }
+
+        public Task CommandUserActionAsync(UserActionEventArgs e)
+        {
+            if (e is null)
+            {
+                return Task.CompletedTask;
+            }
+
+            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                return Task.CompletedTask;
+            }
+
+            switch (userAction)
+            {
+                case UserAction.VerifyItem:
+                    {
+                        var itemCode = e.GetItemCode();
+                        if (itemCode is null)
+                        {
+                            this.ShowNotification(
+                                string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
+                                Services.Models.NotificationSeverity.Warning);
+
+                            return Task.CompletedTask;
+                        }
+
+                        this.InputItemCode = itemCode;
+
+                        this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
+
+                        this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+
+                        this.InputLot = e.GetItemLot() ?? this.InputLot;
+                    }
+
+                    break;
+            }
+
+            return Task.CompletedTask;
         }
 
         public async Task ConfirmOperationAsync()
@@ -358,7 +544,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
-                    var size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
+                    var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
 
                     this.alphaNumericBarDriver.Configure(ipAddress, port, size);
                 }

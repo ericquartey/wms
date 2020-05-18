@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel
     {
         #region Fields
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemPick.ToString();
+        public override string ActiveContextName => OperationalContext.ItemPick.ToString();
 
         public bool CanConfirmOnEmpty
         {
@@ -65,18 +65,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public Task CommandUserActionAsync(UserActionEventArgs userAction)
-        {
-            // do nothing
-            return Task.CompletedTask;
-        }
-
         public override Task OnAppearedAsync()
         {
             this.Compartments = null;
             this.SelectedCompartment = null;
 
-            this.MeasureUnitTxt = String.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+            this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             return base.OnAppearedAsync();
         }
@@ -90,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.MeasureUnitTxt = String.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+            this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             this.emptyOperationCommand.RaiseCanExecuteChanged();
         }

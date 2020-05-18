@@ -103,6 +103,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.item, value);
         }
 
+        public string ItemTxt
+        {
+            get => this.itemTxt;
+            set => this.SetProperty(ref this.itemTxt, value);
+        }
+
         public int? ReasonId
         {
             get => this.reasonId;
@@ -113,12 +119,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.reasonNotes;
             set => this.SetProperty(ref this.reasonNotes, value);
-        }
-
-        public string ItemTxt
-        {
-            get => this.itemTxt;
-            set => this.SetProperty(ref this.itemTxt, value);
         }
 
         public IEnumerable<OperationReason> Reasons
@@ -174,24 +174,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (e is null)
             {
-                throw new ArgumentNullException(nameof(e));
+                return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
             {
-                switch (userAction)
-                {
-                    case UserAction.FilterItems:
-                        await this.ShowItemDetailsByBarcodeAsync(e);
+                return;
+            }
 
-                        break;
+            switch (userAction)
+            {
+                case UserAction.FilterItems:
+                    await this.ShowItemDetailsByBarcodeAsync(e);
 
-                    case UserAction.PickItem:
+                    break;
 
-                        // TODO da implementare
-                        throw new NotImplementedException();
-                        break;
-                }
+                case UserAction.PickItem:
+
+                    // TODO da implementare
+                    throw new NotImplementedException();
+                    break;
             }
         }
 

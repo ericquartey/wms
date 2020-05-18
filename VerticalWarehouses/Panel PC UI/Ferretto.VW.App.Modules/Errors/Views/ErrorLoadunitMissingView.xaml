@@ -19,8 +19,8 @@
     <ctrls:View.Resources>
         <!--#region Converters-->
         <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseColor="PpcBackground"
-                                        TrueColor="{StaticResource FerrettoBlue}" />
+                                        FalseBrushResourceName="PpcBackground"
+                                        TrueBrush="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
         <!--#region DataTemplate Body-->

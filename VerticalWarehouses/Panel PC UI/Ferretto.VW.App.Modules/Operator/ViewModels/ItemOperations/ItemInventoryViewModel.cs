@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
+    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
     {
         #region Constructors
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+        public override string ActiveContextName => OperationalContext.ItemInventory.ToString();
 
         #endregion
 
@@ -50,11 +50,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             // do nothing
         }
 
-        public override void OnMisionOperationRetrieved()
-        {
-            this.InputQuantity = null;
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -62,6 +57,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
+        }
+
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = null;
         }
 
         protected override void ShowOperationDetails()
