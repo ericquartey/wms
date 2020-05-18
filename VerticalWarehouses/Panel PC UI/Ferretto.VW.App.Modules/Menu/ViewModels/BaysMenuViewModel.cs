@@ -192,8 +192,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationBypassed));
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
 
-            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
-            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationVisible));
+            //this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+            //this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationVisible));
+
+            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationBypassed));
+            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationCompleted));
 
             await base.OnAppearedAsync();
         }
