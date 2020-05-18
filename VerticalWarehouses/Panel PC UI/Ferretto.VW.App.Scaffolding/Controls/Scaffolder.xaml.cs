@@ -258,7 +258,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 if (value != e.Value && (value?.Equals(e.Value) != true))
                 {
                     var t = Nullable.GetUnderlyingType(entity.Property.PropertyType) ?? entity.Property.PropertyType;
-                    var safeValue = (e.Value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
+                    var safeValue = (e.Value == null) ? null : Convert.ChangeType(e.Value, t, Ferretto.VW.App.Resources.Localized.Instance.CurrentCulture);
                     entity.Property.SetValue(entity.Instance, safeValue);
 
                     // trigger property change
@@ -361,17 +361,17 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             else
             {
                 var structureUnion = new[]{
-                    new Models.ScaffoldedStructure(Scaffolding.Resources.UI.All,
+                    new Models.ScaffoldedStructure(Scaffolding.Resources.UI.ResourceManager.GetString("All", VW.App.Resources.Localized.Instance.CurrentCulture),
                     this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => new Models.ScaffoldedEntity( i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory)),
                     Array.Empty<Models.ScaffoldedStructure>())
                     {
-                        Description = Scaffolding.Resources.UI.AllDescription,
+                        Description = Scaffolding.Resources.UI.ResourceManager.GetString("AllDescription", VW.App.Resources.Localized.Instance.CurrentCulture),
                         Id = 0
                     }
                 }.Union(this._model.Children).OrderBy(o => o.Id);
 
                 this._navigationRoot = new Models.ScaffoldedStructure(
-                    Ferretto.VW.App.Scaffolding.Resources.UI.Root,
+                    Ferretto.VW.App.Scaffolding.Resources.UI.ResourceManager.GetString("Root", VW.App.Resources.Localized.Instance.CurrentCulture),
                     Array.Empty<Models.ScaffoldedEntity>(),
                     structureUnion);
 

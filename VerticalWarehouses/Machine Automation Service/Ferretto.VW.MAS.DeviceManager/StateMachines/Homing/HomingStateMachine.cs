@@ -351,14 +351,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                             errorText = "Find Zero not possible: External position occupied";
                         }
                         // Check presence in internal position
-                        if (ok
-                            && this.machineData.CalibrationType == Calibration.FindSensor
-                            && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                            )
-                        {
-                            ok = false;
-                            errorText = "Find Zero not possible: Internal position occupied";
-                        }
+                        //if (ok
+                        //    && this.machineData.CalibrationType == Calibration.FindSensor
+                        //    && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                        //    )
+                        //{
+                        //    ok = false;
+                        //    errorText = "Find Zero not possible: Internal position occupied";
+                        //}
                     }
                 }
 #endif

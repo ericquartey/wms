@@ -502,15 +502,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 switch (columnName)
                 {
-                    case nameof(this.LuIdOnElevator):
-                        if (this.SensorsService.IsLoadingUnitOnElevator &&
-                            ((!this.LuIdOnElevator.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnElevator && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
-                        {
-                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
-                            return Localized.Get("ErrorsApp.InvalidUnit") + lus;
-                        }
+                    //case nameof(this.LuIdOnElevator):
+                    //    if (this.SensorsService.IsLoadingUnitOnElevator &&
+                    //        ((!this.LuIdOnElevator.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnElevator && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
+                    //    {
+                    //        var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
+                    //        return Localized.Get("ErrorsApp.InvalidUnit") + lus;
+                    //    }
 
-                        break;
+                    //    break;
 
                     case nameof(this.LuIdOnBay1Down):
                         if (this.SensorsService.Sensors.LUPresentInBay1 &&
@@ -656,19 +656,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsBay3PositionDownVisible = false;
 
                 // Elevator
-                this.LuIdOnElevator = null;
-                if (this.SensorsService.IsLoadingUnitOnElevator)
-                {
-                    this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.InElevator)?.Id;
-                    //this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
-                }
+                //this.LuIdOnElevator = null;
+                //if (this.SensorsService.IsLoadingUnitOnElevator)
+                //{
+                //    this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.InElevator)?.Id;
+                //    //this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                //}
 
-                if (this.LuIdOnElevator != null)
-                {
-                    this.ElevatorStepText = stepValue.ToString();
-                    stepValue++;
-                    this.ElevatorStepVisible = true;
-                }
+                //if (this.LuIdOnElevator != null)
+                //{
+                //    this.ElevatorStepText = stepValue.ToString();
+                //    stepValue++;
+                //    this.ElevatorStepVisible = true;
+                //}
 
                 // Bay 1
                 this.LuIdOnBay1Up = null;
@@ -676,16 +676,16 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 if (this.SensorsService.Sensors.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible)
                 {
-                    this.LuIdOnBay1Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay)?.Id;
                     //this.LuIdOnBay1Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
+                    this.LuIdOnBay1Up = this.MachineService.Bay?.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit?.Id;
                     this.IsBay1PositionUpVisible = true;
                 }
 
                 if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
                     this.HasBay1PositionDownVisible)
                 {
-                    this.LuIdOnBay1Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay)?.Id;
                     //this.LuIdOnBay1Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                    this.LuIdOnBay1Down = this.MachineService.Bay?.Positions.FirstOrDefault(p => !p.IsUpper)?.LoadingUnit?.Id;
                     this.IsBay1PositionDownVisible = true;
                 }
 
@@ -951,7 +951,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.CanLuIdOnElevator = this.CanBaseExecute();
+            //this.CanLuIdOnElevator = this.CanBaseExecute();
 
             this.markAsResolvedCommand?.RaiseCanExecuteChanged();
             this.moveLoadunitCommand?.RaiseCanExecuteChanged();
@@ -968,11 +968,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsWaitingForResponse = true;
 
                 // Elevator
-                if (this.SensorsService.IsLoadingUnitOnElevator &&
-                    this.LuIdOnElevator.HasValue)
-                {
-                    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
-                }
+                //if (this.SensorsService.IsLoadingUnitOnElevator &&
+                //    this.LuIdOnElevator.HasValue)
+                //{
+                //    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                //}
 
                 // Bay 1
                 if (this.SensorsService.Sensors.LUPresentInBay1 &&

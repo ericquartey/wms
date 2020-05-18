@@ -140,16 +140,16 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                //if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
-                //{
-                //    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
-                //        .GetRequiredService<ISetupProceduresDataProvider>()
-                //        .GetBayCarouselCalibration(this.machineData.RequestingBay)
-                //        .PerformedCycles;
+                if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+                {
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBayExternalCalibration(this.machineData.RequestingBay)
+                        .PerformedCycles;
 
-                //    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
-                //    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
-                //}
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                }
             }
 
             this.Logger.LogTrace(
@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 this.machineData.MessageData,
                 this.machineData.MessageData.RequiredCycles == 0
                     ? $"{this.machineData.MessageData.AxisMovement} External Bay Positioning Started"
-                    : "Burnishing Started",
+                    : "External Bay Calibration Test Started",
                 MessageActor.Any,
                 MessageActor.DeviceManager,
                 MessageType.Positioning,

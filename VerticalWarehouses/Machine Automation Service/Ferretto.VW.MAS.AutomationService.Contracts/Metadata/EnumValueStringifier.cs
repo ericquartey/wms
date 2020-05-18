@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         #region Methods
 
         public string Stringify(object value)
-            => this.Stringify(value, System.Globalization.CultureInfo.CurrentCulture);
+            => this.Stringify(value, CommonUtils.Culture.Actual);
 
         public string Stringify(object value, CultureInfo culture)
         {
@@ -27,6 +27,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources.Vertimag.ResourceManager.GetString(resourceName, culture) ?? name;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

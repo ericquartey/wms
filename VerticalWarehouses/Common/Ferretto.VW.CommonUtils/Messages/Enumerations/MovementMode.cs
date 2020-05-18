@@ -54,7 +54,7 @@
         BayChainManual,
 
         /// <summary>
-        /// Test in carousel bay
+        /// Test in carousel bay (for calibration)
         /// </summary>
         BayTest,
 
@@ -68,6 +68,11 @@
         /// <summary>
         /// Manual movements in external bay
         /// </summary>
-        ExtBayChainManual
+        ExtBayChainManual,
+
+        /// <summary>
+        /// Test in external bay (for calibration)
+        /// </summary>
+        ExtBayTest
     }
 }

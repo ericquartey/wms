@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     this.Mission.RestoreStep = MissionStep.NotDefined;
                                     this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
-                                    var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                    var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                                     newStep.OnEnter(null);
                                 }
                             }

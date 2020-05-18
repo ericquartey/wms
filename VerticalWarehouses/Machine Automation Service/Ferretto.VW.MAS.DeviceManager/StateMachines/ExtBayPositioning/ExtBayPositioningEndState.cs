@@ -190,11 +190,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            //if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)    // <-- ATTENTION
-            //{
-            //    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
-            //    this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
-            //}
+            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+            }
         }
 
         public override void Stop(StopRequestReason reason)

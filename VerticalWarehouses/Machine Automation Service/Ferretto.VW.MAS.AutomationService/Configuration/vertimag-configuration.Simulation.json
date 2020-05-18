@@ -2203,6 +2203,10 @@
             "RequiredCycles": 600,
             "FeedRate": 0.9
         },
+        "Bay1ExternalCalibration": {
+            "RequiredCycles": 10,
+            "FeedRate": 0.9
+        },
         "Bay1CarouselTest": {
         },
         "Bay1FullTest": {
@@ -2228,6 +2232,10 @@
             "RequiredCycles": 600,
             "FeedRate": 0.9
         },
+        "Bay2ExternalCalibration": {
+            "RequiredCycles": 10,
+            "FeedRate": 0.9
+        },
         "Bay2CarouselTest": {
         },
         "Bay2FullTest": {
@@ -2251,6 +2259,10 @@
         },
         "Bay3CarouselCalibration": {
             "RequiredCycles": 600,
+            "FeedRate": 0.9
+        },
+        "Bay3ExternalCalibration": {
+            "RequiredCycles": 10,
             "FeedRate": 0.9
         },
         "Bay3CarouselTest": {

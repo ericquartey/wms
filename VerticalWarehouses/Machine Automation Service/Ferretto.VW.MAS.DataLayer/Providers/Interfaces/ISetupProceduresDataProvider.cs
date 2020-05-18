@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber);
 
+        RepeatedTestProcedure GetBayExternalCalibration(BayNumber bayNumber);
+
         SetupProcedure GetBayHeightCheck(BayNumber bayNumber);
 
         SetupProcedure GetBayLaser(BayNumber bayNumber);

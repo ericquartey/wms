@@ -182,8 +182,8 @@ namespace Ferretto.VW.App.Controls.Controls
                 }
                 if (this.machineService.Bays.Any(f => f.IsExternal))
                 {
-                    this.CardSensorLabel2 = "Int";
-                    this.CardSensorLabel3 = "Ext";
+                    this.CardSensorLabel2 = "Ext";
+                    this.CardSensorLabel3 = "Int";
                 }
             }
 

@@ -264,7 +264,7 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore. Controllare inoltre che la serranda sia chiusa.</value>
   </data>
-  <data name="LoadUnitHeightExceeded" xml:space="preserve">
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
     <value>Abbassare l'altezza del materiale nel cassetto. In seguito rimettere in automatico.</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
@@ -404,5 +404,8 @@
   </data>
   <data name="WmsError" xml:space="preserve">
     <value>The WMS system has answerd with an error code</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Il cassetto è troppo alto per questa baia. Prelevalo con un'altra baia o muovilo manualmente</value>
   </data>
 </root>

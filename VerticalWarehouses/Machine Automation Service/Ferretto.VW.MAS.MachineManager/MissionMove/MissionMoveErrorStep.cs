@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.ToTarget:
-                case MissionStep.BackToTarget:
+                case MissionStep.BackToBay:
                 case MissionStep.WaitDeposit:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
@@ -190,6 +190,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreWaitPick();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
+                    break;
+
+                case MissionStep.WaitChain:
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.RestoreWaitChain();
                     }
                     else
                     {
@@ -368,6 +380,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
+                case MissionStep.WaitChain:
+                    newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
                 case MissionStep.WaitDeposit:
                     newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
@@ -402,6 +418,43 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
+        }
+
+        private void RestoreWaitChain()
+        {
+            this.Mission.RestoreConditions = true;
+            this.Mission.NeedMovingBackward = false;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                if (bay is null)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                if (bay.Shutter != null)
+                {
+                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                    if (shutterPosition != ShutterPosition.Opened
+                        && shutterPosition != ShutterPosition.Half
+                        && shutterPosition != ShutterPosition.Closed
+                        )
+                    {
+                        this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                        this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                        this.MissionsDataProvider.Update(this.Mission);
+                        return;
+                    }
+                }
+            }
+
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            newStep.OnEnter(null);
         }
 
         private void RestoreWaitPick()
