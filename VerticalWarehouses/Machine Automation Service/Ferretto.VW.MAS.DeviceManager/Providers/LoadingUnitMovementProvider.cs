@@ -78,6 +78,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (message.Type == MessageType.Positioning
                 || message.Type == MessageType.Homing
+                || message.Type == MessageType.ShutterPositioning
                 )
             {
                 return message.Status;
@@ -263,7 +264,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         // TODO: throw an exception?
                         closeShutter = ShutterPosition.NotSpecified;
                     }
-                    else if (bay.Positions.Any(x => x.IsUpper && x.LoadingUnit != null))
+                    else if (bay.Positions.Any(x => x.LoadingUnit != null))
                     {
                         closeShutter = ShutterPosition.Half;
                     }

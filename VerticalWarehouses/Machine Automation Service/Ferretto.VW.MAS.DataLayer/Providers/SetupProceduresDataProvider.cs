@@ -18,6 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 context.SetupProceduresSets.AsNoTracking()
 
                     .Include(s => s.Bay1CarouselCalibration)
+                    .Include(s => s.Bay1ExternalCalibration)
                     .Include(s => s.Bay1HeightCheck)
                     .Include(s => s.Bay1Laser)
                     .Include(s => s.Bay1ProfileCheck)
@@ -25,6 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.Bay1FullTest)
 
                     .Include(s => s.Bay2CarouselCalibration)
+                    .Include(s => s.Bay2ExternalCalibration)
                     .Include(s => s.Bay2HeightCheck)
                     .Include(s => s.Bay2Laser)
                     .Include(s => s.Bay2ProfileCheck)
@@ -32,6 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.Bay2FullTest)
 
                     .Include(s => s.Bay3CarouselCalibration)
+                    .Include(s => s.Bay3ExternalCalibration)
                     .Include(s => s.Bay3HeightCheck)
                     .Include(s => s.Bay3Laser)
                     .Include(s => s.Bay3ProfileCheck)
@@ -89,6 +92,16 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1CarouselCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2CarouselCalibration : s.Bay3CarouselCalibration)
+                    .Single();
+            }
+        }
+
+        public RepeatedTestProcedure GetBayExternalCalibration(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ExternalCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2ExternalCalibration : s.Bay3ExternalCalibration)
                     .Single();
             }
         }
@@ -250,6 +263,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay1CarouselCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay1ExternalCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
@@ -257,6 +271,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet?.Bay1FullTest, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay2CarouselCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay2ExternalCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
@@ -264,6 +279,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet?.Bay2FullTest, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay3CarouselCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay3ExternalCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);
@@ -409,6 +425,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1CarouselCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay1ExternalCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
@@ -416,6 +433,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1FullTest, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2CarouselCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay2ExternalCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
@@ -423,6 +441,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2FullTest, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3CarouselCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay3ExternalCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);

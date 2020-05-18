@@ -1367,6 +1367,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("Bay1CarouselCalibrationId");
 
+                    b.Property<int?>("Bay1ExternalCalibrationId");
+
                     b.Property<int?>("Bay1FirstLoadingUnitId");
 
                     b.Property<int?>("Bay1FullTestId");
@@ -1381,6 +1383,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("Bay2CarouselCalibrationId");
 
+                    b.Property<int?>("Bay2ExternalCalibrationId");
+
                     b.Property<int?>("Bay2FirstLoadingUnitId");
 
                     b.Property<int?>("Bay2FullTestId");
@@ -1394,6 +1398,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("Bay2ShutterTestId");
 
                     b.Property<int?>("Bay3CarouselCalibrationId");
+
+                    b.Property<int?>("Bay3ExternalCalibrationId");
 
                     b.Property<int?>("Bay3FirstLoadingUnitId");
 
@@ -1433,6 +1439,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("Bay1CarouselCalibrationId");
 
+                    b.HasIndex("Bay1ExternalCalibrationId");
+
                     b.HasIndex("Bay1FirstLoadingUnitId");
 
                     b.HasIndex("Bay1FullTestId");
@@ -1447,6 +1455,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("Bay2CarouselCalibrationId");
 
+                    b.HasIndex("Bay2ExternalCalibrationId");
+
                     b.HasIndex("Bay2FirstLoadingUnitId");
 
                     b.HasIndex("Bay2FullTestId");
@@ -1460,6 +1470,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("Bay2ShutterTestId");
 
                     b.HasIndex("Bay3CarouselCalibrationId");
+
+                    b.HasIndex("Bay3ExternalCalibrationId");
 
                     b.HasIndex("Bay3FirstLoadingUnitId");
 
@@ -2033,6 +2045,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("Bay1CarouselCalibrationId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1ExternalCalibration")
+                        .WithMany()
+                        .HasForeignKey("Bay1ExternalCalibrationId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "Bay1FirstLoadingUnit")
                         .WithMany()
                         .HasForeignKey("Bay1FirstLoadingUnitId");
@@ -2061,6 +2077,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("Bay2CarouselCalibrationId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2ExternalCalibration")
+                        .WithMany()
+                        .HasForeignKey("Bay2ExternalCalibrationId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "Bay2FirstLoadingUnit")
                         .WithMany()
                         .HasForeignKey("Bay2FirstLoadingUnitId");
@@ -2088,6 +2108,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3CarouselCalibration")
                         .WithMany()
                         .HasForeignKey("Bay3CarouselCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3ExternalCalibration")
+                        .WithMany()
+                        .HasForeignKey("Bay3ExternalCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "Bay3FirstLoadingUnit")
                         .WithMany()

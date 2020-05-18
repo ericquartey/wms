@@ -12,6 +12,7 @@
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:resx="clr-namespace:Ferretto.VW.App.Scaffolding.Resources"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
@@ -507,7 +508,7 @@
                                         <TextBlock Style="{StaticResource CellTextBlockStyle}">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource TwoWayConverter}"
-                                                              ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
+                                                              ConverterCulture="{x:Static res:UILoc.UICulture}">
                                                     <Binding Path="Property" />
                                                     <Binding Path="Instance" />
                                                 </MultiBinding>

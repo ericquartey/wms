@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand cellsPanelCheckBypassCommand;
 
+        private DelegateCommand externalBayCalibrationTestBypassCommand;
+
         private DelegateCommand horizontalChainCalibrationTestBypassCommand;
 
         private int proceduresCompleted;
@@ -97,6 +99,34 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
+
+                        await this.UpdateSetupStatusAsync();
+                    }
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsExecutingProcedure = false;
+                }
+            }));
+
+        public ICommand ExternalBayCalibrationBypassCommand =>
+        this.externalBayCalibrationTestBypassCommand
+        ??
+        (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
+            async () =>
+            {
+                try
+                {
+                    this.IsExecutingProcedure = true;
+
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync();
 
                         await this.UpdateSetupStatusAsync();
                     }
@@ -277,7 +307,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public override bool ConfirmSetupVisible => (this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure && this.IsGeneralActive);
 
         public ICommand HorizontalChainCalibrationTestBypassCommand =>
-                                    this.horizontalChainCalibrationTestBypassCommand
+            this.horizontalChainCalibrationTestBypassCommand
             ??
             (this.horizontalChainCalibrationTestBypassCommand = new DelegateCommand(
                 async () =>
@@ -526,11 +556,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = Localized.Get("InstallationApp.TestExternalBay"),
-                        Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = false,
-                        Bypassed = false,
-                        Command = null,
+                        Text = Localized.Get("InstallationApp.ExtBayCalibration"),
+                        Status = bayStatus.ExternalBayCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                        Bypassable = !bayStatus.ExternalBayCalibration.IsCompleted,
+                        Bypassed = bayStatus.ExternalBayCalibration.IsBypassed,
+                        Command = this.ExternalBayCalibrationBypassCommand,
                     });
                 }
 

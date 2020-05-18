@@ -1,5 +1,6 @@
-﻿using System;
+﻿ using System;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand bayHeightCommand;
 
         private DelegateCommand carouselCalibrationCommand;
+
+        private DelegateCommand externalBayCalibrationCommand;
 
         private DelegateCommand testShutterCommand;
 
@@ -50,6 +53,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             BayHeight,
 
             CarouselCalibration,
+
+            ExternalBayCalibration,
 
             TestShutter,
         }
@@ -90,6 +95,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration ?? new SetupStepStatus();
+
+        public ICommand ExternalBayCalibrationCommand =>
+                    this.externalBayCalibrationCommand
+            ??
+            (this.externalBayCalibrationCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.ExternalBayCalibration),
+                () => this.CanExecuteCommand() &&
+               //this.MachineModeService.MachineMode == MachineMode.Manual &&
+               (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
+
         public bool IsBayControlBypassed => this.BayControl.IsBypassed;
 
         public bool IsBayControlCompleted => this.BayControl.IsCompleted && !this.BayControl.IsBypassed;
@@ -103,6 +120,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public bool IsCarouselCalibrationCompleted => this.CarouselCalibration.IsCompleted && !this.CarouselCalibration.IsBypassed;
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
+
+        public bool IsExternalBayCalibrationBypassed => this.ExternalBayCalibration.IsBypassed;
+
+        public bool IsExternalBayCalibrationCompleted => this.ExternalBayCalibration.IsCompleted && !this.ExternalBayCalibration.IsBypassed;
+
+        public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal);
 
         public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
 
@@ -169,7 +192,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationBypassed));
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
 
-            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+            //this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+            //this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationVisible));
+
+            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationBypassed));
+            this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationCompleted));
 
             await base.OnAppearedAsync();
         }
@@ -193,6 +220,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.bayHeightCommand?.RaiseCanExecuteChanged();
             this.testShutterCommand?.RaiseCanExecuteChanged();
             this.carouselCalibrationCommand?.RaiseCanExecuteChanged();
+            this.externalBayCalibrationCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -219,6 +247,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.CAROUSELCALIBRATION,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.ExternalBayCalibration:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.EXTERNALBAYCALIBRATION,
                         data: null,
                         trackCurrentView: true);
                     break;

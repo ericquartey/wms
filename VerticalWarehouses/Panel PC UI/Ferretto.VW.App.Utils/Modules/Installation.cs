@@ -31,6 +31,8 @@
 
         public const string CAROUSELCALIBRATION = "CarouselCalibrationViewModel";
 
+        public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";
+
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
         public const string CELLSHEIGHTCHECK = "CellsHeightCheckViewModel";

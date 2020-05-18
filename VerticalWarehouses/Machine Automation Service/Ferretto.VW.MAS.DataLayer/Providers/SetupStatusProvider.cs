@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (!(bay1 is null))
             {
                 bay1AllTestCompleted = (setup.Bay1CarouselCalibration.IsCompleted || bay1.Carousel is null) &&
+                               (setup.Bay1ExternalCalibration.IsCompleted || !bay1.IsExternal) &&
                                (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null) &&
                                 setup.Bay1HeightCheck.IsCompleted &&
                                (setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
@@ -76,6 +77,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (!(bay2 is null))
             {
                 bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
+                               (setup.Bay2ExternalCalibration.IsCompleted || !bay2.IsExternal) &&
                                (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
                                 setup.Bay2HeightCheck.IsCompleted &&
                                (setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
@@ -85,6 +87,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (!(bay3 is null))
             {
                 bay3AllTestCompleted = (setup.Bay3CarouselCalibration.IsCompleted || bay3.Carousel is null) &&
+                               (setup.Bay3ExternalCalibration.IsCompleted || !bay3.IsExternal) &&
                                (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null) &&
                                 setup.Bay3HeightCheck.IsCompleted &&
                                (setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
@@ -126,6 +129,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay1CarouselCalibration.IsBypassed,
                     },
+                    ExternalBayCalibration = new SetupStepStatus
+                    {
+                        IsCompleted = setup.Bay1ExternalCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1ExternalCalibration.IsBypassed,
+                    },
+
                     IsAllTestCompleted = bay1AllTestCompleted,
                 },
                 Bay2 = new BaySetupStatus
@@ -161,6 +171,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay2CarouselCalibration.IsBypassed,
                     },
+                    ExternalBayCalibration = new SetupStepStatus
+                    {
+                        IsCompleted = setup.Bay2ExternalCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay2ExternalCalibration.IsBypassed,
+                    },
+
                     IsAllTestCompleted = bay2AllTestCompleted,
                 },
                 Bay3 = new BaySetupStatus
@@ -195,6 +212,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         IsCompleted = setup.Bay3CarouselCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay3CarouselCalibration.IsBypassed,
+                    },
+                    ExternalBayCalibration = new SetupStepStatus
+                    {
+                        IsCompleted = setup.Bay3ExternalCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay3ExternalCalibration.IsBypassed,
                     },
 
                     IsAllTestCompleted = bay3AllTestCompleted,

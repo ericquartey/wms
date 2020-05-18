@@ -531,9 +531,18 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Try to lower the height of the load unit. Then set Auto mode..
         /// </summary>
-        public static string LoadUnitHeightExceeded {
+        public static string LoadUnitHeightFromBayExceeded {
             get {
-                return ResourceManager.GetString("LoadUnitHeightExceeded", resourceCulture);
+                return ResourceManager.GetString("LoadUnitHeightFromBayExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The height of the load unit is too high for this bay. Send it to another bay or move it manually.
+        /// </summary>
+        public static string LoadUnitHeightToBayExceeded {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightToBayExceeded", resourceCulture);
             }
         }
         

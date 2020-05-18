@@ -979,7 +979,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnGuidedPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        private void OnGuidedPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (!this.IsMovementsGuided)
             {

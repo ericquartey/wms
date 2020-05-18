@@ -10,12 +10,10 @@
 
         ExecuteList,
 
-        ConfirmPickOperation,
+        ConfirmOperation,
 
-        ConfirmPutOperation,
+        LoginUser,
 
-        ConfirmInventoryOperation,
-
-        LoginUser
+        VerifyItem
     }
 }

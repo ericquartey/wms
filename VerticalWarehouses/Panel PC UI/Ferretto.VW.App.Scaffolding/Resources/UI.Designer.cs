@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tutti.
+        ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
+        ///   Looks up a localized string similar to Allows access to the list of all parameters..
         /// </summary>
         public static string AllDescription {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Annulla.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nessun elemento corrispondente al criterio di navigazione..
+        ///   Looks up a localized string similar to No items matching the navigation criteria..
         /// </summary>
         public static string Empty {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Valore non valido.
+        ///   Looks up a localized string similar to Value not valid..
         /// </summary>
         public static string GenericValidationError {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Macchina.
+        ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
+        ///   Looks up a localized string similar to Allows access to the list of all parameters..
         /// </summary>
         public static string MachineDescription {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Salva.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ricerca:.
+        ///   Looks up a localized string similar to Search:.
         /// </summary>
         public static string Search {
             get {
