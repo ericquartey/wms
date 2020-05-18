@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="All" xml:space="preserve">
-    <value>All</value>
+    <value>Tutti</value>
   </data>
   <data name="AllDescription" xml:space="preserve">
-    <value>Allows access to the list of all parameters.</value>
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla categoria.</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annulla</value>
   </data>
   <data name="Empty" xml:space="preserve">
-    <value>No items matching the navigation criteria.</value>
+    <value>Nessun elemento corrispondente al criterio di navigazione.</value>
   </data>
   <data name="GenericValidationError" xml:space="preserve">
-    <value>Value not valid.</value>
+    <value>Valore non valido</value>
   </data>
   <data name="Machine" xml:space="preserve">
-    <value>Machine</value>
+    <value>Macchina</value>
   </data>
   <data name="MachineDescription" xml:space="preserve">
-    <value>Allows access to the list of all parameters.</value>
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla categoria.</value>
   </data>
   <data name="Root" xml:space="preserve">
     <value>Root</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Salva</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search:</value>
+    <value>Ricerca:</value>
   </data>
 </root>

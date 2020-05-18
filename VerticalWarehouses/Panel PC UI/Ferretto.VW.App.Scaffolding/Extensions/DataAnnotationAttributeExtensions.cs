@@ -61,7 +61,9 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             }
             if (display != null)
             {
-                return display.GetName() ?? display.GetShortName();
+                string dn = AutomationService.Contracts.Metadata.Resources.Vertimag.ResourceManager.GetString(display.Name, Localized.Instance.CurrentCulture);
+
+                return dn ?? display.GetName() ?? display.GetShortName();
             }
 
             return property.Name;
