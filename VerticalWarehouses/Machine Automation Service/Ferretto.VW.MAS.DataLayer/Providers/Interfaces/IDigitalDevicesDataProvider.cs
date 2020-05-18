@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Inverter GetInverterByIndex(InverterIndex mainInverter);
 
+        void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value);
+
         #endregion
     }
 }

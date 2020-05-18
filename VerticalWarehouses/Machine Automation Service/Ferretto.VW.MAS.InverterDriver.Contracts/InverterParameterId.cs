@@ -71,5 +71,7 @@
         BlockRead = 19,
 
         HeartBeatTimer1 = 1390,
+
+        SoftwareVersion = 12,
     }
 }

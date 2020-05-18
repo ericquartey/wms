@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private InverterParametersData inverterParameters;
+
+        private ISetVertimagConfiguration parentConfiguration;
 
         private DelegateCommand setInverterParamertersCommand;
 
@@ -62,9 +65,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
-            if (this.Data is InverterParametersData inverterParameters)
+            if (this.Data is ISetVertimagConfiguration mainConfiguration)
             {
-                this.InverterParameters = inverterParameters;
+                this.parentConfiguration = mainConfiguration;
+                this.InverterParameters = mainConfiguration.SelectedInverter;
             }
 
             this.IsWaitingForResponse = false;
@@ -89,13 +93,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, null);
+                await this.parentConfiguration.BackupVertimagConfigurationParameters();
+
+                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, this.parentConfiguration.VertimagConfiguration);
 
                 this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 

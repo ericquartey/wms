@@ -3100,6 +3100,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Payload { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("StringValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StringValue { get; set; }
     
@@ -4530,6 +4533,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("InverterIndex", Required = Newtonsoft.Json.Required.Always)]
         public byte InverterIndex { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCheckInverterVersion", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCheckInverterVersion { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<object> Parameters { get; set; }

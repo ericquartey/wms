@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
+        bool IsCheckInverterVersion { get; }
+
         IEnumerable<object> Parameters { get; }
 
         #endregion
