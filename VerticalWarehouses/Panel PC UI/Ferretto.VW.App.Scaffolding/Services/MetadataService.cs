@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
         #region Methods
 
         public static Models.ScaffoldedStructure Scaffold(this object instance)
-            => instance.Scaffold(CultureInfo.CurrentCulture);
+            => instance.Scaffold(Ferretto.VW.App.Resources.Localized.Instance.CurrentCulture);
 
         public static Models.ScaffoldedStructure Scaffold(this object instance, CultureInfo culture)
             => new MetadataServiceExecutor(culture).ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());

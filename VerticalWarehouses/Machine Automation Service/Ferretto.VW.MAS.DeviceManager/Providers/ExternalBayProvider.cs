@@ -391,8 +391,54 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            var policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Assisted);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(bayNumber);
+
+            var targetPosition = bay.External.Race;
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Absolute,
+                MovementMode.ExtBayTest,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.logger.LogDebug(
+                $"Start External Bay Calibration Test " +
+                $"bayNumber: {bayNumber}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
         }
 
         public void Stop(BayNumber bayNumber, MessageActor sender)
@@ -410,8 +456,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StopTest(BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            this.PublishCommand(
+                null,
+                $"Stop external bay {bayNumber} calibration",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
+                bayNumber,
+                BayNumber.None);
         }
 
         #endregion

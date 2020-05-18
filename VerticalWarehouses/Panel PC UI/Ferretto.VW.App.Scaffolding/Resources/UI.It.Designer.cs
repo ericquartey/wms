@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.App.Scaffolding.Resources {
+namespace Ferretto.VW.App.Scaffolding {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Scaffolding.Resources.UI", typeof(UI).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Scaffolding.UI", typeof(UI).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All.
+        ///   Looks up a localized string similar to Tutti.
         /// </summary>
         public static string All {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows access to the list of all parameters..
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
         /// </summary>
         public static string AllDescription {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Annulla.
         /// </summary>
         public static string Cancel {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No items matching the navigation criteria..
+        ///   Looks up a localized string similar to Nessun elemento corrispondente al criterio di navigazione..
         /// </summary>
         public static string Empty {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value not valid..
+        ///   Looks up a localized string similar to Valore non valido.
         /// </summary>
         public static string GenericValidationError {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machine.
+        ///   Looks up a localized string similar to Macchina.
         /// </summary>
         public static string Machine {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows access to the list of all parameters..
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
         /// </summary>
         public static string MachineDescription {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Salva.
         /// </summary>
         public static string Save {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search:.
+        ///   Looks up a localized string similar to Ricerca:.
         /// </summary>
         public static string Search {
             get {

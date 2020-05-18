@@ -7,6 +7,7 @@
         internal static readonly BaySetupStatus Complete = new BaySetupStatus
         {
             CarouselCalibration = SetupStepStatus.Complete,
+            ExternalBayCalibration = SetupStepStatus.Complete,
             Check = SetupStepStatus.Complete,
             Laser = SetupStepStatus.Complete,
             Profile = SetupStepStatus.Complete,
@@ -20,6 +21,8 @@
         public SetupStepStatus CarouselCalibration { get; set; }
 
         public SetupStepStatus Check { get; set; }
+
+        public SetupStepStatus ExternalBayCalibration { get; set; }
 
         public bool IsAllTestCompleted { get; set; }
 

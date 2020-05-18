@@ -11,6 +11,18 @@ using System.Xaml;
 
 namespace Ferretto.VW.App.Resources
 {
+    public static class UILoc
+    {
+        #region Properties
+
+        public static CultureInfo UICulture
+        {
+            get => Localized.Instance.CurrentCulture;
+        }
+
+        #endregion
+    }
+
     public class Localized : INotifyPropertyChanged
 
     {

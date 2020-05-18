@@ -288,7 +288,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                 if (data.MovementMode == MovementMode.ExtBayChain ||
-                    data.MovementMode == MovementMode.ExtBayChainManual)
+                    data.MovementMode == MovementMode.ExtBayChainManual ||
+                    data.MovementMode == MovementMode.ExtBayTest)
                 {
                     // external bay
                     var currentStateMachine = new ExtBayPositioningStateMachine(
@@ -642,6 +643,21 @@ namespace Ferretto.VW.MAS.DeviceManager
                 foreach (var fsm in stateMachines)
                 {
                     var stateMachine = fsm as PositioningStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+            }
+            //else
+            //{
+            //    this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
+            //}
+
+            // Check the stopTest message for the ExtBayPositioning state machine
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is ExtBayPositioningStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as ExtBayPositioningStateMachine;
                     stateMachine.ProcessCommandMessage(receivedMessage);
                 }
             }
