@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Windows.Media.TextFormatting;
 using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
@@ -127,7 +127,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 if (!(this.configurationService.VertimagConfiguration is null))
                 {
-                    this.invertersParameters = this.GetInvertersParameters(this.configurationService.VertimagConfiguration);
+                    this.invertersParameters = this.GetInvertersParameters(this.configurationService.VertimagConfiguration).OrderBy(i => i.InverterIndex);
                 }
 
                 this.RaisePropertyChanged(nameof(this.InvertersParameters));
