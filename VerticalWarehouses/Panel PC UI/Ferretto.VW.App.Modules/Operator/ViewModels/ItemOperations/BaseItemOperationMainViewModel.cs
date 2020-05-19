@@ -338,26 +338,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return Task.CompletedTask;
             }
 
-            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            if (e.IsReset)
             {
+                this.InputSerialNumber = null;
+                this.InputLot = null;
+                this.InputItemCode = null;
+                this.InputQuantity = this.MissionOperation?.RequestedQuantity;
+
                 return Task.CompletedTask;
             }
 
-            switch (userAction)
+            switch (e.UserAction)
             {
+                case UserAction.ConfirmOperation:
                 case UserAction.VerifyItem:
                     {
-                        var itemCode = e.GetItemCode();
-                        if (itemCode is null)
-                        {
-                            this.ShowNotification(
-                                string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
-                                Services.Models.NotificationSeverity.Warning);
-
-                            return Task.CompletedTask;
-                        }
-
-                        this.InputItemCode = itemCode;
+                        this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 

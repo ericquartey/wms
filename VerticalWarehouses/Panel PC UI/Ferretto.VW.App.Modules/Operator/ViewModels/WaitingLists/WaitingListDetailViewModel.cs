@@ -124,17 +124,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            if (e.UserAction is UserAction.ExecuteList)
             {
-                return;
-            }
-
-            switch (userAction)
-            {
-                case UserAction.ExecuteList:
-
-                    await this.ExecuteListByBarcodeAsync(e);
-                    break;
+                await this.ExecuteListByBarcodeAsync(e);
             }
         }
 
