@@ -102,6 +102,11 @@ namespace Ferretto.VW.App.Services
             await this.machineBaysWebService.SetAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
         }
 
+        public async Task SetSetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        {
+            await this.machineBaysWebService.SetLaserPointerAsync(isEnabled, ipAddress.ToString(), port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+        }
+
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
         {
             this.ChainPosition = e.Position;

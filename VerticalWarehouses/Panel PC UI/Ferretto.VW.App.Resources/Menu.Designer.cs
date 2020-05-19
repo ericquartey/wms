@@ -225,18 +225,45 @@ namespace Ferretto.VW.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Configuration and test of the laser printer.
         /// </summary>
-        public static string AccessoriesLaserMenuDescription {
+        public static string AccessoriesLaserPointerMenuDescription {
             get {
-                return ResourceManager.GetString("AccessoriesLaserMenuDescription", resourceCulture);
+                return ResourceManager.GetString("AccessoriesLaserPointerMenuDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Laser Pointer.
         /// </summary>
-        public static string AccessoriesLaserMenuTitle {
+        public static string AccessoriesLaserPointerMenuTitle {
             get {
-                return ResourceManager.GetString("AccessoriesLaserMenuTitle", resourceCulture);
+                return ResourceManager.GetString("AccessoriesLaserPointerMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset Y axis.
+        /// </summary>
+        public static string AccessoriesLaserPointerYOffset {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserPointerYOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset Z axis (lower bay).
+        /// </summary>
+        public static string AccessoriesLaserPointerZOffsetLowerPosition {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserPointerZOffsetLowerPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset Z axis (upper bay).
+        /// </summary>
+        public static string AccessoriesLaserPointerZOffsetUpperPosition {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserPointerZOffsetUpperPosition", resourceCulture);
             }
         }
         

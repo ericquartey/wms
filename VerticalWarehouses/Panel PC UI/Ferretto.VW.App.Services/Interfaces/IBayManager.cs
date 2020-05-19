@@ -26,7 +26,11 @@ namespace Ferretto.VW.App.Services
         /// <exception cref="MasWebApiException"></exception>
         Task InitializeAsync();
 
+        /// <exception cref="MasWebApiException"></exception>
         Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port);
+
+        /// <exception cref="MasWebApiException"></exception>
+        Task SetSetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
 
         #endregion
     }

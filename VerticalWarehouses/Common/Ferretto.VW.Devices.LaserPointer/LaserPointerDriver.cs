@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.Devices.LaserPointer
 {
@@ -11,7 +12,13 @@ namespace Ferretto.VW.Devices.LaserPointer
     {
         #region Fields
 
-        public const int PORT_DEFAULT = 2020;
+        public const string IP_ADDRESS_DEFAULT = "192.168.99.12";
+
+        public const int PORT_DEFAULT = 80;
+
+        public const int SPEED_DEFAULT = 80;
+
+        private readonly Queue errorsQueue;
 
         private readonly Queue messagesReceivedQueue;
 
@@ -19,7 +26,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private readonly int tcpTimeout = 2000;
 
-        private IPAddress ipAddress = IPAddress.Parse("192.168.99.12");
+        private IPAddress ipAddress = IPAddress.Parse(IP_ADDRESS_DEFAULT);
 
         private bool laserEnabled = false;
 
@@ -28,6 +35,23 @@ namespace Ferretto.VW.Devices.LaserPointer
         private LaserPointerCommands.Command setPositionStatus = LaserPointerCommands.Command.SETP_F;
 
         private bool testEnabled = false;
+
+        private double yOffset;
+
+        private double zOffsetLowerPosition;
+
+        private double zOffsetUpperPosition;
+
+        #endregion
+
+        #region Constructors
+
+        public LaserPointerDriver()
+        {
+            this.messagesToBeSendQueue = new Queue();
+            this.messagesReceivedQueue = new Queue();
+            this.errorsQueue = new Queue();
+        }
 
         #endregion
 
@@ -43,10 +67,31 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         #region Methods
 
-        public bool Configure(IPAddress ipAddress, int port)
+        public LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, bool isBayUpperPosition, WarehouseSide baySide)
+        {
+            var result = new LaserPoint();
+
+            if (baySide == WarehouseSide.Back)
+            {
+                compartmentXPosition = loadingUnitWidth - compartmentXPosition;
+                compartmentYPosition = loadingUnitDepth - compartmentYPosition;
+            }
+
+            result.X = (int)((loadingUnitWidth / 2) - compartmentXPosition);
+            result.Y = (int)(compartmentYPosition - (loadingUnitDepth / 2));
+            result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
+            result.Speed = SPEED_DEFAULT;
+            return result;
+        }
+
+        public bool Configure(IPAddress ipAddress, int port, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
         {
             this.ipAddress = ipAddress;
             this.port = port;
+            this.yOffset = yOffset;
+            this.zOffsetUpperPosition = zOffsetUpperPosition;
+            this.zOffsetLowerPosition = zOffsetLowerPosition;
+
             return true;
         }
 
@@ -97,6 +142,12 @@ namespace Ferretto.VW.Devices.LaserPointer
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
+        public async Task<bool> IsConnectedAsync()
+        {
+            this.EnqueueCommand(LaserPointerCommands.Command.HELP);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -129,6 +180,11 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// <returns></returns>
         public async Task<bool> MoveAsync(LaserPoint point)
         {
+            if (point is null)
+            {
+                return false;
+            }
+
             this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -160,6 +216,18 @@ namespace Ferretto.VW.Devices.LaserPointer
         public async Task<bool> StepAsync(LaserStep step)
         {
             this.EnqueueCommand(LaserPointerCommands.Command.STEP, null, step);
+            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        public async Task<bool> SwitchOnAndMoveAsync(LaserPoint point)
+        {
+            if (point is null)
+            {
+                return false;
+            }
+
+            this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
+            this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
@@ -292,6 +360,8 @@ namespace Ferretto.VW.Devices.LaserPointer
             try
             {
                 this.messagesReceivedQueue.Clear();
+                this.errorsQueue.Clear();
+
                 var client = new TcpClient();
                 NetworkStream stream = null;
 
@@ -334,12 +404,17 @@ namespace Ferretto.VW.Devices.LaserPointer
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                        this.errorsQueue.Enqueue(e);
                     }
                 }
 
                 stream?.Close();
                 client?.Close();
-                result = true;
+
+                if (this.errorsQueue.Count == 0)
+                {
+                    result = true;
+                }
             }
             catch (Exception e)
             {

@@ -171,11 +171,20 @@
   <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
     <value>Stampante Etichette</value>
   </data>
-  <data name="AccessoriesLaserMenuDescription" xml:space="preserve">
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
     <value>Gestione della configurazione e test funzionalità del Laser</value>
   </data>
-  <data name="AccessoriesLaserMenuTitle" xml:space="preserve">
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
     <value>Puntatore Laser</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Offset asse Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Offset asse Z (baia bassa)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Offset asse Z (baia alta)</value>
   </data>
   <data name="AccessoriesMenuName" xml:space="preserve">
     <value>Menu Accessori</value>
