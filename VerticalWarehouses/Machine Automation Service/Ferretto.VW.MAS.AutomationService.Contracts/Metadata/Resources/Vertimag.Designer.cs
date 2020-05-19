@@ -520,6 +520,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay {0} External.
+        /// </summary>
+        public static string ExternalBay {
+            get {
+                return ResourceManager.GetString("ExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Bay Parameters.
+        /// </summary>
+        public static string ExternalBay_Description {
+            get {
+                return ResourceManager.GetString("ExternalBay_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed Rate.
         /// </summary>
         public static string FeedRate {
@@ -903,6 +921,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string PulleyDiameter {
             get {
                 return ResourceManager.GetString("PulleyDiameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Race.
+        /// </summary>
+        public static string Race {
+            get {
+                return ResourceManager.GetString("Race", resourceCulture);
             }
         }
         

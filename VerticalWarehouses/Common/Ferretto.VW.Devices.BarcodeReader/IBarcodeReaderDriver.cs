@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils;
 
 namespace Ferretto.VW.Devices.BarcodeReader
 {

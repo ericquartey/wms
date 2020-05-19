@@ -2497,9 +2497,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Abort = 4,
     
-        Test = 5,
-    
-        Stop = 6,
+        Stop = 5,
     
     }
     
@@ -6242,8 +6240,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("contextName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContextName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("nextRuleId", Required = Newtonsoft.Json.Required.Always)]
-        public int NextRuleId { get; set; }
+        [Newtonsoft.Json.JsonProperty("nextRuleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? NextRuleId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Pattern { get; set; }

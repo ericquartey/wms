@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private double? inputQuantity;
+        private int? inputQuantity;
 
         private bool isBusyLoadingNextPage;
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public double? InputQuantity
+        public int? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
@@ -331,12 +331,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
-            {
-                return;
-            }
-
-            switch (userAction)
+            switch (e.UserAction)
             {
                 case UserAction.FilterItems:
                     await this.ShowItemDetailsByBarcodeAsync(e);
@@ -642,7 +637,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (items.Count() == 1)
                 {
-                    this.InputQuantity = itemQuantity;
+                    this.InputQuantity = (int) itemQuantity;
 
                     await this.RequestItemPickAsync(items.First().Item.Id, itemCode);
                 }

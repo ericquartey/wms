@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
