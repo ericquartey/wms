@@ -19,6 +19,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Offset(10)]
             public Carousel Carousel { get; set; }
 
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ExternalBay))]
+            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.ExternalBay_Description))]
+            [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
+            [Id(60)]
+            public External External { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ChainOffset))]
             [Unit("mm")]
             [Id(1)]
