@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class External : DataModel
     {
-        #region Properties
+        #region Properties 
 
         public ExternalBayManualParameters AssistedMovements { get; set; }
 

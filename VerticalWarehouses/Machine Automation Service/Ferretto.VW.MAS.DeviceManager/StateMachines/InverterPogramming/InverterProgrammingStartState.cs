@@ -72,20 +72,19 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                 {
                     case MessageStatus.OperationEnd:
                         var notificationMessage = new NotificationMessage(
-                                   null,
-                           $"Starting inverter Programming state on inverters",
-                           MessageActor.Any,
-                           MessageActor.DeviceManager,
-                           MessageType.InverterProgramming,
-                           this.requestingBay,
-                           this.targetBay,
-                           MessageStatus.OperationStepEnd);
+                                       null,
+                               $"Starting inverter Programming state on inverters",
+                               MessageActor.Any,
+                               MessageActor.DeviceManager,
+                               MessageType.InverterProgramming,
+                               this.requestingBay,
+                               this.targetBay,
+                               MessageStatus.OperationStepEnd);
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
                         if (this.NextInverterParameters is InverterParametersData nextInverterParametersData)
                         {
                             this.currentInverterIndex = nextInverterParametersData.InverterIndex;
-                            var nextCommandMessageData = new InverterProgrammingFieldMessageData(nextInverterParametersData.Parameters);
+                            var nextCommandMessageData = new InverterProgrammingFieldMessageData(nextInverterParametersData.Parameters, nextInverterParametersData.IsCheckInverterVersion);
                             var nextCommandMessage = new FieldCommandMessage(
                                 nextCommandMessageData,
                                 $"Inverter Programming Start State Field Command",
@@ -133,7 +132,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
         public override void Start()
         {
             var mainInverter = this.machineData.InverterParametersData.First();
-            var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter.Parameters);
+            var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter.Parameters, mainInverter.IsCheckInverterVersion);
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
                 $"Inverter Programming Start State Field Command",

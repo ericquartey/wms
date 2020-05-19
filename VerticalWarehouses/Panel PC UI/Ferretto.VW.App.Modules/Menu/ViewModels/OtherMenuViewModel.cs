@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Inverters.PARAMETERINVERTER,
-                            data: null,
+                            data: "reset",
                             trackCurrentView: true);
                         break;
 

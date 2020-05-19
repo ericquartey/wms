@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -40,10 +41,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
 
-            var inverters = inverterParametersData.OrderBy(i => i.InverterIndex);
+            if (inverterParametersData.Count() == 0)
+            {
+                throw new ArgumentException($"No Inverters found");
+            }
 
             this.PublishCommand(
-                new InverterProgrammingMessageData(inverters, CommonUtils.CommandAction.Start),
+                new InverterProgrammingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
@@ -56,23 +60,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
 
-            if (inverterParametersData.FirstOrDefault(i => i.InverterIndex == inverterIndex) is InverterParametersData inverterParameters
-                &&
-                inverterParameters.Parameters?.Count() > 0)
+            var inverterParameters = inverterParametersData.Where(i => i.InverterIndex == inverterIndex);
+            if (inverterParameters is null)
             {
-                this.PublishCommand(
-                new InverterProgrammingMessageData(new List<InverterParametersData> { inverterParameters }, CommonUtils.CommandAction.Start),
+                throw new ArgumentException($"No Inverter found");
+            }
+
+            if (inverterParameters.Skip(1).FirstOrDefault()?.Parameters?.Count() == 0)
+            {
+                throw new ArgumentException($"No Inverter Parameters found for {inverterIndex}");
+            }
+
+            this.PublishCommand(
+                new InverterProgrammingMessageData(inverterParameters, CommonUtils.CommandAction.Start),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.InverterProgramming,
                 requestingBay,
                 requestingBay);
-            }
-            else
-            {
-                throw new ArgumentException($"No Inverter Parameters found for {inverterIndex}");
-            }
         }
 
         public void Stop(BayNumber requestingBay, MessageActor sender)
@@ -87,30 +93,72 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay);
         }
 
+        private (InverterParametersData inverterParametersCheckVersionData, InverterParametersData inverterParametersWriteData) GetInverterParameters(Inverter inverter)
+        {
+            var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
+                                            this.GetShortInverterDescription(inverter.Type,
+                                            inverter.IpAddress, inverter.TcpPort),
+                                            this.GetWritableParameters(inverter.Parameters));
+
+            var inverterParametersCheckVersionData = this.InverterVersionParameterData(inverter);
+
+            return (inverterParametersCheckVersionData, inverterParametersWriteData);
+        }
+
         private IEnumerable<InverterParametersData> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
         {
-            var inverterParametersData = new List<InverterParametersData>();
+            var inverterParametersCheckVersionData = new List<InverterParametersData>();
+            var inverterParametersWriteData = new List<InverterParametersData>();
 
             foreach (var axe in vertimagConfiguration.Machine.Elevator.Axes)
             {
                 if (!(axe.Inverter?.Parameters is null))
                 {
-                    inverterParametersData.Add(new InverterParametersData((byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort), axe.Inverter.Parameters));
+                    var inverter = axe.Inverter;
+
+                    if (inverter.Parameters.Count() > 0)
+                    {
+                        var newInverterParametersData = this.GetInverterParameters(inverter);
+                        inverterParametersCheckVersionData.Add(newInverterParametersData.inverterParametersCheckVersionData);
+                        inverterParametersWriteData.Add(newInverterParametersData.inverterParametersWriteData);
+                    }
                 }
+            }
+
+            if (inverterParametersWriteData.Count == 0)
+            {
+                throw new InvalidOperationException("No main inverter parameters found.");
             }
 
             foreach (var bay in vertimagConfiguration.Machine.Bays)
             {
                 if (!(bay.Inverter?.Parameters is null))
                 {
-                    inverterParametersData.Add(new InverterParametersData((byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort), bay.Inverter.Parameters));
+                    var inverter = bay.Inverter;
+
+                    if (inverter.Parameters.Count() > 0)
+                    {
+                        var newInverterParametersData = this.GetInverterParameters(inverter);
+                        inverterParametersCheckVersionData.Add(newInverterParametersData.inverterParametersCheckVersionData);
+                        inverterParametersWriteData.Add(newInverterParametersData.inverterParametersWriteData);
+                    }
+                    if (!(bay.Shutter?.Inverter?.Parameters is null))
+                    {
+                        var inverterShutter = bay.Shutter.Inverter;
+
+                        if (inverterShutter.Parameters.Count() > 0)
+                        {
+                            var newShutterInverterParametersData = this.GetInverterParameters(inverterShutter);
+                            inverterParametersCheckVersionData.Add(newShutterInverterParametersData.inverterParametersCheckVersionData);
+                            inverterParametersWriteData.Add(newShutterInverterParametersData.inverterParametersWriteData);
+                        }
+                    }
                 }
             }
 
-            if (inverterParametersData.Count == 0)
-            {
-                throw new Exception("No inverters parameters found.");
-            }
+            var inverterParametersData = new List<InverterParametersData>();
+            inverterParametersData.AddRange(inverterParametersCheckVersionData);
+            inverterParametersData.AddRange(inverterParametersWriteData.OrderBy(i => i.InverterIndex).ToList());
 
             return inverterParametersData;
         }
@@ -122,6 +170,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
 
             return $"{type.ToString()} {ipPort}";
+        }
+
+        private IEnumerable<InverterParameter> GetWritableParameters(IEnumerable<InverterParameter> parameters)
+        {
+            return parameters.Where(p => !p.IsReadOnly);
+        }
+
+        private InverterParametersData InverterVersionParameterData(Inverter inverter)
+        {
+            var parameters = new List<InverterParameter>();
+            var versionInverterParameter = new InverterParameter
+            {
+                Code = (short)InverterParameterId.SoftwareVersion,
+                DataSet = 0,
+                Type = "String",
+                StringValue = ((InverterParameter)inverter.Parameters.SingleOrDefault(p => ((InverterParameter)p).Code == (short)InverterParameterId.SoftwareVersion)).StringValue
+            };
+            parameters.Add(versionInverterParameter);
+            return new InverterParametersData((byte)inverter.Index, null, parameters, true);
         }
 
         #endregion

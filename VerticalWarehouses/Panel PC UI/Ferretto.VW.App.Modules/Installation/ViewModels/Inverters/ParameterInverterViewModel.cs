@@ -12,6 +12,7 @@ using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     internal sealed class ParameterInverterViewModel : BaseParameterInverterViewModel, ISetVertimagConfiguration
     {
         #region Fields
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
@@ -31,26 +34,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
+        private string importFolderPath;
+
         private IEnumerable<InverterParametersData> invertersParameters;
 
-        private string selectedFileConfigurationName;
+        private FileInfo selectedFileConfiguration;
 
-        private Inverter selectedInverter;
+        private InverterParametersData selectedInverter;
 
         private DelegateCommand setInvertersParamertersCommand;
 
-        private DelegateCommand<object> showInverterParamertersCommand;
+        private DelegateCommand<InverterParametersData> showInverterParamertersCommand;
 
         private VertimagConfiguration vertimagConfiguration;
+
+        private const string RESETDATA = "reset";
 
         #endregion
 
         #region Constructors
 
-        public ParameterInverterViewModel(IMachineDevicesWebService machineDevicesWebService, UsbWatcherService usb)
+        public ParameterInverterViewModel(IMachineDevicesWebService machineDevicesWebService,
+                                          IMachineConfigurationWebService machineConfigurationWebService,
+                                          UsbWatcherService usb)
             : base()
         {
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcher = usb;
         }
 
@@ -62,20 +72,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ICommand GoToImport => this.goToImport
                                     ??
-                            (this.goToImport = new DelegateCommand(
-                                this.ShowImport, this.CanShowImport));
+                                    (this.goToImport = new DelegateCommand(
+                                     this.ShowImport, this.CanShowImport));
 
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
-        public IEnumerable<InverterParametersData> InvertersParameters => this.invertersParameters;
-
-        public string SelectedFileConfigurationName
+        public string ImportFolderPath
         {
-            get => this.selectedFileConfigurationName;
-            set => this.SetProperty(ref this.selectedFileConfigurationName, value);
+            get => this.importFolderPath;
+            set => this.SetProperty(ref this.importFolderPath, value);
         }
 
-        public Inverter SelectedInverter
+        public IEnumerable<InverterParametersData> InvertersParameters => this.invertersParameters;
+
+        public FileInfo SelectedFileConfiguration
+        {
+            get => this.selectedFileConfiguration;
+            set => this.SetProperty(ref this.selectedFileConfiguration, value);
+        }
+
+        public InverterParametersData SelectedInverter
         {
             get => this.selectedInverter;
             set => this.SetProperty(ref this.selectedInverter, value);
@@ -90,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand ShowInverterParamertersCommand =>
            this.showInverterParamertersCommand
        ??
-       (this.showInverterParamertersCommand = new DelegateCommand<object>(this.ShowInverterParameters));
+       (this.showInverterParamertersCommand = new DelegateCommand<InverterParametersData>(this.ShowInverterParameters));
 
         public VertimagConfiguration VertimagConfiguration
         {
@@ -102,11 +118,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public async Task BackupVertimagConfigurationParameters()
+        {
+            if (this.selectedFileConfiguration is null)
+            {
+                return;
+            }
+
+            var currentConfiguration = await this.machineConfigurationWebService.GetAsync();
+            var settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new Modules.Installation.Models.OrderedContractResolver(),
+                Converters = new JsonConverter[]
+                {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                },
+            };
+
+            var json = JsonConvert.SerializeObject(currentConfiguration, settings);
+            var fullPath = currentConfiguration.Filename(new DriveInfo(this.selectedFileConfiguration.DirectoryName), true);
+
+            File.WriteAllText(fullPath, json);
+        }
+
         public override void Disappear()
         {
-            this.SelectedFileConfigurationName = string.Empty;
-            this.VertimagConfiguration = null;
-
             this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Dispose();
 
@@ -116,6 +154,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsWaitingForResponse = true;
+
+            if (this.Data == RESETDATA)
+            {
+                this.SelectedFileConfiguration = null;
+                this.VertimagConfiguration = null;
+                this.Data = null;
+            }
 
             this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Start();
@@ -133,11 +178,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (!(this.VertimagConfiguration is null))
                 {
-                    var invertersParameters = this.GetInvertersParameters(this.VertimagConfiguration);
+                    this.invertersParameters = this.GetInvertersParameters(this.VertimagConfiguration);
                 }
                 else
                 {
-                    this.SelectedFileConfigurationName = Localized.Get("InstallationApp.DefaultConfigurationLoaded");
+                    this.SelectedFileConfiguration = null;
                     this.invertersParameters = await this.machineDevicesWebService.GetParametersAsync();
                 }
 
@@ -187,11 +232,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     inverterParametersData.Add(new InverterParametersData() { InverterIndex = (byte)bay.Inverter.Index, Description = this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort), Parameters = bay.Inverter.Parameters });
                 }
+
+                if (!(bay.Shutter?.Inverter?.Parameters is null))
+                {
+                    inverterParametersData.Add(new InverterParametersData() { InverterIndex = (byte)bay.Shutter.Inverter.Index, Description = this.GetShortInverterDescription(bay.Shutter.Inverter.Type, bay.Shutter.Inverter.IpAddress, bay.Shutter.Inverter.TcpPort), Parameters = bay.Shutter.Inverter.Parameters });
+                }
             }
 
             if (inverterParametersData.Count == 0)
             {
-                throw new Exception("No inverters parameters found.");
+                throw new ArgumentException("No inverters parameters found.");
             }
 
             return inverterParametersData;
@@ -213,7 +263,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ProgramAllInvertersAsync(new VertimagConfiguration());
+                await this.BackupVertimagConfigurationParameters();
+
+                await this.machineDevicesWebService.ProgramAllInvertersAsync(this.vertimagConfiguration);
 
                 this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStarted"), Services.Models.NotificationSeverity.Info);
 
@@ -238,12 +290,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 trackCurrentView: true);
         }
 
-        private void ShowInverterParameters(object paramerter)
+        private void ShowInverterParameters(InverterParametersData inverterParametrers)
         {
+            this.SelectedInverter = inverterParametrers;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Inverters.PARAMETERSINVERTERDETAILS,
-                data: paramerter,
+                data: this,
                 trackCurrentView: true);
         }
 

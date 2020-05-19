@@ -2497,9 +2497,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Abort = 4,
     
-        Test = 5,
-    
-        Stop = 6,
+        Stop = 5,
     
     }
     
@@ -4553,6 +4551,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("InverterIndex", Required = Newtonsoft.Json.Required.Always)]
         public byte InverterIndex { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCheckInverterVersion", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCheckInverterVersion { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<object> Parameters { get; set; }

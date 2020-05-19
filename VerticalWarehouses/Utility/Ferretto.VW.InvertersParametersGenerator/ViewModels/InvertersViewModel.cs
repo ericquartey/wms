@@ -97,6 +97,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 {
                     inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
                 }
+
+                if (!(bay.Shutter?.Inverter?.Parameters is null))
+                {
+                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Shutter.Inverter.Type, (byte)bay.Shutter.Inverter.Index, this.GetShortInverterDescription(bay.Shutter.Inverter.IpAddress, bay.Shutter.Inverter.TcpPort)));
+                }
             }
 
             if (inverterParametersData.Count == 0)
@@ -111,7 +116,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
-            return  (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";            
+            return (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
         }
 
         private void LoadConfiguration()

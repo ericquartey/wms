@@ -156,6 +156,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public int SendDelay => this.sendDelay;
 
+        public short ShortParameterId => this.parameterId;
+
         public string StringPayload => this.ConvertPayloadToString();
 
         public InverterIndex SystemIndex

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using NLog.Time;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
@@ -12,10 +14,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Description = description;
         }
 
-        public InverterParametersData(byte inverterIndex, string description, IEnumerable<object> parameters)
+        public InverterParametersData(byte inverterIndex, string description, IEnumerable<object> parameters, bool isCheckInverterVersion = false)
             : this(inverterIndex, description)
         {
             this.Parameters = parameters;
+            this.IsCheckInverterVersion = isCheckInverterVersion;
         }
 
         #endregion
@@ -25,6 +28,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public string Description { get; }
 
         public byte InverterIndex { get; }
+
+        public bool IsCheckInverterVersion { get; }
 
         public IEnumerable<object> Parameters { get; }
 

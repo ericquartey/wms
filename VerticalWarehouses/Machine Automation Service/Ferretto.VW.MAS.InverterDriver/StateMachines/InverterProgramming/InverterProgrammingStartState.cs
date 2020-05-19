@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -46,7 +47,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             this.Logger.LogDebug("1:Inverter Programming Start state");
 
             var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-            var message = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Value, (InverterDataset)parameter.DataSet);
+
+            var message = this.GetNewInverterMessage(parameter);
             this.Logger.LogTrace($"5:inverterMessage={message}");
             this.ParentStateMachine.EnqueueCommandMessage(message);
 
@@ -99,6 +101,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
             else
             {
+                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, message.StringPayload);
+                if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
+                {
+                    var currentParameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+                    if (currentParameter.StringValue != message.StringPayload)
+                    {
+                        this.Logger.LogError($"1:Inverter Programming StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
+                        this.ParentStateMachine.ChangeState(
+                             new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
+                        return true;
+                    }
+                }
                 if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1))
                 {
                     this.ParentStateMachine.ChangeState(
@@ -108,8 +122,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 {
                     this.currentParametersPosition++;
                     var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-
-                    var data = new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Payload, (byte)parameter.DataSet);
+                    var data = this.GetNewInverterMessage(parameter);
                     _ = data.ToBytes();
 
                     this.ParentStateMachine.EnqueueCommandMessage(data);
@@ -117,6 +130,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
 
             return true;
+        }
+
+        private InverterMessage GetNewInverterMessage(InverterParameter parameter)
+        {
+            if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
+            {
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion);
+            }
+            else
+            {
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.StringValue, (InverterDataset)parameter.DataSet);
+            }
         }
 
         #endregion
