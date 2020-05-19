@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("statistics")]
         public async Task<ActionResult<MachineStatistics>> GetStatistics([FromServices] IMachinesWmsWebService machinesWebService)
         {
-            var statistics = this.machineProvider.GetStatistics();
+            var statistics = this.machineProvider.GetPresentStatistics();
 
             if (this.wmsSettingsProvider.IsEnabled)
             {

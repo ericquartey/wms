@@ -18,12 +18,18 @@ namespace Ferretto.VW.MAS.DataLayer
         double GetHeight();
 
         int GetIdentity();
+
+        MachineStatistics GetPresentStatistics();
+
         IEnumerable<ServicingInfo> GetServicingInfo();
-        MachineStatistics GetStatistics();
+
+        IEnumerable<MachineStatistics> GetStatistics();
 
         void Import(Machine machine, DataLayerContext context);
-        void ImportMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext context);
-        void ImportMachineStatistics(MachineStatistics machineStatistics, DataLayerContext context);
+
+        void ImportMachineServicingInfo(IEnumerable<ServicingInfo> servicingInfo, DataLayerContext context);
+
+        void ImportMachineStatistics(IEnumerable<MachineStatistics> machineStatistics, DataLayerContext context);
 
         bool IsOneTonMachine();
 
@@ -34,7 +40,9 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId);
 
         void UpdateHorizontalAxisStatistics(double distance);
+
         void UpdateMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext dataContext);
+
         void UpdateMachineStatistics(MachineStatistics machineStatistics, DataLayerContext dataContext);
 
         void UpdateMissionTime(TimeSpan duration);

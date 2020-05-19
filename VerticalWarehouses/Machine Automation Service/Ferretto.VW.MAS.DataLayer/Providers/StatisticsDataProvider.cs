@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.First().TotalVerticalAxisKilometers;
+                return this.dataContext.MachineStatistics.Last().TotalVerticalAxisKilometers;
             }
         }
 

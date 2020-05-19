@@ -3730,7 +3730,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public Machine Machine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MachineStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MachineStatistics MachineStatistics { get; set; }
+        public System.Collections.Generic.IEnumerable<MachineStatistics> MachineStatistics { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ServicingInfo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<ServicingInfo> ServicingInfo { get; set; }

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Machine Machine { get; set; }
 
-        public MachineStatistics MachineStatistics { get; set; }
+        public IEnumerable<MachineStatistics> MachineStatistics { get; set; }
 
         public IEnumerable<ServicingInfo> ServicingInfo { get; set; }
 
