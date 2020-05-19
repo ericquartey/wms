@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using DevExpress.Xpf.Editors.Helpers;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -9,9 +10,7 @@ using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.App.Resources;
 using Prism.Commands;
-using System.Windows.Media;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -28,7 +27,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Brush connectionBrush;
 
-        private string connectionLabel = "Disconnesso";
+        private string connectionLabel = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
 
         private DeviceInformation deviceInformation;
 
