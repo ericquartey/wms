@@ -46,8 +46,11 @@ namespace Ferretto.VW.App.Modules.Login
         {
             containerRegistry.ConfigureBarcodeReaderUiServices();
 
-            // containerRegistry.ConfigureNewlandBarcodeReader();
+            containerRegistry.ConfigureNewlandBarcodeReader();
 
+            /*
+             * For barcode reader debugging purposes
+             *
             var barcodes = new[]
             {
                 // user tokens
@@ -70,6 +73,7 @@ namespace Ferretto.VW.App.Modules.Login
                 "B8450BDD_LOT_ABC_SN_123",
             };
             containerRegistry.ConfigureMockBarcodeReader(barcodes, 5000);
+            */
         }
 
         #endregion

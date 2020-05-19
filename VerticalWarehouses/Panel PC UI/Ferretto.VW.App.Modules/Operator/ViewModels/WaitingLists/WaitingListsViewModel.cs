@@ -117,12 +117,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
-            {
-                return;
-            }
-
-            switch (userAction)
+            switch (e.UserAction)
             {
                 case UserAction.FilterLists:
 

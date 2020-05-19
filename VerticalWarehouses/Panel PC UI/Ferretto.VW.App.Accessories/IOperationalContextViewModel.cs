@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Accessories;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Accessories
 {
     public interface IOperationalContextViewModel
     {

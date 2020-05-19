@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Ferretto.VW.CommonUtils;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {

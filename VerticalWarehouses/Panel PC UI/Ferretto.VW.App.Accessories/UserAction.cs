@@ -2,6 +2,8 @@
 {
     public enum UserAction
     {
+        NotSpecified,
+
         FilterItems,
 
         PickItem,
@@ -14,6 +16,6 @@
 
         LoginUser,
 
-        VerifyItem
+        VerifyItem,
     }
 }
