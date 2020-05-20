@@ -371,6 +371,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
 
+        // ADD
+        // public bool IsExternalPositionOccupied(BayNumber bayNumber)
+        //
+        // public bool IsInternalPositionOccupied(BayNumber bayNumber)
+        //
+
+        // ADD
+        // public void MoveExternalBay(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
+        //
+
         public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
         {
             if (restore)
