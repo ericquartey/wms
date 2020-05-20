@@ -968,6 +968,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        {
+            lock (this.dataContext)
+            {
+                var laserPointerBay = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                        .Single(b => b.Number == bayNumber);
+
+                laserPointerBay.Accessories.LaserPointer.IsEnabledNew = isEnabled;
+                laserPointerBay.Accessories.LaserPointer.IpAddress = IPAddress.Parse(ipAddress);
+                laserPointerBay.Accessories.LaserPointer.TcpPort = port;
+                laserPointerBay.Accessories.LaserPointer.YOffset = yOffset;
+                laserPointerBay.Accessories.LaserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
+                laserPointerBay.Accessories.LaserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;
+
+                this.dataContext.Accessories.Update(laserPointerBay.Accessories.LaserPointer);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null)
         {
             var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);

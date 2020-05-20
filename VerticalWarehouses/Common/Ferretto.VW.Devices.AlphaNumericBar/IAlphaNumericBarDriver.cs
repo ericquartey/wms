@@ -16,13 +16,25 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         int CalculateOffset(int offset, string message);
 
+        int CalculateOffsetArrowMiddlePosition(int delta = 1);
+
         Task<bool> ClearAsync();
 
         bool Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size);
 
         Task<bool> CustomAsync(string hexval);
 
+        Task<bool> DimAsync(int dimension);
+
+        Task<bool> EnabledAsync(bool value);
+
         Task<bool> HelpAsync();
+
+        Task<bool> LuminosityAsync(int luminosity);
+
+        Task<bool> ScrollDirAsync(ScrollDirection direction);
+
+        Task<bool> ScrollSpeedAsync(int speed);
 
         Task<bool> SetAndWriteArrowAsync(int arrowPosition = 0, bool forceClear = true);
 
@@ -30,19 +42,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> SetAndWriteMessageScrollAsync(string message, int offset, int scrollEnd, bool forceClear = true);
 
-        Task<bool> SetDimAsync(int dimension);
+        Task<bool> SetCustomCharacterAsync(int index, int offset, bool forceClear = true);
 
-        Task<bool> SetEnabledAsync(bool value);
+        Task<bool> TestAsync(bool value);
 
-        Task<bool> SetLuminosityAsync(int luminosity);
-
-        Task<bool> SetScrollDirAsync(ScrollDirection direction);
-
-        Task<bool> SetScrollSpeedAsync(int speed);
-
-        Task<bool> SetTestAsync(bool value);
-
-        Task<bool> SetTestScrollAsync(bool value);
+        Task<bool> TestScrollAsync(bool value);
 
         #endregion
     }
