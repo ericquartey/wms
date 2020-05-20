@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string connectionLabel = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
 
-        private DeviceInformation deviceInformation;
+        private string firmwareVersion;
 
         private IPAddress ipAddress;
 
@@ -37,9 +37,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private LaserPointerDriver laserPointerDriver;
 
+        private string manufactureDate;
+
+        private string modelNumber;
+
         private int port;
 
         private DelegateCommand saveCommand;
+
+        private string serialNumber;
 
         private bool testIsChecked;
 
@@ -101,7 +107,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public DeviceInformation DeviceInformation => this.deviceInformation;
+        public string FirmwareVersion
+        {
+            get => this.firmwareVersion;
+            set
+            {
+                if (this.SetProperty(ref this.firmwareVersion, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public IPAddress IpAddress
         {
@@ -131,6 +148,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabledEditing => true;
 
+        public string ManufactureDate
+        {
+            get => this.manufactureDate;
+            set
+            {
+                if (this.SetProperty(ref this.manufactureDate, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ModelNumber
+        {
+            get => this.modelNumber;
+            set
+            {
+                if (this.SetProperty(ref this.modelNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int Port
         {
             get => this.port;
@@ -154,6 +197,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.saveCommand = new DelegateCommand(
             async () => await this.SaveAsync(), this.CanSave));
+
+        public string SerialNumber
+        {
+            get => this.serialNumber;
+            set
+            {
+                if (this.SetProperty(ref this.serialNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public bool TestIsChecked
         {
@@ -230,20 +286,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsAccessoryEnabled = accessories.LaserPointer.IsEnabledNew;
                 this.IpAddress = accessories.LaserPointer.IpAddress;
-
-                if (!(accessories.LaserPointer.DeviceInformation is null))
-                {
-                    this.deviceInformation = new DeviceInformation
-                    {
-                        FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion,
-                        Id = accessories.LaserPointer.DeviceInformation.Id,
-                        ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber,
-                        SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber,
-                        ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.TryConvertToDateTime(),
-                    };
-                }
-
                 this.Port = accessories.LaserPointer.TcpPort;
+
+                this.SetDeviceInformation(accessories);
                 this.YOffset = (int)accessories.LaserPointer.YOffset;
                 this.ZOffsetUpperPosition = (int)accessories.LaserPointer.ZOffsetUpperPosition;
                 this.ZOffsetLowerPosition = (int)accessories.LaserPointer.ZOffsetLowerPosition;
@@ -345,6 +390,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void SetDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
+        {
+            if (!(accessories.LaserPointer.DeviceInformation is null))
+            {
+                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
+                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
+                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
+
+                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
+                {
+                    this.ManufactureDate = "-";
+                }
+                else
+                {
+                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
+                }
             }
         }
 

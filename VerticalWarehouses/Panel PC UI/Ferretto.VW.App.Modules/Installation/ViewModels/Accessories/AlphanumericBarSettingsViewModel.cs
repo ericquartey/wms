@@ -25,13 +25,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool areSettingsChanged;
 
+        private string firmwareVersion;
+
         private IPAddress ipAddress;
 
         private bool isAccessoryEnabled;
 
+        private string manufactureDate;
+
+        private string modelNumber;
+
         private int port;
 
         private DelegateCommand saveCommand;
+
+        private string serialNumber;
 
         private AlphaNumericBarSize size;
 
@@ -80,6 +88,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public string FirmwareVersion
+        {
+            get => this.firmwareVersion;
+            set
+            {
+                if (this.SetProperty(ref this.firmwareVersion, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public IPAddress IpAddress
         {
             get => this.ipAddress;
@@ -108,6 +129,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabledEditing => true;
 
+        public string ManufactureDate
+        {
+            get => this.manufactureDate;
+            set
+            {
+                if (this.SetProperty(ref this.manufactureDate, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ModelNumber
+        {
+            get => this.modelNumber;
+            set
+            {
+                if (this.SetProperty(ref this.modelNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int Port
         {
             get => this.port;
@@ -131,6 +178,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
+
+        public string SerialNumber
+        {
+            get => this.serialNumber;
+            set
+            {
+                if (this.SetProperty(ref this.serialNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public AlphaNumericBarSize Size
         {
@@ -280,6 +340,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IpAddress = accessories.AlphaNumericBar.IpAddress;
                 this.Port = accessories.AlphaNumericBar.TcpPort;
                 this.Size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size;
+
+                this.SetDeviceInformation(accessories);
+
                 this.AreSettingsChanged = false;
 
                 if (this.TestMessageText is null)
@@ -398,6 +461,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void SetDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
+        {
+            if (!(accessories.LaserPointer.DeviceInformation is null))
+            {
+                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
+                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
+                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
+
+                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
+                {
+                    this.ManufactureDate = "-";
+                }
+                else
+                {
+                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
+                }
             }
         }
 

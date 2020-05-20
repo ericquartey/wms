@@ -219,7 +219,7 @@
                 <TextBox Grid.Row="3"
                          Margin="0 15 0 0"
                          FontSize="{DynamicResource FontSize_High}"
-                         Text="{Binding ReasonsNotes, Mode=TwoWay}" MinHeight="100"/>
+                         Text="{Binding ReasonNotes, Mode=TwoWay}" MinHeight="100"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Margin="0,15,0,0">
                     <cctrls:PpcButton Content="{res:Loc OperatorApp.Confirm}" Command="{Binding ConfirmReasonCommand}"/>                                
