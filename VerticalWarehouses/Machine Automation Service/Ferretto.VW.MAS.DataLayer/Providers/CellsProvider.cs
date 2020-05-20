@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnitId} not in cell! ");
                 throw new EntityNotFoundException(loadingUnitId);
             }
-            var machineStatistics = this.machineProvider.GetStatistics();
+            var machineStatistics = this.machineProvider.GetPresentStatistics();
             if (machineStatistics is null)
             {
                 throw new EntityNotFoundException();
@@ -510,7 +510,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(cellId);
                 }
 
-                var statistics = this.dataContext.MachineStatistics.FirstOrDefault();
+                var statistics = this.dataContext.MachineStatistics.LastOrDefault();
 
                 if (loadingUnitId is null)
                 {

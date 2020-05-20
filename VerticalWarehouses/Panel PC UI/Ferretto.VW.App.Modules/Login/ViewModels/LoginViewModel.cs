@@ -136,12 +136,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
-            {
-                return;
-            }
-
-            if (userAction is UserAction.LoginUser)
+            if (e.UserAction is UserAction.LoginUser)
             {
                 try
                 {

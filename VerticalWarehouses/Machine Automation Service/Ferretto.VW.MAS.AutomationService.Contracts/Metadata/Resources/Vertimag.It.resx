@@ -270,6 +270,12 @@
   <data name="EmptyLoadMovement" xml:space="preserve">
     <value>Movimenti a vuoto</value>
   </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Baia esterna {0}</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Parametri Baia Esterna</value>
+  </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed Rate</value>
   </data>
@@ -398,6 +404,9 @@
   </data>
   <data name="PulleyDiameter" xml:space="preserve">
     <value>Diametro primitivo puleggia</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Corsa</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
     <value>Diametro albero</value>

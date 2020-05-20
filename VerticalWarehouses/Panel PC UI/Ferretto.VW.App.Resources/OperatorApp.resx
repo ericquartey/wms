@@ -454,7 +454,7 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
-    <value>DrawerSpaceSaturazionTotalDrawers</value>
+    <value>Total units</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
@@ -1789,5 +1789,32 @@ Please put back any moved pieces in their original position.</value>
   <data name="ExecutionOfListAccepted" xml:space="preserve">
     <value>Execution of list '{0}' was accepted.</value>
     <comment>Information Message</comment>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Busy cells</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Free cells</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Free cells for support</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Cells free only space</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Locked cells</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Total cells</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Units in the bay</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Units in the cell</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Units in the elevator</value>
   </data>
 </root>

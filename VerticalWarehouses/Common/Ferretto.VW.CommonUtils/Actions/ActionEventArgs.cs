@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.Devices.BarcodeReader
+namespace Ferretto.VW.CommonUtils
 {
     public class ActionEventArgs
     {

@@ -145,9 +145,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.ReasonNotes = null;
 
-                this.Reasons = null;
-                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {
@@ -177,23 +177,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (!Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            if (e.UserAction is UserAction.FilterItems)
             {
-                return;
-            }
-
-            switch (userAction)
-            {
-                case UserAction.FilterItems:
-                    await this.ShowItemDetailsByBarcodeAsync(e);
-
-                    break;
-
-                case UserAction.PickItem:
-
-                    // TODO da implementare
-                    throw new NotImplementedException();
-                    break;
+                await this.FilterItemsByCodeAsync(e);
             }
         }
 
@@ -244,7 +230,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.Item = this.Data as ItemInfo;
 
-            this.ItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.Item.MeasureUnit);
+            this.ItemTxt = string.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.Item.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.ItemTxt));
 
@@ -299,17 +285,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
+        private async Task FilterItemsByCodeAsync(UserActionEventArgs e)
         {
-            var itemBarcode = e.GetItemCode();
-            if (itemBarcode != null)
+            var itemCode = e.GetItemCode();
+            if (itemCode != null)
             {
                 try
                 {
-                    var item = await this.itemsWebService.GetByBarcodeAsync(itemBarcode);
+                    var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
                     this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
                 }
-                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                catch (Exception ex)
                 {
                     this.ShowNotification(ex);
                 }

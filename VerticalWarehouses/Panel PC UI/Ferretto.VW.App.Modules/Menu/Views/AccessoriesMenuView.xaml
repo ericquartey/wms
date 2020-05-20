@@ -55,7 +55,6 @@
 
             <Grid Grid.Row="1">
                 <WrapPanel>
-
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesAlphaNumBarMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
@@ -108,7 +107,7 @@
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsLabelPrinterAvailable, Converter={StaticResource BTVC}}" />
 
-                    <controls:PpcButton Title="{res:Loc Menu.AccessoriesLaserMenuTitle}"
+                    <controls:PpcButton Title="{res:Loc Menu.AccessoriesLaserPointerMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
@@ -116,7 +115,7 @@
                                         BorderBrush="{DynamicResource FerrettoBlue}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.LaserPointer}"
-                                        Content="{res:Loc Menu.AccessoriesLaserMenuDescription}"
+                                        Content="{res:Loc Menu.AccessoriesLaserPointerMenuDescription}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsLaserPointerAvailable, Converter={StaticResource BTVC}}" />

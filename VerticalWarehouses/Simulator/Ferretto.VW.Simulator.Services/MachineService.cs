@@ -548,9 +548,13 @@ namespace Ferretto.VW.Simulator.Services
             {
                 messageResponse = "GET " + this.alphaNumericBar1Message;
             }
+            else if (messageReceived.StartsWith("CLEAR", StringComparison.Ordinal) || messageReceived.StartsWith("ENABLE", StringComparison.Ordinal) || messageReceived.StartsWith("TEST", StringComparison.Ordinal))
+            {
+                return;
+            }
 
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
-            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + "\r\n"));
+            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + Environment.NewLine));
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)

@@ -120,6 +120,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
+        void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
+
         /// <summary>
         /// Specifies that the given loading unit is now located in a bay position.
         /// It updates bay and LoadUnit db tables.

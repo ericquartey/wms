@@ -280,25 +280,6 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
 
                         break;
-
-                    case CommandAction.Test:
-                        if (messageData.MissionId != null)
-                        {
-                            if (!missionMoveProvider.TestMission(messageData.MissionId.Value, command, serviceProvider))
-                            {
-                                this.Logger.LogError("Supplied mission Id to be tested is no longer valid");
-                                this.NotifyCommandError(command);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var mission in missionsDataProvider.GetAllActiveMissions())
-                            {
-                                missionMoveProvider.TestMission(mission.Id, command, serviceProvider);
-                            }
-                        }
-
-                        break;
                 }
             }
             else

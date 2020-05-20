@@ -145,6 +145,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("accessories/laser-pointer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<BayAccessories> SetLaserPointer(bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        {
+            this.baysDataProvider.SetLaserPointer(this.BayNumber, isEnabled, ipAddress, port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+
+            return this.Ok();
+        }
+
         [HttpPost("set-light")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
