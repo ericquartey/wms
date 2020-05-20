@@ -313,6 +313,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Busy cells.
+        /// </summary>
+        public static string BusyCells {
+            get {
+                return ResourceManager.GetString("BusyCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel pick.
         /// </summary>
         public static string CancelPick {
@@ -1322,7 +1331,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionTotalDrawers.
+        ///   Looks up a localized string similar to Total units.
         /// </summary>
         public static string DrawerSpaceSaturazionTotalDrawers {
             get {
@@ -1534,6 +1543,33 @@ namespace Ferretto.VW.App.Resources {
         public static string FragmentTotal {
             get {
                 return ResourceManager.GetString("FragmentTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free cells.
+        /// </summary>
+        public static string FreeCells {
+            get {
+                return ResourceManager.GetString("FreeCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free cells for support.
+        /// </summary>
+        public static string FreeCellsForSupport {
+            get {
+                return ResourceManager.GetString("FreeCellsForSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cells free only space.
+        /// </summary>
+        public static string FreeCellsOnlySpace {
+            get {
+                return ResourceManager.GetString("FreeCellsOnlySpace", resourceCulture);
             }
         }
         
@@ -2200,6 +2236,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingUnitWidth {
             get {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked cells.
+        /// </summary>
+        public static string LockedCells {
+            get {
+                return ResourceManager.GetString("LockedCells", resourceCulture);
             }
         }
         
@@ -3716,6 +3761,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total cells.
+        /// </summary>
+        public static string TotalCells {
+            get {
+                return ResourceManager.GetString("TotalCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total km traveled.
         /// </summary>
         public static string TotalKm {
@@ -3757,6 +3811,33 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitId {
             get {
                 return ResourceManager.GetString("UnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units in the bay.
+        /// </summary>
+        public static string UnitsInBay {
+            get {
+                return ResourceManager.GetString("UnitsInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units in the cell.
+        /// </summary>
+        public static string UnitsInCell {
+            get {
+                return ResourceManager.GetString("UnitsInCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units in the elevator.
+        /// </summary>
+        public static string UnitsInElevator {
+            get {
+                return ResourceManager.GetString("UnitsInElevator", resourceCulture);
             }
         }
         
