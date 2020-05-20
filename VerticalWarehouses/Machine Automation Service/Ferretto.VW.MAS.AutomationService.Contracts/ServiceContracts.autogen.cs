@@ -6246,6 +6246,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Pattern { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        public int Priority { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("restartOnMismatch", Required = Newtonsoft.Json.Required.Always)]
         public bool RestartOnMismatch { get; set; }
     
