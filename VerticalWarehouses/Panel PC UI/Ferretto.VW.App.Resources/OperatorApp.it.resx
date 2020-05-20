@@ -1396,4 +1396,31 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ExecutionOfListAccepted" xml:space="preserve">
     <value>L'esecuzione della lista '{0}' è stata accettata.</value>
   </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Celle occupate</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Celle libere</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Celle libere per appoggio</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Celle libere solo spazio</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Celle bloccate</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Celle totali</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Cassetti in baia</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Cassetti in cella</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Cassetti in elevatore</value>
+  </data>
 </root>
