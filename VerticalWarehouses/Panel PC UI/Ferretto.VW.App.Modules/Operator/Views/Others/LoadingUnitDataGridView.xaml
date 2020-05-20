@@ -28,7 +28,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
                                 Width="1*"
-                                Binding="{Binding Path=Height}"
+                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
@@ -39,7 +39,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column3"
                                 Width="1*"
-                                Binding="{Binding Path=GrossWeight}"
+                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
