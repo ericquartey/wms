@@ -218,8 +218,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 return !(this.vertimagConfiguration is null);
             }
-            catch
+            catch(Exception ex)
             {
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             return false;
