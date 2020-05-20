@@ -108,6 +108,8 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0"
@@ -115,6 +117,13 @@
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection1}" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="3"
+                           Margin="15,0,0,0"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.FirmwareVersion}" />
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -133,7 +142,7 @@
                                      Grid.Column="1"
                                      Margin="5,5,5,5"
                                      HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
+                                     VerticalAlignment="Top"
                                      InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="{x:Static res:Menu.AccessoriesPort}" />
@@ -159,6 +168,40 @@
 
                     </Border>
                 </StackPanel>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="3"
+                      Margin="15,5,5,5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PpcLabeledText Grid.Row="0"
+                                                 Grid.Column="0"
+                                                 ContentText="{Binding FirmwareVersion}"
+                                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
+                        <controls:PpcLabeledText Grid.Row="1"
+                                                 Grid.Column="0"
+                                                 ContentText="{Binding ModelNumber}"
+                                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
+                        <controls:PpcLabeledText Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 ContentText="{Binding ManufactureDate}"
+                                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
+                        <controls:PpcLabeledText Grid.Row="1"
+                                                 Grid.Column="1"
+                                                 ContentText="{Binding SerialNumber}"
+                                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
+                    </Grid>
+                </Grid>
+
+
             </Grid>
         </Border>
 

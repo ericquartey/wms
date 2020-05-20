@@ -98,6 +98,7 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -107,10 +108,18 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0"
+                           Grid.Column="0"
                            Margin="0,0,0,0"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection1}" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Margin="15,0,0,0"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.FirmwareVersion}" />
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -136,36 +145,66 @@
 
                 <StackPanel Grid.Row="2"
                             Grid.Column="0"
-                            Grid.ColumnSpan="3"
-                            Orientation="Horizontal"
+                            Grid.ColumnSpan="2"
                             Margin="0,0,15,0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Orientation="Horizontal">
 
-                    <controls:PpcTextBox
-                                     Margin="5,5,5,5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding YOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesLaserPointerYOffset}" />
+                    <controls:PpcTextBox Margin="5,5,5,5"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         InputText="{Binding YOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding IsEnabledEditing}"
+                                         LabelText="{x:Static res:Menu.AccessoriesLaserPointerYOffset}" />
 
-                    <controls:PpcTextBox 
-                                     Margin="5,5,5,5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding ZOffsetUpperPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetUpperPosition}" />
+                    <controls:PpcTextBox Margin="5,5,5,5"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         InputText="{Binding ZOffsetUpperPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding IsEnabledEditing}"
+                                         LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetUpperPosition}" />
 
-                    <controls:PpcTextBox 
-                                     Margin="5,5,5,5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding ZOffsetLowerPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
+                    <controls:PpcTextBox Margin="5,5,5,5"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         InputText="{Binding ZOffsetLowerPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding IsEnabledEditing}"
+                                         LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
                 </StackPanel>
+
+                <Grid Grid.Row="1"
+                      Grid.RowSpan="2"
+                      Grid.Column="2"
+                      Margin="15,5,5,5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PpcLabeledText Grid.Row="0"
+                                                 Grid.Column="0"
+                                                 ContentText="{Binding FirmwareVersion}"
+                                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
+                        <controls:PpcLabeledText Grid.Row="1"
+                                                 Grid.Column="0"
+                                                 ContentText="{Binding ModelNumber}"
+                                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
+                        <controls:PpcLabeledText Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 ContentText="{Binding ManufactureDate}"
+                                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
+                        <controls:PpcLabeledText Grid.Row="1"
+                                                 Grid.Column="1"
+                                                 ContentText="{Binding SerialNumber}"
+                                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
+                    </Grid>
+                </Grid>
             </Grid>
         </Border>
 
@@ -209,7 +248,7 @@
                                    Text="{x:Static res:Menu.AccessoriesOff}" />
                     </RadioButton.Content>
                 </RadioButton>
-                
+
                 <RadioButton Grid.Row="0"
                              Grid.Column="2"
                              Margin="5"
@@ -228,27 +267,27 @@
                            Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="Connettività" />
 
-                <Border  Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="6"
-                    Height="33"
-                    CornerRadius="4" Background="{Binding ConnectionBrush}">
-                    <TextBlock
-                        Margin="10,5,10,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        IsEnabled="false"
-                        Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                        Text="{Binding ConnectionLabel}" />
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Height="33"
+                        Margin="6"
+                        Background="{Binding ConnectionBrush}"
+                        CornerRadius="4">
+                    <TextBlock Margin="10,5,10,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               IsEnabled="false"
+                               Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                               Text="{Binding ConnectionLabel}" />
                 </Border>
 
                 <controls:PpcButton Grid.Row="1"
-                            Grid.Column="3"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding CheckConnectionCommand}"
-                            Content="{res:Loc InstallationApp.CheckStatus}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
+                                    Grid.Column="3"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding CheckConnectionCommand}"
+                                    Content="{res:Loc InstallationApp.CheckStatus}"
+                                    IsBusy="{Binding IsWaitingForResponse}" />
             </Grid>
         </Border>
 
