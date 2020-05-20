@@ -145,9 +145,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.ReasonNotes = null;
 
-                this.Reasons = null;
-                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {

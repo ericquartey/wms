@@ -325,6 +325,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsBusyLoadingNextPage = true;
+                this.ReasonNotes = null;
 
                 this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
