@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using Newtonsoft.Json;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class Instruction : DataModel
     {
@@ -9,6 +11,9 @@
         public bool IsDone { get; set; }
 
         public bool IsToDo { get; set; }
+
+        [JsonIgnore]
+        public ServicingInfo ServicingInfo { get; set; }
 
         #endregion
     }
