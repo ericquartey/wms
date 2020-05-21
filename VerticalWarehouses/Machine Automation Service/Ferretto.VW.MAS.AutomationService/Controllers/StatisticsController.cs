@@ -12,23 +12,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class StatisticsController : ControllerBase
     {
-        #region Fields
-
         private readonly IStatisticsDataProvider statisticsProvider;
-
-        #endregion
-
-        #region Constructors
 
         public StatisticsController(
             IStatisticsDataProvider statisticsProvider)
         {
             this.statisticsProvider = statisticsProvider ?? throw new System.ArgumentNullException(nameof(statisticsProvider));
         }
-
-        #endregion
-
-        #region Methods
 
         [HttpPost("confirm-statistics")]
         public ActionResult<int> ConfirmStatistics()
@@ -48,7 +38,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.statisticsProvider.GetAll());
         }
 
-        [HttpGet("actual-statistics")]
+        [HttpGet("Get-By-Id")]
         public ActionResult<MachineStatistics> GetById(int id)
         {
             return this.Ok(this.statisticsProvider.GetById(id));
@@ -59,7 +49,5 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             return this.Ok(this.statisticsProvider.GetLastConfirmed());
         }
-
-        #endregion
     }
 }

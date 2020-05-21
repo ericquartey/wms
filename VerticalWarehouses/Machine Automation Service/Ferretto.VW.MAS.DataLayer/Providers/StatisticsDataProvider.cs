@@ -51,6 +51,60 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public int ConfirmAndCreateNew()
+        {
+            lock (this.dataContext)
+            {
+                var s = new MachineStatistics();
+
+                this.dataContext.MachineStatistics.Add(s);
+                this.dataContext.SaveChanges();
+            }
+
+            return this.dataContext.MachineStatistics.Last().Id;
+        }
+
+        public MachineStatistics GetActual()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.MachineStatistics.LastOrDefault();
+            }
+        }
+
+        public IEnumerable<MachineStatistics> GetAll()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.MachineStatistics.ToList();
+            }
+        }
+
+        public MachineStatistics GetById(int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.MachineStatistics.Where(s => s.Id == id).FirstOrDefault();
+            }
+        }
+
+        public MachineStatistics GetLastConfirmed()
+        {
+            lock (this.dataContext)
+            {
+                int dim = this.dataContext.MachineStatistics.Count();
+
+                if (dim > 1)
+                {
+                    return this.dataContext.MachineStatistics.ElementAt(dim - 1);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public int MissionTotalNumber()
         {
             lock (this.dataContext)
