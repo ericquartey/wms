@@ -4231,11 +4231,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Definition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstructionDefinition Definition { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DoubleCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? DoubleCounter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IntCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IntCounter { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsDone", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDone { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsToDo", Required = Newtonsoft.Json.Required.Always)]
         public bool IsToDo { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MaintenanceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? MaintenanceDate { get; set; }
     
         public string ToJson() 
         {
@@ -4270,8 +4279,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MaxTotalCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxTotalCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsElevator", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsElevator { get; set; }
+        [Newtonsoft.Json.JsonProperty("Axis", Required = Newtonsoft.Json.Required.Always)]
+        public Axis Axis { get; set; }
     
         [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber BayNumber { get; set; }
@@ -4302,31 +4311,89 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         Undefined = 0,
     
-        HorizontalChainAdjust = 1,
+        AirFiltersCheck = 1,
     
-        HorizontalCHainGrease = 2,
+        BearingsCheck = 2,
     
-        HorizontalMotorGearOil = 3,
+        BearingsGrease = 3,
     
-        HorizontalMotorGearSubstitute = 4,
+        BeltAdjust = 4,
     
-        VerticalBeltAdjust = 5,
+        BeltFasten = 5,
     
-        VerticalBeltFasten = 6,
+        BeltSubstitute = 6,
     
-        VerticalBeltSubstitute = 7,
+        CableChainCheck = 7,
     
-        FirstCellCeck = 8,
+        CablesCheck = 8,
     
-        RandomCellCheck = 9,
+        ChainAdjust = 9,
     
-        LiftLinksWornCheck = 10,
+        ChainGrease = 10,
     
-        LiftLinksGrease = 11,
+        ChainSubstitute = 11,
     
-        BearingsCheck = 12,
+        ContactorsSubstitute = 12,
     
-        BearingsGrease = 13,
+        ElectricalComponentsCheck = 13,
+    
+        FirstCellCeck = 14,
+    
+        GuidesCheck = 15,
+    
+        GuidesSubstitute = 16,
+    
+        LampsCheck = 17,
+    
+        LinkCheck = 18,
+    
+        LinksGrease = 19,
+    
+        LinkSubstitute = 20,
+    
+        MicroSwitchesCheck = 21,
+    
+        MicroSwitchesMount = 22,
+    
+        MicroSwitchesSubstitute = 23,
+    
+        MotorChainAdjust = 24,
+    
+        MotorChainGrease = 25,
+    
+        MotorChainSubstitute = 26,
+    
+        MotorGearOil = 27,
+    
+        MotorGearSubstitute = 28,
+    
+        OpticalSensorsClean = 29,
+    
+        OpticalSensorsMount = 30,
+    
+        PinPawlFastenersCheck = 31,
+    
+        PinPawlFastenersGrease = 32,
+    
+        PinPawlFastenersSubstitute = 33,
+    
+        PlasticCamsCheck = 34,
+    
+        RandomCellCheck = 35,
+    
+        SensorsClean = 36,
+    
+        SensorCheck = 37,
+    
+        SensorsMount = 38,
+    
+        ShaftCheck = 39,
+    
+        SupportsCheck = 40,
+    
+        WheelsCheck = 41,
+    
+        WheelsSubstitute = 42,
     
     }
     

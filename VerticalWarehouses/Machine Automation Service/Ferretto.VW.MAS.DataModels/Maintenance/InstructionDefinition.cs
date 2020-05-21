@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -17,7 +19,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? MaxTotalCount { get; set; }
 
-        public bool IsElevator { get; set; }
+        public Axis Axis { get; set; }
+
         public BayNumber BayNumber { get; set; }
 
         public bool IsShutter { get; set; }

@@ -1,2 +1,2 @@
-dotnet ef migrations add instructions --verbose
+dotnet ef migrations add instructions2 --verbose
 pause

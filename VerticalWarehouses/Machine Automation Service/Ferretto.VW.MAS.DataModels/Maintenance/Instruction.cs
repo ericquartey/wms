@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -8,9 +9,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public InstructionDefinition Definition { get; set; }
 
+        public double? DoubleCounter { get; set; }
+
+        public int? IntCounter { get; set; }
+
         public bool IsDone { get; set; }
 
         public bool IsToDo { get; set; }
+
+        public DateTime? MaintenanceDate { get; set; }
 
         [JsonIgnore]
         public ServicingInfo ServicingInfo { get; set; }

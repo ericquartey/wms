@@ -40,6 +40,95 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        private void GenerateInstructions(DataLayerContext dataContext)
+        {
+            if (dataContext.InstructionDefinitions.Any())
+            {
+                return;
+            }
+
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                const int OneYear = 365;
+                var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+                foreach (InstructionType instructionType in Enum.GetValues(typeof(InstructionType)))
+                {
+                    var instruction = new InstructionDefinition();
+                    switch (instructionType)
+                    {
+                        case InstructionType.AirFiltersCheck:
+                            instruction.InstructionType = instructionType;
+                            instruction.IsSystem = true;
+                            instruction.MaxDays = OneYear;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.MaxRelativeCount = 20000;
+                            break;
+
+                        case InstructionType.BearingsCheck:
+                        case InstructionType.BearingsGrease:
+                        case InstructionType.BeltAdjust:
+                        case InstructionType.BeltFasten:
+                        case InstructionType.CableChainCheck:
+                        case InstructionType.CablesCheck:
+                            instruction.InstructionType = instructionType;
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.MaxDays = OneYear;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.MaxRelativeCount = 20000;
+                            break;
+
+                        case InstructionType.ChainAdjust:
+                        case InstructionType.ChainGrease:
+
+                            instruction.InstructionType = instructionType;
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.MaxDays = OneYear;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.MaxRelativeCount = 20000;
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                dataContext.InstructionDefinitions.Add(instruction);
+                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
+                                instruction.BayNumber = bay.Number;
+                            }
+                            break;
+
+                        case InstructionType.BeltSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.MaxDays = OneYear * 5;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            break;
+
+                        case InstructionType.ChainSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.MaxRelativeCount = 40000;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                dataContext.InstructionDefinitions.Add(instruction);
+                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
+                                instruction.BayNumber = bay.Number;
+                            }
+                            break;
+
+                        default:
+                            continue;
+                    }
+                    dataContext.InstructionDefinitions.Add(instruction);
+                }
+                dataContext.SaveChanges();
+            }
+        }
+
         private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext)
         {
             if (dataContext.Machines.Any())
