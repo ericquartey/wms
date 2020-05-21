@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder.Ignore(s => s.AreaFillPercentage);
             builder.Ignore(s => s.UsageTimePercentage);
 
-            builder.HasData(new MachineStatistics { Id = -1 });
+            builder.HasData(new MachineStatistics { Id = 1 });
         }
 
         #endregion

@@ -29,6 +29,8 @@
 
         public int TotalLoadUnitsInBay3 { get; set; }
 
+        public int TotalMissions => this.TotalLoadUnitsInBay1 + this.TotalLoadUnitsInBay2 + this.TotalLoadUnitsInBay3;
+
         public System.TimeSpan TotalMissionTime { get; set; }
 
         public System.TimeSpan TotalPowerOnTime { get; set; }

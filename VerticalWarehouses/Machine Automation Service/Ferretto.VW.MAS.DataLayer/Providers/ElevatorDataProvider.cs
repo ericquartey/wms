@@ -399,6 +399,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 elevator.LoadingUnitId = loadingUnitId;
 
+                if (loadingUnitId.HasValue)
+                {
+                    var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(e => e.Id == loadingUnitId);
+                    if (loadingUnit != null)
+                    {
+                        loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InElevator;
+                    }
+                }
+
                 this.dataContext.SaveChanges();
             }
         }
