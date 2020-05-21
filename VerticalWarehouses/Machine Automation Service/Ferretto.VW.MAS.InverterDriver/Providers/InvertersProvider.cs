@@ -363,11 +363,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             var rigidityKgMeters = properties.BeltRigidity / (9.81 * 1000.0);
 
+            var secondTermMultiplier = 1; // 1 Vertimag 2017, 10 Vertimag EF, 6 = Todesco 56hz
+
             return
                 grossWeight /
                 (2 * (
                     (rigidityKgMeters / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters + ElevatorStructuralProperties.PulleyCircleMeters))
-                        + (rigidityKgMeters / (10 * targetPositionMeters))
+                        + (rigidityKgMeters / (secondTermMultiplier * targetPositionMeters))
                     )
                 );
         }

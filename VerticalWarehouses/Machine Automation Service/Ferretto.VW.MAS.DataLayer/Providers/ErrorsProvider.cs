@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    var statistics = this.dataContext.MachineStatistics.First();
+                    var statistics = this.dataContext.MachineStatistics.Last();
                     summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {

@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -121,6 +122,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<SetupStatusCapabilities> Get()
         {
             return this.Ok(this.setupStatusProvider.Get());
+        }
+
+        [HttpGet("servicing-info")]
+        public ActionResult<ServicingInfo> GetServicingInfo()
+        {
+            return this.Ok(this.servicingProvider.GetInfo());
         }
 
         [HttpPost("horizontal-chain-calibration-bypass")]

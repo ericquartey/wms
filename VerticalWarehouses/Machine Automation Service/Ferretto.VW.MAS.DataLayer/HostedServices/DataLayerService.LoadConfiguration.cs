@@ -77,7 +77,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (vertimagConfiguration.MachineStatistics != null)
             {
-                dataContext.AddOrUpdate(vertimagConfiguration.MachineStatistics, d => d.Id);
+                dataContext.AddRange(vertimagConfiguration.MachineStatistics);
+            }
+            if (vertimagConfiguration.ServicingInfo != null)
+            {
+                dataContext.AddRange(vertimagConfiguration.ServicingInfo);
             }
 
             dataContext.SaveChanges();

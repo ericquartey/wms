@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private double? inputQuantity;
+        private int? inputQuantity;
 
         private bool isBusyLoadingNextPage;
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public double? InputQuantity
+        public int? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
@@ -165,7 +165,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsDistinctBySerialNumber
         {
             get => this.isDistinctBySerialNumber;
-            set => this.SetProperty(ref this.isDistinctBySerialNumber, value);
+            set
+            {
+                if (this.SetProperty(ref this.isDistinctBySerialNumber, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                    }).Start();
+                }
+            }
         }
 
         public bool IsDistinctBySerialNumberEnabled
@@ -177,7 +190,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsGroupbyLot
         {
             get => this.isGroupbyLot;
-            set => this.SetProperty(ref this.isGroupbyLot, value);
+            set
+            {
+                if (this.SetProperty(ref this.isGroupbyLot, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                    }).Start();
+                }
+            }
         }
 
         public bool IsGroupbyLotEnabled
@@ -299,9 +325,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsBusyLoadingNextPage = true;
+                this.ReasonNotes = null;
 
-                this.Reasons = null;
-                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {
@@ -637,7 +663,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (items.Count() == 1)
                 {
-                    this.InputQuantity = itemQuantity;
+                    this.InputQuantity = (int)itemQuantity;
 
                     await this.RequestItemPickAsync(items.First().Item.Id, itemCode);
                 }

@@ -101,21 +101,37 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             switch (notificationStatus)
             {
-                case MessageStatus.OperationEnd:
-                    if (notification.RequestingBay == this.Mission.TargetBay
-                        && notification.Type == MessageType.Positioning)
-                    {
-                        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
-                    break;
-
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
                     this.OnStop(StopRequestReason.Error);
                     break;
             }
+        }
+
+        public override void OnResume(CommandMessage command)
+        {
+            this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator);
+            if (measure)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                if (bay is null)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                if (bay.Carousel != null
+                    && bay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit != null
+                    )
+                {
+                    this.Logger.LogInformation($"Waiting for resume of lower bay Mission");
+                    return;
+                }
+            }
+            // no need to wait
+            var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            newStep.OnEnter(null);
         }
 
         #endregion

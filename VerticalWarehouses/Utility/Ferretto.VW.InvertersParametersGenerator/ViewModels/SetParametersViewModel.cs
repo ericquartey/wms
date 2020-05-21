@@ -103,7 +103,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.loadFileCommand
             ??
             (this.loadFileCommand = new DelegateCommand(
-            this.LoadFile, this.CanImport));
+            this.LoadParameters, this.CanImport));
 
         public FileInfo SelectedFile
         {
@@ -177,11 +177,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
             if (!this.GotoNextInverterParametersSet())
             {
-                if (this.AdjustInvertConfigurationNodes())
-                {
-                    this.configurationService.SetWizard(WizardMode.ExportConfiguration);
-                    return true;
-                }
+                this.configurationService.SetWizard(WizardMode.ExportConfiguration);
+                return true;
             }
 
             return false;
@@ -214,32 +211,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     var description = worksheet.Cells[row, 3].Text;
                     var type = worksheet.Cells[row, 4].Text;
                     var access = worksheet.Cells[row, 8].Text;
-                    parameters.Add(new ParameterInfo(code, description, type, access == ACCESSREADONLY));
+                    parameters.Add(new ParameterInfo(short.Parse(code), description, type, access == ACCESSREADONLY));
                 }
             }
 
             return parameters;
-        }
-
-        private bool AdjustInvertConfigurationNodes()
-        {
-            if (this.configurationService.VertimagConfiguration.Machine.Bays.FirstOrDefault(b => b.Inverter != null) is Bay bay)
-            {
-                if (bay.Inverter.Parameters.SingleOrDefault(p => p.Code == SLAVEINVERTERCODE) is InverterParameter firstBayInverterParameter)
-                {
-                    if (this.configurationService.VertimagConfiguration.Machine.Elevator.Axes.FirstOrDefault(axe => axe.Inverter != null) is ElevatorAxis elevatorAxis)
-                    {
-                        if (elevatorAxis.Inverter.Parameters.SingleOrDefault(p => p.Code == MASTERINVERTERCODE) is InverterParameter mainInverterParameter)
-                        {
-                            mainInverterParameter.StringValue = firstBayInverterParameter.StringValue;
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            // TODO complete configure parameters on inverters master, slave
-            throw new ArgumentException($"Set paramter on mainInverter for confifgure first node failed");
         }
 
         private bool CanImport()
@@ -306,6 +282,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 return inverterBay;
             }
 
+            if (vertimagConfiguration.Machine.Bays.SingleOrDefault(a => (a.Shutter.Inverter != null && (byte)a.Shutter.Inverter.Index == inverterIndex))?.Inverter is Inverter inverterShutter)
+            {
+                return inverterShutter;
+            }
+
             return null;
         }
 
@@ -337,16 +318,18 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private void LoadFile()
+        private void LoadParameters()
         {
             this.IsBusy = true;
             try
             {
-                this.inverterParameters = new List<InverterParameter>();
+                var inverterParameters = new List<InverterParameter>();
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
-                var lastParameterCode = string.Empty;
+                short lastParameterCode = 0;
                 var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
                 var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
+
+                var inverterNodeParameters = this.configurationService.GetInverterNode(this.currentInverterParameters.InverterIndex).Parameters;
 
                 var softwareVersionCode = $"0{(short)InverterParameterId.SoftwareVersion}";
                 var softwareVersionParameter = parameters.SingleOrDefault(p => p.Code == softwareVersionCode);
@@ -357,27 +340,30 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     Type = STRINGTYPE,
                     IsReadOnly = true
                 };
-                this.inverterParameters.Add(inverterVersionParameter);
+                inverterParameters.Add(inverterVersionParameter);
 
                 foreach (var parameter in parameters)
                 {
-                    var code = Regex.Replace(parameter.Code, @"^0+(?!$)", string.Empty);
-                    if (string.IsNullOrEmpty(code))
+                    short code;
+                    if (string.IsNullOrEmpty(parameter.Code))
                     {
                         code = lastParameterCode;
                     }
                     else
                     {
-                        lastParameterCode = code;
+                        code = short.Parse(parameter.Code);
+                        lastParameterCode = short.Parse(parameter.Code);
                     }
 
                     var parameterInfo = parametersInfo.SingleOrDefault(pi => pi.Code == code);
                     if (parameterInfo is null)
                     {
-                        throw new ArgumentException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
+                        throw new ArgumentNullException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
                     }
 
-                    if (string.IsNullOrEmpty(parameter.Writable))
+                    if (!inverterNodeParameters.Any(np => np.Code == code)
+                        &&
+                        string.IsNullOrEmpty(parameter.Writable))
                     {
                         continue;
                     }
@@ -396,17 +382,19 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     var inverterParameter = new InverterParameter
                     {
-                        Code = short.Parse(code),
+                        Code = code,
                         DataSet = this.GetDatasetIndex(parameter),
                         StringValue = this.ExtractValue(parameterInfo.Type, parameter.Value),
                         Type = parameterInfo.Type
                     };
 
-                    this.inverterParameters.Add(inverterParameter);
-
-                    this.RaisePropertyChanged(nameof(this.InverterParameters));
-                    this.IsParametersSet = true;
+                    inverterParameters.Add(inverterParameter);
                 }
+
+                this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
+                this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
+                this.RaisePropertyChanged(nameof(this.InverterParameters));
+                this.IsParametersSet = true;
             }
             catch (Exception ex)
             {

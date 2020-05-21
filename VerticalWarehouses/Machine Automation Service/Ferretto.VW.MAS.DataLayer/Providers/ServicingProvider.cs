@@ -23,6 +23,24 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void CheckServicingInfo()
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.ServicingInfo.LastOrDefault() == null)
+                {
+                    var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
+                    var s = new ServicingInfo();
+                    if (machineId.HasValue)
+                    {
+                        s.MachineStatisticsId = machineId.Value;
+                    }
+                    this.dataContext.ServicingInfo.Add(s);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public ServicingInfo GetInfo()
         {
             lock (this.dataContext)

@@ -117,8 +117,7 @@
                                   MinHeight="80"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.AdditionalText}"
-                                  LabelText="{res:Loc OperatorApp.AdditionalText}"
-                                  Visibility="Hidden" />
+                                  LabelText="{res:Loc OperatorApp.AdditionalText}" />
 
             <local:PpcLabeledText Grid.Row="4"
                                   MinHeight="80"

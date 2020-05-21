@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di prelievo.
+        ///   Looks up a localized string similar to Invalid sensors.
         /// </summary>
         public static string BottomLevelBayEmpty {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di deposito.
+        ///   Looks up a localized string similar to Invalid sensors.
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {

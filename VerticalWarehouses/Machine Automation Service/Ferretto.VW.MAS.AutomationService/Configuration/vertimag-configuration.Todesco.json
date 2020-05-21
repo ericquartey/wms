@@ -5782,27 +5782,29 @@
         "SerialNumber": "MV20-0003",
         "Simulation": true
     },
-    "MachineStatistics": {
-        "AutomaticTimePercentage": 0.0,
-        "Id": -1,
-        "TotalAutomaticTime": "00:00:00",
-        "TotalBayChainKilometers1": 0.53607541061868147,
-        "TotalBayChainKilometers2": 0.0,
-        "TotalBayChainKilometers3": 0.0,
-        "TotalHorizontalAxisCycles": 1405,
-        "TotalHorizontalAxisKilometers": 1.7102984403702266,
-        "TotalLoadUnitsInBay1": 373,
-        "TotalLoadUnitsInBay2": 0,
-        "TotalLoadUnitsInBay3": 0,
-        "TotalMissionTime": "09:23:19.1606149",
-        "TotalPowerOnTime": "00:00:00",
-        "TotalVerticalAxisCycles": 1039,
-        "TotalVerticalAxisKilometers": 1.9581622479129528,
-        "TotalWeightBack": 2402.8195589999982,
-        "TotalWeightFront": 3006.9306369999995,
-        "UsageTimePercentage": 0.0,
-        "WeightCapacityPercentage": 9.2054217434954939
-    },
+  "MachineStatistics": [
+    {
+      "AutomaticTimePercentage": 0.0,
+      "Id": -1,
+      "TotalAutomaticTime": "00:00:00",
+      "TotalBayChainKilometers1": 0.53607541061868147,
+      "TotalBayChainKilometers2": 0.0,
+      "TotalBayChainKilometers3": 0.0,
+      "TotalHorizontalAxisCycles": 1405,
+      "TotalHorizontalAxisKilometers": 1.7102984403702266,
+      "TotalLoadUnitsInBay1": 373,
+      "TotalLoadUnitsInBay2": 0,
+      "TotalLoadUnitsInBay3": 0,
+      "TotalMissionTime": "09:23:19.1606149",
+      "TotalPowerOnTime": "00:00:00",
+      "TotalVerticalAxisCycles": 1039,
+      "TotalVerticalAxisKilometers": 1.9581622479129528,
+      "TotalWeightBack": 2402.8195589999982,
+      "TotalWeightFront": 3006.9306369999995,
+      "UsageTimePercentage": 0.0,
+      "WeightCapacityPercentage": 9.2054217434954939
+    }
+  ],
     "ServicingInfo": [],
     "SetupProcedures": {
         "Bay1CarouselCalibration": {

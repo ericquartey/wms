@@ -283,8 +283,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (missionOperationType != MissionOperationType.NotSpecified)
                 {
-                    this.Reasons = null;
-                    // this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(missionOperationType);
+                    this.ReasonNotes = null;
+                    this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(missionOperationType);
                 }
 
                 if (this.reasons?.Any() == true)
@@ -419,7 +419,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //if (this.IsNewOperationAvailable)
                 //{
-                    this.operatorNavigationService.NavigateToDrawerView();
+                this.operatorNavigationService.NavigateToDrawerView();
                 //}
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken missionOperationToken;
 
-        private string recallLoadingUnitInfo = Localized.Get("OperatorApp.RecallDrawer");
+        private string recallLoadingUnitInfo = OperatorApp.RecallDrawer;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -142,8 +142,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.isNewOperationAvailable, value))
                 {
                     this.RecallLoadingUnitInfo = value
-                        ? Localized.Get("OperatorApp.NewOperationsAvailable")
-                        : Localized.Get("OperatorApp.RecallDrawer");
+                        ? OperatorApp.NewOperationsAvailable
+                        : OperatorApp.RecallDrawer;
                 }
             }
         }

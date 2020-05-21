@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
@@ -65,7 +64,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         }
 
         public ICommand PreviousCommand =>
-                                this.previousCommand
+                        this.previousCommand
                         ??
                         (this.previousCommand = new DelegateCommand(this.Previous, this.CanPrevious));
 
@@ -173,15 +172,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private void Close()
-        {
-            Application.Current.Shutdown(0);
-        }
-
         private void Next()
         {
-            var canNext = this.CurrentMode.Next();
-            if (!canNext)
+            if (!this.CurrentMode.Next())
             {
                 return;
             }
