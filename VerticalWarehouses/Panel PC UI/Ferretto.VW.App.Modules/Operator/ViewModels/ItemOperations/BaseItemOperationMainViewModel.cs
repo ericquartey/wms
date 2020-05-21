@@ -523,7 +523,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetLoadingUnitDetails();
 
             await this.AlphaNumericBarSendMessageAsync();
-            await this.LaserPointerMoveAsync();
+            await this.LaserPointerSwitchOnAndMoveAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -749,7 +749,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
-                    this.laserPointerDriver.Configure(ipAddress, port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                    this.laserPointerDriver.Configure(ipAddress, port, 0, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
                 }
             }
             catch (Exception ex)
@@ -758,7 +758,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task LaserPointerMoveAsync()
+        private async Task LaserPointerSwitchOnAndMoveAsync()
         {
             try
             {
@@ -783,7 +783,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var idLoadingUnit = this.selectedCompartment.LoadingUnitId;
                     var isUpper = this.bay.Positions.FirstOrDefault(p => p.LoadingUnit.Id == idLoadingUnit).IsUpper;
 
-                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, isUpper, this.bay.Side);
+                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, this.MissionOperation.ItemHeight.Value, isUpper, this.bay.Side);
                     await this.laserPointerDriver.SwitchOnAndMoveAsync(point);
                 }
             }
@@ -809,7 +809,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             _ = this.AlphaNumericBarSendMessageAsync();
-            _ = this.LaserPointerMoveAsync();
+            _ = this.LaserPointerSwitchOnAndMoveAsync();
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;

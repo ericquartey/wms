@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool testIsChecked;
 
+        private double xOffset;
+
         private double yOffset;
 
         private double zOffsetLowerPosition;
@@ -223,6 +225,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public double XOffset
+        {
+            get => this.xOffset;
+            set
+            {
+                if (this.SetProperty(ref this.xOffset, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public double YOffset
         {
             get => this.yOffset;
@@ -329,6 +344,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.ConnectionLabel = VW.App.Resources.Localized.Get("InstallationApp.Wait");
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.Wait"), Services.Models.NotificationSeverity.Warning);
                 this.ConnectionBrush = Brushes.DarkOrange;
 
                 this.laserPointerDriver.Configure(this.ipAddress, this.port);
@@ -338,10 +354,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.ConnectionLabel = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOnline");
                     this.ConnectionBrush = Brushes.Green;
+                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOnline"), Services.Models.NotificationSeverity.Success);
                 }
                 else
                 {
                     this.ConnectionLabel = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
+                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline"), Services.Models.NotificationSeverity.Error);
                     this.ConnectionBrush = Brushes.Red;
                 }
             }
@@ -360,7 +378,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.laserPointerDriver.Configure(this.ipAddress, this.port, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                this.laserPointerDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
                 return await this.laserPointerDriver.TestAsync(enable);
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
