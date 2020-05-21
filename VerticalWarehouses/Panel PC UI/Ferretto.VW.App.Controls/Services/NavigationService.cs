@@ -106,10 +106,6 @@ namespace Ferretto.VW.App.Controls
                 this.DisappearActiveView();
                 this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
 
-                Analytics.TrackEvent("Page Visited", new Dictionary<string, string> {
-                    { "Name", viewName },
-                });
-
                 if (this.navigationStack.Count > 0)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
