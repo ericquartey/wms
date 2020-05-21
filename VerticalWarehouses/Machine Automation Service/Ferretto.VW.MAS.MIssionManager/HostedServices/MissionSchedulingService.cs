@@ -960,10 +960,15 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
+            var servicingInfo = serviceProvider.GetRequiredService<IServicingProvider>();
+            servicingInfo.CheckServicingInfo();
+
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
+
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.RestoreFullTest(serviceProvider);
+
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
