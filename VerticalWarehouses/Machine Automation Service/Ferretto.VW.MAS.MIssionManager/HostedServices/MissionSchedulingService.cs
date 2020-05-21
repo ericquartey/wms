@@ -478,7 +478,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (mission.WmsId.HasValue)
                 {
-                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, activeMissions, mission);
+                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, mission);
                 }
                 else if (mission.Status is MissionStatus.New)
                 {
@@ -1097,7 +1097,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <returns></returns>
-        private async Task OnTimePeriodElapsed(IServiceProvider serviceProvider)
+        private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
         {
             // at midnight it is time do do some housework
             if (DateTime.UtcNow.Hour == 0)
@@ -1148,7 +1148,10 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task ScheduleWmsMissionAsync(BayNumber bayNumber, IServiceProvider serviceProvider, IEnumerable<Mission> activeMissions, Mission mission)
+        private async Task ScheduleWmsMissionAsync(
+            BayNumber bayNumber,
+            IServiceProvider serviceProvider,
+            Mission mission)
         {
             System.Diagnostics.Debug.Assert(mission.WmsId.HasValue);
 

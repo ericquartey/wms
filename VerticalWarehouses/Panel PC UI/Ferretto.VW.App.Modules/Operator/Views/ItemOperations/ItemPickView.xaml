@@ -59,16 +59,6 @@
                        Text="{resources:Loc OperatorApp.DrawerActivityPickingPageHeader}" />
         </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   Height="Auto"
-                   Margin="0,0,0,0"
-                   VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{resources:Loc HelpDescriptions.HelpDrawerActivityPickingDescription}"
-                   TextWrapping="Wrap" />
-
         <Border Grid.Row="2"
                 Margin="0,15,0,0"
                 Background="{DynamicResource PpcBackground}"
@@ -227,7 +217,7 @@
                                LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                MinValue="0" />
-            
+
             <Border Grid.Row="2"
                     Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">
                 <iconPacks:PackIconMaterial Width="18"
@@ -239,7 +229,7 @@
                                             Kind="{Binding IsInputQuantityValid, Converter={StaticResource BoolToValidationIconConverter}}"
                                             Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}" />
             </Border>
-            
+
             <controls:PpcButton Grid.Row="3"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"

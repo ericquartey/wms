@@ -9,6 +9,8 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
+using Microsoft.AppCenter.Analytics;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Services
 {
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IBayManager bayManager;
+
         public UserAccessLevel UserAccessLevel { get; private set; }
 
         public MachineIdentity MachineIdentity { get; set; }
@@ -31,11 +35,13 @@ namespace Ferretto.VW.App.Services
         public SessionService(
             IAuthenticationService autenticationService,
             IEventAggregator eventAggregator,
+            IBayManager bayManager,
             IHealthProbeService healthProbeService,
             INavigationService navigationService)
         {
             this.autenticationService = autenticationService ?? throw new ArgumentNullException(nameof(autenticationService));
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+            this.bayManager = bayManager;
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
@@ -43,6 +49,21 @@ namespace Ferretto.VW.App.Services
                 async m => await this.OnHealthStatusChanged(m),
                 ThreadOption.UIThread,
                 false);
+
+            this.eventAggregator
+                .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                .Subscribe(
+                    this.OnNavigation,
+                    ThreadOption.BackgroundThread,
+                    false);
+        }
+
+        private void OnNavigation(NavigationCompletedEventArgs e)
+        {
+            Analytics.TrackEvent("Page Visit", new Dictionary<string, string> {
+                    { "Name", e.ViewModelName?.Replace("ViewModel", "View") },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                });
         }
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)

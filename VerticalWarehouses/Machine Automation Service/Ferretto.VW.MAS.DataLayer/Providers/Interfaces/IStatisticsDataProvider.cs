@@ -8,6 +8,16 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        int ConfirmAndCreateNew();
+
+        MachineStatistics GetActual();
+
+        IEnumerable<MachineStatistics> GetAll();
+
+        MachineStatistics GetById(int id);
+
+        MachineStatistics GetLastConfirmed();
+
         int MissionTotalNumber();
 
         double TotalDistance();

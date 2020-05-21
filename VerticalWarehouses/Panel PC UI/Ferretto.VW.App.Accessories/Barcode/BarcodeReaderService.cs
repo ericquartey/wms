@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.VW.App.Accessories.Barcode;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
@@ -19,19 +21,25 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IMachineBarcodesWebService barcodesWebService;
 
+        private readonly IBarcodeReaderDriver deviceDriver;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILoadingUnitBarcodeService loadingUnitBarcodeService;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly INavigationService navigationService;
 
-        private readonly IBarcodeReaderDriver reader;
+        private readonly IPutToLightBarcodeService putToLightBarcodeService;
 
         private BarcodeRule activeRule;
 
         private bool isStarted;
 
-        private IEnumerable<BarcodeRule> ruleSet;
+        private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
 
         #endregion
 
@@ -40,17 +48,21 @@ namespace Ferretto.VW.App.Accessories
         public BarcodeReaderService(
             IEventAggregator eventAggregator,
             IMachineBaysWebService machineBaysWebService,
-            IBarcodeReaderDriver reader,
+            IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
+            IPutToLightBarcodeService putToLightBarcodeService,
+            ILoadingUnitBarcodeService loadingUnitBarcodeService,
             IMachineBarcodesWebService barcodesWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-            this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
+            this.deviceDriver = deviceDriver ?? throw new ArgumentNullException(nameof(deviceDriver));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.putToLightBarcodeService = putToLightBarcodeService;
+            this.loadingUnitBarcodeService = loadingUnitBarcodeService;
             this.barcodesWebService = barcodesWebService ?? throw new ArgumentNullException(nameof(barcodesWebService));
 
-            this.reader.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(sender, e);
+            this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
         }
 
         #endregion
@@ -66,7 +78,7 @@ namespace Ferretto.VW.App.Accessories
                     throw new InvalidOperationException("Cannot retrieve device information because the barcode is not connected.");//TODO localize
                 }
 
-                if (this.reader is IQueryableDevice queryableDevice)
+                if (this.deviceDriver is IQueryableDevice queryableDevice)
                 {
                     return queryableDevice.Information;
                 }
@@ -83,9 +95,15 @@ namespace Ferretto.VW.App.Accessories
 
         public void Disable()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
             try
             {
-                this.reader.Disconnect();
+                this.deviceDriver.Disconnect();
+                this.ruleSet = Array.Empty<BarcodeRule>();
 
                 this.DisableSerialPortsTimer();
             }
@@ -101,6 +119,11 @@ namespace Ferretto.VW.App.Accessories
 
         public async Task StartAsync()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
             if (this.isStarted)
             {
                 return;
@@ -114,7 +137,7 @@ namespace Ferretto.VW.App.Accessories
 
                 if (accessories.BarcodeReader?.IsEnabledNew == true)
                 {
-                    this.reader.Connect(
+                    this.deviceDriver.Connect(
                         new ConfigurationOptions
                         {
                             PortName = accessories.BarcodeReader.PortName
@@ -131,24 +154,40 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        private static async Task ExecuteActionOnActiveContext(UserActionEventArgs eventArgs, IOperationalContextViewModel activeContext)
+        private async Task ExecuteActionOnActiveContext(UserActionEventArgs eventArgs, IOperationalContextViewModel activeContext)
         {
             if (activeContext is null)
             {
-                return;
-            }
+                var handled = await this.putToLightBarcodeService.ProcessUserActionAsync(eventArgs);
 
-            await Application.Current.Dispatcher.Invoke(async () =>
+                handled = handled || await this.loadingUnitBarcodeService.ProcessUserActionAsync(eventArgs);
+
+                if (!handled)
+                {
+                    this.logger.Warn("The"); // TODO localize
+                }
+            }
+            else
             {
-                try
+                await Application.Current.Dispatcher.Invoke(async () =>
                 {
-                    await activeContext.CommandUserActionAsync(eventArgs);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Barcode {eventArgs.Code} caused an exception on {activeContext.GetType()}: {ex.Message}");
-                }
-            });
+                    try
+                    {
+                        await activeContext.CommandUserActionAsync(eventArgs);
+
+                        if (eventArgs.HasMismatch && eventArgs.RestartOnMismatch)
+                        {
+                            this.activeRule = null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.Error(
+                            ex,
+                            $"Barcode {eventArgs.Code} caused an exception on context '{activeContext.GetType()}'");
+                    }
+                });
+            }
         }
 
         /// <summary>
@@ -174,8 +213,6 @@ namespace Ferretto.VW.App.Accessories
         /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if not match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
-            System.Diagnostics.Debug.Assert(this.ruleSet != null);
-
             // note: rules with a context have priority
             var matchedRule = this.ruleSet
                 .FirstOrDefault(r =>
@@ -201,11 +238,13 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
-                this.ruleSet = await this.barcodesWebService.GetAllAsync();
+                var rules = await this.barcodesWebService.GetAllAsync();
+
+                this.ruleSet = rules.OrderBy(r => r.Priority).ToArray();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Unable to load barcode rules.");
+                this.logger.Error($"Unable to load barcode rules.");
                 this.NotifyError(ex);
             }
         }
@@ -224,13 +263,12 @@ namespace Ferretto.VW.App.Accessories
                 .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
         }
 
-        private async Task OnBarcodeReceivedAsync(object sender, ActionEventArgs e)
+        private async Task OnBarcodeReceivedAsync(ActionEventArgs e)
         {
             var activeContext = this.GetActiveContext();
 
-            System.Diagnostics.Debug.WriteLineIf(
-                activeContext is null,
-                $"Current view model does not specify an operational context.");
+            this.logger.Debug(
+                $"Barcode active context is: '{activeContext?.GetType().Name}'.");
 
             var code = e.Code
                 .Replace("\r", string.Empty)
@@ -243,18 +281,19 @@ namespace Ferretto.VW.App.Accessories
                 this.NotifyWarning(
                     string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code));
 
-                System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} does not match any rule.");
+                this.logger.Warn($"Barcode {e.Code} does not match any rule.");
 
+                // send an event to notify the reset
                 var eventArgs = new UserActionEventArgs(e.Code, isReset: chainedRuleIsExpected);
-                await ExecuteActionOnActiveContext(eventArgs, activeContext);
+                await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine(
+                this.logger.Debug(
                     $"Barcode {e.Code} matched rule context '{this.activeRule.ContextName}', action '{this.activeRule.Action}'");
 
                 var eventArgs = new UserActionEventArgs(e.Code, this.activeRule);
-                await ExecuteActionOnActiveContext(eventArgs, activeContext);
+                await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
             }
         }
 
@@ -271,7 +310,7 @@ namespace Ferretto.VW.App.Accessories
                 return this.GetActiveContextRule(code, activeContext?.ActiveContextName);
             }
 
-            System.Diagnostics.Debug.WriteLine($"Barcode chained rule found.");
+            this.logger.Debug($"Barcode chained rule found.");
 
             if (Regex.IsMatch(code, nextRule.Pattern))
             {

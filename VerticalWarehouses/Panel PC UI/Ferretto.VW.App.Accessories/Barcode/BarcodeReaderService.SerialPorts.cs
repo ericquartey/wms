@@ -26,16 +26,16 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public void InitializeSerialPortsTimer()
-        {
-            this.serialPortsPollTimer?.Dispose();
-            this.serialPortsPollTimer = new Timer(this.RefreshSystemPorts, null, 0, SerialPortRefreshInterval);
-        }
-
         private void DisableSerialPortsTimer()
         {
             this.serialPortsPollTimer?.Dispose();
             this.serialPortsPollTimer = null;
+        }
+
+        private void InitializeSerialPortsTimer()
+        {
+            this.serialPortsPollTimer?.Dispose();
+            this.serialPortsPollTimer = new Timer(this.RefreshSystemPorts, null, 0, SerialPortRefreshInterval);
         }
 
         private void RefreshSystemPorts(object state)
