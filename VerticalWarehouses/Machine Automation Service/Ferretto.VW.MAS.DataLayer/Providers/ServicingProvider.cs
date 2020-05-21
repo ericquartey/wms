@@ -41,6 +41,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     this.dataContext.ServicingInfo.Add(s);
                     this.dataContext.SaveChanges();
+
+                    this.GenerateInstructions(s);
+                    this.dataContext.SaveChanges();
                 }
             }
         }
@@ -59,6 +62,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 s.MachineStatisticsId = this.machineStatistics.ConfirmAndCreateNew();
 
                 this.dataContext.ServicingInfo.Add(s);
+                this.dataContext.SaveChanges();
+
+                this.GenerateInstructions(s);
                 this.dataContext.SaveChanges();
             }
         }
@@ -84,6 +90,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     s.MachineStatisticsId = this.machineStatistics.ConfirmAndCreateNew();
 
                     this.dataContext.ServicingInfo.Add(s);
+                    this.dataContext.SaveChanges();
+
+                    this.GenerateInstructions(s);
                     this.dataContext.SaveChanges();
                 }
             }
@@ -134,6 +143,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 else
                 {
                     return null;
+                }
+            }
+        }
+
+        private void GenerateInstructions(ServicingInfo s)
+        {
+            var instructionDefinitions = this.dataContext.InstructionDefinitions.ToList();
+            if (instructionDefinitions.Any())
+            {
+                foreach (var definition in instructionDefinitions)
+                {
+                    var instruction = new Instruction();
+                    instruction.ServicingInfo = s;
+                    instruction.Definition = definition;
+                    this.dataContext.Instructions.Add(instruction);
                 }
             }
         }

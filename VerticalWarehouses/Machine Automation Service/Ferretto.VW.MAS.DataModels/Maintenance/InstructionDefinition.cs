@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Newtonsoft.Json;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -8,24 +6,50 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public InstructionType InstructionType { get; set; }
+        public Axis Axis { get; set; }
+
+        public BayNumber BayNumber { get; set; }
+
+        public string CounterName { get; set; }
 
         public string Description { get; set; }
 
-        public string CounterName { get; set; }
+        public InstructionType InstructionType { get; set; }
+
+        public bool IsCarousel { get; set; }
+
+        public bool IsShutter { get; set; }
+
+        public bool IsSystem { get; set; }
+
         public int? MaxDays { get; set; }
 
         public int? MaxRelativeCount { get; set; }
 
         public int? MaxTotalCount { get; set; }
 
-        public Axis Axis { get; set; }
+        #endregion
 
-        public BayNumber BayNumber { get; set; }
+        #region Methods
 
-        public bool IsShutter { get; set; }
-        public bool IsCarousel { get; set; }
-        public bool IsSystem { get; set; }
+        public void SetCounterName(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.CounterName = nameof(MachineStatistics.TotalLoadUnitsInBay1);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.CounterName = nameof(MachineStatistics.TotalLoadUnitsInBay2);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.CounterName = nameof(MachineStatistics.TotalLoadUnitsInBay3);
+                    break;
+            }
+        }
+
         #endregion
     }
 }

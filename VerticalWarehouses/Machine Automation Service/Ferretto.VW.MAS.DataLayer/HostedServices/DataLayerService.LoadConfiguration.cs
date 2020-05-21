@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Converters;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +41,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void GenerateInstructions(DataLayerContext dataContext)
+        private void GenerateInstructionDefinitions(DataLayerContext dataContext)
         {
             if (dataContext.InstructionDefinitions.Any())
             {
@@ -49,19 +50,28 @@ namespace Ferretto.VW.MAS.DataLayer
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
+                const int HighMissionCount = 3000000;
+                const int NormalMissionCount = 40000;
+                const int LowMissionCount = 20000;
+                const int VeryHighMissionCount = 600000;
                 const int OneYear = 365;
+
+                // this instruction is reeeeally slow
                 var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+
                 foreach (InstructionType instructionType in Enum.GetValues(typeof(InstructionType)))
                 {
                     var instruction = new InstructionDefinition();
                     switch (instructionType)
                     {
                         case InstructionType.AirFiltersCheck:
+                        case InstructionType.ElectricalComponentsCheck:
                             instruction.InstructionType = instructionType;
                             instruction.IsSystem = true;
                             instruction.MaxDays = OneYear;
                             instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.MaxRelativeCount = 20000;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.BearingsCheck:
@@ -70,61 +80,197 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.BeltFasten:
                         case InstructionType.CableChainCheck:
                         case InstructionType.CablesCheck:
+                        case InstructionType.FirstCellCheck:
+                        case InstructionType.RandomCellCheck:
+                        case InstructionType.WheelsCheck:
                             instruction.InstructionType = instructionType;
                             instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
                             instruction.MaxDays = OneYear;
                             instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.MaxRelativeCount = 20000;
-                            break;
-
-                        case InstructionType.ChainAdjust:
-                        case InstructionType.ChainGrease:
-
-                            instruction.InstructionType = instructionType;
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.MaxDays = OneYear;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.MaxRelativeCount = 20000;
+                            instruction.MaxRelativeCount = LowMissionCount;
                             dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
-                            {
-                                dataContext.InstructionDefinitions.Add(instruction);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
-                            }
                             break;
 
                         case InstructionType.BeltSubstitute:
                             instruction.InstructionType = instructionType;
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
                             instruction.MaxDays = OneYear * 5;
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.IsShutter = true;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            instruction.IsShutter = false;
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
                             instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.ChainSubstitute:
+                        case InstructionType.ChainAdjust:
+                        case InstructionType.ChainGrease:
                             instruction.InstructionType = instructionType;
+                            instruction.MaxDays = OneYear;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
                             instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.MaxRelativeCount = 40000;
                             instruction.CounterName = nameof(MachineStatistics.TotalMissions);
                             dataContext.InstructionDefinitions.Add(instruction);
 
                             instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.ChainSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxRelativeCount = NormalMissionCount;
+
                             foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
                             {
-                                dataContext.InstructionDefinitions.Add(instruction);
+                                instruction.SetCounterName(bay.Number);
                                 instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
                                 instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
                             }
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.ContactorsSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.IsSystem = true;
+                            instruction.MaxDays = OneYear * 5;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.GuidesCheck:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxDays = OneYear;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.IsShutter = true;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            instruction.IsShutter = false;
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.GuidesSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxRelativeCount = HighMissionCount;
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.IsShutter = true;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionType.Undefined:
+                            break;
+
+                        case InstructionType.LampsCheck:
+                            break;
+
+                        case InstructionType.LinkCheck:
+                            break;
+
+                        case InstructionType.LinksGrease:
+                            break;
+
+                        case InstructionType.LinkSubstitute:
+                            break;
+
+                        case InstructionType.MicroSwitchesCheck:
+                            break;
+
+                        case InstructionType.MicroSwitchesMount:
+                            break;
+
+                        case InstructionType.MicroSwitchesSubstitute:
+                            break;
+
+                        case InstructionType.MotorChainAdjust:
+                            break;
+
+                        case InstructionType.MotorChainGrease:
+                            break;
+
+                        case InstructionType.MotorChainSubstitute:
+                            break;
+
+                        case InstructionType.MotorGearOil:
+                            break;
+
+                        case InstructionType.MotorGearSubstitute:
+                            break;
+
+                        case InstructionType.OpticalSensorsClean:
+                            break;
+
+                        case InstructionType.OpticalSensorsMount:
+                            break;
+
+                        case InstructionType.PinPawlFastenersCheck:
+                            break;
+
+                        case InstructionType.PinPawlFastenersGrease:
+                            break;
+
+                        case InstructionType.PinPawlFastenersSubstitute:
+                            break;
+
+                        case InstructionType.PlasticCamsCheck:
+                            break;
+
+                        case InstructionType.SensorsClean:
+                            break;
+
+                        case InstructionType.SensorCheck:
+                            break;
+
+                        case InstructionType.SensorsMount:
+                            break;
+
+                        case InstructionType.ShaftCheck:
+                            break;
+
+                        case InstructionType.SupportsCheck:
+                            break;
+
+                        case InstructionType.WheelsSubstitute:
                             break;
 
                         default:
                             continue;
                     }
-                    dataContext.InstructionDefinitions.Add(instruction);
                 }
+
                 dataContext.SaveChanges();
             }
         }

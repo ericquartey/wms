@@ -4341,14 +4341,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class InstructionDefinition : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("InstructionType", Required = Newtonsoft.Json.Required.Always)]
-        public InstructionType InstructionType { get; set; }
+        [Newtonsoft.Json.JsonProperty("Axis", Required = Newtonsoft.Json.Required.Always)]
+        public Axis Axis { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber BayNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CounterName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CounterName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CounterName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CounterName { get; set; }
+        [Newtonsoft.Json.JsonProperty("InstructionType", Required = Newtonsoft.Json.Required.Always)]
+        public InstructionType InstructionType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCarousel", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCarousel { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsShutter", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsShutter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsSystem", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsSystem { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxDays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxDays { get; set; }
@@ -4358,21 +4373,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("MaxTotalCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxTotalCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Axis", Required = Newtonsoft.Json.Required.Always)]
-        public Axis Axis { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber BayNumber { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsShutter", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsShutter { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsCarousel", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsCarousel { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsSystem", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsSystem { get; set; }
     
         public string ToJson() 
         {
@@ -4417,7 +4417,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ElectricalComponentsCheck = 13,
     
-        FirstCellCeck = 14,
+        FirstCellCheck = 14,
     
         GuidesCheck = 15,
     
