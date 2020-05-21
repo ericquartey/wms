@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.VW.App.Accessories.Barcode;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices;
@@ -24,11 +25,15 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILoadingUnitBarcodeService loadingUnitBarcodeService;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly INavigationService navigationService;
+
+        private readonly IPutToLightBarcodeService putToLightBarcodeService;
 
         private BarcodeRule activeRule;
 
@@ -45,12 +50,16 @@ namespace Ferretto.VW.App.Accessories
             IMachineBaysWebService machineBaysWebService,
             IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
+            IPutToLightBarcodeService putToLightBarcodeService,
+            ILoadingUnitBarcodeService loadingUnitBarcodeService,
             IMachineBarcodesWebService barcodesWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.deviceDriver = deviceDriver ?? throw new ArgumentNullException(nameof(deviceDriver));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.putToLightBarcodeService = putToLightBarcodeService;
+            this.loadingUnitBarcodeService = loadingUnitBarcodeService;
             this.barcodesWebService = barcodesWebService ?? throw new ArgumentNullException(nameof(barcodesWebService));
 
             this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
@@ -149,27 +158,36 @@ namespace Ferretto.VW.App.Accessories
         {
             if (activeContext is null)
             {
-                return;
+                var handled = await this.putToLightBarcodeService.ProcessUserActionAsync(eventArgs);
+
+                handled = handled || await this.loadingUnitBarcodeService.ProcessUserActionAsync(eventArgs);
+
+                if (!handled)
+                {
+                    this.logger.Warn("The"); // TODO localize
+                }
             }
-
-            await Application.Current.Dispatcher.Invoke(async () =>
+            else
             {
-                try
+                await Application.Current.Dispatcher.Invoke(async () =>
                 {
-                    await activeContext.CommandUserActionAsync(eventArgs);
-
-                    if (eventArgs.HasMismatch && eventArgs.RestartOnMismatch)
+                    try
                     {
-                        this.activeRule = null;
+                        await activeContext.CommandUserActionAsync(eventArgs);
+
+                        if (eventArgs.HasMismatch && eventArgs.RestartOnMismatch)
+                        {
+                            this.activeRule = null;
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    this.logger.Error(
-                        ex,
-                        $"Barcode {eventArgs.Code} caused an exception on context '{activeContext.GetType()}'");
-                }
-            });
+                    catch (Exception ex)
+                    {
+                        this.logger.Error(
+                            ex,
+                            $"Barcode {eventArgs.Code} caused an exception on context '{activeContext.GetType()}'");
+                    }
+                });
+            }
         }
 
         /// <summary>
@@ -250,7 +268,7 @@ namespace Ferretto.VW.App.Accessories
             var activeContext = this.GetActiveContext();
 
             this.logger.Debug(
-                $"Barcode active context is: {activeContext?.GetType().Name}");
+                $"Barcode active context is: '{activeContext?.GetType().Name}'.");
 
             var code = e.Code
                 .Replace("\r", string.Empty)
@@ -263,8 +281,9 @@ namespace Ferretto.VW.App.Accessories
                 this.NotifyWarning(
                     string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code));
 
-                this.logger.Debug($"Barcode {e.Code} does not match any rule.");
+                this.logger.Warn($"Barcode {e.Code} does not match any rule.");
 
+                // send an event to notify the reset
                 var eventArgs = new UserActionEventArgs(e.Code, isReset: chainedRuleIsExpected);
                 await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
             }

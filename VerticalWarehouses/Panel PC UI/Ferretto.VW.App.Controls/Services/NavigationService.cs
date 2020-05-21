@@ -5,6 +5,7 @@ using System.Windows;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
+using Microsoft.AppCenter.Analytics;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;
@@ -104,6 +105,10 @@ namespace Ferretto.VW.App.Controls
 
                 this.DisappearActiveView();
                 this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
+
+                Analytics.TrackEvent("Page Visited", new Dictionary<string, string> {
+                    { "Name", viewName },
+                });
 
                 if (this.navigationStack.Count > 0)
                 {

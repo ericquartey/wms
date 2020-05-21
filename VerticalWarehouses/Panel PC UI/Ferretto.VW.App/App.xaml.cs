@@ -15,6 +15,9 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -93,6 +96,11 @@ namespace Ferretto.VW.App
             {
                 this.Shutdown(1);
             }
+
+            AppCenter.Start(
+                "58921cd8-0634-4e0d-9958-13aca573d887",
+                typeof(Analytics),
+                typeof(Crashes));
 
             SplashScreenService.Show();
 

@@ -17,5 +17,17 @@
         LoginUser,
 
         VerifyItem,
+
+        RecallLoadingUnit,
+
+        AssociateBasketToShelf,
+
+        CompleteBasket,
+
+        RemoveFullBasket,
+
+        SelectBasket,
+
+        SelectShelf,
     }
 }

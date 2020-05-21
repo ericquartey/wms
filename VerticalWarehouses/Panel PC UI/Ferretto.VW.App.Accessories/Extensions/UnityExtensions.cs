@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using Ferretto.VW.App.Accessories.Barcode;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -36,6 +37,8 @@ namespace Ferretto.VW.App.Accessories
             }
 
             containerRegistry.RegisterSingleton<IBarcodeReaderService, BarcodeReaderService>();
+            containerRegistry.RegisterSingleton<ILoadingUnitBarcodeService, LoadingUnitBarcodeService>();
+            containerRegistry.RegisterSingleton<IPutToLightBarcodeService, PutToLightBarcodeService>();
 
             return containerRegistry;
         }
