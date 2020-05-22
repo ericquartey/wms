@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 #if CHECK_BAY_SENSOR
-            else if (!this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
+            else if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number))
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.BottomLevelBayEmpty, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.BottomLevelBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
