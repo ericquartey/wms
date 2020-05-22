@@ -38,6 +38,11 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         public async Task<bool> ProcessUserActionAsync(UserActionEventArgs e)
         {
+            if (e.IsReset)
+            {
+                return false;
+            }
+
             switch (e.UserAction)
             {
                 case UserAction.RecallLoadingUnit:
@@ -79,6 +84,9 @@ namespace Ferretto.VW.App.Accessories.Barcode
             catch
             {
                 this.NotifyError("Errore durante la richiesta di rientro cassetto.");
+            }
+            finally
+            {
             }
         }
 

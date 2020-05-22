@@ -199,7 +199,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.barcodeReaderService.Disable();
+                    this.barcodeReaderService.StopAsync();
                 }
             }
             catch (Exception ex)
