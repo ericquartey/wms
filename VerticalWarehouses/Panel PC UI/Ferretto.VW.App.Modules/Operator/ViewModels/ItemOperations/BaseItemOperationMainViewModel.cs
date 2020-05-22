@@ -87,9 +87,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.eventAggregator = eventAggregator;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
-
-            _ = this.AlphaNumericBarConfigureAsync();
-            _ = this.LaserPointerConfigureAsync();
         }
 
         #endregion
