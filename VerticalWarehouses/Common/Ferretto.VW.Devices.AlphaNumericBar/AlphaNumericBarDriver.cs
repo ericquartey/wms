@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -15,9 +16,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public const int PORT_DEFAULT = 2020;
 
-        private readonly Queue messagesReceivedQueue;
+        private const string NEW_LINE = "\r\n";
 
-        private readonly Queue messagesToBeSendQueue;
+        private readonly ConcurrentQueue<string> errorsQueue;
+
+        private readonly ConcurrentQueue<string> messagesReceivedQueue;
+
+        private readonly ConcurrentQueue<string> messagesToBeSendQueue;
 
         private readonly int tcpTimeout = 2000;
 
@@ -40,8 +45,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public AlphaNumericBarDriver()
         {
             this.StepLedBar = 4.75;
-            this.messagesToBeSendQueue = new Queue();
-            this.messagesReceivedQueue = new Queue();
+            this.messagesToBeSendQueue = new ConcurrentQueue<string>();
+            this.messagesReceivedQueue = new ConcurrentQueue<string>();
+            this.errorsQueue = new ConcurrentQueue<string>();
         }
 
         #endregion
@@ -50,7 +56,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public IPAddress IpAddress => this.ipAddress;
 
-        public Queue MessagesReceived => this.messagesReceivedQueue;
+        public ConcurrentQueue<string> MessagesReceived => this.messagesReceivedQueue;
 
         public int NumberOfLeds => ((int)this.size) * 8;
 
@@ -146,7 +152,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> ClearAsync()
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -184,7 +190,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> DimAsync(int dimension)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -198,7 +204,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> EnabledAsync(bool enable)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -218,7 +224,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> HelpAsync()
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.HELP);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -230,7 +236,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> LuminosityAsync(int luminosity)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
             if (luminosity > 15)
             {
                 luminosity = 15;
@@ -276,7 +282,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteArrowAsync(int arrowPosition, bool forceClear = true)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (forceClear)
             {
@@ -296,7 +302,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteMessageAsync(string message, int offset = 0, bool forceClear = true)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
@@ -322,7 +328,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteMessageScrollAsync(string message, int offset = 0, int scrollEnd = 0, bool forceClear = true)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
             //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
             if (forceClear)
@@ -344,7 +350,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetCustomCharacterAsync(int index, int offset, bool forceClear = true)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (forceClear)
             {
@@ -362,7 +368,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetScrollEnabledAsync(bool enable)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -383,7 +389,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> TestAsync(bool enable)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -404,7 +410,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> TestScrollAsync(bool enable)
         {
-            this.messagesToBeSendQueue.Clear();
+            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -416,6 +422,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
+        {
+            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            return true;
         }
 
         /// <summary>
@@ -515,7 +527,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     break;
             }
 
-            strCommand += Environment.NewLine;
+            strCommand += NEW_LINE;
 
             this.messagesToBeSendQueue.Enqueue(strCommand);
             result = true;
@@ -532,44 +544,51 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             var result = false;
             try
             {
-                this.messagesReceivedQueue.Clear();
+                this.ClearConcurrentQueue(this.errorsQueue);
                 var client = new TcpClient();
                 NetworkStream stream = null;
 
-                foreach (string sendMessage in this.messagesToBeSendQueue)
+                while (!this.messagesToBeSendQueue.IsEmpty)
                 {
                     try
                     {
-                        if (!client.Connected)
+                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
                         {
-                            client.SendTimeout = this.tcpTimeout;
-                            await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
-                            stream = client.GetStream();
-                        }
-
-                        var data = Encoding.ASCII.GetBytes(sendMessage);
-                        stream = client.GetStream();
-                        stream.ReadTimeout = this.tcpTimeout;
-                        stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
-
-                        if (this.IsWaitResponse(sendMessage))
-                        {
-                            data = new byte[client.ReceiveBufferSize];
-                            var bytes = stream.Read(data, 0, data.Length);
-                            var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-
-                            this.messagesReceivedQueue.Enqueue(responseMessage);
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
-                            if (!this.IsResponseOk(sendMessage, responseMessage))
+                            if (!client.Connected)
                             {
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                client.SendTimeout = this.tcpTimeout;
+                                await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                                stream = client.GetStream();
+                            }
+
+                            var data = Encoding.ASCII.GetBytes(sendMessage);
+                            stream = client.GetStream();
+                            stream.ReadTimeout = this.tcpTimeout;
+                            stream.Write(data, 0, data.Length);
+                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
+
+                            if (this.IsWaitResponse(sendMessage))
+                            {
+                                data = new byte[client.ReceiveBufferSize];
+                                var bytes = stream.Read(data, 0, data.Length);
+                                var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+
+                                this.messagesReceivedQueue.Enqueue(responseMessage);
+                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
+                                if (!this.IsResponseOk(sendMessage, responseMessage))
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                }
+                            }
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
+                                this.messagesReceivedQueue.Enqueue("");
                             }
                         }
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
-                            this.messagesReceivedQueue.Enqueue("");
+                            System.Threading.Thread.Sleep(100);
                         }
                     }
                     catch (Exception e)

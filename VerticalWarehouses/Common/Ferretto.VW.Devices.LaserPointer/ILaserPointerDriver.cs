@@ -11,9 +11,9 @@ namespace Ferretto.VW.Devices.LaserPointer
     {
         #region Methods
 
-        LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, bool isBayLowerPosition, WarehouseSide baySide);
+        LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, double missionOperationItemHeight, bool isBayLowerPosition, WarehouseSide baySide);
 
-        bool Configure(IPAddress ipAddress, int port, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
+        bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
 
         Task<bool> EnabledAsync(bool enable, bool onMovement);
 
