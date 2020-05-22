@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AppCenter.Analytics;
 using Prism.Commands;
 using Prism.Events;
 
@@ -52,7 +53,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private double? inputQuantity;
+        private int? inputQuantity;
 
         private bool isBusyLoadingNextPage;
 
@@ -87,6 +88,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string searchItem;
 
         private ItemInfo selectedItem;
+
+        private string selectedItemTxt;
 
         private DelegateCommand showItemDetailsCommand;
 
@@ -137,12 +140,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
           this.confirmReasonCommand
           ??
           (this.confirmReasonCommand = new DelegateCommand(
-              async () => await this.ExecuteItemPickAsync(),
+              async () => await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code),
               this.CanExecuteItemPick));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public double? InputQuantity
+        public int? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
@@ -163,7 +166,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsDistinctBySerialNumber
         {
             get => this.isDistinctBySerialNumber;
-            set => this.SetProperty(ref this.isDistinctBySerialNumber, value);
+            set
+            {
+                if (this.SetProperty(ref this.isDistinctBySerialNumber, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                    }).Start();
+                }
+            }
         }
 
         public bool IsDistinctBySerialNumberEnabled
@@ -175,7 +191,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsGroupbyLot
         {
             get => this.isGroupbyLot;
-            set => this.SetProperty(ref this.isGroupbyLot, value);
+            set
+            {
+                if (this.SetProperty(ref this.isGroupbyLot, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                    }).Start();
+                }
+            }
         }
 
         public bool IsGroupbyLotEnabled
@@ -207,7 +236,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showItemDetailsCommand
             ??
             (this.showItemDetailsCommand = new DelegateCommand(
-                this.ShowItemDetails,
+                () => this.ShowItemDetails(this.SelectedItem),
                 this.CanShowItemDetails));
 
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
@@ -236,7 +265,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.requestItemPickCommand
             ??
             (this.requestItemPickCommand = new DelegateCommand(
-                async () => await this.RequestItemPickAsync(),
+                async () => await this.RequestItemPickAsync(this.selectedItem.Id, this.selectedItem.
+                    Code),
                 this.CanRequestItemPick));
 
         public ICommand ScrollCommand => this.scrollCommand ?? (this.scrollCommand = new DelegateCommand<object>((arg) => this.Scroll(arg)));
@@ -272,9 +302,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = null;
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
+                this.selectedItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
+                this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();
             }
+        }
+
+        public string SelectedItemTxt
+        {
+            get => this.selectedItemTxt;
+            set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -288,9 +326,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsBusyLoadingNextPage = true;
+                this.ReasonNotes = null;
 
-                this.Reasons = null;
-                //this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
 
                 if (this.reasons?.Any() == true)
                 {
@@ -317,24 +355,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (e is null)
             {
-                throw new ArgumentNullException(nameof(e));
+                return;
             }
 
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            switch (e.UserAction)
             {
-                switch (userAction)
-                {
-                    case UserAction.FilterItems:
-                        await this.ShowItemDetailsByBarcodeAsync(e);
+                case UserAction.FilterItems:
+                    await this.ShowItemDetailsByBarcodeAsync(e);
 
-                        break;
+                    break;
 
-                    case UserAction.PickItem:
-                        // TODO da implementare
-                        throw new NotImplementedException();
+                case UserAction.PickItem:
+                    await this.PickItemByBarcodeAsync(e);
 
-                        break;
-                }
+                    break;
             }
         }
 
@@ -350,15 +384,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.productsChangedToken = null;
         }
 
-        public async Task ExecuteItemPickAsync()
+        public async Task ExecuteItemPickAsync(int itemId, string itemCode)
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPick = true;
 
+                Analytics.TrackEvent("Product Pick Requested", new Dictionary<string, string> {
+                    { "Item Code", itemCode },
+                    { "Requested Quantity", this.inputQuantity?.ToString() },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
+                });
+
                 await this.wmsDataProvider.PickAsync(
-                    this.SelectedItem.Id,
+                    itemId,
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes);
@@ -367,8 +407,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(
                     string.Format(
-                        Resources.OperatorApp.PickRequestWasAccepted,
-                        this.SelectedItem.Code,
+                        Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
+                        itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
             }
@@ -389,16 +429,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputQuantity = null;
             this.Reasons = null;
             this.productsChangedToken =
-      this.productsChangedToken
-      ??
-      this.EventAggregator
-          .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
-          .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
+              this.productsChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
+                  .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
             await base.OnAppearedAsync();
         }
 
-        public async Task RequestItemPickAsync()
+        public async Task RequestItemPickAsync(int itemId, string itemCode)
         {
             this.IsWaitingForResponse = true;
             this.IsBusyRequestingItemPick = true;
@@ -407,7 +447,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPickAsync();
+                await this.ExecuteItemPickAsync(itemId, itemCode);
             }
         }
 
@@ -596,6 +636,51 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.RefreshItemsAsync();
         }
 
+        private async Task PickItemByBarcodeAsync(UserActionEventArgs e)
+        {
+            var itemCode = e.GetItemCode();
+            if (itemCode is null)
+            {
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
+                    Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            var itemQuantity = e.GetItemQuantity();
+            if (itemQuantity is null)
+            {
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemQuantity"), e.Code),
+                    Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            var items = await this.areasWebService.GetProductsAsync(
+                   this.areaId.Value,
+                   0,
+                   1,
+                   itemCode,
+                   false,
+                   false);
+
+            if (items.Any() && itemQuantity.HasValue)
+            {
+                if (items.Count() == 1)
+                {
+                    this.InputQuantity = (int)itemQuantity;
+
+                    await this.RequestItemPickAsync(items.First().Item.Id, itemCode);
+                }
+            }
+            else
+            {
+                this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+            }
+        }
+
         private async Task RefreshItemsAsync()
         {
             var startIndex = ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > 0) ? this.maxKnownIndexSelection - ItemsVisiblePageSize : 0;
@@ -607,7 +692,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void Scroll(object parameter)
         {
-            ScrollChangedEventArgs scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
+            var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
             if (scrollChangedEventArgs != null)
             {
                 var last = (int)scrollChangedEventArgs.VerticalOffset + (int)scrollChangedEventArgs.ViewportHeight;
@@ -653,44 +738,59 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
         }
 
-        private void ShowItemDetails()
+        private void ShowItemDetails(ItemInfo item)
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                this.SelectedItem,
+                item,
                 trackCurrentView: true);
         }
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemCode = e.GetItemCode();
-            if (itemCode != null)
+            if (itemCode is null)
             {
-                try
-                {
-                    var items = await this.areasWebService.GetProductsAsync(
-                        this.areaId.Value,
-                        0,
-                        1,
-                        itemCode,
-                        false,
-                        false);
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
+                    Services.Models.NotificationSeverity.Warning);
 
-                    if (items.Any())
+                return;
+            }
+
+            try
+            {
+                this.ClearNotifications();
+
+                var items = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    1,
+                    itemCode,
+                    false,
+                    false);
+
+                if (items.Any())
+                {
+                    if (items.Count() == 1)
                     {
-                        this.ClearNotifications();
-                        this.SearchItem = itemCode;
+                        this.ShowItemDetails(new ItemInfo(items.First(), this.bayManager.Identity.Id));
                     }
                     else
                     {
-                        this.ShowNotification(string.Format(Ferretto.VW.App.Resources.OperatorApp.NoItemWithCodeIsAvailable, itemCode), Services.Models.NotificationSeverity.Warning);
+                        this.SearchItem = itemCode;
+                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    this.ShowNotification(ex);
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

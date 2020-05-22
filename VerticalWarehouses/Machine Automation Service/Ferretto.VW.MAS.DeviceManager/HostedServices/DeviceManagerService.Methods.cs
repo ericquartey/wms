@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.Homing;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
@@ -286,21 +287,47 @@ namespace Ferretto.VW.MAS.DeviceManager
                 data.IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value;
                 data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
-                var currentStateMachine = new PositioningStateMachine(
-                    message.Source,
-                    message.RequestingBay,
-                    targetBay,
-                    data,
-                    this.machineResourcesProvider,
-                    this.EventAggregator,
-                    this.Logger,
-                    baysDataProvider,
-                    this.ServiceScopeFactory);
+                if (data.MovementMode == MovementMode.ExtBayChain ||
+                    data.MovementMode == MovementMode.ExtBayChainManual ||
+                    data.MovementMode == MovementMode.ExtBayTest)
+                {
+                    // external bay
+                    var currentStateMachine = new ExtBayPositioningStateMachine(
+                        message.Source,
+                        message.RequestingBay,
+                        targetBay,
+                        data,
+                        this.machineResourcesProvider,
+                        this.EventAggregator,
+                        this.Logger,
+                        baysDataProvider,
+                        this.ServiceScopeFactory);
 
-                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                this.currentStateMachines.Add(currentStateMachine);
+                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                    this.currentStateMachines.Add(currentStateMachine);
 
-                this.StartStateMachine(currentStateMachine);
+                    this.StartStateMachine(currentStateMachine);
+                }
+                else
+                {
+                    // vertical and horizontal axes,
+                    // carousel
+                    var currentStateMachine = new PositioningStateMachine(
+                        message.Source,
+                        message.RequestingBay,
+                        targetBay,
+                        data,
+                        this.machineResourcesProvider,
+                        this.EventAggregator,
+                        this.Logger,
+                        baysDataProvider,
+                        this.ServiceScopeFactory);
+
+                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                    this.currentStateMachines.Add(currentStateMachine);
+
+                    this.StartStateMachine(currentStateMachine);
+                }
             }
         }
 
@@ -609,13 +636,28 @@ namespace Ferretto.VW.MAS.DeviceManager
                 return;
             }
 
-            // Check the stopTest message for the Positioning state machine (see carousel)
+            // Check the stopTest message for the Positioning state machine
             stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
             if (stateMachines.Any())
             {
                 foreach (var fsm in stateMachines)
                 {
                     var stateMachine = fsm as PositioningStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+            }
+            //else
+            //{
+            //    this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
+            //}
+
+            // Check the stopTest message for the ExtBayPositioning state machine
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is ExtBayPositioningStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as ExtBayPositioningStateMachine;
                     stateMachine.ProcessCommandMessage(receivedMessage);
                 }
             }

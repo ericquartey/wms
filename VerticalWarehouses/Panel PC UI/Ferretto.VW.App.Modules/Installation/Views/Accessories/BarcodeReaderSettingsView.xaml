@@ -41,7 +41,7 @@
         <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesBarcodeReaderMenuTitle}" />
+                   Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}" />
 
         <controls:PpcLabeledText Grid.Row="1"
                                  ContentText="{Binding FirmwareVersion}"
@@ -62,7 +62,7 @@
                     Orientation="Horizontal">
             <controls:PpcCheckBox Margin="0,0,70,0"
                                   VerticalAlignment="Center"
-                                  IsChecked="{Binding IsAccessoryEnabled}"
+                                  IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
                                   LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
             <controls:PpcTextBox VerticalAlignment="Center"

@@ -1,13 +1,10 @@
 using System;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Resources;
@@ -15,6 +12,9 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -93,6 +93,12 @@ namespace Ferretto.VW.App
             {
                 this.Shutdown(1);
             }
+
+            AppCenter.SetCountryCode(RegionInfo.CurrentRegion.TwoLetterISORegionName);
+            AppCenter.Start(
+                "58921cd8-0634-4e0d-9958-13aca573d887",
+                typeof(Analytics),
+                typeof(Crashes));
 
             SplashScreenService.Show();
 
@@ -187,7 +193,7 @@ namespace Ferretto.VW.App
         {
             try
             {
-                string language = System.Configuration.ConfigurationManager.AppSettings["Language"];
+                var language = System.Configuration.ConfigurationManager.AppSettings["Language"];
 
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(language);
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(language);

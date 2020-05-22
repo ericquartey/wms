@@ -131,7 +131,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.removeDrawerCommand = new DelegateCommand(
                 async () => await this.RemoveDrawer(),
                 () => !this.IsMoving &&
-                      !this.SensorsService.IsLoadingUnitInBay &&
                       this.SelectedLU != null));
 
         public ICommand SaveDrawerCommand =>

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -846,7 +846,7 @@
     <value>Baia 3</value>
   </data>
   <data name="ShutterEnduranceTestTitle" xml:space="preserve">
-    <value>Test Serranda della Baia {0}</value>
+    <value>Test Serranda della Baia</value>
   </data>
   <data name="ShutterClosed" xml:space="preserve">
     <value>Chiusa</value>
@@ -2484,6 +2484,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Muovi verso elevatore</value>
+  </data>
   <data name="AccessoryEnabled" xml:space="preserve">
     <value>Abilitato</value>
   </data>
@@ -2526,8 +2529,14 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AlphaNumericBarSizeL" xml:space="preserve">
     <value>Lunga</value>
   </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Muovi verso operatore</value>
+  </data>
   <data name="AlphaNumericBarSizeM" xml:space="preserve">
     <value>Media</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Taratura baia esterna</value>
   </data>
   <data name="AlphaNumericBarSizeS" xml:space="preserve">
     <value>Corta</value>
@@ -2552,5 +2561,29 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="BayHomingStarted" xml:space="preserve">
     <value>Homing catena baia in corso</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Cassetto in posizione esterna</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Cassetto in posizione interna</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Effettua la calibrazione della baia esterna</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrazione baia esterna</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Esegui la procedura di taratura della baia per il posizionamento in corrispondenza del sensore</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Movimenti eseguiti</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Corsa (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Premi su INIZIA per avviare la procedura</value>
   </data>
 </root>

@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
+        private readonly IMachineErrorsService machineErrorsService;
+
         private readonly SubscriptionToken machineModeChangedToken;
 
         private readonly IMachineModeService machineModeService;
@@ -69,7 +71,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             IMachineModeService machineModeService,
             IMachineModeWebService machineModeWebService,
             IDialogService dialogService,
-            IMachineService machineService)
+            IMachineService machineService,
+            IMachineErrorsService machineErrorsService)
             : base(PresentationTypes.MachineMode)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
@@ -77,6 +80,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
 
             this.machineModeChangedToken = this.EventAggregator
               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
@@ -103,7 +107,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 ?? this.EventAggregator
                     .GetEvent<MachineStatusChangedPubSubEvent>()
                     .Subscribe(
-                        (m) => this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations,
+                        //(m) => this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations,
+                        (m) => this.OnMachineStatusChanged(),
                         ThreadOption.UIThread,
                         false);
 
@@ -250,7 +255,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
-                !this.IsUnknownState;
+                !this.IsUnknownState
+                &&
+                (this.machineErrorsService.ActiveError == null);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -319,6 +326,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
         {
             this.MachinePowerState = e.MachinePowerState;
+        }
+
+        private void OnMachineStatusChanged()
+        {
+            this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations;
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

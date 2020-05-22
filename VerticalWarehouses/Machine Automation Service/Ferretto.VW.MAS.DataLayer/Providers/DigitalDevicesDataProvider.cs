@@ -115,6 +115,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value)
+        {
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == inverterIndex);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)inverterIndex);
+                }
+
+                var inverterParameter = inverter.Parameters.SingleOrDefault(p => p.Code == code);
+                if (inverterParameter is null)
+                {
+                    throw new EntityNotFoundException(code);
+                }
+
+                inverterParameter.StringValue = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }

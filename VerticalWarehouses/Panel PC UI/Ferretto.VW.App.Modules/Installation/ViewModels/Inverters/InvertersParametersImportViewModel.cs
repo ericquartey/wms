@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.selectedFile;
             set
             {
-                FileInfo old = this.selectedFile;
+                var old = this.selectedFile;
                 if (this.SetProperty(ref this.selectedFile, value))
                 {
                     this.OnSelectedFileChanged(old, value);
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void FindConfigurationFiles()
         {
             this.IsBusy = true;
-            UsbWatcherService usb = this._usbWatcher;
+            var usb = this._usbWatcher;
             IEnumerable<FileInfo> configurationFiles = null;
 
             configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
@@ -144,6 +144,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
                 this.NavigationService.GoBackSafelyAsync();
             }
+
             this.IsBusy = false;
         }
 
@@ -158,8 +159,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 // merge and save
                 var result = source.ExtendWith(this.selectedConfiguration);
                 var vertimagConfiguration = VertimagConfiguration.FromJson(result.ToString());
-
-                this.parentConfiguration.SelectedFileConfigurationName = this.selectedFile.FullName;
+                
+                this.parentConfiguration.SelectedFileConfiguration = this.selectedFile;
                 this.parentConfiguration.VertimagConfiguration = vertimagConfiguration;
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.ImportSuccessful"), Services.Models.NotificationSeverity.Success);
                 this.NavigationService.GoBack();
@@ -177,6 +178,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void OnSelectedFileChanged(FileInfo _, FileInfo file)
         {
             VertimagConfiguration config = null;
+            this.ClearNotifications();
             if (file != null)
             {
                 try

@@ -232,7 +232,7 @@
     <value>Tipo di confezione</value>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
-    <value>Liste in attesa esecuzione.</value>
+    <value>Liste in attesa esecuzione</value>
   </data>
   <data name="ListsInWaitNote" xml:space="preserve">
     <value>Nota</value>
@@ -244,7 +244,7 @@
     <value>Esegui lista</value>
   </data>
   <data name="ItemSearchHeader" xml:space="preserve">
-    <value>Ricerca articolo per codice e descrizione.</value>
+    <value>Ricerca articolo per codice e descrizione</value>
   </data>
   <data name="ItemSearchKeySearch" xml:space="preserve">
     <value>Ricerca</value>
@@ -262,16 +262,16 @@
     <value>Chiama articolo</value>
   </data>
   <data name="ItemDetailHeader" xml:space="preserve">
-    <value>Dettaglio articolo.</value>
+    <value>Dettaglio articolo</value>
   </data>
   <data name="ItemDetailManagement" xml:space="preserve">
-    <value>Tipo di gestione:</value>
+    <value>Tipo di gestione</value>
   </data>
   <data name="ItemDetailPeriod" xml:space="preserve">
-    <value>Periodo FIFO gg. :</value>
+    <value>Periodo FIFO [gg.]</value>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
-    <value>Richiesta immediata cassetto.</value>
+    <value>Richiesta immediata cassetto</value>
   </data>
   <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
     <value>Chiama cassetto</value>
@@ -283,7 +283,7 @@
     <value>Riga lista</value>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
-    <value>Informazioni generali.</value>
+    <value>Informazioni generali</value>
   </data>
   <data name="GeneralInfoModel" xml:space="preserve">
     <value>Modello</value>
@@ -442,7 +442,7 @@
     <value>Descrizione errore</value>
   </data>
   <data name="MaintenanceMainPageHeader" xml:space="preserve">
-    <value>Manutenzione: Vertimag X.</value>
+    <value>Manutenzione: Vertimag X</value>
   </data>
   <data name="MaintenanceMainPageModel" xml:space="preserve">
     <value>Modello</value>
@@ -478,7 +478,7 @@
     <value>Cicli da ultima manutenzione</value>
   </data>
   <data name="MaintenanceDetailElementStatus" xml:space="preserve">
-    <value>Stato elemento:</value>
+    <value>Stato elemento</value>
   </data>
   <data name="MaintenanceDetailStopRequired" xml:space="preserve">
     <value>Fermo macchina richiesto [ore]</value>
@@ -658,7 +658,7 @@
     <value>Dati lato posteriore.</value>
   </data>
   <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
-    <value> 002350467 - Catenaria elevatore.</value>
+    <value> 002350467 - Catenaria elevatore</value>
   </data>
   <data name="CommonListType" xml:space="preserve">
     <value>Tipo lista</value>
@@ -1139,7 +1139,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Non definito</value>
   </data>
   <data name="LoadingUnitInBay" xml:space="preserve">
-    <value>Cassetto {0} in baia</value>
+    <value>in baia</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Rientro Cassetto</value>
@@ -1169,7 +1169,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Descrizione articolo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>Codice art.</value>
+    <value>Codice articolo</value>
   </data>
   <data name="Compartment" xml:space="preserve">
     <value>Scomparto</value>
@@ -1193,7 +1193,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Giacenza</value>
   </data>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
-    <value>Cassetto presente {0}</value>
+    <value>Cassetto presente</value>
   </data>
   <data name="SelectCompartment" xml:space="preserve">
     <value>Seleziona uno scomparto</value>
@@ -1343,28 +1343,28 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Non posso eseguire l'elenco.</value>
   </data>
   <data name="InvalidOperation" xml:space="preserve">
-    <value>Operazione {0} non valida </value>
+    <value>Operazione {0} non valida</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Utenti</value>
   </data>
   <data name="LoadingUnitOutBay" xml:space="preserve">
-    <value>Cassetto {0} in uscita da baia</value>
+    <value>in uscita da baia</value>
   </data>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
-    <value>Cassetto {0}</value>
+    <value>Cassetto</value>
   </data>
   <data name="AdditionalText" xml:space="preserve">
     <value>Informazioni Aggiuntive</value>
   </data>
   <data name="UnitId" xml:space="preserve">
-    <value>Cassetto n.{0}</value>
+    <value>Cassetto n.</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Altezza:</value>
+    <value>Altezza</value>
   </data>
   <data name="Weight" xml:space="preserve">
-    <value>Peso:</value>
+    <value>Peso</value>
   </data>
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>La frammentazione totale supera il 25%</value>
@@ -1374,5 +1374,53 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="HorizontalCalibration" xml:space="preserve">
     <value>Calibrazione orizzontale in corso</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Articoli filtrati per codice.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Il codice a barre '{0}' non contiene un codice articolo.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Il codice a barre '{0}' non contiene la quantità dell'articolo.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>Il codice a barre '{0}' non contiene il codice identificativo della lista.</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Quantità disponibile</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Non esiste una lista con codice identificativo '{0}'.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>L'esecuzione della lista '{0}' è stata accettata.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Celle occupate</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Celle libere</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Celle libere per appoggio</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Celle libere solo spazio</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Celle bloccate</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Celle totali</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Cassetti in baia</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Cassetti in cella</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Cassetti in elevatore</value>
   </data>
 </root>

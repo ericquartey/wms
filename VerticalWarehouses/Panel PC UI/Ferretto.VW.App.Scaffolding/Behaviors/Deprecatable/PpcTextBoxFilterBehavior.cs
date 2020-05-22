@@ -20,10 +20,10 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            bool accept = true;
+            var accept = true;
             if (this.IsEnabled)
             {
-                TextBox box = sender as TextBox;
+                var box = sender as TextBox;
                 int start = box.CaretIndex,
                     end = start;
                 if (box.SelectionLength > 0)
@@ -31,8 +31,8 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
                     start = box.SelectionStart;
                     end = start + box.SelectionLength;
                 }
-                string actualText = box.Text;
-                string previewText = string.Concat(actualText.Substring(0, start), e.Text, actualText.Substring(end));
+                var actualText = box.Text;
+                var previewText = string.Concat(actualText.Substring(0, start), e.Text, actualText.Substring(end));
                 accept = this.Validate(previewText);
             }
             e.Handled = !accept;

@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CellPanelsCheckStep value = (CellPanelsCheckStep)(item ?? CellPanelsCheckStep.Inizialize);
+            var value = (CellPanelsCheckStep)(item ?? CellPanelsCheckStep.Inizialize);
             switch (value)
             {
                 case CellPanelsCheckStep.Inizialize:

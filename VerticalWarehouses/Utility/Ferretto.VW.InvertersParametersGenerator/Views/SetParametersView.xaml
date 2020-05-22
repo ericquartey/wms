@@ -125,9 +125,7 @@
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsSelected" Value="True" />
-                                    
-        <Condition Property="Selector.IsSelectionActive" Value="true" />
-        
+                                    <Condition Property="Selector.IsSelectionActive" Value="true" />
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
                                 <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
@@ -182,17 +180,17 @@
 
     </UserControl.Resources>
 
-    <Grid Margin="30">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
+                   FontSize="36"                                              
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding Title}" />
 
@@ -209,6 +207,15 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
+                   Text="{x:Static res:Resources.SelectFile}" />
+
+
+            <TextBlock
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile.Name, Converter={StaticResource RTVC}}"
                    Text="{Binding SelectedFile.Name}" />
 
             <ListView Grid.Row="1"
@@ -216,7 +223,7 @@
                       ItemsSource="{Binding ConfigurationFiles}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="300"
+                        <GridViewColumn Width="350"
                                         Header="File">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -255,20 +262,20 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock
+                   Margin="0 0 0 0"
                    HorizontalAlignment="Left"                   
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding TotalParameters}" />
+                   Text="{Binding SelectedFile.Name}" />
 
                 <TextBlock
-                   HorizontalAlignment="Right"                   
+                   Margin="20 0 0 0"                    
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{Binding TotalParameters}" />
             </StackPanel>
 
             <DataGrid Grid.Row="1"
                   Name="DataGrid"
-                  Width="auto"                  
-                  Height="400"
+                  Height="430"
                   AutoGenerateColumns="False"                  
                   BorderThickness="0"
                   CanUserReorderColumns="False"
@@ -430,7 +437,7 @@
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=Value}"
+                                    Binding="{Binding Path=StringValue}"
                                     Header="{x:Static res:Resources.InverterParametersValue}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
@@ -454,28 +461,44 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column5"
+                                    Width="100"
+                                    Binding="{Binding Path=IsReadOnly}"
+                                    Header="{x:Static res:Resources.IsReadOnly}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                                <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        
+
         <controls:PpcButton Grid.Row="2"                                
                                 HorizontalAlignment="Right"
-                                Margin="0,9,15,6"
-                                Width="150"
+                                Margin="0, 0, 30,0"
+                                Width="130"
                                 Height="60"
                                 Command="{Binding LoadFileCommand}"                                
                                 Content="{x:Static res:Resources.Import}"
                                 Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}"
                                 IsBusy="{Binding IsBusy}"/>
-
-        <controls:PpcButton Grid.Row="3"                        
-                        Margin="15,15,15,0"
-                        Width="150"
-                        Height="60"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"                        
-                        Command="{Binding NextCommand}"
-                        Content="{x:Static res:Resources.Next}"
-                        IsBusy="{Binding IsBusy}"/>
     </Grid>
 </UserControl>

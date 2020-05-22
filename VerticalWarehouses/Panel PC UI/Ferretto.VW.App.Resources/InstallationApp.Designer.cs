@@ -754,6 +754,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Perform the bay calibration procedure for positioning in correspondence with the sensor.
+        /// </summary>
+        public static string CalibrationProcedureRequiredExternalBay {
+            get {
+                return ResourceManager.GetString("CalibrationProcedureRequiredExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration result:.
         /// </summary>
         public static string CalibrationResult {
@@ -2374,11 +2383,56 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External bay calibration.
+        /// </summary>
+        public static string ExtBayCalibration {
+            get {
+                return ResourceManager.GetString("ExtBayCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toward machine.
+        /// </summary>
+        public static string ExtBayTowardMachine {
+            get {
+                return ResourceManager.GetString("ExtBayTowardMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toward operator.
+        /// </summary>
+        public static string ExtBayTowardOperator {
+            get {
+                return ResourceManager.GetString("ExtBayTowardOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Bay.
         /// </summary>
         public static string ExternalBay {
             get {
                 return ResourceManager.GetString("ExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate the external bay.
+        /// </summary>
+        public static string ExternalBayCalibrationMenuDescription {
+            get {
+                return ResourceManager.GetString("ExternalBayCalibrationMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External bay calibration.
+        /// </summary>
+        public static string ExternalBayCalibrationMenuTitle {
+            get {
+                return ResourceManager.GetString("ExternalBayCalibrationMenuTitle", resourceCulture);
             }
         }
         
@@ -4597,6 +4651,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movements performed.
+        /// </summary>
+        public static string MovementPerformed {
+            get {
+                return ResourceManager.GetString("MovementPerformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movimenti Guidati.
         /// </summary>
         public static string MovementsGuided {
@@ -5688,6 +5751,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run (mm).
+        /// </summary>
+        public static string Run {
+            get {
+                return ResourceManager.GetString("Run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -6057,7 +6129,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutter Endurance Test for Bay {0}.
+        ///   Looks up a localized string similar to Shutter Endurance Test for Bay.
         /// </summary>
         public static string ShutterEnduranceTestTitle {
             get {
@@ -6224,6 +6296,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StartPositionOutOfRangeAxis {
             get {
                 return ResourceManager.GetString("StartPositionOutOfRangeAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press on START to begin the procedure.
+        /// </summary>
+        public static string StartProcedure {
+            get {
+                return ResourceManager.GetString("StartProcedure", resourceCulture);
             }
         }
         
@@ -6723,11 +6804,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit in external position.
+        /// </summary>
+        public static string UnitExternalPosition {
+            get {
+                return ResourceManager.GetString("UnitExternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit in high position.
         /// </summary>
         public static string UnitHightPosition {
             get {
                 return ResourceManager.GetString("UnitHightPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit in internal position.
+        /// </summary>
+        public static string UnitInternalPosition {
+            get {
+                return ResourceManager.GetString("UnitInternalPosition", resourceCulture);
             }
         }
         

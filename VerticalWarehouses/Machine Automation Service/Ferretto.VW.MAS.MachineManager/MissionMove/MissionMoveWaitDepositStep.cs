@@ -63,7 +63,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var description = $"Deposit in cell not possible because shutter is not Closed or Half. Wait for resume";
                     this.Logger.LogInformation(description);
-                    this.MissionsDataProvider.Update(this.Mission);
                     return true;
                 }
             }
@@ -120,7 +119,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var description = $"Deposit in cell not possible because shutter is not Closed or Half. Wait for resume";
                     this.Logger.LogInformation(description);
-                    this.MissionsDataProvider.Update(this.Mission);
                     return;
                 }
             }

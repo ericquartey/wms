@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using FileHelpers;
 using OfficeOpenXml;
 using Prism.Commands;
@@ -22,17 +23,25 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
     {
         #region Fields
 
+        private const string ACCESSREADONLY = "r_only";
+
+        private const string DATASETZERO = "[*]";
+
+        private const short MASTERINVERTERCODE = 924;
+
+        private const short SLAVEINVERTERCODE = 925;
+
+        private const string STRINGTYPE = "String";
+
         private readonly ConfigurationService configurationService;
 
-        private readonly List<InverterParameter> inverterParameters;
-
-        private readonly List<InverterParametersDataInfo> invertersParameters;
-
-        private readonly bool isSuccessful;
+        private readonly IParentActionChanged parentActionChanged;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
         private InverterParametersDataInfo currentInverterParameters;
+
+        private List<InverterParameter> inverterParameters;
 
         private List<InverterParametersDataInfo> inverters;
 
@@ -42,7 +51,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private DelegateCommand loadFileCommand = null;
 
-        private RelayCommand nextCommand;
+        private Regex regexDataSet;
+
+        private Regex regexDigit;
 
         private FileInfo selectedFile = null;
 
@@ -52,10 +63,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public SetParametersViewModel(ConfigurationService configurationService)
+        public SetParametersViewModel(ConfigurationService configurationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-            this.inverterParameters = new List<InverterParameter>();
+            this.parentActionChanged = parentActionChanged;
             this.SelectedFile = null;
             this.InitializeData();
         }
@@ -63,6 +74,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         #endregion
 
         #region Properties
+
+        public bool CanNext => this.isParametersSet;
+
+        public bool CanPrevious => true;
 
         public IEnumerable<FileInfo> ConfigurationFiles => this.configurationFiles;
 
@@ -84,18 +99,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.isParametersSet, value);
         }
 
-        public bool IsSuccessful => this.isSuccessful;
-
         public ICommand LoadFileCommand =>
             this.loadFileCommand
             ??
             (this.loadFileCommand = new DelegateCommand(
-            async () => await this.LoadFileAsync(), this.CanImport));
-
-        public ICommand NextCommand =>
-                        this.nextCommand
-                        ??
-                        (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
+            this.LoadParameters, this.CanImport));
 
         public FileInfo SelectedFile
         {
@@ -109,7 +117,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type);
+        public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type.ToString());
 
         public string TotalParameters
         {
@@ -117,58 +125,75 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.totalParameters, value);
         }
 
-        private bool IsOneTonMachine
-        {
-            get
-            {
-                var elevatorInvertersCount = this.configurationService.VertimagConfiguration.Machine.Elevator.Axes
-                    .Where(a => a.Inverter != null)
-                    .Select(a => a.Inverter.Id)
-                    .Distinct()
-                    .Count();
-
-                return elevatorInvertersCount > 1;
-            }
-        }
-
         #endregion
 
         #region Methods
 
-        public static string ExtractNumber(string source)
+        public string ExtractDigit(string value)
         {
-            if (string.IsNullOrWhiteSpace(source))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 return string.Empty;
             }
 
-            var number = Regex.Match(source, @"\d+");
-            return number != null ? number.Value : string.Empty;
+            var match = this.regexDigit.Match(value);
+            if (match.Success)
+            {
+                return match.Value.Replace(",", null);
+            }
+
+            return null;
         }
 
-        public static IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
+        public string ExtractValue(string type, string value)
+        {
+            if (type == STRINGTYPE)
+            {
+                return value;
+            }
+
+            return this.ExtractDigit(value);
+        }
+
+        public IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
         {
             try
             {
-                //var inverterFileName = "ACU_giostra_800kg_INV20200305.txt";
-                //var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{filename}";
                 var engine = new FileHelperEngine<InverterParameterField>();
                 engine.ErrorManager.ErrorMode = ErrorMode.IgnoreAndContinue;
                 return engine.ReadFileAsList(filename);
             }
             catch (Exception ex)
             {
-                ConfigurationService.GetInstance.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             return null;
+        }
+
+        public bool Next()
+        {
+            this.SaveInverterParameters();
+
+            if (!this.GotoNextInverterParametersSet())
+            {
+                this.configurationService.SetWizard(WizardMode.ExportConfiguration);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.Inverters);
         }
 
         private static IEnumerable<ParameterInfo> LoadParametersList(InverterType inverterType)
         {
             var parameters = new List<ParameterInfo>();
 
-            var inverterFileName = $"Para_list_{inverterType.ToString().ToUpper()}.xlsx";
+            var inverterFileName = $"Para_list_{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.xlsx";
             var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
             var fileInfo = new FileInfo(parmsDir);
 
@@ -180,13 +205,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 var start = worksheet.Dimension.Start;
                 var end = worksheet.Dimension.End;
 
-                for (int row = start.Row + 3; row <= end.Row; row++)
+                for (var row = start.Row + 3; row <= end.Row; row++)
                 {
                     var code = worksheet.Cells[row, 1].Text;
                     var description = worksheet.Cells[row, 3].Text;
                     var type = worksheet.Cells[row, 4].Text;
                     var access = worksheet.Cells[row, 8].Text;
-                    parameters.Add(new ParameterInfo(code, description, type, access == "r_only"));
+                    parameters.Add(new ParameterInfo(short.Parse(code), description, type, access == ACCESSREADONLY));
                 }
             }
 
@@ -198,26 +223,25 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return this.selectedFile != null;
         }
 
-        private bool CanNext()
-        {
-            return true;
-        }
-
         private int GetDatasetIndex(InverterParameterField parameter)
         {
             if (string.IsNullOrEmpty(parameter.Dataset)
                 ||
-                parameter.Dataset.Trim().ToLowerInvariant().Equals("[*]"))
+                parameter.Dataset.Trim().ToLowerInvariant().Equals(DATASETZERO))
             {
                 return 0;
             }
 
-            if (int.TryParse(ExtractNumber(parameter.Dataset), out var dataset))
+            var match = this.regexDataSet.Match(parameter.Dataset);
+            if (match.Success)
             {
-                return dataset;
+                if (int.TryParse(match.Value, out var dataset))
+                {
+                    return dataset;
+                }
             }
 
-            throw new InvalidDataException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
+            throw new ArgumentException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
         }
 
         private void GetInverterParametersFiles()
@@ -225,25 +249,20 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.IsBusy = true;
             try
             {
-                //if (Double.IsNaN(this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight))
-                //{
-                //    throw new InvalidDataException($" Invalid data on {nameof(his.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight)}");
-                //}
-
-                var sufix = this.IsOneTonMachine ? "800" : "1000";
-                var files = $"{this.currentInverterParameters.Type.ToString().ToUpper()}*{sufix}*.txt";
+                var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
+                var files = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.txt";
                 var di = new DirectoryInfo(this.configurationService.InvertersParametersFolder);
                 this.configurationFiles = di.EnumerateFiles(files);
 
                 this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
                 if (!this.configurationFiles.Any())
                 {
-                    this.configurationService.ShowNotification(Resources.NoParametersFilesFound);
+                    this.parentActionChanged.Notify(Resources.NoParametersFilesFound, NotificationSeverity.Warning);
                 }
             }
             catch (Exception ex)
             {
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
                 this.configurationFiles = null;
             }
 
@@ -253,14 +272,19 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private Inverter GetVertimagConfigurationByInverterId(byte inverterIndex)
         {
             var vertimagConfiguration = this.configurationService.VertimagConfiguration;
-            if (vertimagConfiguration.Machine.Elevator.Axes.FirstOrDefault(a => (byte)a.Inverter.Index == inverterIndex)?.Inverter is Inverter inverter)
+            if (vertimagConfiguration.Machine.Elevator.Axes.SingleOrDefault(a => (a.Inverter != null && (byte)a.Inverter.Index == inverterIndex))?.Inverter is Inverter inverter)
             {
                 return inverter;
             }
 
-            if (vertimagConfiguration.Machine.Bays.FirstOrDefault(a => (byte)a.Inverter.Index == inverterIndex)?.Inverter is Inverter inverterBay)
+            if (vertimagConfiguration.Machine.Bays.SingleOrDefault(a => (a.Inverter != null && (byte)a.Inverter.Index == inverterIndex))?.Inverter is Inverter inverterBay)
             {
                 return inverterBay;
+            }
+
+            if (vertimagConfiguration.Machine.Bays.SingleOrDefault(a => (a.Shutter.Inverter != null && (byte)a.Shutter.Inverter.Index == inverterIndex))?.Inverter is Inverter inverterShutter)
+            {
+                return inverterShutter;
             }
 
             return null;
@@ -269,7 +293,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private bool GotoNextInverterParametersSet()
         {
             var indexOf = this.inverters.IndexOf(this.currentInverterParameters);
-            if (indexOf == this.inverters.Count() - 1)
+            if (indexOf == this.inverters.Count - 1)
             {
                 return false;
             }
@@ -285,6 +309,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void InitializeData()
         {
+            this.regexDataSet = new Regex(@"(?<=\[).+?(?=\])", RegexOptions.Compiled);
+            this.regexDigit = new Regex(@"^-?\d+(?:\,\d+)?", RegexOptions.Compiled);
             this.inverters = this.configurationService.InvertersParameters.ToList();
             this.currentInverterParameters = this.inverters.First();
             this.RaisePropertyChanged(nameof(this.Title));
@@ -292,37 +318,63 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private void LoadFile()
+        private void LoadParameters()
         {
             this.IsBusy = true;
             try
             {
-                this.inverterParameters.Clear();
-                var lastParameterCode = string.Empty;
+                var inverterParameters = new List<InverterParameter>();
+                this.RaisePropertyChanged(nameof(this.InverterParameters));
+                short lastParameterCode = 0;
                 var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
-                var parameters = GetParametersFromFile(this.selectedFile.FullName);
+                var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
+
+                var inverterNodeParameters = this.configurationService.GetInverterNode(this.currentInverterParameters.InverterIndex).Parameters;
+
+                var softwareVersionCode = $"0{(short)InverterParameterId.SoftwareVersion}";
+                var softwareVersionParameter = parameters.SingleOrDefault(p => p.Code == softwareVersionCode);
+                var inverterVersionParameter = new InverterParameter
+                {
+                    Code = (short)InverterParameterId.SoftwareVersion,
+                    StringValue = softwareVersionParameter.Value,
+                    Type = STRINGTYPE,
+                    IsReadOnly = true
+                };
+                inverterParameters.Add(inverterVersionParameter);
+
                 foreach (var parameter in parameters)
                 {
-                    if (string.IsNullOrEmpty(parameter.Writable))
-                    {
-                        continue;
-                    }
-
-                    var code = parameter.Code.TrimStart('0');
-                    if (string.IsNullOrEmpty(code))
+                    short code;
+                    if (string.IsNullOrEmpty(parameter.Code))
                     {
                         code = lastParameterCode;
                     }
                     else
                     {
-                        lastParameterCode = code;
+                        code = short.Parse(parameter.Code);
+                        lastParameterCode = short.Parse(parameter.Code);
                     }
 
-                    var parameterInfo = parametersInfo.FirstOrDefault(pi => pi.Code == code);
+                    var parameterInfo = parametersInfo.SingleOrDefault(pi => pi.Code == code);
                     if (parameterInfo is null)
                     {
-                        throw new InvalidDataException($"Parameter code '{parameter.Code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
+                        throw new ArgumentNullException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
                     }
+
+                    if (!inverterNodeParameters.Any(np => np.Code == code)
+                        &&
+                        string.IsNullOrEmpty(parameter.Writable))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (parameterInfo.IsReadOnly)
+                        {
+                            throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
+                        }
+                    }
+
                     if (parameterInfo.IsReadOnly)
                     {
                         continue;
@@ -330,58 +382,36 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     var inverterParameter = new InverterParameter
                     {
-                        Code = short.Parse(code),
+                        Code = code,
                         DataSet = this.GetDatasetIndex(parameter),
-                        Type = parameterInfo.Type,
-                        Value = ExtractNumber(parameter.Value)
+                        StringValue = this.ExtractValue(parameterInfo.Type, parameter.Value),
+                        Type = parameterInfo.Type
                     };
 
-                    this.inverterParameters.Add(inverterParameter);
-
-                    this.RaisePropertyChanged(nameof(this.InverterParameters));
-                    this.IsParametersSet = true;
+                    inverterParameters.Add(inverterParameter);
                 }
+
+                this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
+                this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
+                this.RaisePropertyChanged(nameof(this.InverterParameters));
+                this.IsParametersSet = true;
             }
             catch (Exception ex)
             {
                 this.IsParametersSet = false;
-                this.configurationService.ShowNotification(ex);
+                this.SelectedFile = null;
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             this.TotalParameters = string.Format(Resources.TotalParameters, this.inverterParameters.Count);
             this.IsBusy = false;
-        }
-
-        private async Task LoadFileAsync()
-        {
-            //await Task.Run(() => this.LoadFile());
-            this.LoadFile();
             this.RaiseCanExecuteChanged();
         }
 
-        //private short GetCodeIndex(string code parameter)
-        //{
-        //    if (short.TryParse(parameter.Code, out var code))
-        //    {
-        //        return code;
-        //    }
-
-        private void Next()
-        {
-            this.SaveInverterParameters();
-
-            if (!this.GotoNextInverterParametersSet())
-            {
-                this.configurationService.SetWizard(WizardMode.ExportConfiguration);
-            }
-        }
-
-        //    throw new InvalidDataException($"Invalid code '{parameter.Code} for parameter '{parameter.Description}'");
-        //}
         private void RaiseCanExecuteChanged()
         {
             this.loadFileCommand?.RaiseCanExecuteChanged();
-            this.nextCommand?.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         private void SaveInverterParameters()

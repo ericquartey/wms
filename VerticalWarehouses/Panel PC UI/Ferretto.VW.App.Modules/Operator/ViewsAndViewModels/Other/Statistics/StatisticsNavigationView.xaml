@@ -11,22 +11,22 @@
         <StackPanel>
             <controls:PpcButton Margin="0,50,0,0"
                                 Command="{Binding MachineStatisticsButtonCommand}"
-                                Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
+                                Content="{res:Loc OperatorApp.StatisticsNavigationMachine}"
                                 IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
             <controls:PpcButton Command="{Binding DrawerSpaceSaturationButtonCommand}"
-                                Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
+                                Content="{res:Loc OperatorApp.StatisticsNavigationDrawers}"
                                 IsEnabled="{Binding IsCompactionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
             <controls:PpcButton Command="{Binding CellsStatisticsButtonCommand}"
-                                Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
+                                Content="{res:Loc OperatorApp.StatisticsNavigationCells}"
                                 IsEnabled="{Binding IsStatisticsButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
             <controls:PpcButton Command="{Binding ErrorsStatisticsButtonCommand}"
-                                Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
+                                Content="{res:Loc OperatorApp.StatisticsNavigationErrors}"
                                 IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 

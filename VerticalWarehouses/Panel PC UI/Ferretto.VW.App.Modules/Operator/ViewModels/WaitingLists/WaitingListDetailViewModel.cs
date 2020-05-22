@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -13,7 +14,7 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class WaitingListDetailViewModel : BaseOperatorViewModel
+    public class WaitingListDetailViewModel : BaseOperatorViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -58,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ListSearch.ToString();
+
         public ICommand DownCommand =>
             this.downCommand
             ??
@@ -72,7 +75,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand ListExecuteCommand =>
             this.listExecuteCommand
             ??
-            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
+            (this.listExecuteCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
 
         public IList<ItemListRow> ListRows => new List<ItemListRow>(this.listRows);
 
@@ -112,6 +117,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
+        {
+            if (e is null)
+            {
+                return;
+            }
+
+            if (e.UserAction is UserAction.ExecuteList)
+            {
+                await this.ExecuteListByBarcodeAsync(e);
+            }
+        }
+
         public async Task ExecuteListAsync()
         {
             if (!this.areaId.HasValue || this.list is null)
@@ -123,10 +141,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, null);
                 await this.LoadListRowsAsync();
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), this.list.Code),
+                    Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(Resources.OperatorApp.CannotExecuteList, Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(
+                    Resources.Localized.Get("OperatorApp.CannotExecuteList"),
+                    Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -194,6 +217,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return
                 this.currentItemIndex > 0;
+        }
+
+        private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
+        {
+            var listId = e.GetListId();
+            if (!listId.HasValue)
+            {
+                this.ShowNotification(
+                   string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
+                   Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            if (listId.Value == this.list?.Id)
+            {
+                await this.ExecuteListAsync();
+            }
+            else
+            {
+                this.ShowNotification(
+                   string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
+                   Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
         }
 
         private async Task LoadListRowsAsync()

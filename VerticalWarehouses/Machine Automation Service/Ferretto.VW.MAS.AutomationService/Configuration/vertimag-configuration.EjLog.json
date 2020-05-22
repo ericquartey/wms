@@ -203,26 +203,26 @@
       {
         "Accessories": {
           "AlphaNumericBar": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "IpAddress": "127.0.0.1",
             "TcpPort": 1234,
             "Size": "Medium"
           },
           "LabelPrinter": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "IpAddress": "127.0.0.1",
             "TcpPort": 12020
           },
           "BarcodeReader": {
-            "IsEnabled": true,
+            "IsEnabledNew": true,
             "PortName": "COM4"
           },
           "WeightingScale": {
-            "IsEnabled": true,
+            "IsEnabledNew": true
           }
         },
         "Carousel": {
@@ -6214,7 +6214,7 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "MV20-0003",
+    "SerialNumber": "EjLog",
     "Id": 2
   },
   "SetupProcedures": {
@@ -6284,6 +6284,13 @@
     "Bay2CarouselCalibration": {
     },
     "Bay3CarouselCalibration": {
+    },
+    "Bay1ExternalCalibration": {
+      "FeedRate": 1.0
+    },
+    "Bay2ExternalCalibration": {
+    },
+    "Bay3ExternalCalibration": {
     },
     "Bay1FullTest": {
     },

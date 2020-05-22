@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string measureUnit;
 
+        private string measureUnitDescription;
+
         private MissionWithLoadingUnitDetails mission;
 
         private MissionOperation missionOperation;
@@ -63,6 +65,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.measureUnit;
             set => this.SetProperty(ref this.measureUnit, value);
+        }
+
+        public string MeasureUnitDescription
+        {
+            get => this.measureUnitDescription;
+            set => this.SetProperty(ref this.measureUnitDescription, value);
         }
 
         public MissionWithLoadingUnitDetails Mission

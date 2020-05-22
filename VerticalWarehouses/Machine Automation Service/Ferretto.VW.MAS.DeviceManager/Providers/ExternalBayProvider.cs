@@ -100,9 +100,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)   // ADD define the interface  bay.External
+            if (bay is null)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
+                return new ActionPolicy { Reason = "The bay is null!" };
+            }
+            if (bay.External is null)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", CommonUtils.Culture.Actual) };
+            }
+
+            // Always allow the manual movements
+            if (movementCategory == MovementCategory.Manual)
+            {
+                return ActionPolicy.Allowed;
             }
 
             var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
@@ -113,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardMachine:
                     if (isLoadingUnitInInternalPosition)
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                     }
 
                     break;
@@ -121,12 +131,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardOperator:
                     if (
 #if CHECK_BAY_SENSOR
-                        (isLoadingUnitInExternalPosition && movementCategory != MovementCategory.Manual) ||
+                        isLoadingUnitInExternalPosition ||
 #endif
-                        bay.Positions.FirstOrDefault().LoadingUnit != null          // .FirstOrDefault(p => p.IsExternal).LoadingUnit
+                        bay.Positions.FirstOrDefault().LoadingUnit != null
                         )
                     {
-                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsExternalPosition };
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
                     }
 
                     break;
@@ -139,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 movementCategory != MovementCategory.Manual &&
                 direction == ExternalBayMovementDirection.TowardOperator)
             {
-                return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
+                //return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
             }
 
             return ActionPolicy.Allowed;
@@ -187,7 +197,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.Carousel.ElevatorDistance : 0;   // ADD   bay.External.Race
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
@@ -206,7 +216,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Absolute,
+                MovementType.Relative,
                 MovementMode.ExtBayChain,
                 targetPosition,
                 speed,
@@ -251,9 +261,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.Carousel.ElevatorDistance : 0;   // bay.External.Race
+            var race = bay.External.Race;
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race : /*-race*/0;
 
-            var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);   // .GetAssistedMovementsExternalBay(bayNumber)
+            var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
 
             var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
@@ -262,8 +273,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Absolute,
-                MovementMode.ExtBayChain,   // CHECK!! defined a new movement mode
+                MovementType.Absolute,  //.Relative,
+                MovementMode.ExtBayChain,
                 targetPosition,
                 speed,
                 acceleration,
@@ -305,16 +316,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var targetPosition = bay.Carousel.ElevatorDistance;    // ADD    bay.External.Race
-            // Check the module of distance to be moved
-            if (distance > 0 && distance < bay.Carousel.ElevatorDistance + Math.Abs(bay.ChainOffset))   //   bay.External.Race + Math.Abs(...
-            {
-                targetPosition = distance;
-            }
+            //var targetPosition = bay.External.Race;    // USE for .Relative
+            //// Check the module of distance to be moved
+            //if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset))
+            //{
+            //    targetPosition = distance;
+            //}
 
-            targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
+            //targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
 
-            var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(bayNumber);   // ADD  .GetManualMovementsExternalBay(bayNumber)
+            // Use this for .Absolute
+            const double EXT_RACE_FOR_EXTRACTION = 250.0d;
+            const double INTERNAL_LIMIT = -150.0d;
+            var targetPosition = (direction is ExternalBayMovementDirection.TowardOperator) ?
+                bay.External.Race + EXT_RACE_FOR_EXTRACTION :
+                INTERNAL_LIMIT;
+
+            var procedureParameters = this.baysDataProvider.GetManualMovementsExternalBay(bayNumber);
 
             var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
@@ -323,8 +341,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
-                MovementType.Relative,
-                MovementMode.ExtBayChainManual,   // ADDED!! New movement mode
+                MovementType.Absolute,    //.Relative,
+                MovementMode.ExtBayChainManual,
                 targetPosition,
                 speed,
                 acceleration,
@@ -373,8 +391,54 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            var policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Assisted);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(bayNumber);
+
+            var targetPosition = bay.External.Race;
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Absolute,
+                MovementMode.ExtBayTest,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.logger.LogDebug(
+                $"Start External Bay Calibration Test " +
+                $"bayNumber: {bayNumber}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
         }
 
         public void Stop(BayNumber bayNumber, MessageActor sender)
@@ -392,8 +456,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StopTest(BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            this.PublishCommand(
+                null,
+                $"Stop external bay {bayNumber} calibration",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
+                bayNumber,
+                BayNumber.None);
         }
 
         #endregion

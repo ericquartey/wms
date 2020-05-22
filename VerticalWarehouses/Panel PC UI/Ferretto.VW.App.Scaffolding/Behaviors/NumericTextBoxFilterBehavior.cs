@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
         {
             if (!string.IsNullOrEmpty(text))
             {
-                System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.AllowLeadingSign;
+                var styles = System.Globalization.NumberStyles.AllowLeadingSign;
                 if (this.AllowDecimals)
                 {
                     styles = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowLeadingSign;

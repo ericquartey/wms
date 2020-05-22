@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     this.logger.LogError($"Another mission is active for load unit {loadingUnitId} on bay {bayNumber}");
-                    throw new InvalidOperationException(string.Format(Resources.Missions.ActiveMissionForLoadingUnit, loadingUnitId, (int)bayNumber));
+                    throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId, (int)bayNumber));
                 }
                 var entry = this.dataContext.Missions
                     .Add(
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     transaction.Rollback();
-                    throw new InvalidOperationException(string.Format(Resources.Missions.ActiveMissionForWMS, wmsId));
+                    throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForWMS", CommonUtils.Culture.Actual), wmsId));
                 }
 
                 var entry = this.dataContext.Missions.Add(
@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     && m.Status == MissionStatus.New)
                     )
                 {
-                    throw new InvalidOperationException(string.Format(Resources.Missions.RecallMissionForLoadingUnit, loadingUnitId));
+                    throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("RecallMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId));
                 }
                 var entry = this.dataContext.Missions.Add(
                     new Mission
@@ -296,7 +296,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> GetAllActiveUnitGoBay()
         {
-            List<int> UnitGoBay = new List<int>();
+            var UnitGoBay = new List<int>();
 
             lock (this.dataContext)
             {
@@ -320,7 +320,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> GetAllActiveUnitGoCell()
         {
-            List<int> UnitGoBay = new List<int>();
+            var UnitGoBay = new List<int>();
 
             lock (this.dataContext)
             {

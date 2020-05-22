@@ -10,7 +10,7 @@
             <DataGridTextColumn x:Name="Column1"
                                 Width="120"
                                 Binding="{Binding Path=ItemCode}"
-                                Header="{x:Static Resources:OperatorApp.ItemCode}">
+                                Header="{Resources:Loc OperatorApp.ItemCode}">
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -27,7 +27,7 @@
             <DataGridTextColumn x:Name="ItemDescriptionColumn"
                                 Width="*"
                                 Binding="{Binding Path=ItemDescription}"
-                                Header="{x:Static Resources:OperatorApp.ItemDescription}">
+                                Header="{Resources:Loc OperatorApp.ItemDescription}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -38,7 +38,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="StockColumn"
                                 Width="100"
-                                Header="{x:Static Resources:OperatorApp.CompartmentStock}">
+                                Header="{Resources:Loc OperatorApp.CompartmentStock}">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0} {1}">
                         <Binding Path="Stock" />
@@ -56,7 +56,7 @@
             <DataGridTextColumn x:Name="Column4"
                                 Width="120"
                                 Binding="{Binding Path=Id}"
-                                Header="{x:Static Resources:OperatorApp.Compartment}">
+                                Header="{Resources:Loc OperatorApp.Compartment}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />

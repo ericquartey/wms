@@ -5,10 +5,12 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -55,9 +57,30 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private bool refreshTargetTable = false;
 
+        private DateTime timePeriodElapsed = DateTime.UtcNow;
+
         #endregion
 
         #region Methods
+
+        private void CheckTimePeriodElapsed()
+        {
+            if (DateTime.UtcNow.Subtract(this.timePeriodElapsed).TotalMinutes >= 60)
+            {
+                this.timePeriodElapsed = DateTime.UtcNow;
+                var notificationMessage = new NotificationMessage(
+                    null,
+                    $"Time period elapsed",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.TimePeriodElapsed,
+                    BayNumber.None,
+                    BayNumber.None,
+                    MessageStatus.OperationStart);
+
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+        }
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
@@ -379,7 +402,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // Adds error related to the InverterFaultDetected
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                         var idx = (int)message.SystemIndex + 1; // it has the systemIndex on base 1
-                        errorsProvider.RecordNew(idx, error, bayNumber);
+                        errorsProvider.RecordNew(idx, error, bayNumber, InverterFaultCodes.GetErrorByCode(error));
                     }
                 }
             }
@@ -403,13 +426,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogTrace("2:Evaluate Control word");
 
                 var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
-
-                if (mainInverter.WaitingHeartbeatAck)
-                {
-                    mainInverter.WaitingHeartbeatAck = false;
-                    this.Logger.LogTrace("5:Reset Heartbeat flag");
-                    return;
-                }
             }
 
             if (currentStateMachine?.ValidateCommandMessage(message) ?? false)
@@ -574,7 +590,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger.LogTrace("Start the timer for update status word");
                     this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
 
-                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.Parameters);
+                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion);
                     var currentStateMachine = new InverterProgrammigState(
                         inverter,
                         inverterProgrammingFieldMessageData,
@@ -1101,6 +1117,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                     //this.Logger.LogTrace($"2.RequestHeartBeat={heartBeatMessage}");
 
                     this.isHeartBeatOn = !this.isHeartBeatOn;
+
+                    this.CheckTimePeriodElapsed();
                 }
             }
         }

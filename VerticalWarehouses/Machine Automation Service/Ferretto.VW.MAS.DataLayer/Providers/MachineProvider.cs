@@ -54,6 +54,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.Carousel)
                             .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
+                        .ThenInclude(b => b.External)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.External)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
                         .ThenInclude(b => b.Inverter)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.IoDevice)
@@ -183,6 +189,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public MachineStatistics GetPresentStatistics()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.MachineStatistics.AsNoTracking().LastOrDefault();
+            }
+        }
+
         public IEnumerable<ServicingInfo> GetServicingInfo()
         {
             lock (this.dataContext)
@@ -191,11 +205,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public MachineStatistics GetStatistics()
+        public IEnumerable<MachineStatistics> GetStatistics()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.AsNoTracking().FirstOrDefault();
+                return this.dataContext.MachineStatistics.AsNoTracking();
             }
         }
 
@@ -211,6 +225,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
             context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
             context.Carousels.RemoveRange(context.Carousels);
+            context.Externals.RemoveRange(context.Externals);
             context.CellPanels.RemoveRange(context.CellPanels);
             context.Shutters.RemoveRange(context.Shutters);
             context.WeightMeasurements.RemoveRange(context.WeightMeasurements);
@@ -230,22 +245,22 @@ namespace Ferretto.VW.MAS.DataLayer
             context.Machines.Add(machine);
         }
 
-        public void ImportMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext context)
+        public void ImportMachineServicingInfo(IEnumerable<ServicingInfo> servicingInfo, DataLayerContext context)
         {
             _ = servicingInfo ?? throw new System.ArgumentNullException(nameof(servicingInfo));
 
             context.ServicingInfo.RemoveRange(context.ServicingInfo);
 
-            context.ServicingInfo.Add(servicingInfo);
+            context.ServicingInfo.AddRange(servicingInfo);
         }
 
-        public void ImportMachineStatistics(MachineStatistics machineStatistics, DataLayerContext context)
+        public void ImportMachineStatistics(IEnumerable<MachineStatistics> machineStatistics, DataLayerContext context)
         {
             _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
 
             context.MachineStatistics.RemoveRange(context.MachineStatistics);
 
-            context.MachineStatistics.Add(machineStatistics);
+            context.MachineStatistics.AddRange(machineStatistics);
         }
 
         public bool IsOneTonMachine()
@@ -307,6 +322,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.External?.ManualMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.EmptyLoadMovement, (e) => e.Id);
                 dataContext.AddOrUpdate(b.FullLoadMovement, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
@@ -334,7 +352,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -363,7 +381,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -399,7 +417,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalHorizontalAxisCycles++;
@@ -441,7 +459,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
@@ -471,7 +489,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalVerticalAxisCycles++;
@@ -483,7 +501,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
-            var machineStat = dataContext.MachineStatistics.FirstOrDefault();
+            var machineStat = dataContext.MachineStatistics.LastOrDefault();
             machineStat.TotalWeightFront = 0;
             machineStat.TotalWeightBack = 0;
             var loadingUnits = dataContext.LoadingUnits

@@ -103,20 +103,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
             if (bayPosition?.Id != bayPositionId)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual) };
             }
 
             var cellId = this.cellsProvider.GetAll().FirstOrDefault(c => Math.Abs(bayPosition.Height - c.Position) < 25 && !c.IsFree)?.Id;
 
             if (cellId != null)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheCellIsNotFree };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheCellIsNotFree", CommonUtils.Culture.Actual) };
             }
 
             // check #2: a loading unit must not be present in the bay position
             if (this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual) };
             }
 
             // check #3: no loading unit must be on board of the elevator
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ||
                 !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
             }
 
             // check #4: the shutter must be completely open
@@ -134,14 +134,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (shutterPosition != ShutterPosition.Opened)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                 }
             }
 
             // check #5: elevator's pawl must be in zero position
             if (!this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -152,13 +152,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #1: a loading unit must be present in the bay position
             if (!this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual) };
             }
             // check #2: a loading unit must be waiting to be extracted in the bay position
             var bayPosition = this.baysDataProvider.GetPositionById(bayPositionId);
             if (!this.missionsDataProvider.IsMissionInWaitState(bayNumber, bayPosition.LoadingUnit.Id))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.NoMissionIsWaitingInTheSpecifiedBayPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("NoMissionIsWaitingInTheSpecifiedBayPosition", CommonUtils.Culture.Actual) };
             }
             return ActionPolicy.Allowed;
         }
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #2: a loading unit must be present in the bay position
             if (enforceLoadUnitPresent && !this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual) };
             }
 
             // check #3: no loading unit must be on board of the elevator
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ||
                 !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
             }
 
             // check #4: the shutter must be completely closed or open depending if mission is guided or not
@@ -195,14 +195,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (shutterPosition != ShutterPosition.Closed)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyClosed", CommonUtils.Culture.Actual) };
                     }
                 }
                 else
                 {
                     if (shutterPosition != ShutterPosition.Opened)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                     }
                 }
             }
@@ -210,7 +210,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #5: elevator's pawl must be in zero position
             if (!this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -222,13 +222,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var cell = this.elevatorDataProvider.GetCurrentCell();
             if (cell?.Id != cellId)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedCell };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedCell", CommonUtils.Culture.Actual) };
             }
 
             // check #2: a loading unit must be present in the cell
             if (cell.LoadingUnit is null)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedCell };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsPresentInTheSpecifiedCell", CommonUtils.Culture.Actual) };
             }
 
             // check #3: no loading unit must be on board of the elevator
@@ -236,13 +236,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ||
                 !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
             }
 
             // check #4: elevator's pawl must be in zero position
             if (!this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             // check #5: the shutters on the same side of the cell must be completely closed
@@ -269,7 +269,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             if (cell.Position < verticalAxis.LowerBound || cell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition,
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual),
                     ReasonType = ReasonType.ElevatorInPosition
                 };
             }
@@ -302,14 +302,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
                 else if (!isElevatorFull)
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
             }
@@ -325,7 +325,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell,
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell", CommonUtils.Culture.Actual),
                     ReasonType = ReasonType.ElevatorInPosition
                 };
             }
@@ -344,14 +344,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
                 else if (!isElevatorFull)
                 {
                     return new ActionPolicy
                     {
-                        Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition,
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual),
                     };
                 }
             }
@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var targetCell = this.cellsProvider.GetById(cellId);
             if (targetCell.Position < verticalAxis.LowerBound || targetCell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -375,7 +375,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -384,7 +384,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -395,7 +395,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.NoLoadingUnitIsOnBoardOfTheElevator
+                    Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsOnBoardOfTheElevator", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -408,14 +408,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (shutterPosition != ShutterPosition.Closed)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyClosed", CommonUtils.Culture.Actual) };
                     }
                 }
                 else
                 {
                     if (shutterPosition != ShutterPosition.Opened)
                     {
-                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                        return new ActionPolicy { Reason = Resources.Shutters.ResourceManager.GetString("TheShutterIsNotCompletelyOpen", CommonUtils.Culture.Actual) };
                     }
                 }
             }
@@ -423,7 +423,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #5: elevator's pawl cannot be be in zero position
             if (this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -435,7 +435,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var elevatorCell = this.elevatorDataProvider.GetCurrentCell();
             if (elevatorCell is null || elevatorCell.Id != cellId)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedCell };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedCell", CommonUtils.Culture.Actual) };
             }
 
             // check #2: a loading unit must be on board of the elevator
@@ -444,19 +444,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ||
                 !this.machineResourcesProvider.IsDrawerCompletelyOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsOnBoardOfTheElevator };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
             }
 
             // check #2: there is enough space to host the loading unit in the specified cell
             if (!this.cellsProvider.CanFitLoadingUnit(elevatorCell.Id, loadingUnit.Id))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheLoadingUnitDoesNotFitInTheSpecifiedCell };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheLoadingUnitDoesNotFitInTheSpecifiedCell", CommonUtils.Culture.Actual) };
             }
 
             // check #3: elevator's pawl cannot be be in zero position
             if (this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             // check #4: the shutters on the same side of the cell must be completely closed
@@ -485,7 +485,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             if (elevatorCell.Position < verticalAxis.LowerBound || elevatorCell.Position > verticalAxis.UpperBound)
             {
-                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -632,11 +632,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
             {
-                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual));
             }
             if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
             {
-                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual));
             }
 
             if (measure && isLoadingUnitOnBoard)
@@ -974,7 +974,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
         {
-            int cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
+            var cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
             var policy = this.CanMoveToCell(cellId);
             if (!policy.IsAllowed)
             {
@@ -1002,13 +1002,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(distance),
-                    Resources.Elevator.MovementDistanceCannotBeZero);
+                    Resources.Elevator.ResourceManager.GetString("MovementDistanceCannotBeZero", CommonUtils.Culture.Actual));
             }
 
             var homingDone = this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
             if (!homingDone)
             {
-                throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("VerticalOriginCalibrationMustBePerformed", CommonUtils.Culture.Actual));
             }
 
             var sensors = this.sensorsProvider.GetAll();
@@ -1138,7 +1138,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(displacement),
-                    Resources.Elevator.MovementDistanceCannotBeZero);
+                    Resources.Elevator.ResourceManager.GetString("MovementDistanceCannotBeZero", CommonUtils.Culture.Actual));
             }
 
             var sensors = this.sensorsProvider.GetAll();
@@ -1150,7 +1150,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var homingDone = this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
             if (!homingDone)
             {
-                throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("VerticalOriginCalibrationMustBePerformed", CommonUtils.Culture.Actual));
             }
 
             var procedureParameters = this.elevatorDataProvider.GetAxis(Orientation.Vertical).WeightMeasurement;
@@ -1227,14 +1227,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
             if (upperBoundPosition <= lowerBoundPosition)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition", CommonUtils.Culture.Actual));
             }
 
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
@@ -1243,14 +1243,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("UpperBoundPositionOutOfRange", CommonUtils.Culture.Actual));
             }
 
             if (lowerBoundPosition < verticalAxis.LowerBound)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
+                    Resources.BeltBurnishingProcedure.ResourceManager.GetString("LowerBoundPositionOutOfRange", CommonUtils.Culture.Actual));
             }
 
             var sensors = this.sensorsProvider.GetAll();
@@ -1447,18 +1447,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var upperBound = verticalAxis.UpperBound;
             if (verticalAxis.Offset < lowerBound || verticalAxis.Offset > upperBound)
             {
-                throw new InvalidOperationException(string.Format(Resources.Elevator.OffsetOutOfBounds, verticalAxis.Offset, lowerBound, upperBound));
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("OffsetOutOfBounds", CommonUtils.Culture.Actual), verticalAxis.Offset, lowerBound, upperBound));
             }
 
             if (targetPosition < lowerBound)
             {
                 this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, requestingBay);
-                throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("TargetPositionOutOfBounds", CommonUtils.Culture.Actual), targetPosition, lowerBound, upperBound));
             }
             if (targetPosition > upperBound)
             {
                 this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, requestingBay);
-                throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("TargetPositionOutOfBounds", CommonUtils.Culture.Actual), targetPosition, lowerBound, upperBound));
             }
 
             var homingDone = (checkHomingDone ? this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] : true);

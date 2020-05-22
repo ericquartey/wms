@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    var statistics = this.dataContext.MachineStatistics.First();
+                    var statistics = this.dataContext.MachineStatistics.Last();
                     summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {
@@ -181,6 +181,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     errorStatistics.TotalErrors++;
                     this.dataContext.ErrorStatistics.Update(errorStatistics);
                 }
+                else
+                {
+                    this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
+                }
 
                 this.dataContext.SaveChanges();
             }
@@ -200,7 +204,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="detailCode">The detail code of the inverter error.</param>
         /// <param name="bayNumber">The bay number.</param>
         /// <returns></returns>
-        public MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None)
+        public MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None, string detailText = null)
         {
             var newError = new MachineError
             {
@@ -208,7 +212,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 OccurrenceDate = DateTime.Now,
                 InverterIndex = inverterIndex,
                 BayNumber = bayNumber,
-                DetailCode = detailCode
+                DetailCode = detailCode,
+                AdditionalText = detailText
             };
 
             lock (this.dataContext)
@@ -237,13 +242,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     errorStatistics.TotalErrors++;
                     this.dataContext.ErrorStatistics.Update(errorStatistics);
                 }
+                else
+                {
+                    this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
+                }
 
                 this.dataContext.SaveChanges();
             }
 
             this.NotifyErrorCreation(newError, bayNumber);
 
-            this.logger.LogError($"Error: {MachineErrorCode.InverterFaultStateDetected} ({newError.Code}); Inverter Fault: 0x{detailCode:X4}; index {inverterIndex}; Bay {bayNumber}; {newError.Description}");
+            this.logger.LogError($"Error: {MachineErrorCode.InverterFaultStateDetected} ({newError.Code}); Inverter Fault: 0x{detailCode:X4} {newError.AdditionalText}; index {inverterIndex}; Bay {bayNumber}; {newError.Description}");
 
             return newError;
         }

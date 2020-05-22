@@ -139,16 +139,16 @@
     <value>File di generazione parametri Inverters</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import</value>
+    <value>Importa</value>
   </data>
   <data name="NoParametersFilesFound" xml:space="preserve">
     <value>Nessun file di parametri trovato</value>
   </data>
   <data name="InverterTypeParametersConfiguration" xml:space="preserve">
-    <value>Inverter {0} tipo {0} configurazione parametri</value>
+    <value>Inverter [{0}] tipo '{1}' configurazione parametri</value>
   </data>
   <data name="TotalParameters" xml:space="preserve">
-    <value>Totale parametri {0}</value>
+    <value>totale parametri {0}</value>
   </data>
   <data name="InverterParametersId" xml:space="preserve">
     <value>Id</value>
@@ -168,8 +168,8 @@
   <data name="IsReadOnly" xml:space="preserve">
     <value>Sola lettura</value>
   </data>
-  <data name="EsportConfigurationFile" xml:space="preserve">
-    <value>Esportazione file di configurazione</value>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Esportazione configurazione</value>
   </data>
   <data name="ExportFile" xml:space="preserve">
     <value>Esporta file</value>
@@ -185,5 +185,32 @@
   </data>
   <data name="ConfigurationFile" xml:space="preserve">
     <value>File di configurazione</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Importazione configurazione</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Seleziona un file</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Cartella parametri inverters</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Scegli file di configurazione</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Cartella di configurazione</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Cartella non esiste</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>File non valido o non inserito</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>File non salvato</value>
   </data>
 </root>

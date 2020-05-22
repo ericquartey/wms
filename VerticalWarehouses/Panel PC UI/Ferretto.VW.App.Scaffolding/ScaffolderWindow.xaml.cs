@@ -99,14 +99,14 @@ namespace Ferretto.VW.App.Scaffolding
 
         public void SelectCategory(object sender, EventArgs e)
         {
-            Models.ScaffoldedStructure context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
+            var context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
             this.SetValue(CurrentStructureProperty, context);
         }
 
         private static void OnCurrentStructurePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Models.ScaffoldedStructure current = e.NewValue as Models.ScaffoldedStructure;
-            ScaffolderWindow window = d as ScaffolderWindow;
+            var current = e.NewValue as Models.ScaffoldedStructure;
+            var window = d as ScaffolderWindow;
             window.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? new Models.ScaffoldedEntity[0]);
             window.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? new Models.ScaffoldedStructure[0]);
         }

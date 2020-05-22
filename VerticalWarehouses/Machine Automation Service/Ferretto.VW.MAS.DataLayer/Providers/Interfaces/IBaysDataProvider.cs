@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
 
+        ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber);
+
         ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);
 
         BayNumber GetByAxis(IHomingMessageData data);
@@ -83,6 +85,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber);
 
+        ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber);
+
         ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 
         /// <summary>
@@ -116,6 +120,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
+        void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
+
         /// <summary>
         /// Specifies that the given loading unit is now located in a bay position.
         /// It updates bay and LoadUnit db tables.
@@ -132,6 +138,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
+
+        void UpdateRace(BayNumber bayNumber, double race);
 
         #endregion
     }

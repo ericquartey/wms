@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsErrorSmall();
 
-        MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None);
+        MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None, string detailText = null);
 
         MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null);
 

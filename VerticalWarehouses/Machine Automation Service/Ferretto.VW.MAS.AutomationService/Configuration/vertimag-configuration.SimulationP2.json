@@ -6026,7 +6026,7 @@
         "Side": "Back"
       }
     ],
-    "SerialNumber": "Simulation Prototype #2",
+    "SerialNumber": "Prototype #2 Sim",
     "Simulation": false
   },
   "SetupProcedures": {
@@ -6038,6 +6038,9 @@
       "IsCompleted": false,
       "PerformedCycles": 0,
       "RequiredCycles": 600
+    },
+    "Bay1ExternalCalibration": {
+      "FeedRate": 1.0
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1,
@@ -6078,6 +6081,8 @@
       "PerformedCycles": 0,
       "RequiredCycles": 600
     },
+    "Bay2ExternalCalibration": {
+    },
     "Bay2HeightCheck": {
       "FeedRate": 0.1,
       "Id": 26,
@@ -6116,6 +6121,8 @@
       "IsCompleted": false,
       "PerformedCycles": 0,
       "RequiredCycles": 600
+    },
+    "Bay3ExternalCalibration": {
     },
     "Bay3HeightCheck": {
       "FeedRate": 0.1,

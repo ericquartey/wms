@@ -17,7 +17,7 @@
             <DataGridTextColumn x:Name="Column1"
                                 Width="0.5*"
                                 Binding="{Binding Path=ItemListId}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderRow}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -34,7 +34,7 @@
             <DataGridTextColumn x:Name="Column2"
                                 Width="1*"
                                 Binding="{Binding Path=Code}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderItem}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderItem}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -45,7 +45,7 @@
             <DataGridTextColumn x:Name="Column3"
                                 Width="3*"
                                 Binding="{Binding Path=ItemDescription}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderDescription}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderDescription}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -56,7 +56,7 @@
             <DataGridTextColumn x:Name="Column4"
                                 Width="0.8*"
                                 Binding="{Binding Path=RequestedQuantity}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderQuantity}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderQuantity}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -67,7 +67,7 @@
             <DataGridTextColumn x:Name="Column5"
                                 Width="1*"
                                 Binding="{Binding Machines, Converter={StaticResource MTSC}}"
-                                Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderMachine}">
+                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderMachine}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />

@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.Converters
                 if (values[0] is DriveInfo drive)
                 {
                     filename = drive.Name;
-                    bool overwrite = false;
+                    var overwrite = false;
                     if (values.Length > 2 && values[2] is bool over)
                     {
                         overwrite = over;

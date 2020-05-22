@@ -2,6 +2,8 @@
 {
     public enum UserAction
     {
+        NotSpecified,
+
         FilterItems,
 
         PickItem,
@@ -10,12 +12,22 @@
 
         ExecuteList,
 
-        ConfirmPickOperation,
+        ConfirmOperation,
 
-        ConfirmPutOperation,
+        LoginUser,
 
-        ConfirmInventoryOperation,
+        VerifyItem,
 
-        LoginUser
+        RecallLoadingUnit,
+
+        AssociateBasketToShelf,
+
+        CompleteBasket,
+
+        RemoveFullBasket,
+
+        SelectBasket,
+
+        SelectShelf,
     }
 }

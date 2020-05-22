@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="NotificationSeverityInfo"
+                     Color="{DynamicResource ColorFerrettoBlue}" />
+    <SolidColorBrush x:Key="NotificationSeverityError"
+                     Color="{DynamicResource ColorFerrettoRed}" />
+    <SolidColorBrush x:Key="NotificationSeverityWarning"
+                     Color="{DynamicResource ColorFerrettoOrange}" />
+    <SolidColorBrush x:Key="NotificationSeveritySuccess"
+                     Color="{DynamicResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="NotificationSeverityLow"
+                     Color="{DynamicResource ColorFerrettoYellow}" />
+
+    <SolidColorBrush x:Key="NotificationSeverityForegroundInfo"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundError"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundWarning"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundSuccess"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundLow"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+</ResourceDictionary>

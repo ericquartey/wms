@@ -16,14 +16,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionHeader}" />
+                   Text="{Resources:Loc OperatorApp.DrawerSpaceSaturazionHeader}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="520,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Dimension}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
+                                              LabelText="{Resources:Loc OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
 
         <ContentControl Width="680"
                         Height="340"
@@ -37,27 +37,27 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding TotalLoadingUnits}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
+                                              LabelText="{Resources:Loc OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
         <controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="590,510,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
+                                           LabelText="{Resources:Loc OperatorApp.DrawerSpaceSaturazionFillingMachine}"
                                            ProgressionValue="{Binding FillPercentage, StringFormat={}{0:N1} %}" />
 
         <controls:PpcButton  Margin="0,190,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                Content="{Resources:Loc OperatorApp.CommonUp}"
                  />
 
         <controls:PpcButton  Margin="0,255,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                Content="{Resources:Loc OperatorApp.CommonDown}"
                  />
 
 

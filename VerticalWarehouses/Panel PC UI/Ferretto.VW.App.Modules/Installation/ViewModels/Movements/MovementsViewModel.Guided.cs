@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterMoving;
 
+        private bool isTuningExtBay;
+
         private bool isTuningBay;
 
         private bool isTuningChain;
@@ -74,6 +76,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveCarouselUpPolicy;
 
+        private DelegateCommand moveExtBayTowardOperatorCommand;
+
+        private ActionPolicy moveExtBayTowardOperatorPolicy;
+
+        private DelegateCommand moveExtBayTowardMachineCommand;
+
+        private ActionPolicy moveExtBayTowardMachinePolicy;
+
         private DelegateCommand moveToBayPositionCommand;
 
         private ActionPolicy moveToBayPositionPolicy;
@@ -93,6 +103,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private Cell selectedCell;
 
         private LoadingUnit selectedLoadingUnit;
+
+        private DelegateCommand tuningExtBayCommand;
 
         private DelegateCommand tuningBayCommand;
 
@@ -122,14 +134,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.MoveCarouselUpAsync(),
                 this.CanMoveCarouselUp));
 
+        public ICommand ExtBayTowardOperatorCommand =>
+            this.moveExtBayTowardOperatorCommand
+            ??
+            (this.moveExtBayTowardOperatorCommand = new DelegateCommand(
+                async () => await this.MoveExtBayTowardOperatorAsync(),
+                this.CanMoveExtBayTowardOperator));
+
+        public ICommand ExtBayTowardMachineCommand =>
+            this.moveExtBayTowardMachineCommand
+            ??
+            (this.moveExtBayTowardMachineCommand = new DelegateCommand(
+                async () => await this.MoveExtBayTowardMachineAsync(),
+                this.CanMoveExtBayTowardMachine));
+
         public ICommand ClosedShutterCommand =>
             this.closedShutterCommand
             ??
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
-
-        public bool HasBayExternal => this.MachineService.HasBayExternal;
 
         public int? InputCellId
         {
@@ -232,6 +256,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isShutterMoving;
             private set => this.SetProperty(ref this.isShutterMoving, value);
+        }
+
+        public bool IsTuningExtBay
+        {
+            get => this.isTuningExtBay;
+            private set => this.SetProperty(ref this.isTuningExtBay, value);
         }
 
         public bool IsTuningBay
@@ -360,6 +390,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand TuningExtBayCommand =>
+            this.tuningExtBayCommand
+            ??
+            (this.tuningExtBayCommand = new DelegateCommand(
+                async () => await this.TuneExtBayAsync(),
+                this.CanTuneExtBay));
+
         public ICommand TuningBayCommand =>
             this.tuningBayCommand
             ??
@@ -404,7 +441,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                  this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded))
             {
 #if DEBUG
-                StackTrace stackTrace = new StackTrace();
+                var stackTrace = new StackTrace();
                 var method1 = stackTrace.GetFrame(1).GetMethod().Name;
                 var method2 = stackTrace.GetFrame(2).GetMethod().Name;
                 var method3 = stackTrace.GetFrame(3).GetMethod().Name;
@@ -422,6 +459,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                 this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+
+                this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
+                this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
 
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
@@ -504,6 +544,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.moveCarouselUpPolicy?.IsAllowed == true;
         }
 
+        private bool CanMoveExtBayTowardMachine()
+        {
+            return
+                this.CanBaseExecute()
+                &&
+                this.moveExtBayTowardMachinePolicy?.IsAllowed == true;
+        }
+
+        private bool CanMoveExtBayTowardOperator()
+        {
+            return
+                this.CanBaseExecute()
+                &&
+                this.moveExtBayTowardOperatorPolicy?.IsAllowed == true;
+        }
+
         private bool CanMoveToBayPosition()
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
@@ -569,6 +625,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute();
+        }
+
+        private bool CanTuneExtBay()
+        {
+            return this.CanBaseExecute() &&
+                   !this.IsTuningExtBay &&
+                   this.MachineStatus.LoadingUnitPositionDownInBay is null &&
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   this.SensorsService.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuneBay()
@@ -789,6 +854,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task MoveExtBayTowardMachineAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardMachine);
+                this.IsExternalBayMoving = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayTowardOperatorAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                this.IsExternalBayMoving = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private async Task MoveCarouselUpAsync()
         {
             this.IsWaitingForResponse = true;
@@ -874,7 +979,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnGuidedPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        private void OnGuidedPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (!this.IsMovementsGuided)
             {
@@ -888,6 +993,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
+                        }
+
+                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.ExtBayChain)
+                        {
+                            this.IsExternalBayMoving = false;
                         }
 
                         break;
@@ -962,6 +1072,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsPositionUpSelected = true;
             this.RaiseCanExecuteChanged();
+        }
+
+        private async Task TuneExtBayAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ExtBayCalibration, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineExternalBayWebService.FindZeroAsync();
+                    this.IsTuningExtBay = true;
+                    this.IsExecutingProcedure = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningExtBay = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task TuneBayAsync()

@@ -4,16 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             
              xmlns:res="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Properties"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Controls"
              mc:Ignorable="d">
 
-    <Grid x:Name="Root"
-           Margin="30">
+    <Grid x:Name="Root">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />            
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -25,13 +24,13 @@
                    VerticalAlignment="Top"
                    FontSize="36"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Utility impostazione parametri Inverters" />
+                   Text="{x:Static res:Resources.ImportConfiguration}" />
 
 
         <Grid Grid.Row="1"
                      Grid.Column="1"
                      Grid.ColumnSpan="2"
-                     Margin="10,20,10,0"
+                     Margin="20,20,20,0"
                      HorizontalAlignment="Stretch">
             <StackPanel Orientation="Vertical">
                 <TextBlock Grid.Row="2"
@@ -58,15 +57,14 @@
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{Binding VertimagConfigurationFilePath}" />
 
-                    <Button Margin="20 0 20 0"
+                    <controls:PpcButton Margin="20 0 20 0"
                                 Grid.Column="1"
                                 Width="120"
                                 Height="60"
                                 FontSize="18"
-                                Content="{x:Static res:Resources.OpenFile}"
-                                Style="{StaticResource ButtonStyle}"
-                                Command="{Binding OpenVertimagConfigurationFileCommand}">
-                    </Button>
+                                Content="{x:Static res:Resources.OpenFile}"                                
+                                Command="{Binding OpenVertimagConfigurationFileCommand}"/>
+
                     <TextBlock
                                Grid.Row="1"
                                Grid.ColumnSpan="2"
@@ -75,7 +73,7 @@
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSize_Normal}"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Foreground="Red"
+                               Foreground="{StaticResource FerrettoRed}"
                                Text="{Binding ResultVertimagConfiguration}" />
                 </Grid>
             </StackPanel>
@@ -84,7 +82,7 @@
         <Grid  Grid.Row="2"
                      Grid.Column="1"
                      Grid.ColumnSpan="2"
-                     Margin="10,20,10,0"
+                     Margin="20,20,20,0"
                      HorizontalAlignment="Stretch">
             <StackPanel Orientation="Vertical">
                 <TextBlock Grid.Row="2"
@@ -104,39 +102,29 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock
                                FontSize="{DynamicResource FontSize_High}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" Margin="0,15,0,0" VerticalAlignment="Top"
                                Text="{Binding InvertersParametersFolder}" />
-                    <Button Margin="20,6,20,6"
+                    <controls:PpcButton Margin="20,6,20,6"
                                 Grid.Column="3"
+                                HorizontalAlignment="Right"
                                 Width="120"
                                 Height="60"
                                 FontSize="18"                           
-                                Content="{x:Static res:Resources.OpenFolder}"        
-                                Style="{StaticResource ButtonStyle}"
-                                Command="{Binding OpenInvertersParametersFolderCommand}">
-                    </Button>
+                                Content="{x:Static res:Resources.OpenFolder}"                                        
+                                Command="{Binding OpenInvertersParametersFolderCommand}"/>
+
                     <TextBlock
                                Grid.Row="1"
                                Grid.ColumnSpan="4"
                                VerticalAlignment="Top"
                                TextWrapping="Wrap"
+                               Foreground="{StaticResource FerrettoRed}"
                                FontSize="{DynamicResource FontSize_Normal}"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{Binding ResultInvertersFolder}" />
                 </Grid>
             </StackPanel>
         </Grid>
-
-        <Button Grid.Row="3"
-                Grid.ColumnSpan="3"
-                Margin="15,15,15,0"
-                Width="100"
-                Height="60"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                FontSize="18"
-                Style="{StaticResource ButtonStyle}"
-                Command="{Binding NextCommand}"
-                Content="{x:Static res:Resources.Next}" />
     </Grid>
 </UserControl>

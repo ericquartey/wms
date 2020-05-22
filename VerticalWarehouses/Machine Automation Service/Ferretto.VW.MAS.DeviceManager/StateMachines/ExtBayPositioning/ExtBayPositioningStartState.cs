@@ -35,8 +35,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         #region Constructors
 
-        public ExtBayPositioningStartState(IExtBayPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ExtBayPositioningStartState(IExtBayPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -85,14 +85,14 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                     case MessageStatus.OperationError:
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new ExtBayPositioningExecutingState(this.stateData));
+                this.ParentStateMachine.ChangeState(new ExtBayPositioningExecutingState(this.stateData, this.Logger));
             }
         }
 
@@ -140,16 +140,16 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                //if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
-                //{
-                //    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
-                //        .GetRequiredService<ISetupProceduresDataProvider>()
-                //        .GetBayCarouselCalibration(this.machineData.RequestingBay)
-                //        .PerformedCycles;
+                if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+                {
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBayExternalCalibration(this.machineData.RequestingBay)
+                        .PerformedCycles;
 
-                //    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
-                //    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
-                //}
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                }
             }
 
             this.Logger.LogTrace(
@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 this.machineData.MessageData,
                 this.machineData.MessageData.RequiredCycles == 0
                     ? $"{this.machineData.MessageData.AxisMovement} External Bay Positioning Started"
-                    : "Burnishing Started",
+                    : "External Bay Calibration Test Started",
                 MessageActor.Any,
                 MessageActor.DeviceManager,
                 MessageType.Positioning,
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
         }
 
         #endregion

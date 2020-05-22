@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveBayChainStep : MissionMoveBase
     {
+        private const double LoadUnitMaxNetWeightBayChainPercent = 1.1;
+
         #region Constructors
 
         public MissionMoveBayChainStep(Mission mission,
@@ -67,27 +70,47 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, bay.Number);
                 throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, bay.Number, MessageActor.MachineManager);
             }
+            var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+            if (position != null
+                && position.LoadingUnit != null
+                && position.LoadingUnit.Id == this.Mission.LoadUnitId
+                && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
+                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                )
+            {
+                this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
+            }
             try
             {
                 if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
                 {
                     throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, bay.Number, MessageActor.MachineManager);
                 }
-                this.Mission.Status = MissionStatus.Executing;
-                this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
+                {
+                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                    this.Mission.LoadUnitDestination = destination.Location;
+                }
 
                 var shutterInverter = bay.Shutter.Inverter.Index;
                 if (bay.Shutter.Type == ShutterType.ThreeSensors
-                    && this.SensorsProvider.GetShutterPosition(shutterInverter) == ShutterPosition.Closed)
+                    && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)
                 {
                     this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
                     this.Mission.OpenShutterPosition = ShutterPosition.Half;
                     this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, false);
                 }
+                else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                {
+                    this.SetErrorMoveBayChain(bay, position);
+                    return true;
+                }
+                this.Mission.Status = MissionStatus.Executing;
             }
             catch (StateMachineException ex)
             {
-                var description = $"Move Bay chain not possible in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
+                var description = $"Move Bay chain not allowed at the moment in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
                 // we don't want any exception here because this is the normal procedure:
                 // send a second LU in lower position while operator is working on upper position
                 this.Logger.LogInformation(description);
@@ -119,11 +142,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
+                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                             if (notification.Type == MessageType.Positioning
                                 && notification.TargetBay == notification.RequestingBay
                             )
                             {
-                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                                 if (destination is null)
                                 {
@@ -142,7 +165,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                                     transaction.Commit();
                                 }
-                                this.Mission.LoadUnitDestination = destination.Location;
 
                                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                                 this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
@@ -160,11 +182,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                                 }
-                                else
-                                {
-                                    this.BayChainEnd();
-                                    break;
-                                }
                             }
                         }
                         if (notification.Type == MessageType.ShutterPositioning)
@@ -177,7 +194,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
 
                                 this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                break;
+                                return;
                             }
                         }
                         if (notification.Type == MessageType.Homing
@@ -207,21 +224,50 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.OnStop(StopRequestReason.Error);
+                        return;
                     }
                     break;
+            }
+            if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                    || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
+                )
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                if (this.Mission.NeedHomingAxis == Axis.BayChain
+                    && bay.Positions.Count(p => p.LoadingUnit != null) < 2
+                    && !this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing)
+                    )
+                {
+                    this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
+                }
+                else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                {
+                    this.SetErrorMoveBayChain(bay, bay.Positions.FirstOrDefault(p => !p.IsUpper));
+                }
+                else
+                {
+                    this.BayChainEnd();
+                }
             }
         }
 
         private void BayChainEnd()
         {
-            if (this.Mission.MissionType == MissionType.OUT
+            IMissionMoveBase newStep;
+            if (this.CheckMissionShowError())
+            {
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            }
+            else if (this.Mission.MissionType == MissionType.OUT
                 || this.Mission.MissionType == MissionType.WMS
                 || this.Mission.MissionType == MissionType.FullTestOUT
                 )
             {
                 var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
                     .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
-                        && m.Step == MissionStep.WaitDeposit);
+                        && (m.Step == MissionStep.WaitDeposit || m.Step == MissionStep.WaitChain));
 
                 if (waitingMission != null)
                 {
@@ -237,14 +283,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         MessageActor.MachineManager);
                 }
 
-                var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else
             {
-                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
+            newStep.OnEnter(null);
         }
 
         public override void OnResume(CommandMessage command)
@@ -258,40 +303,62 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 )
 #endif
             {
+                var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                if (position != null
+                    && position.LoadingUnit != null
+                    && position.LoadingUnit.Id == this.Mission.LoadUnitId
+                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                    )
+                {
+                    this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
+                }
                 try
                 {
                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
                     this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
                     this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+                    if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
+                    {
+                        this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
+                        this.Mission.LoadUnitDestination = destination.Location;
+                        this.Mission.StepTime = DateTime.UtcNow;
+                    }
                     var shutterInverter = bay.Shutter.Inverter.Index;
                     if (bay.Shutter.Type == ShutterType.ThreeSensors
-                        && this.SensorsProvider.GetShutterPosition(shutterInverter) == ShutterPosition.Closed)
+                        && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)
                     {
                         this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
                         this.Mission.OpenShutterPosition = ShutterPosition.Half;
                     }
-                    this.Mission.Status = MissionStatus.Executing;
-                    this.Mission.StepTime = DateTime.UtcNow;
-                    this.MissionsDataProvider.Update(this.Mission);
-                    this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
-
-                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
-                    this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
 
                     if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                     {
                         this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, false);
                     }
+                    else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                    {
+                        this.SetErrorMoveBayChain(bay, position);
+                        return;
+                    }
+                    this.Mission.Status = MissionStatus.Executing;
+                    this.MissionsDataProvider.Update(this.Mission);
+                    this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+                    this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
                 }
-                catch (StateMachineException ex)
+                catch (StateMachineException)
                 {
                     //this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
                     //throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                    this.Logger.LogInformation(ErrorDescriptions.MoveBayChainNotAllowed);
+                    this.Logger.LogInformation($"Move Bay chain not allowed at the moment. Wait for another resume.");
                 }
             }
 #if CHECK_BAY_SENSOR
+            else if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number))
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.BottomLevelBayEmpty, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.BottomLevelBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             else
             {
                 //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
@@ -299,6 +366,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
             }
 #endif
+        }
+
+        private void SetErrorMoveBayChain(Bay bay, BayPosition position)
+        {
+            this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed,
+                bay.Number,
+                string.Format(Resources.Missions.RemoveMaterialFromLoadUnit,
+                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)),
+                    this.Mission.LoadUnitId,
+                    Math.Round(position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare)));
+
+            this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+            this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+            // set gross weight to the maximum that do not show this error again
+            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare);
+
+            this.Mission.ErrorCode = MachineErrorCode.LoadUnitWeightExceeded;
+            this.Mission.RestoreStep = this.Mission.Step;
+            var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            newStep.OnEnter(null);
         }
 
         #endregion

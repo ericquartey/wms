@@ -28,8 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         #region Constructors
 
-        public ExtBayPositioningErrorState(IExtBayPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ExtBayPositioningErrorState(IExtBayPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
@@ -125,14 +125,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            //if (/*this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing ||
-            //    this.machineData.MessageData.MovementMode == MovementMode.BayTest || */
-            //    // this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest   // <-- ATTENTION
-            //    )
-            //{
-            //    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
-            //    this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
-            //}
+            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+            }
         }
 
         public override void Stop(StopRequestReason reason)

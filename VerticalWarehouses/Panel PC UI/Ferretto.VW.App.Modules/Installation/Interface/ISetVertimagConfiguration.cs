@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.App.Scaffolding.Design;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Interface
@@ -8,9 +8,17 @@ namespace Ferretto.VW.App.Modules.Installation.Interface
     {
         #region Properties
 
-        string SelectedFileConfigurationName { get; set; }
+        FileInfo SelectedFileConfiguration { get; set; }
+
+        InverterParametersData SelectedInverter { get; }
 
         VertimagConfiguration VertimagConfiguration { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        Task BackupVertimagConfigurationParameters();
 
         #endregion
     }

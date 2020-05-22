@@ -41,14 +41,14 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="Operazione precede"
-                                 LabelText="{x:Static res:OperatorApp.CommonNote}" />
+                                 LabelText="{res:Loc OperatorApp.CommonNote}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="20,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="3"
-                                 LabelText="{x:Static res:OperatorApp.DrawerWaitOperation}" />
+                                 LabelText="{res:Loc OperatorApp.DrawerWaitOperation}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -62,7 +62,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.DrawerWaitPageHeader}" />
+                   Text="{res:Loc OperatorApp.DrawerWaitPageHeader}" />
 
     </Grid>
 </UserControl>

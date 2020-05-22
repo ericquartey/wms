@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Xpf.Charts;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;
@@ -24,21 +25,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool areSettingsChanged;
 
+        private string firmwareVersion;
+
         private IPAddress ipAddress;
 
         private bool isAccessoryEnabled;
 
-        private int luminosity = 7;
+        private string manufactureDate;
+
+        private string modelNumber;
 
         private int port;
 
         private DelegateCommand saveCommand;
 
+        private string serialNumber;
+
         private AlphaNumericBarSize size;
 
-        private bool switchOnIsChecked;
+        private bool testArrowIsChecked;
 
-        private bool testIsChecked;
+        private int testArrowOffset;
+
+        private bool testLedIsChecked;
+
+        private bool testMessageIsChecked;
+
+        private int testMessageOffset;
+
+        private string testMessageText;
+
+        private bool testOffIsChecked;
 
         #endregion
 
@@ -66,6 +83,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.ClearNotifications();
                     }
 
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string FirmwareVersion
+        {
+            get => this.firmwareVersion;
+            set
+            {
+                if (this.SetProperty(ref this.firmwareVersion, value))
+                {
+                    this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -99,14 +129,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabledEditing => true;
 
-        public int Luminosity
+        public string ManufactureDate
         {
-            get => this.luminosity;
+            get => this.manufactureDate;
             set
             {
-                if (this.SetProperty(ref this.luminosity, value))
+                if (this.SetProperty(ref this.manufactureDate, value))
                 {
-                    _ = this.DoLuminosityAsync(value);
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ModelNumber
+        {
+            get => this.modelNumber;
+            set
+            {
+                if (this.SetProperty(ref this.modelNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -135,6 +179,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public string SerialNumber
+        {
+            get => this.serialNumber;
+            set
+            {
+                if (this.SetProperty(ref this.serialNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public AlphaNumericBarSize Size
         {
             get => this.size;
@@ -148,26 +205,111 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool SwitchOnIsChecked
+        public bool TestArrowIsChecked
         {
-            get => this.switchOnIsChecked;
+            get => this.testArrowIsChecked;
             set
             {
-                if (this.SetProperty(ref this.switchOnIsChecked, value))
+                if (this.SetProperty(ref this.testArrowIsChecked, value))
                 {
-                    _ = this.DoSwitchOnAsync(value);
+                    if (value)
+                    {
+                        _ = this.DoTestArrowOnAsync(this.testArrowOffset);
+                    }
                 }
             }
         }
 
-        public bool TestIsChecked
+        public int TestArrowOffset
         {
-            get => this.testIsChecked;
+            get => this.testArrowOffset;
             set
             {
-                if (this.SetProperty(ref this.testIsChecked, value))
+                if (value < 0 || value > 5000)
                 {
-                    _ = this.DoTestAsync(value);
+                    value = 0;
+                }
+
+                if (this.SetProperty(ref this.testArrowOffset, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool TestLedIsChecked
+        {
+            get => this.testLedIsChecked;
+            set
+            {
+                if (this.SetProperty(ref this.testLedIsChecked, value))
+                {
+                    if (value)
+                    {
+                        _ = this.DoTestLedAsync(value);
+                    }
+                }
+            }
+        }
+
+        public bool TestMessageIsChecked
+        {
+            get => this.testMessageIsChecked;
+            set
+            {
+                if (this.SetProperty(ref this.testMessageIsChecked, value))
+                {
+                    if (value)
+                    {
+                        _ = this.DoTestMessageOnAsync(this.TestMessageText, this.testMessageOffset);
+                    }
+                }
+            }
+        }
+
+        public int TestMessageOffset
+        {
+            get => this.testMessageOffset;
+            set
+            {
+                if (value < 0 || value > 5000)
+                {
+                    value = 0;
+                }
+
+                if (this.SetProperty(ref this.testMessageOffset, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string TestMessageText
+        {
+            get => this.testMessageText;
+            set
+            {
+                if (this.SetProperty(ref this.testMessageText, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool TestOffIsChecked
+        {
+            get => this.testOffIsChecked;
+            set
+            {
+                if (this.SetProperty(ref this.testOffIsChecked, value))
+                {
+                    if (value)
+                    {
+                        _ = this.DoTestLedAsync(false);
+                    }
                 }
             }
         }
@@ -194,11 +336,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.alphaNumericBarDriver = new AlphaNumericBarDriver();
                 }
 
-                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabled;
+                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabledNew;
                 this.IpAddress = accessories.AlphaNumericBar.IpAddress;
                 this.Port = accessories.AlphaNumericBar.TcpPort;
                 this.Size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size;
+
+                this.SetDeviceInformation(accessories);
+
                 this.AreSettingsChanged = false;
+
+                if (this.TestMessageText is null)
+                {
+                    this.TestMessageText = $"{DateTime.Now} {Ferretto.VW.App.Resources.Menu.AccessoriesAlphaNumBarTestMessageDefault}";
+                }
+
+                this.TestArrowOffset = this.alphaNumericBarDriver.CalculateOffsetArrowMiddlePosition();
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -223,13 +375,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        private async Task<bool> DoLuminosityAsync(int luminosity)
+        private async Task<bool> DoTestArrowOnAsync(int offset)
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                return await this.alphaNumericBarDriver.SetLuminosityAsync(luminosity);
+                if (this.alphaNumericBarDriver.TestEnabled)
+                {
+                    await this.alphaNumericBarDriver.TestAsync(false);
+                }
+
+                return await this.alphaNumericBarDriver.SetCustomCharacterAsync(0, offset, true);
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -243,13 +400,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return false;
         }
 
-        private async Task<bool> DoSwitchOnAsync(bool switchOn)
+        private async Task<bool> DoTestLedAsync(bool enable)
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                return await this.alphaNumericBarDriver.SetEnabledAsync(switchOn);
+                return await this.alphaNumericBarDriver.TestAsync(enable);
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -263,13 +420,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return false;
         }
 
-        private async Task<bool> DoTestAsync(bool enable)
+        private async Task<bool> DoTestMessageOnAsync(string message, int offset)
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                return await this.alphaNumericBarDriver.SetTestAsync(enable);
+                if (this.alphaNumericBarDriver.TestEnabled)
+                {
+                    await this.alphaNumericBarDriver.TestAsync(false);
+                }
+
+                return await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, true);
             }
             catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -299,6 +461,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void SetDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
+        {
+            if (!(accessories.LaserPointer.DeviceInformation is null))
+            {
+                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
+                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
+                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
+
+                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
+                {
+                    this.ManufactureDate = "-";
+                }
+                else
+                {
+                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
+                }
             }
         }
 

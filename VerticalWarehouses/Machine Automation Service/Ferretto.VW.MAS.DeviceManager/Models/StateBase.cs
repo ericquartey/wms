@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager
 {
     internal abstract class StateBase : IState
@@ -26,14 +25,14 @@ namespace Ferretto.VW.MAS.DeviceManager
             this.ParentStateMachine = parentStateMachine;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            this.Logger.LogTrace($"State '{this.GetType().Name}' initialized.");
+            this.Logger.LogTrace("State '{0}' initialized.", this.GetType().Name);
         }
 
         #endregion
 
         #region Properties
 
-        public ILogger Logger { get; }
+        protected ILogger Logger { get; }
 
         protected IStateMachine ParentStateMachine { get; }
 
@@ -41,20 +40,14 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         #region Methods
 
-        /// <inheritdoc />
         public abstract void ProcessCommandMessage(CommandMessage message);
 
-        /// <inheritdoc />
         public abstract void ProcessFieldNotificationMessage(FieldNotificationMessage message);
 
-        /// <inheritdoc />
         public abstract void ProcessNotificationMessage(NotificationMessage message);
 
-        /// <inheritdoc />
         public abstract void Start();
 
-        /// <param name="reason"></param>
-        /// <inheritdoc />
         public abstract void Stop(StopRequestReason reason);
 
         #endregion

@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private bool CheckBayDestination(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay, LoadingUnitLocation destination, Mission mission, bool showErrors = true)
         {
-            bool returnValue = true;
+            var returnValue = true;
             Bay bay;
 #if CHECK_BAY_SENSOR
             if (this.SensorsProvider.IsLoadingUnitInLocation(destination))
@@ -132,10 +132,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             if (showErrors || !canRetry)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightExceeded, requestingBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightToBayExceeded, requestingBay);
                                 if (!showErrors)
                                 {
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitHeightExceeded, requestingBay, MessageActor.MachineManager);
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitHeightToBayExceeded, requestingBay, MessageActor.MachineManager);
                                 }
                             }
                             returnValue = false;
@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private bool IsDestinationOk(Mission mission, IMoveLoadingUnitMessageData messageData, BayNumber requestingBay, bool showErrors)
         {
-            bool returnValue = false;
+            var returnValue = false;
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
@@ -420,7 +420,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private bool IsMachineOk(IMoveLoadingUnitMessageData messageData, bool showErrors)
         {
-            bool returnValue = false;
+            var returnValue = false;
             switch (messageData.MissionType)
             {
                 case MissionType.Manual:

@@ -61,6 +61,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose configuration file.
+        /// </summary>
+        public static string ChooseConfigurationFile {
+            get {
+                return ResourceManager.GetString("ChooseConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
@@ -79,11 +88,20 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export configuration file.
+        ///   Looks up a localized string similar to Configuration folder.
         /// </summary>
-        public static string EsportConfigurationFile {
+        public static string ConfigurationFolder {
             get {
-                return ResourceManager.GetString("EsportConfigurationFile", resourceCulture);
+                return ResourceManager.GetString("ConfigurationFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export configuration.
+        /// </summary>
+        public static string EsportConfiguration {
+            get {
+                return ResourceManager.GetString("EsportConfiguration", resourceCulture);
             }
         }
         
@@ -106,11 +124,47 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not saved.
+        /// </summary>
+        public static string FileNotSaved {
+            get {
+                return ResourceManager.GetString("FileNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not valid or not inserted.
+        /// </summary>
+        public static string FileNotValidOrNotInserted {
+            get {
+                return ResourceManager.GetString("FileNotValidOrNotInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folders does not exist.
+        /// </summary>
+        public static string FoldersDoesNotExist {
+            get {
+                return ResourceManager.GetString("FoldersDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import configuration.
+        /// </summary>
+        public static string ImportConfiguration {
+            get {
+                return ResourceManager.GetString("ImportConfiguration", resourceCulture);
             }
         }
         
@@ -169,6 +223,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverters parameters folder.
+        /// </summary>
+        public static string InvertersParametersFolder {
+            get {
+                return ResourceManager.GetString("InvertersParametersFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverters parameters file generator.
         /// </summary>
         public static string InvertersParametersGeneratorTitle {
@@ -178,7 +241,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inverter {0} type {0} parameters configuration.
+        ///   Looks up a localized string similar to Inverter [{0}] type &apos;{1}&apos; parameters configuration.
         /// </summary>
         public static string InverterTypeParametersConfiguration {
             get {
@@ -241,6 +304,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save file configuration.
         /// </summary>
         public static string SaveFileConfiguration {
@@ -250,7 +322,16 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total parameters {0}.
+        ///   Looks up a localized string similar to Select file.
+        /// </summary>
+        public static string SelectFile {
+            get {
+                return ResourceManager.GetString("SelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to total parameters {0}.
         /// </summary>
         public static string TotalParameters {
             get {

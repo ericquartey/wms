@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.MAS.DataModels;
-using FileHelpers;
-using Newtonsoft.Json;
-using NLog;
-using OfficeOpenXml;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.Services
@@ -17,13 +11,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
     {
         #region Fields
 
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Newtonsoft.Json.Formatting.Indented
-        };
+        private readonly InvertersNodeService invertersNodeService;
 
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private IEnumerable<InverterNode> invertersNode;
+
+        private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         private string invertersParametersFolder;
 
@@ -31,14 +23,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         private WizardMode wizardMode;
 
-        private IEnumerable<InverterParametersDataInfo> invertersParameters;
-
         #endregion
 
         #region Constructors
 
         public ConfigurationService()
         {
+            this.invertersNodeService = new InvertersNodeService();
         }
 
         #endregion
@@ -47,11 +38,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         public static ConfigurationService GetInstance => new ConfigurationService();
 
-        public VertimagConfiguration VertimagConfiguration => this.vertimagConfiguration;
-        public string InvertersParametersFolder => this.invertersParametersFolder;
-        
-
         public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
+
+        public string InvertersParametersFolder => this.invertersParametersFolder;
+
+        public VertimagConfiguration VertimagConfiguration => this.vertimagConfiguration;
 
         public WizardMode WizardMode
         {
@@ -63,29 +54,26 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         #region Methods
 
-
-   
-        internal void ShowNotification(string info)
+        public void ConfigureInverterNode(byte inverterIndex, IEnumerable<InverterParameter> inverterParameters)
         {
-            
+            var nodeInverter = this.GetInverterNode(inverterIndex);
+            if (nodeInverter is null)
+            {
+                throw new ArgumentNullException($"Inverter {inverterIndex} not found on Inverters node");
+            }
+
+            foreach (var nodeParameter in nodeInverter.Parameters)
+            {
+                if (inverterParameters.SingleOrDefault(p => p.Code == nodeParameter.Code) is InverterParameter inverterParameter)
+                {
+                    inverterParameter.StringValue = nodeParameter.Value;
+                }
+            }
         }
 
- 
-
-
-
-        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
+        public InverterNode GetInverterNode(byte inverterIndex)
         {
-            try
-            {
-                File.WriteAllText(configurationFilePath, fileContents);
-            }
-            catch (Exception ex)
-            {
-                var msg = $" Error wrting configuration file \"{configurationFilePath}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
+            return this.invertersNode.SingleOrDefault(i => i.InverterIndex == inverterIndex);
         }
 
         public void SetConfiguration(string invertersParametersFolder, VertimagConfiguration vertimagConfiguration)
@@ -97,6 +85,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
         public void SetInvertersConfiguration(IEnumerable<InverterParametersDataInfo> invertersParameters)
         {
             this.invertersParameters = invertersParameters;
+            this.invertersNode = this.invertersNodeService.BuildMachineInverterNode(this.invertersParameters);
         }
 
         public void SetWizard(WizardMode nMode)
@@ -104,18 +93,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             this.WizardMode = nMode;
         }
 
-        public void ShowNotification(Exception ex)
-        {
-        }
-
         public void Start()
         {
             this.WizardMode = WizardMode.ImportConfiguration;
-        }
-
-        internal void Export()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

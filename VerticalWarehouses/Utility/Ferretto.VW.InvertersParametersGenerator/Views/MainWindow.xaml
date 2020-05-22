@@ -3,9 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Views"
-        xmlns:viewModels="clr-namespace:Ferretto.VW.InvertersParametersGenerator.ViewModels"
         xmlns:res="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Properties"
+        xmlns:views="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Views"
+        xmlns:viewModels="clr-namespace:Ferretto.VW.InvertersParametersGenerator.ViewModels"        
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:controls="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Controls"
+        xmlns:converters="clr-namespace:Ferretto.VW.InvertersParametersGenerator"
         mc:Ignorable="d"
         Title="{x:Static res:Resources.InvertersParametersGeneratorTitle}"
         Width="1024"
@@ -25,8 +28,82 @@
         <DataTemplate DataType="{x:Type viewModels:ExportConfigurationViewModel}">
             <views:ExportConfigurationView />
         </DataTemplate>
+
+        <Style x:Key="VWAPP_ViewErrorTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ErrorTextBlock_Foreground_Normal}" />
+            <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
     </Window.Resources>
     <Grid>
-        <ContentControl Content="{Binding CurrentMode}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <ContentControl  Margin="15 15 15 0" Content="{Binding CurrentMode}" />
+
+        <Grid Grid.Row="1"
+              Height="60"
+              Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.Resources>
+                <converters:NotificationSeverityToBrushConverter x:Key="NSTBC" />
+                <converters:NotificationSeverityToForegroundConverter x:Key="NSTFC" />
+                <converters:NotificationSeverityToIconNameConverter x:Key="NSTINC" />
+            </Grid.Resources>
+            <Border Margin="0,0,0,0"
+                Padding="15,5"
+                Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}"
+                Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <iconPacks:PackIconModern Width="32"
+                                          Height="32"
+                                          Margin="0,0,15,0"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
+                                          Kind="{Binding NotificationSeverity, Converter={StaticResource NSTINC}}" />
+                    <TextBlock Grid.Column="1"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
+                           Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
+                           Text="{Binding NotificationMessage}"
+                           TextWrapping="WrapWithOverflow" />
+                </Grid>
+            </Border>
+
+            <StackPanel Name="StackPanelButtons"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"                    
+                    Orientation="Horizontal">
+
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding PreviousCommand}"
+                                    Content="{x:Static res:Resources.Previous}"
+                                    />
+
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding NextCommand}"
+                                    Content="{x:Static res:Resources.Next}"
+                                    />
+
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Window>

@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accelerazione.
+        ///   Looks up a localized string similar to Acceleration.
         /// </summary>
         public static string Acceleration {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti guidati.
+        ///   Looks up a localized string similar to Assited Movements.
         /// </summary>
         public static string AssistedMovements {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Baia {0}.
+        ///   Looks up a localized string similar to Bay {0}.
         /// </summary>
         public static string Bay {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di modificare i parametri e i dispositivi della baia..
+        ///   Looks up a localized string similar to Allows to modify the parameters and devices of the bay..
         /// </summary>
         public static string Bay_CategoryDescription {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset zero catena.
+        ///   Looks up a localized string similar to Zero Chain Offset.
         /// </summary>
         public static string Bay_ChainOffset {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attiva.
+        ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string Bay_IsActive {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Doppia.
+        ///   Looks up a localized string similar to Double.
         /// </summary>
         public static string Bay_IsDouble {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Esterna.
+        ///   Looks up a localized string similar to External.
         /// </summary>
         public static string Bay_IsExternal {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Risoluzione.
+        ///   Looks up a localized string similar to Resolution.
         /// </summary>
         public static string Bay_Resolution {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lato.
+        ///   Looks up a localized string similar to Side.
         /// </summary>
         public static string Bay_Side {
             get {
@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giostra baia {0}.
+        ///   Looks up a localized string similar to Bay {0} Carousel.
         /// </summary>
         public static string BayCarousel {
             get {
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametri Giostra.
+        ///   Looks up a localized string similar to Carousel Parameter.
         /// </summary>
         public static string BayCarousel_Description {
             get {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inverter baia {0}.
+        ///   Looks up a localized string similar to Bay {0} Inverter.
         /// </summary>
         public static string BayInverter {
             get {
@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IoDevice baia {0}.
+        ///   Looks up a localized string similar to Bay {0} IoDevice.
         /// </summary>
         public static string BayIoDevice {
             get {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Laser baia {0}.
+        ///   Looks up a localized string similar to Bay {0} Laser.
         /// </summary>
         public static string BayLaser {
             get {
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Numero baia.
+        ///   Looks up a localized string similar to Bay number.
         /// </summary>
         public static string BayNumber {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to culla.
+        ///   Looks up a localized string similar to Cradle.
         /// </summary>
         public static string BayNumber_ElevatorBay {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quota.
+        ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string BayPosition_Height {
             get {
@@ -250,7 +250,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altezza massima doppia.
+        ///   Looks up a localized string similar to Maximum Double Height.
         /// </summary>
         public static string BayPosition_MaxDoubleHeight {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altezza massima standard.
+        ///   Looks up a localized string similar to Maximum Standard Height.
         /// </summary>
         public static string BayPosition_MaxSingleHeight {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset controllo sagoma.
+        ///   Looks up a localized string similar to Profile Check Offset.
         /// </summary>
         public static string BayPosition_ProfileOffset {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutter baia {0}.
+        ///   Looks up a localized string similar to Bay {0} Shutter.
         /// </summary>
         public static string BayShutter {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rigidezza della cinghia.
+        ///   Looks up a localized string similar to Belt Rigidity.
         /// </summary>
         public static string BeltRigidity {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distanza blocchi tensionamento cinghia.
+        ///   Looks up a localized string similar to DistanBelt tension block distance.
         /// </summary>
         public static string BeltSpacing {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giostra.
+        ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interasse mensole.
+        ///   Looks up a localized string similar to Elevator Distance.
         /// </summary>
         public static string Carousel_ElevatorDistance {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing.
+        ///   Looks up a localized string similar to Homing Creep Speed.
         /// </summary>
         public static string Carousel_HomingCreepSpeed {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing fast.
+        ///   Looks up a localized string similar to Homing Fast Speed.
         /// </summary>
         public static string Carousel_HomingFastSpeed {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decelerazione.
+        ///   Looks up a localized string similar to Deceleration.
         /// </summary>
         public static string Deceleration {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevatore.
+        ///   Looks up a localized string similar to Elevator.
         /// </summary>
         public static string Elevator {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di modificare i parametri dell&apos;elevatore e dei due assi ad esso associati..
+        ///   Looks up a localized string similar to Allows you to change the parameters of the elevator and the two associated axes..
         /// </summary>
         public static string Elevator_CategoryDescription {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Asse elevatore {0}.
+        ///   Looks up a localized string similar to Elevator Axis {0}.
         /// </summary>
         public static string ElevatorAxis {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Percentuale frenata.
+        ///   Looks up a localized string similar to Brake Activation percentage.
         /// </summary>
         public static string ElevatorAxis_BrakeActivatePercent {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tempo di rilascio in frenata.
+        ///   Looks up a localized string similar to Brake release time.
         /// </summary>
         public static string ElevatorAxis_BrakeReleaseTime {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset zero catena.
+        ///   Looks up a localized string similar to Zero Chain Offset.
         /// </summary>
         public static string ElevatorAxis_ChainOffset {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing.
+        ///   Looks up a localized string similar to Homing Creep Speed.
         /// </summary>
         public static string ElevatorAxis_HomingCreepSpeed {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing fast.
+        ///   Looks up a localized string similar to Homing Fast Speed.
         /// </summary>
         public static string ElevatorAxis_HomingFastSpeed {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limite asse inferiore.
+        ///   Looks up a localized string similar to Axis Lower Bound.
         /// </summary>
         public static string ElevatorAxis_LowerBound {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distanza max calibrazione sagoma.
+        ///   Looks up a localized string similar to Profile calibration max distance.
         /// </summary>
         public static string ElevatorAxis_ProfileCalibrateLength {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distanza sagoma lettura 6a ftc.
+        ///   Looks up a localized string similar to Reading profile distance 6a ftc.
         /// </summary>
         public static string ElevatorAxis_ProfileCalibratePosition {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità calibrazione sagoma.
+        ///   Looks up a localized string similar to Profile Calibration Speed.
         /// </summary>
         public static string ElevatorAxis_ProfileCalibrateSpeed {
             get {
@@ -466,7 +466,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Risoluzione.
+        ///   Looks up a localized string similar to Resolution.
         /// </summary>
         public static string ElevatorAxis_Resolution {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limite asse superiore.
+        ///   Looks up a localized string similar to Axis Upper Bound.
         /// </summary>
         public static string ElevatorAxis_UpperBound {
             get {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset posizionamento in deposito.
+        ///   Looks up a localized string similar to Vertical Deposit Offset.
         /// </summary>
         public static string ElevatorAxis_VerticalDepositOffset {
             get {
@@ -493,7 +493,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset posizionamento in prelievo.
+        ///   Looks up a localized string similar to Vertical Pickup Offset.
         /// </summary>
         public static string ElevatorAxis_VerticalPickupOffset {
             get {
@@ -502,7 +502,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso elevatore.
+        ///   Looks up a localized string similar to Elevator Weight.
         /// </summary>
         public static string ElevatorWeight {
             get {
@@ -511,11 +511,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti a vuoto.
+        ///   Looks up a localized string similar to Empty Load Movement.
         /// </summary>
         public static string EmptyLoadMovement {
             get {
                 return ResourceManager.GetString("EmptyLoadMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay {0} External.
+        /// </summary>
+        public static string ExternalBay {
+            get {
+                return ResourceManager.GetString("ExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Bay Parameters.
+        /// </summary>
+        public static string ExternalBay_Description {
+            get {
+                return ResourceManager.GetString("ExternalBay_Description", resourceCulture);
             }
         }
         
@@ -529,7 +547,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed Rate dopo zero asse.
+        ///   Looks up a localized string similar to Feed Rate after axis zero.
         /// </summary>
         public static string FeedRateAfterZero {
             get {
@@ -538,7 +556,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti a pieno carico.
+        ///   Looks up a localized string similar to Full Load Movement.
         /// </summary>
         public static string FullLoadMovement {
             get {
@@ -547,7 +565,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lunghezza semi albero.
+        ///   Looks up a localized string similar to Half Shaft length.
         /// </summary>
         public static string HalfShaftLength {
             get {
@@ -565,7 +583,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indice.
+        ///   Looks up a localized string similar to Index.
         /// </summary>
         public static string Inverter_Index {
             get {
@@ -583,7 +601,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Porta Inverter.
+        ///   Looks up a localized string similar to Inverter Port.
         /// </summary>
         public static string Inverter_TcpPort {
             get {
@@ -592,7 +610,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo Inverter.
+        ///   Looks up a localized string similar to Inverter Type.
         /// </summary>
         public static string Inverter_Type {
             get {
@@ -610,7 +628,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indice IoDevice.
+        ///   Looks up a localized string similar to IoDevice Index.
         /// </summary>
         public static string IoDevice_Index {
             get {
@@ -628,7 +646,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Porta IoDevice.
+        ///   Looks up a localized string similar to IoDevice Port.
         /// </summary>
         public static string IoDevice_TcpPort {
             get {
@@ -655,7 +673,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Porta Laser.
+        ///   Looks up a localized string similar to Laser Port.
         /// </summary>
         public static string Laser_TcpPort {
             get {
@@ -664,7 +682,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Macchina.
+        ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
             get {
@@ -673,7 +691,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di modificare i parametri strutturali della macchina..
+        ///   Looks up a localized string similar to Allows you to modify the structural parameters of the machine..
         /// </summary>
         public static string Machine_CategoryDescription {
             get {
@@ -682,7 +700,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altezza.
+        ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Machine_Height {
             get {
@@ -691,7 +709,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altezza massima cassetto.
+        ///   Looks up a localized string similar to Max Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {
             get {
@@ -700,7 +718,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso netto massimo cassetto.
+        ///   Looks up a localized string similar to Max Drawer NetWeight.
         /// </summary>
         public static string Machine_LoadUnitMaxNetWeight {
             get {
@@ -709,7 +727,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altezza minima cassetto.
+        ///   Looks up a localized string similar to Min Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMinHeight {
             get {
@@ -718,7 +736,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tara cassetto.
+        ///   Looks up a localized string similar to Drawer Tare.
         /// </summary>
         public static string Machine_LoadUnitTare {
             get {
@@ -727,7 +745,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso lordo massimo macchina.
+        ///   Looks up a localized string similar to Machine Max Gross Weight.
         /// </summary>
         public static string Machine_MaxGrossWeight {
             get {
@@ -736,7 +754,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modello.
+        ///   Looks up a localized string similar to Model.
         /// </summary>
         public static string Machine_ModelName {
             get {
@@ -745,7 +763,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Matricola.
+        ///   Looks up a localized string similar to Serial Number.
         /// </summary>
         public static string Machine_SerialNumber {
             get {
@@ -754,7 +772,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti manuali.
+        ///   Looks up a localized string similar to Manual Movements.
         /// </summary>
         public static string ManualMovements {
             get {
@@ -763,7 +781,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Costante K0 pesatura.
+        ///   Looks up a localized string similar to Weighing K0 constant.
         /// </summary>
         public static string MeasureConst0 {
             get {
@@ -772,7 +790,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Costante K1 pesatura.
+        ///   Looks up a localized string similar to Weighing K1 constant.
         /// </summary>
         public static string MeasureConst1 {
             get {
@@ -781,7 +799,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Costante K2 pesatura.
+        ///   Looks up a localized string similar to Weighing K2 constant.
         /// </summary>
         public static string MeasureConst2 {
             get {
@@ -790,7 +808,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità pesatura.
+        ///   Looks up a localized string similar to Measure Speed.
         /// </summary>
         public static string MeasureSpeed {
             get {
@@ -799,7 +817,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tempo pesatura.
+        ///   Looks up a localized string similar to Measure Time.
         /// </summary>
         public static string MeasureTime {
             get {
@@ -817,7 +835,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lungo deposito.
+        ///   Looks up a localized string similar to Long Deposit.
         /// </summary>
         public static string MovementProfileType_LongDeposit {
             get {
@@ -826,7 +844,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lungo prelievo.
+        ///   Looks up a localized string similar to Long Pickup.
         /// </summary>
         public static string MovementProfileType_LongPickup {
             get {
@@ -835,7 +853,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Corto deposito.
+        ///   Looks up a localized string similar to Short Deposit.
         /// </summary>
         public static string MovementProfileType_ShortDeposit {
             get {
@@ -844,7 +862,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Corto prelievo.
+        ///   Looks up a localized string similar to Short Pickup.
         /// </summary>
         public static string MovementProfileType_ShortPickup {
             get {
@@ -853,7 +871,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non definito.
+        ///   Looks up a localized string similar to Undefined.
         /// </summary>
         public static string MovementProfileType_Undefined {
             get {
@@ -862,7 +880,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configurazione di rete.
+        ///   Looks up a localized string similar to Network Configuration.
         /// </summary>
         public static string NetworkConfiguration {
             get {
@@ -871,7 +889,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to orizzontale.
+        ///   Looks up a localized string similar to Horizontal.
         /// </summary>
         public static string Orientation_Horizontal {
             get {
@@ -880,7 +898,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to verticale.
+        ///   Looks up a localized string similar to Vertical.
         /// </summary>
         public static string Orientation_Vertical {
             get {
@@ -889,7 +907,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posizione {0}.
+        ///   Looks up a localized string similar to Position {0}.
         /// </summary>
         public static string Position {
             get {
@@ -898,7 +916,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diametro primitivo puleggia.
+        ///   Looks up a localized string similar to Pulley Diameter.
         /// </summary>
         public static string PulleyDiameter {
             get {
@@ -907,7 +925,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diametro albero.
+        ///   Looks up a localized string similar to Race.
+        /// </summary>
+        public static string Race {
+            get {
+                return ResourceManager.GetString("Race", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shaft Diameter.
         /// </summary>
         public static string ShaftDiameter {
             get {
@@ -916,7 +943,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modulo di elasticità.
+        ///   Looks up a localized string similar to Shaft Elasticity.
         /// </summary>
         public static string ShaftElasticity {
             get {
@@ -925,7 +952,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mov. guidati serranda.
+        ///   Looks up a localized string similar to Shutter Assisted Movements.
         /// </summary>
         public static string Shutter_AssistedMovements {
             get {
@@ -934,7 +961,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mov. manuali serranda.
+        ///   Looks up a localized string similar to Shutter Manual Movements.
         /// </summary>
         public static string Shutter_ManualMovements {
             get {
@@ -943,7 +970,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo serranda.
+        ///   Looks up a localized string similar to Shutter Type.
         /// </summary>
         public static string Shutter_Type {
             get {
@@ -952,7 +979,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed rate serranda.
+        ///   Looks up a localized string similar to Shutter Feed Rate.
         /// </summary>
         public static string ShutterManualParameters_FeedRate {
             get {
@@ -961,7 +988,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata chiusura serranda.
+        ///   Looks up a localized string similar to Shutter close duration.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedDurationClose {
             get {
@@ -970,7 +997,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata apertura serranda.
+        ///   Looks up a localized string similar to Shutter open duration.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedDurationOpen {
             get {
@@ -979,7 +1006,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata chiusura a metà serranda.
+        ///   Looks up a localized string similar to Shutter half close duration.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedHalfDurationClose {
             get {
@@ -988,7 +1015,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata apertura a metà serranda.
+        ///   Looks up a localized string similar to Shutter half open duration.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedHalfDurationOpen {
             get {
@@ -997,7 +1024,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità massima serranda.
+        ///   Looks up a localized string similar to Shutter Max speed.
         /// </summary>
         public static string ShutterManualParameters_MaxSpeed {
             get {
@@ -1006,7 +1033,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità minima serranda.
+        ///   Looks up a localized string similar to Shutter Min speed.
         /// </summary>
         public static string ShutterManualParameters_MinSpeed {
             get {
@@ -1015,7 +1042,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non specificato.
+        ///   Looks up a localized string similar to Not Specified.
         /// </summary>
         public static string ShutterType_NotSpecified {
             get {
@@ -1024,7 +1051,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tre sensori.
+        ///   Looks up a localized string similar to Three Sensor.
         /// </summary>
         public static string ShutterType_ThreeSensors {
             get {
@@ -1033,7 +1060,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Due sensori.
+        ///   Looks up a localized string similar to Two Sensor.
         /// </summary>
         public static string ShutterType_TwoSensors {
             get {
@@ -1042,7 +1069,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità.
+        ///   Looks up a localized string similar to Speed.
         /// </summary>
         public static string Speed {
             get {
@@ -1051,7 +1078,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correggi accelerazone con peso.
+        ///   Looks up a localized string similar to Adjust acceleration by height.
         /// </summary>
         public static string StepMovementParameters_AdjustAccelerationByWeight {
             get {
@@ -1060,7 +1087,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correggi velocità con peso.
+        ///   Looks up a localized string similar to Adjust speed by weight.
         /// </summary>
         public static string StepMovementParameters_AdjustSpeedByWeight {
             get {
@@ -1069,7 +1096,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Numero.
+        ///   Looks up a localized string similar to Number.
         /// </summary>
         public static string StepMovementParameters_Number {
             get {
@@ -1078,7 +1105,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posizione.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string StepMovementParameters_Position {
             get {
@@ -1087,7 +1114,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali.
+        ///   Looks up a localized string similar to Max distance with manual movement.
         /// </summary>
         public static string TargetDistance {
             get {
@@ -1096,7 +1123,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali dopo zero asse.
+        ///   Looks up a localized string similar to Max distance with manual movement ater axis zero setup.
         /// </summary>
         public static string TargetDistanceAfterZero {
             get {
@@ -1105,7 +1132,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Totale distanza.
+        ///   Looks up a localized string similar to Total Distance.
         /// </summary>
         public static string TotalDistance {
             get {

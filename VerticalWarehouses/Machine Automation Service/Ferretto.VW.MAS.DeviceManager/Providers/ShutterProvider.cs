@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (direction == ShutterMovementDirection.NotSpecified)
             {
-                throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
+                throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("ThePositionIsNotValid", CommonUtils.Culture.Actual));
             }
 
             var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (bay.Shutter.Type == ShutterType.NotSpecified)
             {
-                throw new InvalidOperationException(Resources.Shutters.TheShutterTypeIsNotValid);
+                throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheShutterTypeIsNotValid", CommonUtils.Culture.Actual));
             }
 
             // speed is negative to go up
@@ -214,12 +214,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (delayInSeconds < 0)
             {
-                throw new InvalidOperationException(Resources.Shutters.TheDelayBetweenTestCyclesMustBeStrictlyPositive);
+                throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheDelayBetweenTestCyclesMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
             if (testCycleCount <= 0)
             {
-                throw new InvalidOperationException(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
+                throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheNumberOfTestCyclesMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
             var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);

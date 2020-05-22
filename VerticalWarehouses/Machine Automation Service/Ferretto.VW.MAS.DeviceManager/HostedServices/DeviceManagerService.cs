@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
@@ -295,7 +296,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                             // NEW block
                             case MessageType.Positioning:
-                                if (messageCurrentStateMachine is PositioningStateMachine)
+                                if (messageCurrentStateMachine is PositioningStateMachine ||
+                                    messageCurrentStateMachine is ExtBayPositioningStateMachine)
                                 {
                                     // deallocate only Positioning state machine
                                     this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
@@ -538,7 +540,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (receivedMessage.Status == MessageStatus.OperationUpdateData)
             {
-                string s = string.Empty;
+                var s = string.Empty;
             }
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();

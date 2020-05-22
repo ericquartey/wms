@@ -1,15 +1,20 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Windows;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
+using NLog;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 {
-    public class MainViewModel : BindableBase
+    public class MainViewModel : BindableBase, IParentActionChanged
     {
         #region Fields
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private ConfigurationService configurationService;
 
@@ -18,6 +23,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private IOperationResult exportConfigurationViewModel;
 
         private IOperationResult invertersViewModel;
+
+        private DelegateCommand nextCommand;
+
+        private string notificationMessage;
+
+        private NotificationSeverity notificationSeverity;
+
+        private DelegateCommand previousCommand;
 
         private IOperationResult setParametersViewModel;
 
@@ -33,51 +46,146 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.currentMode, value);
         }
 
+        public ICommand NextCommand =>
+                this.nextCommand
+                ??
+                (this.nextCommand = new DelegateCommand(this.Next, this.CanNext));
+
+        public string NotificationMessage
+        {
+            get => this.notificationMessage;
+            set => this.SetProperty(ref this.notificationMessage, value);
+        }
+
+        public NotificationSeverity NotificationSeverity
+        {
+            get => this.notificationSeverity;
+            set => this.SetProperty(ref this.notificationSeverity, value);
+        }
+
+        public ICommand PreviousCommand =>
+                        this.previousCommand
+                        ??
+                        (this.previousCommand = new DelegateCommand(this.Previous, this.CanPrevious));
+
         #endregion
 
         #region Methods
 
+        public void Notify(string message, NotificationSeverity notificationSeverity)
+        {
+            if (message is null)
+            {
+                return;
+            }
+
+            this.NotificationSeverity = notificationSeverity;
+            this.NotificationMessage = message;
+
+            Task.Delay(10000).ContinueWith(t => this.NotificationMessage = null, TaskScheduler.Current);
+        }
+
+        public void Notify(Exception exception, NotificationSeverity notificationSeverity)
+        {
+            if (exception is null)
+            {
+                return;
+            }
+
+            this.NotificationSeverity = notificationSeverity;
+            this.NotificationMessage = exception.Message;
+
+            this.logger.Error(exception, this.NotificationMessage);
+
+            Task.Delay(10000).ContinueWith(t => this.NotificationMessage = null, TaskScheduler.Current);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            this.nextCommand?.RaiseCanExecuteChanged();
+            this.previousCommand?.RaiseCanExecuteChanged();
+        }
+
         public void StartInstallation()
         {
             this.configurationService = ConfigurationService.GetInstance;
-            this.configurationService.PropertyChanged += this.InstallationService_PropertyChanged;
             this.configurationService.Start();
+            this.ChangeMode(true);
         }
 
-        private void Close()
+        private bool CanNext()
         {
-            Application.Current.Shutdown(this.CurrentMode?.IsSuccessful == true ? 0 : -1);
+            return this.currentMode?.CanNext == true;
         }
 
-        private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private bool CanPrevious()
         {
-            if (e.PropertyName == nameof(WizardMode))
+            return this.currentMode?.CanPrevious == true;
+        }
+
+        private void ChangeMode(bool isNext)
+        {
+            switch (this.configurationService.WizardMode)
             {
-                switch (this.configurationService.WizardMode)
-                {
-                    case WizardMode.None:
-                        throw new InvalidOperationException("Can't change on current mode:Wizard not supported.");
+                case WizardMode.None:
+                    throw new InvalidOperationException("Can't change on current mode:Wizard not supported.");
 
-                    case WizardMode.ImportConfiguration:
-                        this.CurrentMode = this.vertimagConfigurationViewModel ?? (this.vertimagConfigurationViewModel = new VertimagConfigurationViewModel(this.configurationService));
-                        break;
+                case WizardMode.ImportConfiguration:
+                    if (isNext)
+                    {
+                        this.CurrentMode = this.vertimagConfigurationViewModel = new VertimagConfigurationViewModel(this.configurationService, this);
+                    }
+                    this.CurrentMode = this.vertimagConfigurationViewModel;
+                    break;
 
-                    case WizardMode.Inverters:
-                        this.CurrentMode = this.invertersViewModel ?? (this.invertersViewModel = new InvertersViewModel(this.configurationService));
-                        break;
+                case WizardMode.Inverters:
+                    if (isNext)
+                    {
+                        this.CurrentMode = this.invertersViewModel = new InvertersViewModel(this.configurationService, this);
+                    }
 
-                    case WizardMode.Parameters:
-                        this.CurrentMode = this.setParametersViewModel ?? (this.setParametersViewModel = new SetParametersViewModel(this.configurationService));
-                        break;
+                    this.CurrentMode = this.invertersViewModel;
+                    break;
 
-                    case WizardMode.ExportConfiguration:
-                        this.CurrentMode = this.exportConfigurationViewModel ?? (this.exportConfigurationViewModel = new ExportConfigurationViewModel(this.configurationService));
-                        break;
+                case WizardMode.Parameters:
+                    if (isNext)
+                    {
+                        this.CurrentMode = this.setParametersViewModel = new SetParametersViewModel(this.configurationService, this);
+                    }
 
-                    default:
-                        break;
-                }
+                    this.CurrentMode = this.setParametersViewModel;
+                    break;
+
+                case WizardMode.ExportConfiguration:
+                    if (isNext)
+                    {
+                        this.CurrentMode = this.exportConfigurationViewModel = new ExportConfigurationViewModel(this.configurationService, this);
+                    }
+
+                    this.CurrentMode = this.exportConfigurationViewModel;
+                    break;
+
+                default:
+                    break;
             }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void Next()
+        {
+            if (!this.CurrentMode.Next())
+            {
+                return;
+            }
+
+            this.ChangeMode(true);
+        }
+
+        private void Previous()
+        {
+            this.CurrentMode.Previous();
+            this.ChangeMode(false);
         }
 
         #endregion

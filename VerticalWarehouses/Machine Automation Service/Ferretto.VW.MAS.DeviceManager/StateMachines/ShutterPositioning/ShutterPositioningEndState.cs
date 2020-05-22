@@ -14,7 +14,6 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningEndState : StateBase
@@ -31,8 +30,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEndState(IShutterPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public ShutterPositioningEndState(IShutterPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
@@ -82,7 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                         case MessageStatus.OperationError:
                             this.stateData.FieldMessage = message;
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                             break;
                     }
                     break;

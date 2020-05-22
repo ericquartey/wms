@@ -9,7 +9,9 @@ namespace Ferretto.VW.InvertersParametersGenerator
 
         private const string InvertersParametersRootPath = "InvertersParameters:Root:Path";
 
-        private const string VertimagConfigurationRootPath = "VertimagConfiguration:Root:Pat";
+        private const string VertimagConfigurationRootPath = "VertimagConfiguration:Root:Path";
+
+        private const string VertimagExportConfigurationRootPath = "VertimagExportConfiguration:Root:Path";
 
         #endregion
 
@@ -46,6 +48,23 @@ namespace Ferretto.VW.InvertersParametersGenerator
             catch (Exception ex)
             {
                 throw new Exception($"The configuration key '{VertimagConfigurationRootPath}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetVertimagExportConfigurationRootPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(VertimagExportConfigurationRootPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{VertimagExportConfigurationRootPath}' is not specified or invalid.", ex);
             }
         }
 

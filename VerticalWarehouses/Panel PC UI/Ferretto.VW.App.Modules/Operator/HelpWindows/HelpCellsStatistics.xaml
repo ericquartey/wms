@@ -24,7 +24,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.CellsStatisticsHeader}" />
+                   Text="{res:Loc OperatorApp.CellsStatisticsHeader}" />
 
         <TextBlock Width="670"
                    Height="60"
@@ -54,7 +54,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderState}" />
+                   Text="{res:Loc OperatorApp.StatisticsCellsDataGridHeaderState}" />
 
         <TextBlock Width="260"
                    Height="70"
@@ -69,60 +69,60 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderFront}" />
+                   Text="{res:Loc OperatorApp.StatisticsCellsDataGridHeaderFront}" />
 
         <TextBlock Width="180"
                    Margin="20,290,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}" />
+                   Text="{res:Loc OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}" />
 
         <TextBlock Width="180"
                    Margin="20,360,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderBack}" />
+                   Text="{res:Loc OperatorApp.StatisticsCellsDataGridHeaderBack}" />
 
         <TextBlock Width="180"
                    Margin="20,430,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}" />
+                   Text="{res:Loc OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,190,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="300"
-                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsFrontCellsTotal}" />
+                                 LabelText="{res:Loc OperatorApp.CellsStatisticsFrontCellsTotal}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,120,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="630"
-                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsCellsTotal}" />
+                                 LabelText="{res:Loc OperatorApp.CellsStatisticsCellsTotal}" />
 
         <controls:PpcButton Margin="530,400,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.CellsStatisticsOther}" />
+                            Content="{res:Loc OperatorApp.CellsStatisticsOther}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,260,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="330"
-                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsRearCellsTotal}" />
+                                 LabelText="{res:Loc OperatorApp.CellsStatisticsRearCellsTotal}" />
 
         <controls:CustomProgressBarControl Width="200"
                                            Margin="530,330,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static res:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                           LabelText="{res:Loc OperatorApp.CellsStatisticsTotalUsedCells}"
                                            ProgressionValue="87" />
 
         <TextBlock Width="260"

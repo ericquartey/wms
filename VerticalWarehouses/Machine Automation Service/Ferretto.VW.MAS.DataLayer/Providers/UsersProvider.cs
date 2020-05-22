@@ -38,12 +38,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(userName));
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(password));
             }
 
             lock (this.dataContext)
@@ -67,12 +67,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(userName));
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(password));
             }
 
             lock (this.dataContext)
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var window = new VerificationWindow(previous: 1, future: 1);
 
                 // Execute validation
-                bool verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
+                var verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
                 return verification;
             }
         }

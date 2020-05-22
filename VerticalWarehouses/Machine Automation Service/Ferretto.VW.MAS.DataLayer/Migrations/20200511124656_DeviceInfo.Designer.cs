@@ -1071,6 +1071,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Code");
 
+                    b.Property<string>("AdditionalText");
+
                     b.Property<int>("DetailCode");
 
                     b.Property<int>("InverterIndex");
@@ -1655,7 +1657,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
-                    b.Property<bool>("AdjustByWeight");
+                    b.Property<bool>("AdjustAccelerationByWeight");
+
+                    b.Property<bool>("AdjustSpeedByWeight");
 
                     b.Property<int?>("MovementProfileId");
 

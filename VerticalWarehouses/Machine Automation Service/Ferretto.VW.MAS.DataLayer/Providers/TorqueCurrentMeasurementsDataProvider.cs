@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (loadedNetWeight.HasValue && !loadingUnitId.HasValue)
             {
-                throw new InvalidOperationException(Resources.TorqueCurrent.CannotSpecifyLoadedNet);
+                throw new InvalidOperationException(Resources.TorqueCurrent.ResourceManager.GetString("CannotSpecifyLoadedNet", CommonUtils.Culture.Actual));
             }
 
             var entry = this.dataContext.TorqueCurrentMeasurementSessions.Add(

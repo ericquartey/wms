@@ -1,0 +1,53 @@
+parameters:
+  BuildConfiguration: 'debug'
+  BuildPlatform: 'any cpu'   
+  RestoreBuildProjects: '**/Ferretto.VW.InvertersParametersGenerator.csproj'  
+  TargetFramework: 'netcoreapp3.1'
+  RuntimeIdentifier: 'win10-x64'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }}' 
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }} --no-build --no-restore'
+    zipAfterPublish: false
+
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: inverter_parameters_utility'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
+    ArtifactName: 'inverter_parameters_utility'
+
+

@@ -38,7 +38,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Stretch"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MaintenanceMainPageHeader}" />
+                   Text="{Resources:Loc OperatorApp.MaintenanceMainPageHeader}" />
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -55,21 +55,21 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="VRT EF 84 L 990-BIS H 6345"
-                                     LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageModel}" />
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageModel}" />
 
             <controls:PpcLabeledText Grid.Column="1"
                                      Margin="15,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="15-04-2017"
-                                     LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageInstallationDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageInstallationDate}" />
 
             <controls:PpcLabeledText Grid.Column="2"
                                      Margin="15,15,15,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="20-04-2019"
-                                     LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
@@ -77,7 +77,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="VW_190012"
-                                     LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageSerial}" />
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageSerial}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
@@ -85,7 +85,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="20-04-2018"
-                                     LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
 
             <Grid Grid.Row="1"
                   Grid.Column="2"
@@ -106,7 +106,7 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="Manutenzione richiesta"
-                                         LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageStateMachine}" />
+                                         LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageStateMachine}" />
             </Grid>
 
 
@@ -133,13 +133,13 @@
             <controls:PpcButton Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Content="{x:Static Resources:OperatorApp.CommonUp}" />
+                                Content="{Resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Content="{x:Static Resources:OperatorApp.CommonDown}" />
+                                Content="{Resources:Loc OperatorApp.CommonDown}" />
         </Grid>
 
         <controls:PpcButton Grid.Row="3"
@@ -148,6 +148,6 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="top"
                             Command="{Binding MaintenanceDetailButtonCommand}"
-                            Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
+                            Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
     </Grid>
 </ctrls:View>

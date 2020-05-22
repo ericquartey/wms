@@ -3,6 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:WmsControls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -19,6 +20,16 @@
             mc:Ignorable="d">
 
     <Grid Margin="15,0,0,0">
+
+        <Grid.Resources>
+            <converters:BoolToBrushConverter x:Key="BoolToGreenRedConverter"
+                                             FalseBrush="{StaticResource FerrettoRed}"
+                                             TrueBrush="{StaticResource FerrettoGreen}" />
+
+            <converters:BoolToIconKindConverter x:Key="BoolToValidationIconConverter"
+                                                FalseKind="AlertCircle"
+                                                TrueKind="CheckboxMarkedCircle" />
+        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -45,7 +56,7 @@
                        Margin="10,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
+                       Text="{resources:Loc OperatorApp.DrawerActivityRefillingHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -127,13 +138,28 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Margin="8,4"
+                        <TextBlock x:Name="ItemCodeValue"
+                                   Margin="8,4"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static resources:OperatorApp.ItemCode}" />
+                                   Text="{resources:Loc OperatorApp.ItemCode}" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Visibility="{Binding MissionOperation.ItemCode, Converter={StaticResource RTVC}}">
+                            <iconPacks:PackIconMaterial Width="18"
+                                                        Height="18"
+                                                        Margin="5"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Foreground="{Binding IsItemCodeValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                                        Kind="{Binding IsItemCodeValid, Converter={StaticResource BoolToValidationIconConverter}}"
+                                                        Visibility="{Binding InputItemCode, Converter={StaticResource RTVC}}" />
+
+                        </Border>
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -175,7 +201,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
+                                   Text="{resources:Loc OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -196,17 +222,28 @@
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
+                               LabelText="{Binding MeasureUnitDescription}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MaxValue="{Binding MissionOperation.RequestedQuantity}"
                                MinValue="0" />
+
+            <Border Grid.Row="2"
+                    Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">
+                <iconPacks:PackIconMaterial Width="18"
+                                            Height="18"
+                                            Margin="20"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Foreground="{Binding IsInputQuantityValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                            Kind="{Binding IsInputQuantityValid, Converter={StaticResource BoolToValidationIconConverter}}"
+                                            Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}" />
+            </Border>
 
             <controls:PpcButton Grid.Row="3"
                                 Margin="15,15,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding ShowDetailsCommand}"
-                                Content="{x:Static resources:OperatorApp.Details}"
+                                Content="{resources:Loc OperatorApp.Details}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="4"
@@ -214,7 +251,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding FullOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
+                                Content="{resources:Loc OperatorApp.ConfirmOnFull}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
@@ -223,7 +260,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.Confirm}"
+                                Content="{resources:Loc OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
@@ -233,7 +270,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCanceledCommand}"
-                                Content="{x:Static resources:OperatorApp.CancelPut}"
+                                Content="{resources:Loc OperatorApp.CancelPut}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />

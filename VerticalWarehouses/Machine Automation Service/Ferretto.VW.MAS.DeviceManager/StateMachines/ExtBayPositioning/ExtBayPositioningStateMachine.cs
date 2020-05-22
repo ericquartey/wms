@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         private readonly IExtBayPositioningMachineData machineData;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        private readonly IBaysDataProvider baysDataProvider;
+
         #endregion
 
         #region Constructors
@@ -39,8 +43,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             : base(targetBay, eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
-
-            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - MovementType = {messageData.MovementType}");
+            this.baysDataProvider = baysDataProvider;
+            this.machineResourcesProvider = machineResourcesProvider;
 
             this.machineData = new ExtBayPositioningMachineData(
                 requester,
@@ -99,7 +103,9 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 if (this.machineData.MessageData.BypassConditions ||
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    this.ChangeState(new ExtBayPositioningStartState(stateData));
+                    var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+
+                    this.ChangeState(new ExtBayPositioningStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -121,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                         MessageStatus.OperationStart);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.ChangeState(new ExtBayPositioningErrorState(stateData));
+                    this.ChangeState(new ExtBayPositioningErrorState(stateData, this.Logger));
                 }
             }
         }
@@ -148,7 +154,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayChain)
+            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayChain ||
+                this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
             {
 #if CHECK_BAY_SENSOR
                 var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
@@ -166,13 +173,16 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 else
 #endif
                 {
-                    // TODO: Check the zero bay sensor condition (??)
-                    //ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
-                    //if (!ok)
-                    //{
-                    //    errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
-                    //    errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
-                    //}
+                    if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+                    {
+                        // Check the zero bay sensor condition
+                        ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                        if (!ok)
+                        {
+                            errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
+                            errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                        }
+                    }
                 }
             }
             return ok;

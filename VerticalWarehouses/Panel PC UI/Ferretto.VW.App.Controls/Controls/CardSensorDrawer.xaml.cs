@@ -121,11 +121,11 @@ namespace Ferretto.VW.App.Controls.Controls
 
         protected void OnDataRefresh()
         {
-            LoadingUnit lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
-            this.Position = SensorCard.Elevator;
+            var lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
+            this.Position = Localized.Get("SensorCard.Elevator");
             if (lu is null)
             {
-                this.Position = SensorCard.Position;
+                this.Position = Localized.Get("SensorCard.Position");
                 lu = this.machineService.MachineStatus.ElevatorPositionLoadingUnit;
             }
             if (lu is null)

@@ -10,6 +10,8 @@
 
         public const string ERRORLOADUNITMISSING = "ErrorLoadunitMissingViewModel";
 
+        public const string ERRORLOADUNITERRORS = "ErrorLoadUnitErrorsViewModel";
+
         #endregion
     }
 }

@@ -73,6 +73,13 @@ namespace Ferretto.VW.MAS.DataModels
             return this.RestoreStep != MissionStep.NotDefined;
         }
 
+        public bool IsMissionWaiting()
+        {
+            return (this.Status is MissionStatus.Waiting && this.Step is MissionStep.BayChain)
+            || (this.Status is MissionStatus.Executing && this.Step is MissionStep.WaitDeposit)
+            || (this.Status is MissionStatus.Executing && this.Step is MissionStep.BackToBay);
+        }
+
         public bool IsRestoringType()
         {
             return this.MissionType is MissionType.WMS

@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService;
 
-            var versionAttribute = this.GetType().Assembly
+            var versionAttribute = Assembly.GetEntryAssembly()
                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
                 .FirstOrDefault() as AssemblyInformationalVersionAttribute;
 
@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
-           // await base.OnHealthStatusChangedAsync(e);
+            // await base.OnHealthStatusChangedAsync(e);
 
             await this.RetrieveMachineInfoAsync();
         }

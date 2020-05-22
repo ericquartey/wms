@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         moveLoadingUnitProvider.EjectFromCell(MissionType.FirstTest, this.loadUnitSource, loadUnitId.Value, machineProvider.BayTestNumber, MessageActor.MissionManager);
                         returnValue = true;
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         // no more testing is possible. Exit from test mode
                         //this.logger.LogError(e, e.Message);
@@ -478,7 +478,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (mission.WmsId.HasValue)
                 {
-                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, activeMissions, mission);
+                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, mission);
                 }
                 else if (mission.Status is MissionStatus.New)
                 {
@@ -511,10 +511,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             MessageActor.MissionManager);
                     }
                 }
-                else if (
-                    (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.BayChain)
-                    || (mission.Status is MissionStatus.Executing && mission.Step is MissionStep.WaitDeposit)
-                    )
+                else if (mission.IsMissionWaiting())
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
 
@@ -963,10 +960,15 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
+            var servicingInfo = serviceProvider.GetRequiredService<IServicingProvider>();
+            servicingInfo.CheckServicingInfo();
+
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
+
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.RestoreFullTest(serviceProvider);
+
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
@@ -992,7 +994,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
-                else if (message.Status == MessageStatus.OperationError)
+                else if (message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationRunningStop
+                    )
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
 
@@ -1088,6 +1092,27 @@ namespace Ferretto.VW.MAS.MissionManager
             this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
         }
 
+        /// <summary>
+        /// we get this message every hour
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
+        {
+            // at midnight it is time do do some housework
+            if (DateTime.UtcNow.Hour == 0)
+            {
+                this.Logger.LogInformation($"OnTimePeriodElapsed");
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+                // clean missions
+                missionsDataProvider.PurgeWmsMissions();
+
+                // elevator homing every new day
+                this.machineVolatileDataProvider.IsHomingExecuted = false;
+            }
+        }
+
         private void RestoreFullTest(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -1123,7 +1148,10 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task ScheduleWmsMissionAsync(BayNumber bayNumber, IServiceProvider serviceProvider, IEnumerable<Mission> activeMissions, Mission mission)
+        private async Task ScheduleWmsMissionAsync(
+            BayNumber bayNumber,
+            IServiceProvider serviceProvider,
+            Mission mission)
         {
             System.Diagnostics.Debug.Assert(mission.WmsId.HasValue);
 

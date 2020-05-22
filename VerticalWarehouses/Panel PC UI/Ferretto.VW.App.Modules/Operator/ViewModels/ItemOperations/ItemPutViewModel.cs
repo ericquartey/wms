@@ -9,7 +9,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
+    public class ItemPutViewModel : BaseItemOperationMainViewModel
     {
         #region Fields
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemPut.ToString();
+        public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
         public ICommand FullOperationCommand =>
             this.fullOperationCommand
@@ -46,9 +46,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
             // do nothing
+            return Task.CompletedTask;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
         public override void OnMisionOperationRetrieved()

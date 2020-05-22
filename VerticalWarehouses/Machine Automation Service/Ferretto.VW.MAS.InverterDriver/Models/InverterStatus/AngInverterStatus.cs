@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private int currentPositionAxisVertical;
 
-        private bool waitingHeartbeatAck;
-
         #endregion
 
         #region Constructors
@@ -168,24 +166,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 }
 
                 throw new InvalidOperationException($"Current Status Word Type {this.statusWord.GetType().Name} is not compatible with TableTravel Mode");
-            }
-        }
-
-        public bool WaitingHeartbeatAck
-        {
-            get
-            {
-                lock (this)
-                {
-                    return this.waitingHeartbeatAck;
-                }
-            }
-            set
-            {
-                lock (this)
-                {
-                    this.waitingHeartbeatAck = value;
-                }
             }
         }
 

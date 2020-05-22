@@ -1284,4 +1284,10 @@
   <data name="HelpAlphaNumericDescription" xml:space="preserve">
     <value>Maschera di configurazione dei parametri della barra alfanumerica.</value>
   </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>La funzione di calibrazione della baia esterna permette di tarare il corretto valore tramite l'esecuzione di una serie di movimenti automatici consecutivi, aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
+  <data name="HelpLaserPointerDescription" xml:space="preserve">
+    <value>Maschera di configurazione dei parametri del puntatore laser.</value>
+  </data>
 </root>

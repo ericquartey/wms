@@ -2,7 +2,8 @@
 
 namespace Ferretto.VW.InvertersParametersGenerator.Models
 {
-    [FixedLengthRecord(FixedMode.AllowMoreChars)]
+    [FixedLengthRecord(FixedMode.AllowLessChars)]
+#pragma warning disable CA1051 // Do not declare visible instance fields
     public sealed class InverterParameterField
     {
         #region Fields
@@ -35,8 +36,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
         [FieldOrder(6)]
         [FieldFixedLength(3)]
         [FieldTrim(TrimMode.Both)]
+        [FieldOptional]
         public string Writable;
 
         #endregion
     }
+
+#pragma warning restore CA1051 // Do not declare visible instance fields
 }

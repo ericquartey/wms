@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerCompactingDetailHeader}" />
+                    Text="{res:Loc OperatorApp.DrawerCompactingDetailHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -36,31 +36,31 @@
                      Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailFragmentRemaining}" />
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
             ContentText="201"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailSourceCell}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailSourceCell}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
             ContentText="135"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailDestinationCell}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailDestinationCell}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
             ContentText="1008"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailDrawer}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailDrawer}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
             ContentText="Spostamento a sorg"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailActualStep}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailActualStep}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
             ContentText="4352,5"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailVerticalPosition}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailVerticalPosition}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
             ContentText="15789,4"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailOrizzontalPosition}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailOrizzontalPosition}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
             ContentText="250"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailRecoveredSpace}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailRecoveredSpace}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
             ContentText="350"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailSpaceToRecover}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailSpaceToRecover}"/>
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
             ContentText="4"
-            LabelText="{x:Static res:OperatorApp.DrawerCompactingDetailRemainingFragment}"/>
+            LabelText="{res:Loc OperatorApp.DrawerCompactingDetailRemainingFragment}"/>
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"

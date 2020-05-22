@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -6,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
+    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
     {
         #region Constructors
 
@@ -24,7 +25,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+        public override string ActiveContextName => OperationalContext.ItemInventory.ToString();
 
         #endregion
 
@@ -47,6 +48,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
             // do nothing
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
+
+            this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
         public override void OnMisionOperationRetrieved()

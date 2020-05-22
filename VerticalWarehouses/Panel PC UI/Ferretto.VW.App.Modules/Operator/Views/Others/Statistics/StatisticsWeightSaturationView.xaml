@@ -36,7 +36,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.DrawerWeightSaturationHeader}" />
+                   Text="{resources:Loc OperatorApp.DrawerWeightSaturationHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -58,7 +58,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding TotalLoadingUnits}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationTotalDrawers}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationTotalDrawers}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
@@ -66,7 +66,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MaxGrossWeight}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="2"
@@ -74,7 +74,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding GrossWeight}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
@@ -82,7 +82,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MaxNetWeight}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationMaxNetRange}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationMaxNetRange}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="2"
@@ -90,7 +90,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding NetWeight}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
+                                     LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
 
         </Grid>
 
@@ -130,14 +130,14 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonUp}" />
+                                Content="{resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonDown}" />
+                                Content="{resources:Loc OperatorApp.CommonDown}" />
 
         </Grid>
 
@@ -146,7 +146,7 @@
                                            Margin="0,15,20,0"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static resources:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"
+                                           LabelText="{resources:Loc OperatorApp.DrawerWeightSaturationNetLoadedWeight}"
                                            ProgressionValue="{Binding NetWeightPercent, StringFormat={}{0:N1}}" />
 
         <controls:PpcButton Grid.Row="3"
@@ -155,6 +155,6 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding DrawerSpaceSaturationButtonCommand}"
-                            Content="{x:Static resources:OperatorApp.DrawerSpaceSaturazionAnalisys}" />
+                            Content="{resources:Loc OperatorApp.DrawerSpaceSaturazionAnalisys}" />
     </Grid>
 </ctrls:View>

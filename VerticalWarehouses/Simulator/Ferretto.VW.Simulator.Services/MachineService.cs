@@ -413,7 +413,7 @@ namespace Ferretto.VW.Simulator.Services
                 foreach (var bay in bays)
                 {
                     // check if shutter is closed
-                    bool isShutterClosed = false;
+                    var isShutterClosed = false;
                     if (bay.Shutter != null)
                     {
                         switch ((int)bay.Shutter.Inverter.Index)
@@ -435,10 +435,11 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         continue;
                     }
-                    bool isCarousel = bay.Carousel != null;
+                    var isCarousel = bay.Carousel != null;
+                    var isExternal = bay.IsExternal;
 
                     // Retrieve bay position (upper/lower position)
-                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 5);
                     if (bayPosition != null)
                     {
                         // Set/Reset bay presence
@@ -447,7 +448,20 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayOne:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        // check state of external sensor for the ext bay
+                                        if (this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -458,7 +472,19 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayTwo:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        if (this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -469,7 +495,19 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayThree:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    //this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+
+                                    if (!isExternal)
+                                    {
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        if (this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoading;
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -503,16 +541,21 @@ namespace Ferretto.VW.Simulator.Services
                 if (subStr.Length > 1)
                 {
                     this.alphaNumericBar1Offset = int.Parse(subStr[1]);
-                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1]) + subStr[1].Length).Trim();
+                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1], StringComparison.Ordinal) + subStr[1].Length).Trim();
                 }
             }
             else if (messageReceived.StartsWith("GET ", StringComparison.Ordinal))
             {
                 messageResponse = "GET " + this.alphaNumericBar1Message;
             }
+            else if (messageReceived.StartsWith("CLEAR", StringComparison.Ordinal) || messageReceived.StartsWith("ENABLE", StringComparison.Ordinal) || messageReceived.StartsWith("TEST", StringComparison.Ordinal))
+            {
+                return;
+            }
 
+            Task.Delay(1000).Wait();
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
-            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + "\r\n"));
+            client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + Environment.NewLine));
         }
 
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)
@@ -710,7 +753,7 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.ProfileInput:
                     // simulate measure profile height
-                    this.GetProfileRange(inverter, out int minProfileHeight, out int maxProfileHeight);
+                    this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
                     result = client.Client.Send(profileMessage);
                     break;

@@ -38,6 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .Include(b => b.CurrentMission));
@@ -58,6 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.Positions)
                     .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
                     .OrderBy(o => cell.Position - o.Positions.First().Height)
@@ -77,6 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Carousel)
+                    .Include(b => b.External)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
@@ -88,6 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      .Include(b => b.Shutter)
                         .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
+                     .Include(b => b.External)
                      .Include(b => b.Positions)
                         .ThenInclude(t => t.LoadingUnit)
                      .Include(b => b.CurrentMission)
@@ -127,6 +131,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Carousel)
                         .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.External)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.External)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber));
@@ -137,6 +145,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                 .Include(b => b.Bay)
                     .ThenInclude(i => i.Carousel)
+                .Include(b => b.Bay)
+                    .ThenInclude(i => i.External)
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(p => p.Location == location));
 
@@ -341,6 +351,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
+
+        public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;
 
         public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
 
@@ -607,7 +619,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 default:
-                                    throw new InvalidOperationException(Resources.Bays.TheBayHorizontalAndVerticalNotValid);
+                                    throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", CommonUtils.Culture.Actual));
                             }
 
                             break;
@@ -641,6 +653,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
+                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            break;
+
+                        case MovementMode.ExtBayChain:
+                        case MovementMode.ExtBayChainManual:
+                        case MovementMode.ExtBayTest:
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;
 
@@ -744,6 +762,8 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.ManualMovements;
+
+        public ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.ManualMovements;
 
         public ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.ManualMovements;
 
@@ -883,7 +903,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.AlphaNumericBar)
                         .Single(b => b.Number == bayNumber);
 
-                barBay.Accessories.AlphaNumericBar.IsEnabled = isEnabled;
+                barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
                 barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
 
@@ -948,6 +968,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        {
+            lock (this.dataContext)
+            {
+                var laserPointerBay = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                        .Single(b => b.Number == bayNumber);
+
+                laserPointerBay.Accessories.LaserPointer.IsEnabledNew = isEnabled;
+                laserPointerBay.Accessories.LaserPointer.IpAddress = IPAddress.Parse(ipAddress);
+                laserPointerBay.Accessories.LaserPointer.TcpPort = port;
+                laserPointerBay.Accessories.LaserPointer.YOffset = yOffset;
+                laserPointerBay.Accessories.LaserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
+                laserPointerBay.Accessories.LaserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;
+
+                this.dataContext.Accessories.Update(laserPointerBay.Accessories.LaserPointer);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null)
         {
             var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);
@@ -996,7 +1036,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.BarcodeReader)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.BarcodeReader.IsEnabled = isEnabled;
+                bay.Accessories.BarcodeReader.IsEnabledNew = isEnabled;
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
@@ -1022,16 +1062,49 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Carousel)
-                    .SingleOrDefault(b => b.Number == bayNumber);
-                if (bay is null)
+                //var bay = this.dataContext.Bays
+                //    .Include(b => b.Carousel)
+                //    .SingleOrDefault(b => b.Number == bayNumber);
+                //if (bay is null)
+                //{
+                //    throw new EntityNotFoundException(bayNumber.ToString());
+                //}
+
+                //bay.Carousel.LastIdealPosition = position;
+                //this.dataContext.SaveChanges();
+
+                // Retrieve type of bay
+                var currBay = this.GetByNumber(bayNumber);
+
+                if (currBay.Carousel != null)
                 {
-                    throw new EntityNotFoundException(bayNumber.ToString());
+                    // Handle the carousel
+                    var bay = this.dataContext.Bays
+                        .Include(b => b.Carousel)
+                        .SingleOrDefault(b => b.Number == bayNumber);
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+
+                    bay.Carousel.LastIdealPosition = position;
+                    this.dataContext.SaveChanges();
                 }
 
-                bay.Carousel.LastIdealPosition = position;
-                this.dataContext.SaveChanges();
+                if (currBay.External != null)
+                {
+                    // Handle the external bay
+                    var bay = this.dataContext.Bays
+                        .Include(b => b.External)
+                        .SingleOrDefault(b => b.Number == bayNumber);
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+
+                    bay.External.LastIdealPosition = position;
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 
@@ -1042,14 +1115,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.GetByNumber(bayNumber);
                 if (positionIndex < 1 || positionIndex > bay.Positions.Count())
                 {
-                    throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
+                    throw new ArgumentOutOfRangeException(Resources.Bays.ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", CommonUtils.Culture.Actual));
                 }
 
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
                 if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
                 {
                     throw new ArgumentOutOfRangeException(
-                        string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, verticalAxis.LowerBound, verticalAxis.UpperBound));
+                        string.Format(Resources.Bays.ResourceManager.GetString("TheBayHeightMustBeInRange", CommonUtils.Culture.Actual), height, verticalAxis.LowerBound, verticalAxis.UpperBound));
                 }
 
                 BayPosition position = null;
@@ -1073,6 +1146,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);
+            }
+        }
+
+        public void UpdateRace(BayNumber bayNumber, double race)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+                if (bay.External != null)
+                {
+                    bay.External.Race = race;
+                    this.dataContext.AddOrUpdate(bay.External, f => f.Id);
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 

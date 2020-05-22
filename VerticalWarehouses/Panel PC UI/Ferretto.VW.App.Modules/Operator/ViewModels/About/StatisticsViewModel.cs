@@ -26,6 +26,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int totalDrawers;
 
+        private int unitsInCell;
+
+        private int unitsInBay;
+
+        private int unitsInElevator;
+
+        private int totalCells;
+
+        private int busyCells;
+
+        private int lockedCells;
+
+        private int freeCells;
+
+        private int freeCellsForSupport;
+
+        private int freeCellsOnlySpace;
+
         #endregion
 
         #region Constructors
@@ -65,7 +83,61 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public int TotalDrawers
         {
             get => this.totalDrawers;
-            protected set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int UnitsInCell
+        {
+            get => this.unitsInCell;
+            private set => this.SetProperty(ref this.unitsInCell, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int UnitsInBay
+        {
+            get => this.unitsInBay;
+            private set => this.SetProperty(ref this.unitsInBay, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int UnitsInElevator
+        {
+            get => this.unitsInElevator;
+            private set => this.SetProperty(ref this.unitsInElevator, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int TotalCells
+        {
+            get => this.totalCells;
+            private set => this.SetProperty(ref this.totalCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int BusyCells
+        {
+            get => this.busyCells;
+            private set => this.SetProperty(ref this.busyCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int LockedCells
+        {
+            get => this.lockedCells;
+            private set => this.SetProperty(ref this.lockedCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int FreeCells
+        {
+            get => this.freeCells;
+            private set => this.SetProperty(ref this.freeCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int FreeCellsForSupport
+        {
+            get => this.freeCellsForSupport;
+            private set => this.SetProperty(ref this.freeCellsForSupport, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int FreeCellsOnlySpace
+        {
+            get => this.freeCellsOnlySpace;
+            private set => this.SetProperty(ref this.freeCellsOnlySpace, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -90,6 +162,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                this.UnitsInCell = unit.Count(n => n.Status == LoadingUnitStatus.InLocation);
+                this.UnitsInBay = unit.Count(n => n.Status == LoadingUnitStatus.InBay);
+                this.UnitsInElevator = unit.Count(n => n.Status == LoadingUnitStatus.InElevator);
+
+                var cellsStatistic = await this.machineCellsWebService.GetAllAsync();
+                this.TotalCells = cellsStatistic.Count();
+                this.BusyCells = cellsStatistic.Count(n => !n.IsFree);
+                this.FreeCells = cellsStatistic.Count(n => n.IsFree);
+                this.FreeCellsForSupport = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.None);
+                this.FreeCellsOnlySpace = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.SpaceOnly);
 
                 await base.OnDataRefreshAsync();
             }

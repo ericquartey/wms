@@ -217,7 +217,7 @@
     <value>Not valid source cell</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Errore esecuzione comando di deposito</value>
+    <value>Invalid sensors</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Inconsistenza stato sensori elevatore</value>
@@ -280,7 +280,7 @@
     <value>Drawer not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Errore esecuzione comando di prelievo</value>
+    <value>Invalid sensors</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
     <value>Errore esecuzione comando di prelievo</value>
@@ -337,7 +337,7 @@
     <value>The mission type is not valid</value>
   </data>
   <data name="MoveBayChainNotAllowed" xml:space="preserve">
-    <value>Move Bay chain not allowed. Wait for another resume.</value>
+    <value>Move Bay chain not allowed: the load unit is too heavy.</value>
   </data>
   <data name="ResumeCommandNotValid" xml:space="preserve">
     <value>The picking confirmation command is not valid</value>
@@ -348,8 +348,8 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Homing conditions not met.</value>
   </data>
-  <data name="LoadUnitHeightExceeded" xml:space="preserve">
-    <value>The height of the loading unit is over the maximum or below the minimum</value>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Height error</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
@@ -407,5 +407,8 @@
   </data>
   <data name="WmsError" xml:space="preserve">
     <value>WMS error</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Errore altezza</value>
   </data>
 </root>

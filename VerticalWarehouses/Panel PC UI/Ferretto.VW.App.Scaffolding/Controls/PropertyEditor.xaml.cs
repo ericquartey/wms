@@ -66,9 +66,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 if (originalValue != null)
                 {
                     // deep copy
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
-                        BinaryFormatter formatter = new BinaryFormatter();
+                        var formatter = new BinaryFormatter();
                         formatter.Serialize(ms, originalValue);
                         ms.Position = 0;
                         this.Value = formatter.Deserialize(ms);
@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             this.IsDirty = e.NewValue?.Equals(this.OriginalValue) != true;
 
             // validation
-            var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+            var currentCulture = Ferretto.VW.App.Resources.Localized.Instance.CurrentCulture;
             var results = this._validationRules.Select(r => r.Validate(e.NewValue, currentCulture)).Where(r => r.IsValid == false);
             this.IsValid = !results.Any();
             this.ValidationMessage = results.Select(r => r.ErrorContent).FirstOrDefault();

@@ -55,6 +55,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Vertimag.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Metadata\Resources\Vertimag.it.resx">
+      <LastGenOutput>Vertimag.IT.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

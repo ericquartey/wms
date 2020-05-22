@@ -223,41 +223,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var check = this.LoadingUnitsDataProvider.CheckWeight(this.Mission.LoadUnitId);
                         //check = MachineErrorCode.LoadUnitWeightExceeded;    // TEST
-                        if (check == MachineErrorCode.NoError)
+                        if (check != MachineErrorCode.NoError)
                         {
-                            var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
-                            LoadingUnit lowerUnit = null;
-                            if (sourceBay != null
-                                && sourceBay.IsDouble
-                                && (lowerUnit = sourceBay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
-                                )
-                            {
-                                var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id);
-                                if (lowerMission != null)
-                                {
-                                    if (sourceBay.Carousel is null)
-                                    {
-                                        this.BaysDataProvider.AssignMission(this.Mission.TargetBay, lowerMission);
-                                    }
-                                    else
-                                    {
-                                        // carousel: wake up the bottom bay position
-                                        this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
-                                        this.LoadingUnitMovementProvider.ResumeOperation(
-                                            lowerMission.Id,
-                                            lowerMission.LoadUnitSource,
-                                            lowerMission.LoadUnitDestination,
-                                            lowerMission.WmsId,
-                                            lowerMission.MissionType,
-                                            lowerMission.TargetBay,
-                                            MessageActor.MachineManager);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // stop movement and go back to bay
+                            this.Logger.LogDebug($"Stop movement and go back to bay. Mission:Id={this.Mission.Id}");
                             this.Mission.ErrorCode = check;
                             this.Mission.EjectLoadUnit = true;
                             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
@@ -286,7 +254,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else if (this.Mission.EjectLoadUnit)
                 {
-                    newStep = new MissionMoveBackToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep = new MissionMoveBackToBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
                 {
@@ -301,5 +269,38 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         }
 
         #endregion
+
+        //private void UpdateLowerMission()
+        //{
+        //    var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+        //    LoadingUnit lowerUnit = null;
+        //    if (sourceBay != null
+        //        && sourceBay.IsDouble
+        //        && (lowerUnit = sourceBay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
+        //        )
+        //    {
+        //        var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id);
+        //        if (lowerMission != null)
+        //        {
+        //            if (sourceBay.Carousel is null)
+        //            {
+        //                this.BaysDataProvider.AssignMission(this.Mission.TargetBay, lowerMission);
+        //            }
+        //            else
+        //            {
+        //                // carousel: wake up the bottom bay position
+        //                this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
+        //                this.LoadingUnitMovementProvider.ResumeOperation(
+        //                    lowerMission.Id,
+        //                    lowerMission.LoadUnitSource,
+        //                    lowerMission.LoadUnitDestination,
+        //                    lowerMission.WmsId,
+        //                    lowerMission.MissionType,
+        //                    lowerMission.TargetBay,
+        //                    MessageActor.MachineManager);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

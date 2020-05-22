@@ -295,14 +295,14 @@ namespace Ferretto.VW.App.Controls
         {
             if (this.IsEnabled && this.InnerSpinEdit.IsEnabled && !this.InnerSpinEdit.IsReadOnly)
             {
-                Type type = this.InnerSpinEdit.EditValueType;
+                var type = this.InnerSpinEdit.EditValueType;
 
                 // ensure type is not null
                 if (type == null)
                 {
                     if (this.EditValue != null)
                     {
-                        Type objType = this.EditValue.GetType();
+                        var objType = this.EditValue.GetType();
                         type = Nullable.GetUnderlyingType(objType) ?? objType;
                     }
                     else

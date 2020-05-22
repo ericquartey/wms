@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     public class EntityNotFoundException : Exception
@@ -8,13 +7,13 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public EntityNotFoundException(int entityId)
-            : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))
+            : base(string.Format(Resources.General.ResourceManager.GetString("NoEntityWithTheSpecifiedIdExists", CommonUtils.Culture.Actual), entityId))
         {
             this.EntityId = entityId.ToString();
         }
 
         public EntityNotFoundException(string entityId)
-            : base(string.Format(Resources.General.NoEntityWithTheSpecifiedIdExists, entityId))
+            : base(string.Format(Resources.General.ResourceManager.GetString("NoEntityWithTheSpecifiedIdExists", CommonUtils.Culture.Actual), entityId))
         {
             this.EntityId = entityId;
         }

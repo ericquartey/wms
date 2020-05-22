@@ -122,7 +122,7 @@
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
-    <comment>Button test</comment>
+    <comment>Button text</comment>
   </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>Open folder</value>
@@ -150,11 +150,11 @@
     <comment>Description</comment>
   </data>
   <data name="InverterTypeParametersConfiguration" xml:space="preserve">
-    <value>Inverter {0} type {0} parameters configuration</value>
+    <value>Inverter [{0}] type '{1}' parameters configuration</value>
     <comment>Title</comment>
   </data>
   <data name="TotalParameters" xml:space="preserve">
-    <value>Total parameters {0}</value>
+    <value>total parameters {0}</value>
   </data>
   <data name="InverterParametersId" xml:space="preserve">
     <value>Id</value>
@@ -179,8 +179,8 @@
     <value>Is readonly</value>
     <comment>Column header text</comment>
   </data>
-  <data name="EsportConfigurationFile" xml:space="preserve">
-    <value>Export configuration file</value>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Export configuration</value>
   </data>
   <data name="ExportFile" xml:space="preserve">
     <value>Export File</value>
@@ -196,5 +196,33 @@
   </data>
   <data name="ConfigurationFile" xml:space="preserve">
     <value>Configuration file</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Import configuration</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Inverters parameters folder</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Choose configuration file</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Configuration folder</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Folders does not exist</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>File not valid or not inserted</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>File not saved</value>
   </data>
 </root>

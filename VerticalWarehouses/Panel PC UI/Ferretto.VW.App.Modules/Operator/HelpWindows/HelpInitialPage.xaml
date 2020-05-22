@@ -53,28 +53,28 @@
         <controls:PpcButton Margin="510,260,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
+                            Content="{res:Loc OperatorApp.NavigationMainMenuDrawerOperation}"
                             IsEnabled="True"
                             Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton Margin="510,330,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.NavigationMainMenuItems}"
+                            Content="{res:Loc OperatorApp.NavigationMainMenuItems}"
                             IsEnabled="True"
                             Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton Margin="510,400,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.NavigationMainMenuLists}"
+                            Content="{res:Loc OperatorApp.NavigationMainMenuLists}"
                             IsEnabled="True"
                             Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <controls:PpcButton Margin="510,470,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Content="{x:Static res:OperatorApp.NavigationMainMenuOther}"
+                            Content="{res:Loc OperatorApp.NavigationMainMenuOther}"
                             IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 

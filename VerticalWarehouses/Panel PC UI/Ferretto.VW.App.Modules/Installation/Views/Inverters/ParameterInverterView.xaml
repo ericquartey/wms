@@ -83,14 +83,23 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{res:Loc InstallationApp.InverterParameterizationMenuTitle}" />
             </StackPanel>
-            
-            <StackPanel Grid.Row="1"
-                        Orientation="Horizontal">
-                <TextBlock Margin="0,10,15,10"
+
+            <TextBlock Margin="0,10,15,10"
                            VerticalAlignment="Top"
+                           Grid.Row="1"
+                           TextWrapping="WrapWithOverflow"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{Binding SelectedFileConfigurationName}"/>
-            </StackPanel>
+                           Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}"
+                           Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"/>
+            
+            <TextBlock Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Grid.Row="1"
+                           TextWrapping="WrapWithOverflow"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}"
+                           Text="{Binding SelectedFileConfiguration.FullName}"/>
+
 
             <ListView Grid.Row="2"
                           ItemsSource="{Binding InvertersParameters}"

@@ -1,0 +1,18 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+    - release
+    - master
+  paths:
+    include:
+    - 'VerticalWarehouses/Utility/*'
+    - 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.DataModels/*'
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- template: azure-pipeline-vw-inverter-utility-template.yml    
+    

@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 {
     internal class PowerEnableEndState : StateBase
@@ -20,8 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         #region Constructors
 
-        public PowerEnableEndState(IPowerEnableStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PowerEnableEndState(IPowerEnableStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPowerEnableMachineData;

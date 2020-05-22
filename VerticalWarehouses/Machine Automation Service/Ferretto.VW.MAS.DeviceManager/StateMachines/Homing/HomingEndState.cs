@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingEndState : StateBase, System.IDisposable
@@ -31,8 +30,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #region Constructors
 
-        public HomingEndState(IHomingStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public HomingEndState(IHomingStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
@@ -88,7 +87,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         case MessageStatus.OperationError:
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.stateData.FieldMessage = message;
-                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                             break;
                     }
                     break;
@@ -133,6 +132,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
                 }
+
                 var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(

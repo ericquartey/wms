@@ -161,7 +161,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     var bay = this.Machine.Bays.FirstOrDefault(x => (int)x.Number == this.Id + 1);
                     if (bay != null)
                     {
-                        bool hasCarousel = bay.Carousel != null;
+                        var hasCarousel = bay.Carousel != null;
                         this.Enabled = true;
 
                         // Set empty position on bay

@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -22,12 +23,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public SetupStatusController(ISetupStatusProvider setupStatusProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IServicingProvider servicingProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.setupStatusProvider = setupStatusProvider ?? throw new System.ArgumentNullException(nameof(setupStatusProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
         }
 
         #endregion
@@ -44,6 +43,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult BayCarouselCalibrationBypass()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), true);
+            return this.Ok();
+        }
+
+        [HttpPost("bay-external-calibration-bypass")]
+        public IActionResult BayExternalCalibrationBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber), true);
             return this.Ok();
         }
 
@@ -93,13 +99,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult CellsPanelCheckBypass()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck(), true);
-            return this.Ok();
-        }
-
-        [HttpPost("confirm-setup")]
-        public IActionResult ConfirmSetup()
-        {
-            this.servicingProvider.SetInstallationDate();
             return this.Ok();
         }
 

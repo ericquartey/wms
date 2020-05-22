@@ -1,7 +1,7 @@
 parameters:
   BuildConfiguration: 'debug'
   BuildPlatform: 'any cpu'   
-  RestoreBuildProjects: '**/*.csproj'  
+  RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'  
   TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
@@ -45,9 +45,9 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Installer'
+  displayName: 'Publish Artifact: installer'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
-    ArtifactName: 'installer'
+    ArtifactName: 'inverter'
 
 

@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         #region Methods
 
         public string Stringify(object value)
-            => this.Stringify(value, System.Globalization.CultureInfo.CurrentCulture);
+            => this.Stringify(value, CommonUtils.Culture.Actual);
 
         public string Stringify(object value, CultureInfo culture)
         {
@@ -22,11 +22,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 throw new ArgumentException("Provided argument is not an enum type.", nameof(value));
             }
 
-            string name = Enum.GetName(value.GetType(), value);
-            string resourceName = string.Concat(value.GetType().Name, ".", name);
+            var name = Enum.GetName(value.GetType(), value);
+            var resourceName = string.Concat(value.GetType().Name, ".", name);
             return Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources.Vertimag.ResourceManager.GetString(resourceName, culture) ?? name;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

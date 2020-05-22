@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di prelievo.
+        ///   Looks up a localized string similar to Invalid sensors.
         /// </summary>
         public static string BottomLevelBayEmpty {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di deposito.
+        ///   Looks up a localized string similar to Invalid sensors.
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {
@@ -538,11 +538,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The height of the loading unit is over the maximum or below the minimum.
+        ///   Looks up a localized string similar to Height error.
         /// </summary>
-        public static string LoadUnitHeightExceeded {
+        public static string LoadUnitHeightFromBayExceeded {
             get {
-                return ResourceManager.GetString("LoadUnitHeightExceeded", resourceCulture);
+                return ResourceManager.GetString("LoadUnitHeightFromBayExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore altezza.
+        /// </summary>
+        public static string LoadUnitHeightToBayExceeded {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightToBayExceeded", resourceCulture);
             }
         }
         
@@ -754,7 +763,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move Bay chain not allowed. Wait for another resume..
+        ///   Looks up a localized string similar to Move Bay chain not allowed: the load unit is too heavy..
         /// </summary>
         public static string MoveBayChainNotAllowed {
             get {

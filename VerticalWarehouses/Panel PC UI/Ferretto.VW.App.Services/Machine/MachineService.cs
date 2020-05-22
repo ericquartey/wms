@@ -719,7 +719,7 @@ namespace Ferretto.VW.App.Services
                                     //    $"a {messageData.Destination}" +
                                     //    $"{(messageData.DestinationCellId is null ? string.Empty : " ")}{messageData.DestinationCellId}" +
                                     //    $")");
-                                    var msg = string.Format(Resources.ServiceMachine.MovementInProgressExtended,
+                                    var msg = string.Format(Resources.Localized.Get("ServiceMachine.MovementInProgressExtended"),
                                         this.MachineStatus.CurrentMissionId,
                                         messageData.LoadUnitId,
                                         message.Description,
@@ -860,7 +860,7 @@ namespace Ferretto.VW.App.Services
                                 //    $"{(moveLoadingUnitMessageData.DestinationCellId is null ? string.Empty : " ")}{moveLoadingUnitMessageData.DestinationCellId}" +
                                 //    $")");
 
-                                var msg = string.Format(Resources.ServiceMachine.MovementInProgressExtended,
+                                var msg = string.Format(Resources.Localized.Get("ServiceMachine.MovementInProgressExtended"),
                                     this.MachineStatus?.CurrentMissionId,
                                     moveLoadingUnitMessageData.LoadUnitId,
                                     message.Description,
@@ -1358,7 +1358,7 @@ namespace Ferretto.VW.App.Services
                             this.MachineStatus.LogicalPosition = string.Concat(
                                 cell?.Side.ToString(),
                                 " / ",
-                                cell.IsFree ? Resources.ServiceMachine.CellFree : Resources.ServiceMachine.CellBusy,
+                                cell.IsFree ? Resources.Localized.Get("ServiceMachine.CellFree") : Resources.Localized.Get("ServiceMachine.CellBusy"),
                                 cell.BlockLevel != BlockLevel.Undefined && cell.BlockLevel != BlockLevel.None ? $" / {cell.BlockLevel}" : string.Empty);
                         }
                         else
@@ -1380,11 +1380,11 @@ namespace Ferretto.VW.App.Services
 
                         if (dataElevatorPosition?.BayPositionUpper ?? false)
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnTop"));
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.Localized.Get("ServiceMachine.Position"), Resources.Localized.Get("InstallationApp.PositionOnTop"));
                         }
                         else
                         {
-                            this.MachineStatus.LogicalPosition = string.Format(Resources.ServiceMachine.Position, Resources.Localized.Get("InstallationApp.PositionOnBotton"));
+                            this.MachineStatus.LogicalPosition = string.Format(Resources.Localized.Get("ServiceMachine.Position"), Resources.Localized.Get("InstallationApp.PositionOnBotton"));
                         }
 
                         this.MachineStatus.LogicalPositionId = (int)bay.Number;
@@ -1432,26 +1432,26 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
                         }
                         else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic && this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Test)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.MachineNotManual, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineNotManual"), NotificationSeverity.Warning);
                         }
                         else if (this.sensorsService.IsHorizontalInconsistentBothLow && this.machineModeService.MachineMode != MachineMode.Test)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.NoZeroPawlSensor, NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoZeroPawlSensor"), NotificationSeverity.Error);
                         }
                         else if (this.sensorsService.IsHorizontalInconsistentBothHigh && this.machineModeService.MachineMode != MachineMode.Test)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.InconsistencyZeroPawlSensor, NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.InconsistencyZeroPawlSensor"), NotificationSeverity.Error);
                         }
                         else if ((view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
                                   view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) ||
                                   view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase))
                                  && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.NoLoadingUnitInBay, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoLoadingUnitInBay"), NotificationSeverity.Warning);
                         }
                         else if (
                             ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
@@ -1459,11 +1459,11 @@ namespace Ferretto.VW.App.Services
                                  )
                                  && this.machineModeService.MachineMode != MachineMode.Test)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.InconsistencyStateAndSensors, NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.InconsistencyStateAndSensors"), NotificationSeverity.Error);
                         }
                         else if (!this.IsHoming)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.HomingNotPerformed, NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.HomingNotPerformed"), NotificationSeverity.Error);
                         }
                         else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
@@ -1474,14 +1474,14 @@ namespace Ferretto.VW.App.Services
                                  !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.ShowNotification(Resources.ServiceMachine.InconsistencyShutterPresenceSensor, NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.InconsistencyShutterPresenceSensor"), NotificationSeverity.Error);
                         }
                         else if ((view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
                                   view.Equals("VerticalOffsetCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
                                   view.Equals("BayCheckView", StringComparison.InvariantCultureIgnoreCase)) &&
                                  this.sensorsService.IsLoadingUnitOnElevator)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.LoadingUnitOnElevator, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitOnElevator"), NotificationSeverity.Warning);
                         }
                         // tranne per la macchina con la baia esterna l'elevatore non si può muovere se c'è la serranda aperta
                         else if (!this.bay.IsExternal &&
@@ -1489,21 +1489,21 @@ namespace Ferretto.VW.App.Services
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
                                  this.machineModeService.MachineMode != MachineMode.Test)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.ShutterOpenOrUnknowPosition, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutterOpenOrUnknowPosition"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionInError)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
                         else if (view.Equals("CarouselCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                 !this.sensorsService.BayZeroChain)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.CalibrationCarouselFailedChainNotZeroPosition, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.CalibrationCarouselFailedChainNotZeroPosition"), NotificationSeverity.Warning);
                         }
                         else if (!this.isBayHoming[this.bay.Number] &&
                                  !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            this.ShowNotification(Resources.ServiceMachine.BayCalibrationNotPerformed, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
                         else
                         {
@@ -1514,17 +1514,17 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
                         }
                         else if (this.machineModeService.MachineMode != MachineMode.Automatic
                             && this.machineModeService.MachineMode != MachineMode.SwitchingToAutomatic
                             )
                         {
-                            this.ShowNotification(Resources.ServiceMachine.AutomaticMissing, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.AutomaticMissing"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionInError)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {
@@ -1540,7 +1540,7 @@ namespace Ferretto.VW.App.Services
                         }
                         else if (!this.isBayHoming[this.bay.Number])
                         {
-                            this.ShowNotification(Resources.ServiceMachine.BayCalibrationNotPerformed, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
                         else if (this.FragmentTotalPercent > 25)
                         {
@@ -1555,11 +1555,11 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Maintenance:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.NoGear, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionInError)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
                         else if (this.FragmentTotalPercent > 25)
                         {
@@ -1571,7 +1571,7 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Menu:
                         if (this.IsMissionInError)
                         {
-                            this.ShowNotification(Resources.ServiceMachine.MissionInError, NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
                         else if (this.FragmentTotalPercent > 25)
                         {
@@ -1604,24 +1604,24 @@ namespace Ferretto.VW.App.Services
                                     //case CommonUtils.Messages.Enumerations.MissionStep.DepositUnit:
                                     case "DepositUnit":
                                     case "LoadElevator":
-                                        this.ShowNotification(Resources.ServiceMachine.MovementLoadingUnitInProgress, NotificationSeverity.Info);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementLoadingUnitInProgress"), NotificationSeverity.Info);
                                         break;
 
                                     case "BackToTarget":
                                     case "ToTarget":
-                                        this.ShowNotification(Resources.ServiceMachine.MovementElevatorInProgress, NotificationSeverity.Info);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementElevatorInProgress"), NotificationSeverity.Info);
                                         break;
 
                                     case "WaitPick":
-                                        this.ShowNotification(Resources.ServiceMachine.LoadingUnitReady, NotificationSeverity.Warning);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitReady"), NotificationSeverity.Warning);
                                         break;
 
                                     case "BayChain":
-                                        this.ShowNotification(Resources.ServiceMachine.MovementBayChainInProgress, NotificationSeverity.Warning);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementBayChainInProgress"), NotificationSeverity.Warning);
                                         break;
 
                                     case "CloseShutter":
-                                        this.ShowNotification(Resources.ServiceMachine.MovementShutterInProgress, NotificationSeverity.Info);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementShutterInProgress"), NotificationSeverity.Info);
                                         break;
 
                                     case "Error":
@@ -1654,11 +1654,11 @@ namespace Ferretto.VW.App.Services
             {
                 if (this.machineModeService.MachineMode == MachineMode.Test)
                 {
-                    this.Notification = Resources.ServiceMachine.TestInProgress;
+                    this.Notification = Resources.Localized.Get("ServiceMachine.TestInProgress");
                 }
                 else
                 {
-                    this.Notification = Resources.ServiceMachine.MovementShutterInProgress;
+                    this.Notification = Resources.Localized.Get("ServiceMachine.MovementShutterInProgress");
                 }
             }
             else
@@ -1667,24 +1667,24 @@ namespace Ferretto.VW.App.Services
                 {
                     if (axisMovement.HasValue && axisMovement == Axis.Vertical)
                     {
-                        this.Notification = Resources.ServiceMachine.MovementVerticalInProgress;
+                        this.Notification = Resources.Localized.Get("ServiceMachine.MovementVerticalInProgress");
                     }
                     else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
                     {
-                        this.Notification = Resources.ServiceMachine.MovementHorizontalInProgress;
+                        this.Notification = Resources.Localized.Get("ServiceMachine.MovementHorizontalInProgress");
                     }
                     else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
                     {
-                        this.Notification = Resources.ServiceMachine.MovementBayChainInProgress;
+                        this.Notification = Resources.Localized.Get("ServiceMachine.MovementBayChainInProgress");
                     }
                 }
                 else if (this.machineModeService.MachineMode == MachineMode.Test)
                 {
-                    this.Notification = Resources.ServiceMachine.TestInProgress;
+                    this.Notification = Resources.Localized.Get("ServiceMachine.TestInProgress");
                 }
                 else
                 {
-                    this.Notification = string.Format(Resources.ServiceMachine.MovementInProgress, "");
+                    this.Notification = string.Format(Resources.Localized.Get("ServiceMachine.MovementInProgress"), "");
                 }
             }
         }

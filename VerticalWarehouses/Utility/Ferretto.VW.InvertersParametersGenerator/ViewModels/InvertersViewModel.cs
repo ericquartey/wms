@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Windows.Input;
+using Ferretto.VW.InvertersParametersGenerator.Interfaces;
 using Ferretto.VW.InvertersParametersGenerator.Models;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
-using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
@@ -16,13 +16,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private readonly ConfigurationService configurationService;
 
-        private readonly bool isSuccessful;
+        private readonly IParentActionChanged parentActionChanged;
 
         private IEnumerable<InverterParametersDataInfo> invertersParameters;
 
         private bool isBusy;
-
-        private DelegateCommand nextCommand;
 
         private string selectedFileConfigurationName;
 
@@ -30,15 +28,20 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Constructors
 
-        public InvertersViewModel(ConfigurationService installationService)
+        public InvertersViewModel(ConfigurationService installationService, IParentActionChanged parentActionChanged)
         {
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            this.parentActionChanged = parentActionChanged;
             this.LoadConfiguration();
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanNext => true;
+
+        public bool CanPrevious => true;
 
         public IEnumerable<InverterParametersDataInfo> InvertersParameters => this.invertersParameters;
 
@@ -54,14 +57,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        public bool IsSuccessful => this.isSuccessful;
-
-        public ICommand NextCommand =>
-                   this.nextCommand
-               ??
-               (this.nextCommand = new DelegateCommand(
-                this.Next));
-
         public string SelectedFileConfigurationName
         {
             get => this.selectedFileConfigurationName;
@@ -72,9 +67,16 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         #region Methods
 
-        private bool CanSave()
+        public bool Next()
         {
-            return !this.IsBusy;
+            this.configurationService.SetInvertersConfiguration(this.invertersParameters);
+            this.configurationService.SetWizard(WizardMode.Parameters);
+            return true;
+        }
+
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.ImportConfiguration);
         }
 
         private IEnumerable<InverterParametersDataInfo> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
@@ -85,7 +87,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 if (!(axe.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersDataInfo(axe.Inverter.Type, (byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.Type, axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(axe.Inverter.Type, (byte)axe.Inverter.Index, this.GetShortInverterDescription(axe.Inverter.IpAddress, axe.Inverter.TcpPort)));
                 }
             }
 
@@ -93,7 +95,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 if (!(bay.Inverter is null))
                 {
-                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.Type, bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
+                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
+                }
+
+                if (!(bay.Shutter?.Inverter?.Parameters is null))
+                {
+                    inverterParametersData.Add(new InverterParametersDataInfo(bay.Shutter.Inverter.Type, (byte)bay.Shutter.Inverter.Index, this.GetShortInverterDescription(bay.Shutter.Inverter.IpAddress, bay.Shutter.Inverter.TcpPort)));
                 }
             }
 
@@ -105,12 +112,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return inverterParametersData;
         }
 
-        private string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
+        private string GetShortInverterDescription(IPAddress ipAddress, int tcpPort)
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
-            var ipPort = (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
-            return $"{type.ToString()} {ipPort}";
+            return (string.IsNullOrEmpty(ip)) ? string.Empty : $"{ip}:{port}";
         }
 
         private void LoadConfiguration()
@@ -121,14 +127,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 if (!(this.configurationService.VertimagConfiguration is null))
                 {
-                    this.invertersParameters = this.GetInvertersParameters(this.configurationService.VertimagConfiguration);
+                    this.invertersParameters = this.GetInvertersParameters(this.configurationService.VertimagConfiguration).OrderBy(i => i.InverterIndex);
                 }
 
                 this.RaisePropertyChanged(nameof(this.InvertersParameters));
             }
             catch (Exception ex)
             {
-                this.configurationService.ShowNotification(ex);
+                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
             finally
             {
@@ -136,15 +142,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
-        private void Next()
-        {
-            this.configurationService.SetInvertersConfiguration(this.invertersParameters);
-            this.configurationService.SetWizard(WizardMode.Parameters);
-        }
-
         private void RaiseCanExecuteChanged()
         {
-            this.nextCommand?.RaiseCanExecuteChanged();
+            this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
         #endregion

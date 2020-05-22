@@ -40,8 +40,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Constructors
 
-        public PositioningEndState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PositioningEndState(IPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         case MessageStatus.OperationError:
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                             break;
                     }
                     break;
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     this.Logger.LogError($"Measure Profile error {profileHeight}!");
                                     break;
                                 }
-                                int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                                var loadUnitId = this.machineData.MessageData.LoadingUnitId;
                                 if (!loadUnitId.HasValue)
                                 {
                                     var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 {
                                     this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                                 }
-                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                             }
                             else if (message.Source == FieldMessageActor.IoDriver)
                             {
@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
 
-                bool isChanged = false;
+                var isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
                     if (this.machineData.MessageData.AxisMovement is Axis.BayChain)

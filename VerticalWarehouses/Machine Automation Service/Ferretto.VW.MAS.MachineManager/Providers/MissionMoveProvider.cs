@@ -186,22 +186,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return true;
         }
 
-        public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
-        {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var mission = missionsDataProvider.GetById(missionId);
-            if (mission != null)
-            {
-                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                if (state != null)
-                {
-                    state.OnResume(command);
-                }
-            }
-
-            return true;
-        }
-
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
         {
             if (command is null)
@@ -267,7 +251,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }

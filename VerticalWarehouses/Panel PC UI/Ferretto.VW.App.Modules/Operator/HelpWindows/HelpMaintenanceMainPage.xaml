@@ -18,7 +18,7 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.MaintenanceMainPageHeader}" />
+                    Text="{res:Loc OperatorApp.MaintenanceMainPageHeader}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                     Width="670" Height="60"
@@ -45,38 +45,38 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageModel}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageModel}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="VW_190012"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageSerial}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageSerial}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,600,0,0" Width="180"
                                                ContentText="15-04-2017"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageInstallationDate}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageInstallationDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="20-04-2018"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="20-04-2019"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
-                                               LabelText="{x:Static res:OperatorApp.MaintenanceMainPageStateMachine}"/>
+                                               LabelText="{res:Loc OperatorApp.MaintenanceMainPageStateMachine}"/>
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Content="{res:Loc OperatorApp.CommonUp}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Content="{res:Loc OperatorApp.CommonDown}"
                    />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,334,0"
-                  Content="{x:Static res:OperatorApp.CommonButtonDetail}"
+                  Content="{res:Loc OperatorApp.CommonButtonDetail}"
                    />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"

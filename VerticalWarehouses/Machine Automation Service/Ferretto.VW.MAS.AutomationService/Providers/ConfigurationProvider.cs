@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.loadingUnitsDataProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
                         this.machineProvider.ImportMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
-                        this.machineProvider.ImportMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);
+                        this.machineProvider.ImportMachineServicingInfo(vertimagConfiguration.ServicingInfo, this.dataContext);
 
                         this.dataContext.SaveChanges();
 
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
                         this.loadingUnitsDataProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
-                        this.machineProvider.UpdateMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
+                        this.machineProvider.UpdateMachineStatistics(vertimagConfiguration.MachineStatistics.LastOrDefault(), this.dataContext);
                         if (vertimagConfiguration.ServicingInfo.Any())
                         {
                             this.machineProvider.UpdateMachineServicingInfo(vertimagConfiguration.ServicingInfo.LastOrDefault(), this.dataContext);

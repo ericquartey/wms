@@ -27,7 +27,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.DrawerCompactingDetailHeader}" />
+                   Text="{Resources:Loc OperatorApp.DrawerCompactingDetailHeader}" />
 
         <Grid Grid.Row="1"
               Grid.Column="0"
@@ -53,57 +53,57 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="1008"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailDrawer}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailDrawer}" />
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="201"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailSourceCell}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailSourceCell}" />
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="135"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailDestinationCell}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailDestinationCell}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="Spostamento a sorgente"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailActualStep}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailActualStep}" />
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="4352,5"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailVerticalPosition}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailVerticalPosition}" />
             <controls:PpcLabeledText Grid.Row="6"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="15789,4"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailOrizzontalPosition}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailOrizzontalPosition}" />
 
             <controls:PpcLabeledText Grid.Row="0"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="4"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailRemainingFragment}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailRemainingFragment}" />
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="250"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailRecoveredSpace}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailRecoveredSpace}" />
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="350"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingDetailSpaceToRecover}" />
+                                     LabelText="{Resources:Loc OperatorApp.DrawerCompactingDetailSpaceToRecover}" />
 
         </Grid>
 

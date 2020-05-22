@@ -33,27 +33,27 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                                                ContentText="P_12487"
-                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListCode}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
                                                ContentText="1258445984"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonItemCode}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
                                                ContentText="F-3"
-                                               LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonCompartmentPosition}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="Gruppo riduzione"
-                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonListDescription}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
                                                ContentText="Ingranaggio"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonItemDescription}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="4"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailQtyRequest}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailQtyRequest}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
                     Width="260" Height="70"
@@ -97,31 +97,31 @@
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="4"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailRowList}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailRowList}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
                                                ContentText="2019-02-12"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailProductionDate}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailProductionDate}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,610,0,0" Width="180"
                                                ContentText="Collaudato"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailMaterialStatus}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailMaterialStatus}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0" Width="180"
                                                ContentText="045-25"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailLotto}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailLotto}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="Boxed"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailPackagingType}"/>
+                                               LabelText="{res:Loc OperatorApp.DrawerActivityPickingDetailPackagingType}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="P-1012"
-                                               LabelText="{x:Static res:OperatorApp.CommonPackingListCode}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonPackingListCode}"/>
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Packing list"
-                                               LabelText="{x:Static res:OperatorApp.CommonPackingListDescription}"/>
+                                               LabelText="{res:Loc OperatorApp.CommonPackingListDescription}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,260,0,0"
                     Width="260" Height="70"

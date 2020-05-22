@@ -15,14 +15,14 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MachineStatisticsHeader}" />
+                   Text="{Resources:Loc OperatorApp.MachineStatisticsHeader}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,150,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalVerticalAxisCycles}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalVerticalAxisCycles}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatistics_TotalVerticalAxisCycles}" />
 
 
         <controls:PpcLabeledText MaxWidth="300"
@@ -30,84 +30,84 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalVerticalAxisKilometers}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatistics_TotalVerticalAxisKilometers}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,150,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalBeltCycles}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionHorizontalTotalCycles}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatisticsSectionHorizontalTotalCycles}" />
 
         <TextBlock MaxWidth="500"
                    Margin="250,100,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionVertical}" />
+                   Text="{Resources:Loc OperatorApp.MachineStatisticsSectionVertical}" />
 
         <TextBlock MaxWidth="500"
                    Margin="560,100,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionHorizontal}" />
+                   Text="{Resources:Loc OperatorApp.MachineStatisticsSectionHorizontal}" />
 
         <TextBlock MaxWidth="500"
                    Margin="250,320,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutters}" />
+                   Text="{Resources:Loc OperatorApp.MachineStatisticsSectionShutters}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalShutter1Cycles}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalShutter1Cycles}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatistics_TotalShutter1Cycles}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,425,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalShutter2Cycles}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalShutter2Cycles}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatistics_TotalShutter2Cycles}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="250,480,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalShutter3Cycles}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalShutter3Cycles}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatistics_TotalShutter3Cycles}" />
 
         <TextBlock MaxWidth="500"
                    Margin="560,320,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionBays}" />
+                   Text="{Resources:Loc OperatorApp.MachineStatisticsSectionBays}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,370,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTraysInBay1}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay1}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatisticsSectionBaysBay1}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,425,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTraysInBay2}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay2}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatisticsSectionBaysBay2}" />
 
         <controls:PpcLabeledText MaxWidth="300"
                                               Margin="560,480,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Model.TotalMovedTraysInBay3}"
-                                              LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay3}" />
+                                              LabelText="{Resources:Loc OperatorApp.MachineStatisticsSectionBaysBay3}" />
 
     </Grid>
 </UserControl>

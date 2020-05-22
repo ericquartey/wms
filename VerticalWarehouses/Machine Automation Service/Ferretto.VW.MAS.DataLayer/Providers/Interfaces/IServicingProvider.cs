@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System;
+using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -6,8 +8,21 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        ServicingInfo GetInfo();
-        void SetInstallationDate();
+        void CheckServicingInfo();
+
+        void ConfirmService();
+
+        void ConfirmSetup();
+
+        ServicingInfo GetActual();
+
+        IEnumerable<ServicingInfo> GetAll();
+
+        ServicingInfo GetById(int id);
+
+        ServicingInfo GetInstallationInfo();
+
+        ServicingInfo GetLastConfirmed();
 
         #endregion
     }

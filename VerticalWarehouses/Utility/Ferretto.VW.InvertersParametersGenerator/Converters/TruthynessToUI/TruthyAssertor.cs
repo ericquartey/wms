@@ -16,12 +16,12 @@ namespace Ferretto.VW.InvertersParametersGenerator
             }
             if (targetType == typeof(GridLength))
             {
-                double starWeight = 1D;
+                var starWeight = 1D;
                 if (parameter != null)
                 {
                     var invariantCulture = System.Globalization.CultureInfo.InvariantCulture;
-                    string stars = System.Convert.ToString(parameter, invariantCulture);
-                    if (double.TryParse(stars, NumberStyles.AllowDecimalPoint, invariantCulture, out double actualStars))
+                    var stars = System.Convert.ToString(parameter, invariantCulture);
+                    if (double.TryParse(stars, NumberStyles.AllowDecimalPoint, invariantCulture, out var actualStars))
                     {
                         starWeight = actualStars;
                     }
@@ -35,9 +35,9 @@ namespace Ferretto.VW.InvertersParametersGenerator
 
         public static bool IsInverting(object parameter)
         {
-            bool invert = false;
-            string strParam = System.Convert.ToString(parameter, CultureInfo.InvariantCulture);
-            if (bool.TryParse(strParam, out bool param))
+            var invert = false;
+            var strParam = System.Convert.ToString(parameter, CultureInfo.InvariantCulture);
+            if (bool.TryParse(strParam, out var param))
             {
                 invert = param;
             }

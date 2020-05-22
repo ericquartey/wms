@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineExternalBayWebService machineExternalBayWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
@@ -69,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isElevatorInCell;
 
         private bool isExecutingProcedure;
+
+        private bool isExternalBayMoving;
 
         private bool isMovementsGuided = true;
 
@@ -101,7 +105,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineMissionsWebService machineMissionsWebService,
             IBayManager bayManagerService,
             IInstallationHubClient installationHubClient,
-            IMachineService machineService)
+            IMachineService machineService,
+            IMachineExternalBayWebService machineExternalBayWebService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
@@ -115,6 +120,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.machineExternalBayWebService = machineExternalBayWebService ?? throw new ArgumentNullException(nameof(machineExternalBayWebService));
         }
 
         #endregion
@@ -155,6 +161,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.StatusSensorsCommand(),
                 () => (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
 
+        //public bool HasExternalBay => this.MachineService.HasBayExternal;
+        public bool HasBayExternal => this.MachineService.HasBayExternal;
+
         public bool HasCarousel => this.MachineService.HasCarousel;
 
         public bool HasShutter => this.MachineService.HasShutter;
@@ -181,6 +190,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isExecutingProcedure;
             set => this.SetProperty(ref this.isExecutingProcedure, value);
+        }
+
+        public bool IsExternalBayMoving
+        {
+            get => this.isExternalBayMoving;
+            private set => this.SetProperty(ref this.isExternalBayMoving, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovementsGuided => this.isMovementsGuided;
@@ -525,7 +540,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
             {
@@ -544,7 +559,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.OnManualPositioningOperationChanged(message);
-            await this.OnGuidedPositioningOperationChangedAsync(message);
+            this.OnGuidedPositioningOperationChanged(message);
         }
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -613,6 +628,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
                         this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                     }
+                }
+
+                //if (this.HasExternalBay)
+                if (this.HasBayExternal)
+                {
+                    Debug.WriteLine("-->:RefreshActionPoliciesAsync:external bay");
+
+                    this.moveExtBayTowardOperatorPolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardOperator, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
+                    this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
+
+                    this.moveExtBayTowardMachinePolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardMachine, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
+                    this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
                 }
             }
             catch (Exception ex)
@@ -769,7 +796,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        async m => await this.OnPositioningOperationChangedAsync(m),
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);

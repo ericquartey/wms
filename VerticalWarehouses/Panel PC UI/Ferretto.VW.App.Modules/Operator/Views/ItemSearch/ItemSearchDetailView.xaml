@@ -38,7 +38,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
+                       Text="{Resources:Loc OperatorApp.ItemDetailHeader}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1"
@@ -89,49 +89,49 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.Description}"
-                                         LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
+                                         LabelText="{Resources:Loc OperatorApp.CommonItemDescription}" />
 
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.ManagementType, Converter={StaticResource EIMTC}}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailManagement}" />
 
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="2"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.FifoTimePick}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailPeriod}" />
 
                 <controls:PpcLabeledText Grid.Row="2"
                                          Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.ItemCategoryDescription}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailCategory}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailCategory}" />
 
                 <controls:PpcLabeledText Grid.Row="2"
                                          Grid.Column="2"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.MeasureUnitDescription}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailMeasurementUnity}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailMeasurementUnity}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
                                          Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.AbcClassDescription}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailClasse}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailClasse}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
                                          Grid.Column="2"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Item.AverageWeight}"
-                                         LabelText="{x:Static Resources:OperatorApp.ItemDetailWeight}" />
+                                         LabelText="{Resources:Loc OperatorApp.ItemDetailWeight}" />
 
             </Grid>
 
@@ -173,7 +173,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{x:Static Resources:OperatorApp.CommonItemCode}" />
+                                   Text="{Resources:Loc OperatorApp.CommonItemCode}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -213,8 +213,9 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{Binding Item.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
+                                   Foreground="{DynamicResource Text_Foreground}" >
+                            <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}"/> <Run Text="{Binding Item.MeasureUnit}"/>
+                        </TextBlock>
 
                         <TextBlock Grid.Row="1"
                                    Margin="4,0,4,4"
@@ -235,7 +236,7 @@
                                Margin="15,15,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding Item.PickIncrement}"
-                               LabelText="{Binding Item.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.RequestedQuantity}}"
+                               LabelText="{Binding Item.ItemTxt}"
                                Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 
@@ -244,7 +245,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding RequestItemPickCommand}"
-                                Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                                Content="{Resources:Loc OperatorApp.ItemSearchCall}"
                                 IsBusy="{Binding IsBusyRequestingItemPick}"
                                 Style="{StaticResource ConfirmButton}" />
 

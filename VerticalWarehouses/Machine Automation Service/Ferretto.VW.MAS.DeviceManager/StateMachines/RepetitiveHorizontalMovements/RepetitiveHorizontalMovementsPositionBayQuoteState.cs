@@ -46,8 +46,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         #region Constructors
 
-        public RepetitiveHorizontalMovementsPositionBayQuoteState(IRepetitiveHorizontalMovementsStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public RepetitiveHorizontalMovementsPositionBayQuoteState(IRepetitiveHorizontalMovementsStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IRepetitiveHorizontalMovementsMachineData;
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                                     transaction.Commit();
                                 }
 
-                                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsOnBayState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsOnBayState(this.stateData, this.Logger));
                             }
 
                             if (this._previousState == InternalPreviousStates.OnBay)
@@ -140,14 +140,14 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                                     transaction.Commit();
                                 }
 
-                                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsOnElevatorState(this.stateData));
+                                this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsOnElevatorState(this.stateData, this.Logger));
                             }
 
                             break;
                         }
                     case MessageStatus.OperationError:
                         {
-                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData, this.Logger));
                             break;
                         }
                 }
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 var policy = this.CanUnloadToBay(bayPosition.Id, this.machineData.TargetBay);
                 if (!policy.IsAllowed)
                 {
-                    this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData, this.Logger));
                     return;
                 }
 
@@ -207,7 +207,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 var policy = this.CanLoadFromBay(bayPosition.Id, this.machineData.TargetBay);
                 if (!policy.IsAllowed)
                 {
-                    this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData));
+                    this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsErrorState(this.stateData, this.Logger));
                     return;
                 }
 
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new RepetitiveHorizontalMovementsEndState(this.stateData, this.Logger));
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("NoLoadingUnitIsPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -293,7 +293,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
@@ -302,14 +302,14 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             {
                 return new ActionPolicy
                 {
-                    Reason = Resources.Elevator.ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition
+                    Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition", CommonUtils.Culture.Actual)
                 };
             }
 
             // check #5: elevator's pawl cannot be be in zero position
             if (this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition };
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             return ActionPolicy.Allowed;
@@ -383,11 +383,11 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
             if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
             {
-                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual));
             }
             if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
             {
-                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition);
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual));
             }
 
             var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);

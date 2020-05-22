@@ -45,10 +45,35 @@ namespace Ferretto.VW.App.Modules.Login
         private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)
         {
             containerRegistry.ConfigureBarcodeReaderUiServices();
+
             containerRegistry.ConfigureNewlandBarcodeReader();
 
-            // var barcodes = new[] { "1234", "5678" };
-            // containerRegistry.ConfigureMockBarcodeReader(barcodes, 10000);
+            /*
+             * For barcode reader debugging purposes
+             *
+            var barcodes = new[]
+            {
+                // user tokens
+                // "1234",
+                // "5678",
+
+                // item actions
+                // "ITEM_B8450BDD_FILTER",
+                // "ITEM_ABC_FILTER",
+                // "ITEM_B8450BDD_QTY5_PICK",
+
+                // list actions
+                // "LIST_100_EXEC",
+                // "LIST_01_EXEC",
+                // "LIST_0001_FILTER",
+
+                // operations
+                "B8450BDD",
+                "FE8AFA5A",
+                "B8450BDD_LOT_ABC_SN_123",
+            };
+            containerRegistry.ConfigureMockBarcodeReader(barcodes, 5000);
+            */
         }
 
         #endregion

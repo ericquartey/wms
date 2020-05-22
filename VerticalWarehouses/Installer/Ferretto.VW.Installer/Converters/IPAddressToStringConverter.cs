@@ -20,9 +20,9 @@ namespace Ferretto.VW.Installer
 
             if (value is System.Net.IPAddress ipAddress)
             {
-                byte[] bytes = this._ipV4 = ipAddress.GetAddressBytes();
+                var bytes = this._ipV4 = ipAddress.GetAddressBytes();
                 if (parameter != null
-                    && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out int index)
+                    && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out var index)
                     && index >= 0
                     && index <= 3)
                 {
@@ -36,9 +36,9 @@ namespace Ferretto.VW.Installer
 
         public object ConvertBack/*FromString*/(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter != null && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out int index) && index >= 0 && index <= 3)
+            if (parameter != null && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out var index) && index >= 0 && index <= 3)
             {
-                if (byte.TryParse(System.Convert.ToString(value, culture), NumberStyles.Integer, culture, out byte b))
+                if (byte.TryParse(System.Convert.ToString(value, culture), NumberStyles.Integer, culture, out var b))
                 {
                     this._ipV4[index] = b;
                 }

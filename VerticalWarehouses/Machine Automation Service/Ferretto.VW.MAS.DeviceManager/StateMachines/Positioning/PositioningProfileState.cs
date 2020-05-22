@@ -47,8 +47,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Constructors
 
-        public PositioningProfileState(IPositioningStateData stateData)
-            : base(stateData.ParentMachine, stateData.MachineData.Logger)
+        public PositioningProfileState(IPositioningStateData stateData, ILogger logger)
+            : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     break;
                                 }
                             }
-                            int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                            var loadUnitId = this.machineData.MessageData.LoadingUnitId;
                             if (!loadUnitId.HasValue)
                             {
                                 var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                             }
-                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                         }
                         else if (message.Source == FieldMessageActor.IoDriver)
                         {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
                         this.Logger.LogError($"Measure Profile OperationError!");
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
         }
 
         private void RequestMeasureProfile()
