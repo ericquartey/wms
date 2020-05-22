@@ -151,9 +151,9 @@ namespace Ferretto.VW.App
         {
             var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
 #if !DEBUG
-            if (Directory.Exists(tempFolder))
+            if (System.IO.Directory.Exists(tempFolder))
             {
-                Directory.Delete(tempFolder, true);
+                System.IO.Directory.Delete(tempFolder, true);
             }
 #endif
         }
