@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double MinimumLoadOnBoard = 10.0;
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICellsProvider cellsProvider;
 
         private readonly DataLayerContext dataContext;
@@ -32,12 +34,14 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IMachineProvider machineProvider,
             ICellsProvider cellsProvider,
+            IBaysDataProvider baysDataProvider,
             ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
         }
 
         #endregion
@@ -132,19 +136,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public IEnumerable<LoadingUnit> GetAllTestUnits()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.LoadingUnits
-                    .AsNoTracking()
-                    .Where(u => u.IsInFullTest)
-                    .Include(l => l.Cell)
-                    .ThenInclude(c => c.Panel)
-                    .ToArray();
-            }
-        }
-
         public IEnumerable<LoadingUnit> GetAllNotTestUnits()
         {
             lock (this.dataContext)
@@ -152,6 +143,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.LoadingUnits
                     .AsNoTracking()
                     .Where(u => u.IsInFullTest == false)
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<LoadingUnit> GetAllTestUnits()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Where(u => u.IsInFullTest)
                     .Include(l => l.Cell)
                     .ThenInclude(c => c.Panel)
                     .ToArray();
@@ -282,11 +286,17 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(lu.CellId.Value, null);
             }
-
-            lock (this.dataContext)
+            if (lu.Status == DataModels.Enumerations.LoadingUnitStatus.InBay)
             {
-                this.dataContext.LoadingUnits.Remove(lu);
-                this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveLoadingUnit(loadingUnitsId);
+            }
+            else
+            {
+                lock (this.dataContext)
+                {
+                    this.dataContext.LoadingUnits.Remove(lu);
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 
