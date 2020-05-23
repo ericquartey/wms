@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories.Barcode
@@ -14,16 +12,23 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachinePutToLightWebService putToLightWebService;
+
         private string selectedBasketCode;
 
         private string selectedShelfCode;
+
+        private UserAction selectedUserAction;
 
         #endregion
 
         #region Constructors
 
-        public PutToLightBarcodeService(IEventAggregator eventAggregator)
+        public PutToLightBarcodeService(
+            IMachinePutToLightWebService putToLightWebService,
+            IEventAggregator eventAggregator)
         {
+            this.putToLightWebService = putToLightWebService;
             this.eventAggregator = eventAggregator;
         }
 
@@ -33,26 +38,34 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         public async Task<bool> ProcessUserActionAsync(UserActionEventArgs e)
         {
+            if (e.IsReset)
+            {
+                this.selectedUserAction = UserAction.NotSpecified;
+                this.selectedBasketCode = null;
+                this.selectedShelfCode = null;
+
+                return false;
+            }
+
             switch (e.UserAction)
             {
                 case UserAction.AssociateBasketToShelf:
-                    await this.AssociateBasketToShelfAsync();
-                    break;
-
                 case UserAction.CompleteBasket:
-                    await this.CompleteBasketAsync();
+                case UserAction.RemoveFullBasket:
+
+                    this.selectedUserAction = e.UserAction;
+                    this.selectedBasketCode = null;
+                    this.selectedShelfCode = null;
                     break;
 
                 case UserAction.SelectBasket:
-                    this.SelectBasket(e);
+
+                    await this.SelectBasketAsync(e);
                     break;
 
                 case UserAction.SelectShelf:
-                    this.SelectShelf(e);
-                    break;
 
-                case UserAction.RemoveFullBasket:
-                    await this.RemoveFullBasketAsync();
+                    await this.SelectShelfAsync(e);
                     break;
 
                 default:
@@ -64,10 +77,33 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         private async Task AssociateBasketToShelfAsync()
         {
+            try
+            {
+                await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode);
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
         }
 
         private async Task CompleteBasketAsync()
         {
+            try
+            {
+                await this.putToLightWebService.CompleteBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
+        private void NotifyError(Exception ex)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(ex));
         }
 
         private void NotifyWarning(string message)
@@ -79,9 +115,45 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         private async Task RemoveFullBasketAsync()
         {
+            try
+            {
+                await this.putToLightWebService.RemoveFullBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
         }
 
-        private void SelectBasket(UserActionEventArgs e)
+        private async Task RunActionAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.selectedBasketCode)
+                ||
+                string.IsNullOrWhiteSpace(this.selectedShelfCode))
+            {
+                return;
+            }
+
+            switch (this.selectedUserAction)
+            {
+                case UserAction.AssociateBasketToShelf:
+
+                    await this.AssociateBasketToShelfAsync();
+                    break;
+
+                case UserAction.CompleteBasket:
+
+                    await this.CompleteBasketAsync();
+                    break;
+
+                case UserAction.RemoveFullBasket:
+
+                    await this.RemoveFullBasketAsync();
+                    break;
+            }
+        }
+
+        private async Task SelectBasketAsync(UserActionEventArgs e)
         {
             this.selectedBasketCode = e.GetBasketCode();
 
@@ -89,15 +161,23 @@ namespace Ferretto.VW.App.Accessories.Barcode
             {
                 this.NotifyWarning("No basket code found in the barcode");//TODO localize
             }
+            else
+            {
+                await this.RunActionAsync();
+            }
         }
 
-        private void SelectShelf(UserActionEventArgs e)
+        private async Task SelectShelfAsync(UserActionEventArgs e)
         {
             this.selectedShelfCode = e.GetShelfCode();
 
             if (this.selectedShelfCode is null)
             {
-                this.NotifyWarning("No basket code found in the barcode");//TODO localize
+                this.NotifyWarning("No shelf code found in the barcode");//TODO localize
+            }
+            else
+            {
+                await this.RunActionAsync();
             }
         }
 

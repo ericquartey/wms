@@ -178,7 +178,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
-            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
+            this.logger.Debug($"{message.Data.MissionType} {message.Status}.");
+
+            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
                &&
                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
             {
