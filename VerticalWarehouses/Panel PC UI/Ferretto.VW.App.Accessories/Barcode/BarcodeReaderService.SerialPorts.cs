@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly ObservableCollection<string> portNames = new ObservableCollection<string>();
 
+        private readonly object portsSyncRoot = new object();
+
         private Timer serialPortsPollTimer;
 
         #endregion
@@ -44,19 +46,22 @@ namespace Ferretto.VW.App.Accessories
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                foreach (var systemPort in systemPorts)
+                lock (this.portsSyncRoot)
                 {
-                    if (!this.portNames.Contains(systemPort))
+                    foreach (var systemPort in systemPorts)
                     {
-                        this.portNames.Add(systemPort);
+                        if (!this.portNames.Contains(systemPort))
+                        {
+                            this.portNames.Add(systemPort);
+                        }
                     }
-                }
 
-                foreach (var knownPort in this.portNames)
-                {
-                    if (!systemPorts.Contains(knownPort))
+                    foreach (var knownPort in this.portNames.ToArray())
                     {
-                        this.portNames.Remove(knownPort);
+                        if (!systemPorts.Contains(knownPort))
+                        {
+                            this.portNames.Remove(knownPort);
+                        }
                     }
                 }
             });

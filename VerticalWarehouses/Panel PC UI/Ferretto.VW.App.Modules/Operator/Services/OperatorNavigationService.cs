@@ -115,6 +115,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
                 else
                 {
+                    this.logger.Debug($"Auto-navigating to '{Utils.Modules.Operator.OPERATOR_MENU}'.");
                     this.navigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.OPERATOR_MENU,
@@ -160,8 +161,8 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 return;
             }
-            this.logger.Trace("Unit move out, navigation to unit info view.");
 
+            this.logger.Debug($"Auto-navigating to '{Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO}' with loading unit '{this.lastActiveUnitId}'.");
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO,
@@ -217,6 +218,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             var activeViewModelName = this.GetActiveViewModelName();
 
+            this.logger.Debug($"Auto-navigating to '{activeViewModelName}' with loading unit '{loadingUnitId}'.");
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
@@ -246,15 +248,19 @@ namespace Ferretto.VW.App.Modules.Operator
                     break;
 
                 default:
-                    throw new Exception("Operation type is not supported");
+                    this.logger.Trace($"Operation type is not supported (enum value = {(int)operationType}).");
+                    break;
             }
 
             this.lastActiveMissionId = this.missionOperationsService.ActiveWmsMission.Id;
 
+            var loadingUnitId = this.missionOperationsService.ActiveWmsMission?.LoadingUnit?.Id;
+            this.logger.Debug($"Auto-navigating to '{viewModelName}' with loading unit '{loadingUnitId}'.");
+
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 viewModelName,
-                this.missionOperationsService.ActiveWmsMission?.LoadingUnit?.Id,
+                loadingUnitId,
                 trackCurrentView: this.IsViewTrackable());
         }
 

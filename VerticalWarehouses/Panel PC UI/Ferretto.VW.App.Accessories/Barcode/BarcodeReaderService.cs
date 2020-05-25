@@ -307,17 +307,17 @@ namespace Ferretto.VW.App.Accessories
                     this.NotifyWarning(
                         string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code));
 
-                    this.logger.Warn($"Barcode {e.Code}: does not match any rule.");
+                    this.logger.Warn($"Barcode {code}: does not match any rule.");
 
                     // send an event to notify the reset
-                    eventArgs = new UserActionEventArgs(e.Code, isReset: chainedRuleIsExpected);
+                    eventArgs = new UserActionEventArgs(code, isReset: chainedRuleIsExpected);
                 }
                 else
                 {
                     this.logger.Debug(
-                        $"Barcode '{e.Code}': matched action '{this.activeRule.Action}' (context '{this.activeRule.ContextName ?? "<global>"}')");
+                        $"Barcode '{code}': matched action '{this.activeRule.Action}' (context '{this.activeRule.ContextName ?? "<global>"}')");
 
-                    eventArgs = new UserActionEventArgs(e.Code, this.activeRule);
+                    eventArgs = new UserActionEventArgs(code, this.activeRule);
                 }
             }
 

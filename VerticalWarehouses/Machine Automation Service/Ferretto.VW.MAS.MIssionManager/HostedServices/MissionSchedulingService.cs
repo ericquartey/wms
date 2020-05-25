@@ -1205,9 +1205,9 @@ namespace Ferretto.VW.MAS.MissionManager
             else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
             {
                 // wms mission is finished
-                baysDataProvider.ClearMission(bayNumber);
                 mission.Status = MissionStatus.Completed;
                 missionsDataProvider.Update(mission);
+                baysDataProvider.ClearMission(bayNumber);
 
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 

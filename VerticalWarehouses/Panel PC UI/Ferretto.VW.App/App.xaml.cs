@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Resources;
@@ -84,7 +85,27 @@ namespace Ferretto.VW.App
 
             this.DeactivateBay();
 
+            this.DeactivateAccessories();
+
             base.OnExit(e);
+        }
+
+        private void DeactivateAccessories()
+        {
+            try
+            {
+                var barcodeReaderService = this.Container.Resolve<IBarcodeReaderService>();
+                this.logger.Info("Deactivating barcode reader on application exit.");
+
+                Task
+                    .Run(async () => await barcodeReaderService.StopAsync().ConfigureAwait(false))
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -163,6 +184,7 @@ namespace Ferretto.VW.App
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
 
             this.DeactivateBay();
+            this.DeactivateAccessories();
 
             NLog.LogManager.Flush();
             NLog.LogManager.Shutdown();
@@ -184,8 +206,9 @@ namespace Ferretto.VW.App
                         .GetAwaiter().GetResult();
                 }
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
+            catch (Exception ex)
             {
+                this.logger.Error(ex);
             }
         }
 
