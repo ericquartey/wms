@@ -337,21 +337,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             var selectedunit = this.machineService.Loadunits.Where(i => i.Id == units).SingleOrDefault();
                             this.unitNumber = selectedunit.Id;
                             this.unitHeight = selectedunit.Height;
-                            this.unitWeight = selectedunit.GrossWeight;
+                            this.unitWeight = selectedunit.NetWeight;
                         }
                     }
                     else
                     {
                         this.unitNumber = this.LoadingUnit.Id;
                         this.unitHeight = this.LoadingUnit.Height;
-                        this.unitWeight = this.LoadingUnit.GrossWeight;
+                        this.unitWeight = this.LoadingUnit.NetWeight;
                     }
                 }
                 else
                 {
                     this.unitNumber = this.LoadingUnit.Id;
                     this.unitHeight = this.LoadingUnit.Height;
-                    this.unitWeight = this.LoadingUnit.GrossWeight;
+                    this.unitWeight = this.LoadingUnit.NetWeight;
                 }
             }
             catch (Exception)
