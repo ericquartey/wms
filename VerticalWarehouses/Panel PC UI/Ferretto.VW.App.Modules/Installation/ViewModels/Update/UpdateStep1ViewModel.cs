@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -28,8 +29,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public UpdateStep1ViewModel(IDialogService dialogService)
-            : base()
+        public UpdateStep1ViewModel(IDialogService dialogService, UsbWatcherService usb)
+            : base(usb)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
@@ -82,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return this.Installations.Count > 0
                    &&
-                   this.IsInstallationReady;
+                   !this.IsBusy;
         }
 
         private bool CanRestore()
