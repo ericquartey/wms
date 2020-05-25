@@ -21,13 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
-
-        private readonly IElevatorDataProvider elevatorDataProvider;
-
         private readonly IErrorsProvider errorsProvider;
-
-        private readonly ILoadingUnitsDataProvider loadingUnitProvider;
 
         private readonly IExtBayPositioningMachineData machineData;
 
@@ -48,9 +42,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
             this.machineData = stateData.MachineData as IExtBayPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
 
-            this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-            this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 

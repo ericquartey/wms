@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -14,15 +15,17 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public const string IP_ADDRESS_DEFAULT = "192.168.99.12";
 
-        public const int PORT_DEFAULT = 80;
+        public const int PORT_DEFAULT = 2020;
 
-        public const int SPEED_DEFAULT = 80;
+        public const int SPEED_DEFAULT = 10000;
 
-        private readonly Queue errorsQueue;
+        private const string NEW_LINE = "\r\n";
 
-        private readonly Queue messagesReceivedQueue;
+        private readonly ConcurrentQueue<string> errorsQueue;
 
-        private readonly Queue messagesToBeSendQueue;
+        private readonly ConcurrentQueue<string> messagesReceivedQueue;
+
+        private readonly ConcurrentQueue<string> messagesToBeSendQueue;
 
         private readonly int tcpTimeout = 2000;
 
@@ -36,6 +39,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private bool testEnabled = false;
 
+        private double xOffset;
+
         private double yOffset;
 
         private double zOffsetLowerPosition;
@@ -48,9 +53,9 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public LaserPointerDriver()
         {
-            this.messagesToBeSendQueue = new Queue();
-            this.messagesReceivedQueue = new Queue();
-            this.errorsQueue = new Queue();
+            this.messagesToBeSendQueue = new ConcurrentQueue<string>();
+            this.messagesReceivedQueue = new ConcurrentQueue<string>();
+            this.errorsQueue = new ConcurrentQueue<string>();
         }
 
         #endregion
@@ -67,9 +72,12 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         #region Methods
 
-        public LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, bool isBayUpperPosition, WarehouseSide baySide)
+        public LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, double missionOperationItemHeight, bool isBayUpperPosition, WarehouseSide baySide)
         {
             var result = new LaserPoint();
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();loadingUnitWidth: {loadingUnitWidth}, loadingUnitDepth {loadingUnitDepth}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentXPosition: {compartmentXPosition}, compartmentYPosition {compartmentYPosition}");
 
             if (baySide == WarehouseSide.Back)
             {
@@ -77,17 +85,20 @@ namespace Ferretto.VW.Devices.LaserPointer
                 compartmentYPosition = loadingUnitDepth - compartmentYPosition;
             }
 
-            result.X = (int)((loadingUnitWidth / 2) - compartmentXPosition);
-            result.Y = (int)(compartmentYPosition - (loadingUnitDepth / 2));
-            result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
+            result.X = (int)((loadingUnitWidth / 2) - compartmentXPosition) + (int)this.xOffset;
+            result.Y = (int)(compartmentYPosition - (loadingUnitDepth / 2)) + (int)this.yOffset;
+
+            result.Z = (int)missionOperationItemHeight;
+            result.Z += isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
             result.Speed = SPEED_DEFAULT;
             return result;
         }
 
-        public bool Configure(IPAddress ipAddress, int port, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
+        public bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
         {
             this.ipAddress = ipAddress;
             this.port = port;
+            this.xOffset = xOffset;
             this.yOffset = yOffset;
             this.zOffsetUpperPosition = zOffsetUpperPosition;
             this.zOffsetLowerPosition = zOffsetLowerPosition;
@@ -102,8 +113,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// <returns></returns>
         public async Task<bool> EnabledAsync(bool enable, bool onMovement)
         {
-            this.messagesToBeSendQueue.Clear();
-
             if (enable)
             {
                 if (onMovement)
@@ -238,8 +247,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// <returns></returns>
         public async Task<bool> TestAsync(bool enable)
         {
-            this.messagesToBeSendQueue.Clear();
-
             if (enable)
             {
                 this.EnqueueCommand(LaserPointerCommands.Command.TEST_ON);
@@ -250,6 +257,12 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
+        {
+            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            return true;
         }
 
         /// <summary>
@@ -342,7 +355,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                     break;
             }
 
-            strCommand += Environment.NewLine;
+            strCommand += NEW_LINE;
 
             this.messagesToBeSendQueue.Enqueue(strCommand);
             result = true;
@@ -359,52 +372,59 @@ namespace Ferretto.VW.Devices.LaserPointer
             var result = false;
             try
             {
-                this.messagesReceivedQueue.Clear();
-                this.errorsQueue.Clear();
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                this.ClearConcurrentQueue(this.errorsQueue);
 
                 var client = new TcpClient();
                 NetworkStream stream = null;
 
-                foreach (string sendMessage in this.messagesToBeSendQueue)
+                while (!this.messagesToBeSendQueue.IsEmpty)
                 {
                     try
                     {
-                        if (!client.Connected)
+                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
                         {
-                            client.SendTimeout = this.tcpTimeout;
-                            await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
-                            stream = client.GetStream();
-                        }
-
-                        var data = Encoding.ASCII.GetBytes(sendMessage);
-                        stream = client.GetStream();
-                        stream.ReadTimeout = this.tcpTimeout;
-                        stream.Write(data, 0, data.Length);
-                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
-
-                        if (this.IsWaitResponse(sendMessage))
-                        {
-                            data = new byte[client.ReceiveBufferSize];
-                            var bytes = stream.Read(data, 0, data.Length);
-                            var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-
-                            this.messagesReceivedQueue.Enqueue(responseMessage);
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
-                            if (!this.IsResponseOk(sendMessage, responseMessage))
+                            if (!client.Connected)
                             {
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                client.SendTimeout = this.tcpTimeout;
+                                await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                                stream = client.GetStream();
+                            }
+
+                            var data = Encoding.ASCII.GetBytes(sendMessage);
+                            stream = client.GetStream();
+                            stream.ReadTimeout = this.tcpTimeout;
+                            stream.Write(data, 0, data.Length);
+                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands();Sent: {sendMessage}");
+
+                            if (this.IsWaitResponse(sendMessage))
+                            {
+                                data = new byte[client.ReceiveBufferSize];
+                                var bytes = stream.Read(data, 0, data.Length);
+                                var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+
+                                this.messagesReceivedQueue.Enqueue(responseMessage);
+                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands();Received: {responseMessage}");
+                                if (!this.IsResponseOk(sendMessage, responseMessage))
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};LaserPointerDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                }
+                            }
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};LaserPointerDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
+                                this.messagesReceivedQueue.Enqueue("");
                             }
                         }
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
-                            this.messagesReceivedQueue.Enqueue("");
+                            System.Threading.Thread.Sleep(100);
                         }
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
-                        this.errorsQueue.Enqueue(e);
+                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands;{e.Message}");
+                        this.errorsQueue.Enqueue(e.Message);
                     }
                 }
 
@@ -418,7 +438,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;{e.Message}");
             }
 
             return result;

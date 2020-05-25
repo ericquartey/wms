@@ -23,12 +23,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public SetupStatusController(ISetupStatusProvider setupStatusProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IServicingProvider servicingProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.setupStatusProvider = setupStatusProvider ?? throw new System.ArgumentNullException(nameof(setupStatusProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
         }
 
         #endregion
@@ -104,13 +102,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("confirm-setup")]
-        public IActionResult ConfirmSetup()
-        {
-            this.servicingProvider.SetInstallationDate();
-            return this.Ok();
-        }
-
         [HttpPost("deposit-and-pickup-test-bypass")]
         public IActionResult DepositAndPickUpTestBypass()
         {
@@ -122,12 +113,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<SetupStatusCapabilities> Get()
         {
             return this.Ok(this.setupStatusProvider.Get());
-        }
-
-        [HttpGet("servicing-info")]
-        public ActionResult<ServicingInfo> GetServicingInfo()
-        {
-            return this.Ok(this.servicingProvider.GetInfo());
         }
 
         [HttpPost("horizontal-chain-calibration-bypass")]

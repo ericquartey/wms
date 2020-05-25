@@ -286,10 +286,10 @@
     <value>L'inverter sta eseguendo un altro comando</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Il livello basso della baiaa è vuoto</value>
+    <value>Errore dei sensori di baia</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Il livello basso della baia è occupato</value>
+    <value>Errore dei sensori di baia</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
     <value>Elevatore non carico in prelievo</value>

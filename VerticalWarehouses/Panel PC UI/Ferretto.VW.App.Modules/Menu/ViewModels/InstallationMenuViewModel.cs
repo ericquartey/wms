@@ -30,9 +30,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly Services.IDialogService dialogService;
 
-        private readonly IMachineIdentityWebService machineIdentityWebService;
-
         private readonly IMachineService machineService;
+
+        private readonly IMachineServicingWebService machineServicingWebService;
 
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
@@ -72,13 +72,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineService machineService,
             IDialogService dialogService,
-            IMachineIdentityWebService machineIdentityWebService)
+            IMachineServicingWebService machineServicingWebService)
            : base()
         {
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
         }
 
         #endregion
@@ -99,34 +99,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
-                    }
-                }
-                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                {
-                    this.ShowNotification(ex);
-                }
-                finally
-                {
-                    this.IsExecutingProcedure = false;
-                }
-            }));
-
-        public ICommand ExternalBayCalibrationBypassCommand =>
-        this.externalBayCalibrationTestBypassCommand
-        ??
-        (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
-            async () =>
-            {
-                try
-                {
-                    this.IsExecutingProcedure = true;
-
-                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"), DialogType.Question, DialogButtons.YesNo);
-                    if (messageBoxResult == DialogResult.Yes)
-                    {
-                        await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync();
 
                         await this.UpdateSetupStatusAsync();
                     }
@@ -306,6 +278,34 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override bool ConfirmSetupVisible => (this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure && this.IsGeneralActive);
 
+        public ICommand ExternalBayCalibrationBypassCommand =>
+                                                                this.externalBayCalibrationTestBypassCommand
+        ??
+        (this.externalBayCalibrationTestBypassCommand = new DelegateCommand(
+            async () =>
+            {
+                try
+                {
+                    this.IsExecutingProcedure = true;
+
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineSetupStatusWebService.BayExternalCalibrationBypassAsync();
+
+                        await this.UpdateSetupStatusAsync();
+                    }
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsExecutingProcedure = false;
+                }
+            }));
+
         public ICommand HorizontalChainCalibrationTestBypassCommand =>
             this.horizontalChainCalibrationTestBypassCommand
             ??
@@ -382,7 +382,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCompleteTest"), Localized.Get("InstallationApp.ConfirmSetup"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineSetupStatusWebService.ConfirmSetupAsync();
+                    await this.machineServicingWebService.ConfirmSetupAsync();
 
                     await this.UpdateSetupStatusAsync();
                 }

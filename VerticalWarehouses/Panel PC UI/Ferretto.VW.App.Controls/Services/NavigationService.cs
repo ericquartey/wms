@@ -5,6 +5,7 @@ using System.Windows;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
+using Microsoft.AppCenter.Analytics;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;

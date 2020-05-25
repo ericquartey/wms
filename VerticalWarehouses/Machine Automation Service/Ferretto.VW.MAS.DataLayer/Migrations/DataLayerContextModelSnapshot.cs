@@ -811,6 +811,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 78,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -927,6 +932,66 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExternalBayManualParameters");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Instruction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DefinitionId");
+
+                    b.Property<double?>("DoubleCounter");
+
+                    b.Property<int?>("IntCounter");
+
+                    b.Property<bool>("IsDone");
+
+                    b.Property<bool>("IsToDo");
+
+                    b.Property<DateTime?>("MaintenanceDate");
+
+                    b.Property<int?>("ServicingInfoId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefinitionId");
+
+                    b.HasIndex("ServicingInfoId");
+
+                    b.ToTable("Instructions");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InstructionDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Axis");
+
+                    b.Property<int>("BayNumber");
+
+                    b.Property<string>("CounterName");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("InstructionType");
+
+                    b.Property<bool>("IsCarousel");
+
+                    b.Property<bool>("IsShutter");
+
+                    b.Property<bool>("IsSystem");
+
+                    b.Property<int?>("MaxDays");
+
+                    b.Property<int?>("MaxRelativeCount");
+
+                    b.Property<int?>("MaxTotalCount");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InstructionDefinitions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
@@ -1181,7 +1246,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             TotalAutomaticTime = new TimeSpan(0, 0, 0, 0, 0),
                             TotalBayChainKilometers1 = 0.0,
                             TotalBayChainKilometers2 = 0.0,
@@ -1328,6 +1393,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<DateTime?>("LastServiceDate");
 
+                    b.Property<int?>("MachineStatisticsId");
+
                     b.Property<DateTime?>("NextServiceDate");
 
                     b.Property<int>("ServiceStatus");
@@ -1335,6 +1402,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("TotalMissions");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MachineStatisticsId");
 
                     b.ToTable("ServicingInfo");
                 });
@@ -2003,6 +2072,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("ManualMovementsId");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Instruction", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.InstructionDefinition", "Definition")
+                        .WithMany()
+                        .HasForeignKey("DefinitionId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ServicingInfo", "ServicingInfo")
+                        .WithMany("Instructions")
+                        .HasForeignKey("ServicingInfoId");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter")
@@ -2037,6 +2117,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis")
                         .WithMany("Profiles")
                         .HasForeignKey("ElevatorAxisId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MachineStatistics", "MachineStatistics")
+                        .WithMany()
+                        .HasForeignKey("MachineStatisticsId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>

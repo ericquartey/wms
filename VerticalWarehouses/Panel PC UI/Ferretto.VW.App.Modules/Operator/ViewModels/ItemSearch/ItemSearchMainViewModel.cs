@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AppCenter.Analytics;
 using Prism.Commands;
 using Prism.Events;
 
@@ -389,6 +390,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPick = true;
+
+                Analytics.TrackEvent("Product Pick Requested", new Dictionary<string, string> {
+                    { "Item Code", itemCode },
+                    { "Requested Quantity", this.inputQuantity?.ToString() },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
+                });
 
                 await this.wmsDataProvider.PickAsync(
                     itemId,

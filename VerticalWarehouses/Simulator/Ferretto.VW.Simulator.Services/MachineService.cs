@@ -541,7 +541,7 @@ namespace Ferretto.VW.Simulator.Services
                 if (subStr.Length > 1)
                 {
                     this.alphaNumericBar1Offset = int.Parse(subStr[1]);
-                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1]) + subStr[1].Length).Trim();
+                    this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1], StringComparison.Ordinal) + subStr[1].Length).Trim();
                 }
             }
             else if (messageReceived.StartsWith("GET ", StringComparison.Ordinal))
@@ -553,6 +553,7 @@ namespace Ferretto.VW.Simulator.Services
                 return;
             }
 
+            Task.Delay(1000).Wait();
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
             client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + Environment.NewLine));
         }

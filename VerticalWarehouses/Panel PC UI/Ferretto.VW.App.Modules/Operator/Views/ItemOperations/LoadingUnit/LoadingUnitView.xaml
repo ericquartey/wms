@@ -71,7 +71,7 @@
                                 <Run Text="(" /><Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
                                 <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
                                 <Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.GrossWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
+                                <Run Text="{Binding LoadingUnit.NetWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
                             </TextBlock>
                         </StackPanel>
 

@@ -15,5 +15,9 @@
         ItemSerialNumber,
 
         ItemLot,
+
+        BasketCode,
+
+        ShelfCode,
     }
 }

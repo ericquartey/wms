@@ -64,6 +64,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<External> Externals { get; set; }
 
+        public DbSet<InstructionDefinition> InstructionDefinitions { get; set; }
+
+        public DbSet<Instruction> Instructions { get; set; }
+
         public DbSet<Inverter> Inverters { get; set; }
 
         public DbSet<IoDevice> IoDevices { get; set; }

@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.VW.App.Accessories.Barcode;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AppCenter.Analytics;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
@@ -17,21 +20,33 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineBarcodesWebService barcodesWebService;
 
+        private readonly IBayManager bayManager;
+
+        private readonly IBarcodeReaderDriver deviceDriver;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILoadingUnitBarcodeService loadingUnitBarcodeService;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly INavigationService navigationService;
 
-        private readonly IBarcodeReaderDriver reader;
+        private readonly IPutToLightBarcodeService putToLightBarcodeService;
+
+        private readonly object syncRoot = new object();
 
         private BarcodeRule activeRule;
 
         private bool isStarted;
 
-        private IEnumerable<BarcodeRule> ruleSet;
+        private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
 
         #endregion
 
@@ -39,18 +54,26 @@ namespace Ferretto.VW.App.Accessories
 
         public BarcodeReaderService(
             IEventAggregator eventAggregator,
+            IBayManager bayManager,
             IMachineBaysWebService machineBaysWebService,
-            IBarcodeReaderDriver reader,
+            IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
+            IPutToLightBarcodeService putToLightBarcodeService,
+            ILoadingUnitBarcodeService loadingUnitBarcodeService,
+            IAuthenticationService authenticationService,
             IMachineBarcodesWebService barcodesWebService)
         {
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-            this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
-            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            this.barcodesWebService = barcodesWebService ?? throw new ArgumentNullException(nameof(barcodesWebService));
+            this.eventAggregator = eventAggregator;
+            this.bayManager = bayManager;
+            this.machineBaysWebService = machineBaysWebService;
+            this.deviceDriver = deviceDriver;
+            this.navigationService = navigationService;
+            this.putToLightBarcodeService = putToLightBarcodeService;
+            this.loadingUnitBarcodeService = loadingUnitBarcodeService;
+            this.authenticationService = authenticationService;
+            this.barcodesWebService = barcodesWebService;
 
-            this.reader.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(sender, e);
+            this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
         }
 
         #endregion
@@ -66,7 +89,7 @@ namespace Ferretto.VW.App.Accessories
                     throw new InvalidOperationException("Cannot retrieve device information because the barcode is not connected.");//TODO localize
                 }
 
-                if (this.reader is IQueryableDevice queryableDevice)
+                if (this.deviceDriver is IQueryableDevice queryableDevice)
                 {
                     return queryableDevice.Information;
                 }
@@ -81,26 +104,13 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public void Disable()
-        {
-            try
-            {
-                this.reader.Disconnect();
-
-                this.DisableSerialPortsTimer();
-            }
-            catch (Exception ex)
-            {
-                this.NotifyError(ex);
-            }
-            finally
-            {
-                this.isStarted = false;
-            }
-        }
-
         public async Task StartAsync()
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
             if (this.isStarted)
             {
                 return;
@@ -114,7 +124,7 @@ namespace Ferretto.VW.App.Accessories
 
                 if (accessories.BarcodeReader?.IsEnabledNew == true)
                 {
-                    this.reader.Connect(
+                    this.deviceDriver.Connect(
                         new ConfigurationOptions
                         {
                             PortName = accessories.BarcodeReader.PortName
@@ -131,36 +141,81 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        private static async Task ExecuteActionOnActiveContext(UserActionEventArgs eventArgs, IOperationalContextViewModel activeContext)
+        public Task StopAsync()
         {
-            if (activeContext is null)
+            if (this.isDisposed)
             {
-                return;
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            await Application.Current.Dispatcher.Invoke(async () =>
+            try
             {
-                try
+                this.deviceDriver.Disconnect();
+                this.ruleSet = Array.Empty<BarcodeRule>();
+
+                this.DisableSerialPortsTimer();
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+            finally
+            {
+                this.isStarted = false;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private async Task ExecuteActionOnActiveContext(UserActionEventArgs eventArgs, IOperationalContextViewModel activeContext)
+        {
+            var handled = false;
+            if (activeContext != null)
+            {
+                handled = true;
+                await Application.Current.Dispatcher.Invoke(async () =>
                 {
-                    await activeContext.CommandUserActionAsync(eventArgs);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Barcode {eventArgs.Code} caused an exception on {activeContext.GetType()}: {ex.Message}");
-                }
-            });
+                    try
+                    {
+                        await activeContext.CommandUserActionAsync(eventArgs);
+
+                        if (eventArgs.HasMismatch && eventArgs.RestartOnMismatch)
+                        {
+                            this.activeRule = null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.Error(
+                            ex,
+                            $"Barcode {eventArgs.Code} caused an exception on context '{activeContext.GetType()}'");
+                    }
+                });
+            }
+
+            if (this.authenticationService.UserName != null)
+            {
+                handled = await this.putToLightBarcodeService.ProcessUserActionAsync(eventArgs);
+
+                handled = handled || await this.loadingUnitBarcodeService.ProcessUserActionAsync(eventArgs);
+            }
+
+            if (!handled)
+            {
+                this.logger.Warn("The rule was not handled."); // TODO localize
+            }
         }
 
         /// <summary>
         /// Gets the currently active view model.
         /// </summary>
         /// <returns>The reference to the currently active operational context of the view model.</returns>
-        private IOperationalContextViewModel GetActiveContext()
+        private INavigableViewModel GetActiveContext()
         {
-            IOperationalContextViewModel activeViewModel = null;
+            INavigableViewModel activeViewModel = null;
             Application.Current.Dispatcher.Invoke(() =>
             {
-                activeViewModel = this.navigationService.GetActiveViewModel() as IOperationalContextViewModel;
+                activeViewModel = this.navigationService.GetActiveViewModel();
             });
 
             return activeViewModel;
@@ -174,8 +229,6 @@ namespace Ferretto.VW.App.Accessories
         /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if not match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
-            System.Diagnostics.Debug.Assert(this.ruleSet != null);
-
             // note: rules with a context have priority
             var matchedRule = this.ruleSet
                 .FirstOrDefault(r =>
@@ -190,9 +243,14 @@ namespace Ferretto.VW.App.Accessories
                    &&
                    Regex.IsMatch(barcode, r.Pattern));
 
-            System.Diagnostics.Debug.WriteLineIf(
-                matchedRule is null,
-                $"No valid context found for {activeContextName}");
+            if (matchedRule is null)
+            {
+                this.logger.Warn($"Barcode {barcode}: no matching rule found.");
+            }
+            else
+            {
+                this.logger.Debug($"Barcode {barcode}: matched rule action '{matchedRule.Action}' (context '{matchedRule.ContextName ?? "<global>"}').");
+            }
 
             return matchedRule;
         }
@@ -201,11 +259,13 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
-                this.ruleSet = await this.barcodesWebService.GetAllAsync();
+                var rules = await this.barcodesWebService.GetAllAsync();
+
+                this.ruleSet = rules.OrderBy(r => r.Priority).ToArray();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Unable to load barcode rules.");
+                this.logger.Error($"Unable to load barcode rules.");
                 this.NotifyError(ex);
             }
         }
@@ -224,63 +284,94 @@ namespace Ferretto.VW.App.Accessories
                 .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
         }
 
-        private async Task OnBarcodeReceivedAsync(object sender, ActionEventArgs e)
+        private async Task OnBarcodeReceivedAsync(ActionEventArgs e)
         {
-            var activeContext = this.GetActiveContext();
-
-            System.Diagnostics.Debug.WriteLineIf(
-                activeContext is null,
-                $"Current view model does not specify an operational context.");
-
             var code = e.Code
-                .Replace("\r", string.Empty)
-                .Replace("\n", string.Empty);
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
 
-            var chainedRuleIsExpected = this.activeRule?.NextRuleId != null;
-            this.activeRule = this.SelectActiveRule(code, activeContext);
-            if (this.activeRule is null)
+            var activeViewModel = this.GetActiveContext();
+            var activeContext = activeViewModel as IOperationalContextViewModel;
+
+            this.logger.Debug(
+                $"Barcode '{code}': active context is '{activeContext?.GetType().Name ?? "<global>"}'.");
+
+            UserActionEventArgs eventArgs;
+            lock (this.syncRoot)
             {
-                this.NotifyWarning(
-                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code));
+                var chainedRuleIsExpected = this.activeRule?.NextRuleId != null;
+                this.activeRule = this.SelectActiveRule(code, activeContext);
 
-                System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} does not match any rule.");
+                if (this.activeRule is null)
+                {
+                    this.NotifyWarning(
+                        string.Format(Resources.Localized.Get("OperatorApp.BarcodeNotRecognized"), code));
 
-                var eventArgs = new UserActionEventArgs(e.Code, isReset: chainedRuleIsExpected);
-                await ExecuteActionOnActiveContext(eventArgs, activeContext);
+                    this.logger.Warn($"Barcode {e.Code}: does not match any rule.");
+
+                    // send an event to notify the reset
+                    eventArgs = new UserActionEventArgs(e.Code, isReset: chainedRuleIsExpected);
+                }
+                else
+                {
+                    this.logger.Debug(
+                        $"Barcode '{e.Code}': matched action '{this.activeRule.Action}' (context '{this.activeRule.ContextName ?? "<global>"}')");
+
+                    eventArgs = new UserActionEventArgs(e.Code, this.activeRule);
+                }
             }
-            else
+
+            Analytics.TrackEvent("Read Barcode", new Dictionary<string, string>
             {
-                System.Diagnostics.Debug.WriteLine(
-                    $"Barcode {e.Code} matched rule context '{this.activeRule.ContextName}', action '{this.activeRule.Action}'");
+                    { "Active Page", activeViewModel?.GetType()?.Name?.Replace("ViewModel", "View") ?? "<none>" },
+                    { "Matched Rule", this.activeRule?.Action?.ToString() ?? "<none>" },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+            });
 
-                var eventArgs = new UserActionEventArgs(e.Code, this.activeRule);
-                await ExecuteActionOnActiveContext(eventArgs, activeContext);
-            }
+            await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
         }
 
         private BarcodeRule SelectActiveRule(string code, IOperationalContextViewModel activeContext)
         {
+            this.logger.Debug($"Barcode '{code}': active rule is '{this.activeRule?.Action ?? "<none>"}'.");
+
             if (this.activeRule is null)
             {
+                this.logger.Debug($"Barcode '{code}': no active chain, starting a new one.");
+                return this.GetActiveContextRule(code, activeContext?.ActiveContextName);
+            }
+
+            if (this.activeRule.NextRuleId is null)
+            {
+                this.logger.Debug($"Barcode '{code}': chain completed, starting a new one.");
                 return this.GetActiveContextRule(code, activeContext?.ActiveContextName);
             }
 
             var nextRule = this.ruleSet.SingleOrDefault(r => r.Id == this.activeRule.NextRuleId);
+
             if (nextRule is null)
             {
-                return this.GetActiveContextRule(code, activeContext?.ActiveContextName);
+                this.logger.Warn($"Barcode '{code}': next chained rule not found. Check your rule set.");
+
+                return null;
             }
 
-            System.Diagnostics.Debug.WriteLine($"Barcode chained rule found.");
-
+            this.logger.Debug($"Barcode '{code}': next chained rule action is '{nextRule.Action}'.");
             if (Regex.IsMatch(code, nextRule.Pattern))
             {
+                this.logger.Debug($"Barcode '{code}': matched next chained rule.");
                 return nextRule;
             }
-
-            if (this.activeRule.RestartOnMismatch)
+            else
             {
-                return null;
+                this.logger.Warn($"Barcode '{code}': did not match the chained rule.");
+
+                if (this.activeRule.RestartOnMismatch)
+                {
+                    this.logger.Warn($"Barcode '{code}': resetting rule chain.");
+
+                    return this.GetActiveContextRule(code, activeContext?.ActiveContextName);
+                }
             }
 
             return this.activeRule;

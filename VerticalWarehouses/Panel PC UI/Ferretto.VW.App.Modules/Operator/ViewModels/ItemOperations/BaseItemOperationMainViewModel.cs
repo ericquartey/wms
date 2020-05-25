@@ -50,11 +50,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isInputQuantityValid;
 
-        private bool isItemCodeValid;
+        private bool isItemCodeValid = true;
 
-        private bool isItemLotValid;
+        private bool isItemLotValid = true;
 
-        private bool isItemSerialNumberValid;
+        private bool isItemSerialNumberValid = true;
 
         private bool isOperationCanceled;
 
@@ -65,6 +65,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double loadingUnitWidth;
 
         private SubscriptionToken missionToken;
+
+        private bool resetFieldsOnNextAction;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -85,9 +87,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.eventAggregator = eventAggregator;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
-
-            _ = this.AlphaNumericBarConfigureAsync();
-            _ = this.LaserPointerConfigureAsync();
         }
 
         #endregion
@@ -133,7 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputItemCode,
                 value,
-                () => this.IsItemCodeValid = this[nameof(this.InputItemCode)] is null);
+                () => this.IsItemCodeValid = this.inputItemCode is null || this[nameof(this.InputItemCode)] is null);
         }
 
         public string InputLot
@@ -142,7 +141,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputLot,
                 value,
-                () => this.IsItemLotValid = this[nameof(this.InputLot)] is null);
+                () => this.IsItemLotValid = this.inputLot is null || this[nameof(this.InputLot)] is null);
         }
 
         public double? InputQuantity
@@ -164,10 +163,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputSerialNumber,
                 value,
-                () => this.IsItemSerialNumberValid = this[nameof(this.InputSerialNumber)] is null);
+                () => this.IsItemSerialNumberValid = this.inputSerialNumber is null || this[nameof(this.InputSerialNumber)] is null);
         }
 
-        public bool IsBaySideBack => this.bay?.Side == MAS.AutomationService.Contracts.WarehouseSide.Back;
+        public bool IsBaySideBack => this.bay?.Side == WarehouseSide.Back;
 
         public bool IsBusyAbortingOperation
         {
@@ -335,26 +334,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isOperationCanceled;
         }
 
-        public Task CommandUserActionAsync(UserActionEventArgs e)
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
             if (e is null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             if (e.IsReset)
             {
-                this.InputSerialNumber = null;
-                this.InputLot = null;
-                this.InputItemCode = null;
-                this.InputQuantity = this.MissionOperation?.RequestedQuantity;
+                this.ResetInputFields();
 
-                return Task.CompletedTask;
+                return;
+            }
+
+            if (this.resetFieldsOnNextAction)
+            {
+                this.ResetInputFields();
             }
 
             switch (e.UserAction)
             {
-                case UserAction.ConfirmOperation:
                 case UserAction.VerifyItem:
                     {
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
@@ -364,12 +364,61 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
+
+                        e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
+                        if (e.HasMismatch)
+                        {
+                            if (e.RestartOnMismatch)
+                            {
+                                this.resetFieldsOnNextAction = true;
+                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo. Ricominciare.", Services.Models.NotificationSeverity.Warning);
+                            }
+                            else
+                            {
+                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo.", Services.Models.NotificationSeverity.Warning);
+                            }
+                        }
+                        else
+                        {
+                            this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                        }
+                    }
+
+                    break;
+
+                case UserAction.ConfirmOperation:
+                    {
+                        this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
+
+                        this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
+
+                        this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+
+                        this.InputLot = e.GetItemLot() ?? this.InputLot;
+
+                        e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
+                        if (e.HasMismatch)
+                        {
+                            if (e.RestartOnMismatch)
+                            {
+                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo. Ricominciare.", Services.Models.NotificationSeverity.Warning);
+                                this.resetFieldsOnNextAction = true;
+                            }
+                            else
+                            {
+                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo.", Services.Models.NotificationSeverity.Warning);
+                            }
+                        }
+                        else
+                        {
+                            this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+
+                            await this.ConfirmOperationAsync();
+                        }
                     }
 
                     break;
             }
-
-            return Task.CompletedTask;
         }
 
         public async Task ConfirmOperationAsync()
@@ -464,14 +513,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.eventAggregator
                     .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                     .Subscribe(
-                        async e => await this.OnMissionChangedAsync(e),
+                        async e => await this.OnMissionChangedAsync(),
                         ThreadOption.UIThread,
                         false);
 
             this.GetLoadingUnitDetails();
 
             await this.AlphaNumericBarSendMessageAsync();
-            await this.LaserPointerMoveAsync();
+            await this.LaserPointerSwitchOnAndMoveAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -697,7 +746,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
-                    this.laserPointerDriver.Configure(ipAddress, port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                    this.laserPointerDriver.Configure(ipAddress, port, 0, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
                 }
             }
             catch (Exception ex)
@@ -706,7 +755,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task LaserPointerMoveAsync()
+        private async Task LaserPointerSwitchOnAndMoveAsync()
         {
             try
             {
@@ -731,7 +780,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var idLoadingUnit = this.selectedCompartment.LoadingUnitId;
                     var isUpper = this.bay.Positions.FirstOrDefault(p => p.LoadingUnit.Id == idLoadingUnit).IsUpper;
 
-                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, isUpper, this.bay.Side);
+                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, this.MissionOperation.ItemHeight.Value, isUpper, this.bay.Side);
                     await this.laserPointerDriver.SwitchOnAndMoveAsync(point);
                 }
             }
@@ -745,7 +794,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
+        private async Task OnMissionChangedAsync()
         {
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
             {
@@ -757,10 +806,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             _ = this.AlphaNumericBarSendMessageAsync();
-            _ = this.LaserPointerMoveAsync();
+            _ = this.LaserPointerSwitchOnAndMoveAsync();
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
+        }
+
+        private void ResetInputFields()
+        {
+            this.InputSerialNumber = null;
+            this.InputLot = null;
+            this.InputItemCode = null;
+            this.InputQuantity = this.MissionOperation?.RequestedQuantity;
         }
 
         #endregion

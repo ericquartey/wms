@@ -12,7 +12,7 @@
   <ItemGroup>
       <PackageReference Include="Prism.Core" Version="7.1.0.431" PrivateAssets="All" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.15.17" PrivateAssets="All" />
+      <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.15.22" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +21,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
   <ItemGroup>
       <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
       <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />

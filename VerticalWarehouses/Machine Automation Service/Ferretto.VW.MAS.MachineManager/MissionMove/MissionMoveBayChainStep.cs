@@ -182,17 +182,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                                 }
-                                else
-                                {
-                                    this.BayChainEnd();
-                                    break;
-                                }
-                            }
-                            else if (notification.Type == MessageType.ShutterPositioning
-                                && this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed
-                                )
-                            {
-                                this.SetErrorMoveBayChain(bay, bay.Positions.FirstOrDefault(p => !p.IsUpper));
                             }
                         }
                         if (notification.Type == MessageType.ShutterPositioning)
@@ -205,7 +194,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
 
                                 this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                break;
+                                return;
                             }
                         }
                         if (notification.Type == MessageType.Homing
@@ -235,8 +224,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.OnStop(StopRequestReason.Error);
+                        return;
                     }
                     break;
+            }
+            if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                    || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
+                )
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                if (this.Mission.NeedHomingAxis == Axis.BayChain
+                    && bay.Positions.Count(p => p.LoadingUnit != null) < 2
+                    && !this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing)
+                    )
+                {
+                    this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
+                }
+                else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                {
+                    this.SetErrorMoveBayChain(bay, bay.Positions.FirstOrDefault(p => !p.IsUpper));
+                }
+                else
+                {
+                    this.BayChainEnd();
+                }
             }
         }
 
@@ -245,7 +257,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IMissionMoveBase newStep;
             if (this.CheckMissionShowError())
             {
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else if (this.Mission.MissionType == MissionType.OUT
@@ -255,7 +266,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
                     .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
-                        && m.Step == MissionStep.WaitDeposit);
+                        && (m.Step == MissionStep.WaitDeposit || m.Step == MissionStep.WaitChain));
 
                 if (waitingMission != null)
                 {
@@ -342,6 +353,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 #if CHECK_BAY_SENSOR
+            else if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number))
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.BottomLevelBayEmpty, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.BottomLevelBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             else
             {
                 //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
