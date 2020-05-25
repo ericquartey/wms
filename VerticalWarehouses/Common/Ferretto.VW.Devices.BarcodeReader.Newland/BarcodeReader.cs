@@ -3,6 +3,7 @@ using System.IO.Ports;
 using System.Text;
 using System.Threading;
 using Ferretto.VW.CommonUtils;
+using NLog;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
@@ -14,11 +15,11 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         private readonly DeviceInformation information = new DeviceInformation();
 
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
         private readonly SerialPort serialPort = new SerialPort();
 
         private bool isDisposed;
-
-        private Thread readThread;
 
         #endregion
 
@@ -38,26 +39,42 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Connect(ConfigurationOptions options)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReader));
+            }
+
             if (this.serialPort.IsOpen)
             {
-                System.Diagnostics.Debug.WriteLine("Serial port is already open.");
-                return;
+                if (options.PortName == this.serialPort.PortName)
+                {
+                    this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
+
+                    return;
+                }
+                else
+                {
+                    this.Disconnect();
+                }
             }
 
             this.serialPort.PortName = options.PortName;
             this.serialPort.BaudRate = options.BaudRate;
             this.serialPort.Parity = options.Parity;
             this.serialPort.StopBits = options.StopBits;
+            this.serialPort.ReadTimeout = 5000;
+
+            this.logger.Debug($"Opening serial port {this.serialPort.PortName}.");
 
             this.serialPort.Open();
-            this.readThread = new Thread(this.ReadLoop);
-            this.readThread.Start();
+            new Thread(this.ReadLoop).Start();
         }
 
         public void Disconnect()
         {
-            this.readThread?.Abort();
-            this.readThread = null;
+            this.logger.Debug($"Closing serial port {this.serialPort.PortName}.");
+
+            this.serialPort.Close();
         }
 
         public void Dispose()
@@ -94,56 +111,35 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         private void ReadBytes()
         {
-            var buffer = new byte[ReadBufferSize];
-
             try
             {
+                var buffer = new byte[ReadBufferSize];
+
                 var byteCount = this.serialPort.Read(buffer, 0, buffer.Length);
 
                 var barcode = Encoding.ASCII.GetString(buffer, 0, byteCount);
 
-                System.Diagnostics.Debug.WriteLine($"Received barcode '{barcode}'.");
+                this.logger.Debug($"Received barcode '{barcode.Replace("\r", "<CR>").Replace("\n", "<LF>")}'.");
 
                 this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
             }
-            catch (InvalidOperationException ex)
+            catch (System.IO.IOException)
             {
-                System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-
-                this.serialPort.Open();
+                this.logger.Trace($"Serial port '{this.serialPort.PortName}': read timeout.");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-                Thread.Sleep(1000);
-                if (!this.serialPort.IsOpen)
-                {
-                    System.Diagnostics.Debug.WriteLine("Trying to reconnect to serial port {this.serialPort.PortName}.");
-
-                    this.serialPort.Open();
-                }
+                this.logger.Error(ex);
             }
         }
 
         private void ReadLoop()
         {
-            try
+            do
             {
-                do
-                {
-                    this.ReadBytes();
-                }
-                while (this.serialPort.IsOpen);
+                this.ReadBytes();
             }
-            catch (ThreadAbortException)
-            {
-                System.Diagnostics.Debug.WriteLine("Serial port reader thread stopped.");
-                if (this.serialPort.IsOpen)
-                {
-                    System.Diagnostics.Debug.WriteLine("Closing serial port.");
-                    this.serialPort.Close();
-                }
-            }
+            while (this.serialPort.IsOpen && !this.isDisposed);
         }
 
         #endregion
