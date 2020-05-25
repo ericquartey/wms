@@ -62,7 +62,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly CancellationToken stoppingToken;
 
+        private readonly object syncAccess = new object();
+
         private readonly ManualResetEventSlim writeEnableEvent = new ManualResetEventSlim(true);
+
+        private bool commandExecuting;
 
         private IIoStateMachine currentStateMachine;
 
@@ -114,6 +118,19 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Properties
 
+        public bool IsCommandExecuting
+        {
+            get
+            {
+                var value = false;
+                lock (this.syncAccess)
+                {
+                    value = this.commandExecuting;
+                }
+                return value;
+            }
+        }
+
         private IIoStateMachine CurrentStateMachine
         {
             get => this.currentStateMachine;
@@ -162,6 +179,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
 
             this.CurrentStateMachine = null;
+            this.commandExecuting = false;
         }
 
         public void Dispose()

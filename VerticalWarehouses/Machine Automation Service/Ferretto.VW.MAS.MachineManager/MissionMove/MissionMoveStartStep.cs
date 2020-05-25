@@ -166,15 +166,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bay = this.BaysDataProvider.GetByBayPositionId(sourceBayPositionId.Value);
                     var bayPosition = bay.Positions.First(p => p.Id == sourceBayPositionId.Value);
+
                     // TODO - SYNCRHONYSE light and switch axys
-                    //if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
-                    //    && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
-                    //    && (bayPosition.IsUpper
-                    //        || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
-                    //    )
-                    //{
-                    //    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
-                    //}
+                    if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
+                        && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
+                        && (bayPosition.IsUpper
+                            || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
+                        )
+                    {
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    }
 
                     if (this.Mission.RestoreConditions)
                     {

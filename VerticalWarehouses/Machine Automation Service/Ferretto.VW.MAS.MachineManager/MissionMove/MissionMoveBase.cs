@@ -244,13 +244,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
                 {
-                    if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay)
-                        && this.MachineVolatileDataProvider.IsBayLightOn[this.Mission.TargetBay]
-                        && (this.MissionsDataProvider.GetAllActiveMissions().Count(m => m.Status != MissionStatus.New) <= 1)
-                        )
-                    {
-                        this.BaysDataProvider.Light(this.Mission.TargetBay, false);
-                    }
+                    //if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay)
+                    //    && this.MachineVolatileDataProvider.IsBayLightOn[this.Mission.TargetBay]
+                    //    && (this.MissionsDataProvider.GetAllActiveMissions().Count(m => m.Status != MissionStatus.New) <= 1)
+                    //    )
+                    //{
+                    //    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    //}
                     newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
