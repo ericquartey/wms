@@ -39,7 +39,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column3"
                                 Width="1*"
-                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
+                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">

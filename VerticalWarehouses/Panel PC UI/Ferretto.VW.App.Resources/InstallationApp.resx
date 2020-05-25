@@ -2672,4 +2672,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StartProcedure" xml:space="preserve">
     <value>Press on START to begin the procedure</value>
   </data>
+  <data name="NoRemovableDevicesFound" xml:space="preserve">
+    <value>No removable devices found</value>
+  </data>
+  <data name="RemovableDevicesFound" xml:space="preserve">
+    <value>Removable devices found</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>System path '{0}' not found</value>
+  </data>
 </root>

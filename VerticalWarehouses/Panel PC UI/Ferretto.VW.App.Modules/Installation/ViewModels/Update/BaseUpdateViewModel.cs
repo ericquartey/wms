@@ -5,12 +5,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using Ferretto.VW.App.Resources;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 
@@ -20,8 +21,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     public class BaseUpdateViewModel : BaseMainViewModel
     {
         #region Fields
-
-        private const string DEFAULTDEVICENAME = "G";
 
         private const string DEFAULTEXTENSION = "*.exe";
 
@@ -33,13 +32,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string DEFAULTMANIFESTFILENODEVERSION = "version";
 
-        private const string DEVICE = @"{0}:\";
-
-        private const int SECSUPDATESINTERVAL = 3;
-
         private readonly string configurationUpdateRepositoryPath;
 
+        private readonly EventHandler<DrivesChangeEventArgs> drivesChangeEventHandler;
+
         private readonly IList<InstallerInfo> installations = new List<InstallerInfo>();
+
+        private readonly UsbWatcherService usbWatcher;
 
         private bool isBusy;
 
@@ -51,18 +50,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isSystemConfigurationPathReady;
 
-        private string path;
-
-        private DispatcherTimer updateTimer;
+        private IEnumerable<string> zipFilesToCheck;
 
         #endregion
 
         #region Constructors
 
-        public BaseUpdateViewModel()
+        public BaseUpdateViewModel(UsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
             this.configurationUpdateRepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
+            this.usbWatcher = usb;
+            this.drivesChangeEventHandler = new EventHandler<DrivesChangeEventArgs>(async (sender, e) => await this.UsbWatcher_DrivesChangeAsync(sender, e));
         }
 
         #endregion
@@ -75,17 +74,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.isDeviceReady)
                 {
-                    return $"No device '{DEFAULTDEVICENAME}' found";
+                    return Localized.Get("InstallationApp.NoRemovableDevicesFound");
                 }
 
-                return $"Device '{DEFAULTDEVICENAME}' is ready";
+                return Localized.Get("InstallationApp.RemovableDevicesFound");
             }
-        }
-
-        public string DevicePath
-        {
-            get => this.path;
-            set => this.SetProperty(ref this.path, value);
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -147,12 +140,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             get
             {
+                var pathNotDFound = Localized.Get("InstallationApp.SystemPathNotFound");
                 if (!this.isSystemConfigurationPathReady)
                 {
-                    return $"System path '{this.configurationUpdateRepositoryPath}' not found";
+                    return string.Format(pathNotDFound, this.configurationUpdateRepositoryPath);
                 }
 
-                return $"System path '{this.configurationUpdateRepositoryPath}' is valid";
+                return string.Format(pathNotDFound, this.configurationUpdateRepositoryPath);
             }
         }
 
@@ -164,8 +158,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.updateTimer?.Stop();
-            this.updateTimer = null;
+            this.usbWatcher.DrivesChange -= this.drivesChangeEventHandler;
+            this.usbWatcher.Dispose();
 
             base.Disappear();
         }
@@ -174,21 +168,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                this.IsBusy = true;
-
-                this.DevicePath = null;
-                this.IsInstallationReady = false;
-                this.IsDeviceReady = false;               
+                this.usbWatcher.DrivesChange += this.drivesChangeEventHandler;
+                this.usbWatcher.Start();
 
                 this.ClearNotifications();
 
                 await base.OnAppearedAsync();
-
-                await this.RefreshAsync();
-
-                this.StartMonitoring();
-
-                this.IsBusy = false;
             }
             catch (Exception ex)
             {
@@ -206,8 +191,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void CheckForValidZipFiles(IEnumerable<string> zipFiles, bool isRemotePath)
         {
-            this.installations.Clear();
-
             foreach (var zipFile in zipFiles)
             {
                 try
@@ -243,9 +226,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void CheckPath(string path, bool isRemotePath)
+        private void CheckPath(IEnumerable<string> zipFiles, bool isRemotePath)
         {
-            var zipFiles = Directory.EnumerateFiles(path, DEFAULTEXTENSION, SearchOption.TopDirectoryOnly);
             this.CheckForValidZipFiles(zipFiles, isRemotePath);
             this.IsInstallationReady = this.installations.Count > 0;
         }
@@ -284,17 +266,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
+                this.IsBusy = true;
+
                 this.isRefresh = true;
+
+                this.installations.Clear();
 
                 this.RefreshDefaultPath();
 
-                //if (!(this.isSystemConfigurationPathReady
-                //      &&
-                //      this.IsInstallationReady))
-                //{
                 this.RefreshDevicesStatus();
-
-                //}
 
                 this.RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
@@ -306,6 +286,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.isRefresh = false;
                 this.ShowNotification(ex);
             }
+
+            this.IsBusy = false;
         }
 
         private async Task RefreshAsync()
@@ -315,7 +297,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void RefreshDefaultPath()
         {
-            if (!Directory.Exists(this.configurationUpdateRepositoryPath))
+            if (!string.IsNullOrEmpty(this.configurationUpdateRepositoryPath)
+                &&
+                !Directory.Exists(this.configurationUpdateRepositoryPath))
             {
                 this.isSystemConfigurationPathReady = false;
                 return;
@@ -323,49 +307,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.isSystemConfigurationPathReady = true;
 
-            this.CheckPath(this.configurationUpdateRepositoryPath, true);
+            var repositoryZipFiles = Directory.EnumerateFiles(this.configurationUpdateRepositoryPath, DEFAULTEXTENSION, SearchOption.TopDirectoryOnly);
+
+            this.CheckPath(repositoryZipFiles, true);
         }
 
         private void RefreshDevicesStatus()
         {
-            var deviceName = string.Format(DEVICE, DEFAULTDEVICENAME);
-
-            if (DriveInfo.GetDrives()
-                .Select(d => d.Name)
-                .FirstOrDefault(n => n.Equals(deviceName)) is string deviceFound)
+            if (this.zipFilesToCheck?.Any() == true)
             {
-                if (!string.IsNullOrEmpty(this.DevicePath)
-                    &&
-                    this.DevicePath == deviceFound)
-                {
-                    return;
-                }
-
-                this.DevicePath = deviceFound;
-                this.IsDeviceReady = true;
-                this.CheckPath(this.DevicePath, false);
+                this.CheckPath(this.zipFilesToCheck, false);
             }
             else
             {
-                this.DevicePath = null;
+                this.zipFilesToCheck = null;
                 this.IsInstallationReady = false;
                 this.IsDeviceReady = false;
             }
         }
 
-        private void StartMonitoring()
+        private async Task UsbWatcher_DrivesChangeAsync(object sender, DrivesChangeEventArgs e)
         {
-            this.updateTimer = new System.Windows.Threading.DispatcherTimer();
-            this.updateTimer.Tick += async (sender, e) =>
+            if (e.Attached?.Any() == true)
             {
-                await this.UpdateTimer_Tick();
-            };
-            this.updateTimer.Interval = new TimeSpan(0, 0, SECSUPDATESINTERVAL);
-            this.updateTimer.Start();
-        }
+                var drives = ((UsbWatcherService)sender).Drives;
+                this.zipFilesToCheck = drives.FindFiles(DEFAULTEXTENSION).ToList();
+            }
+            else
+            {
+                this.zipFilesToCheck = null;
+            }
 
-        private async Task UpdateTimer_Tick()
-        {
             await this.RefreshAsync();
         }
 

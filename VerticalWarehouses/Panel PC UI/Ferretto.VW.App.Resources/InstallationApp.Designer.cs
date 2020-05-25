@@ -4840,6 +4840,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No removable devices found.
+        /// </summary>
+        public static string NoRemovableDevicesFound {
+            get {
+                return ResourceManager.GetString("NoRemovableDevicesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No serial ports detected. Ensure the device is connected to the panel..
         /// </summary>
         public static string NoSerialPortDetected {
@@ -5387,6 +5396,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RemainingTime {
             get {
                 return ResourceManager.GetString("RemainingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removable devices found.
+        /// </summary>
+        public static string RemovableDevicesFound {
+            get {
+                return ResourceManager.GetString("RemovableDevicesFound", resourceCulture);
             }
         }
         
@@ -6512,6 +6530,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SystemErrorMM {
             get {
                 return ResourceManager.GetString("SystemErrorMM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System path &apos;{0}&apos; not found.
+        /// </summary>
+        public static string SystemPathNotFound {
+            get {
+                return ResourceManager.GetString("SystemPathNotFound", resourceCulture);
             }
         }
         
