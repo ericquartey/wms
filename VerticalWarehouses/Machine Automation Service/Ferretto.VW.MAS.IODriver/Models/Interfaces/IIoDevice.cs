@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Methods
 
+        bool IsCommandExecuting { get; }
+
         void DestroyStateMachine();
 
         void ExecuteBayLight(FieldCommandMessage receivedMessage);
