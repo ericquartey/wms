@@ -52,6 +52,11 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<bool> ProcessUserActionAsync(UserActionEventArgs e)
         {
+            if (e is null)
+            {
+                return false;
+            }
+
             if (e.IsReset)
             {
                 return false;
@@ -72,25 +77,28 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private void NavigateAwayFromActiveView()
         {
-            if (this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.LOADING_UNIT)
-                ||
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY)
-                ||
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PUT)
-                ||
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK))
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
-            }
-            else if (
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK_DETAILS)
-                ||
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PUT_DETAILS)
-                ||
-                this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS))
-            {
-                this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.OPERATOR_MENU);
-            }
+                if (this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.LOADING_UNIT)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PUT)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK))
+                {
+                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+                else if (
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK_DETAILS)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PUT_DETAILS)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS))
+                {
+                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.OPERATOR_MENU);
+                }
+            });
         }
 
         private void NotifyError(string message)

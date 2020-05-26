@@ -19,13 +19,13 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 - script: dotnet publish ${{ parameters.RestoreBuildProjects }} -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }}
-  displayName: 'dotnet publish ($(buildConfiguration))'
+  displayName: 'dotnet publish (${{ parameters.BuildConfiguration }})'
 
 
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
+    SourceFolder: '$(system.defaultworkingdirectory)/VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
     Contents: '**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
