@@ -1,13 +1,14 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(ElevatorAxisManualParameters.Metadata))]
     partial class ElevatorAxisManualParameters
     {
-        class Metadata {
+        class Metadata
+        {
 
             [Id(1)]
             [Editable(true)]

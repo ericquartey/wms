@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
 {

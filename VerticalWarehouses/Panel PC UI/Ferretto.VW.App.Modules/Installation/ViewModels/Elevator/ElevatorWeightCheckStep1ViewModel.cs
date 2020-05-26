@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

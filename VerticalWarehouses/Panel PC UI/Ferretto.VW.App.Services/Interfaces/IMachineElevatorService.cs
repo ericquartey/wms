@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {

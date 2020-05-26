@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using NLog.Time;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {

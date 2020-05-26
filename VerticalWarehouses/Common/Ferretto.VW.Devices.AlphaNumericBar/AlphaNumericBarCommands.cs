@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.Devices.AlphaNumericBar
+﻿namespace Ferretto.VW.Devices.AlphaNumericBar
 {
     public static class AlphaNumericBarCommands
     {

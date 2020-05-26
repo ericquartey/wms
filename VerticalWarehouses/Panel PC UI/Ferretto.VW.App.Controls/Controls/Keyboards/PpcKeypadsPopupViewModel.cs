@@ -1,12 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Prism.Commands;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls.Controls.Keyboards
 {

@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.ValidationRules
 {
-    public abstract class NotifyValidationRule: ValidationRule
+    public abstract class NotifyValidationRule : ValidationRule
     {
         public event EventHandler<ValidationEventArgs> Validated;
 

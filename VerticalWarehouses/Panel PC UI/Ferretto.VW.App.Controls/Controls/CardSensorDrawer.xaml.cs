@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls

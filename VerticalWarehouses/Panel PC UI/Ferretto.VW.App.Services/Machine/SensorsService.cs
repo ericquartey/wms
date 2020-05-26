@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
-using ShutterType = Ferretto.VW.MAS.AutomationService.Contracts.ShutterType;
 
 namespace Ferretto.VW.App.Services
 {

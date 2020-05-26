@@ -409,7 +409,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception)
             {
-               // do nothing
+                // do nothing
             }
 
             await base.OnDataRefreshAsync();
