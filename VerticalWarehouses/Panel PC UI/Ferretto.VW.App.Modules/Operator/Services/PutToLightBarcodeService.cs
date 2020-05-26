@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Accessories.Barcode
+namespace Ferretto.VW.App.Modules.Operator
 {
     internal sealed class PutToLightBarcodeService : IPutToLightBarcodeService
     {
@@ -40,9 +41,7 @@ namespace Ferretto.VW.App.Accessories.Barcode
         {
             if (e.IsReset)
             {
-                this.selectedUserAction = UserAction.NotSpecified;
-                this.selectedBasketCode = null;
-                this.selectedShelfCode = null;
+                this.ResetUserSelection();
 
                 return false;
             }
@@ -53,9 +52,7 @@ namespace Ferretto.VW.App.Accessories.Barcode
                 case UserAction.CompleteBasket:
                 case UserAction.RemoveFullBasket:
 
-                    this.selectedUserAction = e.UserAction;
-                    this.selectedBasketCode = null;
-                    this.selectedShelfCode = null;
+                    this.InitiateUserAction(e);
                     break;
 
                 case UserAction.SelectBasket:
@@ -80,6 +77,9 @@ namespace Ferretto.VW.App.Accessories.Barcode
             try
             {
                 await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode);
+                this.NotifySuccess($"Il collo '{this.selectedBasketCode}' è stato associato allo scaffale '{this.selectedShelfCode}'.");
+
+                this.ResetUserSelection();
             }
             catch (Exception ex)
             {
@@ -92,10 +92,35 @@ namespace Ferretto.VW.App.Accessories.Barcode
             try
             {
                 await this.putToLightWebService.CompleteBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+                this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato chiuso.");
+
+                this.ResetUserSelection();
             }
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+            }
+        }
+
+        private void InitiateUserAction(UserActionEventArgs e)
+        {
+            this.selectedUserAction = e.UserAction;
+            this.selectedBasketCode = null;
+            this.selectedShelfCode = null;
+
+            switch (e.UserAction)
+            {
+                case UserAction.AssociateBasketToShelf:
+                    this.NotifyInfo($"Inizio associazione di un collo ad uno scaffale. Scansionare lo scaffale.");
+                    break;
+
+                case UserAction.RemoveFullBasket:
+                    this.NotifyInfo($"Inizio marcatura di collo pieno. Scansionare lo scaffale.");
+                    break;
+
+                case UserAction.CompleteBasket:
+                    this.NotifyInfo($"Inizio chiusura collo. Scansionare lo scaffale.");
+                    break;
             }
         }
 
@@ -104,6 +129,20 @@ namespace Ferretto.VW.App.Accessories.Barcode
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(ex));
+        }
+
+        private void NotifyInfo(string message)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Info));
+        }
+
+        private void NotifySuccess(string message)
+        {
+            this.eventAggregator
+              .GetEvent<PresentationNotificationPubSubEvent>()
+              .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Success));
         }
 
         private void NotifyWarning(string message)
@@ -118,11 +157,21 @@ namespace Ferretto.VW.App.Accessories.Barcode
             try
             {
                 await this.putToLightWebService.RemoveFullBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+                this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato marcato come pieno.");
+
+                this.ResetUserSelection();
             }
             catch (Exception ex)
             {
                 this.NotifyError(ex);
             }
+        }
+
+        private void ResetUserSelection()
+        {
+            this.selectedUserAction = default(UserAction);
+            this.selectedBasketCode = null;
+            this.selectedShelfCode = null;
         }
 
         private async Task RunActionAsync()
@@ -155,7 +204,22 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         private async Task SelectBasketAsync(UserActionEventArgs e)
         {
+            if (this.selectedUserAction is UserAction.NotSpecified)
+            {
+                this.NotifyWarning("Scansionare prima il codice a barre dell'azione da eseguire.");//TODO localize
+
+                return;
+            }
+
+            if (this.selectedShelfCode == null)
+            {
+                this.NotifyWarning("Scansionare prima il codice a barre dello scaffale.");//TODO localize
+
+                return;
+            }
+
             this.selectedBasketCode = e.GetBasketCode();
+            this.NotifyInfo($"Collo '{this.selectedBasketCode}' selezionato.");
 
             if (this.selectedBasketCode is null)
             {
@@ -169,7 +233,16 @@ namespace Ferretto.VW.App.Accessories.Barcode
 
         private async Task SelectShelfAsync(UserActionEventArgs e)
         {
+            if (this.selectedUserAction is UserAction.NotSpecified)
+            {
+                this.NotifyWarning("Scansionare prima il codice a barre dell'azione da eseguire.");//TODO localize
+
+                return;
+            }
+
+            this.selectedBasketCode = null;
             this.selectedShelfCode = e.GetShelfCode();
+            this.NotifyInfo($"Scaffale '{this.selectedShelfCode}' selezionato. Scansionare il collo.");
 
             if (this.selectedShelfCode is null)
             {

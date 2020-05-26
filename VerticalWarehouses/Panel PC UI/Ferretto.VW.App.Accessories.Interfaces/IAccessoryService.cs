@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Devices;
+﻿using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Accessories
 {
@@ -16,7 +11,7 @@ namespace Ferretto.VW.App.Accessories
         /// </summary>
         /// <returns></returns>
         /// <exception cref="System.NotSupportedException">An exception is thrown if the device does not support information querying.</exception>
-        DeviceInformation DeviceInformation { get; }
+        Ferretto.VW.Devices.DeviceInformation DeviceInformation { get; }
 
         #endregion
 
