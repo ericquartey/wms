@@ -1,6 +1,5 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Menu.ViewModels;
-using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Modules.Menu.Models

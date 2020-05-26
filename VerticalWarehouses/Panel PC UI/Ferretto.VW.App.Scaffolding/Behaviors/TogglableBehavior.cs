@@ -1,9 +1,9 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.Xaml.Behaviors;
 
 namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
-    public abstract class TogglableBehavior<T> : Behavior<T> where T: DependencyObject
+    public abstract class TogglableBehavior<T> : Behavior<T> where T : DependencyObject
     {
         public static readonly DependencyProperty IsEnabledProperty
                     = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(TogglableBehavior<T>), new PropertyMetadata(true));

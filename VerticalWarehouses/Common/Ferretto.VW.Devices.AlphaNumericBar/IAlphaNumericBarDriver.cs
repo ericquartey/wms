@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;

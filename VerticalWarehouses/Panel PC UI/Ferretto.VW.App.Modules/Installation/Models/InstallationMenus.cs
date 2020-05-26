@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using Ferretto.VW.App.Installation.Attributes;
-using Ferretto.VW.App.Modules.Installation.Models;
 
 namespace Ferretto.VW.App.Installation.Resources
 {

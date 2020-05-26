@@ -367,7 +367,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public string SubTitleLabel =>
             this.ProceduresCompletedPercent == 100 ?
-            Localized.Get("InstallationApp.InstallationStateCompleted") : String.Format(Localized.Get("InstallationApp.InstallationStateIncompleted"), this.ProceduresCompleted, this.ProceduresCount);
+            Localized.Get("InstallationApp.InstallationStateCompleted") : string.Format(Localized.Get("InstallationApp.InstallationStateIncompleted"), this.ProceduresCompleted, this.ProceduresCount);
 
         #endregion
 

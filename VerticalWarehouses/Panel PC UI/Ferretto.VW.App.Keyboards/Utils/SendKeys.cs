@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.App.Keyboards
+﻿namespace Ferretto.VW.App.Keyboards
 {
     internal static class SendKeys
     {

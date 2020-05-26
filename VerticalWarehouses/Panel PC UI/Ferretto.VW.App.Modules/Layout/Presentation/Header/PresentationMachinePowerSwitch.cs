@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;

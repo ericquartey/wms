@@ -1,14 +1,7 @@
-﻿using System.Configuration;
-using System.Net;
-using System.Threading.Tasks;
-using CommonServiceLocator;
-using Ferretto.VW.App.Accessories;
+﻿using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Views;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.Devices.BarcodeReader.Newland;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -52,14 +45,14 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.ConfigureAlphaNumericBarUiServices();
-
-            // Operator
+            // Services
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
-
+            containerRegistry.RegisterSingleton<ILoadingUnitBarcodeService, LoadingUnitBarcodeService>();
+            containerRegistry.RegisterSingleton<IPutToLightBarcodeService, PutToLightBarcodeService>();
             containerRegistry.RegisterSingleton<IOperatorNavigationService, OperatorNavigationService>();
 
+            // Views
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
             containerRegistry.RegisterForNavigation<LoadingUnitView>();

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services
 {

@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Installation.Views;
+﻿using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Modules.Installation.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;

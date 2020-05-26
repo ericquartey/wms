@@ -3,7 +3,6 @@ using Ferretto.VW.MAS.IODriver.StateMachines.Reset;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver
 {
     internal partial class IoDevice
@@ -26,6 +25,10 @@ namespace Ferretto.VW.MAS.IODriver
                     this.deviceIndex,
                     this.eventAggregator,
                     this.logger);
+                lock (this.syncAccess)
+                {
+                    this.commandExecuting = true;
+                }
 
                 this.CurrentStateMachine.Start();
             }

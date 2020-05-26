@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Configuration;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using System.Globalization;
 using Ferretto.VW.App.Resources;
-using DevExpress.CodeParser;
-using DevExpress.XtraRichEdit.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {

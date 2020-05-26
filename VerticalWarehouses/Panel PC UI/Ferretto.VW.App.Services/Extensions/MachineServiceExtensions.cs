@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
-using Prism.Ioc;
-using Prism.Unity;
-using Unity;
-using Unity.Injection;
 
 namespace Ferretto
 {

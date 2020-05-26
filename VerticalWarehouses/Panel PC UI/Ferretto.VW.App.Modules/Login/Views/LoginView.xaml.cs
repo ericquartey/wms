@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Modules.Login.Views
         {
             //this.txtTime.Text = string.Concat(DateTime.Now.ToLongDateString(), ", ", DateTime.Now.ToShortTimeString());
 
-            this.txtTime.Text = String.Format(Localized.Instance.CurrentCulture, "{0:f}", DateTime.Now);
+            this.txtTime.Text = string.Format(Localized.Instance.CurrentCulture, "{0:f}", DateTime.Now);
         }
 
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)

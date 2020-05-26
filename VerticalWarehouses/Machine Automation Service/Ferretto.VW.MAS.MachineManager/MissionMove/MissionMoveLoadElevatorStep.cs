@@ -119,15 +119,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
 #endif
+
                         // TODO - SYNCRHONYSE light and switch axys
-                        //if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
-                        //    && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
-                        //    && (bayPosition.IsUpper
-                        //        || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
-                        //    )
-                        //{
-                        //    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
-                        //}
+                        if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
+                            && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
+                            && (bayPosition.IsUpper
+                                || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
+                            )
+                        {
+                            this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                        }
                     }
                     break;
             }

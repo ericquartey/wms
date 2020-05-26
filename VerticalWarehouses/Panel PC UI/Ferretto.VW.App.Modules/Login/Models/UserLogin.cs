@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Ferretto.VW.Utils;
+﻿using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.App.Modules.Login.Models
 {

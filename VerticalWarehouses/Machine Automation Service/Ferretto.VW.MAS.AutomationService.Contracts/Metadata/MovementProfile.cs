@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
 using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
