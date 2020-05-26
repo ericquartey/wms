@@ -1817,4 +1817,109 @@ Please put back any moved pieces in their original position.</value>
   <data name="UnitsInElevator" xml:space="preserve">
     <value>Units in the elevator</value>
   </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Confirm service</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Installation Date</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Last service date</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Next service date</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Service status</value>
+  </data>
+  <data name="TotalMission" xml:space="preserve">
+    <value>Total mission</value>
+  </data>
+  <data name="Instruction" xml:space="preserve">
+    <value>Instruction</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>IsDone</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>IsToDo</value>
+  </data>
+  <data name="MachineStatisticsCounter" xml:space="preserve">
+    <value>MachineStatisticsCounter</value>
+  </data>
+  <data name="MaintenanceRequired" xml:space="preserve">
+    <value>Maintenance required</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaxDays</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaxRelativeCount</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Total active mission time</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Km Bay 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Bay 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Bay 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km horizontal axis elevator</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km vertical axis lift</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Units in Bay 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Units in Bay 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Units in Bay 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(The data are calculated from the last maintenance compared to the total value)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Time active missions</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Bay 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Bay 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Bay 3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Horizontal axle elevator</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Vertical axle elevator</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Km bays since last maintenance / total</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Km lift axles since last maintenance / total</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Total time of active missions since last maintenance / total</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Units in bays since last maintenance / total</value>
+  </data>
 </root>

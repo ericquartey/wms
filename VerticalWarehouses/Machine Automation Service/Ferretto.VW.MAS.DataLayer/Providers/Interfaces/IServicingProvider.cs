@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void CheckServicingInfo();
 
+        void UpdateServiceStatus();
+
         void ConfirmService();
 
         void ConfirmSetup();

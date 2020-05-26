@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                () => false && this.CanExecuteCommand()));
+                () => this.CanExecuteCommand()));
 
         public ICommand MenuUpdateCommand =>
             this.menuUpdateCommand

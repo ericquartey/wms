@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly IServicingProvider servicingProvider;
+
         private bool dataLayerIsReady;
 
         private LoadingUnitLocation loadUnitSource;
@@ -39,12 +41,14 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionSchedulingService(
             IMachineVolatileDataProvider machineVolatileDataProvider,
+            IServicingProvider servicingProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
         }
 
         #endregion
@@ -1111,6 +1115,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 // elevator homing every new day
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
             }
+
+            this.servicingProvider.UpdateServiceStatus();
         }
 
         private void RestoreFullTest(IServiceProvider serviceProvider)

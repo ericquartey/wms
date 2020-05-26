@@ -4508,6 +4508,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         Undefined = 0,
     
+        Completed = 67,
+    
         Expiring = 71,
     
         Valid = 86,
