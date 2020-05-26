@@ -1,7 +1,7 @@
 parameters:
   BuildConfiguration: 'debug'
   BuildPlatform: 'any cpu'
-  RestoreBuildProjects: '**/Ferretto.VW.InvertersParametersGenerator.csproj'
+  RestoreBuildProjects: 'VerticalWarehouses/Utility/Ferretto.VW.InvertersParametersGenerator/Ferretto.VW.InvertersParametersGenerator.csproj'
   TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
@@ -18,7 +18,7 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }} ${{ parameters.RestoreBuildProjects }}
+- script: dotnet publish ${{ parameters.RestoreBuildProjects }} -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }}
   displayName: 'dotnet publish ($(buildConfiguration))'
 
 
