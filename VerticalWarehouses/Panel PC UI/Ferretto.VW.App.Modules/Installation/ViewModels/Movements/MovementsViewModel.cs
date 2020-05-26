@@ -406,6 +406,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
             this.lightCommand?.RaiseCanExecuteChanged();
+            this.isPolicyBypassedCommand?.RaiseCanExecuteChanged();
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
