@@ -34,6 +34,18 @@ namespace Ferretto.VW.App.Accessories
             return containerRegistry;
         }
 
+        public static IContainerRegistry ConfigureCardReaderUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterSingleton<ICardReaderService, KeyboarEmulatedCardReaderService>();
+
+            return containerRegistry;
+        }
+
         #endregion
     }
 }
