@@ -15,8 +15,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly SubscriptionToken loadingUnitToken;
-
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
@@ -33,9 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly SubscriptionToken navigationToken;
 
-        private bool autoNavigate;
-
-        private bool autoNavigateOnMenu = true;
+        private bool isDisposed;
 
         private int? lastActiveMissionId;
 
@@ -85,14 +81,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void Dispose()
         {
-            this.loadingUnitToken.Dispose();
-            this.missionToken.Dispose();
-            this.navigationToken.Dispose();
-        }
+            if (!this.isDisposed)
+            {
+                this.missionToken.Dispose();
+                this.navigationToken.Dispose();
 
-        public void NavigateToDrawerInfoView()
-        {
-            this.NavigateToDrawerInfoView(goToWaitViewIfBayIsEmpty: true);
+                this.isDisposed = true;
+            }
         }
 
         public void NavigateToDrawerView()
@@ -130,6 +125,36 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.navigationService.GetActiveViewModel().GetType().Name;
         }
 
+        private bool IsOperationOrLoadingUnitViewModel(string activeViewModelName)
+        {
+            return
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PICK
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PICK_DETAILS
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PUT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.PUT_DETAILS
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.INVENTORY
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO;
+        }
+
+        private bool IsOperatorViewModel(string activeViewModelName)
+        {
+            return
+                activeViewModelName is Utils.Modules.Operator.OPERATOR_MENU
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.WAIT
+                ||
+                this.IsOperationOrLoadingUnitViewModel(activeViewModelName);
+        }
+
         private bool IsViewTrackable()
         {
             var activeViewModelName = this.GetActiveViewModelName();
@@ -144,44 +169,10 @@ namespace Ferretto.VW.App.Modules.Operator
                 activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY;
         }
 
-        private void NavigateToDrawerInfoView(bool goToWaitViewIfBayIsEmpty)
-        {
-            var activeViewModelName = this.GetActiveViewModelName();
-            if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.PICK
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.PUT
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY)
-            {
-                return;
-            }
-
-            this.logger.Debug($"Auto-navigating to '{Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO}' with loading unit '{this.lastActiveUnitId}'.");
-            this.navigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO,
-                this.lastActiveUnitId,
-                trackCurrentView: this.IsViewTrackable());
-        }
-
         private void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
         {
             var activeViewModelName = this.GetActiveViewModelName();
-            if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.PICK
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.PUT
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY)
+            if (!this.IsOperatorViewModel(activeViewModelName))
             {
                 return;
             }
@@ -199,15 +190,27 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
-                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT && goToWaitViewIfBayIsEmpty)
+                else if (
+                    activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
+                    &&
+                    goToWaitViewIfBayIsEmpty)
                 {
-                    this.logger.Trace("No operation and no loading unit in bay, navigation to wait view.");
+                    this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
 
-                    this.navigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT,
-                        null,
-                        trackCurrentView: this.IsViewTrackable());
+                    if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
+                    {
+                        this.navigationService.GoBackTo(
+                           nameof(Utils.Modules.Operator),
+                           Utils.Modules.Operator.ItemOperations.WAIT);
+                    }
+                    else
+                    {
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            null,
+                            trackCurrentView: true);
+                    }
                 }
             }
         }
@@ -218,7 +221,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             var activeViewModelName = this.GetActiveViewModelName();
 
-            this.logger.Debug($"Auto-navigating to '{activeViewModelName}' with loading unit '{loadingUnitId}'.");
+            this.logger.Debug($"Auto-navigating to '{Utils.Modules.Operator.ItemOperations.LOADING_UNIT}' with loading unit '{loadingUnitId}'.");
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
@@ -266,56 +269,24 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
-            var activeViewModelName = this.GetActiveViewModelName();
-            if (activeViewModelName is Utils.Modules.Operator.OPERATOR_MENU
-                ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.WAIT
-                ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.PICK
-                ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.PUT
-                ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.INVENTORY)
-            {
-                this.NavigateToDrawerView();
-            }
+            this.NavigateToDrawerView();
         }
 
         private void OnNavigationCompleted(NavigationCompletedEventArgs e)
         {
-            this.autoNavigateOnMenu = this.previousModuleName != nameof(Utils.Modules.Operator);
+            var navigatingFromOtherModule = this.previousModuleName != nameof(Utils.Modules.Operator);
             this.previousModuleName = e.ModuleName;
 
-            if (e.ModuleName != nameof(Utils.Modules.Operator))
+            // auto navigate to drawer view if:
+            // - there is a loading unit in the bay
+            // - we are now in the operator pages but we are coming from outside of the operator pages
+            if (e.ModuleName == nameof(Utils.Modules.Operator)
+                &&
+                e.ViewModelName == Utils.Modules.Operator.OPERATOR_MENU
+                &&
+                navigatingFromOtherModule)
             {
-                this.autoNavigate = false;
-                return;
-            }
-
-            switch (e.ViewModelName)
-            {
-                case Utils.Modules.Operator.OPERATOR_MENU:
-                    if (this.autoNavigateOnMenu)
-                    {
-                        this.NavigateToDrawerView(goToWaitViewIfBayIsEmpty: false);
-                    }
-
-                    break;
-
-                case Utils.Modules.Operator.ItemOperations.WAIT:
-                case Utils.Modules.Operator.ItemOperations.LOADING_UNIT:
-                case Utils.Modules.Operator.ItemOperations.INVENTORY:
-                case Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS:
-                case Utils.Modules.Operator.ItemOperations.PICK:
-                case Utils.Modules.Operator.ItemOperations.PICK_DETAILS:
-                case Utils.Modules.Operator.ItemOperations.PUT:
-                case Utils.Modules.Operator.ItemOperations.PUT_DETAILS:
-                    this.autoNavigate = true;
-                    break;
-
-                default:
-                    this.autoNavigate = false;
-                    break;
+                this.NavigateToDrawerView(goToWaitViewIfBayIsEmpty: false);
             }
         }
 

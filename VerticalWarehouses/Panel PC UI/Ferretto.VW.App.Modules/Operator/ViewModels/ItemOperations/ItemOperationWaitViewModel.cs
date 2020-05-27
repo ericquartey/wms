@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineService machineService;
 
-        private readonly IMissionOperationsService missionOperationsService;
-
         private readonly List<LoadingUnit> moveUnits = new List<LoadingUnit>();
 
         private int count;
@@ -223,14 +221,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.loadingUnitsMovements == 0)
             {
-                //this.isGridVisible = false;
-
                 return Localized.Get("OperatorApp.NoLoadingUnitsToMove");
             }
             else if (this.loadingUnitsMovements == 1)
             {
-                //this.isGridVisible = true;
-
                 return Localized.Get("OperatorApp.LoadingUnitSendToBay");
             }
 

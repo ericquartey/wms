@@ -70,7 +70,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken themeChangedToken;
 
-
         #endregion
 
         #region Constructors
@@ -476,10 +475,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
-            {
-                this.RaisePropertyChanged(nameof(this.ShutterLabel));
-            }));
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    this.RaisePropertyChanged(nameof(this.ShutterLabel));
+                }));
         }
 
         private async Task MoveToBayPositionAsync()
