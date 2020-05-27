@@ -285,6 +285,29 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                    this.UserLogin.Password,
                    this.UserLogin.SupportToken);
 
+                switch (this.UserLogin.UserName)
+                {
+                    case "admin":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Admin;
+                        break;
+
+                    case "service":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Support;
+                        break;
+
+                    case "installer":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Installer;
+                        break;
+
+                    case "operator":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
+                        break;
+
+                    default:
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.NoAccess;
+                        break;
+                }
+
                 await this.NavigateToMainMenuAsync(claims);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
