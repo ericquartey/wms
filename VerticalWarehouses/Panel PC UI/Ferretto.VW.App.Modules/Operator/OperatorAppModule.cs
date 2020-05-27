@@ -41,6 +41,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerProvider.Resolve<IOperatorNavigationService>();
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
             containerProvider.Resolve<IWmsDataProvider>().Start();
+            containerProvider.Resolve<ILaserPointerService>().StartAsync();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -48,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator
             // Services
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
+            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
+
             containerRegistry.RegisterSingleton<ILoadingUnitBarcodeService, LoadingUnitBarcodeService>();
             containerRegistry.RegisterSingleton<IPutToLightBarcodeService, PutToLightBarcodeService>();
             containerRegistry.RegisterSingleton<IOperatorNavigationService, OperatorNavigationService>();

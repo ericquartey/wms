@@ -10,7 +10,6 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;
-using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -57,8 +56,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isItemSerialNumberValid = true;
 
         private bool isOperationCanceled;
-
-        private LaserPointerDriver laserPointerDriver;
 
         private double loadingUnitDepth;
 
@@ -520,7 +517,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetLoadingUnitDetails();
 
             await this.AlphaNumericBarSendMessageAsync();
-            await this.LaserPointerSwitchOnAndMoveAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -724,76 +720,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task LaserPointerConfigureAsync()
-        {
-            try
-            {
-                var accessories = await this.BayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    return;
-                }
-
-                var laserPointer = accessories.LaserPointer;
-                if (laserPointer.IsEnabledNew)
-                {
-                    this.laserPointerDriver = new LaserPointerDriver();
-
-                    var ipAddress = laserPointer.IpAddress;
-                    var port = laserPointer.TcpPort;
-                    var yOffset = laserPointer.YOffset;
-                    var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
-                    var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
-
-                    this.laserPointerDriver.Configure(ipAddress, port, 0, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task LaserPointerSwitchOnAndMoveAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                if (this.laserPointerDriver is null)
-                {
-                    return;
-                }
-
-                if (this.MissionOperation is null)
-                {
-                    await this.laserPointerDriver.EnabledAsync(false, false); // no mission, then switch off the alpha numeric bar
-                }
-                else
-                {
-                    if (this.selectedCompartment is null)
-                    {
-                        return;
-                    }
-
-                    var idLoadingUnit = this.selectedCompartment.LoadingUnitId;
-                    var isUpper = this.bay.Positions.FirstOrDefault(p => p.LoadingUnit.Id == idLoadingUnit).IsUpper;
-
-                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, this.MissionOperation.ItemHeight.Value, isUpper, this.bay.Side);
-                    await this.laserPointerDriver.SwitchOnAndMoveAsync(point);
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task OnMissionChangedAsync()
         {
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
@@ -806,7 +732,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             _ = this.AlphaNumericBarSendMessageAsync();
-            _ = this.LaserPointerSwitchOnAndMoveAsync();
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
