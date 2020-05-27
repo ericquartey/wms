@@ -41,8 +41,8 @@
                     VerticalAlignment="Center"
                     Orientation="Vertical">
 
-            <StackPanel HorizontalAlignment="Center"
-                        Margin="0,0,0,20"
+            <StackPanel Margin="0,0,0,20"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Vertical">
                 <TextBlock Height="Auto"
@@ -65,9 +65,9 @@
                               Width="auto"
                               Height="auto"
                               MaxHeight="200"
+                              ItemsSource="{Binding LoadingUnits}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              ItemsSource="{Binding LoadingUnits}">
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column10"
                                                 Width="1*"
@@ -151,9 +151,9 @@
                               Width="auto"
                               Height="auto"
                               MaxHeight="200"
+                              ItemsSource="{Binding MoveUnits}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              ItemsSource="{Binding MoveUnits}">
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column1"
                                                 Width="1*"

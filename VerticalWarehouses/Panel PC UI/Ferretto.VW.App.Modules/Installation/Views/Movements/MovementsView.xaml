@@ -501,6 +501,7 @@
 
                     <controls:PpcCheckBox Grid.Column="3"
                                           Margin="30"
+                                          Visibility="Hidden"
                                           IsChecked="{Binding IsPolicyBypassed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           LabelText="Bypass" />
                     <Grid Grid.Row="0"
@@ -778,8 +779,8 @@
                                             HorizontalAlignment="Right"
                                             HorizontalContentAlignment="Center"
                                             BorderBrush="{DynamicResource FerrettoRed}"
+                                            Command="{Binding IsPolicyBypassedCommand}"
                                             Foreground="{StaticResource FerrettoPureWhite}"
-                                            IsEnabled="False"
                                             Kind="Shield"
                                             Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}" />
                         <controls:PpcButton Width="60"

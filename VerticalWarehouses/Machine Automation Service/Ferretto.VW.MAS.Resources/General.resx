@@ -123,6 +123,12 @@
   <data name="InternalServerErrorTitle" xml:space="preserve">
     <value>Internal Server Error.</value>
   </data>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>Maintenance status expired</value>
+  </data>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>Maintenance status expiring</value>
+  </data>
   <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
     <value>No entity with the specified id '{0}' exists.</value>
   </data>

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -17,7 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public ServicingProvider(DataLayerContext dataContext, IStatisticsDataProvider machineStatistics)
+        public ServicingProvider(DataLayerContext dataContext,
+            IStatisticsDataProvider machineStatistics)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineStatistics = machineStatistics ?? throw new ArgumentNullException(nameof(machineStatistics));
@@ -33,16 +36,30 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (this.dataContext.ServicingInfo.LastOrDefault() == null)
                 {
-                    var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
+                    //var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
+                    //var s = new ServicingInfo();
+                    //if (machineId.HasValue)
+                    //{
+                    //    s.MachineStatisticsId = machineId.Value;
+                    //}
+                    //this.dataContext.ServicingInfo.Add(s);
+                    //this.dataContext.SaveChanges();
+
+                    //this.GenerateInstructions(s);
+                    //this.dataContext.SaveChanges();
+                    // Add new record
+
                     var s = new ServicingInfo();
+
+                    s.ServiceStatus = MachineServiceStatus.Valid;
+
+                    var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
                     if (machineId.HasValue)
                     {
                         s.MachineStatisticsId = machineId.Value;
                     }
-                    this.dataContext.ServicingInfo.Add(s);
-                    this.dataContext.SaveChanges();
 
-                    this.GenerateInstructions(s);
+                    this.dataContext.ServicingInfo.Add(s);
                     this.dataContext.SaveChanges();
                 }
             }
@@ -52,6 +69,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                // Confirm setup date in actual record
+                this.dataContext.ServicingInfo.Last().ServiceStatus = MachineServiceStatus.Completed;
+                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+
                 // Add new record
                 var s = new ServicingInfo();
 
@@ -76,13 +97,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (this.dataContext.ServicingInfo.Count() == 1)
                 {
                     // Confirm setup date in actual record
+                    this.dataContext.ServicingInfo.FirstOrDefault().ServiceStatus = MachineServiceStatus.Completed;
                     this.dataContext.ServicingInfo.FirstOrDefault().InstallationDate = DateTime.Now;
                     this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.FirstOrDefault());
 
                     // Add new record
                     var s = new ServicingInfo();
 
-                    s.InstallationDate = DateTime.Now;
                     s.LastServiceDate = DateTime.Now;
                     s.NextServiceDate = DateTime.Now.AddYears(1);
                     s.ServiceStatus = MachineServiceStatus.Valid;
@@ -102,7 +123,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.LastOrDefault();
+                ServicingInfo si = this.dataContext.ServicingInfo.LastOrDefault();
+                si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+
+                return si;
             }
         }
 
@@ -110,7 +135,20 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.ToList();
+                List<ServicingInfo> silNew = new List<ServicingInfo>();
+
+                List<ServicingInfo> silDB = this.dataContext.ServicingInfo.ToList();
+
+                foreach (ServicingInfo si in silDB)
+                {
+                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                    silNew.Add(si);
+                }
+
+                return silNew.ToList();
+
+                //return this.dataContext.ServicingInfo.ToList();
             }
         }
 
@@ -118,7 +156,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.Where(s => s.Id == id).FirstOrDefault();
+                ServicingInfo si = this.dataContext.ServicingInfo.Where(s => s.Id == id).FirstOrDefault();
+                si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                return si;
             }
         }
 
@@ -126,7 +167,34 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.Where(s => s.InstallationDate != null).FirstOrDefault();
+                ServicingInfo si = this.dataContext.ServicingInfo.Where(s => s.InstallationDate != null).FirstOrDefault();
+
+                if (si != null)
+                {
+                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+
+                    return si;
+                }
+                else
+                {
+                    ServicingInfo siTot = this.dataContext.ServicingInfo.FirstOrDefault();
+
+                    if (siTot == null)
+                    {
+                        siTot = new ServicingInfo();
+
+                        siTot.MachineStatisticsId = this.machineStatistics.GetActual().Id;
+
+                        this.dataContext.ServicingInfo.Add(siTot);
+                        this.dataContext.SaveChanges();
+                    }
+
+                    siTot.MachineStatistics = this.machineStatistics.GetById((int)siTot.MachineStatisticsId);
+                    siTot.Instructions = this.dataContext.Instructions.Where(s => siTot.Id == s.ServicingInfo.Id).ToList();
+
+                    return siTot;
+                }
             }
         }
 
@@ -138,11 +206,51 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    return this.dataContext.ServicingInfo.ElementAt(dim - 1);
+                    ServicingInfo si = this.dataContext.ServicingInfo.Where(S => S.ServiceStatus == MachineServiceStatus.Completed).LastOrDefault();
+                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+
+                    return si;
                 }
                 else
                 {
                     return null;
+                }
+            }
+        }
+
+        public void UpdateServiceStatus()
+        {
+            lock (this.dataContext)
+            {
+                var logger = LogManager.GetCurrentClassLogger();
+
+                // Confirm setup date in actual record
+                var service = this.dataContext.ServicingInfo.Last();
+                if (service.ServiceStatus == MachineServiceStatus.Expired)
+                {
+                    logger.Warn(Resources.General.MaintenanceStateExpired);
+                    //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
+                }
+                if (service.ServiceStatus == MachineServiceStatus.Expiring)
+                {
+                    var diff = service.NextServiceDate.Value.Subtract(service.NextServiceDate.Value);
+                    if (diff.TotalDays <= 0)
+                    {
+                        service.ServiceStatus = MachineServiceStatus.Expired;
+                        this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                    }
+                    logger.Warn(Resources.General.MaintenanceStateExpiring);
+                    //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
+                }
+                if (service.ServiceStatus == MachineServiceStatus.Valid)
+                {
+                    var diff = service.NextServiceDate.Value.Subtract(service.NextServiceDate.Value);
+                    if (diff.TotalDays <= 30)
+                    {
+                        service.ServiceStatus = MachineServiceStatus.Expiring;
+                        this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                    }
                 }
             }
         }

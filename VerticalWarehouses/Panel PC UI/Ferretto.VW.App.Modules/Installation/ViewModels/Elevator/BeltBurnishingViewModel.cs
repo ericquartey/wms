@@ -434,6 +434,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.MachineService.MachineStatus.IsMoving
                 &&
+                this.SensorsService.ShutterSensors.Closed
+                &&
                 !this.IsExecutingProcedure
                 &&
                 string.IsNullOrWhiteSpace(this.Error);
