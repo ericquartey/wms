@@ -6436,17 +6436,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationCompletedAsync()
+        public System.Threading.Tasks.Task<FileResponse> SetDepositAndPickUpTestCompletedAsync()
         {
-            return SetHorizontalChainCalibrationCompletedAsync(System.Threading.CancellationToken.None);
+            return SetDepositAndPickUpTestCompletedAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationCompletedAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> SetDepositAndPickUpTestCompletedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/calibration/set-completed");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/deposit/and/pickup/set-completed");
     
             var client_ = _httpClient;
             try
@@ -6504,17 +6504,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> SetDepositAndPickUpTestCompletedAsync()
+        public System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationCompletedAsync()
         {
-            return SetDepositAndPickUpTestCompletedAsync(System.Threading.CancellationToken.None);
+            return SetHorizontalChainCalibrationCompletedAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> SetDepositAndPickUpTestCompletedAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationCompletedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/deposit/and/pickup/set-completed");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/calibration/set-completed");
     
             var client_ = _httpClient;
             try

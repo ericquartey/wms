@@ -17,9 +17,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<LoadingUnit> GetAll();
 
-        IEnumerable<LoadingUnit> GetAllTestUnits();
-
         IEnumerable<LoadingUnit> GetAllNotTestUnits();
+
+        IEnumerable<LoadingUnit> GetAllTestUnits();
 
         /// <summary>
         /// Gets the specified loading unit from the database.
@@ -46,6 +46,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
+
+        void TryAdd(int loadingUnitId);
 
         void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext);
 
