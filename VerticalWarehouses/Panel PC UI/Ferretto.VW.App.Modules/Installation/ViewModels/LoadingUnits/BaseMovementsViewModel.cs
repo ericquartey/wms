@@ -120,7 +120,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public virtual bool KeepAlive => true;
+        public override bool KeepAlive => true;
 
         public int? LoadingUnitCellId
         {
@@ -314,8 +314,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
-
-                //this.IsStopping = true;
             }
             catch (Exception ex)
             {
@@ -338,7 +336,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 Services.Models.NotificationSeverity.Success);
         }
 
-        protected virtual void Error(Exception ex, string errorMessage)
+        protected virtual void NotifyError(Exception ex, string errorMessage)
         {
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
@@ -353,6 +351,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
+            if (e is null)
+            {
+                return;
+            }
+
             await base.OnMachinePowerChangedAsync(e);
 
             if (e.MachinePowerState != MachinePowerState.Powered)
@@ -383,10 +386,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return
                 this.IsExecutingProcedure
                 &&
-                !this.IsWaitingForResponse
-                //&&
-                //!this.IsStopping
-                ;
+                !this.IsWaitingForResponse;
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
@@ -394,7 +394,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             var data = message?.Data as FsmExceptionMessageData;
             var ex = data?.InnerException as Exception;
 
-            this.Error(ex, data.ExceptionDescription);
+            this.NotifyError(ex, data.ExceptionDescription);
         }
 
         private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
@@ -446,7 +446,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void Stopped()
         {
-            //this.IsStopping = false;
             this.RestoreStates();
 
             this.ShowNotification(

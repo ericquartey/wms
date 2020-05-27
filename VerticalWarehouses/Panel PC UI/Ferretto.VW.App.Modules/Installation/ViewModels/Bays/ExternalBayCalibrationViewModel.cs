@@ -806,7 +806,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message.Data?.MovementMode != MovementMode.ExtBayTest)
             {
@@ -818,7 +818,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
             }
 
-            if (message.IsErrored() ||
+            if (message.IsErrored()
+                ||
                 this.MachineError != null)
             {
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);

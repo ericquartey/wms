@@ -15,14 +15,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineMissionsWebService machineMissionsWebService;
-
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
-        private readonly IMachineService machineService;
-
-        private readonly IMissionOperationsService missionOperationsService;
-
         private readonly IOperatorNavigationService operatorNavigationService;
 
         private readonly Sensors sensors = new Sensors();
@@ -37,19 +29,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public LoadingUnitInfoViewModel(IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineMissionsWebService machineMissionsWebService,
-            IMachineSensorsWebService machineSensorsWebService,
+        public LoadingUnitInfoViewModel(
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IOperatorNavigationService operatorNavigationService,
-            IMachineService machineService,
-            IMissionOperationsService missionOperationsService, IEventAggregator eventAggregator,
+            IMissionOperationsService missionOperationsService,
+            IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
             : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
-            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
         }
 
@@ -116,7 +104,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operatorNavigationService.NavigateToDrawerView();
         }
 
-        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             try
             {
@@ -146,6 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception)
             {
+                // do nothing
             }
         }
 

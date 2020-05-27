@@ -452,11 +452,14 @@ namespace Ferretto.VW.App.Services
         {
             if (this.machineStatus.CurrentMissionId != null)
             {
-                this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
+                await this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
-            this.machineElevatorWebService?.StopAsync();
-            this.machineCarouselWebService?.StopAsync();
-            this.shuttersWebService?.StopAsync();
+
+            await Task.WhenAll(
+                this.machineElevatorWebService?.StopAsync(),
+                this.machineCarouselWebService?.StopAsync(),
+                this.shuttersWebService?.StopAsync());
+
             this.StopMoving();
         }
 

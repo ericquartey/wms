@@ -21,10 +21,6 @@ namespace Ferretto.VW.App.Modules.Login.Views
         {
             this.InitializeComponent();
 
-            this.dispatcherTimer.Tick += this.DispatcherTimer_Tick;
-            this.dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
-            this.dispatcherTimer.Start();
-
             this.DispatcherTimer_Tick(null, null);
         }
 
@@ -32,10 +28,17 @@ namespace Ferretto.VW.App.Modules.Login.Views
 
         #region Methods
 
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            this.dispatcherTimer.Tick += this.DispatcherTimer_Tick;
+            this.dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
+            this.dispatcherTimer.Start();
+        }
+
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            //this.txtTime.Text = string.Concat(DateTime.Now.ToLongDateString(), ", ", DateTime.Now.ToShortTimeString());
-
             this.txtTime.Text = string.Format(Localized.Instance.CurrentCulture, "{0:f}", DateTime.Now);
         }
 

@@ -21,11 +21,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
 
@@ -41,15 +41,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
+        private SubscriptionToken positioningMessageReceivedToken;
+
         private bool pressMinus;
+
+        private SubscriptionToken receiveHomingUpdateToken;
 
         private LoadingUnit selectedUnitUnit;
 
         private DelegateCommand upSelectionCommand;
-
-        private SubscriptionToken receiveHomingUpdateToken;
-
-        private SubscriptionToken positioningMessageReceivedToken;
 
         #endregion
 
@@ -173,7 +173,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task GetLoadingUnitsAsync()
+        public Task GetLoadingUnitsAsync()
         {
             try
             {
@@ -192,6 +192,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
                 this.IsSearching = false;
             }
+
+            return Task.CompletedTask;
         }
 
         public override async Task OnAppearedAsync()
@@ -302,6 +304,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 trackCurrentView: true);
         }
 
+        private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            if (message.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical)
+            {
+                if (message.Status == MessageStatus.OperationStart)
+                {
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), Services.Models.NotificationSeverity.Info);
+                }
+            }
+        }
+
+        private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.CarouselCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+
+            if (message.Data?.MovementMode == MovementMode.HorizontalCalibration)
+            {
+                this.ShowNotification(Resources.Localized.Get("OperatorApp.HorizontalCalibration"), Services.Models.NotificationSeverity.Info);
+            }
+        }
+
         private void SelectLoadingUnit()
         {
             this.SelectedLoadingUnit = this.loadingUnits.ElementAtOrDefault(this.currentItemIndex);
@@ -323,33 +349,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                    this.OnHomingProcedureStatusChanged,
+                        this.OnHomingProcedureStatusChanged,
                         ThreadOption.UIThread,
-                    false);
-        }
-
-        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (message.Data?.MovementMode == MovementMode.BayTest)
-            {
-                this.ShowNotification(Resources.Localized.Get("OperatorApp.CarouselCalibration"), Services.Models.NotificationSeverity.Info);
-            }
-
-            if (message.Data?.MovementMode == MovementMode.HorizontalCalibration)
-            {
-                this.ShowNotification(Resources.Localized.Get("OperatorApp.HorizontalCalibration"), Services.Models.NotificationSeverity.Info);
-            }
-        }
-
-        private async void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
-        {
-            if (message.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical)
-            {
-                if (message.Status == MessageStatus.OperationStart)
-                {
-                    this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), Services.Models.NotificationSeverity.Info);
-                }
-            }
+                        false);
         }
 
         #endregion

@@ -400,7 +400,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
                 this.Logger.Debug($"User requested recall of loading unit.");
 
-                if (this.WmsDataProvider.IsEnabled && activeOperation != null)
+                if (activeOperation != null)
                 {
                     var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
                     if (!canComplete)
@@ -415,15 +415,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
                 }
 
-                this.NavigationService.GoBack();
+                this.NavigationService.GoBackTo(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.WAIT);
+
                 this.Reset();
-
-                //this.operatorNavigationService.NavigateToDrawerInfoView();
-
-                //if (this.IsNewOperationAvailable)
-                //{
-                this.operatorNavigationService.NavigateToDrawerView();
-                //}
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

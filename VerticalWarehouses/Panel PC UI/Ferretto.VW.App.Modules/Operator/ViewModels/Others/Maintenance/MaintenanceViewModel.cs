@@ -21,10 +21,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ISessionService sessionService;
 
-        //private ICommand servicingInfoUp;
-
-        //private ICommand servicingInfoDown;
-
         private DelegateCommand confirmServiceCommand;
 
         private bool isConfirmServiceVisible;
@@ -39,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ServicingInfo selectedServicingInfo;
 
-        private List<ServicingInfo> servicingInfo;
+        private IEnumerable<ServicingInfo> servicingInfo;
 
         private MachineStatistics statistics;
 
@@ -132,12 +128,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     catch (Exception)
                     {
+                        // do nothing
                     }
                 }
             }
         }
 
-        public List<ServicingInfo> ServicingInfo
+        public IEnumerable<ServicingInfo> ServicingInfo
         {
             get => this.servicingInfo;
             set => this.SetProperty(ref this.servicingInfo, value);
@@ -151,12 +148,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
-        //public ICommand ServicingInfoUp =>
-        //    this.servicingInfoUp
-        //    ??
-        //    (this.servicingInfoUp = new DelegateCommand(
-        //        () => this.ServicingInfoUpAction(), this.CanServicingInfoUp));
-
         #region Methods
 
         public override void Disappear()
@@ -166,20 +157,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.Disappear();
         }
 
-        //public ICommand ServicingInfoDown =>
-        //    this.servicingInfoDown
-        //    ??
-        //    (this.servicingInfoDown = new DelegateCommand(
-        //        () => this.ServicingInfoDownAction(), this.CanServicingInfoDown));
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            //this.IsConfirmServiceVisible = this.sessionService.UserAccessLevel == UserAccessLevel.Support;
-
-            //this.RaisePropertyChanged(nameof(this.IsConfirmServiceVisible));
 
             this.MachineSerial = this.sessionService.MachineIdentity.SerialNumber;
 
@@ -191,26 +173,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var lst = await this.machineServicingWebService.GetAllAsync();
 
-            //this.ServicingInfo = lst.OrderByDescending(o => o.LastServiceDate).ToList();
-
             this.ServicingInfo = lst.ToList();
 
             this.RaisePropertyChanged(nameof(this.ServicingInfo));
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            try
-            {
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -220,33 +185,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
         }
 
-        private bool CanConfirmService()
-        {
-            if (true) { return true; }
-            else { return false; }
-        }
+        private bool CanConfirmService() => true;
 
-        private bool CanDetailCommand()
-        {
-            try
-            {
-                return this.selectedServicingInfo != null;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+        private bool CanDetailCommand() => this.selectedServicingInfo != null;
 
-        //}
         private async Task ConfirmServiceAsync()
         {
             try
             {
                 await this.machineServicingWebService.ConfirmServiceAsync();
             }
-            catch (Exception)
+            catch
             {
+                // do nothing
             }
         }
 
@@ -261,14 +212,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Utils.Modules.Operator.Others.Maintenance.DETAIL,
                     this.selectedServicingInfo.Id,
                     trackCurrentView: true);
-
-                //this.NavigationService.Appear(
-                //    nameof(Utils.Modules.Operator),
-                //    Utils.Modules.Operator.Others.Maintenance.DETAIL,
-                //    null,
-                //    trackCurrentView: true);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -280,90 +225,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void GetStatistics()
         {
+            this.IsWaitingForResponse = true;
             try
             {
                 this.Statistics = this.selectedServicingInfo.MachineStatistics;
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
-            catch (Exception)
+            finally
             {
-                throw;
+                this.IsWaitingForResponse = false;
             }
         }
 
         #endregion
-
-        //private void ServicingInfoUpAction()
-        //{
-        //    try
-        //    {
-        //        var index = this.ServicingInfo.IndexOf(this.SelectedServicingInfo);
-        //        this.SelectedServicingInfo = this.ServicingInfo.ElementAt(index++);
-
-        //        this.RaisePropertyChanged(nameof(this.SelectedServicingInfo));
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
-
-        //}
-
-        //private void ServicingInfoDownAction()
-        //{
-        //    try
-        //    {
-        //        var index = this.ServicingInfo.IndexOf(this.SelectedServicingInfo);
-        //        this.SelectedServicingInfo = this.ServicingInfo.ElementAt(index--);
-
-        //        this.RaisePropertyChanged(nameof(this.SelectedServicingInfo));
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
-
-        //}
-
-        //private bool CanServicingInfoUp()
-        //{
-        //    try
-        //    {
-        //        var index = this.ServicingInfo.IndexOf(this.SelectedServicingInfo);
-        //        if (index == (this.ServicingInfo.Count() - 1))
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-
-        //}
-
-        //private bool CanServicingInfoDown()
-        //{
-        //    try
-        //    {
-        //        var index = this.ServicingInfo.IndexOf(this.SelectedServicingInfo);
-        //        if (index < 1 && this.SelectedServicingInfo != null)
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
     }
 }

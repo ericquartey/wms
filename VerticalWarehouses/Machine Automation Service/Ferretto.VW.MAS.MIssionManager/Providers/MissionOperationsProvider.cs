@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
 
@@ -23,7 +24,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILogger<MissionOperationsProvider> logger;
+
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
+
+        private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -35,16 +40,20 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionOperationsProvider(
             IEventAggregator eventAggregator,
+            IMissionSchedulingProvider missionSchedulingProvider,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsDataProvider missionsDataProvider,
             IWmsSettingsProvider wmsSettingsProvider,
-            IErrorsProvider errorsProvider)
+            IErrorsProvider errorsProvider,
+            ILogger<MissionOperationsProvider> logger)
         {
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
-            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
-            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.eventAggregator = eventAggregator;
+            this.missionSchedulingProvider = missionSchedulingProvider;
+            this.missionOperationsWmsWebService = missionOperationsWmsWebService;
+            this.missionsDataProvider = missionsDataProvider;
+            this.wmsSettingsProvider = wmsSettingsProvider;
+            this.errorsProvider = errorsProvider;
+            this.logger = logger;
         }
 
         #endregion
@@ -69,21 +78,26 @@ namespace Ferretto.VW.MAS.MissionManager
         }
 
         /// <summary>
-        /// the UI informs mission manager that the operation is completed
+        /// Marks the specified WMS mission as complete.
         /// </summary>
-        /// <param name="id">operation id</param>
-        /// <param name="quantity"></param>
-        /// <returns></returns>
+        /// <param name="wmsId">The identifier of the WMS mission to complete.</param>
+        /// <param name="quantity">The product quantity that was involved.</param>
+        /// <returns>Returns HTTP 200 if the completion request was successfully processed.</returns>
         public async Task CompleteAsync(int wmsId, double quantity, string printerName)
         {
-            if (!this.wmsSettingsProvider.IsEnabled)
-            {
-                throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
-            }
-
             try
             {
-                await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, printerName);
+                if (this.wmsSettingsProvider.IsEnabled)
+                {
+                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, printerName);
+                }
+                else
+                {
+                    var mission = this.missionsDataProvider.GetByWmsId(wmsId);
+                    this.logger.LogWarning($"WMS is not enabled. Forcing recall of load unit {mission.LoadUnitId} from bay {mission.TargetBay}.");
+
+                    this.missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
+                }
 
                 var messageData = new MissionOperationCompletedMessageData
                 {

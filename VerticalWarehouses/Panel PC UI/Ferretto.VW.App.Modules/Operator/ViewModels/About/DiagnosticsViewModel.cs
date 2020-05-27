@@ -6,15 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.Utils.Attributes;
-using Ferretto.VW.App.Services.IO;
 using Prism.Commands;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -39,9 +34,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public DiagnosticsViewModel(UsbWatcherService usbWatcher,
+        public DiagnosticsViewModel(
+            UsbWatcherService usbWatcher,
             IMachineServicingWebService machineServicingWebService)
-                    : base()
+            : base()
         {
             this.usbWatcher = usbWatcher ?? throw new ArgumentNullException(nameof(usbWatcher));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
@@ -99,9 +95,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var lastServicing = await this.machineServicingWebService.GetLastConfirmedAsync();
 
-                this.LastServiceStatistics = lastServicing.MachineStatistics;
+                if (lastServicing != null)
+                {
+                    this.LastServiceStatistics = lastServicing.MachineStatistics;
 
-                this.RaisePropertyChanged(nameof(this.LastServiceStatistics));
+                    this.RaisePropertyChanged(nameof(this.LastServiceStatistics));
+                }
 
                 var allServicing = await this.machineServicingWebService.GetAllAsync();
 
@@ -125,8 +124,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.TotalStatistics));
             }
-            catch (Exception)
+            catch
             {
+                // do nothing
             }
         }
 
@@ -152,10 +152,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.ToList());
             }
-            catch (Exception ex)
+            catch
             {
-                var exc = ex;
+                // do nothing
             }
+
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToLogsExport?.RaiseCanExecuteChanged();
 
