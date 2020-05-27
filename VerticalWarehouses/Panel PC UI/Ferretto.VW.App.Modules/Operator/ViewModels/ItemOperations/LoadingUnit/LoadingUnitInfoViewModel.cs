@@ -37,12 +37,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public LoadingUnitInfoViewModel(IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+        public LoadingUnitInfoViewModel(
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineSensorsWebService machineSensorsWebService,
             IOperatorNavigationService operatorNavigationService,
             IMachineService machineService,
-            IMissionOperationsService missionOperationsService, IEventAggregator eventAggregator,
+            IMissionOperationsService missionOperationsService,
+            IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
             : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
