@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {

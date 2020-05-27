@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Services.IO
 {

@@ -2,10 +2,8 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;

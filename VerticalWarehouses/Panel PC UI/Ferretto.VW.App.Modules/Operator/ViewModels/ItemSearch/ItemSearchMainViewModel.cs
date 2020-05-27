@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
@@ -309,7 +308,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
-                this.selectedItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
+                this.selectedItemTxt = string.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
                 this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();

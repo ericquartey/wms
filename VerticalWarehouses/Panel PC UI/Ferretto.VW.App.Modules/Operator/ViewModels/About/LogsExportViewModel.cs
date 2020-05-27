@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels

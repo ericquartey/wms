@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.
+/* Unmerged change from project 'Ferretto.VW.MAS.AutomationService.Contracts (net471)'
+Before:
 using System.Text;
 using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
-using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
+After:
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+*/
+ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {

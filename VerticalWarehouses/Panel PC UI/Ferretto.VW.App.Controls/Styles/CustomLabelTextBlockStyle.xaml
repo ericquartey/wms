@@ -22,5 +22,15 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="VWAPP_CustomLabelBig_LabelTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomLabel_LabelTextBlock_Foreground_Normal}" />
+        <Setter Property="FontSize" Value="14" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomLabel_LabelTextBlock_Foreground_Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

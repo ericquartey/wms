@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Prism.Mvvm;
 using Prism.Regions;

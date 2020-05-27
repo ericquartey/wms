@@ -127,7 +127,7 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
                                     Binding="{Binding Path=Height}"
-                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -144,7 +144,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=MaxNetWeight}"
-                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -161,7 +161,7 @@
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
                                     Binding="{Binding Path=Tare}"
-                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
@@ -206,7 +206,7 @@
                 <DataGridTextColumn x:Name="Column6"
                                     Width="1*"
                                     Binding="{Binding Path=MaxWeightPercentage, StringFormat={}{0:N1}}"
-                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" >
+                                    Header="{Resources:Loc OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />

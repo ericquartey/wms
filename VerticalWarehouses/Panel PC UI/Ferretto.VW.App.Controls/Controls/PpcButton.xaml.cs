@@ -1,15 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CommonServiceLocator;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Hubs;
-using Prism.Events;
-using System;
-using Ferretto.VW.App.Resources;
-using CommonServiceLocator;
-using System.ComponentModel;
 using MahApps.Metro.IconPacks;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls
 {

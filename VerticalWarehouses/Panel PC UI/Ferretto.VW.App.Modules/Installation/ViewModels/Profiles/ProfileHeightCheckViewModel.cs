@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -21,9 +14,6 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
-using LoadingUnitLocation = Ferretto.VW.MAS.AutomationService.Contracts.LoadingUnitLocation;
-using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

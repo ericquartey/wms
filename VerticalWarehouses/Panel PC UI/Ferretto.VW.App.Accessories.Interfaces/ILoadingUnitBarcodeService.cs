@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Accessories.Interfaces
 {
     public interface ILoadingUnitBarcodeService
     {

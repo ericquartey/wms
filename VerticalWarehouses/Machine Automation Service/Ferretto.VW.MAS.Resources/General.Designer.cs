@@ -79,6 +79,24 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maintenance status expired.
+        /// </summary>
+        public static string MaintenanceStateExpired {
+            get {
+                return ResourceManager.GetString("MaintenanceStateExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance status expiring.
+        /// </summary>
+        public static string MaintenanceStateExpiring {
+            get {
+                return ResourceManager.GetString("MaintenanceStateExpiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No entity with the specified id &apos;{0}&apos; exists..
         /// </summary>
         public static string NoEntityWithTheSpecifiedIdExists {

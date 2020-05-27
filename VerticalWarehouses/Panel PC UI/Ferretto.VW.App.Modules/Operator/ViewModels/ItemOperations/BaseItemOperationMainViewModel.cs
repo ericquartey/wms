@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;

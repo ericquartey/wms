@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Xpf.Charts;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;

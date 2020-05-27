@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommonServiceLocator;
-using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {

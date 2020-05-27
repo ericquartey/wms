@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using DevExpress.Mvvm;
 using MahApps.Metro.IconPacks;
 
 namespace Ferretto.VW.App.Controls.Controls

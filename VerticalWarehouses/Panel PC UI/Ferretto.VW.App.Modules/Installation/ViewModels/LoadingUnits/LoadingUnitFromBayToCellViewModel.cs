@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using DevExpress.Mvvm;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;

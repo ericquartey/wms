@@ -8,7 +8,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {

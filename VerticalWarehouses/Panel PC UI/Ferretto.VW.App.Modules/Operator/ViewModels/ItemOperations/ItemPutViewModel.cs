@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.MeasureUnitDescription = String.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+            this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }

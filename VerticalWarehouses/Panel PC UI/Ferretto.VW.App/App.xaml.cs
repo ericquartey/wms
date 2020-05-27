@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Resources;

@@ -1,10 +1,8 @@
 ﻿using Ferretto.VW.App.Menu.Views;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Prism.Regions;
 using Unity;
 
 namespace Ferretto.VW.App.Modules.Menu

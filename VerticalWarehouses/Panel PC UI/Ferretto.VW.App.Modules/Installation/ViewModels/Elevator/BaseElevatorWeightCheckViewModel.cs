@@ -3,7 +3,6 @@ using System.ComponentModel;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

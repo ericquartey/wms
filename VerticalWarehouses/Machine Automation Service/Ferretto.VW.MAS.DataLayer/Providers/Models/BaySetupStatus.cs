@@ -12,6 +12,7 @@
             Laser = SetupStepStatus.Complete,
             Profile = SetupStepStatus.Complete,
             Shutter = SetupStepStatus.Complete,
+            FullTest = SetupStepStatus.Complete,
         };
 
         #endregion
@@ -31,6 +32,8 @@
         public SetupStepStatus Profile { get; set; }
 
         public SetupStepStatus Shutter { get; set; }
+
+        public SetupStepStatus FullTest { get; set; }
 
         #endregion
     }
