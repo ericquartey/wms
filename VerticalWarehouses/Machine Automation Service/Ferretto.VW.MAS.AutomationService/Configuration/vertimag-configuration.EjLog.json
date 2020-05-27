@@ -221,6 +221,9 @@
             "IsEnabledNew": true,
             "PortName": "COM4"
           },
+          "CardReader": {
+            "IsEnabledNew": true
+          },
           "WeightingScale": {
             "IsEnabledNew": true
           }
