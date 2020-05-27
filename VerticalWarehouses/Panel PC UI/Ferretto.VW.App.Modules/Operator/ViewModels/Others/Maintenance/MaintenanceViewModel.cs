@@ -102,22 +102,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     try
                     {
-                        if (this.selectedServicingInfo.ServiceStatus == MachineServiceStatus.Valid)
+                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Valid)
                         {
                             this.mainteinanceRequest = "Red";
                         }
 
-                        if (this.selectedServicingInfo.ServiceStatus == MachineServiceStatus.Expired)
+                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expired)
                         {
                             this.mainteinanceRequest = "Green";
                         }
 
-                        if (this.selectedServicingInfo.ServiceStatus == MachineServiceStatus.Expiring)
+                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expiring)
                         {
                             this.mainteinanceRequest = "Orange";
                         }
 
-                        if (this.selectedServicingInfo.ServiceStatus == MachineServiceStatus.Completed)
+                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Completed)
                         {
                             this.mainteinanceRequest = "White";
                         }
@@ -228,7 +228,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                this.Statistics = this.selectedServicingInfo.MachineStatistics;
+                if (this.selectedServicingInfo != null)
+                {
+                    this.Statistics = this.selectedServicingInfo.MachineStatistics;
+                }
             }
             catch (Exception ex)
             {
