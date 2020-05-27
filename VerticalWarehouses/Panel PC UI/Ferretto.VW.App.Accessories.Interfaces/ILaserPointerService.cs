@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Devices;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Accessories.Interfaces
 {
     public interface ILaserPointerService
     {

@@ -46,6 +46,18 @@ namespace Ferretto.VW.App.Accessories
             return containerRegistry;
         }
 
+        public static IContainerRegistry ConfigureLaserPointerUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
+
+            return containerRegistry;
+        }
+
         #endregion
     }
 }

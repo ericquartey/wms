@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;

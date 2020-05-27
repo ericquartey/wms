@@ -49,7 +49,6 @@ namespace Ferretto.VW.App.Modules.Operator
             // Services
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
-            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
 
             containerRegistry.RegisterSingleton<ILoadingUnitBarcodeService, LoadingUnitBarcodeService>();
             containerRegistry.RegisterSingleton<IPutToLightBarcodeService, PutToLightBarcodeService>();
