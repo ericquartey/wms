@@ -85,12 +85,12 @@ namespace Ferretto.VW.App.Accessories
 
                 if (isCardReaderEnabled)
                 {
-                    if (accessories.CardReader.TokenRegex != null)
+                    /*if (accessories.CardReader.TokenRegex != null)
                     {
                         this.tokenRegex = new Regex(
                             "^.+\rò(?<Token>.+)-\rj");//accessories.CardReader.TokenRegex;
                     }
-                    else
+                    else*/
                     {
                         this.tokenRegex = DefaultTokenRegex;
                     }
