@@ -99,9 +99,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var lastServicing = await this.machineServicingWebService.GetLastConfirmedAsync();
 
-                this.LastServiceStatistics = lastServicing.MachineStatistics;
+                if (lastServicing != null)
+                {
+                    this.LastServiceStatistics = lastServicing.MachineStatistics;
 
-                this.RaisePropertyChanged(nameof(this.LastServiceStatistics));
+                    this.RaisePropertyChanged(nameof(this.LastServiceStatistics));
+                }
 
                 var allServicing = await this.machineServicingWebService.GetAllAsync();
 
