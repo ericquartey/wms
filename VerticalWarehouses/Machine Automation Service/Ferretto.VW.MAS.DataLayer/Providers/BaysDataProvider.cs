@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const double AdditionalStorageSpace = 16.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 29mm
+
+        private const int ProfileStep = 25;
+
         private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
             context.Bays
@@ -292,8 +296,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException();
                 }
+                var heightMm = (profile * this.kMul) + this.kSum;
+                var heightClass = (int)Math.Round(heightMm);
+                heightClass = (heightClass / ProfileStep) * ProfileStep
+                    + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
+                    + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                return (profile * this.kMul) + this.kSum + offset;
+                //this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}");
+                return heightClass + offset + AdditionalStorageSpace;
             }
         }
 
