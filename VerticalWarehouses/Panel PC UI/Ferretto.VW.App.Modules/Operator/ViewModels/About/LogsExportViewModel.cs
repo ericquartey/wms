@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -168,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    this.SelectedDrive != null;
         }
 
-        private async Task ExportAsync()
+        private Task ExportAsync()
         {
             var goback = false;
             try
@@ -181,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var messageBoxResult = dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmFileOverwrite"), Localized.Get("InstallationApp.FileIsAlreadyPresent"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult != DialogResult.Yes)
                     {
-                        return;
+                        return Task.CompletedTask;
                     }
                 }
                 this.IsBusy = true;
@@ -228,6 +226,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.GoBack();
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         private void OnSelectedDriveChanged(DriveInfo old, DriveInfo value)

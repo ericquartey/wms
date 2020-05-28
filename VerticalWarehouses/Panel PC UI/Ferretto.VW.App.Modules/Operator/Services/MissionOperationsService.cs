@@ -11,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
-    internal sealed class MissionOperationsService : IMissionOperationsService
+    internal sealed class MissionOperationsService : IMissionOperationsService, IDisposable
     {
         #region Fields
 
@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Operator
         private readonly IOperatorHubClient operatorHubClient;
 
         private SubscriptionToken healthToken;
+
+        private bool isDisposed;
 
         private SubscriptionToken loadingUnitToken;
 
@@ -90,6 +92,20 @@ namespace Ferretto.VW.App.Modules.Operator
             }
 
             return false;
+        }
+
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.healthToken?.Dispose();
+                this.healthToken = null;
+
+                this.loadingUnitToken?.Dispose();
+                this.healthToken = null;
+
+                this.isDisposed = true;
+            }
         }
 
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
@@ -181,9 +197,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
-            this.logger.Debug($"{message.Data.MissionType} {message.Status}.");
-
-            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
+            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                &&
                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
             {

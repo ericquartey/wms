@@ -75,6 +75,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand lightCommand;
 
+        private DelegateCommand isPolicyBypassedCommand;
+
         private string lightIcon;
 
         private DelegateCommand moveCarouselCloseCommand;
@@ -252,6 +254,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.OnManualRaiseCanExecuteChanged();
             }
         }
+
+        public ICommand IsPolicyBypassedCommand =>
+            this.isPolicyBypassedCommand
+            ??
+            (this.isPolicyBypassedCommand = new DelegateCommand(() =>
+            {
+                if (this.IsPolicyBypassed == true)
+                {
+                    this.IsPolicyBypassed = false;
+                    this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
+                }
+                else
+                {
+                    this.IsPolicyBypassed = true;
+                    this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
+                }
+            }
+            ));
 
         public bool IsShutterMovingDown
         {

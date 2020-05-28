@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.VW.App.Accessories.Barcode
+namespace Ferretto.VW.App.Accessories.Interfaces
 {
-    internal interface IPutToLightBarcodeService
+    public interface IPutToLightBarcodeService
     {
         #region Methods
 

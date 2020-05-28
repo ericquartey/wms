@@ -129,6 +129,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("full-test-bypass")]
+        public IActionResult FullTestBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetFullTest(this.BayNumber), true);
+            return this.Ok();
+        }
+
         [HttpPost("shutter-height-check-bypass")]
         public IActionResult ShutterHeightCheckBypass()
         {

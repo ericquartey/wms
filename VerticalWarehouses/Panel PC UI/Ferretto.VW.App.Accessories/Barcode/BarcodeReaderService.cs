@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.VW.App.Accessories.Barcode;
+using CommonServiceLocator;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices;
@@ -30,15 +31,11 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILoadingUnitBarcodeService loadingUnitBarcodeService;
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly INavigationService navigationService;
-
-        private readonly IPutToLightBarcodeService putToLightBarcodeService;
 
         private readonly object syncRoot = new object();
 
@@ -58,8 +55,6 @@ namespace Ferretto.VW.App.Accessories
             IMachineBaysWebService machineBaysWebService,
             IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
-            IPutToLightBarcodeService putToLightBarcodeService,
-            ILoadingUnitBarcodeService loadingUnitBarcodeService,
             IAuthenticationService authenticationService,
             IMachineBarcodesWebService barcodesWebService)
         {
@@ -68,8 +63,6 @@ namespace Ferretto.VW.App.Accessories
             this.machineBaysWebService = machineBaysWebService;
             this.deviceDriver = deviceDriver;
             this.navigationService = navigationService;
-            this.putToLightBarcodeService = putToLightBarcodeService;
-            this.loadingUnitBarcodeService = loadingUnitBarcodeService;
             this.authenticationService = authenticationService;
             this.barcodesWebService = barcodesWebService;
 
@@ -152,6 +145,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
+                this.ruleSet = Array.Empty<BarcodeRule>();
 
                 this.DisableSerialPortsTimer();
             }
@@ -195,9 +189,11 @@ namespace Ferretto.VW.App.Accessories
 
             if (this.authenticationService.UserName != null)
             {
-                handled = await this.putToLightBarcodeService.ProcessUserActionAsync(eventArgs);
+                var putToLightBarcodeService = ServiceLocator.Current.GetService(typeof(IPutToLightBarcodeService)) as IPutToLightBarcodeService;
+                handled = await putToLightBarcodeService.ProcessUserActionAsync(eventArgs);
 
-                handled = handled || await this.loadingUnitBarcodeService.ProcessUserActionAsync(eventArgs);
+                var loadingUnitBarcodeService = ServiceLocator.Current.GetService(typeof(ILoadingUnitBarcodeService)) as ILoadingUnitBarcodeService;
+                handled = handled || await loadingUnitBarcodeService.ProcessUserActionAsync(eventArgs);
             }
 
             if (!handled)
@@ -245,11 +241,11 @@ namespace Ferretto.VW.App.Accessories
 
             if (matchedRule is null)
             {
-                this.logger.Warn($"Barcode {barcode}: no matching rule found.");
+                this.logger.Warn($"Barcode '{barcode}': no matching rule found.");
             }
             else
             {
-                this.logger.Debug($"Barcode {barcode}: matched rule action '{matchedRule.Action}' (context '{matchedRule.ContextName ?? "<global>"}').");
+                this.logger.Debug($"Barcode '{barcode}': matched rule action '{matchedRule.Action}' (context '{matchedRule.ContextName ?? "<global>"}').");
             }
 
             return matchedRule;

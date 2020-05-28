@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:StatisticsViewModel,
@@ -44,7 +45,510 @@
 
 
         <Grid Grid.Row="1"
-              Grid.Column="1" />
+              Grid.Column="1">
+            <StackPanel Orientation="Vertical">
+
+                <Grid>
+                    <TextBlock Style="{StaticResource VWAPP_CustomLabelBig_LabelTextBlockStyle}"
+                               Text="{res:Loc OperatorApp.KmBayTotal}" />
+                    <Border Margin="0,30,15,15"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay1}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalBayChainKilometers1, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalBayChainKilometers1, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="3"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay2}" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalBayChainKilometers2, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalBayChainKilometers3, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="6"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,0,15,0">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay3}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalBayChainKilometers3, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalBayChainKilometers3, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
+                <Grid>
+                    <TextBlock Style="{StaticResource VWAPP_CustomLabelBig_LabelTextBlockStyle}"
+                               Text="{res:Loc OperatorApp.TotalUnitsInBay}" />
+                    <Border Margin="0,30,15,15"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay1}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalLoadUnitsInBay1, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalLoadUnitsInBay1, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="3"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay2}" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalLoadUnitsInBay2, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalLoadUnitsInBay2, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="6"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,0,15,0">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource VWAPP_CardSensor}"
+                                               Text="{res:Loc OperatorApp.Bay3}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                        <Run Text="{Binding LastServiceStatistics.TotalLoadUnitsInBay3, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalLoadUnitsInBay3, TargetNullValue=0, FallbackValue=0}" />
+                                    </TextBlock>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Margin="0,0,7,0">
+                        <TextBlock Margin="0,0,5,0"
+                                   Style="{StaticResource VWAPP_CustomLabelBig_LabelTextBlockStyle}"
+                                   Text="{res:Loc OperatorApp.TotalMissionsTime}"
+                                   TextWrapping="WrapWithOverflow" />
+                        <Border Margin="0,50,10,0"
+                                VerticalAlignment="Top"
+                                Background="{DynamicResource PpcBackground}">
+                            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0"
+                                          Grid.ColumnSpan="3">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <TextBlock Margin="0,20,0,0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource VWAPP_CardSensor}"
+                                                   Text="{res:Loc OperatorApp.ActiveMissionsTime}"
+                                                   TextAlignment="Left" />
+
+                                        <TextBlock Grid.Row="1"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Top"
+                                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                            <Run Text="{Binding LastServiceStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" />
+                                        </TextBlock>
+
+                                        <Border Grid.RowSpan="2"
+                                                Grid.Column="1"
+                                                Margin="0,25"
+                                                VerticalAlignment="Stretch"
+                                                BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                                BorderThickness="1"
+                                                Visibility="Hidden" />
+                                    </Grid>
+
+                                </Grid>
+                            </Border>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                          Margin="7,0,0,0">
+                        <TextBlock Margin="0,10,0,0"
+                                   Style="{StaticResource VWAPP_CustomLabelBig_LabelTextBlockStyle}"
+                                   Text="{res:Loc OperatorApp.KmElevatorAxis}" />
+                        <Border Margin="0,50,20,0"
+                                VerticalAlignment="Top"
+                                Background="{DynamicResource PpcBackground}">
+                            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0"
+                                          Grid.ColumnSpan="3">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <TextBlock Margin="0,20,0,0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource VWAPP_CardSensor}"
+                                                   Text="{res:Loc OperatorApp.ElevatorVerticalAxis}"
+                                                   TextAlignment="Left" />
+
+                                        <TextBlock Grid.Row="1"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Top"
+                                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                            <Run Text="{Binding LastServiceStatistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                        </TextBlock>
+
+                                        <Border Grid.RowSpan="2"
+                                                Grid.Column="1"
+                                                Margin="0,25"
+                                                VerticalAlignment="Stretch"
+                                                BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                                BorderThickness="1" />
+
+                                    </Grid>
+
+                                    <Grid Grid.Column="3"
+                                          Grid.ColumnSpan="3">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <TextBlock Margin="0,20,0,0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource VWAPP_CardSensor}"
+                                                   Text="{res:Loc OperatorApp.ElevatorHorizontalAxis}" />
+
+                                        <TextBlock Grid.Row="1"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Top"
+                                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                            <Run Text="{Binding LastServiceStatistics.TotalHorizontalAxisKilometers, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalHorizontalAxisKilometers, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                        </TextBlock>
+                                    </Grid>
+
+                                </Grid>
+                            </Border>
+                        </Border>
+                    </Grid>
+
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+
+        <!--<Grid Grid.Row="1"
+              Grid.Column="1"
+              Margin="15"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="0"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers1, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers1}" />
+
+            <controls:PpcLabeledText Margin="10,15,0,0"
+                                     Grid.Row="0"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers2}" />
+
+            <controls:PpcLabeledText Grid.Column="2"
+                                     Grid.Row="0"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers3}" />
+
+            <controls:PpcLabeledText Grid.Column="0"
+                                     Grid.Row="1"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalVerticalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalVerticalAxisKilometers}" />
+
+            <controls:PpcLabeledText Grid.Column="1"
+                                     Grid.Row="1"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalHorizontalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalHorizontalAxisKilometers}" />
+
+            <controls:PpcLabeledText Grid.Column="2"
+                                     Grid.Row="1"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalMissionTime, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalActiveMissionTime}" />
+
+            <controls:PpcLabeledText Margin="0,15,0,0"
+                                     Grid.Row="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay1, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay1}" />
+
+            <controls:PpcLabeledText Grid.Column="1"
+                                     Grid.Row="2"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay2}" />
+
+            <controls:PpcLabeledText Grid.Column="2"
+                                     Grid.Row="2"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay3}" />
+            <TextBlock Grid.Row="3"
+                  Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="0, 15"
+                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                   Text="{Resources:Loc OperatorApp.DiagnosticStatisticDesc}" />
+        </Grid>-->
 
     </Grid>
 </ctrls:View>

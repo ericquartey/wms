@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Threading;
 using CommonServiceLocator;
 using DevExpress.Xpf.WindowsUI;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;

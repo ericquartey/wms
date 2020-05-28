@@ -15,7 +15,6 @@ using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Ferretto.VW.Utils.Extensions;
-using Prism.Regions;
 
 
 namespace Ferretto.VW.App.Installation.ViewModels

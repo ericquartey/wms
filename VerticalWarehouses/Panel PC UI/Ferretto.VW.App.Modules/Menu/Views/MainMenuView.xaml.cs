@@ -30,8 +30,8 @@ namespace Ferretto.VW.App.Menu.Views
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            this.txtTime.Text = String.Format(Localized.Instance.CurrentCulture, "{0:t}", DateTime.Now);
-            this.txtDate.Text = String.Format(Localized.Instance.CurrentCulture, "{0:d}", DateTime.Now);
+            this.txtTime.Text = string.Format(Localized.Instance.CurrentCulture, "{0:t}", DateTime.Now);
+            this.txtDate.Text = string.Format(Localized.Instance.CurrentCulture, "{0:d}", DateTime.Now);
             this.BayBadge.BayNumber = this.BayBadge.BayNumber;
         }
 

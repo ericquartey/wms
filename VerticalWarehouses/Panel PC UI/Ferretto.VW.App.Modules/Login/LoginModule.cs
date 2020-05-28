@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using Ferretto.VW.App.Accessories;
+﻿using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Modules.Login.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.BarcodeReader.Newland;
@@ -35,6 +34,9 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.ConfigureAlphaNumericBarUiServices();
+            containerRegistry.ConfigureCardReaderUiServices();
+
             ConfigureBarcodeReader(containerRegistry);
 
             containerRegistry.RegisterForNavigation<LoginView>();
@@ -50,7 +52,7 @@ namespace Ferretto.VW.App.Modules.Login
 
             /*
              * For barcode reader debugging purposes
-             *
+
             var barcodes = new[]
             {
                 // user tokens
@@ -68,12 +70,29 @@ namespace Ferretto.VW.App.Modules.Login
                 // "LIST_0001_FILTER",
 
                 // operations
-                "B8450BDD",
-                "FE8AFA5A",
-                "B8450BDD_LOT_ABC_SN_123",
+
+                // "B8450BDD",
+                // "FE8AFA5A",
+                // "B8450BDD_LOT_ABC_SN_123",
+
+                // "#CONFIRM#",
+                // "C#",
+                // "#RECALL_LU",
+
+                // "SN#123",
+                // "LOT#ABC",
+
+                // put to light
+                "#PTL_OPEN",
+                "#BASKET456",
+                "#SHELF123",
+
+                "#PTL_CLOSE",
+                "#BASKET456",
+                "#SHELF123",
             };
             containerRegistry.ConfigureMockBarcodeReader(barcodes, 5000);
-            */
+             */
         }
 
         #endregion

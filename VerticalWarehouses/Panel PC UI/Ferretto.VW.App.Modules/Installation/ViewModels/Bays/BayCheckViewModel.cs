@@ -1,18 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
-using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -75,7 +69,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand stopCommand;
 
         private SubscriptionToken themeChangedToken;
-
 
         #endregion
 
@@ -482,10 +475,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
-            {
-                this.RaisePropertyChanged(nameof(this.ShutterLabel));
-            }));
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    this.RaisePropertyChanged(nameof(this.ShutterLabel));
+                }));
         }
 
         private async Task MoveToBayPositionAsync()

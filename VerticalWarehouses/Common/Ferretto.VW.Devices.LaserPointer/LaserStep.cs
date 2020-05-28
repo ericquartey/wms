@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.Devices.LaserPointer
+﻿namespace Ferretto.VW.Devices.LaserPointer
 {
     public class LaserStep
     {

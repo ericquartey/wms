@@ -161,12 +161,12 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kMul = 0.090625;
+        private readonly double kMul = 0.0938;
 
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kSum = -181.25;
+        private readonly double kSum = -212.5;
 
         private readonly ILogger<DataLayerContext> logger;
 
@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         /// <summary>
         /// <param name="profile">value read from inverter</param>
-        /// profile = 200   ==> height = 0
+        /// profile = 2000  ==> height = 0
         /// profile = 10000 ==> height = 725mm
         /// height = kMul * profile + kSum;
         /// </summary>

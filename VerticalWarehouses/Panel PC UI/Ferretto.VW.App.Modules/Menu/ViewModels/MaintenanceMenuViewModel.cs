@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -90,7 +87,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                () => false && this.CanExecuteCommand()));
+                () => this.CanExecuteCommand()));
 
         public ICommand MenuUpdateCommand =>
             this.menuUpdateCommand

@@ -450,4 +450,7 @@
   <data name="DateFormatHourMinutes" xml:space="preserve">
     <value>{0: HH:mm}</value>
   </data>
+  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
+    <value>{0: HH:mm:ss}</value>
+  </data>
 </root>
