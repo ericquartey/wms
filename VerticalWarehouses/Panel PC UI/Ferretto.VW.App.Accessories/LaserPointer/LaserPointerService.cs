@@ -24,11 +24,7 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IMachineMissionsWebService missionWebService;
 
@@ -45,17 +41,11 @@ namespace Ferretto.VW.App.Accessories
         public LaserPointerService(
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            IMachineLoadingUnitsWebService loadingUnitsWebService,
-            IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineMissionsWebService missionWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
-
-            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
-            this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
-
+            this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
 
@@ -79,8 +69,6 @@ namespace Ferretto.VW.App.Accessories
         }
 
         #endregion
-
-        //private IBayManager BayManager { get; }
 
         #region Methods
 
@@ -145,42 +133,42 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        private async Task LaserPointerUpdateAsync(Mission machineMission, MissionWithLoadingUnitDetails wmsMission, MissionOperation missionOperation)
-        {
-            try
-            {
-                if (machineMission is null || this.laserPointerDriver is null)
-                {
-                    return;
-                }
+        //private async Task LaserPointerUpdateAsync(Mission machineMission, MissionWithLoadingUnitDetails wmsMission, MissionOperation missionOperation)
+        //{
+        //    try
+        //    {
+        //        if (machineMission is null || this.laserPointerDriver is null)
+        //        {
+        //            return;
+        //        }
 
-                if (machineMission.MissionType is MissionType.OUT || machineMission.MissionType is MissionType.WMS)
-                {
-                    var activeMission = await this.RetrieveActiveMissionAsync();
-                    if (activeMission != null && activeMission.WmsId.HasValue)
-                    {
-                        var bay = await this.bayManager.GetBayAsync();
-                        var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == wmsMission.LoadingUnit.Id);
-                        var compartmentSelected = wmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == missionOperation.CompartmentId);
+        //        if (machineMission.MissionType is MissionType.OUT || machineMission.MissionType is MissionType.WMS)
+        //        {
+        //            var activeMission = await this.RetrieveActiveMissionAsync();
+        //            if (activeMission != null && activeMission.WmsId.HasValue)
+        //            {
+        //                var bay = await this.bayManager.GetBayAsync();
+        //                var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == wmsMission.LoadingUnit.Id);
+        //                var compartmentSelected = wmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == missionOperation.CompartmentId);
 
-                        double itemHeight = 0;
-                        if (missionOperation.ItemHeight != null)
-                        {
-                            itemHeight = missionOperation.ItemHeight.Value;
-                        }
+        //                double itemHeight = 0;
+        //                if (missionOperation.ItemHeight != null)
+        //                {
+        //                    itemHeight = missionOperation.ItemHeight.Value;
+        //                }
 
-                        var point = this.laserPointerDriver.CalculateLaserPoint(wmsMission.LoadingUnit.Width, wmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
+        //                var point = this.laserPointerDriver.CalculateLaserPoint(wmsMission.LoadingUnit.Width, wmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
 
-                        this.logger.Info("Move and switch on laser pointer");
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.NotifyError(ex);
-            }
-        }
+        //                this.logger.Info("Move and switch on laser pointer");
+        //                await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        this.NotifyError(ex);
+        //    }
+        //}
 
         private void NotifyError(Exception ex)
         {
@@ -204,7 +192,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 try
                 {
-                    this.logger.Debug("Switch off  laser pointer");
+                    this.logger.Debug("Switch off laser pointer");
                     await this.laserPointerDriver.EnabledAsync(false, false);
                 }
                 catch (Exception ex)
@@ -249,15 +237,6 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.NotifyError(ex);
             }
-
-            //try
-            //{
-            //    await this.LaserPointerUpdateAsync(e.MachineMission, e.WmsMission, e.WmsOperation);
-            //}
-            //catch (Exception ex)
-            //{
-            //    this.NotifyError(ex);
-            //}
         }
 
         private async Task<Mission> RetrieveActiveMissionAsync()

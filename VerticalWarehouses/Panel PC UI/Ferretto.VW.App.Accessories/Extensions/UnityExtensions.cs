@@ -1,6 +1,6 @@
 ﻿using System;
+using Ferretto.VW.App.Accessories.AlphaNumericBar;
 using Ferretto.VW.App.Accessories.Interfaces;
-using Ferretto.VW.Devices.AlphaNumericBar;
 using Prism.Ioc;
 using Unity;
 
@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TODO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
+            containerRegistry.RegisterSingleton<IAlphaNumericBarService, AlphaNumericBarService>();
 
             return containerRegistry;
         }

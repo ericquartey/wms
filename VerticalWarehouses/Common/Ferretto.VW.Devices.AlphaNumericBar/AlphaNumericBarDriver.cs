@@ -76,12 +76,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <summary>
         ///
         /// </summary>
-        /// <param name="loadUnitlengthInMM"></param>
-        /// <param name="itemPositionXInMM"></param>
+        /// <param name="compartmentWidth"></param>
+        /// <param name="itemXPosition"></param>
         /// <returns></returns>
-        public int CalculateArrowPosition(double loadingUnitWidth, double itemXPosition)
+        public int CalculateArrowPosition(double compartmentWidth, double itemXPosition)
         {
-            var arrowPosition = (loadingUnitWidth / 2) + itemXPosition;
+            var arrowPosition = (compartmentWidth / 2) + itemXPosition;
             var pixelOffset = (arrowPosition / this.StepLedBar) + 2;
 
             return (int)pixelOffset;
