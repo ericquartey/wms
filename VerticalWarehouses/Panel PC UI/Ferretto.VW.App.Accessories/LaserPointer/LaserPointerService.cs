@@ -1,0 +1,249 @@
+﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.Devices;
+using Ferretto.VW.Devices.LaserPointer;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using NLog;
+using Prism.Events;
+
+namespace Ferretto.VW.App.Accessories
+{
+    public sealed partial class LaserPointerService : ILaserPointerService
+    {
+        #region Fields
+
+        private readonly IBayManager bayManager;
+
+        private readonly BayNumber bayNumber;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineMissionsWebService missionWebService;
+
+        private LaserPointerDriver laserPointerDriver;
+
+        private SubscriptionToken loadingUnitToken;
+
+        private SubscriptionToken missionToken;
+
+        #endregion
+
+        #region Constructors
+
+        public LaserPointerService(
+            IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            IMachineMissionsWebService missionWebService)
+        {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
+            this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public Devices.DeviceInformation DeviceInformation
+        {
+            get
+            {
+                if (this.laserPointerDriver is IQueryableDevice queryableDevice)
+                {
+                    return queryableDevice.Information;
+                }
+                else
+                {
+                    throw new NotSupportedException("The laser pointer driver does not support querying information");
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public async Task StartAsync()
+        {
+            this.loadingUnitToken = this.loadingUnitToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        async e => await this.OnLoadingUnitMovedAsync(e),
+                        ThreadOption.BackgroundThread,
+                        false);
+
+            this.missionToken = this.missionToken
+            ??
+            this.eventAggregator
+                .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
+                .Subscribe(
+                    async e => await this.OnMissionChangeAsync(e),
+                    ThreadOption.BackgroundThread,
+                    false);
+
+            //await this.LaserPointerConfigureAsync();
+        }
+
+        public async void StopAsync()
+        {
+            this.logger.Info("Switch off laser pointer");
+            await this.laserPointerDriver.EnabledAsync(false, false);
+        }
+
+        private async Task LaserPointerConfigureAsync()
+        {
+            try
+            {
+                var accessories = await this.bayManager.GetBayAccessoriesAsync();
+
+                if (accessories is null)
+                {
+                    this.laserPointerDriver = null;
+                    return;
+                }
+
+                var laserPointer = accessories.LaserPointer;
+                if (laserPointer.IsEnabledNew)
+                {
+                    var ipAddress = laserPointer.IpAddress;
+                    var port = laserPointer.TcpPort;
+                    var xOffset = 0;
+                    var yOffset = laserPointer.YOffset;
+                    var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
+                    var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
+
+                    if (this.laserPointerDriver is null)
+                    {
+                        this.laserPointerDriver = new LaserPointerDriver();
+                    }
+                    this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                }
+                else
+                {
+                    this.laserPointerDriver = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
+        private void NotifyError(Exception ex)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(ex));
+        }
+
+        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType.ToString()} Status {message.Status.ToString()}");
+
+            await this.LaserPointerConfigureAsync();
+
+            if (this.laserPointerDriver is null)
+            {
+                return;
+            }
+
+            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
+                &&
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting)
+            {
+                try
+                {
+                    this.logger.Debug("Switch off laser pointer");
+                    await this.laserPointerDriver.EnabledAsync(false, false);
+                }
+                catch (Exception ex)
+                {
+                    this.NotifyError(ex);
+                }
+            }
+        }
+
+        private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+                {
+                    return;
+                }
+
+                await this.LaserPointerConfigureAsync();
+
+                if (this.laserPointerDriver is null)
+                {
+                    return;
+                }
+
+                if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
+                {
+                    var activeMission = await this.RetrieveActiveMissionAsync();
+                    if (activeMission != null && activeMission.WmsId.HasValue)
+                    {
+                        var bay = await this.bayManager.GetBayAsync();
+                        var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
+                        var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
+
+                        double itemHeight = 0;
+                        if (e.WmsOperation.ItemHeight != null)
+                        {
+                            itemHeight = e.WmsOperation.ItemHeight.Value;
+                        }
+
+                        var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
+
+                        this.logger.Info("Move and switch on laser pointer");
+                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
+        private async Task<Mission> RetrieveActiveMissionAsync()
+        {
+            try
+            {
+                var machineMissions = await this.missionWebService.GetAllAsync();
+
+                var activeMissions = machineMissions.Where(m =>
+                    m.Step is MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.bayNumber)
+                    .OrderBy(o => o.LoadUnitDestination);
+
+                this.logger.Debug(!activeMissions.Any()
+                    ? "No active mission on bay."
+                    : $"Active mission has id {activeMissions.FirstOrDefault().Id}.");
+
+                return activeMissions.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
+        #endregion
+    }
+}

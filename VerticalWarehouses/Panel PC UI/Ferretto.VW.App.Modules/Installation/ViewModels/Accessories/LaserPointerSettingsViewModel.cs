@@ -346,7 +346,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ConnectionBrush = Brushes.DarkOrange;
 
                 this.laserPointerDriver.Configure(this.ipAddress, this.port);
-                var result = await this.laserPointerDriver.IsConnectedAsync();
+                var result = await this.laserPointerDriver.ParametersAsync();
 
                 if (result)
                 {
