@@ -2400,6 +2400,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LaserPointer : TcpIpAccessory
     {
+        [Newtonsoft.Json.JsonProperty("XOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double XOffset { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("YOffset", Required = Newtonsoft.Json.Required.Always)]
         public double YOffset { get; set; }
     
