@@ -95,7 +95,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                         }
 #if CHECK_BAY_SENSOR
-                        if (bay.Carousel != null)
+                        if (bay.Carousel != null ||
+                            bay.External != null)
                         {
                             var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
                             if (result != MachineErrorCode.NoError)

@@ -303,9 +303,58 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
+                                //if (this.Mission.LoadUnitSource is LoadingUnitLocation.Cell)
+                                //{
+                                //    var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                //    newStep.OnEnter(null);
+                                //}
+                                //else
+                                //{
+                                // Retrieve the bay related to the source location (if exists)
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+
+                                if (bay != null)
+                                {
+                                    if (bay.IsExternal)
+                                    {
+                                        // Handle the external bay with a proper step
+                                        var isExternalBayMovementRequested = bay.IsExternal &&
+                                        this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+
+                                        if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                            this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)) ||
+                                            (!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                            !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                        {
+                                            var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                            break;
+                                        }
+
+                                        if (isExternalBayMovementRequested)
+                                        {
+                                            // Move the external bay
+                                            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
+                                }
+                                else
+                                {
+                                    var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                    newStep.OnEnter(null);
+                                }
                             }
+
+                            //var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            //newStep.OnEnter(null);
+                            //}
                         }
                     }
                     break;

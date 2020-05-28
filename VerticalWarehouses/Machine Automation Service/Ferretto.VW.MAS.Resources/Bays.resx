@@ -156,4 +156,7 @@
   <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
     <value>The specified bay is not an external bay</value>
   </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>The external bay cannot perform an invalid movement</value>
+  </data>
 </root>

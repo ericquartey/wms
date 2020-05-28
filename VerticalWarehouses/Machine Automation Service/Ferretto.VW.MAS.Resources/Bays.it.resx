@@ -147,4 +147,7 @@
   <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
     <value>La baia specificata non è una baia esterna</value>
   </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>La baia esterna non può eseguire un movimento non valido</value>
+  </data>
 </root>

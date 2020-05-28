@@ -102,6 +102,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 returnValue = false;
             }
+
+            if (returnValue &&
+                (bay = this.BaysDataProvider.GetByLoadingUnitLocation(destination)) != null &&
+                bay.IsExternal)
+            {
+                if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
+                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                {
+                    if (showErrors)
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, requestingBay);
+                    }
+                    returnValue = false;
+                }
+            }
+
             if (returnValue
                 && destination != LoadingUnitLocation.NoLocation)
             {
@@ -238,6 +254,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByNumber(requestingBay);
                     if (bay.Positions.Count() == 1)
                     {
+                        if (bay.External != null &&
+                            !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
+                            }
+                            return false;
+                        }
+                        // always check upper position
                         returnValue = this.CheckBayDestination(messageData, requestingBay, bay.Positions.First().Location, mission, showErrors);
                         if (returnValue)
                         {

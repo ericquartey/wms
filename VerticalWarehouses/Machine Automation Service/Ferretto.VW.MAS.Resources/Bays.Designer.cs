@@ -151,6 +151,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The external bay cannot perform an invalid movement.
+        /// </summary>
+        public static string TheExtBayCannotPerformAnInvalidMovement {
+            get {
+                return ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified bay has no carousel..
         /// </summary>
         public static string TheSpecifiedBayHasNoCarousel {

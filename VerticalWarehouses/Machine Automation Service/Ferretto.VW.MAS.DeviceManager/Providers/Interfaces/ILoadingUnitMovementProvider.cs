@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore, ShutterPosition shutterPosition = ShutterPosition.Closed);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
+
+        MessageStatus ExternalBayStatus(NotificationMessage message);
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
@@ -37,11 +40,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Homing(Axis axis, Calibration calibration, int loadingUnitId, bool showErrors, BayNumber requestingBay, MessageActor sender);
 
+        bool IsExternalPositionOccupied(BayNumber bayNumber);
+
+        bool IsInternalPositionOccupied(BayNumber bayNumber);
+
         bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
 
         bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
         void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
+
+        void MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore);
 
         void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId);
 
