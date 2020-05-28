@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.2.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.2.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,7 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="NLog" Version="4.7.2" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
 
     <!-- begin: these references are included to ensure dynamic module dependencies can be resolved -->
@@ -36,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ferretto.VW.App.Accessories\Ferretto.VW.App.Accessories.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
   </ItemGroup>

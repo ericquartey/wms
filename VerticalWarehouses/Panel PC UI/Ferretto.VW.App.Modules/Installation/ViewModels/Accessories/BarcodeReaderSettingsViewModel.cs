@@ -53,6 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.baysWebService = baysWebService;
 
             this.barcodeReaderService.PortNames.CollectionChanged += this.OnPortNamesChanged;
+            this.SystemPortsAvailable = this.barcodeReaderService.PortNames.Any();
         }
 
         #endregion
@@ -199,7 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.barcodeReaderService.Disable();
+                    this.barcodeReaderService.StopAsync();
                 }
             }
             catch (Exception ex)

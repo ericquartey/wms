@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AppCenter.Analytics;
 using Prism.Commands;
 using Prism.Events;
 
@@ -69,6 +70,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isSearching;
 
         private List<ItemInfo> items = new List<ItemInfo>();
+
+        private string itemToPickCode;
+
+        private int? itemToPickId;
 
         private int maxKnownIndexSelection;
 
@@ -139,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
           this.confirmReasonCommand
           ??
           (this.confirmReasonCommand = new DelegateCommand(
-              async () => await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code),
+              async () => await this.ExecuteItemPickAsync(),
               this.CanExecuteItemPick));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -299,6 +304,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var machineId = this.bayManager.Identity.Id;
                 this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
                 this.InputQuantity = null;
+                this.itemToPickId = value.Id;
+                this.itemToPickCode = value.Code;
+
                 var selectedItemId = this.SelectedItem?.Id;
                 this.SetCurrentIndex(selectedItemId);
                 this.selectedItemTxt = String.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
@@ -383,15 +391,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.productsChangedToken = null;
         }
 
-        public async Task ExecuteItemPickAsync(int itemId, string itemCode)
+        public async Task ExecuteItemPickAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPick = true;
 
+                Analytics.TrackEvent("Product Pick Requested", new Dictionary<string, string> {
+                    { "Item Code", this.itemToPickCode },
+                    { "Requested Quantity", this.inputQuantity?.ToString() },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
+                });
+
                 await this.wmsDataProvider.PickAsync(
-                    itemId,
+                    this.itemToPickId.Value,
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes);
@@ -401,7 +415,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(
                     string.Format(
                         Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
-                        itemCode,
+                        this.itemToPickCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
             }
@@ -414,6 +428,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = null;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
+
+                this.itemToPickCode = null;
+                this.itemToPickId = null;
             }
         }
 
@@ -436,11 +453,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsWaitingForResponse = true;
             this.IsBusyRequestingItemPick = true;
 
+            this.itemToPickId = itemId;
+            this.itemToPickCode = itemCode;
+
             var waitForReason = await this.CheckReasonsAsync();
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPickAsync(itemId, itemCode);
+                await this.ExecuteItemPickAsync();
             }
         }
 

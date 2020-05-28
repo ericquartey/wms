@@ -220,14 +220,20 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.Missions.Any(m =>
-                    m.LoadUnitId == loadingUnitId
-                    && m.MissionType == missionType
-                    && m.Status == MissionStatus.New)
-                    )
+                var existingMission = this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m =>
+                        m.LoadUnitId == loadingUnitId
+                        &&
+                        m.MissionType == missionType
+                        &&
+                        m.Status == MissionStatus.New);
+
+                if (existingMission != null)
                 {
-                    throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("RecallMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId));
+                    return existingMission;
                 }
+
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {

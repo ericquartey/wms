@@ -5,6 +5,7 @@ using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AppCenter.Crashes;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
@@ -153,7 +154,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                             else
                             {
                                 try
-                                { 
+                                {
                                     var problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(webApiException.Response);
 
                                     notificationMessage +=
@@ -174,6 +175,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                         this.NotificationMessage = message.Exception.Message;
                         break;
                 }
+
+                Crashes.TrackError(message.Exception);
             }
             else
             {

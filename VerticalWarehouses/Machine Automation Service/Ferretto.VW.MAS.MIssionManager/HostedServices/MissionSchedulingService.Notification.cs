@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.TimePeriodElapsed:
-                    await this.OnTimePeriodElapsed(serviceProvider);
+                    this.OnTimePeriodElapsed(serviceProvider);
                     break;
             }
         }

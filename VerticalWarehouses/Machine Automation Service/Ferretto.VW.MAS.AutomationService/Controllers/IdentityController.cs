@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public async Task<ActionResult<MachineIdentity>> Get([FromServices] IMachinesWmsWebService machinesWebService)
         {
-            var servicingInfo = this.servicingProvider.GetInfo();
+            var servicingInfo = this.servicingProvider.GetInstallationInfo();
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 

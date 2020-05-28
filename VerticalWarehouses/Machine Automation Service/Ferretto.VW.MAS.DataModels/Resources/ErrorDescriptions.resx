@@ -217,7 +217,7 @@
     <value>Not valid source cell</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Errore esecuzione comando di deposito</value>
+    <value>Invalid sensors</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Inconsistenza stato sensori elevatore</value>
@@ -280,7 +280,7 @@
     <value>Drawer not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Errore esecuzione comando di prelievo</value>
+    <value>Invalid sensors</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
     <value>Errore esecuzione comando di prelievo</value>

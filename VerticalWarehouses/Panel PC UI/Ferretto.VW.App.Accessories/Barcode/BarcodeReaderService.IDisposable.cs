@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Accessories
 
             if (disposing)
             {
-                this.Disable();
+                this.StopAsync();
             }
 
             this.isDisposed = true;

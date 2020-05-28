@@ -321,7 +321,7 @@
                                     "Position": 450.0,
                                     "Acceleration": 1500.0,
                                     "Deceleration": 0.0,
-                                    "Speed": 100.0
+                                    "Speed": 480.0
                                 },
                                 {
                                     "AdjustAccelerationByWeight": true,
@@ -423,7 +423,7 @@
                                     "Position": 450.0,
                                     "Acceleration": 2000.0,
                                     "Deceleration": 0.0,
-                                    "Speed": 100.0
+                                    "Speed": 480.0
                                 },
                                 {
                                     "AdjustAccelerationByWeight": true,
@@ -2185,7 +2185,7 @@
                 "Id": 10
             }
         ],
-        "SerialNumber": "Prototype #1",
+        "SerialNumber": "Prototype #1 Sim",
         "Id": 1
     },
     "SetupProcedures": {

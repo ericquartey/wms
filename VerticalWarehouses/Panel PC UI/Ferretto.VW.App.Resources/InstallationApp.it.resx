@@ -2586,4 +2586,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StartProcedure" xml:space="preserve">
     <value>Premi su INIZIA per avviare la procedura</value>
   </data>
+  <data name="NoRemovableDevicesFound" xml:space="preserve">
+    <value>Nessuna periferica rimovibile trovata</value>
+  </data>
+  <data name="RemovableDevicesFound" xml:space="preserve">
+    <value>Dispositivi removibili trovati</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Percorso '{0}' non trovato</value>
+  </data>
 </root>

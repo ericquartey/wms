@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Layout
 {
@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly Services.INavigationService navigationService;
+        private readonly INavigationService navigationService;
 
         private readonly IThemeService themeService;
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public PresentationLogged(
             IAuthenticationService authenticationService,
-            Services.INavigationService navigationService,
+            INavigationService navigationService,
             IMachineBaysWebService machineBaysWebService,
             IThemeService themeService)
             : base(PresentationTypes.Logged)

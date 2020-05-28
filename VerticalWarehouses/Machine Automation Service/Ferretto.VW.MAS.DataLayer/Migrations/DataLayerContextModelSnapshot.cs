@@ -941,9 +941,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("DefinitionId");
 
+                    b.Property<double?>("DoubleCounter");
+
+                    b.Property<int?>("IntCounter");
+
                     b.Property<bool>("IsDone");
 
                     b.Property<bool>("IsToDo");
+
+                    b.Property<DateTime?>("MaintenanceDate");
 
                     b.Property<int?>("ServicingInfoId");
 
@@ -953,13 +959,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("ServicingInfoId");
 
-                    b.ToTable("Instruction");
+                    b.ToTable("Instructions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InstructionDefinition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Axis");
 
                     b.Property<int>("BayNumber");
 
@@ -970,8 +978,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("InstructionType");
 
                     b.Property<bool>("IsCarousel");
-
-                    b.Property<bool>("IsElevator");
 
                     b.Property<bool>("IsShutter");
 
@@ -985,7 +991,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InstructionDefinition");
+                    b.ToTable("InstructionDefinitions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
@@ -1240,7 +1246,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             TotalAutomaticTime = new TimeSpan(0, 0, 0, 0, 0),
                             TotalBayChainKilometers1 = 0.0,
                             TotalBayChainKilometers2 = 0.0,
@@ -2072,7 +2078,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("DefinitionId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ServicingInfo")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ServicingInfo", "ServicingInfo")
                         .WithMany("Instructions")
                         .HasForeignKey("ServicingInfoId");
                 });

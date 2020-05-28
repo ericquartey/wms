@@ -14,12 +14,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Microsoft.Extensions.Hosting;
+using Ferretto.VW.MAS.Utils.Utilities;
+using System.Threading;
 
 namespace Ferretto.VW.MAS.IODriver
 {
     internal sealed class IoDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
     {
         #region Fields
+
+        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
         private readonly IConfiguration configuration;
 
@@ -71,6 +75,13 @@ namespace Ferretto.VW.MAS.IODriver
         {
             var currentDevice = Enum.Parse<DataModels.IoIndex>(command.DeviceIndex.ToString());
             var ioDevice = this.ioDevices[currentDevice];
+
+            if (ioDevice.IsCommandExecuting)
+            {
+                // Enqueue the incoming filed command message
+                this.commandQueue.Enqueue(command);
+                return Task.CompletedTask;
+            }
 
             switch (command.Type)
             {
@@ -143,6 +154,18 @@ namespace Ferretto.VW.MAS.IODriver
                 this.EventAggregator
                     .GetEvent<FieldNotificationEvent>()
                     .Publish(message);
+
+                // Check if other command is enqueued and publish it into background service
+                if (this.commandQueue.Count > 0)
+                {
+                    if (this.commandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var fieldCommandMessage) &&
+                        fieldCommandMessage != null)
+                    {
+                        this.commandQueue.Dequeue(out _);
+                        this.Logger.LogDebug($"Publish the {fieldCommandMessage.Type} command message from {fieldCommandMessage.Source} to {fieldCommandMessage.Destination}");
+                        this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(fieldCommandMessage);
+                    }
+                }
             }
         }
 

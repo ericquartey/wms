@@ -1251,13 +1251,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> CellsPanelCheckBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> ConfirmSetupAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> ConfirmSetupAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> DepositAndPickUpTestBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1270,13 +1263,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ServicingInfo> GetServicingInfoAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ServicingInfo> GetServicingInfoAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> HorizontalChainCalibrationBypassAsync();
@@ -1585,6 +1571,60 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineServicingWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ConfirmServiceAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ConfirmServiceAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ConfirmSetupAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ConfirmSetupAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetActualAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetActualAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ServicingInfo>> GetAllAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ServicingInfo>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetByIdAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetInstallationInfoAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetInstallationInfoAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetLastConfirmedAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ServicingInfo> GetLastConfirmedAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineShuttersWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
@@ -1635,6 +1675,46 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineStatisticsWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> ConfirmStatisticsAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> ConfirmStatisticsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetActualAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetActualAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MachineStatistics>> GetAllAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MachineStatistics>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetByIdAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetLastConfirmedAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetLastConfirmedAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1876,6 +1956,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachinePutToLightWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2931,7 +3037,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WaitDeposit = 11,
     
-        End = 12,
+        ExtBay = 12,
+    
+        End = 13,
     
         Error = 101,
     
@@ -4231,11 +4339,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Definition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstructionDefinition Definition { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DoubleCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? DoubleCounter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IntCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IntCounter { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsDone", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDone { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsToDo", Required = Newtonsoft.Json.Required.Always)]
         public bool IsToDo { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MaintenanceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? MaintenanceDate { get; set; }
     
         public string ToJson() 
         {
@@ -4252,14 +4369,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class InstructionDefinition : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("InstructionType", Required = Newtonsoft.Json.Required.Always)]
-        public InstructionType InstructionType { get; set; }
+        [Newtonsoft.Json.JsonProperty("Axis", Required = Newtonsoft.Json.Required.Always)]
+        public Axis Axis { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber BayNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CounterName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CounterName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CounterName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CounterName { get; set; }
+        [Newtonsoft.Json.JsonProperty("InstructionType", Required = Newtonsoft.Json.Required.Always)]
+        public InstructionType InstructionType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCarousel", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCarousel { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsShutter", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsShutter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsSystem", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsSystem { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxDays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxDays { get; set; }
@@ -4269,21 +4401,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("MaxTotalCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxTotalCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsElevator", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsElevator { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber BayNumber { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsShutter", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsShutter { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsCarousel", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsCarousel { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsSystem", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsSystem { get; set; }
     
         public string ToJson() 
         {
@@ -4302,31 +4419,89 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         Undefined = 0,
     
-        HorizontalChainAdjust = 1,
+        AirFiltersCheck = 1,
     
-        HorizontalCHainGrease = 2,
+        BearingsCheck = 2,
     
-        HorizontalMotorGearOil = 3,
+        BearingsGrease = 3,
     
-        HorizontalMotorGearSubstitute = 4,
+        BeltAdjust = 4,
     
-        VerticalBeltAdjust = 5,
+        BeltFasten = 5,
     
-        VerticalBeltFasten = 6,
+        BeltSubstitute = 6,
     
-        VerticalBeltSubstitute = 7,
+        CableChainCheck = 7,
     
-        FirstCellCeck = 8,
+        CablesCheck = 8,
     
-        RandomCellCheck = 9,
+        ChainAdjust = 9,
     
-        LiftLinksWornCheck = 10,
+        ChainGrease = 10,
     
-        LiftLinksGrease = 11,
+        ChainSubstitute = 11,
     
-        BearingsCheck = 12,
+        ContactorsSubstitute = 12,
     
-        BearingsGrease = 13,
+        ElectricalComponentsCheck = 13,
+    
+        FirstCellCheck = 14,
+    
+        GuidesCheck = 15,
+    
+        GuidesSubstitute = 16,
+    
+        LampsCheck = 17,
+    
+        LinkCheck = 18,
+    
+        LinksGrease = 19,
+    
+        LinkSubstitute = 20,
+    
+        MicroSwitchesCheck = 21,
+    
+        MicroSwitchesMount = 22,
+    
+        MicroSwitchesSubstitute = 23,
+    
+        MotorChainAdjust = 24,
+    
+        MotorChainGrease = 25,
+    
+        MotorChainSubstitute = 26,
+    
+        MotorGearOil = 27,
+    
+        MotorGearSubstitute = 28,
+    
+        OpticalSensorsClean = 29,
+    
+        OpticalSensorsMount = 30,
+    
+        PinPawlFastenersCheck = 31,
+    
+        PinPawlFastenersGrease = 32,
+    
+        PinPawlFastenersSubstitute = 33,
+    
+        PlasticCamsCheck = 34,
+    
+        RandomCellCheck = 35,
+    
+        SensorsClean = 36,
+    
+        SensorCheck = 37,
+    
+        SensorsMount = 38,
+    
+        ShaftCheck = 39,
+    
+        SupportsCheck = 40,
+    
+        WheelsCheck = 41,
+    
+        WheelsSubstitute = 42,
     
     }
     
@@ -6377,6 +6552,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Pattern { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        public int Priority { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("restartOnMismatch", Required = Newtonsoft.Json.Required.Always)]
         public bool RestartOnMismatch { get; set; }
     
@@ -6727,6 +6905,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("itemDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ItemHeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Always)]
         public int ItemId { get; set; }

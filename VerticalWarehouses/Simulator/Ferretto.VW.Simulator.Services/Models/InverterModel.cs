@@ -1274,7 +1274,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     else
                     {
                         // external bay, simulate the Forward (TowardOperator) direction
-                        if (Math.Abs(this.target0_extBay - this.AxisPosition) < 20)
+                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
@@ -1286,7 +1286,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                             this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
                         }
-                        if (Math.Abs(this.targetRace_extBay - this.AxisPosition) < 20)
+                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
                             // turn on the external presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
@@ -1368,7 +1368,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     if (this.isExternal)
                     {
                         // external bay, simulate the Backward (TowardMachine) direction
-                        if (Math.Abs(this.target0_extBay - this.AxisPosition) < 20)
+                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
@@ -1381,7 +1381,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
                         }
 
-                        if (Math.Abs(this.targetRace_extBay - this.AxisPosition) < 20)
+                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
                             // turn on the external presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;

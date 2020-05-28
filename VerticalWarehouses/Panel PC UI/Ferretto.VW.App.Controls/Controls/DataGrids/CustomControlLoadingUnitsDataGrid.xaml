@@ -228,7 +228,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=GrossWeight}"
+                                    Binding="{Binding Path=NetWeight}"
                                     Header="Weight">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

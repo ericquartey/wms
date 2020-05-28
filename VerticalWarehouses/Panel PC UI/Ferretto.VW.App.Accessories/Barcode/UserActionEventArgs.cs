@@ -14,7 +14,8 @@ namespace Ferretto.VW.App.Accessories
 
         #region Constructors
 
-        public UserActionEventArgs(string code, bool isReset) : base(code)
+        public UserActionEventArgs(string code, bool isReset)
+            : base(code)
         {
             this.IsReset = isReset;
         }
@@ -47,9 +48,16 @@ namespace Ferretto.VW.App.Accessories
 
         #region Properties
 
+        public bool HasMismatch { get; set; }
+
+        /// <summary>
+        /// When set to <c>True</c> it indicates that the barcode was discarded because not valid for the active chain.
+        /// </summary>
         public bool IsReset { get; }
 
         public Dictionary<string, string> Parameters { get; } = new Dictionary<string, string>();
+
+        public bool RestartOnMismatch => this.rule?.RestartOnMismatch == true;
 
         public UserAction UserAction { get; } = UserAction.NotSpecified;
 

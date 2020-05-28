@@ -478,7 +478,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (mission.WmsId.HasValue)
                 {
-                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, activeMissions, mission);
+                    await this.ScheduleWmsMissionAsync(bayNumber, serviceProvider, mission);
                 }
                 else if (mission.Status is MissionStatus.New)
                 {
@@ -960,10 +960,15 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
+            var servicingInfo = serviceProvider.GetRequiredService<IServicingProvider>();
+            servicingInfo.CheckServicingInfo();
+
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
+
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.RestoreFullTest(serviceProvider);
+
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
@@ -1092,7 +1097,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <returns></returns>
-        private async Task OnTimePeriodElapsed(IServiceProvider serviceProvider)
+        private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
         {
             // at midnight it is time do do some housework
             if (DateTime.UtcNow.Hour == 0)
@@ -1143,7 +1148,10 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task ScheduleWmsMissionAsync(BayNumber bayNumber, IServiceProvider serviceProvider, IEnumerable<Mission> activeMissions, Mission mission)
+        private async Task ScheduleWmsMissionAsync(
+            BayNumber bayNumber,
+            IServiceProvider serviceProvider,
+            Mission mission)
         {
             System.Diagnostics.Debug.Assert(mission.WmsId.HasValue);
 
@@ -1197,9 +1205,9 @@ namespace Ferretto.VW.MAS.MissionManager
             else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
             {
                 // wms mission is finished
-                baysDataProvider.ClearMission(bayNumber);
                 mission.Status = MissionStatus.Completed;
                 missionsDataProvider.Update(mission);
+                baysDataProvider.ClearMission(bayNumber);
 
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 

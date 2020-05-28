@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver
 {
     internal partial class IoDevice
@@ -60,6 +59,10 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.logger);
 
                             this.logger.LogTrace("3:Method Start State Machine");
+                            lock (this.syncAccess)
+                            {
+                                this.commandExecuting = true;
+                            }
 
                             this.CurrentStateMachine.Start();
                         }
@@ -96,6 +99,10 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.logger);
 
                             this.logger.LogDebug("5:Method Start State Machine");
+                            lock (this.syncAccess)
+                            {
+                                this.commandExecuting = true;
+                            }
 
                             this.CurrentStateMachine.Start();
                         }

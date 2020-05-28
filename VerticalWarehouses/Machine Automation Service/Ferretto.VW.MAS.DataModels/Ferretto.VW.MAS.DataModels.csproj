@@ -43,6 +43,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ErrorReasons.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Instructions.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Instructions.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +58,10 @@
     <EmbeddedResource Update="Resources\ErrorReasons.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorReasons.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Instructions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Instructions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
 
-        private readonly double firstPosition;
-
         private readonly IExtBayPositioningMachineData machineData;
 
         private readonly IServiceScope scope;
@@ -119,7 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                     switch (message.Type)
                     {
                         case FieldMessageType.Positioning:
-                            this.Logger.LogDebug($"Trace Notification Message {message.ToString()}");
+                            this.Logger.LogDebug($"Trace Notification Message {message}");
                             this.ProcessEndPositioning();
                             break;
 
@@ -517,7 +515,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 case MovementMode.ExtBayTest:
                     {
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        double distance = Math.Abs(this.machineData.MessageData.TargetPosition);
+                        var distance = Math.Abs(this.machineData.MessageData.TargetPosition);
                         if (distance > 50)
                         {
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
