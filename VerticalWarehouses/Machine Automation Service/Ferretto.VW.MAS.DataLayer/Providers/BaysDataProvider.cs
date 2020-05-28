@@ -978,7 +978,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
             lock (this.dataContext)
             {
@@ -989,6 +989,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 laserPointerBay.Accessories.LaserPointer.IsEnabledNew = isEnabled;
                 laserPointerBay.Accessories.LaserPointer.IpAddress = IPAddress.Parse(ipAddress);
                 laserPointerBay.Accessories.LaserPointer.TcpPort = port;
+                laserPointerBay.Accessories.LaserPointer.XOffset = xOffset;
                 laserPointerBay.Accessories.LaserPointer.YOffset = yOffset;
                 laserPointerBay.Accessories.LaserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
                 laserPointerBay.Accessories.LaserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;

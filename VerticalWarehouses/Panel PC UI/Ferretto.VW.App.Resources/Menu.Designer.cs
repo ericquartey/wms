@@ -243,6 +243,15 @@ namespace Ferretto.VW.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Offset Y axis.
         /// </summary>
+        public static string AccessoriesLaserPointerXOffset {
+            get {
+                return ResourceManager.GetString("AccessoriesLaserPointerXOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset Y axis.
+        /// </summary>
         public static string AccessoriesLaserPointerYOffset {
             get {
                 return ResourceManager.GetString("AccessoriesLaserPointerYOffset", resourceCulture);
