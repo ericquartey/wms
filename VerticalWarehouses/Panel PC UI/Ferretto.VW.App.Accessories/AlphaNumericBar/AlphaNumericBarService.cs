@@ -10,6 +10,7 @@ using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
+using NLog.LayoutRenderers.Wrappers;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories.AlphaNumericBar
@@ -92,7 +93,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     ThreadOption.BackgroundThread,
                     false);
 
-            await this.AlphaNumericBarConfigureAsync();
+            //await this.AlphaNumericBarConfigureAsync();
         }
 
         public async void StopAsync()
@@ -109,19 +110,28 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 if (accessories is null)
                 {
+                    this.alphaNumericBarDriver = null;
                     return;
                 }
 
                 var alphaNumericBar = accessories.AlphaNumericBar;
+
                 if (alphaNumericBar.IsEnabledNew)
                 {
-                    this.alphaNumericBarDriver = new AlphaNumericBarDriver();
-
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
                     var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
 
+                    if (this.alphaNumericBarDriver is null)
+                    {
+                        this.alphaNumericBarDriver = new AlphaNumericBarDriver();
+                    }
+
                     this.alphaNumericBarDriver.Configure(ipAddress, port, size);
+                }
+                else
+                {
+                    this.alphaNumericBarDriver = null;
                 }
             }
             catch (Exception ex)
@@ -139,6 +149,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
+            await this.AlphaNumericBarConfigureAsync();
+
             if (this.alphaNumericBarDriver is null)
             {
                 return;
@@ -162,7 +174,14 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
         {
-            if (e.MachineMission is null || this.alphaNumericBarDriver is null || e.WmsOperation.CompartmentId == 0)
+            if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+            {
+                return;
+            }
+
+            await this.AlphaNumericBarConfigureAsync();
+
+            if (this.alphaNumericBarDriver is null)
             {
                 return;
             }
@@ -177,6 +196,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
                     var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
+                    this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
                     //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(e.WmsMission.LoadingUnit.Width, compartmentSelected.XPosition.Value);
                     await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
 
@@ -193,6 +213,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     }
 
                     message += e.WmsOperation.RequestedQuantity + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
+                    message = message.Trim();
 
                     var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
                     if (offset > 0)

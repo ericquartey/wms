@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Accessories
                     ThreadOption.BackgroundThread,
                     false);
 
-            await this.LaserPointerConfigureAsync();
+            //await this.LaserPointerConfigureAsync();
         }
 
         public async void StopAsync()
@@ -109,14 +109,13 @@ namespace Ferretto.VW.App.Accessories
 
                 if (accessories is null)
                 {
+                    this.laserPointerDriver = null;
                     return;
                 }
 
                 var laserPointer = accessories.LaserPointer;
                 if (laserPointer.IsEnabledNew)
                 {
-                    this.laserPointerDriver = new LaserPointerDriver();
-
                     var ipAddress = laserPointer.IpAddress;
                     var port = laserPointer.TcpPort;
                     var xOffset = 0;
@@ -124,7 +123,15 @@ namespace Ferretto.VW.App.Accessories
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
+                    if (this.laserPointerDriver is null)
+                    {
+                        this.laserPointerDriver = new LaserPointerDriver();
+                    }
                     this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                }
+                else
+                {
+                    this.laserPointerDriver = null;
                 }
             }
             catch (Exception ex)
@@ -132,43 +139,6 @@ namespace Ferretto.VW.App.Accessories
                 this.NotifyError(ex);
             }
         }
-
-        //private async Task LaserPointerUpdateAsync(Mission machineMission, MissionWithLoadingUnitDetails wmsMission, MissionOperation missionOperation)
-        //{
-        //    try
-        //    {
-        //        if (machineMission is null || this.laserPointerDriver is null)
-        //        {
-        //            return;
-        //        }
-
-        //        if (machineMission.MissionType is MissionType.OUT || machineMission.MissionType is MissionType.WMS)
-        //        {
-        //            var activeMission = await this.RetrieveActiveMissionAsync();
-        //            if (activeMission != null && activeMission.WmsId.HasValue)
-        //            {
-        //                var bay = await this.bayManager.GetBayAsync();
-        //                var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == wmsMission.LoadingUnit.Id);
-        //                var compartmentSelected = wmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == missionOperation.CompartmentId);
-
-        //                double itemHeight = 0;
-        //                if (missionOperation.ItemHeight != null)
-        //                {
-        //                    itemHeight = missionOperation.ItemHeight.Value;
-        //                }
-
-        //                var point = this.laserPointerDriver.CalculateLaserPoint(wmsMission.LoadingUnit.Width, wmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
-
-        //                this.logger.Info("Move and switch on laser pointer");
-        //                await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.NotifyError(ex);
-        //    }
-        //}
 
         private void NotifyError(Exception ex)
         {
@@ -180,6 +150,8 @@ namespace Ferretto.VW.App.Accessories
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType.ToString()} Status {message.Status.ToString()}");
+
+            await this.LaserPointerConfigureAsync();
 
             if (this.laserPointerDriver is null)
             {
@@ -206,7 +178,14 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
-                if (e.MachineMission is null || this.laserPointerDriver is null || e.WmsOperation.CompartmentId == 0)
+                if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+                {
+                    return;
+                }
+
+                await this.LaserPointerConfigureAsync();
+
+                if (this.laserPointerDriver is null)
                 {
                     return;
                 }
