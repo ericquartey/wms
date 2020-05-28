@@ -165,12 +165,16 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kMul = 0.0938;
+        private readonly double kMul = 0.090625;
+
+        private readonly double kMulNew = 0.0938;
 
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kSum = -212.5;
+        private readonly double kSum = -181.25;
+
+        private readonly double kSumNew = -212.5;
 
         private readonly ILogger<DataLayerContext> logger;
 
@@ -288,6 +292,20 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public double ConvertProfileToHeight(ushort profile, int positionId)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByBayPositionId(positionId);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException();
+                }
+                var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
+                return (profile * this.kMul) + this.kSum + offset;
+            }
+        }
+
+        public double ConvertProfileToHeightNew(ushort profile, int positionId)
         {
             lock (this.dataContext)
             {
