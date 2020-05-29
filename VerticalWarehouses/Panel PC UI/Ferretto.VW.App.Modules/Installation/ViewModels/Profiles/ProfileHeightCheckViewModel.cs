@@ -364,6 +364,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.LoadingUnitId):
                         if (!this.LoadingUnitId.HasValue ||
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInElevatorById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
                             return VW.App.Resources.Localized.Get("InstallationApp.InvalidDrawerSelected");
