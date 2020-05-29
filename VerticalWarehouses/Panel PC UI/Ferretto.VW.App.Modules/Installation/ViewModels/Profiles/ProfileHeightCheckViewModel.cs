@@ -171,14 +171,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.completedCommand
             ??
             (this.completedCommand = new DelegateCommand(
-                async () =>
-                {
-                    await this.machineProfileProcedureWeb.SaveAsync();
-
-                    this.CurrentStep = ProfileCheckStep.Initialize;
-
-                    this.NavigationService.GoBack();
-                }));
+                async () => await this.CompleteProcedureAsync(),
+                this.CanCompleteProcedure));
 
         public ProfileCheckStep CurrentStep
         {
@@ -577,6 +571,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand?.RaiseCanExecuteChanged();
             this.mensurationSxCommand?.RaiseCanExecuteChanged();
             this.mensurationDxCommand?.RaiseCanExecuteChanged();
+            this.completedCommand?.RaiseCanExecuteChanged();
 
             this.UpdateStatusButtonFooter();
         }
@@ -617,6 +612,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    this.SensorsService.ShutterSensors.Open;
+        }
+
+        private bool CanCompleteProcedure()
+        {
+            if ((this.measuredDx < 1.00) && (this.measuredSx < 1.00))
+            {
+                return true;
+            }
+            else
+            {
+                this.ShowNotification(VW.App.Resources.Localized.Get("ErrorsApp.CalibrationBarierError"));
+                return false;
+            }
         }
 
         private bool CanGoToBayCommand()
@@ -677,6 +685,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var bay = this.MachineService.Bay;
                 var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
                 await this.shuttersWebService.MoveToAsync(closePosition);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task CompleteProcedureAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineProfileProcedureWeb.SaveAsync();
+
+                this.CurrentStep = ProfileCheckStep.Initialize;
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
