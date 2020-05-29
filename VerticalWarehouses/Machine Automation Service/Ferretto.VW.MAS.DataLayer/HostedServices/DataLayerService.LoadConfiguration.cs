@@ -61,11 +61,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.Accessories.BarcodeReader = new BarcodeReader();
                     dataContext.Accessories.Add(bay.Accessories.BarcodeReader);
 
+                    bay.Accessories.CardReader = new CardReader();
+                    dataContext.Accessories.Add(bay.Accessories.CardReader);
+
                     bay.Accessories.LabelPrinter = new LabelPrinter();
                     dataContext.Accessories.Add(bay.Accessories.LabelPrinter);
 
                     bay.Accessories.LaserPointer = new LaserPointer();
                     dataContext.Accessories.Add(bay.Accessories.LaserPointer);
+
+                    bay.Accessories.TokenReader = new TokenReader();
+                    dataContext.Accessories.Add(bay.Accessories.TokenReader);
 
                     bay.Accessories.WeightingScale = new WeightingScale();
                     dataContext.Accessories.Add(bay.Accessories.WeightingScale);
