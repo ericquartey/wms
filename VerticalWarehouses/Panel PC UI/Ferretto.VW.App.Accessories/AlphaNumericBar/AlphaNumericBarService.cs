@@ -84,14 +84,14 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         ThreadOption.BackgroundThread,
                         false);
 
-            //this.missionToken = this.missionToken
-            //??
-            //this.eventAggregator
-            //    .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
-            //    .Subscribe(
-            //        async e => await this.OnMissionChangeAsync(e),
-            //        ThreadOption.BackgroundThread,
-            //        false);
+            this.missionToken = this.missionToken
+            ??
+            this.eventAggregator
+                .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
+                .Subscribe(
+                    async e => await this.OnMissionChangeAsync(e),
+                    ThreadOption.BackgroundThread,
+                    false);
 
             //await this.AlphaNumericBarConfigureAsync();
         }
