@@ -264,4 +264,7 @@
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Units</value>
   </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>No accessories installed.</value>
+  </data>
 </root>

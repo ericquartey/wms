@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.AlphaNumericBar;
+using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -27,9 +29,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
+            ILaserPointerDriver laserPointerDriver,
+            IAlphaNumericBarDriver alphaNumericBarDriver,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(
+                  itemsWebService,
+                  bayManager,
+                  eventAggregator,
+                  laserPointerDriver,
+                  alphaNumericBarDriver,
+                  missionOperationsService,
+                  dialogService)
         {
         }
 

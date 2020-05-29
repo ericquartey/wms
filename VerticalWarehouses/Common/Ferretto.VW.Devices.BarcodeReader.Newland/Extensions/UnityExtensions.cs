@@ -28,7 +28,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             return containerRegistry;
         }
 
-        public static IContainerRegistry ConfigureNewlandBarcodeReader(this IContainerRegistry containerRegistry)
+        public static IContainerRegistry ConfigureNewlandBarcodeReaderDriver(this IContainerRegistry containerRegistry)
         {
             if (containerRegistry is null)
             {

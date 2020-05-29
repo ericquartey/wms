@@ -5,11 +5,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
+using NLog;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
-    public class AlphaNumericBarDriver : IAlphaNumericBarDriver
+    internal sealed class AlphaNumericBarDriver : IAlphaNumericBarDriver
     {
         #region Fields
 
@@ -17,37 +18,23 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private const string NEW_LINE = "\r\n";
 
-        private readonly ConcurrentQueue<string> errorsQueue;
+        private readonly ConcurrentQueue<string> errorsQueue = new ConcurrentQueue<string>();
 
-        private readonly ConcurrentQueue<string> messagesReceivedQueue;
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ConcurrentQueue<string> messagesToBeSendQueue;
+        private readonly ConcurrentQueue<string> messagesReceivedQueue = new ConcurrentQueue<string>();
+
+        private readonly ConcurrentQueue<string> messagesToBeSendQueue = new ConcurrentQueue<string>();
 
         private readonly int tcpTimeout = 2000;
 
-        private bool barEnabled = false;
-
         private IPAddress ipAddress;
-
-        private int port = PORT_DEFAULT;
 
         private AlphaNumericBarSize size = AlphaNumericBarSize.Medium;
 
-        private bool testEnabled = false;
+        private bool testEnabled;
 
-        private bool testScrollEnabled = false;
-
-        #endregion
-
-        #region Constructors
-
-        public AlphaNumericBarDriver()
-        {
-            this.StepLedBar = 4.75;
-            this.messagesToBeSendQueue = new ConcurrentQueue<string>();
-            this.messagesReceivedQueue = new ConcurrentQueue<string>();
-            this.errorsQueue = new ConcurrentQueue<string>();
-        }
+        private bool testScrollEnabled;
 
         #endregion
 
@@ -59,11 +46,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public int NumberOfLeds => ((int)this.size) * 8;
 
-        public int Port => this.port;
+        public int Port { get; private set; } = PORT_DEFAULT;
 
         public AlphaNumericBarSize Size => this.size;
 
-        public double StepLedBar { get; set; }
+        public double StepLedBar { get; set; } = 4.75;
 
         public bool TestEnabled => this.testEnabled;
 
@@ -156,19 +143,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ipAddress"></param>
-        /// <param name="port"></param>
-        /// <param name="size"></param>
-        public bool Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size)
+        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size)
         {
             this.ipAddress = ipAddress;
-            this.port = port;
+            this.Port = port;
             this.size = size;
-
-            return true;
         }
 
         /// <summary>
@@ -453,19 +432,17 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         private bool EnqueueCommand(AlphaNumericBarCommands.Command command, string message = null, int offset = 0, int scrollEnd = 0)
         {
-            var result = false;
+            bool result;
             var strCommand = command.ToString();
 
             switch (command)
             {
                 case AlphaNumericBarCommands.Command.ENABLE_ON:
                     strCommand = "ENABLE ON";
-                    this.barEnabled = true;
                     break;
 
                 case AlphaNumericBarCommands.Command.ENABLE_OFF:
                     strCommand = "ENABLE OFF";
-                    this.barEnabled = false;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_ON:                   // deprecated, not use
@@ -564,7 +541,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             stream = client.GetStream();
                             stream.ReadTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Sent: {sendMessage}");
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
@@ -573,15 +550,15 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;ExecuteCommands();Received: {responseMessage}");
+                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage}");
                                 if (!this.IsResponseOk(sendMessage, responseMessage))
                                 {
-                                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                                 }
                             }
                             else
                             {
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};AplhaNumericBarDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
+                                this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
                         }
@@ -590,9 +567,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             System.Threading.Thread.Sleep(100);
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                        this.logger.Error(ex);
                     }
                 }
 
@@ -600,9 +577,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 client?.Close();
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                this.logger.Error(ex);
             }
 
             return result;

@@ -73,6 +73,8 @@
     <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
     <None Remove="Views\Accessories\BarcodeReaderConfigurationView.xaml" />
     <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
+    <None Remove="Views\Accessories\CardReaderSettingsView.xaml" />
+    <None Remove="Views\Accessories\DeviceInformationView.xaml" />
     <None Remove="Views\Accessories\LaserPointerSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
@@ -102,6 +104,12 @@
     </Compile>
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\CardReaderSettingsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\DeviceInformationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Bays\ExternalBayCalibrationView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

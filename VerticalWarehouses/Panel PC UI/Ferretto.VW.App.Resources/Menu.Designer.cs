@@ -475,6 +475,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No accessories installed..
+        /// </summary>
+        public static string NoAccessoriesInstalled {
+            get {
+                return ResourceManager.GetString("NoAccessoriesInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         public static string Other {

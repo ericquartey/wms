@@ -264,4 +264,7 @@
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Cassetti</value>
   </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>Nessun accessorio installato.</value>
+  </data>
 </root>

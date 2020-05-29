@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
+
         private readonly IAuthenticationService authenticationService;
 
         private readonly IMachineBarcodesWebService barcodesWebService;
@@ -41,6 +43,8 @@ namespace Ferretto.VW.App.Accessories
 
         private BarcodeRule activeRule;
 
+        private bool isDeviceEnabled;
+
         private bool isStarted;
 
         private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
@@ -52,6 +56,7 @@ namespace Ferretto.VW.App.Accessories
         public BarcodeReaderService(
             IEventAggregator eventAggregator,
             IBayManager bayManager,
+            IMachineAccessoriesWebService accessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
             IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
@@ -60,6 +65,7 @@ namespace Ferretto.VW.App.Accessories
         {
             this.eventAggregator = eventAggregator;
             this.bayManager = bayManager;
+            this.accessoriesWebService = accessoriesWebService;
             this.machineBaysWebService = machineBaysWebService;
             this.deviceDriver = deviceDriver;
             this.navigationService = navigationService;
@@ -113,9 +119,9 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.InitializeSerialPortsTimer();
 
-                var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
-
-                if (accessories.BarcodeReader?.IsEnabledNew == true)
+                var accessories = await this.accessoriesWebService.GetAllAsync();
+                this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
+                if (this.isDeviceEnabled)
                 {
                     this.deviceDriver.Connect(
                         new ConfigurationOptions
@@ -130,7 +136,7 @@ namespace Ferretto.VW.App.Accessories
             catch (Exception ex)
             {
                 this.isStarted = false;
-                this.NotifyError(ex);
+                this.NotifyError($"Impossibile comunicare con il lettore di codici a barre. {ex.Message}");
             }
         }
 
@@ -139,6 +145,11 @@ namespace Ferretto.VW.App.Accessories
             if (this.isDisposed)
             {
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                return Task.CompletedTask;
             }
 
             try
@@ -159,6 +170,28 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return Task.CompletedTask;
+        }
+
+        public async Task UpdateSettingsAsync(bool isEnabled, string portName)
+        {
+            try
+            {
+                await this.accessoriesWebService.UpdateBarcodeReaderSettingsAsync(isEnabled, portName);
+
+                this.isDeviceEnabled = isEnabled;
+                if (this.isDeviceEnabled)
+                {
+                    await this.StartAsync();
+                }
+                else
+                {
+                    await this.StopAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
         }
 
         private async Task ExecuteActionOnActiveContext(UserActionEventArgs eventArgs, IOperationalContextViewModel activeContext)
@@ -271,6 +304,13 @@ namespace Ferretto.VW.App.Accessories
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(ex));
+        }
+
+        private void NotifyError(string message)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Error));
         }
 
         private void NotifyWarning(string message)

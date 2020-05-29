@@ -133,6 +133,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName);
 
+        void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex);
+
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);

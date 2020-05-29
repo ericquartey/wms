@@ -24,9 +24,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAlphaNumericBarDriver alphaNumericBarDriver;
+
         private readonly IEventAggregator eventAggregator;
 
-        private AlphaNumericBarDriver alphaNumericBarDriver;
+        private readonly ILaserPointerDriver laserPointerDriver;
 
         private Bay bay;
 
@@ -58,8 +60,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperationCanceled;
 
-        private LaserPointerDriver laserPointerDriver;
-
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
@@ -80,12 +80,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
+            ILaserPointerDriver laserPointerDriver,
+            IAlphaNumericBarDriver alphaNumericBarDriver,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
             : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
-
+            this.laserPointerDriver = laserPointerDriver;
+            this.alphaNumericBarDriver = alphaNumericBarDriver;
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
@@ -590,8 +593,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var alphaNumericBar = accessories.AlphaNumericBar;
                 if (alphaNumericBar.IsEnabledNew)
                 {
-                    this.alphaNumericBarDriver = new AlphaNumericBarDriver();
-
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
                     var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
@@ -738,8 +739,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var laserPointer = accessories.LaserPointer;
                 if (laserPointer.IsEnabledNew)
                 {
-                    this.laserPointerDriver = new LaserPointerDriver();
-
                     var ipAddress = laserPointer.IpAddress;
                     var port = laserPointer.TcpPort;
                     var yOffset = laserPointer.YOffset;

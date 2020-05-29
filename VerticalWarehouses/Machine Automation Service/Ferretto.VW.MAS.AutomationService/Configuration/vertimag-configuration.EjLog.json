@@ -224,9 +224,9 @@
           "CardReader": {
             "IsEnabledNew": true
           },
-          "WeightingScale": {
+          /*  "WeightingScale": {
             "IsEnabledNew": true
-          }
+          }*/
         },
         "Carousel": {
           "AssistedMovements": {

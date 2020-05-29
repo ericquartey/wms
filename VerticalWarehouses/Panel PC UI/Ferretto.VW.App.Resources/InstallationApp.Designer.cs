@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abort.
+        /// </summary>
+        public static string Abort {
+            get {
+                return ResourceManager.GetString("Abort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance (%).
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -115,11 +124,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Matching Pattern (regex).
+        /// </summary>
+        public static string AccessoriesCardReaderTokenRegex {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderTokenRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
         public static string AccessoryEnabled {
             get {
                 return ResourceManager.GetString("AccessoryEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acquired token.
+        /// </summary>
+        public static string AcquiredToken {
+            get {
+                return ResourceManager.GetString("AcquiredToken", resourceCulture);
             }
         }
         
@@ -390,6 +417,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Bay3 {
             get {
                 return ResourceManager.GetString("Bay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay4 {
+            get {
+                return ResourceManager.GetString("Bay4", resourceCulture);
             }
         }
         
@@ -1272,6 +1308,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CloseShutterCommand {
             get {
                 return ResourceManager.GetString("CloseShutterCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code was recognized..
+        /// </summary>
+        public static string CodeRecognized {
+            get {
+                return ResourceManager.GetString("CodeRecognized", resourceCulture);
             }
         }
         
@@ -5787,6 +5832,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save changes before starting the test..
+        /// </summary>
+        public static string SaveChangesBeforeStartingTest {
+            get {
+                return ResourceManager.GetString("SaveChangesBeforeStartingTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the new dimensions and press Save to make the changes effective..
         /// </summary>
         public static string SaveCheckPosition {
@@ -6350,6 +6404,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StartResolutionProcedure {
             get {
                 return ResourceManager.GetString("StartResolutionProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Test.
+        /// </summary>
+        public static string StartTest {
+            get {
+                return ResourceManager.GetString("StartTest", resourceCulture);
             }
         }
         
@@ -6971,6 +7034,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UserManagement {
             get {
                 return ResourceManager.GetString("UserManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the card on the card reader..
+        /// </summary>
+        public static string UseTheCardOnCardReader {
+            get {
+                return ResourceManager.GetString("UseTheCardOnCardReader", resourceCulture);
             }
         }
         

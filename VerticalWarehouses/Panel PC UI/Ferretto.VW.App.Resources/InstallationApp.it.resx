@@ -1474,7 +1474,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Numero dei cicli necessari completato.</value>
   </data>
   <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
-    <value>Offset asse verticale aggiornato.</value>
+    <value>Offset asse verticale aggiornato</value>
   </data>
   <data name="CellInsertedNotFree" xml:space="preserve">
     <value>la cella inserita non è libera</value>
@@ -1708,7 +1708,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Calibrazione in corso ...</value>
   </data>
   <data name="CalibrationProcedureRequired" xml:space="preserve">
-    <value>Esegui la procedura di taratura della baia per posizionare la mensola in corrispondenza del sensore</value>
+    <value>Esegui la procedura di taratura della baia per posizionare la mensola in corrispondenza del sensore.</value>
   </data>
   <data name="CheckDrawersThenStart" xml:space="preserve">
     <value>Controlla che non ci siano cassetti in baia prima di cominciare. Premi su INIZIA per avviare la procedura</value>
@@ -2395,7 +2395,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Esegui il movimento che porta l'elevatore in baia</value>
   </data>
   <data name="StopTest" xml:space="preserve">
-    <value>Stop test</value>
+    <value>Ferma Test</value>
   </data>
   <data name="CallUnitDescription" xml:space="preserve">
     <value>Seleziona cassetto da chiamare in baia</value>
@@ -2594,5 +2594,23 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="SystemPathNotFound" xml:space="preserve">
     <value>Percorso '{0}' non trovato</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Sequenze riconosciute (regex)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Avvia Test</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Sequenza acquisita</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Codice riconosciuto.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Salvare le modifiche prima di iniziare il test.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Passare la carta sul lettore.</value>
   </data>
 </root>

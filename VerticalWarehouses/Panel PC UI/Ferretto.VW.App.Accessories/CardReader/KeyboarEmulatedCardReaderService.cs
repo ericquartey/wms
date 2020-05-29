@@ -4,35 +4,39 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Markup;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Devices;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
 {
-    internal sealed class KeyboarEmulatedCardReaderService : Interfaces.ICardReaderService, IDisposable
+    internal sealed class KeyboarEmulatedCardReaderService : ICardReaderService, IDisposable
     {
         #region Fields
 
-        private static readonly Regex DefaultTokenRegex = new Regex(".+", RegexOptions.Compiled);
+        private const string TokenCaptureGroupName = "Token";
+
+        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.+)\r", RegexOptions.Compiled);
+
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly MAS.AutomationService.Contracts.IMachineBaysWebService machineBaysWebService;
-
         private readonly StringBuilder stringBuilder = new StringBuilder();
 
         private readonly TextCompositionEventHandler textCompositionEventHandler;
 
-        private bool isDisposed = false;
+        private bool isDeviceEnabled;
+
+        private bool isDisposed;
 
         private bool isStarted;
 
-        private Regex tokenRegex;
+        private Regex tokenRegex = DefaultTokenRegex;
 
         #endregion
 
@@ -40,10 +44,10 @@ namespace Ferretto.VW.App.Accessories
 
         public KeyboarEmulatedCardReaderService(
             IEventAggregator eventAggregator,
-            MAS.AutomationService.Contracts.IMachineBaysWebService machineBaysWebService)
+            IMachineAccessoriesWebService accessoriesWebService)
         {
             this.eventAggregator = eventAggregator;
-            this.machineBaysWebService = machineBaysWebService;
+            this.accessoriesWebService = accessoriesWebService;
 
             this.textCompositionEventHandler = new TextCompositionEventHandler(this.MainWindow_PreviewTextInput);
             Application.Current.MainWindow.PreviewTextInput += this.textCompositionEventHandler;
@@ -53,13 +57,15 @@ namespace Ferretto.VW.App.Accessories
 
         #region Events
 
-        public event EventHandler<string> TokenAcquired;
+        public event EventHandler<string> KeysAcquired;
+
+        public event EventHandler<RegexMatchEventArgs> TokenAcquired;
 
         #endregion
 
         #region Properties
 
-        public DeviceInformation DeviceInformation => throw new NotSupportedException();
+        public Devices.DeviceInformation DeviceInformation => throw new NotSupportedException();
 
         #endregion
 
@@ -80,21 +86,20 @@ namespace Ferretto.VW.App.Accessories
 
             try
             {
-                var accessories = await this.machineBaysWebService.GetAccessoriesAsync();
-                var isCardReaderEnabled = accessories.CardReader?.IsEnabledNew == true;
+                this.stringBuilder.Clear();
 
-                if (isCardReaderEnabled)
+                var accessories = await this.accessoriesWebService.GetAllAsync();
+
+                this.isDeviceEnabled = accessories.CardReader?.IsEnabledNew == true;
+                if (accessories.CardReader?.TokenRegex != null)
                 {
-                    /*if (accessories.CardReader.TokenRegex != null)
-                    {
-                        this.tokenRegex = new Regex(
-                            "^.+\rò(?<Token>.+)-\rj");//accessories.CardReader.TokenRegex;
-                    }
-                    else*/
-                    {
-                        this.tokenRegex = DefaultTokenRegex;
-                    }
+                    this.tokenRegex = accessories.CardReader?.TokenRegex is null
+                        ? DefaultTokenRegex
+                        : new Regex(accessories.CardReader.TokenRegex);
+                }
 
+                if (this.isDeviceEnabled)
+                {
                     this.isStarted = true;
                     this.logger.Debug("Starting keyboard-emulated card reader service.");
                 }
@@ -114,6 +119,30 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return Task.CompletedTask;
+        }
+
+        public async Task UpdateSettingsAsync(bool isEnabled, string tokenRegex)
+        {
+            try
+            {
+                await this.accessoriesWebService.UpdateCardReaderSettingsAsync(isEnabled, tokenRegex);
+
+                this.tokenRegex = tokenRegex is null
+                    ? DefaultTokenRegex
+                    : new Regex(tokenRegex);
+
+                this.stringBuilder.Clear();
+                this.isDeviceEnabled = isEnabled;
+
+                if (this.isStarted && !this.isDeviceEnabled)
+                {
+                    await this.StopAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex.Message);
+            }
         }
 
         private void Dispose(bool disposing)
@@ -138,17 +167,20 @@ namespace Ferretto.VW.App.Accessories
 
             this.stringBuilder.Append(e.Text);
 
+            this.KeysAcquired?.Invoke(this, e.Text);
+
             var match = this.tokenRegex.Match(this.stringBuilder.ToString());
 
-            if (match.Groups["Token"].Success)
+            if (match.Groups[TokenCaptureGroupName].Success)
             {
-                this.logger.Debug($"Found match '{this.stringBuilder}'.");
-
-                var token = match.Groups["Token"].Value;
+                var token = match.Groups[TokenCaptureGroupName].Value;
 
                 this.logger.Debug($"Found token '{token}'.");
 
-                this.TokenAcquired?.Invoke(this, token);
+                this.TokenAcquired?.Invoke(
+                    this,
+                    new RegexMatchEventArgs(token, match.Groups[TokenCaptureGroupName].Index));
+
                 this.stringBuilder.Clear();
             }
 
@@ -163,50 +195,5 @@ namespace Ferretto.VW.App.Accessories
         }
 
         #endregion
-
-        // To detect redundant calls
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~KeyboarEmulatedCardReaderService()
-        // {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-        /*
-                private void OnMainWindowKeyDown(object sender, KeyEventArgs e)
-                {
-                    var inputKey = new KeyConverter().ConvertToInvariantString(e.Key);
-
-                    if (this.tokenRegex is null)
-                    {
-                        if (e.Key is Key.Return)
-                        {
-                            this.logger.Debug($"Received token '{this.stringBuilder}'.");
-
-                            this.TokenAcquired?.Invoke(this, this.stringBuilder.ToString());
-                            this.stringBuilder.Clear();
-                        }
-                        else
-                        {
-                            this.stringBuilder.Append(inputKey);
-                        }
-                    }
-                    else
-                    {
-                        this.stringBuilder.Append(inputKey);
-
-                        var match = this.tokenRegex.Match(this.stringBuilder.ToString());
-                        if (match.Groups["Token"].Success)
-                        {
-                            this.logger.Debug($"Found match '{this.stringBuilder}'.");
-
-                            var token = match.Groups["Token"].Value;
-
-                            this.TokenAcquired?.Invoke(this, token);
-                            this.stringBuilder.Clear();
-                        }
-                    }
-
-                    e.Handled = true;
-                }*/
     }
 }

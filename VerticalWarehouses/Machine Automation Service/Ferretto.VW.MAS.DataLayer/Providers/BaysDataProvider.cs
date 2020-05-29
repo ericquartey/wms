@@ -330,7 +330,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Single(b => b.Number == bayNumber);
 
-                return bay.Accessories;
+                return bay.Accessories ?? new BayAccessories();
             }
         }
 
@@ -1040,6 +1040,23 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.CardReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.CardReader.IsEnabledNew = isEnabled;
+                bay.Accessories.CardReader.TokenRegex = tokenRegex;
+
+                this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
             }
         }

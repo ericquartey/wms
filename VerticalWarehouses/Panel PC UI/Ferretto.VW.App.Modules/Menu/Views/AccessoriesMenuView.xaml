@@ -54,6 +54,11 @@
                        Text="{res:Loc Menu.AccessoriesMenuName}" />
 
             <Grid Grid.Row="1">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{res:Loc Menu.NoAccessoriesInstalled}"
+                           Visibility="{Binding HasAccessories, Converter={StaticResource BTVIC}}" />
                 <WrapPanel>
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesAlphaNumBarMenuTitle}"
                                         Height="130"
