@@ -54,8 +54,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var bay in machine.Bays)
                 {
                     bay.Accessories = new BayAccessories();
+
+                    bay.Accessories.AlphaNumericBar = new AlphaNumericBar();
+                    dataContext.Accessories.Add(bay.Accessories.AlphaNumericBar);
+
+                    bay.Accessories.BarcodeReader = new BarcodeReader();
+                    dataContext.Accessories.Add(bay.Accessories.BarcodeReader);
+
+                    bay.Accessories.LabelPrinter = new LabelPrinter();
+                    dataContext.Accessories.Add(bay.Accessories.LabelPrinter);
+
                     bay.Accessories.LaserPointer = new LaserPointer();
                     dataContext.Accessories.Add(bay.Accessories.LaserPointer);
+
+                    bay.Accessories.WeightingScale = new WeightingScale();
+                    dataContext.Accessories.Add(bay.Accessories.WeightingScale);
                 }
                 dataContext.SaveChanges();
             }
