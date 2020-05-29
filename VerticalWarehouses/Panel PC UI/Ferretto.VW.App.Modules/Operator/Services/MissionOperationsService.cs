@@ -35,6 +35,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private int unitId;
+
+        private bool isRecallUnit;
+
         #endregion
 
         #region Constructors
@@ -131,11 +135,24 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             await this.loadingUnitsWebService.RemoveFromBayAsync(id);
 
+            this.unitId = id;
+            this.isRecallUnit = true;
+
             this.ActiveMachineMission = null;
             this.ActiveWmsMission = null;
             this.ActiveWmsOperation = null;
 
             this.RaiseMissionChangedEvent();
+        }
+
+        public int RecallLoadingUnitId()
+        {
+            return this.unitId;
+        }
+
+        public bool IsRecallLoadingUnitId()
+        {
+            return this.isRecallUnit;
         }
 
         public async Task RefreshAsync()

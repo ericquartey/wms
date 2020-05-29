@@ -37,6 +37,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private int? lastActiveUnitId;
 
+        private int lastLu = 0;
+
+        private LoadingUnit loadingUnitInBay;
+
         private string previousModuleName;
 
         #endregion
@@ -185,10 +189,51 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 var currentMission = this.missionOperationsService.ActiveMachineMission;
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                if (loadingUnit != null)
+                this.loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
+                var recallUnitId = this.missionOperationsService.RecallLoadingUnitId();
+                var isRecallUnit = this.missionOperationsService.IsRecallLoadingUnitId();
+
+                if (loadingUnit != null || this.loadingUnitInBay != null)
                 {
-                    this.lastActiveUnitId = loadingUnit.Id;
-                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                    if (this.lastLu == recallUnitId)
+                    {
+                        this.lastLu = 0;
+                    }
+
+                    if (loadingUnit != null)
+                    {
+                        this.lastActiveUnitId = loadingUnit.Id;
+                        this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                    }
+                    else if ((this.lastLu != this.loadingUnitInBay.Id) && isRecallUnit == false)
+                    {
+                        this.lastActiveUnitId = this.loadingUnitInBay.Id;
+                        this.NavigateToLoadingUnitDetails(this.loadingUnitInBay.Id);
+
+                        if (recallUnitId != 0)
+                        {
+                            this.lastLu = this.loadingUnitInBay.Id;
+                        }
+                    }
+                    else
+                    {
+                        this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
+
+                        if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
+                        {
+                            this.navigationService.GoBackTo(
+                               nameof(Utils.Modules.Operator),
+                               Utils.Modules.Operator.ItemOperations.WAIT);
+                        }
+                        else
+                        {
+                            this.navigationService.Appear(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.ItemOperations.WAIT,
+                                null,
+                                trackCurrentView: true);
+                        }
+                    }
                 }
                 else if (
                     activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
