@@ -82,6 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     await this.LoadConfigurationAsync(configuration.GetDataLayerConfigurationFile(), dataContext);
                     this.GenerateInstructionDefinitions(dataContext);
+                    this.GenerateAccessories(dataContext);
 
                     this.IsReady = true;
 

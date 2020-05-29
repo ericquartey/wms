@@ -41,6 +41,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        private void GenerateAccessories(DataLayerContext dataContext)
+        {
+            if (dataContext.Accessories.Any())
+            {
+                return;
+            }
+
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+                foreach (var bay in machine.Bays)
+                {
+                    bay.Accessories = new BayAccessories();
+                    dataContext.Accessories.Add(bay.Accessories.LaserPointer);
+                }
+                dataContext.SaveChanges();
+            }
+        }
+
         private void GenerateInstructionDefinitions(DataLayerContext dataContext)
         {
             if (dataContext.InstructionDefinitions.Any())
@@ -191,6 +210,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                             break;
 
+                        // TODO: compile all the cases
                         case InstructionType.Undefined:
                             break;
 

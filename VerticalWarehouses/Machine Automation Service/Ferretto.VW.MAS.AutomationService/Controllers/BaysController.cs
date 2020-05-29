@@ -78,6 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpGet("accessories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         public ActionResult<BayAccessories> GetAccessories()
         {
