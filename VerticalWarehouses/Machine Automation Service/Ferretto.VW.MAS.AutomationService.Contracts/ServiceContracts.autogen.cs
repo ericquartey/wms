@@ -4489,27 +4489,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         PinPawlFastenersCheck = 31,
     
-        PinPawlFastenersGrease = 32,
+        PinPawlFastenersSubstitute = 32,
     
-        PinPawlFastenersSubstitute = 33,
+        PlasticCamsCheck = 33,
     
-        PlasticCamsCheck = 34,
+        RandomCellCheck = 34,
     
-        RandomCellCheck = 35,
+        SensorsClean = 35,
     
-        SensorsClean = 36,
+        SensorCheck = 36,
     
-        SensorCheck = 37,
+        SensorsMount = 37,
     
-        SensorsMount = 38,
+        ShaftCheck = 38,
     
-        ShaftCheck = 39,
+        SupportsCheck = 39,
     
-        SupportsCheck = 40,
-    
-        WheelsCheck = 41,
-    
-        WheelsSubstitute = 42,
+        WheelsCheck = 40,
     
     }
     

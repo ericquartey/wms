@@ -66,8 +66,6 @@
 
         PinPawlFastenersCheck,
 
-        PinPawlFastenersGrease,
-
         PinPawlFastenersSubstitute,
 
         PlasticCamsCheck,
@@ -85,7 +83,5 @@
         SupportsCheck,
 
         WheelsCheck,
-
-        WheelsSubstitute,
     }
 }
