@@ -123,9 +123,8 @@ namespace Ferretto.VW.App.Accessories
                             PortName = accessories.BarcodeReader.PortName
                         });
                     this.isStarted = true;
+                    await this.LoadRuleSetAsync();
                 }
-
-                await this.LoadRuleSetAsync();
             }
             catch (Exception ex)
             {

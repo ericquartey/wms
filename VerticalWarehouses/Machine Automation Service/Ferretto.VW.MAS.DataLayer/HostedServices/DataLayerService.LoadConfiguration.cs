@@ -75,6 +75,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     bay.Accessories.WeightingScale = new WeightingScale();
                     dataContext.Accessories.Add(bay.Accessories.WeightingScale);
+
+                    dataContext.Bays.Update(bay);
                 }
                 dataContext.SaveChanges();
             }
@@ -105,6 +107,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         case InstructionType.AirFiltersCheck:
                         case InstructionType.ElectricalComponentsCheck:
+                        case InstructionType.LampsCheck:
                             instruction.InstructionType = instructionType;
                             instruction.IsSystem = true;
                             instruction.MaxDays = OneYear;
@@ -230,27 +233,75 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                             break;
 
-                        // TODO: compile all the cases
-                        case InstructionType.Undefined:
-                            break;
-
-                        case InstructionType.LampsCheck:
-                            break;
-
                         case InstructionType.LinkCheck:
-                            break;
-
                         case InstructionType.LinksGrease:
-                            break;
+                        case InstructionType.OpticalSensorsClean:
+                        case InstructionType.OpticalSensorsMount:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxDays = OneYear;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            dataContext.InstructionDefinitions.Add(instruction);
 
-                        case InstructionType.LinkSubstitute:
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.MicroSwitchesCheck:
+                        case InstructionType.MicroSwitchesMount:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxDays = OneYear;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.MicroSwitchesMount:
+                        case InstructionType.SensorCheck:
+                        case InstructionType.SensorsClean:
+                        case InstructionType.SensorsMount:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxDays = OneYear;
+                            instruction.MaxRelativeCount = LowMissionCount;
+                            if (instructionType == InstructionType.SensorCheck)
+                            {
+                                foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                                {
+                                    instruction.SetCounterName(bay.Number);
+                                    instruction.IsShutter = true;
+                                    instruction.BayNumber = bay.Number;
+                                    dataContext.InstructionDefinitions.Add(instruction);
+                                }
+                                instruction.IsShutter = false;
+                            }
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                instruction.SetCounterName(bay.Number);
+                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
+                                instruction.BayNumber = bay.Number;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            dataContext.InstructionDefinitions.Add(instruction);
                             break;
+
+                        case InstructionType.LinkSubstitute:
+                            instruction.InstructionType = instructionType;
+                            instruction.MaxRelativeCount = NormalMissionCount;
+                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
+                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.Undefined:
+                            break;
+
+                        // TODO: compile all the following cases
 
                         case InstructionType.MicroSwitchesSubstitute:
                             break;
@@ -270,12 +321,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.MotorGearSubstitute:
                             break;
 
-                        case InstructionType.OpticalSensorsClean:
-                            break;
-
-                        case InstructionType.OpticalSensorsMount:
-                            break;
-
                         case InstructionType.PinPawlFastenersCheck:
                             break;
 
@@ -288,15 +333,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.PlasticCamsCheck:
                             break;
 
-                        case InstructionType.SensorsClean:
-                            break;
-
-                        case InstructionType.SensorCheck:
-                            break;
-
-                        case InstructionType.SensorsMount:
-                            break;
-
                         case InstructionType.ShaftCheck:
                             break;
 
@@ -307,7 +343,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         default:
-                            continue;
+                            break;
                     }
                 }
 

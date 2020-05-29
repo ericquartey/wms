@@ -110,13 +110,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.accessories = await this.machineBaysWebService.GetAccessoriesAsync();
 
-                this.IsAlphaNumericBarAvailable = this.accessories.AlphaNumericBar != null;
-                this.IsBarcodeReaderAvailable = this.accessories.BarcodeReader != null;
-                this.IsCardReaderAvailable = this.accessories.CardReader != null;
-                this.IsLabelPrinterAvailable = this.accessories.LabelPrinter != null;
-                this.IsLaserPointerAvailable = this.accessories.LaserPointer != null;
-                this.IsTokenReaderAvailable = this.accessories.TokenReader != null;
-                this.IsWeightingScaleAvailable = this.accessories.WeightingScale != null;
+                this.IsAlphaNumericBarAvailable = this.accessories.AlphaNumericBar?.IsConfiguredNew ?? false;
+                this.IsBarcodeReaderAvailable = this.accessories.BarcodeReader?.IsConfiguredNew ?? false;
+                this.IsCardReaderAvailable = this.accessories.CardReader?.IsConfiguredNew ?? false;
+                this.IsLabelPrinterAvailable = this.accessories.LabelPrinter?.IsConfiguredNew ?? false;
+                this.IsLaserPointerAvailable = this.accessories.LaserPointer?.IsConfiguredNew ?? false;
+                this.IsTokenReaderAvailable = this.accessories.TokenReader?.IsConfiguredNew ?? false;
+                this.IsWeightingScaleAvailable = this.accessories.WeightingScale?.IsConfiguredNew ?? false;
             }
             catch (Exception ex)
             {
