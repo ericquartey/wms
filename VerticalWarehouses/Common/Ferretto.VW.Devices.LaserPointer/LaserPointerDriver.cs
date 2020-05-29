@@ -27,7 +27,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private readonly ConcurrentQueue<string> messagesToBeSendQueue;
 
-        private readonly string parametersRow;
+        private readonly string parametersRaw;
 
         private readonly int tcpTimeout = 2000;
 
@@ -66,7 +66,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public IPAddress IpAddress => this.ipAddress;
 
-        public string ParametersRow => this.parametersRow;
+        public string ParametersRaw => this.parametersRaw;
 
         public int Port => this.port;
 
@@ -84,14 +84,14 @@ namespace Ferretto.VW.Devices.LaserPointer
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentWidth: {compartmentWidth}, compartmentDepth {compartmentDepth}");
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentXPosition: {compartmentXPosition}, compartmentYPosition {compartmentYPosition}");
 
-            if (baySide == WarehouseSide.Back)
-            {
-                compartmentXPosition = loadingUnitWidth - compartmentXPosition;
-                compartmentYPosition = loadingUnitDepth - compartmentYPosition;
-            }
-
             result.X = (int)((loadingUnitDepth / 2) - compartmentYPosition - (compartmentDepth / 2)) + (int)this.xOffset;
             result.Y = (int)((loadingUnitWidth / 2) - compartmentXPosition - (compartmentWidth / 2)) + (int)this.yOffset;
+
+            if (baySide == WarehouseSide.Back)
+            {
+                result.X = (-1) * result.X;
+                result.Y = (-1) * result.Y;
+            }
 
             result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
             result.Z -= (int)missionOperationItemHeight;
@@ -487,7 +487,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
             catch (Exception e)
             {
-                //System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;{e.Message}");
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;{e.Message}");
             }
 
             return result;

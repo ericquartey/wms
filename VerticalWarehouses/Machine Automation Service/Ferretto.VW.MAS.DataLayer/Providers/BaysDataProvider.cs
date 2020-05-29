@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private const double AdditionalStorageSpace = 16.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 29mm
+        private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
 
         private const int ProfileStep = 25;
 
@@ -356,7 +356,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Accessories)
                         .ThenInclude(a => a.WeightingScale)
                     .AsNoTracking()
-                    .Single(b => b.Number == bayNumber);
+                    .SingleOrDefault(b => b.Number == bayNumber);
 
                 return bay.Accessories;
             }

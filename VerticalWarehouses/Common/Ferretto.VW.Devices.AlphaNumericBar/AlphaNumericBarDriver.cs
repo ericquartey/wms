@@ -601,7 +601,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     }
                     catch (Exception e)
                     {
-                        //System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
                     }
                 }
 
@@ -611,7 +611,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
             catch (Exception e)
             {
-                //System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};AplhaNumericBarDriver;{e.Message}");
             }
 
             return result;
