@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var bay in machine.Bays)
                 {
                     bay.Accessories = new BayAccessories();
+                    bay.Accessories.LaserPointer = new LaserPointer();
                     dataContext.Accessories.Add(bay.Accessories.LaserPointer);
                 }
                 dataContext.SaveChanges();
