@@ -178,20 +178,25 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
-                if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+                if (e.MachineMission is null || e.WmsOperation is null)
                 {
                     return;
                 }
 
-                await this.LaserPointerConfigureAsync();
-
-                if (this.laserPointerDriver is null)
+                if (e.WmsOperation.CompartmentId == 0)
                 {
                     return;
                 }
 
                 if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
                 {
+                    await this.LaserPointerConfigureAsync();
+
+                    if (this.laserPointerDriver is null)
+                    {
+                        return;
+                    }
+
                     var activeMission = await this.RetrieveActiveMissionAsync();
                     if (activeMission != null && activeMission.WmsId.HasValue)
                     {

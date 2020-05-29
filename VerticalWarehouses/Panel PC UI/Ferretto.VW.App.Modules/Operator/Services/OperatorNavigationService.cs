@@ -99,6 +99,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.NavigateToDrawerView(goToWaitViewIfBayIsEmpty: true);
         }
 
+        public void NavigateToDrawerViewBase()
+        {
+            this.NavigateToDrawerViewBase(goToWaitViewIfBayIsEmpty: true);
+        }
+
         public void NavigateToOperatorMenu()
         {
             if (this.missionOperationsService.ActiveWmsOperation != null)
@@ -174,6 +179,52 @@ namespace Ferretto.VW.App.Modules.Operator
         }
 
         private void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
+            if (!this.IsOperatorViewModel(activeViewModelName))
+            {
+                return;
+            }
+
+            if (this.missionOperationsService.ActiveWmsOperation != null)
+            {
+                this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
+            }
+            else
+            {
+                var currentMission = this.missionOperationsService.ActiveMachineMission;
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+                if (loadingUnit != null)
+                {
+                    this.lastActiveUnitId = loadingUnit.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
+                else if (
+                    activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
+                    &&
+                    goToWaitViewIfBayIsEmpty)
+                {
+                    this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
+
+                    if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
+                    {
+                        this.navigationService.GoBackTo(
+                           nameof(Utils.Modules.Operator),
+                           Utils.Modules.Operator.ItemOperations.WAIT);
+                    }
+                    else
+                    {
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            null,
+                            trackCurrentView: true);
+                    }
+                }
+            }
+        }
+
+        private void NavigateToDrawerViewBase(bool goToWaitViewIfBayIsEmpty)
         {
             var activeViewModelName = this.GetActiveViewModelName();
             if (!this.IsOperatorViewModel(activeViewModelName))

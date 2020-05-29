@@ -174,62 +174,74 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
         {
-            if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+            try
             {
-                return;
-            }
-
-            await this.AlphaNumericBarConfigureAsync();
-
-            if (this.alphaNumericBarDriver is null)
-            {
-                return;
-            }
-
-            if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
-            {
-                var activeMission = await this.RetrieveActiveMissionAsync();
-                if (activeMission != null && activeMission.WmsId.HasValue)
+                if (e.MachineMission is null || e.WmsOperation is null)
                 {
-                    var bay = await this.bayManager.GetBayAsync();
-                    var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
-                    var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
+                    return;
+                }
 
-                    var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
-                    this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
-                    //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(e.WmsMission.LoadingUnit.Width, compartmentSelected.XPosition.Value);
-                    await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
+                if (e.WmsOperation.CompartmentId == 0)
+                {
+                    return;
+                }
 
-                    var message = "?";
-                    switch (e.WmsOperation.Type)
+                if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
+                {
+                    await this.AlphaNumericBarConfigureAsync();
+
+                    if (this.alphaNumericBarDriver is null)
                     {
-                        case MissionOperationType.Pick:
-                            message = "-";
-                            break;
-
-                        case MissionOperationType.Put:
-                            message = "+";
-                            break;
+                        return;
                     }
 
-                    message += e.WmsOperation.RequestedQuantity + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
-                    message = message.Trim();
+                    var activeMission = await this.RetrieveActiveMissionAsync();
+                    if (activeMission != null && activeMission.WmsId.HasValue)
+                    {
+                        var bay = await this.bayManager.GetBayAsync();
+                        var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
+                        var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
-                    var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
-                    if (offset > 0)
-                    {
-                        await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
-                    }
-                    else if (offset == -1)
-                    {
-                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
-                    }
-                    else
-                    {
-                        var start = arrowPosition + 6;
-                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
+                        this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
+                        //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(e.WmsMission.LoadingUnit.Width, compartmentSelected.XPosition.Value);
+                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
+
+                        var message = "?";
+                        switch (e.WmsOperation.Type)
+                        {
+                            case MissionOperationType.Pick:
+                                message = "-";
+                                break;
+
+                            case MissionOperationType.Put:
+                                message = "+";
+                                break;
+                        }
+
+                        message += e.WmsOperation.RequestedQuantity + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
+                        message = message.Trim();
+
+                        var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
+                        if (offset > 0)
+                        {
+                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
+                        }
+                        else if (offset == -1)
+                        {
+                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                        }
+                        else
+                        {
+                            var start = arrowPosition + 6;
+                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
 
