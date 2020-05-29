@@ -75,6 +75,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     bay.Accessories.WeightingScale = new WeightingScale();
                     dataContext.Accessories.Add(bay.Accessories.WeightingScale);
+
+                    dataContext.Bays.Update(bay);
                 }
                 dataContext.SaveChanges();
             }
