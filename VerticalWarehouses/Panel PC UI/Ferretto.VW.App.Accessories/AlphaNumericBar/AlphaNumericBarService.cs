@@ -186,15 +186,15 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     return;
                 }
 
-                await this.AlphaNumericBarConfigureAsync();
-
-                if (this.alphaNumericBarDriver is null)
-                {
-                    return;
-                }
-
                 if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
                 {
+                    await this.AlphaNumericBarConfigureAsync();
+
+                    if (this.alphaNumericBarDriver is null)
+                    {
+                        return;
+                    }
+
                     var activeMission = await this.RetrieveActiveMissionAsync();
                     if (activeMission != null && activeMission.WmsId.HasValue)
                     {
