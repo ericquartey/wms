@@ -111,6 +111,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.accessories = await this.machineBaysWebService.GetAccessoriesAsync();
 
                 this.IsAlphaNumericBarAvailable = this.accessories.AlphaNumericBar?.IsConfiguredNew ?? false;
+                this.IsBarcodeReaderAvailable = this.accessories.BarcodeReader?.IsConfiguredNew ?? false;
                 this.IsCardReaderAvailable = this.accessories.CardReader?.IsConfiguredNew ?? false;
                 this.IsLabelPrinterAvailable = this.accessories.LabelPrinter?.IsConfiguredNew ?? false;
                 this.IsLaserPointerAvailable = this.accessories.LaserPointer?.IsConfiguredNew ?? false;
