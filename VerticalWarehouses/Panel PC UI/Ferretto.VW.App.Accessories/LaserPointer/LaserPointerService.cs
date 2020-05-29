@@ -178,7 +178,12 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
-                if (e.MachineMission is null || e.WmsOperation.CompartmentId == 0)
+                if (e.MachineMission is null || e.WmsOperation is null)
+                {
+                    return;
+                }
+
+                if (e.WmsOperation.CompartmentId == 0)
                 {
                     return;
                 }
