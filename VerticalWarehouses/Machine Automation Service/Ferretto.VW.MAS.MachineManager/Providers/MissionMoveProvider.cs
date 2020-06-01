@@ -220,7 +220,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
-                    && (m.Step == MissionStep.WaitPick
+                    && ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
                         || m.Status == MissionStatus.New)
                 );
             if (waitMission != null)
