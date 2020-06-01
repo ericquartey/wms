@@ -574,16 +574,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void AdjustItemsAppearance()
         {
-            if (this.maxKnownIndexSelection == 0)
+            try
             {
-                this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
-            }
+                if (this.maxKnownIndexSelection == 0)
+                {
+                    this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
+                }
 
-            if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
-                &&
-                this.Items.Count >= this.maxKnownIndexSelection)
+                if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
+                    &&
+                    this.Items.Count >= this.maxKnownIndexSelection)
+                {
+                    this.SelectedItem = this.items?.ElementAtOrDefault(this.maxKnownIndexSelection);
+                }
+            }
+            catch (Exception ex)
             {
-                this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
+                this.ShowNotification(ex);
             }
         }
 

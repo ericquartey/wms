@@ -84,8 +84,11 @@ namespace Ferretto.VW.Devices.LaserPointer
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentWidth: {compartmentWidth}, compartmentDepth {compartmentDepth}");
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentXPosition: {compartmentXPosition}, compartmentYPosition {compartmentYPosition}");
 
-            result.X = (int)((loadingUnitDepth / 2) - compartmentYPosition - (compartmentDepth / 2)) + (int)this.xOffset;
-            result.Y = (int)((loadingUnitWidth / 2) - compartmentXPosition - (compartmentWidth / 2)) + (int)this.yOffset;
+            result.X = (int)((loadingUnitWidth / 2) - compartmentXPosition - (compartmentWidth / 2)) + (int)this.xOffset;
+            result.Y = (int)((loadingUnitDepth / 2) - compartmentYPosition - (compartmentDepth / 2)) + (int)this.yOffset;
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();X: {result.X}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();Y: {result.Y}");
 
             if (baySide == WarehouseSide.Back)
             {

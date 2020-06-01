@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double BeltSpacing { get; set; }
 
             [Id(3)]
-            [Editable(false)]
+            [Editable(true)]
             [Unit("kg")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorWeight))]
             public double ElevatorWeight { get; set; }
@@ -42,6 +42,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.PulleyDiameter))]
             public double PulleyDiameter { get; set; }
+
+            [Id(8)]
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.SecondTermMultiplier))]
+            public double SecondTermMultiplier { get; set; }
 
             [Id(6)]
             [Editable(true)]
