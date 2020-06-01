@@ -53,7 +53,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLaserPointerDescription}" />
+                   Text="{x:Static res:Menu.AccessoriesLaserPointerMenuDescription}" />
 
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="2"

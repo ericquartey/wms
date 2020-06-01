@@ -75,7 +75,10 @@
     <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
     <None Remove="Views\Accessories\CardReaderSettingsView.xaml" />
     <None Remove="Views\Accessories\DeviceInformationView.xaml" />
+    <None Remove="Views\Accessories\LabelPrinterSettingsView.xaml" />
     <None Remove="Views\Accessories\LaserPointerSettingsView.xaml" />
+    <None Remove="Views\Accessories\TokenReaderSettingsView.xaml" />
+    <None Remove="Views\Accessories\WeightingScaleSettingsView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
     <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
@@ -104,6 +107,15 @@
     </Compile>
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\LabelPrinterSettingsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\WeightingScaleSettingsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Accessories\TokenReaderSettingsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Accessories\CardReaderSettingsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
