@@ -169,11 +169,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                         // Set empty position on bay, according to the bay type
                         if (hasCarousel)
                         {
-                            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false; //hasCarousel ? false : true;
+                            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                         }
                         if (hasExternal)
                         {
-                            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false; //hasExternal ? false : true;
+                            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                         }
                         if (!hasCarousel && !hasExternal)
                         {
