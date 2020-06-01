@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
 {
-    public sealed partial class LaserPointerService : ILaserPointerService
+    internal sealed class LaserPointerService : ILaserPointerService
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IMachineMissionsWebService missionWebService;
 
-        private LaserPointerDriver laserPointerDriver;
+        private ILaserPointerDriver laserPointerDriver;
 
         private SubscriptionToken loadingUnitToken;
 
@@ -40,10 +40,12 @@ namespace Ferretto.VW.App.Accessories
 
         public LaserPointerService(
             IEventAggregator eventAggregator,
+            ILaserPointerDriver laserPointerDriver,
             IBayManager bayManager,
             IMachineMissionsWebService missionWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
@@ -72,7 +74,7 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public async Task StartAsync()
+        public Task StartAsync()
         {
             this.loadingUnitToken = this.loadingUnitToken
                 ??
@@ -84,20 +86,21 @@ namespace Ferretto.VW.App.Accessories
                         false);
 
             this.missionToken = this.missionToken
-            ??
-            this.eventAggregator
-                .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnMissionChangeAsync(e),
-                    ThreadOption.BackgroundThread,
-                    false);
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnMissionChangeAsync(e),
+                        ThreadOption.BackgroundThread,
+                        false);
 
-            //await this.LaserPointerConfigureAsync();
+            return Task.CompletedTask;
         }
 
-        public async void StopAsync()
+        public async Task StopAsync()
         {
             this.logger.Info("Switch off laser pointer");
+
             await this.laserPointerDriver.EnabledAsync(false, false);
         }
 
@@ -109,7 +112,6 @@ namespace Ferretto.VW.App.Accessories
 
                 if (accessories is null)
                 {
-                    this.laserPointerDriver = null;
                     return;
                 }
 
@@ -123,10 +125,6 @@ namespace Ferretto.VW.App.Accessories
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
-                    if (this.laserPointerDriver is null)
-                    {
-                        this.laserPointerDriver = new LaserPointerDriver();
-                    }
                     this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
                 }
                 else

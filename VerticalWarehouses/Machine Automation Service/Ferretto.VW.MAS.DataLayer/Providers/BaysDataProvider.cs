@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .SingleOrDefault(b => b.Number == bayNumber);
 
-                return bay.Accessories;
+                return bay.Accessories ?? new BayAccessories();
             }
         }
 
@@ -1004,15 +1004,17 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.LaserPointer)
                         .Single(b => b.Number == bayNumber);
 
-                laserPointerBay.Accessories.LaserPointer.IsEnabledNew = isEnabled;
-                laserPointerBay.Accessories.LaserPointer.IpAddress = IPAddress.Parse(ipAddress);
-                laserPointerBay.Accessories.LaserPointer.TcpPort = port;
-                laserPointerBay.Accessories.LaserPointer.XOffset = xOffset;
-                laserPointerBay.Accessories.LaserPointer.YOffset = yOffset;
-                laserPointerBay.Accessories.LaserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
-                laserPointerBay.Accessories.LaserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;
+                var laserPointer = laserPointerBay.Accessories.LaserPointer;
 
-                this.dataContext.Accessories.Update(laserPointerBay.Accessories.LaserPointer);
+                laserPointer.IsEnabledNew = isEnabled;
+                laserPointer.IpAddress = IPAddress.Parse(ipAddress);
+                laserPointer.TcpPort = port;
+                laserPointer.XOffset = xOffset;
+                laserPointer.YOffset = yOffset;
+                laserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
+                laserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;
+
+                this.dataContext.Accessories.Update(laserPointer);
                 this.dataContext.SaveChanges();
             }
         }
@@ -1069,6 +1071,23 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.CardReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.CardReader.IsEnabledNew = isEnabled;
+                bay.Accessories.CardReader.TokenRegex = tokenRegex;
+
+                this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
             }
         }

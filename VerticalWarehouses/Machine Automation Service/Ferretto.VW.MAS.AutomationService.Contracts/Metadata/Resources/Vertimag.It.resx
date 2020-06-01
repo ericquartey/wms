@@ -408,6 +408,9 @@
   <data name="Race" xml:space="preserve">
     <value>Corsa</value>
   </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>Secondo fattore moltiplicativo</value>
+  </data>
   <data name="ShaftDiameter" xml:space="preserve">
     <value>Diametro albero</value>
   </data>

@@ -10,12 +10,11 @@ using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
-using NLog.LayoutRenderers.Wrappers;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 {
-    public sealed partial class AlphaNumericBarService : IAlphaNumericBarService
+    internal sealed class AlphaNumericBarService : IAlphaNumericBarService
     {
         #region Fields
 
@@ -29,7 +28,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private readonly IMachineMissionsWebService missionWebService;
 
-        private AlphaNumericBarDriver alphaNumericBarDriver;
+        private IAlphaNumericBarDriver alphaNumericBarDriver;
 
         private SubscriptionToken loadingUnitToken;
 
@@ -42,11 +41,14 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
         public AlphaNumericBarService(
             IEventAggregator eventAggregator,
             IBayManager bayManager,
+            IAlphaNumericBarDriver alphaNumericBarDriver,
             IMachineMissionsWebService missionWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.alphaNumericBarDriver = alphaNumericBarDriver ?? throw new ArgumentNullException(nameof(missionWebService));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
+
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
 
@@ -96,9 +98,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             //await this.AlphaNumericBarConfigureAsync();
         }
 
-        public async void StopAsync()
+        public async Task StopAsync()
         {
-            this.logger.Info("Switch off alpha numeric bar");
+            this.logger.Info("Switch off alpha numeric bar.");
+
             await this.alphaNumericBarDriver.EnabledAsync(false);
         }
 
@@ -121,11 +124,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
                     var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
-
-                    if (this.alphaNumericBarDriver is null)
-                    {
-                        this.alphaNumericBarDriver = new AlphaNumericBarDriver();
-                    }
 
                     this.alphaNumericBarDriver.Configure(ipAddress, port, size);
                 }

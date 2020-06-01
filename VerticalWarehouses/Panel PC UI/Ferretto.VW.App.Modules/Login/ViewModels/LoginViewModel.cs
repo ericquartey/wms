@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
+        private readonly EventHandler<RegexMatchEventArgs> tokenAcquiredEventHandler;
+
         #endregion
 
         #region Constructors
@@ -84,16 +86,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
             this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
-            this.cardReaderService.TokenAcquired += async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e);
+
+            this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e));
+            this.cardReaderService.TokenAcquired += this.tokenAcquiredEventHandler;
         }
 
-        private async Task OnCardReaderTokenAcquired(object sender, string e)
+        private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
         {
             try
             {
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingCard"), Services.Models.NotificationSeverity.Info);
 
-                var claims = await this.authenticationService.LogInAsync(e);
+                var claims = await this.authenticationService.LogInAsync(e.Token);
 
                 await this.NavigateToMainMenuAsync(claims);
             }
@@ -185,6 +189,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             base.Disappear();
 
             this.cardReaderService.StopAsync();
+            this.cardReaderService.TokenAcquired -= this.tokenAcquiredEventHandler;
 
             this.UserLogin.IsValidationEnabled = true;
             this.UserLogin.Password = null;

@@ -151,15 +151,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration mask of the alphanumeric bar parameters..
-        /// </summary>
-        public static string HelpAlphaNumericDescription {
-            get {
-                return ResourceManager.GetString("HelpAlphaNumericDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HelpBCTRActualHeight.
         /// </summary>
         public static string HelpBCTRActualHeight {
@@ -2127,15 +2118,6 @@ namespace Ferretto.VW.App.Resources {
         public static string HelpItemSearchTextToFind {
             get {
                 return ResourceManager.GetString("HelpItemSearchTextToFind", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Configuration mask of the laser pointer parameters..
-        /// </summary>
-        public static string HelpLaserPointerDescription {
-            get {
-                return ResourceManager.GetString("HelpLaserPointerDescription", resourceCulture);
             }
         }
         

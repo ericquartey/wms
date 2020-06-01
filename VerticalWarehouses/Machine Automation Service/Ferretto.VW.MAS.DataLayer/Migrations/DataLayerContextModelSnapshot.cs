@@ -403,6 +403,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("PulleyDiameter");
 
+                    b.Property<int>("SecondTermMultiplier");
+
                     b.Property<double>("ShaftDiameter");
 
                     b.Property<double>("ShaftElasticity");
@@ -1750,6 +1752,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CardReader", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("TokenRegex");
 
                     b.HasDiscriminator().HasValue("CardReader");
                 });

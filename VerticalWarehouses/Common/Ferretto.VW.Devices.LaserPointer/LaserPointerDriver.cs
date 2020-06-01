@@ -9,7 +9,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.Devices.LaserPointer
 {
-    public class LaserPointerDriver : ILaserPointerDriver
+    internal sealed class LaserPointerDriver : ILaserPointerDriver
     {
         #region Fields
 

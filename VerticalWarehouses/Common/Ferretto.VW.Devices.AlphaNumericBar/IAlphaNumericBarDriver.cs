@@ -7,6 +7,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 {
     public interface IAlphaNumericBarDriver
     {
+        #region Properties
+
+        int NumberOfLeds { get; }
+
+        bool TestEnabled { get; }
+
+        #endregion
+
         #region Methods
 
         int CalculateArrowPosition(double loadUnitlengthInMM, double itemPositionXInMM);
@@ -17,7 +25,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> ClearAsync();
 
-        bool Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size);
+        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size);
 
         Task<bool> CustomAsync(string hexval);
 

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.AlphaNumericBar;
+using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
@@ -16,7 +18,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(
+                  itemsWebService,
+                  bayManager,
+                  eventAggregator,
+                  missionOperationsService,
+                  dialogService)
         {
         }
 

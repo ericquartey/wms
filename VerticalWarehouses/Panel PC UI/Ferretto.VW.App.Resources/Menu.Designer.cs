@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accessory not available.
+        /// </summary>
+        public static string AccessoriesAccessoryNotAvailable {
+            get {
+                return ResourceManager.GetString("AccessoriesAccessoryNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration and test of the alphanumeric bar.
         /// </summary>
         public static string AccessoriesAlphaNumBarMenuDescription {
@@ -480,6 +489,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Movements {
             get {
                 return ResourceManager.GetString("Movements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No accessories installed..
+        /// </summary>
+        public static string NoAccessoriesInstalled {
+            get {
+                return ResourceManager.GetString("NoAccessoriesInstalled", resourceCulture);
             }
         }
         

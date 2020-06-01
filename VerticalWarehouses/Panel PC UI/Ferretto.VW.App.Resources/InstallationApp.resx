@@ -2681,4 +2681,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SystemPathNotFound" xml:space="preserve">
     <value>System path '{0}' not found</value>
   </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Matching Pattern (regex)</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="Bay4" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Start Test</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Acquired token</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Code was recognized.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Save changes before starting the test.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Use the card on the card reader.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Received Barcode</value>
+  </data>
 </root>

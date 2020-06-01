@@ -16,22 +16,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly IErrorsProvider errorsProvider;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-
         #endregion
 
         #region Constructors
 
-        public BaysController(
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysDataProvider baysDataProvider,
-            IErrorsProvider errorsProvider)
+        public BaysController(IBaysDataProvider baysDataProvider)
         {
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
-            this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -74,17 +65,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.baysDataProvider.FindZero(this.BayNumber);
 
             return this.Accepted();
-        }
-
-        [HttpGet("accessories")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public ActionResult<BayAccessories> GetAccessories()
-        {
-            var accessories = this.baysDataProvider.GetAccessories(this.BayNumber);
-
-            return this.Ok(accessories);
         }
 
         [HttpGet]
@@ -136,26 +116,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("accessories/alpha-numeric-bar")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        public ActionResult<BayAccessories> SetAlphaNumericBar(bool isEnabled, string ipAddress, int port)
-        {
-            this.baysDataProvider.SetAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port);
-
-            return this.Ok();
-        }
-
-        [HttpPost("accessories/laser-pointer")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        public ActionResult<BayAccessories> SetLaserPointer(bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
-        {
-            this.baysDataProvider.SetLaserPointer(this.BayNumber, isEnabled, ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
-
-            return this.Ok();
-        }
-
         [HttpPost("set-light")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -173,18 +133,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.baysDataProvider.SetLoadingUnit(bayPositionId, loadingUnitId);
             return this.Accepted();
-        }
-
-        [HttpPut("accessories/barcode-reader")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public ActionResult<Bay> UpdateBarcodeReaderSettings(bool isEnabled, string portName)
-        {
-            this.baysDataProvider.UpdateBarcodeReaderSettings(this.BayNumber, isEnabled, portName);
-
-            return this.Ok();
         }
 
         [HttpPost("height")]
