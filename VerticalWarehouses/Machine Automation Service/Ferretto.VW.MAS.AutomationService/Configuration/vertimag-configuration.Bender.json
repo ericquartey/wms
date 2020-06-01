@@ -328,15 +328,16 @@
                     ]
                 }
             ],
-            "StructuralProperties": {
-                "BeltRigidity": 7000000,
-                "BeltSpacing": 300,
-                "ElevatorWeight": 230,
-                "HalfShaftLength": 2084,
-                "PulleyDiameter": 160,
-                "ShaftDiameter": 45,
-                "ShaftElasticity": 210000
-            }
+          "StructuralProperties": {
+            "BeltRigidity": 7000000,
+            "BeltSpacing": 300,
+            "ElevatorWeight": 230,
+            "HalfShaftLength": 2084,
+            "PulleyDiameter": 160,
+            "SecondTermMultiplier": 1,
+            "ShaftDiameter": 45,
+            "ShaftElasticity": 210000
+          }
         },
         "Height": 4563,
         "Id": 1,
