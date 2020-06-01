@@ -161,8 +161,12 @@ namespace Ferretto.VW.App.Accessories
             {
                 try
                 {
-                    this.logger.Debug("OnLoadingUnitMovedAsync;Switch off laser pointer");
-                    await this.laserPointerDriver.EnabledAsync(false, false);
+                    var bay = await this.bayManager.GetBayAsync();
+                    if (bay.CurrentMission is null)
+                    {
+                        this.logger.Debug("OnLoadingUnitMovedAsync;Switch off laser pointer");
+                        await this.laserPointerDriver.EnabledAsync(false, false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -199,6 +203,12 @@ namespace Ferretto.VW.App.Accessories
                     {
                         var bay = await this.bayManager.GetBayAsync();
                         var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
+
+                        if (bayPosition is null)
+                        {
+                            return;
+                        }
+
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
                         double itemHeight = 0;

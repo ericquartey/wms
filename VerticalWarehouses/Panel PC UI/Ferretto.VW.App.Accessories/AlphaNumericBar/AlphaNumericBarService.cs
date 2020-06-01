@@ -160,8 +160,13 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             {
                 try
                 {
-                    this.logger.Debug("Switch off alpha numeric bar");
-                    await this.alphaNumericBarDriver.EnabledAsync(false);
+                    var bay = await this.bayManager.GetBayAsync();
+
+                    if (bay.CurrentMission is null)
+                    {
+                        this.logger.Debug("Switch off alpha numeric bar");
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -198,6 +203,12 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     {
                         var bay = await this.bayManager.GetBayAsync();
                         var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
+
+                        if (bayPosition is null)
+                        {
+                            return;
+                        }
+
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
                         var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
