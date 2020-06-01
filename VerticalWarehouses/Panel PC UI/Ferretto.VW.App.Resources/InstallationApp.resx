@@ -2705,4 +2705,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UseTheCardOnCardReader" xml:space="preserve">
     <value>Use the card on the card reader.</value>
   </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Received Barcode</value>
+  </data>
 </root>

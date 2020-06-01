@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -18,11 +21,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
+        private readonly IEventAggregator eventAggregator;
+
+        private SubscriptionToken barcodeSubscriptionToken;
+
         private DelegateCommand configureDeviceCommand;
 
         private string portName;
 
-        private string selectedPortName;
+        private string receivedBarcode;
 
         private bool systemPortsAvailable;
 
@@ -30,9 +37,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public BarcodeReaderSettingsViewModel(IBarcodeReaderService barcodeReaderService)
+        public BarcodeReaderSettingsViewModel(
+            IBarcodeReaderService barcodeReaderService,
+            IEventAggregator eventAggregator)
         {
             this.barcodeReaderService = barcodeReaderService;
+            this.eventAggregator = eventAggregator;
 
             this.barcodeReaderService.PortNames.CollectionChanged += this.OnPortNamesChanged;
             this.SystemPortsAvailable = this.barcodeReaderService.PortNames.Any();
@@ -52,15 +62,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string PortName
         {
             get => this.portName;
-            set => this.SetProperty(ref this.portName, value);
+            set => this.SetProperty(ref this.portName, value, () => this.AreSettingsChanged = true);
         }
 
         public IEnumerable<string> PortNames => this.barcodeReaderService.PortNames;
 
-        public string SelectedPortName
+        public string ReceivedBarcode
         {
-            get => this.selectedPortName;
-            set => this.SetProperty(ref this.selectedPortName, value);
+            get => this.receivedBarcode;
+            set => this.SetProperty(ref this.receivedBarcode, value);
         }
 
         public bool SystemPortsAvailable
@@ -72,6 +82,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.receivedBarcode = null;
+
+            this.barcodeSubscriptionToken?.Dispose();
+            this.barcodeSubscriptionToken = null;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.ReceivedBarcode = null;
+
+            this.barcodeSubscriptionToken =
+                this.barcodeSubscriptionToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ActionEventArgs>>()
+                    .Subscribe(
+                        this.OnBarcodeReceived,
+                        ThreadOption.UIThread,
+                        false);
+        }
 
         protected override async Task OnDataRefreshAsync()
         {
@@ -94,6 +131,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 await this.barcodeReaderService.StartAsync();
+
+                var liveInformation = this.barcodeReaderService.DeviceInformation;
+                this.FirmwareVersion = liveInformation.FirmwareVersion;
+                this.SerialNumber = liveInformation.SerialNumber;
+                this.ManufactureDate = liveInformation.ManufactureDate;
+                this.ModelNumber = liveInformation.ModelNumber;
 
                 this.AreSettingsChanged = false;
             }
@@ -135,6 +178,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Accessories.BarcodeReaderConfig);
+        }
+
+        private void OnBarcodeReceived(ActionEventArgs e)
+        {
+            this.ReceivedBarcode = e.Code.Replace("\r", "<CR>").Replace("\n", "<LF>");
         }
 
         private void OnPortNamesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

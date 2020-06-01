@@ -5427,6 +5427,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Received Barcode.
+        /// </summary>
+        public static string ReceivedBarcode {
+            get {
+                return ResourceManager.GetString("ReceivedBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference&apos;s cell position [mm].
         /// </summary>
         public static string ReferenceCellHeight {

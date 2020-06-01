@@ -322,9 +322,27 @@ namespace Ferretto.VW.App.Accessories
 
         private async Task OnBarcodeReceivedAsync(ActionEventArgs e)
         {
+            this.eventAggregator
+                .GetEvent<PubSubEvent<ActionEventArgs>>()
+                .Publish(e);
+
+            var skipProcessing = false;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                skipProcessing =
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Accessories.BarcodeReader)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Accessories.BarcodeReaderConfig);
+            });
+
+            if (skipProcessing)
+            {
+                return;
+            }
+
             var code = e.Code
-            .Replace("\r", string.Empty)
-            .Replace("\n", string.Empty);
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
 
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
@@ -359,9 +377,9 @@ namespace Ferretto.VW.App.Accessories
 
             Analytics.TrackEvent("Read Barcode", new Dictionary<string, string>
             {
-                    { "Active Page", activeViewModel?.GetType()?.Name?.Replace("ViewModel", "View") ?? "<none>" },
-                    { "Matched Rule", this.activeRule?.Action?.ToString() ?? "<none>" },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                { "Active Page", activeViewModel?.GetType()?.Name?.Replace("ViewModel", "View") ?? "<none>" },
+                { "Matched Rule", this.activeRule?.Action?.ToString() ?? "<none>" },
+                { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
             });
 
             await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
