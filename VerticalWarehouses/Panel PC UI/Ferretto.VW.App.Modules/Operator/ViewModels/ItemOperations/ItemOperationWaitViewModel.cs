@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,25 +17,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
-
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineService machineService;
-
-        private readonly List<LoadingUnit> moveUnits = new List<LoadingUnit>();
 
         private int count;
 
         private bool isGridVisible;
 
+        private List<LoadingUnit> loadingUnits;
+
         private string loadingUnitsInfo;
 
         private int loadingUnitsMovements;
 
-        private IEnumerable<int> moveUnitId = new List<int>();
+        private IEnumerable<int> moveUnitId;
 
-        private IEnumerable<int> moveUnitIdToCell = new List<int>();
+        private IEnumerable<int> moveUnitIdToCell;
+
+        private List<LoadingUnit> moveUnits;
 
         private bool moveVisible;
 
@@ -51,6 +52,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+
+            this.loadingUnits = new List<LoadingUnit>();
+            this.moveUnits = new List<LoadingUnit>();
+            this.moveUnitId = new List<int>();
+            this.moveUnitIdToCell = new List<int>();
         }
 
         #endregion
@@ -64,13 +70,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.isGridVisible, value) && value)
                 {
-                    this.RaisePropertyChanged();
                     this.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
+        public List<LoadingUnit> LoadingUnits => new List<LoadingUnit>(this.loadingUnits);
 
         public string LoadingUnitsInfo
         {
@@ -78,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitsInfo, value);
         }
 
-        public IEnumerable<LoadingUnit> MoveUnits => new BindingList<LoadingUnit>(this.moveUnits);
+        public List<LoadingUnit> MoveUnits => new List<LoadingUnit>(this.moveUnits);
 
         public bool MoveVisible
         {
@@ -87,7 +92,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.moveVisible, value) && value)
                 {
-                    this.RaisePropertyChanged();
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -171,11 +175,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
-                this.RaisePropertyChanged(nameof(this.moveVisible));
+                this.RaisePropertyChanged(nameof(this.MoveVisible));
 
                 this.RaisePropertyChanged(nameof(this.MoveUnits));
 
-                this.RaisePropertyChanged(nameof(this.isGridVisible));
+                this.RaisePropertyChanged(nameof(this.IsGridVisible));
             }
         }
 
@@ -183,9 +187,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.RaisePropertyChanged(nameof(this.moveVisible));
+            this.RaisePropertyChanged(nameof(this.MoveVisible));
 
-            this.RaisePropertyChanged(nameof(this.isGridVisible));
+            this.RaisePropertyChanged(nameof(this.IsGridVisible));
 
             this.IsBackNavigationAllowed = true;
 
@@ -203,18 +207,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            await base.OnDataRefreshAsync();
+            try
+            {
+                await base.OnDataRefreshAsync();
 
-            await this.GetLoadingUnitsAsync();
+                await this.GetLoadingUnitsAsync();
 
-            await this.CheckForNewOperationCount();
+                await this.CheckForNewOperationCount();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async Task CheckForNewOperationCount()
         {
-            var missions = await this.machineMissionsWebService.GetAllAsync();
-            this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
-            this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
+            try
+            {
+                var missions = await this.machineMissionsWebService.GetAllAsync();
+                this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
+                this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private string ComputeLoadingUnitInfo()
