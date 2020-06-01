@@ -213,8 +213,8 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}" >
-                            <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}"/> <Run Text="{Binding Item.MeasureUnit}"/>
+                                   Foreground="{DynamicResource Text_Foreground}">
+                            <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}" /> <Run Text="{Binding Item.MeasureUnit}" />
                         </TextBlock>
 
                         <TextBlock Grid.Row="1"
