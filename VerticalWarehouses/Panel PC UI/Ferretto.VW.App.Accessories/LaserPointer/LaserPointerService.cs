@@ -99,9 +99,8 @@ namespace Ferretto.VW.App.Accessories
 
         public async Task StopAsync()
         {
-            this.logger.Info("Switch off laser pointer");
-
-            await this.laserPointerDriver.EnabledAsync(false, false);
+            //this.logger.Info("StopAsync;Switch off laser pointer");
+            //await this.laserPointerDriver.EnabledAsync(false, false);
         }
 
         private async Task LaserPointerConfigureAsync()
@@ -147,7 +146,7 @@ namespace Ferretto.VW.App.Accessories
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
-            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType.ToString()} Status {message.Status.ToString()}");
+            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType} Status {message.Status}");
 
             await this.LaserPointerConfigureAsync();
 
@@ -162,7 +161,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 try
                 {
-                    this.logger.Debug("Switch off laser pointer");
+                    this.logger.Debug("OnLoadingUnitMovedAsync;Switch off laser pointer");
                     await this.laserPointerDriver.EnabledAsync(false, false);
                 }
                 catch (Exception ex)
