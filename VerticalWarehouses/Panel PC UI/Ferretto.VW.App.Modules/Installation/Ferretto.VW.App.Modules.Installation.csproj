@@ -108,10 +108,10 @@
     <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
       <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Accessories\WeightingScaleSettingsView.xaml.cs">
+    <Compile Update="Views\Accessories\LabelPrinterSettingsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\Accessories\LabelPrinterSettingsView.xaml.cs">
+    <Compile Update="Views\Accessories\WeightingScaleSettingsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Accessories\TokenReaderSettingsView.xaml.cs">
