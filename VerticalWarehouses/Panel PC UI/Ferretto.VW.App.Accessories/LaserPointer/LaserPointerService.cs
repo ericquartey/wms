@@ -157,7 +157,7 @@ namespace Ferretto.VW.App.Accessories
 
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
                 &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting)
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
             {
                 try
                 {
