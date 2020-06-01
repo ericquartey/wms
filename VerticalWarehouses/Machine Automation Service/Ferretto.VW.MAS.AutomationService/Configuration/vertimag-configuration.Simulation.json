@@ -518,6 +518,7 @@
                 "ElevatorWeight": 230.0,
                 "HalfShaftLength": 2084.0,
                 "PulleyDiameter": 160.0,
+        "SecondTermMultiplier": 1,
                 "ShaftDiameter": 45.0,
                 "ShaftElasticity": 210000.0
             }

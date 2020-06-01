@@ -1,0 +1,158 @@
+<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.CardReaderSettingsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            UseLayoutRounding="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="30,0,0,0">
+        <Grid.Resources>
+            <converters:BoolToBrushConverter x:Key="BTBC"
+                                             FalseBrush="{StaticResource FerrettoLightGray}"
+                                             TrueBrush="{StaticResource FerrettoGreen}" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="Row0_Title"
+                           Height="100" />
+            <RowDefinition x:Name="Row1_DeviceInfo"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row2_Enable"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row3_TokenRegex"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row4_Input" />
+            <RowDefinition x:Name="Row5_Tokens_Title"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row6_Tokens"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row7_Save"
+                           Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="PageTitle"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc Menu.AccessoriesCardReaderMenuTitle}" />
+
+        <views:DeviceInformationView Grid.Row="1" />
+
+        <controls:PpcCheckBox Grid.Row="2"
+                              Margin="0,15,0,0"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+
+        <controls:PpcTextBox Grid.Row="3"
+                             Width="350"
+                             VerticalAlignment="Center"
+                             InputText="{Binding TokenRegex, Mode=TwoWay}"
+                             IsEnabled="{Binding CanEditTokenRegex}"
+                             LabelText="{x:Static res:InstallationApp.AccessoriesCardReaderTokenRegex}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding StartTestCommand}"
+                            Content="{x:Static res:InstallationApp.StartTest}"
+                            Visibility="{Binding IsTesting, Converter={StaticResource BTVIC}}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding StopTestCommand}"
+                            Content="{x:Static res:InstallationApp.StopTest}"
+                            Visibility="{Binding IsTesting, Converter={StaticResource BTVC}}" />
+
+        <ItemsControl Grid.Row="4"
+                      Grid.ColumnSpan="2"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding InputKeys}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="1"
+                            Padding="1,10,1,1"
+                            BorderBrush="{Binding IsHighlighted, Converter={StaticResource BTBC}}"
+                            BorderThickness="0,0,0,3">
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="DemiBold"
+                                   Foreground="{StaticResource FerrettoLightGray}"
+                                   Text="{Binding DisplayKey}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Grid.Row="5"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontSize="14"
+                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.AcquiredToken}" />
+        
+        <ItemsControl Grid.Row="6"
+                      Grid.ColumnSpan="2"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding AcquiredTokens}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="1"
+                            Padding="5"
+                            Background="{StaticResource FerrettoLightGray}"
+                            CornerRadius="5">
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="DemiBold"
+                                   Foreground="{StaticResource FerrettoDarkGray}"
+                                   Text="{Binding .}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <controls:PpcButton Grid.Row="7"
+                            Grid.Column="2"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding SaveCommand}"
+                            Content="{x:Static res:General.Save}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+    </Grid>
+</ctrls:View>

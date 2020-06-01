@@ -8,6 +8,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -53,7 +54,7 @@
                    Margin="0,0,15,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.HelpLaserPointerDescription}" />
+                   Text="{x:Static res:Menu.AccessoriesLaserPointerMenuDescription}" />
 
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="2"
@@ -62,29 +63,12 @@
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
 
-            <TextBlock x:Name="Enabled"
-                       Margin="0,10,10,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                       Text="{x:Static res:Menu.AccessoriesEnable}" />
+            <controls:PpcCheckBox Margin="0,0,70,0"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                                  LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
-            <RadioButton Margin="10"
-                         GroupName="RadioButtonGroupEnable">
-                <RadioButton.Content>
-                    <TextBlock Margin="0,5,0,0"
-                               Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{x:Static res:Menu.AccessoriesOff}" />
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton Margin="10"
-                         GroupName="RadioButtonGroupEnable"
-                         IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}">
-                <RadioButton.Content>
-                    <TextBlock Margin="0,5,0,0"
-                               Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{x:Static res:Menu.AccessoriesOn}" />
-                </RadioButton.Content>
-            </RadioButton>
+
         </StackPanel>
 
         <Border Grid.Row="3"
@@ -154,6 +138,13 @@
                     <controls:PpcTextBox Margin="5,5,5,5"
                                          HorizontalAlignment="Stretch"
                                          VerticalAlignment="Stretch"
+                                         InputText="{Binding XOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding IsEnabledEditing}"
+                                         LabelText="{x:Static res:Menu.AccessoriesLaserPointerXOffset}" />
+
+                    <controls:PpcTextBox Margin="5,5,5,5"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
                                          InputText="{Binding YOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding IsEnabledEditing}"
                                          LabelText="{x:Static res:Menu.AccessoriesLaserPointerYOffset}" />
@@ -173,38 +164,11 @@
                                          LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
                 </StackPanel>
 
-                <Grid Grid.Row="1"
-                      Grid.RowSpan="2"
-                      Grid.Column="2"
-                      Margin="15,5,5,5">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
+                <views:DeviceInformationView Grid.Row="1"
+                                             Grid.RowSpan="2"
+                                             Grid.Column="2"
+                                             Margin="15,5,5,5" />
 
-                        <controls:PpcLabeledText Grid.Row="0"
-                                                 Grid.Column="0"
-                                                 ContentText="{Binding FirmwareVersion}"
-                                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
-                        <controls:PpcLabeledText Grid.Row="1"
-                                                 Grid.Column="0"
-                                                 ContentText="{Binding ModelNumber}"
-                                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
-                        <controls:PpcLabeledText Grid.Row="0"
-                                                 Grid.Column="1"
-                                                 ContentText="{Binding ManufactureDate}"
-                                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
-                        <controls:PpcLabeledText Grid.Row="1"
-                                                 Grid.Column="1"
-                                                 ContentText="{Binding SerialNumber}"
-                                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
-                    </Grid>
-                </Grid>
             </Grid>
         </Border>
 

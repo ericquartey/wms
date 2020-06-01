@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Accessories.Interfaces
 {
@@ -6,7 +7,15 @@ namespace Ferretto.VW.App.Accessories.Interfaces
     {
         #region Events
 
-        event EventHandler<string> TokenAcquired;
+        event EventHandler<string> KeysAcquired;
+
+        event EventHandler<RegexMatchEventArgs> TokenAcquired;
+
+        #endregion
+
+        #region Methods
+
+        Task UpdateSettingsAsync(bool isEnabled, string tokenRegex);
 
         #endregion
     }

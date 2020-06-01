@@ -1,6 +1,9 @@
 ﻿using System;
+using Ferretto.VW.App.Accessories.AlphaNumericBar;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.Devices.AlphaNumericBar;
+using Ferretto.VW.Devices.BarcodeReader.Newland;
+using Ferretto.VW.Devices.LaserPointer;
 using Prism.Ioc;
 using Unity;
 
@@ -17,7 +20,8 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TODO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
+            containerRegistry.ConfigureAlphaNumericBarDriver();
+            containerRegistry.RegisterSingleton<IAlphaNumericBarService, AlphaNumericBarService>();
 
             return containerRegistry;
         }
@@ -29,6 +33,7 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
+            containerRegistry.ConfigureNewlandBarcodeReaderDriver();
             containerRegistry.RegisterSingleton<IBarcodeReaderService, BarcodeReaderService>();
 
             return containerRegistry;
@@ -41,7 +46,20 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
+            containerRegistry.ConfigureLaserPointerDriver();
             containerRegistry.RegisterSingleton<ICardReaderService, KeyboarEmulatedCardReaderService>();
+
+            return containerRegistry;
+        }
+
+        public static IContainerRegistry ConfigureLaserPointerUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
 
             return containerRegistry;
         }

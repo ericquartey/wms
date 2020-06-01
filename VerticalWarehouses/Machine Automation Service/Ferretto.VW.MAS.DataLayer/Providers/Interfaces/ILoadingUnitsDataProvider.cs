@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<LoadingUnit> GetAll();
 
+        IEnumerable<LoadingUnit> GetAllCompacting();
+
         IEnumerable<LoadingUnit> GetAllNotTestUnits();
 
         IEnumerable<LoadingUnit> GetAllTestUnits();

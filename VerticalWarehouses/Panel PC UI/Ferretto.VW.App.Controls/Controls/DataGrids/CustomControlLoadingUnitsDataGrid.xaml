@@ -228,7 +228,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=NetWeight}"
+                                    Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
                                     Header="Weight">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -254,7 +254,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=Height}"
+                                    Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
                                     Header="Height">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

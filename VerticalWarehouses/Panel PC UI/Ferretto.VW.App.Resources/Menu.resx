@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
+    <value>Accessory not available</value>
+  </data>
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Configuration and test of the alphanumeric bar</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
     <value>Laser Pointer</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Offset Y axis</value>
   </data>
   <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
     <value>Offset Y axis</value>
@@ -263,5 +269,8 @@
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Units</value>
+  </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>No accessories installed.</value>
   </data>
 </root>
