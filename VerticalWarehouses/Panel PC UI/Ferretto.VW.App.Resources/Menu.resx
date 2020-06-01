@@ -177,6 +177,9 @@
   <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
     <value>Laser Pointer</value>
   </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Offset Y axis</value>
+  </data>
   <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
     <value>Offset Y axis</value>
   </data>

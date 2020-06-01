@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
+
+        private const int ProfileStep = 25;
+
         private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
             context.Bays
@@ -161,12 +165,16 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kMul = 0.0938;
+        private readonly double kMul = 0.090625;
+
+        private readonly double kMulNew = 0.0938;
 
         /// <summary>
         /// TODO move to configuration
         /// </summary>
-        private readonly double kSum = -212.5;
+        private readonly double kSum = -181.25;
+
+        private readonly double kSumNew = -212.5;
 
         private readonly ILogger<DataLayerContext> logger;
 
@@ -297,6 +305,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double ConvertProfileToHeightNew(ushort profile, int positionId)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByBayPositionId(positionId);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException();
+                }
+                var heightMm = (profile * this.kMul) + this.kSum;
+                var heightClass = (int)Math.Round(heightMm);
+                heightClass = (heightClass / ProfileStep) * ProfileStep
+                    + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
+                    + 24;
+                var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
+                //this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}");
+                return heightClass + offset + AdditionalStorageSpace;
+            }
+        }
+
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(
@@ -328,7 +356,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Accessories)
                         .ThenInclude(a => a.WeightingScale)
                     .AsNoTracking()
-                    .Single(b => b.Number == bayNumber);
+                    .SingleOrDefault(b => b.Number == bayNumber);
 
                 return bay.Accessories ?? new BayAccessories();
             }
@@ -968,7 +996,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        public void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
             lock (this.dataContext)
             {
@@ -979,6 +1007,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 laserPointerBay.Accessories.LaserPointer.IsEnabledNew = isEnabled;
                 laserPointerBay.Accessories.LaserPointer.IpAddress = IPAddress.Parse(ipAddress);
                 laserPointerBay.Accessories.LaserPointer.TcpPort = port;
+                laserPointerBay.Accessories.LaserPointer.XOffset = xOffset;
                 laserPointerBay.Accessories.LaserPointer.YOffset = yOffset;
                 laserPointerBay.Accessories.LaserPointer.ZOffsetLowerPosition = zOffsetLowerPosition;
                 laserPointerBay.Accessories.LaserPointer.ZOffsetUpperPosition = zOffsetUpperPosition;

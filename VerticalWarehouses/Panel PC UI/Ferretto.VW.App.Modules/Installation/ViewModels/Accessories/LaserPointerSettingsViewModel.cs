@@ -191,6 +191,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ZOffsetLowerPosition = (int)bayAccessories.LaserPointer.ZOffsetLowerPosition;
 
                     this.SetDeviceInformation(bayAccessories.LaserPointer.DeviceInformation);
+
+                    this.ReadDeviceInformation(accessories);
+                    this.XOffset = (int)accessories.LaserPointer.XOffset;
+                    this.YOffset = (int)accessories.LaserPointer.YOffset;
+                    this.ZOffsetUpperPosition = (int)accessories.LaserPointer.ZOffsetUpperPosition;
+                    this.ZOffsetLowerPosition = (int)accessories.LaserPointer.ZOffsetLowerPosition;
+
                     this.AreSettingsChanged = false;
                 }
                 else
@@ -244,7 +251,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ConnectionBrush = Brushes.DarkOrange;
 
                 this.deviceDriver.Configure(this.ipAddress, this.port);
-                var result = await this.deviceDriver.IsConnectedAsync();
+                var result = await this.deviceDriver.ParametersAsync();
 
                 if (result)
                 {
@@ -287,6 +294,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             return false;
+        }
+
+        private void ReadDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
+        {
+            if (!(accessories.LaserPointer.DeviceInformation is null))
+            {
+                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
+                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
+                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
+
+                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
+                {
+                    this.ManufactureDate = "-";
+                }
+                else
+                {
+                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
+                }
+            }
+        }
+
+        private async Task SaveAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.bayManager.SetSetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

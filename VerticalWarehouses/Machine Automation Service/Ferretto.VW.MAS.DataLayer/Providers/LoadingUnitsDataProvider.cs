@@ -445,6 +445,29 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void TryAdd(int loadingUnitId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
+            if (lu is null)
+            {
+                var machine = this.machineProvider.Get();
+                lock (this.dataContext)
+                {
+                    var loadingUnits = new LoadingUnit
+                    {
+                        Id = loadingUnitId,
+                        Tare = machine.LoadUnitTare,
+                        MaxNetWeight = machine.LoadUnitMaxNetWeight,
+                        Height = 0
+                    };
+
+                    this.dataContext.LoadingUnits.Add(loadingUnits);
+
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext)
         {
             _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));

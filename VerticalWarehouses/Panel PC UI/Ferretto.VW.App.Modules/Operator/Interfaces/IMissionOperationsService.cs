@@ -27,6 +27,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         Task RecallLoadingUnitAsync(int id);
 
+        int RecallLoadingUnitId();
+
+        bool IsRecallLoadingUnitId();
+
         Task RefreshAsync();
 
         Task StartAsync();

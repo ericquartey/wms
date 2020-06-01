@@ -35,6 +35,7 @@ namespace Ferretto.VW.App.Modules.Login
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.ConfigureAlphaNumericBarUiServices();
+            containerRegistry.ConfigureLaserPointerUiServices();
             containerRegistry.ConfigureCardReaderUiServices();
             containerRegistry.ConfigureBarcodeReaderUiServices();
 

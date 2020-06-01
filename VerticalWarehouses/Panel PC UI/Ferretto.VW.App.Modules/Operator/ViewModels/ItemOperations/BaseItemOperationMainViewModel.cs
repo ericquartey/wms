@@ -9,8 +9,6 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Devices.AlphaNumericBar;
-using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -24,11 +22,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IAlphaNumericBarDriver alphaNumericBarDriver;
-
         private readonly IEventAggregator eventAggregator;
-
-        private readonly ILaserPointerDriver laserPointerDriver;
 
         private Bay bay;
 
@@ -80,15 +74,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
-            ILaserPointerDriver laserPointerDriver,
-            IAlphaNumericBarDriver alphaNumericBarDriver,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
             : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
-            this.laserPointerDriver = laserPointerDriver;
-            this.alphaNumericBarDriver = alphaNumericBarDriver;
+
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
@@ -521,9 +512,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
 
             this.GetLoadingUnitDetails();
-
-            await this.AlphaNumericBarSendMessageAsync();
-            await this.LaserPointerSwitchOnAndMoveAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -576,93 +564,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception)
             {
                 return Array.Empty<TrayControlCompartment>();
-            }
-        }
-
-        private async Task AlphaNumericBarConfigureAsync()
-        {
-            try
-            {
-                var accessories = await this.BayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    return;
-                }
-
-                var alphaNumericBar = accessories.AlphaNumericBar;
-                if (alphaNumericBar.IsEnabledNew)
-                {
-                    var ipAddress = alphaNumericBar.IpAddress;
-                    var port = alphaNumericBar.TcpPort;
-                    var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
-
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task AlphaNumericBarSendMessageAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                if (this.alphaNumericBarDriver is null)
-                {
-                    return;
-                }
-
-                if (this.MissionOperation is null)
-                {
-                    await this.alphaNumericBarDriver.EnabledAsync(false); // no mission, then switch off the alpha numeric bar
-                }
-                else
-                {
-                    var message = "?";
-                    var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.loadingUnitWidth, this.selectedCompartment is null ? 0 : this.selectedCompartment.XPosition.Value);
-                    await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
-
-                    switch (this.MissionOperation.Type)
-                    {
-                        case MissionOperationType.Pick:
-                            message = "-";
-                            break;
-
-                        case MissionOperationType.Put:
-                            message = "+";
-                            break;
-                    }
-
-                    message += this.MissionOperation.RequestedQuantity + " " + this.MissionOperation.ItemCode + " " + this.MissionOperation.ItemDescription;
-
-                    var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
-                    if (offset > 0)
-                    {
-                        await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
-                    }
-                    else if (offset == -1)
-                    {
-                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
-                    }
-                    else
-                    {
-                        var start = arrowPosition + 6;
-                        await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
-                    }
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
             }
         }
 
@@ -725,74 +626,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task LaserPointerConfigureAsync()
-        {
-            try
-            {
-                var accessories = await this.BayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    return;
-                }
-
-                var laserPointer = accessories.LaserPointer;
-                if (laserPointer.IsEnabledNew)
-                {
-                    var ipAddress = laserPointer.IpAddress;
-                    var port = laserPointer.TcpPort;
-                    var yOffset = laserPointer.YOffset;
-                    var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
-                    var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
-
-                    this.laserPointerDriver.Configure(ipAddress, port, 0, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task LaserPointerSwitchOnAndMoveAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                if (this.laserPointerDriver is null)
-                {
-                    return;
-                }
-
-                if (this.MissionOperation is null)
-                {
-                    await this.laserPointerDriver.EnabledAsync(false, false); // no mission, then switch off the alpha numeric bar
-                }
-                else
-                {
-                    if (this.selectedCompartment is null)
-                    {
-                        return;
-                    }
-
-                    var idLoadingUnit = this.selectedCompartment.LoadingUnitId;
-                    var isUpper = this.bay.Positions.FirstOrDefault(p => p.LoadingUnit.Id == idLoadingUnit).IsUpper;
-
-                    var point = this.laserPointerDriver.CalculateLaserPoint(this.loadingUnitWidth, this.loadingUnitDepth, this.selectedCompartment.XPosition.Value, this.selectedCompartment.YPosition.Value, this.MissionOperation.ItemHeight.Value, isUpper, this.bay.Side);
-                    await this.laserPointerDriver.SwitchOnAndMoveAsync(point);
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task OnMissionChangedAsync()
         {
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
@@ -803,9 +636,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.GetLoadingUnitDetails();
             }
-
-            _ = this.AlphaNumericBarSendMessageAsync();
-            _ = this.LaserPointerSwitchOnAndMoveAsync();
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;

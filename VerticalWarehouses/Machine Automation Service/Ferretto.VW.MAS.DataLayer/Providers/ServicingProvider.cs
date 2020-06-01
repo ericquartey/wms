@@ -232,9 +232,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     logger.Warn(Resources.General.MaintenanceStateExpired);
                     //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
                 }
-                if (service.ServiceStatus == MachineServiceStatus.Expiring)
+                if (service.ServiceStatus == MachineServiceStatus.Expiring
+                    && service.NextServiceDate != null
+                    )
                 {
-                    var diff = service.NextServiceDate.Value.Subtract(service.NextServiceDate.Value);
+                    var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
                     if (diff.TotalDays <= 0)
                     {
                         service.ServiceStatus = MachineServiceStatus.Expired;
@@ -243,9 +245,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     logger.Warn(Resources.General.MaintenanceStateExpiring);
                     //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                 }
-                if (service.ServiceStatus == MachineServiceStatus.Valid)
+                if (service.ServiceStatus == MachineServiceStatus.Valid
+                    && service.NextServiceDate != null
+                    )
                 {
-                    var diff = service.NextServiceDate.Value.Subtract(service.NextServiceDate.Value);
+                    var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
                     if (diff.TotalDays <= 30)
                     {
                         service.ServiceStatus = MachineServiceStatus.Expiring;

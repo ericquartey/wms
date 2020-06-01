@@ -63,12 +63,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <summary>
         ///
         /// </summary>
-        /// <param name="loadUnitlengthInMM"></param>
-        /// <param name="itemPositionXInMM"></param>
+        /// <param name="compartmentWidth"></param>
+        /// <param name="itemXPosition"></param>
         /// <returns></returns>
-        public int CalculateArrowPosition(double loadingUnitWidth, double itemXPosition)
+        public int CalculateArrowPosition(double compartmentWidth, double itemXPosition)
         {
-            var arrowPosition = (loadingUnitWidth / 2) + itemXPosition;
+            var arrowPosition = (compartmentWidth / 2) + itemXPosition;
             var pixelOffset = (arrowPosition / this.StepLedBar) + 2;
 
             return (int)pixelOffset;
@@ -182,6 +182,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> EnabledAsync(bool enable)
         {
+            if (enable == this.barEnabled)
+            {
+                return true;
+            }
+
             this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
@@ -500,6 +505,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                 case AlphaNumericBarCommands.Command.SET_LUM:
                     strCommand = "SETLUM " + offset;
+                    break;
+
+                case AlphaNumericBarCommands.Command.WRITE:
+                    this.barEnabled = true;
                     break;
             }
 

@@ -132,9 +132,9 @@ namespace Ferretto.VW.App.Services
             await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
         }
 
-        public async Task SetSetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        public async Task SetSetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
-            await this.accessoriesWebService.UpdateLaserPointerAsync(isEnabled, ipAddress.ToString(), port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+            await this.accessoriesWebService.UpdateLaserPointerAsync(isEnabled, ipAddress.ToString(), port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)

@@ -263,10 +263,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.IsPolicyBypassed == true)
                 {
                     this.IsPolicyBypassed = false;
+                    this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
                 }
                 else
                 {
                     this.IsPolicyBypassed = true;
+                    this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
                 }
             }
             ));

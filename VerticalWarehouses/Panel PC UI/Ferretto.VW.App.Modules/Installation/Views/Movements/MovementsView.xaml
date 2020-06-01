@@ -501,9 +501,9 @@
 
                     <controls:PpcCheckBox Grid.Column="3"
                                           Margin="30"
-                                          Visibility="Hidden"
                                           IsChecked="{Binding IsPolicyBypassed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          LabelText="Bypass" />
+                                          LabelText="Bypass"
+                                          Visibility="Hidden" />
                     <Grid Grid.Row="0"
                           Grid.RowSpan="2"
                           Grid.Column="0"
@@ -778,11 +778,26 @@
                                             Margin="15,0,0,0"
                                             HorizontalAlignment="Right"
                                             HorizontalContentAlignment="Center"
-                                            BorderBrush="{DynamicResource FerrettoRed}"
                                             Command="{Binding IsPolicyBypassedCommand}"
-                                            Foreground="{StaticResource FerrettoPureWhite}"
-                                            Kind="Shield"
-                                            Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}" />
+                                            Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}">
+                            <controls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                                       TargetType="{x:Type controls:PpcButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPolicyBypassed}"
+                                                     Value="True">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+                                            <Setter Property="KindMaterial" Value="ShieldOff" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsPolicyBypassed}"
+                                                     Value="False">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                                            <Setter Property="KindMaterial" Value="Shield" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:PpcButton.Style>
+                        </controls:PpcButton>
                         <controls:PpcButton Width="60"
                                             Margin="15,0,0,0"
                                             HorizontalAlignment="Right"
