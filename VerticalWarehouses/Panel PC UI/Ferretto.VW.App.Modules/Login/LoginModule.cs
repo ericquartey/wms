@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Modules.Login.Views;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;

@@ -3,7 +3,7 @@ using Ferretto.VW.Devices;
 
 namespace Ferretto.VW.App.Accessories.Interfaces
 {
-    public interface IAlphaNumericBarService
+    public interface IAlphaNumericBarService : IAccessoryService
     {
         #region Properties
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// <summary>
         ///
         /// </summary>
-        void StopAsync();
+        Task StopAsync();
 
         #endregion
     }

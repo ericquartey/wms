@@ -79,9 +79,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut("laser-pointer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public IActionResult UpdateLaserPointer(bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        public IActionResult UpdateLaserPointer(bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
-            this.baysDataProvider.SetLaserPointer(this.BayNumber, isEnabled, ipAddress, port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+            this.baysDataProvider.SetLaserPointer(this.BayNumber, isEnabled, ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
 
             return this.Ok();
         }

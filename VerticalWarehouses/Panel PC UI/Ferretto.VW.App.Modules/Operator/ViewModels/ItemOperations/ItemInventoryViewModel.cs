@@ -16,16 +16,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
-            ILaserPointerDriver laserPointerDriver,
-            IAlphaNumericBarDriver alphaNumericBarDriver,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
                   itemsWebService,
                   bayManager,
                   eventAggregator,
-                  laserPointerDriver,
-                  alphaNumericBarDriver,
                   missionOperationsService,
                   dialogService)
         {

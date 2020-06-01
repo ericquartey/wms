@@ -20,6 +20,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task<bool> JogAsync(LaserPointerCommands.Command JogCommand);
 
+        Task<bool> MoveAndSwitchOnAsync(LaserPoint point);
+
         Task<bool> MoveAsync(LaserPoint point);
 
         Task<bool> ParametersAsync();

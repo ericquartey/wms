@@ -28,6 +28,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private readonly int tcpTimeout = 2000;
 
+        private bool barEnabled;
+
         private IPAddress ipAddress;
 
         private AlphaNumericBarSize size = AlphaNumericBarSize.Medium;
@@ -444,10 +446,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 case AlphaNumericBarCommands.Command.ENABLE_ON:
                     strCommand = "ENABLE ON";
+                    this.barEnabled = true;
                     break;
 
                 case AlphaNumericBarCommands.Command.ENABLE_OFF:
                     strCommand = "ENABLE OFF";
+                    this.barEnabled = false;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_ON:                   // deprecated, not use
