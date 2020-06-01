@@ -99,9 +99,8 @@ namespace Ferretto.VW.App.Accessories
 
         public async Task StopAsync()
         {
-            this.logger.Info("Switch off laser pointer");
-
-            await this.laserPointerDriver.EnabledAsync(false, false);
+            //this.logger.Info("StopAsync;Switch off laser pointer");
+            //await this.laserPointerDriver.EnabledAsync(false, false);
         }
 
         private async Task LaserPointerConfigureAsync()
@@ -147,7 +146,7 @@ namespace Ferretto.VW.App.Accessories
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
-            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType.ToString()} Status {message.Status.ToString()}");
+            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType} Status {message.Status}");
 
             await this.LaserPointerConfigureAsync();
 
@@ -158,12 +157,16 @@ namespace Ferretto.VW.App.Accessories
 
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
                 &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting)
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
             {
                 try
                 {
-                    this.logger.Debug("Switch off laser pointer");
-                    await this.laserPointerDriver.EnabledAsync(false, false);
+                    var bay = await this.bayManager.GetBayAsync();
+                    if (bay.CurrentMission is null)
+                    {
+                        this.logger.Debug("OnLoadingUnitMovedAsync;Switch off laser pointer");
+                        await this.laserPointerDriver.EnabledAsync(false, false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -200,6 +203,12 @@ namespace Ferretto.VW.App.Accessories
                     {
                         var bay = await this.bayManager.GetBayAsync();
                         var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
+
+                        if (bayPosition is null)
+                        {
+                            return;
+                        }
+
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
                         double itemHeight = 0;
