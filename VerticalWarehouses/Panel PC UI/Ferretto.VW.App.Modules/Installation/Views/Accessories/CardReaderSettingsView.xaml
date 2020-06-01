@@ -33,14 +33,16 @@
                            Height="100" />
             <RowDefinition x:Name="Row1_DeviceInfo"
                            Height="Auto" />
-            <RowDefinition x:Name="Row2_TokenRegex"
+            <RowDefinition x:Name="Row2_Enable"
                            Height="Auto" />
-            <RowDefinition x:Name="Row3_Input" />
-            <RowDefinition x:Name="Row4_Tokens_Title"
+            <RowDefinition x:Name="Row3_TokenRegex"
                            Height="Auto" />
-            <RowDefinition x:Name="Row5_Tokens"
+            <RowDefinition x:Name="Row4_Input" />
+            <RowDefinition x:Name="Row5_Tokens_Title"
                            Height="Auto" />
-            <RowDefinition x:Name="Row6_Save"
+            <RowDefinition x:Name="Row6_Tokens"
+                           Height="Auto" />
+            <RowDefinition x:Name="Row7_Save"
                            Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -52,14 +54,20 @@
 
         <views:DeviceInformationView Grid.Row="1" />
 
-        <controls:PpcTextBox Grid.Row="2"
+        <controls:PpcCheckBox Grid.Row="2"
+                              Margin="0,15,0,0"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+
+        <controls:PpcTextBox Grid.Row="3"
                              Width="350"
                              VerticalAlignment="Center"
                              InputText="{Binding TokenRegex, Mode=TwoWay}"
                              IsEnabled="{Binding CanEditTokenRegex}"
                              LabelText="{x:Static res:InstallationApp.AccessoriesCardReaderTokenRegex}" />
 
-        <controls:PpcButton Grid.Row="2"
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Left"
@@ -68,7 +76,7 @@
                             Content="{x:Static res:InstallationApp.StartTest}"
                             Visibility="{Binding IsTesting, Converter={StaticResource BTVIC}}" />
 
-        <controls:PpcButton Grid.Row="2"
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Left"
@@ -77,7 +85,7 @@
                             Content="{x:Static res:InstallationApp.StopTest}"
                             Visibility="{Binding IsTesting, Converter={StaticResource BTVC}}" />
 
-        <ItemsControl Grid.Row="3"
+        <ItemsControl Grid.Row="4"
                       Grid.ColumnSpan="2"
                       Background="Transparent"
                       BorderBrush="Transparent"
@@ -104,14 +112,14 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-
-        <TextBlock Grid.Row="4"
+        <TextBlock Grid.Row="5"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    FontSize="14"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{res:Loc InstallationApp.AcquiredToken}" />
-        <ItemsControl Grid.Row="5"
+        
+        <ItemsControl Grid.Row="6"
                       Grid.ColumnSpan="2"
                       Background="Transparent"
                       BorderBrush="Transparent"
@@ -138,7 +146,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <controls:PpcButton Grid.Row="6"
+        <controls:PpcButton Grid.Row="7"
                             Grid.Column="2"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"

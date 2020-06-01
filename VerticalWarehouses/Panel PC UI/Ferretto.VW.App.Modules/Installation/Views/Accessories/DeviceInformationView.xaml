@@ -22,11 +22,12 @@
                            Height="Auto" />
             <RowDefinition x:Name="DeviceInfo2"
                            Height="Auto" />
-            <RowDefinition x:Name="EnableState"
-                           Height="Auto" />
+            <!--<RowDefinition x:Name="EnableState"
+                           Height="Auto" />-->
         </Grid.RowDefinitions>
 
-        <controls:PpcLabeledText ContentText="{Binding ModelNumber}"
+        <controls:PpcLabeledText Margin="0,0,15,15"
+                                 ContentText="{Binding ModelNumber}"
                                  LabelText="{x:Static res:InstallationApp.ModelNumber}" />
 
         <controls:PpcLabeledText Grid.Column="1"
@@ -34,6 +35,7 @@
                                  LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
 
         <controls:PpcLabeledText Grid.Row="1"
+                                 Margin="0,0,15,15"
                                  ContentText="{Binding SerialNumber}"
                                  LabelText="{x:Static res:InstallationApp.SerialNumber}" />
 
@@ -42,11 +44,7 @@
                                  ContentText="{Binding ManufactureDate, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
 
-        <controls:PpcCheckBox Grid.Row="3"
-                              Margin="0,15,0,0"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+
 
     </Grid>
 </ctrls:View>

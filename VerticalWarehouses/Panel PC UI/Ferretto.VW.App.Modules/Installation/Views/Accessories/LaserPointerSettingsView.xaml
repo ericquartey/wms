@@ -8,6 +8,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -67,7 +68,7 @@
                                   IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
                                   LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
-           
+
         </StackPanel>
 
         <Border Grid.Row="3"
@@ -140,7 +141,7 @@
                                          InputText="{Binding XOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding IsEnabledEditing}"
                                          LabelText="{x:Static res:Menu.AccessoriesLaserPointerXOffset}" />
-                    
+
                     <controls:PpcTextBox Margin="5,5,5,5"
                                          HorizontalAlignment="Stretch"
                                          VerticalAlignment="Stretch"
@@ -163,38 +164,11 @@
                                          LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
                 </StackPanel>
 
-                <Grid Grid.Row="1"
-                      Grid.RowSpan="2"
-                      Grid.Column="2"
-                      Margin="15,5,5,5">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
+                <views:DeviceInformationView Grid.Row="1"
+                                             Grid.RowSpan="2"
+                                             Grid.Column="2"
+                                             Margin="15,5,5,5" />
 
-                        <controls:PpcLabeledText Grid.Row="0"
-                                                 Grid.Column="0"
-                                                 ContentText="{Binding FirmwareVersion}"
-                                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
-                        <controls:PpcLabeledText Grid.Row="1"
-                                                 Grid.Column="0"
-                                                 ContentText="{Binding ModelNumber}"
-                                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
-                        <controls:PpcLabeledText Grid.Row="0"
-                                                 Grid.Column="1"
-                                                 ContentText="{Binding ManufactureDate}"
-                                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
-                        <controls:PpcLabeledText Grid.Row="1"
-                                                 Grid.Column="1"
-                                                 ContentText="{Binding SerialNumber}"
-                                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
-                    </Grid>
-                </Grid>
             </Grid>
         </Border>
 
