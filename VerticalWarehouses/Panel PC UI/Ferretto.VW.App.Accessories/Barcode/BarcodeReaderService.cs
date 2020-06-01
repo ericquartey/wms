@@ -129,7 +129,17 @@ namespace Ferretto.VW.App.Accessories
                             PortName = accessories.BarcodeReader.PortName
                         });
                     this.isStarted = true;
+
                     await this.LoadRuleSetAsync();
+
+                    await this.accessoriesWebService.UpdateBarcodeReaderDeviceInfoAsync(
+                        new MAS.AutomationService.Contracts.DeviceInformation
+                        {
+                            FirmwareVersion = this.DeviceInformation.FirmwareVersion,
+                            ManufactureDate = this.DeviceInformation.ManufactureDate,
+                            ModelNumber = this.DeviceInformation.ModelNumber,
+                            SerialNumber = this.DeviceInformation.SerialNumber
+                        });
                 }
             }
             catch (Exception ex)

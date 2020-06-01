@@ -41,7 +41,7 @@
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="1"
-                                 ContentText="{Binding ManufactureDate, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                 ContentText="{Binding ManufactureDate, StringFormat=d, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
 
 

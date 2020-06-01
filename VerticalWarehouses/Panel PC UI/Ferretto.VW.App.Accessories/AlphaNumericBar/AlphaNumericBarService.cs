@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         #region Methods
 
-        public async Task StartAsync()
+        public Task StartAsync()
         {
             this.loadingUnitToken = this.loadingUnitToken
                 ??
@@ -95,7 +95,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     ThreadOption.BackgroundThread,
                     false);
 
-            //await this.AlphaNumericBarConfigureAsync();
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync()

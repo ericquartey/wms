@@ -12,16 +12,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
+        private readonly IAccessoriesDataProvider accessoriesDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public AccessoriesController(
-            IBaysDataProvider baysDataProvider)
+        public AccessoriesController(IAccessoriesDataProvider accessoriesDataProvider)
         {
-            this.baysDataProvider = baysDataProvider;
+            this.accessoriesDataProvider = accessoriesDataProvider;
         }
 
         #endregion
@@ -39,7 +38,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<BayAccessories> GetAll()
         {
-            var accessories = this.baysDataProvider.GetAccessories(this.BayNumber);
+            var accessories = this.accessoriesDataProvider.GetAccessories(this.BayNumber);
 
             return this.Ok(accessories);
         }
@@ -49,7 +48,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult UpdateAlphaNumericBar(bool isEnabled, string ipAddress, int port)
         {
-            this.baysDataProvider.SetAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port);
+            this.accessoriesDataProvider.UpdateAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port);
+
+            return this.Ok();
+        }
+
+        [HttpPut("barcode-reader/info")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateBarcodeReaderDeviceInfo(DeviceInformation deviceInformation)
+        {
+            this.accessoriesDataProvider.UpdateBarcodeReaderDeviceInfo(this.BayNumber, deviceInformation);
 
             return this.Ok();
         }
@@ -60,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult UpdateBarcodeReaderSettings(bool isEnabled, string portName)
         {
-            this.baysDataProvider.UpdateBarcodeReaderSettings(this.BayNumber, isEnabled, portName);
+            this.accessoriesDataProvider.UpdateBarcodeReaderSettings(this.BayNumber, isEnabled, portName);
 
             return this.Ok();
         }
@@ -71,7 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult UpdateCardReaderSettings(bool isEnabled, string tokenRegex)
         {
-            this.baysDataProvider.UpdateCardReaderSettings(this.BayNumber, isEnabled, tokenRegex);
+            this.accessoriesDataProvider.UpdateCardReaderSettings(this.BayNumber, isEnabled, tokenRegex);
 
             return this.Ok();
         }
@@ -81,7 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult UpdateLaserPointer(bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
-            this.baysDataProvider.SetLaserPointer(this.BayNumber, isEnabled, ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+            this.accessoriesDataProvider.UpdateLaserPointer(this.BayNumber, isEnabled, ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
 
             return this.Ok();
         }

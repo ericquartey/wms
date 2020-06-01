@@ -33,6 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
             services.AddDbContext<DataLayerContext>();
 
             services
+                .AddScoped<IAccessoriesDataProvider, AccessoriesDataProvider>()
                 .AddScoped<IBaysDataProvider, BaysDataProvider>()
                 .AddScoped<ICellPanelsProvider, CellPanelsProvider>()
                 .AddScoped<ICellsProvider, CellsProvider>()
