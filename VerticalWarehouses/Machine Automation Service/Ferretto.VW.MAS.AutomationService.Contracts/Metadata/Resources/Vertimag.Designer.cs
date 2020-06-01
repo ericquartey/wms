@@ -934,6 +934,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SecondTermMultiplier.
+        /// </summary>
+        public static string SecondTermMultiplier {
+            get {
+                return ResourceManager.GetString("SecondTermMultiplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shaft Diameter.
         /// </summary>
         public static string ShaftDiameter {

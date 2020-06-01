@@ -4218,6 +4218,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("PulleyDiameter", Required = Newtonsoft.Json.Required.Always)]
         public double PulleyDiameter { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("SecondTermMultiplier", Required = Newtonsoft.Json.Required.Always)]
+        public int SecondTermMultiplier { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ShaftDiameter", Required = Newtonsoft.Json.Required.Always)]
         public double ShaftDiameter { get; set; }
     

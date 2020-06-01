@@ -408,6 +408,9 @@
   <data name="Race" xml:space="preserve">
     <value>Race</value>
   </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>SecondTermMultiplier</value>
+  </data>
   <data name="ShaftDiameter" xml:space="preserve">
     <value>Shaft Diameter</value>
   </data>

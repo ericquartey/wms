@@ -1573,6 +1573,18 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
+                        else if (this.isHomingStarted[Axis.Horizontal])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.BayChain])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                        }
                         else if (this.FragmentTotalPercent > 25)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
