@@ -452,6 +452,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.tuningBayCommand?.RaiseCanExecuteChanged();
                 this.tuningChainCommand?.RaiseCanExecuteChanged();
 
+                this.tuningExtBayCommand?.RaiseCanExecuteChanged();
+
                 this.openShutterCommand?.RaiseCanExecuteChanged();
                 this.intermediateShutterCommand?.RaiseCanExecuteChanged();
                 this.closedShutterCommand?.RaiseCanExecuteChanged();
@@ -631,7 +633,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    !this.IsTuningExtBay &&
                    this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&   // comment this...
                    this.SensorsService.Sensors.ACUBay1S3IND;
         }
 

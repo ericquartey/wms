@@ -303,13 +303,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                //if (this.Mission.LoadUnitSource is LoadingUnitLocation.Cell)
-                                //{
-                                //    var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                //    newStep.OnEnter(null);
-                                //}
-                                //else
-                                //{
                                 // Retrieve the bay related to the source location (if exists)
                                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
 
@@ -351,10 +344,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     newStep.OnEnter(null);
                                 }
                             }
-
-                            //var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                            //newStep.OnEnter(null);
-                            //}
                         }
                     }
                     break;

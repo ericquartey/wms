@@ -403,7 +403,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (axis == Axis.BayChain)
             {
-                this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                if (bay.Carousel != null)
+                {
+                    this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                }
+                if (bay.External != null)
+                {
+                    this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                }
             }
             else
             {
@@ -430,16 +438,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
-
-        // ADD
-        // public bool IsExternalPositionOccupied(BayNumber bayNumber)
-        //
-        // public bool IsInternalPositionOccupied(BayNumber bayNumber)
-        //
-
-        // ADD
-        // public void MoveExternalBay(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
-        //
 
         public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
         {
@@ -476,7 +474,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (restore)
             {
                 var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                var distance = bay.External.Race - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.External.LastIdealPosition) + bay.ChainOffset;
+                var distance = bay.External.Race;
+                switch (direction)
+                {
+                    case ExternalBayMovementDirection.TowardMachine:
+                        distance = Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)) + bay.ChainOffset;
+                        break;
+
+                    case ExternalBayMovementDirection.TowardOperator:
+                        distance -= Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)) + bay.ChainOffset;
+                        break;
+                }
+
                 try
                 {
                     this.externalBayProvider.MoveManual(direction, distance, loadUnitId, false, requestingBay, sender);

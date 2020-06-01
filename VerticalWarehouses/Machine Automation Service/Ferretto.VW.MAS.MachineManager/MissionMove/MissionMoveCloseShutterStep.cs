@@ -137,8 +137,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
-
-                    //newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
                 {

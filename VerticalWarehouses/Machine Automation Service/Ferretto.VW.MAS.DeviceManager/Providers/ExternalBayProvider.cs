@@ -115,6 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return ActionPolicy.Allowed;
             }
 
+            // Check the position of loading unit onto the bay and the given movement direction
             var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
             var isLoadingUnitInInternalPosition = this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber);
 
@@ -149,6 +150,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
                 movementCategory != MovementCategory.Manual &&
                 direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
+            }
+
+            // Not admitted the assisted and/or automatic movement if bay contains a loading unit
+            if ((movementCategory == MovementCategory.Assisted || movementCategory == MovementCategory.Automatic) &&
+                bay.Positions.FirstOrDefault().LoadingUnit != null &&
+                !isLoadingUnitInExternalPosition &&
+                !isLoadingUnitInInternalPosition)
             {
                 return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
             }
@@ -263,7 +273,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race : -race; /* : 0;*/ // for .Absolute
+
+            var distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + bay.ChainOffset;
+
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? /*race*/ distance : /*-race*/-distance; /* : 0;*/ // for .Absolute
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
 
