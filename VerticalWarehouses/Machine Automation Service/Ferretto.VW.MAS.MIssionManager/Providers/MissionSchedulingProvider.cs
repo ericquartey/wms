@@ -156,8 +156,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="serviceProvider"></param>
         public bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
-            var loadUnits = this.loadingUnitsDataProvider.GetAll()
-                .Where(x => x.Cell != null)
+            var loadUnits = this.loadingUnitsDataProvider.GetAllCompacting()
                 .OrderByDescending(l => l.Cell.Position)
                 .ToList();
             int? cellId;
