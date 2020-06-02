@@ -38,8 +38,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        //private readonly IMachineCarouselWebService machineCarouselWebService;
-
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineExternalBayWebService machineExternalBayWebMachine;
@@ -735,7 +733,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToStartCalibration()
         {
             return this.CanBaseExecute() &&
-                   this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
+                   this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private bool CanRepeat()
@@ -748,8 +746,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   this.SensorsService.BayZeroChain;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh; // && this.SensorsService.BayZeroChain;
         }
 
         private bool CanStop()
