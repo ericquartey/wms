@@ -478,11 +478,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switch (direction)
                 {
                     case ExternalBayMovementDirection.TowardMachine:
-                        distance = Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)) + bay.ChainOffset;
+                        distance = Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)); // + bay.ChainOffset;
                         break;
 
                     case ExternalBayMovementDirection.TowardOperator:
-                        distance -= Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)) + bay.ChainOffset;
+                        distance -= Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)); //+ bay.ChainOffset;
                         break;
                 }
 

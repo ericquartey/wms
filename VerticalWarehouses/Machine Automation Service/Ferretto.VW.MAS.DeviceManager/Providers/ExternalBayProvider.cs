@@ -274,9 +274,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var race = bay.External.Race;
 
-            var distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + bay.ChainOffset;
+            var distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
 
-            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? /*race*/ distance : /*-race*/-distance; /* : 0;*/ // for .Absolute
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? distance : -distance; /* : 0;*/ // for .Absolute
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
 
