@@ -2474,6 +2474,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsDouble", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDouble { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
     
