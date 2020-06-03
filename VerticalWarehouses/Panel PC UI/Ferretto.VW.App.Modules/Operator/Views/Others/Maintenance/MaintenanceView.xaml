@@ -44,7 +44,7 @@
         <Grid Grid.Row="2"
               Grid.Column="0"
               Grid.ColumnSpan="2"
-              Margin="12,15"
+              Margin="12,10"
               HorizontalAlignment="Left"
               VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

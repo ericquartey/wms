@@ -342,6 +342,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.machineErrorsService.AutoNavigateOnError = true;
 
                 this.localizationService.ActivateCulture(claims.AccessLevel);
+
+                ScaffolderUserAccesLevel.IsLogged = true;
             }
             else
             {

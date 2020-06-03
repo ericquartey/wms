@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.VW.App.Modules.Layout.Presentation;
+using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
@@ -9,6 +12,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         #region Fields
 
         private readonly IMachineErrorsService machineErrorsService;
+
+        private DevExpress.Mvvm.DelegateCommand goToMenuCommand;
 
         #endregion
 
@@ -20,6 +25,12 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         }
 
         #endregion
+
+        public ICommand GoToMenuCommand =>
+            this.goToMenuCommand
+            ??
+            (this.goToMenuCommand = new DelegateCommand(
+                this.GoToMenu, this.CanGoToMenu));
 
         #region Methods
 
@@ -34,6 +45,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance<PresentationMachinePowerSwitch>());
             this.States.Add(this.GetInstance<PresentationError>());
             this.States.Add(this.GetInstance<PresentationDebug>());
+        }
+
+        private void GoToMenu()
+        {
+            this.NavigationService.Appear(
+                    nameof(Utils.Modules.Menu),
+                    Utils.Modules.Menu.MAIN_MENU,
+                    data: this.Data,
+                    trackCurrentView: true);
+        }
+
+        private bool CanGoToMenu()
+        {
+            return ScaffolderUserAccesLevel.IsLogged;
         }
 
         public override void UpdateChanges(PresentationChangedMessage presentation)
