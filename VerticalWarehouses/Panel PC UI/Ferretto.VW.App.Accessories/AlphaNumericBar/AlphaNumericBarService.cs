@@ -77,15 +77,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         public Task StartAsync()
         {
-            this.loadingUnitToken = this.loadingUnitToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                    .Subscribe(
-                        async e => await this.OnLoadingUnitMovedAsync(e),
-                        ThreadOption.BackgroundThread,
-                        false);
-
             this.missionToken = this.missionToken
             ??
             this.eventAggregator
@@ -145,42 +136,20 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                 .Publish(new PresentationNotificationMessage(ex));
         }
 
-        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
-        {
-            await this.AlphaNumericBarConfigureAsync();
-
-            if (this.alphaNumericBarDriver is null)
-            {
-                return;
-            }
-
-            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
-                &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting)
-            {
-                try
-                {
-                    var bay = await this.bayManager.GetBayAsync();
-
-                    if (bay.CurrentMission is null)
-                    {
-                        this.logger.Debug("Switch off alpha numeric bar");
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this.NotifyError(ex);
-                }
-            }
-        }
-
         private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
         {
             try
             {
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
+                    var bay = await this.bayManager.GetBayAsync();
+
+                    if (bay.CurrentMission is null)
+                    {
+                        this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                    }
+
                     return;
                 }
 
