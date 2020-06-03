@@ -76,15 +76,6 @@ namespace Ferretto.VW.App.Accessories
 
         public Task StartAsync()
         {
-            this.loadingUnitToken = this.loadingUnitToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                    .Subscribe(
-                        async e => await this.OnLoadingUnitMovedAsync(e),
-                        ThreadOption.BackgroundThread,
-                        false);
-
             this.missionToken = this.missionToken
                 ??
                 this.eventAggregator
@@ -144,43 +135,20 @@ namespace Ferretto.VW.App.Accessories
                 .Publish(new PresentationNotificationMessage(ex));
         }
 
-        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
-        {
-            this.logger.Debug($"OnLoadingUnitMovedAsync: MissionType {message.Data.MissionType} Status {message.Status}");
-
-            await this.LaserPointerConfigureAsync();
-
-            if (this.laserPointerDriver is null)
-            {
-                return;
-            }
-
-            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.IN
-                &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
-            {
-                try
-                {
-                    var bay = await this.bayManager.GetBayAsync();
-                    if (bay.CurrentMission is null)
-                    {
-                        this.logger.Debug("OnLoadingUnitMovedAsync;Switch off laser pointer");
-                        await this.laserPointerDriver.EnabledAsync(false, false);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this.NotifyError(ex);
-                }
-            }
-        }
-
         private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
         {
             try
             {
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
+                    var bay = await this.bayManager.GetBayAsync();
+                    if (bay.CurrentMission is null
+                        && this.laserPointerDriver != null
+                        )
+                    {
+                        this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
+                        await this.laserPointerDriver.EnabledAsync(false, false);
+                    }
                     return;
                 }
 
@@ -189,7 +157,9 @@ namespace Ferretto.VW.App.Accessories
                     return;
                 }
 
-                if (e.MachineMission.MissionType is MissionType.OUT || e.MachineMission.MissionType is MissionType.WMS)
+                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id} MissionType {e.MachineMission.MissionType} Status {e.MachineMission.Status}");
+
+                if (e.MachineMission.MissionType is MissionType.WMS)
                 {
                     await this.LaserPointerConfigureAsync();
 

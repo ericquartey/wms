@@ -1045,7 +1045,6 @@
           "Id": 6,
           "Speed": 130.0
         },
-        "Id": 1,
         "Inverter": {
           "Id": 1,
           "Index": "Slave3",
@@ -1060,7 +1059,6 @@
           "TcpPort": 19550
         },
         "IsActive": true,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": "BayOne",
         "Operation": "Idle",
