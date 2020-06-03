@@ -142,7 +142,9 @@ namespace Ferretto.VW.App.Accessories
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
                     var bay = await this.bayManager.GetBayAsync();
-                    if (bay.CurrentMission is null)
+                    if (bay.CurrentMission is null
+                        && this.laserPointerDriver != null
+                        )
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
                         await this.laserPointerDriver.EnabledAsync(false, false);
