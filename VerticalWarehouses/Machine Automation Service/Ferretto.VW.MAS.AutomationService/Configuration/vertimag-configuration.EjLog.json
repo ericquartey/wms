@@ -271,7 +271,6 @@
           "Id": 1
         },
         "IsActive": false,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": 1,
         "Operation": 0,
@@ -349,7 +348,6 @@
           "Id": 2
         },
         "IsActive": false,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": 2,
         "Operation": 0,

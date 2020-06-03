@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -29,6 +30,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
+        [JsonIgnore]
         public bool IsDouble => this.Positions?.Count() == 2;
 
         public bool IsExternal { get; set; }
