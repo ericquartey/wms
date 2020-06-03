@@ -1528,4 +1528,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="TotalUnitsInBay" xml:space="preserve">
     <value>Cassetti nelle baie da ultima manutenzione / totali</value>
   </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Quantità richiesta</value>
+  </data>
 </root>

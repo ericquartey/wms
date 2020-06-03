@@ -1922,4 +1922,8 @@ Please put back any moved pieces in their original position.</value>
   <data name="TotalUnitsInBay" xml:space="preserve">
     <value>Units in bays since last maintenance / total</value>
   </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Requested quantity</value>
+    <comment>Label</comment>
+  </data>
 </root>

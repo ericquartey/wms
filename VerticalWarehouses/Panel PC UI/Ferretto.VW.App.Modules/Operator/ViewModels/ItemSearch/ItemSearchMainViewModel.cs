@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand requestItemPickCommand;
 
-        private DelegateCommand<object> scrollCommand;
+        //private DelegateCommand<object> scrollCommand;
 
         private string searchItem;
 
@@ -272,7 +272,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Code),
                 this.CanRequestItemPick));
 
-        public ICommand ScrollCommand => this.scrollCommand ?? (this.scrollCommand = new DelegateCommand<object>((arg) => this.Scroll(arg)));
+        //public ICommand ScrollCommand => this.scrollCommand ?? (this.scrollCommand = new DelegateCommand<object>((arg) => this.Scroll(arg)));
 
         public string SearchItem
         {
@@ -302,7 +302,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var machineId = this.bayManager.Identity.Id;
                 this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
-                this.InputQuantity = null;
+                this.InputQuantity = 0;
                 this.itemToPickId = value.Id;
                 this.itemToPickCode = value.Code;
 
@@ -424,7 +424,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.InputQuantity = null;
+                this.InputQuantity = 0;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
 
@@ -435,7 +435,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.InputQuantity = null;
+            this.InputQuantity = 0;
             this.Reasons = null;
             this.productsChangedToken =
               this.productsChangedToken
@@ -526,17 +526,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task SelectNextItemAsync()
         {
-            if (this.currentItemIndex > this.maxKnownIndexSelection)
+            try
             {
-                this.maxKnownIndexSelection = this.currentItemIndex;
-            }
+                if (this.currentItemIndex > this.maxKnownIndexSelection)
+                {
+                    this.maxKnownIndexSelection = this.currentItemIndex;
+                }
 
-            if (this.currentItemIndex > Math.Max((this.items.Count - 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
+                if (this.currentItemIndex > Math.Max((this.items.Count - 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
+                {
+                    this.IsSearching = true;
+                    this.tokenSource = new CancellationTokenSource();
+                    this.IsBusyLoadingNextPage = true;
+                    await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                }
+            }
+            catch (Exception)
             {
-                this.IsSearching = true;
-                this.tokenSource = new CancellationTokenSource();
-                this.IsBusyLoadingNextPage = true;
-                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
         }
 
@@ -709,27 +715,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.SearchItemAsync(startIndex, this.tokenSource.Token);
         }
 
-        private void Scroll(object parameter)
-        {
-            var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
-            if (scrollChangedEventArgs != null)
-            {
-                var last = (int)scrollChangedEventArgs.VerticalOffset + (int)scrollChangedEventArgs.ViewportHeight;
+        //private void Scroll(object parameter)
+        //{
+        //    var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
+        //    if (scrollChangedEventArgs != null)
+        //    {
+        //        var last = (int)scrollChangedEventArgs.VerticalOffset + (int)scrollChangedEventArgs.ViewportHeight;
 
-                if (last > this.maxKnownIndexSelection)
-                {
-                    this.maxKnownIndexSelection = last;
-                }
+        //        if (last > this.maxKnownIndexSelection)
+        //        {
+        //            this.maxKnownIndexSelection = last;
+        //        }
 
-                if (last > Math.Max((this.items.Count + 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
-                {
-                    this.IsSearching = true;
-                    this.tokenSource = new CancellationTokenSource();
-                    this.IsBusyLoadingNextPage = true;
-                    Task.Run(async () => await this.SearchItemAsync(last, this.tokenSource.Token).ConfigureAwait(false)).GetAwaiter().GetResult();
-                }
-            }
-        }
+        //        if (last > Math.Max((this.items.Count + 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
+        //        {
+        //            this.IsSearching = true;
+        //            this.tokenSource = new CancellationTokenSource();
+        //            this.IsBusyLoadingNextPage = true;
+        //            Task.Run(async () => await this.SearchItemAsync(last, this.tokenSource.Token).ConfigureAwait(false)).GetAwaiter().GetResult();
+        //        }
+        //    }
+        //}
 
         private void SetCurrentIndex(int? itemId)
         {
