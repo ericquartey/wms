@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.isDistinctBySerialNumber,
                     cancellationToken);
 
-                if (!newItems.Any())
+                if (!newItems.Any() || newItems.Count() == 1)
                 {
                     return;
                 }
