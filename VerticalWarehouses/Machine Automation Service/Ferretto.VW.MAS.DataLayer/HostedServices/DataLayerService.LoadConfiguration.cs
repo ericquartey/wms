@@ -145,14 +145,12 @@ namespace Ferretto.VW.MAS.DataLayer
                             instruction.MaxDays = OneYear * 5;
                             foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
                             {
-                                instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
                                 instruction.BayNumber = bay.Number;
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
                             instruction.IsShutter = false;
                             instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
