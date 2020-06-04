@@ -22,8 +22,6 @@
                            Height="Auto" />
             <RowDefinition x:Name="DeviceInfo2"
                            Height="Auto" />
-            <!--<RowDefinition x:Name="EnableState"
-                           Height="Auto" />-->
         </Grid.RowDefinitions>
 
         <controls:PpcLabeledText Margin="0,0,15,15"

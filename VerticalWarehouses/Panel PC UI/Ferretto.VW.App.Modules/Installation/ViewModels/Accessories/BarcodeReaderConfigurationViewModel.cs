@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public IEnumerable<string> PortNames => this.barcodeReaderService.PortNames;
+
         public IEnumerable<object> BarcodeSteps { get; } = new List<object>()
         {
             new

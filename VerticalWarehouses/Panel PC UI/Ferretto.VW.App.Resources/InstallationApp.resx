@@ -2584,7 +2584,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>No serial ports detected. Ensure the device is connected to the panel.</value>
   </data>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
-    <value>Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done.</value>
+    <value>Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation.</value>
   </data>
   <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
     <value>Cannot find the serial port of the barcode reader? Configure the device.</value>
@@ -2707,5 +2707,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ReceivedBarcode" xml:space="preserve">
     <value>Received Barcode</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Check serial ports</value>
   </data>
 </root>
