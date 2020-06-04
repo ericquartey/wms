@@ -1740,7 +1740,7 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerCompactingWarning" xml:space="preserve">
-    <value>Fragmentation total above 25%</value>
+    <value>Fragmentation too high: please run a Compact procedure</value>
   </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Carousel calibration in progress</value>

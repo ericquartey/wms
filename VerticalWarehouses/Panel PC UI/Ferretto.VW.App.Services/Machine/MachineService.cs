@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private const int MaximumFragmentation = 30;
+
         private readonly IBayManager bayManagerService;
 
         private readonly IEventAggregator eventAggregator;
@@ -1542,7 +1544,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
@@ -1561,7 +1563,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
@@ -1585,7 +1587,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }

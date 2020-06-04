@@ -1295,7 +1295,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fragmentation total above 25%.
+        ///   Looks up a localized string similar to Fragmentation too high: please run a Compact procedure.
         /// </summary>
         public static string DrawerCompactingWarning {
             get {

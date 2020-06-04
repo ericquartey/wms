@@ -1366,9 +1366,6 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Weight" xml:space="preserve">
     <value>Peso</value>
   </data>
-  <data name="DrawerCompactingWarning" xml:space="preserve">
-    <value>La frammentazione totale supera il 25%</value>
-  </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Calibrazione giostra in corso</value>
   </data>
@@ -1530,5 +1527,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Quantità richiesta</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
   </data>
 </root>
