@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.BeltSubstitute:
                             instruction.InstructionType = instructionType;
                             instruction.MaxDays = OneYear * 5;
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                             {
                                 instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
@@ -199,7 +199,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             instruction.InstructionType = instructionType;
                             instruction.MaxDays = OneYear;
                             instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                             {
                                 instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.GuidesSubstitute:
                             instruction.InstructionType = instructionType;
                             instruction.MaxRelativeCount = HighMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                             {
                                 instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
@@ -266,7 +266,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             instruction.MaxRelativeCount = LowMissionCount;
                             if (instructionType == InstructionType.SensorCheck)
                             {
-                                foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                                foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                                 {
                                     instruction.SetCounterName(bay.Number);
                                     instruction.IsShutter = true;
@@ -335,7 +335,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             instruction.InstructionType = instructionType;
                             instruction.MaxDays = OneYear;
                             instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                             {
                                 instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.ShaftCheck:
                             instruction.InstructionType = instructionType;
                             instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
                             {
                                 instruction.SetCounterName(bay.Number);
                                 instruction.IsShutter = true;
