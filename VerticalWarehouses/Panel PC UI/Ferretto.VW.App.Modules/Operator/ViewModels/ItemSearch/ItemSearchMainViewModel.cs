@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private const int DefaultPageSize = 20;
+        private const int DefaultPageSize = 10000;
 
         private const int ItemsToCheckBeforeLoad = 2;
 
