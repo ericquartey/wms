@@ -3581,6 +3581,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requested quantity.
+        /// </summary>
+        public static string RequestedQuantityBase {
+            get {
+                return ResourceManager.GetString("RequestedQuantityBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resolution date.
         /// </summary>
         public static string ResolutionDate {

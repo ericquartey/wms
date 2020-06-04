@@ -167,7 +167,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            if (!this.IsMoving)
+            if (!this.IsMachineMoving)
             {
                 this.IsStopPressed = false;
             }
@@ -187,13 +187,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   !this.IsMoving;
+                   !this.IsMachineMoving;
         }
 
         private bool CanCompactingStop()
         {
             return !this.IsWaitingForResponse &&
-                   this.IsMoving &&
+                   this.IsMachineMoving &&
                    !this.IsStopPressed;
         }
 

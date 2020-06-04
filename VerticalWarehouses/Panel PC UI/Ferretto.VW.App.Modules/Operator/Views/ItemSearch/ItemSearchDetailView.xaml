@@ -214,7 +214,7 @@
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource Text_Foreground}">
-                            <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}" /> <Run Text="{Binding Item.MeasureUnit}" />
+                            <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}" /> <Run Text="{Binding Item.MeasureUnit, Mode=OneWay}" />
                         </TextBlock>
 
                         <TextBlock Grid.Row="1"
@@ -236,7 +236,7 @@
                                Margin="15,15,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding Item.PickIncrement}"
-                               LabelText="{Binding Item.ItemTxt}"
+                               LabelText="{Binding ItemTxt, TargetNullValue={x:Static Resources:OperatorApp.RequestedQuantityBase}}"
                                Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 

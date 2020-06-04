@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Controls
 
         public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
+        public bool IsMachineMoving => this.machineService?.MachineStatus?.IsMoving ?? true;
+
         public virtual bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;

@@ -65,7 +65,12 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    RenderOptions.BitmapScalingMode="HighQuality"
-                   Source="{DynamicResource FerrettoGroup}" />
+                   Source="{DynamicResource FerrettoGroup}">
+                <Image.InputBindings>
+                    <MouseBinding Command="{Binding GoToMenuCommand, Mode=OneTime}"
+                                  Gesture="LeftClick" />
+                </Image.InputBindings>
+            </Image>
         </StackPanel>
 
 

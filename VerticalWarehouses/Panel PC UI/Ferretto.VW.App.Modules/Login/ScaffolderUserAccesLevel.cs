@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Modules.Login
 
         public static UserAccessLevel User { get; set; }
 
+        public static bool IsLogged { get; set; }
+
         #endregion
     }
 }
