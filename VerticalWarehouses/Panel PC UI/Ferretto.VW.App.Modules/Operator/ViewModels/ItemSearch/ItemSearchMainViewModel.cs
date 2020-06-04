@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.isDistinctBySerialNumber,
                     cancellationToken);
 
-                if (!newItems.Any() || newItems.Count() == 1)
+                if (!newItems.Any())
                 {
                     return;
                 }
@@ -533,15 +533,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.currentItemIndex > this.maxKnownIndexSelection)
             {
                 this.maxKnownIndexSelection = this.currentItemIndex;
-            }
-
-            if (this.currentItemIndex > Math.Max((this.items.Count - 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad)
-                && !this.IsBusyLoadingNextPage)
-            {
-                this.IsSearching = true;
-                this.tokenSource = new CancellationTokenSource();
-                this.IsBusyLoadingNextPage = true;
-                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
         }
 
