@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Accessories
 
         private ILaserPointerDriver laserPointerDriver;
 
-        private SubscriptionToken loadingUnitToken;
-
         private SubscriptionToken missionToken;
 
         #endregion
