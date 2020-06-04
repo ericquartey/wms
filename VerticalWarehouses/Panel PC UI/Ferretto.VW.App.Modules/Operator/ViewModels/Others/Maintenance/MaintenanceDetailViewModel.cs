@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if ((this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
+                if (this.Instructions != null && (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
                 {
                     return true;
                 }
