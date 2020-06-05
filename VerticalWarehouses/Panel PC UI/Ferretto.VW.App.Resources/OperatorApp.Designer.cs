@@ -151,6 +151,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis.
+        /// </summary>
+        public static string Axis {
+            get {
+                return ResourceManager.GetString("Axis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -291,6 +300,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayNumberElevatorBay {
             get {
                 return ResourceManager.GetString("BayNumberElevatorBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BayNumber.
+        /// </summary>
+        public static string BayNumberHeader {
+            get {
+                return ResourceManager.GetString("BayNumberHeader", resourceCulture);
             }
         }
         
@@ -696,6 +714,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmService {
             get {
                 return ResourceManager.GetString("ConfirmService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CounterName.
+        /// </summary>
+        public static string CounterName {
+            get {
+                return ResourceManager.GetString("CounterName", resourceCulture);
             }
         }
         
@@ -1867,6 +1894,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Instruction {
             get {
                 return ResourceManager.GetString("Instruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instruction status.
+        /// </summary>
+        public static string InstructionState {
+            get {
+                return ResourceManager.GetString("InstructionState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string InstructionStatus {
+            get {
+                return ResourceManager.GetString("InstructionStatus", resourceCulture);
             }
         }
         
