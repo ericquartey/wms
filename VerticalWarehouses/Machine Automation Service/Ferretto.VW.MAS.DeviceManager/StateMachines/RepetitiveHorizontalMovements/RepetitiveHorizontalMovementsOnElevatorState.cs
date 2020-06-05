@@ -275,10 +275,10 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 $"targetPosition: {targetPosition}; " +
                 $"homing: {homingDone}; " +
                 $"feedRate: {feedRate}; " +
-                $"speed: {speed[0]:0.2}; " +
-                $"acceleration: {acceleration[0]:0.2}; " +
-                $"deceleration: {deceleration[0]:0.2}; " +
-                $"speed w/o feedRate: {movementParameters.Speed:0.2}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00}; " +
+                $"speed w/o feedRate: {movementParameters.Speed:0.00}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             var message = new CommandMessage(

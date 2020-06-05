@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private IAlphaNumericBarDriver alphaNumericBarDriver;
 
-        private SubscriptionToken loadingUnitToken;
-
         private SubscriptionToken missionToken;
 
         #endregion

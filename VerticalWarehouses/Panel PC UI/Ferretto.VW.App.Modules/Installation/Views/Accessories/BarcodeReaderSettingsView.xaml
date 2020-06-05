@@ -77,6 +77,7 @@
                   Grid.Row="4"
                   Background="Transparent"
                   BorderBrush="Transparent"
+                  Margin="0,0,0,15"
                   ItemsSource="{Binding PortNames}"
                   SelectedItem="{Binding PortName}"
                   Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVC}}">
@@ -92,8 +93,7 @@
                     <Setter Property="Control.Template">
                         <Setter.Value>
                             <ControlTemplate>
-                                <Rectangle Margin="2"
-                                           SnapsToDevicePixels="true"
+                                <Rectangle SnapsToDevicePixels="true"
                                            Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
                                            StrokeDashArray="1 2"
                                            StrokeThickness="1" />
@@ -119,11 +119,13 @@
                     <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Margin" Value="1" />
+                    <Setter Property="BorderThickness" Value="2" />
                     <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListViewItem}">
+
                                 <Border x:Name="Bd"
                                         Padding="{TemplateBinding Padding}"
                                         Background="{TemplateBinding Background}"
@@ -144,7 +146,6 @@
                                         <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
                                         <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
 
-                                        <Setter TargetName="Bd" Property="CornerRadius" Value="5" />
                                     </MultiTrigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
@@ -155,7 +156,6 @@
                                         <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
                                         <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
 
-                                        <Setter TargetName="Bd" Property="CornerRadius" Value="5" />
 
                                     </MultiTrigger>
                                     <Trigger Property="IsEnabled" Value="False">
@@ -168,20 +168,17 @@
                 </Style>
             </ListView.Resources>
             <ListView.ItemTemplate>
-                <DataTemplate DataType="local:Cases">
-                    <StackPanel HorizontalAlignment="Stretch"
-                                Orientation="Horizontal">
+                <DataTemplate>
+                   
                         <Border MinWidth="70"
-                                Margin="5"
+                                Margin="0,3,0,3"
                                 Padding="10"
-                                Background="{StaticResource FerrettoLightGray}"
-                                CornerRadius="5">
+                                Background="{StaticResource FerrettoLightGray}">
                             <TextBlock HorizontalAlignment="Center"
                                        FontSize="14"
                                        FontWeight="DemiBold"
                                        Text="{Binding .}" />
                         </Border>
-                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

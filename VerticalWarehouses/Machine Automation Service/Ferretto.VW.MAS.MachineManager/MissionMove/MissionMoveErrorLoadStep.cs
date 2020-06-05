@@ -260,7 +260,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    // invert direction?
+                    // always invert direction when loading from bay
+                    this.Mission.NeedMovingBackward = true;
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {

@@ -31,18 +31,16 @@
         <Grid.RowDefinitions>
             <RowDefinition x:Name="Row0_Title"
                            Height="100" />
-            <RowDefinition x:Name="Row1_DeviceInfo"
+            <RowDefinition x:Name="Row1_Enable"
                            Height="Auto" />
-            <RowDefinition x:Name="Row2_Enable"
+            <RowDefinition x:Name="Row2_TokenRegex"
                            Height="Auto" />
-            <RowDefinition x:Name="Row3_TokenRegex"
+            <RowDefinition x:Name="Row3_Input" />
+            <RowDefinition x:Name="Row4_Tokens_Title"
                            Height="Auto" />
-            <RowDefinition x:Name="Row4_Input" />
-            <RowDefinition x:Name="Row5_Tokens_Title"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row6_Tokens"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row7_Save"
+            <RowDefinition x:Name="Row5_Tokens"
+                            />
+            <RowDefinition x:Name="Row6_Save"
                            Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -52,22 +50,21 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{res:Loc Menu.AccessoriesCardReaderMenuTitle}" />
 
-        <views:DeviceInformationView Grid.Row="1" />
 
-        <controls:PpcCheckBox Grid.Row="2"
+        <controls:PpcCheckBox Grid.Row="1"
                               Margin="0,15,0,0"
                               VerticalAlignment="Center"
                               IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
                               LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
-        <controls:PpcTextBox Grid.Row="3"
+        <controls:PpcTextBox Grid.Row="2"
                              Width="350"
                              VerticalAlignment="Center"
                              InputText="{Binding TokenRegex, Mode=TwoWay}"
                              IsEnabled="{Binding CanEditTokenRegex}"
                              LabelText="{x:Static res:InstallationApp.AccessoriesCardReaderTokenRegex}" />
 
-        <controls:PpcButton Grid.Row="3"
+        <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Left"
@@ -76,7 +73,7 @@
                             Content="{x:Static res:InstallationApp.StartTest}"
                             Visibility="{Binding IsTesting, Converter={StaticResource BTVIC}}" />
 
-        <controls:PpcButton Grid.Row="3"
+        <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Left"
@@ -85,7 +82,7 @@
                             Content="{x:Static res:InstallationApp.StopTest}"
                             Visibility="{Binding IsTesting, Converter={StaticResource BTVC}}" />
 
-        <ItemsControl Grid.Row="4"
+        <ItemsControl Grid.Row="3"
                       Grid.ColumnSpan="2"
                       Background="Transparent"
                       BorderBrush="Transparent"
@@ -112,14 +109,14 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <TextBlock Grid.Row="5"
+        <TextBlock Grid.Row="4"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    FontSize="14"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{res:Loc InstallationApp.AcquiredToken}" />
         
-        <ItemsControl Grid.Row="6"
+        <ItemsControl Grid.Row="5"
                       Grid.ColumnSpan="2"
                       Background="Transparent"
                       BorderBrush="Transparent"
@@ -146,7 +143,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <controls:PpcButton Grid.Row="7"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"

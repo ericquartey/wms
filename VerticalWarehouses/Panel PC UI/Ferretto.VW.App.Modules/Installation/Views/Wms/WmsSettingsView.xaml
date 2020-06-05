@@ -54,7 +54,8 @@
                      Margin="10,20,10,0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
-                     GroupName="test">
+                     GroupName="test"
+                     IsChecked="{Binding IsWmsEnabled, Mode=TwoWay, Converter={StaticResource BNC}}">
             <RadioButton.Content>
                 <TextBlock Grid.Row="2"
                            Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"

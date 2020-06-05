@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done..
+        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation..
         /// </summary>
         public static string AccessoriesBarcodeReaderConfigurationInstructions {
             get {
@@ -1254,6 +1254,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CheckDrawersThenStart {
             get {
                 return ResourceManager.GetString("CheckDrawersThenStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check serial ports.
+        /// </summary>
+        public static string CheckSerialPorts {
+            get {
+                return ResourceManager.GetString("CheckSerialPorts", resourceCulture);
             }
         }
         

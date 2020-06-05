@@ -151,6 +151,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis.
+        /// </summary>
+        public static string Axis {
+            get {
+                return ResourceManager.GetString("Axis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -291,6 +300,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayNumberElevatorBay {
             get {
                 return ResourceManager.GetString("BayNumberElevatorBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BayNumber.
+        /// </summary>
+        public static string BayNumberHeader {
+            get {
+                return ResourceManager.GetString("BayNumberHeader", resourceCulture);
             }
         }
         
@@ -664,6 +682,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm row.
+        /// </summary>
+        public static string ConfirmInstruction {
+            get {
+                return ResourceManager.GetString("ConfirmInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm on empty.
         /// </summary>
         public static string ConfirmOnEmpty {
@@ -687,6 +714,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmService {
             get {
                 return ResourceManager.GetString("ConfirmService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CounterName.
+        /// </summary>
+        public static string CounterName {
+            get {
+                return ResourceManager.GetString("CounterName", resourceCulture);
             }
         }
         
@@ -1295,7 +1331,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fragmentation total above 25%.
+        ///   Looks up a localized string similar to Fragmentation too high: please run a Compact procedure.
         /// </summary>
         public static string DrawerCompactingWarning {
             get {
@@ -1570,6 +1606,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ExecutableListsRows {
             get {
                 return ResourceManager.GetString("ExecutableListsRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute row.
+        /// </summary>
+        public static string ExecuteRow {
+            get {
+                return ResourceManager.GetString("ExecuteRow", resourceCulture);
             }
         }
         
@@ -1858,6 +1903,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Instruction {
             get {
                 return ResourceManager.GetString("Instruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row status.
+        /// </summary>
+        public static string InstructionState {
+            get {
+                return ResourceManager.GetString("InstructionState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string InstructionStatus {
+            get {
+                return ResourceManager.GetString("InstructionStatus", resourceCulture);
             }
         }
         

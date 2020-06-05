@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -79,39 +78,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/execute")]
-        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id, [FromServices] ILaserProvider laserProvider)
+        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id)
         {
-            if (laserProvider is null)
-            {
-                throw new ArgumentNullException(nameof(laserProvider));
-            }
-
             var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id);
-            var mission = await this.missionsWmsWebService.GetDetailsByIdAsync(operation.MissionId);
-
-            var compartment = mission.LoadingUnit?.Compartments?.SingleOrDefault(c => c.Id == operation.CompartmentId);
-            if (compartment != null && compartment.XPosition.HasValue && compartment.YPosition.HasValue)
-            {
-                var laserOriginX = mission.LoadingUnit.Width / 2;
-                var laserOriginY = mission.LoadingUnit.Depth / 2;
-
-                var compartmentX = compartment.XPosition.Value;
-                var compartmentY = compartment.YPosition.Value;
-
-                var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
-
-                if (bay.Side is DataModels.WarehouseSide.Back)
-                {
-                    compartmentX = mission.LoadingUnit.Width - compartmentX;
-                    compartmentY = mission.LoadingUnit.Depth - compartmentY;
-                }
-
-                // x coordinate is flipped
-                var compartmentLaserX = -(compartmentX - laserOriginX);
-                var compartmentLaserY = compartmentY - laserOriginY;
-
-                laserProvider.MoveToPositionAndSwitchOn(this.BayNumber, compartmentLaserX, compartmentLaserY);
-            }
 
             return this.Ok(operation);
         }

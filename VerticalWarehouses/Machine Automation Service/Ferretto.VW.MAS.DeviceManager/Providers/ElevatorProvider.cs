@@ -615,7 +615,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? targetCellId = null,
             int? targetBayPositionId = null,
             int? sourceCellId = null,
-            int? sourceBayPositionId = null)
+            int? sourceBayPositionId = null,
+            bool fastDeposit = true)
         {
             if (loadingUnitId.HasValue
                 &&
@@ -667,6 +668,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (loadingUnitId.HasValue
                 && !measure
                 && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                && fastDeposit
                 )
             {
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
@@ -698,7 +700,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var compensation = this.HorizontalPosition - axis.LastIdealPosition;
             if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
             {
-                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.2} > offset {axis.ChainOffset}");
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
                 compensation = 0;
             }
             var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
@@ -711,8 +713,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"measure: {measure}; " +
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
-                $"scalingFactor: {scalingFactor:0.4}; " +
-                $"compensation: {compensation:0.2}");
+                $"scalingFactor: {scalingFactor:0.0000}; " +
+                $"compensation: {compensation:0.00}");
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -1366,7 +1368,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var direction = bay.Side is WarehouseSide.Front
                 ? HorizontalMovementDirection.Forwards
                 : HorizontalMovementDirection.Backwards;
-
             this.MoveHorizontalAuto(
                 direction,
                 isLoadingUnitOnBoard: true,
@@ -1528,10 +1529,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"targetPosition: {targetPosition}; " +
                 $"homing: {homingDone}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
-                $"speed: {speed[0]:0.2}; " +
-                $"acceleration: {acceleration[0]:0.2}; " +
-                $"deceleration: {deceleration[0]:0.2}; " +
-                $"speed w/o feedRate: {movementParameters.Speed:0.2}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00}; " +
+                $"speed w/o feedRate: {movementParameters.Speed:0.00}; " +
                 $"Load Unit {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(

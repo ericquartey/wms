@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
 
@@ -36,19 +37,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (this.dataContext.ServicingInfo.LastOrDefault() == null)
                 {
-                    //var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
-                    //var s = new ServicingInfo();
-                    //if (machineId.HasValue)
-                    //{
-                    //    s.MachineStatisticsId = machineId.Value;
-                    //}
-                    //this.dataContext.ServicingInfo.Add(s);
-                    //this.dataContext.SaveChanges();
-
-                    //this.GenerateInstructions(s);
-                    //this.dataContext.SaveChanges();
-                    // Add new record
-
                     var s = new ServicingInfo();
 
                     s.ServiceStatus = MachineServiceStatus.Valid;
@@ -61,6 +49,50 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.dataContext.ServicingInfo.Add(s);
                     this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void ConfirmInstruction(int instructionId)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    // Confirm setup date in actual record
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).InstructionStatus = MachineServiceStatus.Completed;
+                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
+
+                    // Update record
+                    //var s = new ServicingInfo();
+
+                    //s.LastServiceDate = DateTime.Now;
+                    //s.NextServiceDate = DateTime.Now.AddDays((double)this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).Definition.MaxDays);
+                    //s.ServiceStatus = MachineServiceStatus.Valid;
+                    this.dataContext.SaveChanges();
+                }
+                catch(Exception)
+                {
+                    //do nothing
+                }
+            }
+        }
+
+        public void SetIsToDo(int instructionId)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    // Confirm setup date in actual record
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    instruction.IsToDo = true;
+                    this.dataContext.Instructions.Update(instruction);
+                    this.dataContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    //do nothing
                 }
             }
         }
@@ -156,9 +188,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo.Where(s => s.Id == id).FirstOrDefault();
-                si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
-                si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                ServicingInfo si = this.dataContext.ServicingInfo
+                    .Include(s => s.Instructions)
+                    .ThenInclude(e => e.Definition)
+                    .Include(s => s.MachineStatistics)
+                    .Where(s => s.Id == id).FirstOrDefault();
+                //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
                 return si;
             }
         }
@@ -223,38 +259,78 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var logger = LogManager.GetCurrentClassLogger();
+                try
+                {
+                    var logger = LogManager.GetCurrentClassLogger();
 
-                // Confirm setup date in actual record
-                var service = this.dataContext.ServicingInfo.Last();
-                if (service.ServiceStatus == MachineServiceStatus.Expired)
-                {
-                    logger.Warn(Resources.General.MaintenanceStateExpired);
-                    //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
-                }
-                if (service.ServiceStatus == MachineServiceStatus.Expiring
-                    && service.NextServiceDate != null
-                    )
-                {
-                    var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
-                    if (diff.TotalDays <= 0)
+                    // Confirm setup date in actual record
+                    var service = this.dataContext.ServicingInfo.Last();
+                    if (service.ServiceStatus == MachineServiceStatus.Expired)
                     {
-                        service.ServiceStatus = MachineServiceStatus.Expired;
-                        this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                        logger.Warn(Resources.General.MaintenanceStateExpired);
+                        //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
                     }
-                    logger.Warn(Resources.General.MaintenanceStateExpiring);
-                    //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
-                }
-                if (service.ServiceStatus == MachineServiceStatus.Valid
-                    && service.NextServiceDate != null
-                    )
-                {
-                    var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
-                    if (diff.TotalDays <= 30)
+                    if (service.ServiceStatus == MachineServiceStatus.Expiring
+                        && service.NextServiceDate != null
+                        )
                     {
-                        service.ServiceStatus = MachineServiceStatus.Expiring;
-                        this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                        var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
+                        if (diff.TotalDays <= 0)
+                        {
+                            service.ServiceStatus = MachineServiceStatus.Expired;
+                            this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                        }
+                        logger.Warn(Resources.General.MaintenanceStateExpiring);
+                        //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                     }
+                    if (service.ServiceStatus == MachineServiceStatus.Valid
+                        && service.NextServiceDate != null
+                        )
+                    {
+                        var diff = service.NextServiceDate.Value.Subtract(DateTime.UtcNow);
+                        if (diff.TotalDays <= 30)
+                        {
+                            service.ServiceStatus = MachineServiceStatus.Expiring;
+                            this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                        }
+                    }
+
+                    var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+                    foreach (var ins in instructions)
+                    {
+                        if (ins.InstructionStatus == MachineServiceStatus.Expired)
+                        {
+                            logger.Warn(Resources.General.MaintenanceStateExpired);
+                            //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
+                        }
+                        if (ins.InstructionStatus == MachineServiceStatus.Expiring
+                            && ins.MaintenanceDate != null
+                            )
+                        {
+                            var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                            if (diff.TotalDays <= ins.Definition.MaxDays)
+                            {
+                                ins.InstructionStatus = MachineServiceStatus.Expired;
+                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                            }
+                            logger.Warn(Resources.General.MaintenanceStateExpiring);
+                            //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
+                        }
+                        if (ins.InstructionStatus == MachineServiceStatus.Valid
+                            && ins.MaintenanceDate != null
+                            )
+                        {
+                            var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                            if (diff.TotalDays <= ins.Definition.MaxDays)
+                            {
+                                ins.InstructionStatus = MachineServiceStatus.Expiring;
+                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
                 }
             }
         }

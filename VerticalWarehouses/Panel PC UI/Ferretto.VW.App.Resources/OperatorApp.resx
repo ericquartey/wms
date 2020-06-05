@@ -1740,7 +1740,7 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerCompactingWarning" xml:space="preserve">
-    <value>Fragmentation total above 25%</value>
+    <value>Fragmentation too high: please run a Compact procedure</value>
   </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Carousel calibration in progress</value>
@@ -1925,5 +1925,26 @@ Please put back any moved pieces in their original position.</value>
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Requested quantity</value>
     <comment>Label</comment>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Confirm row</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Axis</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>BayNumber</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>CounterName</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Row status</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Execute row</value>
   </data>
 </root>
