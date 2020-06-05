@@ -518,11 +518,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+                this.elevatorProvider.MoveHorizontalAuto(
+                    direction,
+                    !moveToCradle,
+                    loadUnitId,
+                    loadingUnitNetWeight: null,
+                    (moveShutter != ShutterPosition.NotSpecified),
+                    measure,
+                    requestingBay,
+                    sender,
+                    sourceBayPositionId: positionId,
+                    fastDeposit: fastDeposit);
             }
             catch (InvalidOperationException ex)
             {

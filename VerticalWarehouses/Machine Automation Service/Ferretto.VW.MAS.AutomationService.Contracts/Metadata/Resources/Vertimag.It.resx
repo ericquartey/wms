@@ -186,6 +186,9 @@
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>Esterna</value>
   </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Deposito veloce in baia</value>
+  </data>
   <data name="Bay_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
   </data>

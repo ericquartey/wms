@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
-            bool elevatorHasLoadingUnit,
+            bool isLoadingUnitOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
             bool waitContinue,
@@ -54,7 +54,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? targetCellId = null,
             int? targetBayPositionId = null,
             int? sourceCellId = null,
-            int? sourceBayPositionId = null);
+            int? sourceBayPositionId = null,
+            bool fastDeposit = true);
 
         void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender);
 
