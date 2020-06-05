@@ -75,19 +75,39 @@ namespace Ferretto.VW.MAS.DataLayer
                 return false;
             }
 
-            var loadingUnit = this.dataContext.LoadingUnits
+            var loadUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
                 .Include(i => i.Cell)
                     .ThenInclude(c => c.Panel)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
-            if (loadingUnit is null)
+            if (loadUnit is null)
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
 
+            var machine = this.machineProvider.Get();
+            if (machine is null)
+            {
+                throw new EntityNotFoundException();
+            }
+            if (machine.LoadUnitMaxHeight == 0)
+            {
+                throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", CommonUtils.Culture.Actual));
+            }
+
+            double loadUnitHeight;
+            if (loadUnit.Height == 0 || loadUnit.Height > machine.LoadUnitMaxHeight)
+            {
+                loadUnitHeight = machine.LoadUnitMaxHeight;
+                this.logger.LogInformation($"CanFitLoadingUnit: height is not defined for LU {loadingUnitId}; height is {loadUnitHeight} (as configured for max);");
+            }
+            else
+            {
+                loadUnitHeight = loadUnit.Height;
+            }
             var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
                     && c.Position >= cell.Position
-                    && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance
+                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance
                     );
             if (!cellsInRange.Any())
             {
@@ -95,19 +115,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
-            if (availableSpace < loadingUnit.Height + VerticalPositionTolerance)
+            if (availableSpace < loadUnitHeight + VerticalPositionTolerance)
             {
                 return false;
             }
 
-            if (loadingUnit.Cell != null)
+            if (loadUnit.Cell != null)
             {
                 // in cell-to-cell movements we check only the cells not presently occupied by this load unit
-                var cellsFrom = this.dataContext.Cells.Where(c => c.Panel.Side == loadingUnit.Cell.Side
-                    && c.Position >= loadingUnit.Cell.Position
-                    && c.Position <= loadingUnit.Cell.Position + loadingUnit.Height + VerticalPositionTolerance);
+                var cellsFrom = this.dataContext.Cells.Where(c => c.Panel.Side == loadUnit.Cell.Side
+                    && c.Position >= loadUnit.Cell.Position
+                    && c.Position <= loadUnit.Cell.Position + loadUnitHeight + VerticalPositionTolerance);
                 var lastPosition = cellsFrom.LastOrDefault().Position;
-                return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadingUnit.Cell.Position)
+                return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadUnit.Cell.Position)
                     || (!c.IsFree && c.Position > lastPosition)
                     || c.BlockLevel == BlockLevel.Blocked
                     || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
@@ -219,7 +239,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             double loadUnitHeight;
-            if (loadUnit.Height == 0)
+            if (loadUnit.Height == 0 || loadUnit.Height > machine.LoadUnitMaxHeight)
             {
                 if (machine.LoadUnitMaxHeight == 0)
                 {
