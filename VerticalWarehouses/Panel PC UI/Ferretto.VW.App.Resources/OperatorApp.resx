@@ -1929,4 +1929,19 @@ Please put back any moved pieces in their original position.</value>
   <data name="ConfirmInstruction" xml:space="preserve">
     <value>Confirm instruction</value>
   </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Axis</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>BayNumber</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>CounterName</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Instruction status</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>

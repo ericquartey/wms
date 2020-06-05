@@ -466,10 +466,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            base.RaiseCanExecuteChanged();
+            this.bayCarouselCalibrationBypassCommand?.RaiseCanExecuteChanged();
+            this.bayFirstLoadingUnitBypassCommand?.RaiseCanExecuteChanged();
+            this.bayHeightCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.bayProfileCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.bayShutterTestBypassCommand?.RaiseCanExecuteChanged();
+            this.beltBurnishingTestBypassCommand?.RaiseCanExecuteChanged();
+            this.cellsPanelCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.externalBayCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
+            this.fullTestBypassCommand?.RaiseCanExecuteChanged();
+            this.horizontalChainCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.Source));
             this.RaisePropertyChanged(nameof(this.SubTitleLabel));
+
+            base.RaiseCanExecuteChanged();
         }
 
         private async Task UpdateSetupStatusAsync()

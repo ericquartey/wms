@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private List<Instruction> instructions;
 
+        private string instructionStatus;
+
         private string mainteinanceRequest;
 
         private Instruction selectedInstruction;
@@ -67,6 +69,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.instructions, value);
         }
 
+        public string InstructionStatus
+        {
+            get => this.instructionStatus;
+            set => this.SetProperty(ref this.instructionStatus, value);
+        }
+
         public string MainteinanceRequest
         {
             get => this.mainteinanceRequest;
@@ -76,7 +84,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public Instruction SelectedInstruction
         {
             get => this.selectedInstruction;
-            set => this.SetProperty(ref this.selectedInstruction, value);
+            set
+            {
+                this.SetProperty(ref this.selectedInstruction, value);
+
+                if (this.selectedInstruction != null)
+                {
+                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Valid)
+                    {
+                        this.instructionStatus = "Red";
+                    }
+
+                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expired)
+                    {
+                        this.instructionStatus = "Green";
+                    }
+
+                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expiring)
+                    {
+                        this.instructionStatus = "Orange";
+                    }
+
+                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Completed)
+                    {
+                        this.instructionStatus = "White";
+                    }
+
+                    this.RaisePropertyChanged(nameof(this.InstructionStatus));
+                }
+            }
         }
 
         public ServicingInfo Service
@@ -86,22 +122,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged);
 
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Valid)
+                if (this.service.ServiceStatus == MachineServiceStatus.Valid)
                 {
                     this.mainteinanceRequest = "Red";
                 }
 
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Expired)
+                if (this.service.ServiceStatus == MachineServiceStatus.Expired)
                 {
                     this.mainteinanceRequest = "Green";
                 }
 
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Expiring)
+                if (this.service.ServiceStatus == MachineServiceStatus.Expiring)
                 {
                     this.mainteinanceRequest = "Orange";
                 }
 
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Completed)
+                if (this.service.ServiceStatus == MachineServiceStatus.Completed)
                 {
                     this.mainteinanceRequest = "White";
                 }
@@ -140,8 +176,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 return this.SelectedInstruction != null &&
-                    this.SelectedInstruction.IsDone == true &&
-                    this.SelectedInstruction.IsToDo == true &&
+                    !this.SelectedInstruction.IsDone &&
+                    this.SelectedInstruction.IsToDo &&
                     this.SelectedInstruction.InstructionStatus != MachineServiceStatus.Completed;
             }
             catch (Exception)
@@ -155,7 +191,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 return this.Instructions.Any() &&
-                    (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) &&
+                    (this.Instructions.Where(s => !s.IsDone && s.IsToDo).Count() == this.Instructions.Count) &&
                     this.Service.ServiceStatus != MachineServiceStatus.Completed;
             }
             catch (Exception)

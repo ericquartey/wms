@@ -73,7 +73,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column2"
-                                            Width="200"
+                                            Width="150"
                                             Binding="{Binding Path=Definition.Description}"
                                             Header="{res:Loc OperatorApp.Description}">
                             <DataGridTextColumn.CellStyle>
@@ -111,6 +111,39 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column9"
+                                            Width="100"
+                                            Binding="{Binding Path=Definition.Axis}"
+                                            Header="{res:Loc OperatorApp.Axis}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column10"
+                                            Width="120"
+                                            Binding="{Binding Path=Definition.BayNumber}"
+                                            Header="{res:Loc OperatorApp.BayNumber}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column8"
+                                            Width="100"
+                                            Binding="{Binding Path=InstructionStatus}"
+                                            Header="{res:Loc OperatorApp.InstructionStatus}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column5"
                                             Width="120"
                                             Binding="{Binding Path=Definition.MaxDays}"
@@ -136,7 +169,8 @@
                         <DataGridTextColumn x:Name="Column7"
                                             Width="150"
                                             Binding="{Binding Path=Definition.MaxTotalCount}"
-                                            Header="{res:Loc OperatorApp.MaxTotalCount}">
+                                            Header="{res:Loc OperatorApp.MaxTotalCount}"
+                                            Visibility="Collapsed">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -144,10 +178,10 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column8"
+                        <DataGridTextColumn x:Name="Column11"
                                             Width="150"
-                                            Binding="{Binding Path=ServiceStatus}"
-                                            Header="{res:Loc OperatorApp.ServiceStatus}">
+                                            Binding="{Binding Path=Definition.CounterName}"
+                                            Header="{res:Loc OperatorApp.CounterName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -166,6 +200,7 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -224,11 +259,32 @@
                                      LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
 
             <controls:PpcLabeledText Grid.Column="5"
-                                     Margin="10,15,15,0"
+                                     Margin="10,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Service.LastServiceDate, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={x:Static res:General.DateFormatDayNumber}}"
                                      LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
+
+            <Grid Grid.Column="6"
+                  Margin="10,15,15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Width="25"
+                           Height="25"
+                           Margin="0,5,10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Fill="{Binding InstructionStatus}" />
+
+                <controls:PpcLabeledText Grid.Column="1"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding SelectedInstruction.InstructionStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                         LabelText="{res:Loc OperatorApp.InstructionState}" />
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="3"

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
 
@@ -62,19 +63,18 @@ namespace Ferretto.VW.MAS.DataLayer
                     var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).InstructionStatus = MachineServiceStatus.Completed;
                     this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
 
-                    // Add new record
-                    var s = new ServicingInfo();
+                    // Update record
+                    //var s = new ServicingInfo();
 
-                    s.LastServiceDate = DateTime.Now;
-                    s.NextServiceDate = DateTime.Now.AddDays((double)this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).Definition.MaxDays);
-                    s.ServiceStatus = MachineServiceStatus.Valid;
+                    //s.LastServiceDate = DateTime.Now;
+                    //s.NextServiceDate = DateTime.Now.AddDays((double)this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).Definition.MaxDays);
+                    //s.ServiceStatus = MachineServiceStatus.Valid;
                     this.dataContext.SaveChanges();
                 }
                 catch(Exception)
                 {
                     //do nothing
                 }
-                
             }
         }
 
@@ -169,9 +169,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo.Where(s => s.Id == id).FirstOrDefault();
-                si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
-                si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                ServicingInfo si = this.dataContext.ServicingInfo
+                    .Include(s => s.Instructions)
+                    .ThenInclude(e => e.Definition)
+                    .Include(s => s.MachineStatistics)
+                    .Where(s => s.Id == id).FirstOrDefault();
+                //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
                 return si;
             }
         }

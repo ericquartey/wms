@@ -1534,4 +1534,19 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ConfirmInstruction" xml:space="preserve">
     <value>Conferma instruzione</value>
   </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Asse</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>BayNumber</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>CounterName</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Stato istruzione</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>
