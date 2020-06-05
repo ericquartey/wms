@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanCompactingStop()
         {
             return !this.IsWaitingForResponse &&
-                   this.IsMachineMoving &&
+                   (this.IsMachineMoving || this.IsMoving) &&
                    !this.IsStopPressed;
         }
 
