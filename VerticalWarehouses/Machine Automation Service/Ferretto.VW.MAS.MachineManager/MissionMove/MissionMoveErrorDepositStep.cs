@@ -247,6 +247,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                     if (shutterPosition != ShutterPosition.Opened
                         && this.Mission.ErrorMovements == MissionErrorMovements.None
+                        && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)   // cannot move shutter if load unit is not in center
                         )
                     {
                         // in the first movement the shutter always goes to Opened
