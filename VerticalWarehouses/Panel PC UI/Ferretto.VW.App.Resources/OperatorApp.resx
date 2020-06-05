@@ -1927,7 +1927,7 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label</comment>
   </data>
   <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Confirm instruction</value>
+    <value>Confirm row</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Axis</value>
@@ -1939,9 +1939,12 @@ Please put back any moved pieces in their original position.</value>
     <value>CounterName</value>
   </data>
   <data name="InstructionState" xml:space="preserve">
-    <value>Instruction status</value>
+    <value>Row status</value>
   </data>
   <data name="InstructionStatus" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Execute row</value>
   </data>
 </root>

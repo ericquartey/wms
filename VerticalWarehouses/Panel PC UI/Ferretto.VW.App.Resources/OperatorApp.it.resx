@@ -1532,7 +1532,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
   </data>
   <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Conferma instruzione</value>
+    <value>Conferma riga</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Asse</value>
@@ -1544,9 +1544,15 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>CounterName</value>
   </data>
   <data name="InstructionState" xml:space="preserve">
-    <value>Stato istruzione</value>
+    <value>Stato riga</value>
   </data>
   <data name="InstructionStatus" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Esegui riga</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

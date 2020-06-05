@@ -24,8 +24,8 @@
     <Grid Margin="15">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1.04*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -73,7 +73,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column2"
-                                            Width="150"
+                                            Width="180"
                                             Binding="{Binding Path=Definition.Description}"
                                             Header="{res:Loc OperatorApp.Description}">
                             <DataGridTextColumn.CellStyle>
@@ -295,11 +295,17 @@
                                 Command="{Binding ConfirmServiceCommand}"
                                 Content="{res:Loc OperatorApp.ConfirmService}" />
 
-            <controls:PpcButton Margin="0,15,10,0"
+            <controls:PpcButton Margin="0,15,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmInstructionCommand}"
                                 Content="{res:Loc OperatorApp.ConfirmInstruction}" />
+
+            <controls:PpcButton Margin="0,15,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Command="{Binding ExecuteRowCommand}"
+                                Content="{res:Loc OperatorApp.ExecuteRow}" />
         </Grid>
 
     </Grid>

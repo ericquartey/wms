@@ -682,7 +682,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm instruction.
+        ///   Looks up a localized string similar to Confirm row.
         /// </summary>
         public static string ConfirmInstruction {
             get {
@@ -1610,6 +1610,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute row.
+        /// </summary>
+        public static string ExecuteRow {
+            get {
+                return ResourceManager.GetString("ExecuteRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execution of list &apos;{0}&apos; was accepted..
         /// </summary>
         public static string ExecutionOfListAccepted {
@@ -1898,7 +1907,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instruction status.
+        ///   Looks up a localized string similar to Row status.
         /// </summary>
         public static string InstructionState {
             get {

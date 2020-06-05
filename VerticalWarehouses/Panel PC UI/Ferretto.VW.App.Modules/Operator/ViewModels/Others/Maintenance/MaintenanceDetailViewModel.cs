@@ -23,7 +23,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmServiceCommand;
 
-        private List<Instruction> instructions;
+        private DelegateCommand executeRowCommand;
+
+        private List<Instruction> instructions = new List<Instruction>();
 
         private string instructionStatus;
 
@@ -63,11 +65,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public List<Instruction> Instructions
-        {
-            get => this.instructions;
-            set => this.SetProperty(ref this.instructions, value);
-        }
+        public ICommand ExecuteRowCommand =>
+                           this.executeRowCommand
+           ??
+           (this.executeRowCommand = new DelegateCommand(
+              async () => await this.ExecuteRowAsync(), this.CanExecuteRow));
+
+        public List<Instruction> Instructions => new List<Instruction>(this.instructions);
 
         public string InstructionStatus
         {
@@ -86,31 +90,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedInstruction;
             set
             {
-                this.SetProperty(ref this.selectedInstruction, value);
-
-                if (this.selectedInstruction != null)
+                if (this.SetProperty(ref this.selectedInstruction, value, this.RaiseCanExecuteChanged))
                 {
-                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Valid)
+                    if (this.selectedInstruction != null)
                     {
-                        this.instructionStatus = "Red";
-                    }
+                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Valid)
+                        {
+                            this.instructionStatus = "Red";
+                        }
 
-                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expired)
-                    {
-                        this.instructionStatus = "Green";
-                    }
+                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expired)
+                        {
+                            this.instructionStatus = "Green";
+                        }
 
-                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expiring)
-                    {
-                        this.instructionStatus = "Orange";
-                    }
+                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expiring)
+                        {
+                            this.instructionStatus = "Orange";
+                        }
 
-                    if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Completed)
-                    {
-                        this.instructionStatus = "White";
-                    }
+                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Completed)
+                        {
+                            this.instructionStatus = "White";
+                        }
 
-                    this.RaisePropertyChanged(nameof(this.InstructionStatus));
+                        this.RaisePropertyChanged(nameof(this.InstructionStatus));
+                    }
                 }
             }
         }
@@ -160,13 +165,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.GetServicingInfo();
 
-            await this.GetGridElement();
+            this.GetGridElement();
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             this.confirmServiceCommand?.RaiseCanExecuteChanged();
             this.confirmInstructionCommand?.RaiseCanExecuteChanged();
+            this.executeRowCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
@@ -200,6 +206,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private bool CanExecuteRow()
+        {
+            try
+            {
+                return this.SelectedInstruction != null &&
+                    !this.SelectedInstruction.IsToDo;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private async Task ConfirmInstructionAsync()
         {
             try
@@ -208,6 +227,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception)
             {
+            }
+            finally
+            {
+                this.GetGridElement();
             }
         }
 
@@ -222,11 +245,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task GetGridElement()
+        private async Task ExecuteRowAsync()
         {
             try
             {
-                this.Instructions = this.Service.Instructions.ToList();
+                await this.machineServicingWebService.SetIsToDoAsync(this.servicingInfoId);
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                this.GetGridElement();
+            }
+        }
+
+        private void GetGridElement()
+        {
+            try
+            {
+                this.instructions = this.Service.Instructions.ToList();
+                this.RaisePropertyChanged(nameof(this.Instructions));
             }
             catch (Exception)
             {

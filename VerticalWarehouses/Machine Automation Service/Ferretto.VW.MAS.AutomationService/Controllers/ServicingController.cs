@@ -37,6 +37,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("set-IsToDo")]
+        public IActionResult SetIsToDo(int instructionId)
+        {
+            this.servicingProvider.SetIsToDo(instructionId);
+            return this.Ok();
+        }
+
         [HttpPost("confirm-service")]
         public IActionResult ConfirmService()
         {

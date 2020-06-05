@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ServicingInfo GetLastConfirmed();
 
+        void SetIsToDo(int instructionId);
+
         void UpdateServiceStatus();
 
         #endregion
