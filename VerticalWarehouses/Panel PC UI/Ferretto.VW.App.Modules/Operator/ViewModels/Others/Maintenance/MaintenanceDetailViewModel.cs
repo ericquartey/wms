@@ -139,14 +139,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if (this.SelectedInstruction != null && (this.SelectedInstruction.IsDone == true && this.SelectedInstruction.IsToDo == true) && this.SelectedInstruction.InstructionStatus != MachineServiceStatus.Completed)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return this.SelectedInstruction != null &&
+                    this.SelectedInstruction.IsDone == true &&
+                    this.SelectedInstruction.IsToDo == true &&
+                    this.SelectedInstruction.InstructionStatus != MachineServiceStatus.Completed;
             }
             catch (Exception)
             {
@@ -158,14 +154,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if (this.Instructions.Any() && (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
-                {
-                    return true;
-                }
-                else
-                {
-                return false;
-                }
+                return this.Instructions.Any() &&
+                    (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) &&
+                    this.Service.ServiceStatus != MachineServiceStatus.Completed;
             }
             catch (Exception)
             {
