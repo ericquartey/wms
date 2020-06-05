@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        double AdjustHeightWithBayChainWeight(double height, double weightUp, double weightDown);
+
         MessageStatus CarouselStatus(NotificationMessage message);
 
         MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit);
