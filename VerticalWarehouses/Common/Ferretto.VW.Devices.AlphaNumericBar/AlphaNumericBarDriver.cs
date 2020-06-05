@@ -376,6 +376,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.errorsQueue);
 
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
+
             if (enable)
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_ON);
