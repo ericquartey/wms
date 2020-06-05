@@ -841,7 +841,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+        //public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
+        {
+            var shutter = this.GetByNumber(bayNumber).Shutter;
+            if (shutter == null)
+            {
+                return InverterIndex.None;
+            }
+
+            return shutter.Inverter.Index;
+        }
 
         public bool IsMissionInBay(Mission mission)
         {

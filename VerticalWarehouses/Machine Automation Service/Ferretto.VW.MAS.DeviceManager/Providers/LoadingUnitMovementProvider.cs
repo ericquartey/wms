@@ -300,6 +300,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterClosedPosition(Bay bay, LoadingUnitLocation location)
         {
             var closeShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return closeShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
@@ -330,6 +336,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
         {
             var openShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return openShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)

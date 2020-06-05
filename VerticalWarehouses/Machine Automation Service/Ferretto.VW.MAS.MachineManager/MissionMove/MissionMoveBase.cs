@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
                 bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
                 if (bayShutter)
                 {
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
@@ -260,24 +260,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                         || bay.Carousel is null)
                     {
-                        if (this.Mission.MissionType == MissionType.OUT
-                            || this.Mission.MissionType == MissionType.WMS
-                            || this.Mission.MissionType == MissionType.FullTestOUT
-                            )
+                        if (bay.External != null)
                         {
-                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            // External bay movement
+                            newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                         else
                         {
-                            if (!this.CheckMissionShowError())
+
+                            if (this.Mission.MissionType == MissionType.OUT
+                            || this.Mission.MissionType == MissionType.WMS
+                            || this.Mission.MissionType == MissionType.FullTestOUT
+                            )
                             {
-                                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
-                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            else
+                            {
+                                if (!this.CheckMissionShowError())
+                                {
+                                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                }
+                                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
                         }
                     }
                     else
                     {
+                        // Carousel bay movement
                         newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }

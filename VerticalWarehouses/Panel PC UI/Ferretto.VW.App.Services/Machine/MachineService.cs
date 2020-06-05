@@ -558,25 +558,32 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializationBay()
         {
-            this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+            try
+            {
+                this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-            this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
-            this.bays = await this.machineBaysWebService.GetAllAsync();
+                this.bays = await this.machineBaysWebService.GetAllAsync();
 
-            this.Bay = await this.bayManagerService.GetBayAsync();
+                this.Bay = await this.bayManagerService.GetBayAsync();
+            }
+            catch (Exception exc)
+            {
+                this.logger.Debug($"Exception description: {exc.Message}");
+            }
 
             this.BayNumber = this.Bay.Number;
 
             this.HasBayExternal = this.Bay.IsExternal;
 
-            this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
+            this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
 
             this.HasCarousel = this.Bay.Carousel != null;
 
             this.HasBayWithInverter = this.Bay.Inverter != null;
 
-            this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
+            this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
 
             await this.UpdateBay();
         }
@@ -1112,9 +1119,10 @@ namespace Ferretto.VW.App.Services
                 }
                 await this.GetLoadUnits();
             }
-            catch
+            catch (Exception exc)
             {
                 // do nothing
+                this.logger.Debug($"Exception description: {exc.Message}");
             }
         }
 
