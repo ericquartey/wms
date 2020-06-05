@@ -52,7 +52,8 @@
                 <DataGrid Name="DataGrid"
                           Height="auto"
                           ItemsSource="{Binding Instructions}"
-                          RowHeight="40">
+                          RowHeight="40"
+                          SelectedItem="{Binding SelectedInstruction}">
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="Column1"
                                             Width="60"
@@ -89,7 +90,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column3"
-                                            Width="150"
+                                            Width="100"
                                             Binding="{Binding Path=IsToDo}"
                                             Header="{res:Loc OperatorApp.IsToDo}">
                             <DataGridTextColumn.ElementStyle>
@@ -100,7 +101,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column4"
-                                            Width="150"
+                                            Width="100"
                                             Binding="{Binding Path=IsDone}"
                                             Header="{res:Loc OperatorApp.IsDone}">
                             <DataGridTextColumn.ElementStyle>
@@ -111,7 +112,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column5"
-                                            Width="150"
+                                            Width="120"
                                             Binding="{Binding Path=Definition.MaxDays}"
                                             Header="{res:Loc OperatorApp.MaxDays}">
                             <DataGridTextColumn.ElementStyle>
@@ -122,7 +123,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column6"
-                                            Width="150"
+                                            Width="180"
                                             Binding="{Binding Path=Definition.MaxRelativeCount}"
                                             Header="{res:Loc OperatorApp.MaxRelativeCount}">
                             <DataGridTextColumn.ElementStyle>
@@ -136,6 +137,17 @@
                                             Width="150"
                                             Binding="{Binding Path=Definition.MaxTotalCount}"
                                             Header="{res:Loc OperatorApp.MaxTotalCount}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column8"
+                                            Width="150"
+                                            Binding="{Binding Path=ServiceStatus}"
+                                            Header="{res:Loc OperatorApp.ServiceStatus}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
@@ -219,12 +231,20 @@
                                      LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
         </Grid>
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Command="{Binding ConfirmServiceCommand}"
-                            Content="{res:Loc OperatorApp.ConfirmService}" />
+        <Grid Grid.Row="3"
+              Grid.Column="1">
+            <controls:PpcButton Margin="0,15,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ConfirmServiceCommand}"
+                                Content="{res:Loc OperatorApp.ConfirmService}" />
+
+            <controls:PpcButton Margin="0,15,10,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding ConfirmInstructionCommand}"
+                                Content="{res:Loc OperatorApp.ConfirmInstruction}" />
+        </Grid>
+
     </Grid>
 </ctrls:View>

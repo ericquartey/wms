@@ -12,12 +12,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ServicingController : ControllerBase
     {
+        #region Fields
+
         private readonly IServicingProvider servicingProvider;
+
+        #endregion
+
+        #region Constructors
 
         public ServicingController(
             IServicingProvider servicingProvider)
         {
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
+        }
+
+        #endregion
+
+        #region Methods
+
+        [HttpPost("confirm-instruction")]
+        public IActionResult ConfirmInstruction(int instructionId)
+        {
+            this.servicingProvider.ConfirmInstruction(instructionId);
+            return this.Ok();
         }
 
         [HttpPost("confirm-service")]
@@ -63,5 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             return this.Ok(this.servicingProvider.GetLastConfirmed());
         }
+
+        #endregion
     }
 }

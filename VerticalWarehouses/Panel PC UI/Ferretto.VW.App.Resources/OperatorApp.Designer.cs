@@ -664,6 +664,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm instruction.
+        /// </summary>
+        public static string ConfirmInstruction {
+            get {
+                return ResourceManager.GetString("ConfirmInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm on empty.
         /// </summary>
         public static string ConfirmOnEmpty {

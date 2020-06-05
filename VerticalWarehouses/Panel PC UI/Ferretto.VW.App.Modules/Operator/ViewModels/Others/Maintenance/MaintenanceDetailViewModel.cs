@@ -19,11 +19,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineServicingWebService machineServicingWebService;
 
+        private DelegateCommand confirmInstructionCommand;
+
         private DelegateCommand confirmServiceCommand;
 
         private List<Instruction> instructions;
 
         private string mainteinanceRequest;
+
+        private Instruction selectedInstruction;
 
         private ServicingInfo service;
 
@@ -43,8 +47,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public ICommand ConfirmInstructionCommand =>
+           this.confirmInstructionCommand
+           ??
+           (this.confirmInstructionCommand = new DelegateCommand(
+              async () => await this.ConfirmInstructionAsync(), this.CanConfirmInstruction));
+
         public ICommand ConfirmServiceCommand =>
-           this.confirmServiceCommand
+                   this.confirmServiceCommand
            ??
            (this.confirmServiceCommand = new DelegateCommand(
               async () => await this.ConfirmServiceAsync(), this.CanConfirmService));
@@ -61,6 +71,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.mainteinanceRequest;
             set => this.SetProperty(ref this.mainteinanceRequest, value);
+        }
+
+        public Instruction SelectedInstruction
+        {
+            get => this.selectedInstruction;
+            set => this.SetProperty(ref this.selectedInstruction, value);
         }
 
         public ServicingInfo Service
@@ -114,15 +130,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             this.confirmServiceCommand?.RaiseCanExecuteChanged();
+            this.confirmInstructionCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
 
-        private bool CanConfirmService()
+        private bool CanConfirmInstruction()
         {
             try
             {
-                if (this.Instructions != null && (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
+                if (this.SelectedInstruction != null && (this.SelectedInstruction.IsDone == true && this.SelectedInstruction.IsToDo == true) && this.SelectedInstruction.InstructionStatus != MachineServiceStatus.Completed)
                 {
                     return true;
                 }
@@ -134,6 +151,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        private bool CanConfirmService()
+        {
+            try
+            {
+                if (this.Instructions.Any() && (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
+                {
+                    return true;
+                }
+                else
+                {
+                return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async Task ConfirmInstructionAsync()
+        {
+            try
+            {
+                await this.machineServicingWebService.ConfirmInstructionAsync(this.SelectedInstruction.Id);
+            }
+            catch (Exception)
+            {
             }
         }
 

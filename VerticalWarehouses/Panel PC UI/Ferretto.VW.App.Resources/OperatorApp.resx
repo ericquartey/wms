@@ -1926,4 +1926,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Requested quantity</value>
     <comment>Label</comment>
   </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Confirm instruction</value>
+  </data>
 </root>

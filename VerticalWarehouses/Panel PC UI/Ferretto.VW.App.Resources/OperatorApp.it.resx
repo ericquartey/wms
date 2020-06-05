@@ -1531,4 +1531,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
   </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Conferma instruzione</value>
+  </data>
 </root>
