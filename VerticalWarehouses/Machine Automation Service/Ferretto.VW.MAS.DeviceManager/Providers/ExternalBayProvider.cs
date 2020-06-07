@@ -131,9 +131,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case ExternalBayMovementDirection.TowardOperator:
                     if (
-#if CHECK_BAY_SENSOR
+                        //#if CHECK_BAY_SENSOR
                         isLoadingUnitInExternalPosition /*||*/
-#endif
+                        //#endif
                         //bay.Positions.FirstOrDefault().LoadingUnit != null
                         )
                     {
