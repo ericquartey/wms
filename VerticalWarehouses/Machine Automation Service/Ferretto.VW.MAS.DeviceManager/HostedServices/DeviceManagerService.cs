@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.ResetSecurity:
                             case MessageType.InverterProgramming:
                             case MessageType.InverterPowerEnable:
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;
@@ -300,7 +300,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     messageCurrentStateMachine is ExtBayPositioningStateMachine)
                                 {
                                     // deallocate only Positioning state machine
-                                    this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                    this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                     this.currentStateMachines.Remove(messageCurrentStateMachine);
                                     this.SendCleanDebug();
                                 }
@@ -321,7 +321,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     // deallocate only ShutterPositioning state machine
                                     continue;
                                 }
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;
@@ -332,7 +332,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     // deallocate only RepetitiveHorizontalMovements state machine
                                     continue;
                                 }
-                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count()}");
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;
