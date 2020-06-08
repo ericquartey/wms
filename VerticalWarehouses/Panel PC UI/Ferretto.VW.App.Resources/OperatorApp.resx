@@ -1947,4 +1947,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="ExecuteRow" xml:space="preserve">
     <value>Execute row</value>
   </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Are you sure you want to confirm this service?</value>
+  </data>
 </root>

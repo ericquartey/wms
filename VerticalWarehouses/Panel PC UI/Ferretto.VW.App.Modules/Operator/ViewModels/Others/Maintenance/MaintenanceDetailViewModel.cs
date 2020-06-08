@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class MaintenanceDetailViewModel : BaseOperatorViewModel
     {
         #region Fields
+
+        private readonly Services.IDialogService dialogService;
 
         private readonly IMachineServicingWebService machineServicingWebService;
 
@@ -41,9 +44,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public MaintenanceDetailViewModel(IMachineServicingWebService machineServicingWebService)
+        public MaintenanceDetailViewModel(
+            IMachineServicingWebService machineServicingWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
         }
 
@@ -94,25 +100,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     if (this.selectedInstruction != null)
                     {
-                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Valid)
-                        {
-                            this.instructionStatus = "Red";
-                        }
-
-                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expired)
-                        {
-                            this.instructionStatus = "Green";
-                        }
-
-                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Expiring)
-                        {
-                            this.instructionStatus = "Orange";
-                        }
-
-                        if (this.selectedInstruction.InstructionStatus == MachineServiceStatus.Completed)
-                        {
-                            this.instructionStatus = "White";
-                        }
+                        this.instructionStatus = this.SetStatusColor(this.selectedInstruction.InstructionStatus);
 
                         this.RaisePropertyChanged(nameof(this.InstructionStatus));
                     }
@@ -125,29 +113,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.service;
             set
             {
-                this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged);
-
-                if (this.service.ServiceStatus == MachineServiceStatus.Valid)
+                if (this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged))
                 {
-                    this.mainteinanceRequest = "Red";
-                }
+                    this.mainteinanceRequest = this.SetStatusColor(this.service.ServiceStatus);
 
-                if (this.service.ServiceStatus == MachineServiceStatus.Expired)
-                {
-                    this.mainteinanceRequest = "Green";
+                    this.RaisePropertyChanged(nameof(this.MainteinanceRequest));
                 }
-
-                if (this.service.ServiceStatus == MachineServiceStatus.Expiring)
-                {
-                    this.mainteinanceRequest = "Orange";
-                }
-
-                if (this.service.ServiceStatus == MachineServiceStatus.Completed)
-                {
-                    this.mainteinanceRequest = "White";
-                }
-
-                this.RaisePropertyChanged(nameof(this.MainteinanceRequest));
             }
         }
 
@@ -164,8 +135,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.servicingInfoId = (int)this.Data;
 
             await this.GetServicingInfo();
-
-            this.GetGridElement();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -230,7 +199,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.GetGridElement();
+                await this.GetServicingInfo();
             }
         }
 
@@ -238,7 +207,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                await this.machineServicingWebService.ConfirmServiceAsync();
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineServicingWebService.ConfirmServiceAsync();
+                }
             }
             catch (Exception)
             {
@@ -249,14 +222,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                await this.machineServicingWebService.SetIsToDoAsync(this.servicingInfoId);
+                await this.machineServicingWebService.SetIsToDoAsync(this.SelectedInstruction.Id);
             }
             catch (Exception)
             {
             }
             finally
             {
-                this.GetGridElement();
+                await this.GetServicingInfo();
             }
         }
 
@@ -277,9 +250,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.Service = await this.machineServicingWebService.GetByIdAsync(this.servicingInfoId);
+
+                this.GetGridElement();
             }
             catch (Exception)
             {
+            }
+        }
+
+        private string SetStatusColor(MachineServiceStatus status)
+        {
+            switch (status)
+            {
+                case MachineServiceStatus.Valid:
+                    return "Red";
+
+                case MachineServiceStatus.Expired:
+                    return "Green";
+
+                case MachineServiceStatus.Expiring:
+                    return "Orange";
+
+                case MachineServiceStatus.Completed:
+                    return "White";
+
+                default:
+                    return "Trasparent";
             }
         }
 

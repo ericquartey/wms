@@ -718,6 +718,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to confirm this service?.
+        /// </summary>
+        public static string ConfirmServiceMessage {
+            get {
+                return ResourceManager.GetString("ConfirmServiceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CounterName.
         /// </summary>
         public static string CounterName {
