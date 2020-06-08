@@ -235,7 +235,7 @@
                            Margin="0,5,10,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Fill="{Binding MainteinanceRequest}" />
+                           Fill="{Binding MainteinanceRequest, TargetNullValue=Transparent}" />
 
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"
@@ -277,7 +277,7 @@
                            Margin="0,5,10,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Fill="{Binding InstructionStatus}" />
+                           Fill="{Binding InstructionStatus, TargetNullValue=Transparent}" />
 
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"

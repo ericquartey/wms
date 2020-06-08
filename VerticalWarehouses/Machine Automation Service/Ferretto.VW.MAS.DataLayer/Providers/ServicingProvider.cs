@@ -85,9 +85,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
-                    instruction.IsToDo = true;
-                    this.dataContext.Instructions.Update(instruction);
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).IsToDo = true;
+                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
                     this.dataContext.SaveChanges();
                 }
                 catch (Exception)
