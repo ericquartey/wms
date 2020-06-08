@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
@@ -100,7 +100,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ItemInfo Item
         {
             get => this.item;
-            set => this.SetProperty(ref this.item, value);
+            set
+            {
+                if (value is null)
+                {
+                    this.RaisePropertyChanged();
+                    return;
+                }
+
+                this.SetProperty(ref this.item, value);
+                this.ItemTxt = string.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.item.MeasureUnit);
+                this.RaisePropertyChanged(nameof(this.ItemTxt));
+            }
         }
 
         public string ItemTxt
@@ -216,7 +227,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.InputQuantity = null;
+                this.InputQuantity = 0;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
             }
@@ -234,7 +245,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.RaisePropertyChanged(nameof(this.ItemTxt));
 
-            this.InputQuantity = null;
+            this.InputQuantity = 0;
         }
 
         public async Task RequestItemPickAsync()

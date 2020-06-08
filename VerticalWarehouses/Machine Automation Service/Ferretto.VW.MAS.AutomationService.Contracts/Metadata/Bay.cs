@@ -19,12 +19,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Offset(10)]
             public Carousel Carousel { get; set; }
 
-            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ExternalBay))]
-            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.ExternalBay_Description))]
-            [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(60)]
-            public External External { get; set; }
-
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ChainOffset))]
             [Unit("mm")]
             [Id(1)]
@@ -39,6 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             [Id(90)]
             public MovementParameters EmptyLoadMovement { get; set; }
+
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ExternalBay))]
+            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.ExternalBay_Description))]
+            [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
+            [Id(60)]
+            public External External { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             [Id(95)]
@@ -62,6 +62,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsExternal))]
             [Id(5)]
             public bool IsExternal { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsFastDepositToBay))]
+            [Id(31)]
+            public bool IsFastDepositToBay { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayLaser))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]

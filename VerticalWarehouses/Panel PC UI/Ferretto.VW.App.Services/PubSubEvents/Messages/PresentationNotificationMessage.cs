@@ -6,10 +6,11 @@ namespace Ferretto.VW.App.Services
     {
         #region Constructors
 
-        public PresentationNotificationMessage(string notificationMessage, NotificationSeverity notificationSeverity)
+        public PresentationNotificationMessage(string notificationMessage, NotificationSeverity notificationSeverity, string iconName = null)
         {
             this.Msg = string.IsNullOrEmpty(notificationMessage) ? null : notificationMessage;
             this.NotificationSeverity = notificationSeverity;
+            this.IconName = iconName;
         }
 
         public PresentationNotificationMessage(string notificationMessage)
@@ -35,6 +36,8 @@ namespace Ferretto.VW.App.Services
         public bool ClearMessage { get; }
 
         public System.Exception Exception { get; }
+
+        public string IconName { get; }
 
         public string Msg { get; }
 

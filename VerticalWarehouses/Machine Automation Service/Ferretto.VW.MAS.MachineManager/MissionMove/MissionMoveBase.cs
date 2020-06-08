@@ -103,11 +103,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var machine = this.MachineProvider.Get();
                 if (unitToMove.Height > machine.LoadUnitMaxHeight + tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height < bayPosition.MaxSingleHeight + tolerance)
                 {
@@ -129,25 +129,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                         canRetry = true;
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.02} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 if (returnValue
                     && mission.MissionType == MissionType.FirstTest
                     && unitToMove.Height > machine.LoadUnitMinHeight + tolerance)
                 {
                     returnValue = false;
-                    this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.02} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.00} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
             }
 #else
@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
                 bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
                 if (bayShutter)
                 {
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
@@ -244,6 +244,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
                 {
+                    //if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay)
+                    //    && this.MachineVolatileDataProvider.IsBayLightOn[this.Mission.TargetBay]
+                    //    && (this.MissionsDataProvider.GetAllActiveMissions().Count(m => m.Status != MissionStatus.New) <= 1)
+                    //    )
+                    //{
+                    //    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    //}
                     newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
@@ -253,24 +260,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                         || bay.Carousel is null)
                     {
-                        if (this.Mission.MissionType == MissionType.OUT
-                            || this.Mission.MissionType == MissionType.WMS
-                            || this.Mission.MissionType == MissionType.FullTestOUT
-                            )
+                        if (bay.External != null)
                         {
-                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            // External bay movement
+                            newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                         else
                         {
-                            if (!this.CheckMissionShowError())
+
+                            if (this.Mission.MissionType == MissionType.OUT
+                            || this.Mission.MissionType == MissionType.WMS
+                            || this.Mission.MissionType == MissionType.FullTestOUT
+                            )
                             {
-                                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
-                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            else
+                            {
+                                if (!this.CheckMissionShowError())
+                                {
+                                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                }
+                                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
                         }
                     }
                     else
                     {
+                        // Carousel bay movement
                         newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }

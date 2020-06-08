@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abort.
+        /// </summary>
+        public static string Abort {
+            get {
+                return ResourceManager.GetString("Abort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance (%).
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -106,11 +115,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done..
+        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation..
         /// </summary>
         public static string AccessoriesBarcodeReaderConfigurationInstructions {
             get {
                 return ResourceManager.GetString("AccessoriesBarcodeReaderConfigurationInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matching Pattern (regex).
+        /// </summary>
+        public static string AccessoriesCardReaderTokenRegex {
+            get {
+                return ResourceManager.GetString("AccessoriesCardReaderTokenRegex", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace Ferretto.VW.App.Resources {
         public static string AccessoryEnabled {
             get {
                 return ResourceManager.GetString("AccessoryEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acquired token.
+        /// </summary>
+        public static string AcquiredToken {
+            get {
+                return ResourceManager.GetString("AcquiredToken", resourceCulture);
             }
         }
         
@@ -390,6 +417,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Bay3 {
             get {
                 return ResourceManager.GetString("Bay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay4 {
+            get {
+                return ResourceManager.GetString("Bay4", resourceCulture);
             }
         }
         
@@ -1222,6 +1258,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check serial ports.
+        /// </summary>
+        public static string CheckSerialPorts {
+            get {
+                return ResourceManager.GetString("CheckSerialPorts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check Status.
         /// </summary>
         public static string CheckStatus {
@@ -1272,6 +1317,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CloseShutterCommand {
             get {
                 return ResourceManager.GetString("CloseShutterCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code was recognized..
+        /// </summary>
+        public static string CodeRecognized {
+            get {
+                return ResourceManager.GetString("CodeRecognized", resourceCulture);
             }
         }
         
@@ -4840,6 +4894,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No removable devices found.
+        /// </summary>
+        public static string NoRemovableDevicesFound {
+            get {
+                return ResourceManager.GetString("NoRemovableDevicesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No serial ports detected. Ensure the device is connected to the panel..
         /// </summary>
         public static string NoSerialPortDetected {
@@ -5373,6 +5436,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Received Barcode.
+        /// </summary>
+        public static string ReceivedBarcode {
+            get {
+                return ResourceManager.GetString("ReceivedBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference&apos;s cell position [mm].
         /// </summary>
         public static string ReferenceCellHeight {
@@ -5387,6 +5459,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RemainingTime {
             get {
                 return ResourceManager.GetString("RemainingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removable devices found.
+        /// </summary>
+        public static string RemovableDevicesFound {
+            get {
+                return ResourceManager.GetString("RemovableDevicesFound", resourceCulture);
             }
         }
         
@@ -5765,6 +5846,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes before starting the test..
+        /// </summary>
+        public static string SaveChangesBeforeStartingTest {
+            get {
+                return ResourceManager.GetString("SaveChangesBeforeStartingTest", resourceCulture);
             }
         }
         
@@ -6336,6 +6426,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Test.
+        /// </summary>
+        public static string StartTest {
+            get {
+                return ResourceManager.GetString("StartTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to State should be in mode {0} or {1}.
         /// </summary>
         public static string StateShouldBeInMode {
@@ -6512,6 +6611,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SystemErrorMM {
             get {
                 return ResourceManager.GetString("SystemErrorMM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System path &apos;{0}&apos; not found.
+        /// </summary>
+        public static string SystemPathNotFound {
+            get {
+                return ResourceManager.GetString("SystemPathNotFound", resourceCulture);
             }
         }
         
@@ -6944,6 +7052,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UserManagement {
             get {
                 return ResourceManager.GetString("UserManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the card on the card reader..
+        /// </summary>
+        public static string UseTheCardOnCardReader {
+            get {
+                return ResourceManager.GetString("UseTheCardOnCardReader", resourceCulture);
             }
         }
         

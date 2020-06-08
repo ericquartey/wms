@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void NavigateToDrawerInfoView();
+        void NavigateToDrawerViewBase();
 
         void NavigateToDrawerView();
 

@@ -94,7 +94,6 @@
           "Id": 3,
           "Speed": 77.0
         },
-        "Id": 1,
         "Inverter": {
           "Id": 2,
           "Index": "Slave3",
@@ -108,7 +107,6 @@
           "TcpPort": 19550
         },
         "IsActive": true,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": "BayOne",
         "Operation": "Idle",
@@ -168,7 +166,6 @@
       },
       {
         "ChainOffset": 0.0,
-        "Id": 2,
         "IoDevice": {
           "Id": 2,
           "Index": "IoDevice2",
@@ -176,7 +173,6 @@
           "TcpPort": 19551
         },
         "IsActive": false,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": "BayTwo",
         "Operation": "Idle",
@@ -580,6 +576,7 @@
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
+        "SecondTermMultiplier": 1,
         "ShaftDiameter": 45.0,
         "ShaftElasticity": 210000.0
       }

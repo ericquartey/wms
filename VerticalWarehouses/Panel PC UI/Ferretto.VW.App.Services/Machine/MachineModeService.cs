@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
+using Microsoft.AppCenter.Analytics;
 using NLog;
 using Prism.Events;
 
@@ -13,6 +12,8 @@ namespace Ferretto.VW.App.Services
     internal sealed class MachineModeService : IMachineModeService, IDisposable
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -37,11 +38,13 @@ namespace Ferretto.VW.App.Services
         public MachineModeService(
             IEventAggregator eventAggregator,
             IMachinePowerWebService machinePowerWebService,
-            IMachineModeWebService machineModeWebService)
+            IMachineModeWebService machineModeWebService,
+            IBayManager bayManager)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.bayManager = bayManager;
 
             this.machinePowerChangedToken = this.eventAggregator
               .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
@@ -131,6 +134,13 @@ namespace Ferretto.VW.App.Services
             {
                 this.ShowError(ex);
             }
+            finally
+            {
+                Analytics.TrackEvent("Power Off", new Dictionary<string, string>
+                {
+                     { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                });
+            }
         }
 
         public async Task PowerOnAsync()
@@ -142,6 +152,13 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.ShowError(ex);
+            }
+            finally
+            {
+                Analytics.TrackEvent("Power On", new Dictionary<string, string>
+                {
+                     { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                });
             }
         }
 
@@ -155,6 +172,14 @@ namespace Ferretto.VW.App.Services
             {
                 this.ShowError(ex);
             }
+            finally
+            {
+                Analytics.TrackEvent("Change Mode", new Dictionary<string, string>
+                {
+                    { "Mode", "Automatic" },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                });
+            }
         }
 
         public async Task SetManualMode()
@@ -166,6 +191,14 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.ShowError(ex);
+            }
+            finally
+            {
+                Analytics.TrackEvent("Change Mode", new Dictionary<string, string>
+                {
+                    { "Mode", "Manual" },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
+                });
             }
         }
 

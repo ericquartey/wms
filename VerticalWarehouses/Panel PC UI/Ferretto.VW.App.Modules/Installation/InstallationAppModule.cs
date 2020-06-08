@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Installation.Views;
+﻿using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Modules.Installation.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -44,7 +43,11 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<AlphaNumericBarSettingsView>();
             containerRegistry.RegisterForNavigation<BarcodeReaderSettingsView>();
             containerRegistry.RegisterForNavigation<BarcodeReaderConfigurationView>();
+            containerRegistry.RegisterForNavigation<LabelPrinterSettingsView>();
             containerRegistry.RegisterForNavigation<LaserPointerSettingsView>();
+            containerRegistry.RegisterForNavigation<CardReaderSettingsView>();
+            containerRegistry.RegisterForNavigation<TokenReaderSettingsView>();
+            containerRegistry.RegisterForNavigation<WeightingScaleSettingsView>();
 
             containerRegistry.RegisterForNavigation<BayCheckView>();
             containerRegistry.RegisterForNavigation<DepositAndPickUpTestView>();

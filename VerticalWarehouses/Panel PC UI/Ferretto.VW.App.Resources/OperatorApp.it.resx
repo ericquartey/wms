@@ -1366,9 +1366,6 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Weight" xml:space="preserve">
     <value>Peso</value>
   </data>
-  <data name="DrawerCompactingWarning" xml:space="preserve">
-    <value>La frammentazione totale supera il 25%</value>
-  </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Calibrazione giostra in corso</value>
   </data>
@@ -1422,5 +1419,140 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="UnitsInElevator" xml:space="preserve">
     <value>Cassetti in elevatore</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Conferma service</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Data di Installazione</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Data ultimo servizio</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Prossima data di servizio</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Stato del servizio</value>
+  </data>
+  <data name="TotalMission" xml:space="preserve">
+    <value>Missione totale</value>
+  </data>
+  <data name="Instruction" xml:space="preserve">
+    <value>Istruzione</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>IsDone</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>IsToDo</value>
+  </data>
+  <data name="MachineStatisticsCounter" xml:space="preserve">
+    <value>MachineStatisticsCounter</value>
+  </data>
+  <data name="MaintenanceRequired" xml:space="preserve">
+    <value>Manutenzione richiesta</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaxDays</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaxRelativeCount</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Totale tempo di missioni attive</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Km Baia 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Baia 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Baia 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km elevatore asse orizzontale</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km elevatore asse verticale</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Cassetti in Baia 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Cassetti in Baia 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Cassetti in Baia 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(I dati sono calcolati dall'ultima manutenzione rispetto al valore totale)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Manutenzione:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Tempo missioni attive</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Baia 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Baia 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Baia 3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Elevatore asse orizzontale</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Elevatore asse verticale</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Km baie da ultima manutenzione / totali</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Km elevatore assi da ultima manutenzione / totali</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Totale tempo di missioni attive da ultima manutenzione / totale</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Cassetti nelle baie da ultima manutenzione / totali</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Quantità richiesta</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Conferma riga</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Asse</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>BayNumber</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>CounterName</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Stato riga</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Esegui riga</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

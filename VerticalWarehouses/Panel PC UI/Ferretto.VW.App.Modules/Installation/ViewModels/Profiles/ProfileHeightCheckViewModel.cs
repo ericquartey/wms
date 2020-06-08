@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -21,9 +14,6 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
-using LoadingUnitLocation = Ferretto.VW.MAS.AutomationService.Contracts.LoadingUnitLocation;
-using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -181,14 +171,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.completedCommand
             ??
             (this.completedCommand = new DelegateCommand(
-                async () =>
-                {
-                    await this.machineProfileProcedureWeb.SaveAsync();
-
-                    this.CurrentStep = ProfileCheckStep.Initialize;
-
-                    this.NavigationService.GoBack();
-                }));
+                async () => await this.CompleteProcedureAsync(),
+                this.CanCompleteProcedure));
 
         public ProfileCheckStep CurrentStep
         {
@@ -380,6 +364,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.LoadingUnitId):
                         if (!this.LoadingUnitId.HasValue ||
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInElevatorById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
                             return VW.App.Resources.Localized.Get("InstallationApp.InvalidDrawerSelected");
@@ -587,6 +572,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand?.RaiseCanExecuteChanged();
             this.mensurationSxCommand?.RaiseCanExecuteChanged();
             this.mensurationDxCommand?.RaiseCanExecuteChanged();
+            this.completedCommand?.RaiseCanExecuteChanged();
 
             this.UpdateStatusButtonFooter();
         }
@@ -627,6 +613,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    this.SensorsService.ShutterSensors.Open;
+        }
+
+        private bool CanCompleteProcedure()
+        {
+            if ((this.measuredDx < 1.00) && (this.measuredSx < 1.00))
+            {
+                return true;
+            }
+            else
+            {
+                this.ShowNotification(VW.App.Resources.Localized.Get("ErrorsApp.CalibrationBarierError"));
+                return false;
+            }
         }
 
         private bool CanGoToBayCommand()
@@ -687,6 +686,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var bay = this.MachineService.Bay;
                 var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
                 await this.shuttersWebService.MoveToAsync(closePosition);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task CompleteProcedureAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineProfileProcedureWeb.SaveAsync();
+
+                this.CurrentStep = ProfileCheckStep.Initialize;
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

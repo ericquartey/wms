@@ -1,10 +1,8 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {

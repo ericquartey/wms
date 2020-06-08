@@ -162,4 +162,10 @@
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>User name must be specified.</value>
   </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Unable to authenticate user with the card.</value>
+  </data>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Performing login through card ...</value>
+  </data>
 </root>

@@ -38,6 +38,10 @@ namespace Ferretto.VW.MAS.IODriver
                         this.deviceIndex,
                         this.eventAggregator,
                         this.logger);
+                    lock (this.syncAccess)
+                    {
+                        this.commandExecuting = true;
+                    }
 
                     this.CurrentStateMachine.Start();
                 }

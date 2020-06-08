@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The support cannot be more than 1 mm.
+        /// </summary>
+        public static string CalibrationBarierError {
+            get {
+                return ResourceManager.GetString("CalibrationBarierError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell Side.
         /// </summary>
         public static string CellSide {

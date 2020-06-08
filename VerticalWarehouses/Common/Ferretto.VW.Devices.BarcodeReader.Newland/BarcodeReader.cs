@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Ferretto.VW.CommonUtils;
+using NLog;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
@@ -10,15 +14,18 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
     {
         #region Fields
 
-        private const int ReadBufferSize = 2048;
+        private const int DefaultReadTimeout = 6000;
+
+        private static readonly Regex responseRegex = new Regex(
+           @"@@@@!(?<command>\w+);(&{(?<params>.+)\|\w+})?\^\^\^\^", RegexOptions.Compiled);
 
         private readonly DeviceInformation information = new DeviceInformation();
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly SerialPort serialPort = new SerialPort();
 
         private bool isDisposed;
-
-        private Thread readThread;
 
         #endregion
 
@@ -38,26 +45,45 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Connect(ConfigurationOptions options)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReader));
+            }
+
             if (this.serialPort.IsOpen)
             {
-                System.Diagnostics.Debug.WriteLine("Serial port is already open.");
-                return;
+                if (options.PortName == this.serialPort.PortName)
+                {
+                    this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
+
+                    return;
+                }
+                else
+                {
+                    this.Disconnect();
+                }
             }
 
             this.serialPort.PortName = options.PortName;
             this.serialPort.BaudRate = options.BaudRate;
             this.serialPort.Parity = options.Parity;
             this.serialPort.StopBits = options.StopBits;
+            this.serialPort.ReadTimeout = DefaultReadTimeout;
+
+            this.logger.Debug($"Opening serial port {this.serialPort.PortName}.");
 
             this.serialPort.Open();
-            this.readThread = new Thread(this.ReadLoop);
-            this.readThread.Start();
+
+            this.RetrieveDeviceInfo();
+
+            new Thread(this.ReadLoop).Start();
         }
 
         public void Disconnect()
         {
-            this.readThread?.Abort();
-            this.readThread = null;
+            this.logger.Debug($"Closing serial port {this.serialPort.PortName}.");
+
+            this.serialPort.Close();
         }
 
         public void Dispose()
@@ -94,55 +120,120 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         private void ReadBytes()
         {
-            var buffer = new byte[ReadBufferSize];
-
             try
             {
+                var buffer = new byte[this.serialPort.ReadBufferSize];
+
                 var byteCount = this.serialPort.Read(buffer, 0, buffer.Length);
 
                 var barcode = Encoding.ASCII.GetString(buffer, 0, byteCount);
 
-                System.Diagnostics.Debug.WriteLine($"Received barcode '{barcode}'.");
+                this.logger.Debug($"Received barcode '{barcode.Replace("\r", "<CR>").Replace("\n", "<LF>")}'.");
 
                 this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
             }
-            catch (InvalidOperationException ex)
+            catch (System.IO.IOException)
             {
-                System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-
-                this.serialPort.Open();
+                this.logger.Trace($"Serial port '{this.serialPort.PortName}': read timeout.");
+                Thread.Sleep(100);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-                Thread.Sleep(1000);
-                if (!this.serialPort.IsOpen)
-                {
-                    System.Diagnostics.Debug.WriteLine("Trying to reconnect to serial port {this.serialPort.PortName}.");
-
-                    this.serialPort.Open();
-                }
+                this.logger.Error(ex);
             }
         }
 
         private void ReadLoop()
         {
+            do
+            {
+                this.ReadBytes();
+            }
+            while (this.serialPort.IsOpen && !this.isDisposed);
+        }
+
+        private void RetrieveDeviceInfo()
+        {
             try
             {
-                do
+                var responseParams = this.SendCommand(BarcodeCommand.InquireAllInformation);
+                if (responseParams.Any())
                 {
-                    this.ReadBytes();
+                    foreach (var parameter in responseParams)
+                    {
+                        this.logger.Debug($"Received parameter: '{parameter}'.");
+
+                        const string ModelNumberParameter = "Product Name:";
+                        const string SerialNumberParameter = "Product ID:";
+                        const string FirmwareVersionParameter = "Firmware";
+
+                        if (parameter.StartsWith(ModelNumberParameter, StringComparison.Ordinal))
+                        {
+                            this.information.ModelNumber = parameter.Replace(ModelNumberParameter, "").Trim();
+                        }
+                        else if (parameter.StartsWith(SerialNumberParameter, StringComparison.Ordinal))
+                        {
+                            this.information.SerialNumber = parameter.Replace(SerialNumberParameter, "").Trim();
+                        }
+                        else if (parameter.StartsWith(FirmwareVersionParameter, StringComparison.Ordinal))
+                        {
+                            this.information.FirmwareVersion = parameter.Replace(FirmwareVersionParameter, "").Trim();
+                        }
+                    }
                 }
-                while (this.serialPort.IsOpen);
+                else
+                {
+                    this.logger.Warn("Unable to retrieve device info.");
+                    return;
+                }
+
+                responseParams = this.SendCommand(BarcodeCommand.InquireManufactureDate);
+                if (responseParams.Count() == 1
+                    &&
+                    DateTime.TryParse(responseParams.First(), out var dateTime))
+                {
+                    this.information.ManufactureDate = dateTime;
+                }
+                else
+                {
+                    this.logger.Warn("Unable to parse manufacture date.");
+                }
             }
-            catch (ThreadAbortException)
+            catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Serial port reader thread stopped.");
-                if (this.serialPort.IsOpen)
+                this.logger.Warn($"Unable to retrieve device info: {ex.Message}.");
+            }
+        }
+
+        private IEnumerable<string> SendCommand(BarcodeCommand command)
+        {
+            try
+            {
+                var commandCode = (int)command;
+                var commandString = $"$$$$#{commandCode};%%%%";
+                this.logger.Debug($"Sending command '{commandString}' to barcode reader ...");
+                this.serialPort.Write(commandString);
+
+                var buffer = new byte[this.serialPort.ReadBufferSize];
+                var byteCount = this.serialPort.Read(buffer, 0, buffer.Length);
+                var response = Encoding.ASCII.GetString(buffer, 0, byteCount);
+                this.logger.Debug($"Received command response: '{response}'.");
+
+                var match = responseRegex.Match(response);
+                if (!match.Success)
                 {
-                    System.Diagnostics.Debug.WriteLine("Closing serial port.");
-                    this.serialPort.Close();
+                    this.logger.Warn("Unable to parse command response.");
+                    return Array.Empty<string>();
                 }
+                else
+                {
+                    return match.Groups["params"].Value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Unable to send command to barcode reader: {ex.Message}.");
+                return null;
             }
         }
 

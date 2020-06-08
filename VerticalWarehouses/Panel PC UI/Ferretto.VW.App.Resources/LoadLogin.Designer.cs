@@ -97,6 +97,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Performing login through card ....
+        /// </summary>
+        public static string LoggingInUsingCard {
+            get {
+                return ResourceManager.GetString("LoggingInUsingCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
@@ -174,6 +183,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnableToAuthenticateWithTheBarcode {
             get {
                 return ResourceManager.GetString("UnableToAuthenticateWithTheBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to authenticate user with the card..
+        /// </summary>
+        public static string UnableToAuthenticateWithTheCard {
+            get {
+                return ResourceManager.GetString("UnableToAuthenticateWithTheCard", resourceCulture);
             }
         }
         

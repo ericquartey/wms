@@ -48,11 +48,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IMachineStatisticsWebService>(
                 new InjectionFactory(c => new MachineStatisticsWebService(urlString, resolveFunction(c))));
 
+            container.RegisterType<IMachineAccessoriesWebService>(
+                new InjectionFactory(c => new MachineAccessoriesWebService(urlString, resolveFunction(c))));
+
             container.RegisterType<IMachineServicingWebService>(
                 new InjectionFactory(c => new MachineServicingWebService(urlString, resolveFunction(c))));
 
             container.RegisterType<IMachineAboutWebService>(
                 new InjectionFactory(c => new MachineAboutWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachinePutToLightWebService>(
+                new InjectionFactory(c => new MachinePutToLightWebService(urlString, resolveFunction(c))));
 
             container.RegisterType<IMachineIdentityWebService>(
                 new InjectionFactory(c => new MachineIdentityWebService(urlString, resolveFunction(c))));

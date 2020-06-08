@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Controls;
-using System.Windows.Threading;
+﻿using System.Windows.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 

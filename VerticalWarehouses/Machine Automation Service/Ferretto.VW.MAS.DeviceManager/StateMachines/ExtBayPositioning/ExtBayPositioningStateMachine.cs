@@ -175,12 +175,15 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 {
                     if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
                     {
-                        // Check the zero bay sensor condition
-                        ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
-                        if (!ok)
+                        if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)
                         {
-                            errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
-                            errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                            // Check the zero bay sensor condition
+                            ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                            if (!ok)
+                            {
+                                errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
+                                errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                            }
                         }
                     }
                 }

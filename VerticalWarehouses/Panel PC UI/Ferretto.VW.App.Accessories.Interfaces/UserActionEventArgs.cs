@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Accessories.Interfaces
 {
     public class UserActionEventArgs : ActionEventArgs
     {

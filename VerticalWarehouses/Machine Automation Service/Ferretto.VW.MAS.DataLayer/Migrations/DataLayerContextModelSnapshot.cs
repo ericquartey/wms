@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
+                    b.Property<bool>("IsFastDepositToBay");
+
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -402,6 +404,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("HalfShaftLength");
 
                     b.Property<double>("PulleyDiameter");
+
+                    b.Property<int>("SecondTermMultiplier");
 
                     b.Property<double>("ShaftDiameter");
 
@@ -942,6 +946,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("DefinitionId");
 
                     b.Property<double?>("DoubleCounter");
+
+                    b.Property<int>("InstructionStatus");
 
                     b.Property<int?>("IntCounter");
 
@@ -1751,6 +1757,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
 
+                    b.Property<string>("TokenRegex");
+
                     b.HasDiscriminator().HasValue("CardReader");
                 });
 
@@ -1867,6 +1875,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LaserPointer", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.Property<double>("XOffset");
 
                     b.Property<double>("YOffset");
 

@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
             }
             else if (!bay.IsDouble
-                || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
+                || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit?.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
                 )
             {
                 this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);

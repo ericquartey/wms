@@ -41,8 +41,8 @@
                     VerticalAlignment="Center"
                     Orientation="Vertical">
 
-            <StackPanel HorizontalAlignment="Center"
-                        Margin="0,0,0,20"
+            <StackPanel Margin="0,0,0,20"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Vertical">
                 <TextBlock Height="Auto"
@@ -65,9 +65,9 @@
                               Width="auto"
                               Height="auto"
                               MaxHeight="200"
+                              ItemsSource="{Binding LoadingUnits}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              ItemsSource="{Binding LoadingUnits}">
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column10"
                                                 Width="1*"
@@ -99,7 +99,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column30"
                                                 Width="1*"
-                                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
+                                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
                                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -133,7 +133,7 @@
                         Visibility="{Binding MoveVisible, Converter={StaticResource BTVC}}">
 
                 <TextBlock Height="Auto"
-                           Margin="0,0,0,20"
+                           Margin="0,10,0,20"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -151,9 +151,9 @@
                               Width="auto"
                               Height="auto"
                               MaxHeight="200"
+                              ItemsSource="{Binding MoveUnits}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              ItemsSource="{Binding MoveUnits}">
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="Column1"
                                                 Width="1*"
@@ -185,7 +185,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column3"
                                                 Width="1*"
-                                                Binding="{Binding Path=GrossWeight, StringFormat={}{0:F2}}"
+                                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
                                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">

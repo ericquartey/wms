@@ -9,17 +9,23 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    internal sealed class BayManager : IBayManager
+    internal sealed class BayManager : IBayManager, IDisposable
     {
         #region Fields
 
-        private readonly SubscriptionToken chainPositionChangedToken;
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
 
-        private readonly object healthStatusChangedToken;
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private SubscriptionToken chainPositionChangedToken;
+
+        private SubscriptionToken healthStatusChangedToken;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -27,27 +33,32 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IEventAggregator eventAggregator,
+            IMachineAccessoriesWebService accessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService)
         {
-            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.eventAggregator = eventAggregator;
+            this.accessoriesWebService = accessoriesWebService;
+            this.machineBaysWebService = machineBaysWebService;
+            this.machineIdentityWebService = machineIdentityWebService;
 
-            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            this.chainPositionChangedToken = this.chainPositionChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
-            this.chainPositionChangedToken = eventAggregator
-                .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                .Subscribe(
-                    this.OnBayChainPositionChanged,
-                    ThreadOption.UIThread,
-                    false);
-
-            this.healthStatusChangedToken = eventAggregator
-                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                .Subscribe(
-                    async (e) => await this.OnHealthStatusChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+            this.healthStatusChangedToken = this.healthStatusChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async (e) => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion
@@ -62,6 +73,20 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.chainPositionChangedToken?.Dispose();
+                this.chainPositionChangedToken = null;
+
+                this.healthStatusChangedToken?.Dispose();
+                this.healthStatusChangedToken = null;
+
+                this.isDisposed = true;
+            }
+        }
+
         public async Task<LoadingUnit> GetAccessibleLoadingUnitAsync()
         {
             var bay = await this.GetBayAsync();
@@ -75,7 +100,7 @@ namespace Ferretto.VW.App.Services
 
         public async Task<BayAccessories> GetBayAccessoriesAsync()
         {
-            return await this.machineBaysWebService.GetAccessoriesAsync();
+            return await this.accessoriesWebService.GetAllAsync();
         }
 
         public async Task<Bay> GetBayAsync()
@@ -87,6 +112,11 @@ namespace Ferretto.VW.App.Services
 
         public async Task InitializeAsync()
         {
+            if (this.Identity != null)
+            {
+                return;
+            }
+
             try
             {
                 this.Identity = await this.machineIdentityWebService.GetAsync();
@@ -99,12 +129,12 @@ namespace Ferretto.VW.App.Services
 
         public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port)
         {
-            await this.machineBaysWebService.SetAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
+            await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
         }
 
-        public async Task SetSetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
+        public async Task SetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
-            await this.machineBaysWebService.SetLaserPointerAsync(isEnabled, ipAddress.ToString(), port, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+            await this.accessoriesWebService.UpdateLaserPointerAsync(isEnabled, ipAddress.ToString(), port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
@@ -114,7 +144,10 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
-            await this.InitializeAsync();
+            if (e.HealthMasStatus == HealthStatus.Degraded || e.HealthMasStatus == HealthStatus.Healthy)
+            {
+                await this.InitializeAsync();
+            }
         }
 
         #endregion

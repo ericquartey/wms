@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void CheckServicingInfo();
 
+        void ConfirmInstruction(int instructionId);
+
         void ConfirmService();
 
         void ConfirmSetup();
@@ -23,6 +25,10 @@ namespace Ferretto.VW.MAS.DataLayer
         ServicingInfo GetInstallationInfo();
 
         ServicingInfo GetLastConfirmed();
+
+        void SetIsToDo(int instructionId);
+
+        void UpdateServiceStatus();
 
         #endregion
     }

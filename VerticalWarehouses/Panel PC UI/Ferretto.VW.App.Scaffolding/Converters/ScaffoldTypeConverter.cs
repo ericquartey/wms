@@ -1,9 +1,7 @@
-﻿using Ferretto.VW.App.Scaffolding.Services;
-using System;
+﻿using System;
 using System.Globalization;
-using System.Reflection;
-using System.Windows;
 using System.Windows.Data;
+using Ferretto.VW.App.Scaffolding.Services;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
@@ -21,7 +19,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             {
                 return datasource.Children;
             }
-            
+
             return datasource.Entities;
         }
 

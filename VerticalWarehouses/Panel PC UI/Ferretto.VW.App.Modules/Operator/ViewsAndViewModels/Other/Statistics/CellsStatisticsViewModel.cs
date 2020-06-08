@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -17,10 +16,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         private readonly IMachineCellsWebService cellsService;
 
         private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
-
-        // private readonly IStatusMessageService statusMessageService;
-
-        private readonly ICommand drawerCompactingButtonCommand;
 
         private ObservableCollection<CellStatusStatistics> cells;
 

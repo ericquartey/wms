@@ -60,91 +60,84 @@
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.1"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.AlphaNumericBar}"
                                         Content="{res:Loc Menu.AccessoriesAlphaNumBarMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsAlphaNumericBarAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.2"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.BarcodeReader}"
                                         Content="{res:Loc Menu.AccessoriesBarcodeReaderMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsBarcodeReaderAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesCardReaderMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.3"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.CardReader}"
                                         Content="{res:Loc Menu.AccessoriesCardReaderMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsCardReaderAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesLabelPrinterMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.4"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.LabelPrinter}"
                                         Content="{res:Loc Menu.AccessoriesLabelPrinterMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsLabelPrinterAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesLaserPointerMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.5"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.LaserPointer}"
                                         Content="{res:Loc Menu.AccessoriesLaserPointerMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsLaserPointerAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesTokenReaderMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.6"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.TokenReader}"
                                         Content="{res:Loc Menu.AccessoriesTokenReaderMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsTokenReaderAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc Menu.AccessoriesWeightingScaleMenuTitle}"
                                         Height="130"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.6.7"
-                                        BorderBrush="{DynamicResource FerrettoBlue}"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding OpenSettingsCommand}"
                                         CommandParameter="{x:Static acc:Accessories.WeightingScale}"
                                         Content="{res:Loc Menu.AccessoriesWeightingScaleMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsWeightingScaleAvailable, Converter={StaticResource BTVC}}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                 </WrapPanel>
             </Grid>

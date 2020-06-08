@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
-using Prism.Ioc;
-using Prism.Unity;
-using Unity;
-using Unity.Injection;
 
 namespace Ferretto
 {
@@ -14,9 +8,9 @@ namespace Ferretto
     {
         #region Methods
 
-        public static bool DrawerInLocationById(this IEnumerable<LoadingUnit> loadUnits, int id)
+        public static bool DrawerExists(this IEnumerable<LoadingUnit> loadUnits, int id)
         {
-            return loadUnits.Any(f => f.Id == id && f.Status == LoadingUnitStatus.InLocation);
+            return loadUnits.Any(f => f.Id == id);
         }
 
         public static bool DrawerInBay(this IEnumerable<LoadingUnit> loadUnits)
@@ -29,9 +23,14 @@ namespace Ferretto
             return loadUnits.Any(f => f.Id == id && f.Status == LoadingUnitStatus.InBay);
         }
 
-        public static bool DrawerExists(this IEnumerable<LoadingUnit> loadUnits, int id)
+        public static bool DrawerInElevatorById(this IEnumerable<LoadingUnit> loadUnits, int id)
         {
-            return loadUnits.Any(f => f.Id == id);
+            return loadUnits.Any(f => f.Id == id && f.Status == LoadingUnitStatus.InElevator);
+        }
+
+        public static bool DrawerInLocationById(this IEnumerable<LoadingUnit> loadUnits, int id)
+        {
+            return loadUnits.Any(f => f.Id == id && f.Status == LoadingUnitStatus.InLocation);
         }
 
         #endregion

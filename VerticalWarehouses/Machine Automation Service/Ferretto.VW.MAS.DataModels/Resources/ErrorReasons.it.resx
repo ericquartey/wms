@@ -361,7 +361,7 @@
     <value>Nessun errore rilevato.</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated.</value>
+    <value>Una barriera di sicurezza risulta interrotta. Liberare la zona e riprovare.</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>

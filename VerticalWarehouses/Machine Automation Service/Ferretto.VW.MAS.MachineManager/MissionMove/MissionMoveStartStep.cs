@@ -72,9 +72,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (bayNumber != BayNumber.None)
                     {
                         var bay = this.BaysDataProvider.GetByNumber(bayNumber);
-                        if (bay.Shutter.Type != ShutterType.NotSpecified)
+                        if (bay.Shutter != null &&
+                            bay.Shutter.Type != ShutterType.NotSpecified)
                         {
-                            var shutterInverter = bay.Shutter.Inverter.Index;
+                            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
@@ -143,9 +144,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (bayNumber != BayNumber.None)
                     {
                         var bay = this.BaysDataProvider.GetByNumber(bayNumber);
-                        if (bay.Shutter.Type != ShutterType.NotSpecified)
+                        if (bay.Shutter != null &&
+                            bay.Shutter.Type != ShutterType.NotSpecified)
                         {
-                            var shutterInverter = bay.Shutter.Inverter.Index;
+                            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
@@ -166,6 +168,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bay = this.BaysDataProvider.GetByBayPositionId(sourceBayPositionId.Value);
                     var bayPosition = bay.Positions.First(p => p.Id == sourceBayPositionId.Value);
+
+                    // TODO - SYNCRHONYSE light and switch axys
                     if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
                         && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
                         && (bayPosition.IsUpper
@@ -301,8 +305,46 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
+                                // Retrieve the bay related to the source location (if exists)
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+
+                                if (bay != null)
+                                {
+                                    if (bay.IsExternal)
+                                    {
+                                        // Handle the external bay with a proper step
+                                        var isExternalBayMovementRequested = bay.IsExternal &&
+                                        this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+
+                                        if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                            this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)) ||
+                                            (!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                            !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                        {
+                                            var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                            break;
+                                        }
+
+                                        if (isExternalBayMovementRequested)
+                                        {
+                                            // Move the external bay
+                                            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
+                                }
+                                else
+                                {
+                                    var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                    newStep.OnEnter(null);
+                                }
                             }
                         }
                     }

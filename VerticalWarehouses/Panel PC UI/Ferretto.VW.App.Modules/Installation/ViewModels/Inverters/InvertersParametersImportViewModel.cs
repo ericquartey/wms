@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Interface;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.IO;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -159,7 +155,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 // merge and save
                 var result = source.ExtendWith(this.selectedConfiguration);
                 var vertimagConfiguration = VertimagConfiguration.FromJson(result.ToString());
-                
+
                 this.parentConfiguration.SelectedFileConfiguration = this.selectedFile;
                 this.parentConfiguration.VertimagConfiguration = vertimagConfiguration;
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.ImportSuccessful"), Services.Models.NotificationSeverity.Success);

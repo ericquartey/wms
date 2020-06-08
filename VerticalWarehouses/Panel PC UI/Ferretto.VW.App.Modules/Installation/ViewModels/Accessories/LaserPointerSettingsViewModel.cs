@@ -3,11 +3,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using DevExpress.Xpf.Editors.Helpers;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.LaserPointer;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -15,13 +13,13 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal class LaserPointerSettingsViewModel : BaseMainViewModel
+    internal class LaserPointerSettingsViewModel : AccessorySettingsViewModel
     {
         #region Fields
 
         private readonly IBayManager bayManager;
 
-        private bool areSettingsChanged;
+        private readonly ILaserPointerDriver deviceDriver;
 
         private DelegateCommand checkConnectionCommand;
 
@@ -29,23 +27,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string connectionLabel = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
 
-        private string firmwareVersion;
-
         private IPAddress ipAddress;
 
-        private bool isAccessoryEnabled;
-
-        private LaserPointerDriver laserPointerDriver;
-
-        private string manufactureDate;
-
-        private string modelNumber;
-
         private int port;
-
-        private DelegateCommand saveCommand;
-
-        private string serialNumber;
 
         private bool testIsChecked;
 
@@ -61,32 +45,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public LaserPointerSettingsViewModel(IBayManager bayManager)
-        : base(PresentationMode.Installer)
+        public LaserPointerSettingsViewModel(
+            IBayManager bayManager,
+            ILaserPointerDriver laserPointerDriver)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.deviceDriver = laserPointerDriver;
         }
 
         #endregion
 
         #region Properties
-
-        public bool AreSettingsChanged
-        {
-            get => this.areSettingsChanged;
-            set
-            {
-                if (this.SetProperty(ref this.areSettingsChanged, value))
-                {
-                    if (this.AreSettingsChanged)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         public ICommand CheckConnectionCommand =>
             this.checkConnectionCommand
@@ -103,23 +72,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string ConnectionLabel
         {
             get => this.connectionLabel;
-            set
-            {
-                this.SetProperty(ref this.connectionLabel, value);
-            }
-        }
-
-        public string FirmwareVersion
-        {
-            get => this.firmwareVersion;
-            set
-            {
-                if (this.SetProperty(ref this.firmwareVersion, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.connectionLabel, value);
         }
 
         public IPAddress IpAddress
@@ -135,77 +88,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsAccessoryEnabled
-        {
-            get => this.isAccessoryEnabled;
-            set
-            {
-                if (this.SetProperty(ref this.isAccessoryEnabled, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public bool IsEnabledEditing => true;
-
-        public string ManufactureDate
-        {
-            get => this.manufactureDate;
-            set
-            {
-                if (this.SetProperty(ref this.manufactureDate, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public string ModelNumber
-        {
-            get => this.modelNumber;
-            set
-            {
-                if (this.SetProperty(ref this.modelNumber, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         public int Port
         {
             get => this.port;
             set
             {
-                if (value < 1 || value > 65535)
+                if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
-                    value = LaserPointerDriver.PORT_DEFAULT;
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 if (this.SetProperty(ref this.port, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public ICommand SaveCommand =>
-            this.saveCommand
-            ??
-            (this.saveCommand = new DelegateCommand(
-            async () => await this.SaveAsync(), this.CanSave));
-
-        public string SerialNumber
-        {
-            get => this.serialNumber;
-            set
-            {
-                if (this.SetProperty(ref this.serialNumber, value))
                 {
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
@@ -285,32 +180,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
-                var accessories = await this.bayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
+                if (this.Data is BayAccessories accessories)
                 {
-                    this.IsAccessoryEnabled = false;
-                    return;
-                }
+                    this.IsAccessoryEnabled = accessories.LaserPointer.IsEnabledNew;
+                    this.IpAddress = accessories.LaserPointer.IpAddress;
+                    this.Port = accessories.LaserPointer.TcpPort;
 
-                if (this.laserPointerDriver is null)
+                    this.YOffset = accessories.LaserPointer.YOffset;
+                    this.XOffset = accessories.LaserPointer.XOffset;
+                    this.ZOffsetUpperPosition = accessories.LaserPointer.ZOffsetUpperPosition;
+                    this.ZOffsetLowerPosition = accessories.LaserPointer.ZOffsetLowerPosition;
+
+                    this.SetDeviceInformation(accessories.LaserPointer.DeviceInformation);
+
+                    this.AreSettingsChanged = false;
+                }
+                else
                 {
-                    this.laserPointerDriver = new LaserPointerDriver();
+                    this.Logger.Warn("Improper parameters were passed to the laser settings page. Leaving the page ...");
+
+                    this.NavigationService.GoBack();
                 }
-
-                this.IsAccessoryEnabled = accessories.LaserPointer.IsEnabledNew;
-                this.IpAddress = accessories.LaserPointer.IpAddress;
-                this.Port = accessories.LaserPointer.TcpPort;
-
-                this.SetDeviceInformation(accessories);
-                this.YOffset = (int)accessories.LaserPointer.YOffset;
-                this.ZOffsetUpperPosition = (int)accessories.LaserPointer.ZOffsetUpperPosition;
-                this.ZOffsetLowerPosition = (int)accessories.LaserPointer.ZOffsetLowerPosition;
-
-                this.AreSettingsChanged = false;
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -322,18 +214,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnDataRefreshAsync();
         }
 
-        protected override void RaiseCanExecuteChanged()
+        protected override async Task SaveAsync()
         {
-            this.saveCommand?.RaiseCanExecuteChanged();
-            base.RaiseCanExecuteChanged();
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.bayManager.SetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private bool CanCheckConnection()
-        {
-            return !this.IsWaitingForResponse;
-        }
-
-        private bool CanSave()
         {
             return !this.IsWaitingForResponse;
         }
@@ -347,8 +245,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.Wait"), Services.Models.NotificationSeverity.Warning);
                 this.ConnectionBrush = Brushes.DarkOrange;
 
-                this.laserPointerDriver.Configure(this.ipAddress, this.port);
-                var result = await this.laserPointerDriver.IsConnectedAsync();
+                this.deviceDriver.Configure(this.ipAddress, this.port);
+                var result = await this.deviceDriver.ParametersAsync();
 
                 if (result)
                 {
@@ -363,7 +261,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ConnectionBrush = Brushes.Red;
                 }
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -378,10 +276,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.laserPointerDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
-                return await this.laserPointerDriver.TestAsync(enable);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                return await this.deviceDriver.TestAsync(enable);
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -391,43 +289,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             return false;
-        }
-
-        private async Task SaveAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                await this.bayManager.SetSetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void SetDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
-        {
-            if (!(accessories.LaserPointer.DeviceInformation is null))
-            {
-                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
-                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
-                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
-
-                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
-                {
-                    this.ManufactureDate = "-";
-                }
-                else
-                {
-                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
-                }
-            }
         }
 
         #endregion

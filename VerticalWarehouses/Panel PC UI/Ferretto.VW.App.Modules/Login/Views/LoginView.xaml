@@ -162,7 +162,7 @@
                                           FontFamily="{DynamicResource VWAPP_TitleFont}"
                                           FontSize="22"
                                           FontWeight="Light"
-                                          IsEditable="True"
+                                          IsEditable="False"
                                           SelectedValue="{Binding UserLogin.UserName}"
                                           Style="{DynamicResource FlatComboBoxStyle}"
                                           Text="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -251,11 +251,11 @@
                             </StackPanel>
 
                             <ctrls:PpcBayBadge Grid.RowSpan="3"
-                                            Grid.ColumnSpan="2"
-                                            Margin="0,0,20,20"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            BayNumber="{Binding BayNumber, Mode=OneWay}" />
+                                               Grid.ColumnSpan="2"
+                                               Margin="0,0,20,20"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Bottom"
+                                               BayNumber="{Binding BayNumber, Mode=OneWay}" />
 
                         </Grid>
                     </Border>

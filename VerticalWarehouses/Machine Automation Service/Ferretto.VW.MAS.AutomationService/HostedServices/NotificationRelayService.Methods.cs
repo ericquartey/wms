@@ -129,7 +129,8 @@ namespace Ferretto.VW.MAS.AutomationService
             this.Logger.LogTrace("OnDataLayerReady start");
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = baysDataProvider.GetAll();
-            foreach (var bay in bays.Where(b => b.Carousel == null && b.Number != BayNumber.ElevatorBay))
+
+            foreach (var bay in bays.Where(b => b.Carousel == null && b.External == null && b.Number != BayNumber.ElevatorBay))
             {
                 this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
             }

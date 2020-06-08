@@ -125,6 +125,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             switch (this.Mission.RestoreStep)
             {
+                case MissionStep.ExtBay:
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.RestoreExtBay();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
+                    break;
+
                 case MissionStep.BayChain:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
@@ -317,6 +329,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
+        private void RestoreExtBay()
+        {
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
+                this.Mission.LoadUnitSource :
+                this.Mission.LoadUnitDestination;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
+            var destination = bay.Positions.FirstOrDefault();
+
+            this.Mission.RestoreConditions = true;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.NeedMovingBackward = false;
+
+            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            newStep.OnEnter(null);
+        }
+
         private void RestoreMoveToTarget()
         {
             this.Mission.RestoreConditions = true;
@@ -362,6 +392,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IMissionMoveBase newStep;
             switch (this.Mission.RestoreStep)
             {
+                case MissionStep.ExtBay:
+                    // Check THIS!!
+                    newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
                 case MissionStep.BayChain:
                     this.RestoreBayChain();
                     return;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Attributes;
@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public IEnumerable<string> PortNames => this.barcodeReaderService.PortNames;
 
         public IEnumerable<object> BarcodeSteps { get; } = new List<object>()
         {

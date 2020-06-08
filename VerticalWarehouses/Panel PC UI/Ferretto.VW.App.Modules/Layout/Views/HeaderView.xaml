@@ -65,7 +65,12 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    RenderOptions.BitmapScalingMode="HighQuality"
-                   Source="{DynamicResource FerrettoGroup}" />
+                   Source="{DynamicResource FerrettoGroup}">
+                <Image.InputBindings>
+                    <MouseBinding Command="{Binding GoToMenuCommand, Mode=OneTime}"
+                                  Gesture="LeftClick" />
+                </Image.InputBindings>
+            </Image>
         </StackPanel>
 
 
@@ -111,8 +116,8 @@
             </ctrls:PpcControl>
 
             <!--  ToggleThemeCommand  -->
-            <ctrls:PpcControl VerticalAlignment="Center"
-                              Margin="15,0,0,0"
+            <ctrls:PpcControl Margin="15,0,0,0"
+                              VerticalAlignment="Center"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
                               Visibility="Visible">

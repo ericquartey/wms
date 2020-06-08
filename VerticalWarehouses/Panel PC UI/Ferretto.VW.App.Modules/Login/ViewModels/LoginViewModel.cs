@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private readonly ICardReaderService cardReaderService;
+
         private readonly ILocalizationService localizationService;
 
         private DelegateCommand loginCommand;
@@ -43,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
+        private readonly EventHandler<RegexMatchEventArgs> tokenAcquiredEventHandler;
+
         #endregion
 
         #region Constructors
@@ -52,6 +56,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
             ISessionService sessionService,
+            ICardReaderService cardReaderService,
             IBayManager bayManager,
             IBarcodeReaderService barcodeReaderService,
             IMachineBaysWebService machineBaysWebService,
@@ -64,6 +69,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.cardReaderService = cardReaderService;
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
@@ -80,6 +86,26 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
             this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
+
+            this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e));
+            this.cardReaderService.TokenAcquired += this.tokenAcquiredEventHandler;
+        }
+
+        private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
+        {
+            try
+            {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingCard"), Services.Models.NotificationSeverity.Info);
+
+                var claims = await this.authenticationService.LogInAsync(e.Token);
+
+                await this.NavigateToMainMenuAsync(claims);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, $"Unable to authenticate user with card.");
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheCard"), Services.Models.NotificationSeverity.Warning);
+            }
         }
 
         #endregion
@@ -148,7 +174,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error($"Unable to authenticate user with barcode: {ex.Message}");
+                    this.Logger.Error(ex, $"Unable to authenticate user with barcode");
                     this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheBarcode"), Services.Models.NotificationSeverity.Warning);
                 }
             }
@@ -161,6 +187,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
+            this.cardReaderService.StopAsync();
+            this.cardReaderService.TokenAcquired -= this.tokenAcquiredEventHandler;
 
             this.UserLogin.IsValidationEnabled = true;
             this.UserLogin.Password = null;
@@ -199,6 +228,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.IsEnabled = true;
 
             await this.barcodeReaderService.StartAsync();
+            await this.cardReaderService.StartAsync();
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -260,6 +290,29 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                    this.UserLogin.Password,
                    this.UserLogin.SupportToken);
 
+                switch (this.UserLogin.UserName)
+                {
+                    case "admin":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Admin;
+                        break;
+
+                    case "service":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Support;
+                        break;
+
+                    case "installer":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Installer;
+                        break;
+
+                    case "operator":
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
+                        break;
+
+                    default:
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.NoAccess;
+                        break;
+                }
+
                 await this.NavigateToMainMenuAsync(claims);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -289,6 +342,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.machineErrorsService.AutoNavigateOnError = true;
 
                 this.localizationService.ActivateCulture(claims.AccessLevel);
+
+                ScaffolderUserAccesLevel.IsLogged = true;
             }
             else
             {

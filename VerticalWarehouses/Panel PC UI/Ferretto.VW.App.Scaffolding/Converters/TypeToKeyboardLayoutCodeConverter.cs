@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using Ferretto.VW.App.Controls.Controls.Keyboards;
 using Ferretto.VW.App.Keyboards;
 
 namespace Ferretto.VW.App.Scaffolding.Converters

@@ -9,5 +9,7 @@
         Expiring = 'G',
 
         Expired = 'X',
+
+        Completed = 'C',
     }
 }

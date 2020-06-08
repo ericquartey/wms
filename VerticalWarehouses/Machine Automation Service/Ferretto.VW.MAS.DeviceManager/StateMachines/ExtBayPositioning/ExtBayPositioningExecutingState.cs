@@ -575,7 +575,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 // Carry out the target position
                                 var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                                 var race = bay.External.Race;
-                                var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race : /*-race*/0;
+                                var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race : -race; /*: 0; // .Absolute */
 
                                 // Set target parameter and direction parameter
                                 this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?

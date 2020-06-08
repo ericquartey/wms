@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
         #region Properties
 
         public int Offset { get; set; }
-        
+
         #endregion
     }
 }

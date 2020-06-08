@@ -5,6 +5,8 @@ using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AppCenter.Crashes;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
@@ -12,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     internal sealed class FooterViewModel : BasePresentationViewModel
     {
         #region Fields
+
+        private ILogger logger = LogManager.GetCurrentClassLogger();
 
         private string notificationMessage;
 
@@ -153,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                             else
                             {
                                 try
-                                { 
+                                {
                                     var problemDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(webApiException.Response);
 
                                     notificationMessage +=
@@ -174,10 +178,29 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                         this.NotificationMessage = message.Exception.Message;
                         break;
                 }
+
+                this.logger.Error(message.Exception);
+                Crashes.TrackError(message.Exception);
             }
             else
             {
                 this.NotificationMessage = message.Msg;
+
+                switch (message.NotificationSeverity)
+                {
+                    case NotificationSeverity.Error:
+                        this.logger.Error(message.Msg);
+                        break;
+
+                    case NotificationSeverity.Warning:
+                        this.logger.Warn(message.Msg);
+                        break;
+
+                    case NotificationSeverity.Info:
+                    case NotificationSeverity.Success:
+                        this.logger.Info(message.Msg);
+                        break;
+                }
             }
         }
 

@@ -116,6 +116,8 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public int SecondTermMultiplier { get; set; }
+
         /// <summary>
         /// Gets or sets the shaft diameter, in millimeters.
         /// </summary>

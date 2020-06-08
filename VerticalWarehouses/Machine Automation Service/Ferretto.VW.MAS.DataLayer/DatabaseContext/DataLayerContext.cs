@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Cell> Cells { get; set; }
 
+        public DbSet<DeviceInformation> DeviceInformation { get; set; }
+
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
 
         public DbSet<ElevatorAxisManualParameters> ElevatorAxisManualParameters { get; set; }

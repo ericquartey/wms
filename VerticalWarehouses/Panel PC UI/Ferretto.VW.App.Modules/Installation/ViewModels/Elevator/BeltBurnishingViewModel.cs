@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -434,6 +433,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.MachineService.MachineStatus.IsMoving
+                &&
+                this.SensorsService.ShutterSensors.Closed
                 &&
                 !this.IsExecutingProcedure
                 &&

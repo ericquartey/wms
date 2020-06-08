@@ -10,7 +10,6 @@ using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -161,7 +160,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.StatusSensorsCommand(),
                 () => (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
 
-        //public bool HasExternalBay => this.MachineService.HasBayExternal;
         public bool HasBayExternal => this.MachineService.HasBayExternal;
 
         public bool HasCarousel => this.MachineService.HasCarousel;
@@ -249,7 +247,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputLoadingUnitId):
                         if (this.InputLoadingUnitId.HasValue &&
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
-                             !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
+                             !this.MachineService.Loadunits.DrawerInElevatorById(this.InputLoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value))
+                             )
                         {
                             return Localized.Get("InstallationApp.InvalidDrawerSelected");
                         }
@@ -407,6 +407,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
             this.lightCommand?.RaiseCanExecuteChanged();
+            this.isPolicyBypassedCommand?.RaiseCanExecuteChanged();
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
@@ -499,7 +500,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
         }
 
-        private async Task OnBayLightChangedAsync(object sender, BayLightChangedEventArgs e)
+        private void OnBayLightChanged(object sender, BayLightChangedEventArgs e)
         {
             if (this.Bay?.Number == e.BayNumber)
             {
@@ -520,7 +521,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
+        private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
             switch (message.Status)
             {
@@ -630,7 +631,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                 }
 
-                //if (this.HasExternalBay)
                 if (this.HasBayExternal)
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:external bay");
@@ -776,7 +776,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                        async m => await this.OnHomingChangedAsync(m),
+                        this.OnHomingChanged,
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);
@@ -811,7 +811,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false,
                         m => this.IsVisible);
 
-            this.installationHubClient.BayLightChanged += async (sender, e) => await this.OnBayLightChangedAsync(sender, e);
+            this.installationHubClient.BayLightChanged += this.OnBayLightChanged;
         }
 
         #endregion

@@ -1,45 +1,26 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using DevExpress.Xpf.Charts;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal class AlphaNumericBarSettingsViewModel : BaseMainViewModel
+    internal class AlphaNumericBarSettingsViewModel : AccessorySettingsViewModel
     {
         #region Fields
 
         private readonly IBayManager bayManager;
 
-        private AlphaNumericBarDriver alphaNumericBarDriver;
-
-        private bool areSettingsChanged;
-
-        private string firmwareVersion;
+        private readonly IAlphaNumericBarDriver deviceDriver;
 
         private IPAddress ipAddress;
 
-        private bool isAccessoryEnabled;
-
-        private string manufactureDate;
-
-        private string modelNumber;
-
         private int port;
-
-        private DelegateCommand saveCommand;
-
-        private string serialNumber;
 
         private AlphaNumericBarSize size;
 
@@ -61,45 +42,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public AlphaNumericBarSettingsViewModel(IBayManager bayManager)
-            : base(PresentationMode.Installer)
+        public AlphaNumericBarSettingsViewModel(
+            IBayManager bayManager,
+            IAlphaNumericBarDriver deviceDriver)
         {
-            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.bayManager = bayManager;
+            this.deviceDriver = deviceDriver;
         }
 
         #endregion
 
         #region Properties
-
-        public bool AreSettingsChanged
-        {
-            get => this.areSettingsChanged;
-            set
-            {
-                if (this.SetProperty(ref this.areSettingsChanged, value))
-                {
-                    if (this.AreSettingsChanged)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public string FirmwareVersion
-        {
-            get => this.firmwareVersion;
-            set
-            {
-                if (this.SetProperty(ref this.firmwareVersion, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         public IPAddress IpAddress
         {
@@ -114,77 +67,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsAccessoryEnabled
-        {
-            get => this.isAccessoryEnabled;
-            set
-            {
-                if (this.SetProperty(ref this.isAccessoryEnabled, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public bool IsEnabledEditing => true;
-
-        public string ManufactureDate
-        {
-            get => this.manufactureDate;
-            set
-            {
-                if (this.SetProperty(ref this.manufactureDate, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public string ModelNumber
-        {
-            get => this.modelNumber;
-            set
-            {
-                if (this.SetProperty(ref this.modelNumber, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         public int Port
         {
             get => this.port;
             set
             {
-                if (value < 1 || value > 65535)
+                if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
-                    value = AlphaNumericBarDriver.PORT_DEFAULT;
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 if (this.SetProperty(ref this.port, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public ICommand SaveCommand =>
-            this.saveCommand
-            ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.SaveAsync(), this.CanSave));
-
-        public string SerialNumber
-        {
-            get => this.serialNumber;
-            set
-            {
-                if (this.SetProperty(ref this.serialNumber, value))
                 {
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
@@ -322,37 +217,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
-                var accessories = await this.bayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
+                if (this.Data is BayAccessories bayAccessories)
                 {
-                    this.IsAccessoryEnabled = false;
-                    return;
-                }
+                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew;
 
-                if (this.alphaNumericBarDriver is null)
+                    this.IsWaitingForResponse = true;
+
+                    this.IsAccessoryEnabled = bayAccessories.AlphaNumericBar.IsEnabledNew;
+                    this.IpAddress = bayAccessories.AlphaNumericBar.IpAddress;
+                    this.Port = bayAccessories.AlphaNumericBar.TcpPort;
+                    this.Size = bayAccessories.AlphaNumericBar.Size;
+
+                    this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
+
+                    this.AreSettingsChanged = false;
+
+                    if (this.TestMessageText is null)
+                    {
+                        this.TestMessageText = $"{DateTime.Now} {Ferretto.VW.App.Resources.Menu.AccessoriesAlphaNumBarTestMessageDefault}";
+                    }
+
+                    this.TestArrowOffset = this.deviceDriver.CalculateOffsetArrowMiddlePosition();
+                }
+                else
                 {
-                    this.alphaNumericBarDriver = new AlphaNumericBarDriver();
+                    this.Logger.Warn("Improper parameters were passed to the alphanumeric settings page. Leaving the page ...");
+
+                    this.NavigationService.GoBack();
                 }
-
-                this.IsAccessoryEnabled = accessories.AlphaNumericBar.IsEnabledNew;
-                this.IpAddress = accessories.AlphaNumericBar.IpAddress;
-                this.Port = accessories.AlphaNumericBar.TcpPort;
-                this.Size = (Ferretto.VW.MAS.DataModels.AlphaNumericBarSize)accessories.AlphaNumericBar.Size;
-
-                this.SetDeviceInformation(accessories);
-
-                this.AreSettingsChanged = false;
-
-                if (this.TestMessageText is null)
-                {
-                    this.TestMessageText = $"{DateTime.Now} {Ferretto.VW.App.Resources.Menu.AccessoriesAlphaNumBarTestMessageDefault}";
-                }
-
-                this.TestArrowOffset = this.alphaNumericBarDriver.CalculateOffsetArrowMiddlePosition();
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -364,15 +258,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnDataRefreshAsync();
         }
 
-        protected override void RaiseCanExecuteChanged()
+        protected override async Task SaveAsync()
         {
-            this.saveCommand?.RaiseCanExecuteChanged();
-            base.RaiseCanExecuteChanged();
-        }
-
-        private bool CanSave()
-        {
-            return !this.IsWaitingForResponse;
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task<bool> DoTestArrowOnAsync(int offset)
@@ -380,15 +280,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                if (this.alphaNumericBarDriver.TestEnabled)
+                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                if (this.deviceDriver.TestEnabled)
                 {
-                    await this.alphaNumericBarDriver.TestAsync(false);
+                    await this.deviceDriver.TestAsync(false);
                 }
 
-                return await this.alphaNumericBarDriver.SetCustomCharacterAsync(0, offset, true);
+                return await this.deviceDriver.SetCustomCharacterAsync(0, offset, true);
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -405,10 +305,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                return await this.alphaNumericBarDriver.TestAsync(enable);
+                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                return await this.deviceDriver.TestAsync(enable);
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -425,15 +325,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.alphaNumericBarDriver.Configure(this.ipAddress, this.port, this.size);
-                if (this.alphaNumericBarDriver.TestEnabled)
+                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                if (this.deviceDriver.TestEnabled)
                 {
-                    await this.alphaNumericBarDriver.TestAsync(false);
+                    await this.deviceDriver.TestAsync(false);
                 }
 
-                return await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, true);
+                return await this.deviceDriver.SetAndWriteMessageAsync(message, offset, true);
             }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -443,44 +343,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             return false;
-        }
-
-        private async Task SaveAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port);
-
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex) when (ex is MAS.AutomationService.Contracts.MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void SetDeviceInformation(MAS.AutomationService.Contracts.BayAccessories accessories)
-        {
-            if (!(accessories.LaserPointer.DeviceInformation is null))
-            {
-                this.FirmwareVersion = accessories.LaserPointer.DeviceInformation.FirmwareVersion;
-                this.ModelNumber = accessories.LaserPointer.DeviceInformation.ModelNumber;
-                this.SerialNumber = accessories.LaserPointer.DeviceInformation.SerialNumber;
-
-                if (accessories.LaserPointer.DeviceInformation.ManufactureDate is null)
-                {
-                    this.ManufactureDate = "-";
-                }
-                else
-                {
-                    this.ManufactureDate = accessories.LaserPointer.DeviceInformation.ManufactureDate.ToString();
-                }
-            }
         }
 
         #endregion

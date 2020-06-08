@@ -148,18 +148,24 @@
     <value>La password deve essere specificata.</value>
   </data>
   <data name="ServiceInitialization" xml:space="preserve">
-    <value>I servizi sono in fase di inizializzazione.</value>
+    <value>I servizi sono in fase di inizializzazione</value>
   </data>
   <data name="TempKey" xml:space="preserve">
     <value>Chiave temporanea: {0}</value>
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
-    <value>Il codice a barre non corrisponde ad un utente registrato</value>
+    <value>Il codice a barre non corrisponde ad un utente registrato.</value>
   </data>
   <data name="UserLogin" xml:space="preserve">
     <value>Nome utente</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Il nome utente deve essere specificato.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>La carta non è associata ad un utente.</value>
+  </data>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Login tramite lettura carta ...</value>
   </data>
 </root>

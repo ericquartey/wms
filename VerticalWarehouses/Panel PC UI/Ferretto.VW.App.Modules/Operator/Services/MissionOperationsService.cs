@@ -11,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
-    internal sealed class MissionOperationsService : IMissionOperationsService
+    internal sealed class MissionOperationsService : IMissionOperationsService, IDisposable
     {
         #region Fields
 
@@ -31,7 +31,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken healthToken;
 
+        private bool isDisposed;
+
+        private bool isRecallUnit;
+
         private SubscriptionToken loadingUnitToken;
+
+        private int unitId;
 
         #endregion
 
@@ -72,7 +78,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<bool> CompleteAsync(int operationId, double quantity)
         {
+            this.logger.Debug($"User requested to complete operation '{operationId}'.");
+
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
+            this.logger.Debug($"Operation to complete has status '{operationToComplete.Status}'.");
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
             {
@@ -87,6 +96,25 @@ namespace Ferretto.VW.App.Modules.Operator
             }
 
             return false;
+        }
+
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.healthToken?.Dispose();
+                this.healthToken = null;
+
+                this.loadingUnitToken?.Dispose();
+                this.healthToken = null;
+
+                this.isDisposed = true;
+            }
+        }
+
+        public bool IsRecallLoadingUnitId()
+        {
+            return this.isRecallUnit;
         }
 
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
@@ -112,11 +140,19 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             await this.loadingUnitsWebService.RemoveFromBayAsync(id);
 
+            this.unitId = id;
+            this.isRecallUnit = true;
+
             this.ActiveMachineMission = null;
             this.ActiveWmsMission = null;
             this.ActiveWmsOperation = null;
 
             this.RaiseMissionChangedEvent();
+        }
+
+        public int RecallLoadingUnitId()
+        {
+            return this.unitId;
         }
 
         public async Task RefreshAsync()
@@ -219,7 +255,7 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 if (newMachineMission != null && newMachineMission.WmsId.HasValue)
                 {
-                    this.logger.Debug($"Active mission has WMS id {newMachineMission.WmsId}.");
+                    this.logger.Debug($"Active mission has WMS id '{newMachineMission.WmsId}'.");
 
                     newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
 
@@ -233,7 +269,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
                     if (newWmsOperationInfo is null)
                     {
-                        this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
+                        this.logger.Debug($"Active WMS mission '{newMachineMission.WmsId}' has no executable mission operation.");
+
+                        this.logger.Debug($"Recalling loading unit '{newMachineMission.LoadUnitId}'.");
 
                         await this.loadingUnitsWebService.RemoveFromBayAsync(newMachineMission.LoadUnitId);
 
@@ -261,6 +299,14 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
                 {
+                    //if (this.ActiveMachineMission?.LoadUnitId != null
+                    //    &&
+                    //    this.ActiveMachineMission?.LoadUnitId != newMachineMission?.LoadUnitId)
+                    //{
+                    //    this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission.Id}' was removed, but must be completed before proceeding: recalling loading unit '{this.ActiveMachineMission.LoadUnitId}'.");
+                    //    await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
+                    //}
+
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;
                     this.ActiveWmsOperation = newWmsOperation;

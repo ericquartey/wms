@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls

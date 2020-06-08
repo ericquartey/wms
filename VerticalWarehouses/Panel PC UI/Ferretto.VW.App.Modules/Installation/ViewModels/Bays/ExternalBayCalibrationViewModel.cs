@@ -38,8 +38,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        //private readonly IMachineCarouselWebService machineCarouselWebService;
-
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineExternalBayWebService machineExternalBayWebMachine;
@@ -448,6 +446,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.LoadingUnitId):
                         if (!this.LoadingUnitId.HasValue ||
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInElevatorById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
                             return VW.App.Resources.Localized.Get("InstallationApp.InvalidDrawerSelected");
@@ -734,7 +733,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToStartCalibration()
         {
             return this.CanBaseExecute() &&
-                   this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
+                   this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private bool CanRepeat()
@@ -747,8 +746,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   this.SensorsService.BayZeroChain;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh; // && this.SensorsService.BayZeroChain;
         }
 
         private bool CanStop()
@@ -806,7 +804,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message.Data?.MovementMode != MovementMode.ExtBayTest)
             {
@@ -818,7 +816,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
             }
 
-            if (message.IsErrored() ||
+            if (message.IsErrored()
+                ||
                 this.MachineError != null)
             {
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);

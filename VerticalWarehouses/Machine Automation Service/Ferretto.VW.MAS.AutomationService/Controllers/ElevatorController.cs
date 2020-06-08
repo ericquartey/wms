@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILoadingUnitsDataProvider loadingUnits;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider,
             IErrorsProvider errorsProvider,
+            ILoadingUnitsDataProvider loadingUnits,
             IEventAggregator eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
@@ -49,6 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
+            this.loadingUnits = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
         }
 
         #endregion
@@ -343,17 +347,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("horizontal/calibration/set-completed")]
-        public IActionResult SetHorizontalChainCalibrationCompleted()
-        {
-            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), false);
-            return this.Ok();
-        }
-
         [HttpPost("deposit/and/pickup/set-completed")]
         public IActionResult SetDepositAndPickUpTestCompleted()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetDepositAndPickUpTest(), false);
+            return this.Ok();
+        }
+
+        [HttpPost("horizontal/calibration/set-completed")]
+        public IActionResult SetHorizontalChainCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration(), false);
             return this.Ok();
         }
 
@@ -369,6 +373,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetLoadUnitOnElevator(int loadingUnitId)
         {
+            this.loadingUnits.TryAdd(loadingUnitId);
             this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
             return this.Accepted();
         }

@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void FindZero(BayNumber bayNumber);
 
-        BayAccessories GetAccessories(BayNumber bayNumber);
-
         IEnumerable<Bay> GetAll();
 
         int GetAllCount();
@@ -112,15 +110,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
-        void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port);
-
         Bay SetBayActive(BayNumber bayNumber, bool active);
 
         void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
-
-        void SetLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
 
         /// <summary>
         /// Specifies that the given loading unit is now located in a bay position.
@@ -130,8 +124,6 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="loadingUnitId">The identifier of the loading unit.</param>
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
-
-        void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName);
 
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 

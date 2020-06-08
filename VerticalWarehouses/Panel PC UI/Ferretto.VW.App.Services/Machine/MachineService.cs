@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -13,7 +11,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Microsoft.AspNetCore.Http;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -25,6 +22,8 @@ namespace Ferretto.VW.App.Services
     public sealed class MachineService : BindableBase, IMachineService, IDisposable
     {
         #region Fields
+
+        private const int MaximumFragmentation = 30;
 
         private readonly IBayManager bayManagerService;
 
@@ -455,11 +454,14 @@ namespace Ferretto.VW.App.Services
         {
             if (this.machineStatus.CurrentMissionId != null)
             {
-                this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
+                await this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
-            this.machineElevatorWebService?.StopAsync();
-            this.machineCarouselWebService?.StopAsync();
-            this.shuttersWebService?.StopAsync();
+
+            await Task.WhenAll(
+                this.machineElevatorWebService?.StopAsync(),
+                this.machineCarouselWebService?.StopAsync(),
+                this.shuttersWebService?.StopAsync());
+
             this.StopMoving();
         }
 
@@ -558,25 +560,32 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializationBay()
         {
-            this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+            try
+            {
+                this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-            this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
-            this.bays = await this.machineBaysWebService.GetAllAsync();
+                this.bays = await this.machineBaysWebService.GetAllAsync();
 
-            this.Bay = await this.bayManagerService.GetBayAsync();
+                this.Bay = await this.bayManagerService.GetBayAsync();
+            }
+            catch (Exception exc)
+            {
+                this.logger.Debug($"Exception description: {exc.Message}");
+            }
 
             this.BayNumber = this.Bay.Number;
 
             this.HasBayExternal = this.Bay.IsExternal;
 
-            this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
+            this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
 
             this.HasCarousel = this.Bay.Carousel != null;
 
             this.HasBayWithInverter = this.Bay.Inverter != null;
 
-            this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
+            this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
 
             await this.UpdateBay();
         }
@@ -1112,9 +1121,10 @@ namespace Ferretto.VW.App.Services
                 }
                 await this.GetLoadUnits();
             }
-            catch
+            catch (Exception exc)
             {
                 // do nothing
+                this.logger.Debug($"Exception description: {exc.Message}");
             }
         }
 
@@ -1542,7 +1552,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
@@ -1561,7 +1571,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
@@ -1573,7 +1583,19 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > 25)
+                        else if (this.isHomingStarted[Axis.Horizontal])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.isHomingStarted[Axis.BayChain])
+                        {
+                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }

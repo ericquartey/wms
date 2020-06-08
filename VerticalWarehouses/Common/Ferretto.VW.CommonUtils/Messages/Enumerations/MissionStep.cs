@@ -27,6 +27,8 @@
 
         WaitDeposit,
 
+        ExtBay,
+
         End,
 
         Error = 101,

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Controls
+﻿namespace Ferretto.VW.App.Services
 {
     public interface IActivationViewModel
     {

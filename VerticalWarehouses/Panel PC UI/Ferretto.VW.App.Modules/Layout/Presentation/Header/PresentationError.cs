@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {

@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.App.Scaffolding.Design
+﻿namespace Ferretto.VW.App.Scaffolding.Design
 {
     public class ValidationMessageViewModel
     {

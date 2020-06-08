@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0: HH:mm:ss}.
+        /// </summary>
+        public static string DateFormatHourMinuteSecond {
+            get {
+                return ResourceManager.GetString("DateFormatHourMinuteSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:0} days ago.
         /// </summary>
         public static string DaysAgo {

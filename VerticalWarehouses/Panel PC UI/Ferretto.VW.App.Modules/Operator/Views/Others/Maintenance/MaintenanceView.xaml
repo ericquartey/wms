@@ -2,28 +2,29 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:in="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+            xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <ctrls:View.Resources>
-        <ResourceDictionary>
-            <DataTemplate DataType="{x:Type controls:CustomControlMaintenanceDataGridViewModel}">
-                <controls:CustomControlMaintenanceDataGrid />
-            </DataTemplate>
-        </ResourceDictionary>
-    </ctrls:View.Resources>
 
-    <Grid Margin="100,30,0,0">
+    <Grid Margin="15">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
@@ -31,22 +32,30 @@
             <RowDefinition Height="60" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
+        <TextBlock Grid.ColumnSpan="3"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Stretch"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Resources:Loc OperatorApp.MaintenanceMainPageHeader}" />
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+            <Run Text="{Resources:Loc OperatorApp.Maintenance}" /> <Run Text="{Binding MachineModel}" />
+        </TextBlock>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="12,10"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -54,42 +63,28 @@
             <controls:PpcLabeledText Margin="0,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="VRT EF 84 L 990-BIS H 6345"
+                                     ContentText="{Binding MachineModel, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                      LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageModel}" />
 
-            <controls:PpcLabeledText Grid.Column="1"
-                                     Margin="15,15,0,0"
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="1"
+                                     Margin="10,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="15-04-2017"
-                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageInstallationDate}" />
-
-            <controls:PpcLabeledText Grid.Column="2"
-                                     Margin="15,15,15,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="20-04-2019"
-                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="0"
-                                     Margin="0,15,0,15"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="VW_190012"
+                                     ContentText="{Binding MachineSerial, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                      LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageSerial}" />
 
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="15,15,0,15"
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="2"
+                                     Margin="10,15,15,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="20-04-2018"
-                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
+                                     ContentText="{Binding Statistics.TotalMission, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{res:Loc OperatorApp.TotalMission}" />
 
-            <Grid Grid.Row="1"
-                  Grid.Column="2"
-                  Margin="15">
+            <Grid Grid.Row="0"
+                  Grid.Column="3"
+                  Margin="10,15,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -97,57 +92,219 @@
 
                 <Rectangle Width="25"
                            Height="25"
-                           Margin="0,0,15,0"
+                           Margin="0,5,10,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Fill="Red" />
+                           Fill="{Binding MainteinanceRequest}" />
 
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="Manutenzione richiesta"
+                                         ContentText="{Binding SelectedServicingInfo.ServiceStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                          LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageStateMachine}" />
             </Grid>
 
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="0"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SelectedServicingInfo.NextServiceDate, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageNextMaintenanceDate}" />
 
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SelectedServicingInfo.LastServiceDate, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageLastMaintenanceDate}" />
 
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="2"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SelectedServicingInfo.InstallationDate, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                     LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageInstallationDate}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="3"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalMissionTime, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat=hh\\:mm\\:ss}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalActiveMissionTime}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="0"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers1, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers1}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="1"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers2}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="2"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalBayChainKilometers3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers3}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="3"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalVerticalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalVerticalAxisKilometers}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="3"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalHorizontalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
+                                     LabelText="{Resources:Loc OperatorApp.TotalHorizontalAxisKilometers}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay1, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay1}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="1"
+                                     Margin="10,15,15,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay2}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="2"
+                                     Margin="10,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding Statistics.TotalLoadUnitsInBay3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay3}" />
         </Grid>
 
-        <ContentControl Grid.Row="2"
-                        Grid.RowSpan="2"
-                        Margin="0,0,0,15"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Stretch"
-                        Content="{Binding DataGridViewModel}" />
-
-        <Grid Grid.Row="2"
-              Grid.Column="1">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-
-            <controls:PpcButton Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Content="{Resources:Loc OperatorApp.CommonUp}" />
-
-            <controls:PpcButton Grid.Row="1"
-                                Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Content="{Resources:Loc OperatorApp.CommonDown}" />
-        </Grid>
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,15,0"
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="2"
                             HorizontalAlignment="Right"
-                            VerticalAlignment="top"
+                            VerticalAlignment="Bottom"
                             Command="{Binding MaintenanceDetailButtonCommand}"
                             Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
+
+        <!--<controls:PpcButton Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding ConfirmServiceCommand}"
+                            Content="{res:Loc OperatorApp.ConfirmService}"/>-->
+
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Height="250"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="0">
+            <Grid Margin="10">
+                <DataGrid Name="DataGrid"
+                          Width="auto"
+                          Height="auto"
+                          ItemsSource="{Binding ServicingInfo}"
+                          RowHeight="40"
+                          SelectedItem="{Binding SelectedServicingInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="Column1"
+                                            Width="60"
+                                            Binding="{Binding Path=Id}"
+                                            Header="{res:Loc OperatorApp.Id}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column2"
+                                            Width="200"
+                                            Binding="{Binding Path=InstallationDate, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                            Header="{res:Loc OperatorApp.InstallationDate}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column3"
+                                            Width="200"
+                                            Binding="{Binding Path=LastServiceDate, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                            Header="{res:Loc OperatorApp.LastServiceDate}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column4"
+                                            Width="250"
+                                            Binding="{Binding Path=NextServiceDate, StringFormat={x:Static res:General.DateFormatDayNumber}}"
+                                            Header="{res:Loc OperatorApp.NextServiceDate}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column5"
+                                            Width="150"
+                                            Binding="{Binding Path=TotalMission}"
+                                            Header="{res:Loc OperatorApp.TotalMission}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column6"
+                                            Width="150"
+                                            Binding="{Binding Path=ServiceStatus}"
+                                            Header="{res:Loc OperatorApp.ServiceStatus}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </Grid>
 </ctrls:View>

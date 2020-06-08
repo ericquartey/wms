@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand externalBayCalibrationTestBypassCommand;
 
+        private DelegateCommand fullTestBypassCommand;
+
         private DelegateCommand horizontalChainCalibrationTestBypassCommand;
 
         private int proceduresCompleted;
@@ -306,6 +308,33 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
             }));
 
+        public ICommand FullTestBypassCommand =>
+            this.fullTestBypassCommand
+            ??
+            (this.fullTestBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.CompleteTestMenuTitle"), DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.FullTestBypassAsync();
+
+                            await this.UpdateSetupStatusAsync();
+                        }
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                    finally
+                    {
+                        this.IsExecutingProcedure = false;
+                    }
+                }));
+
         public ICommand HorizontalChainCalibrationTestBypassCommand =>
             this.horizontalChainCalibrationTestBypassCommand
             ??
@@ -367,7 +396,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public string SubTitleLabel =>
             this.ProceduresCompletedPercent == 100 ?
-            Localized.Get("InstallationApp.InstallationStateCompleted") : String.Format(Localized.Get("InstallationApp.InstallationStateIncompleted"), this.ProceduresCompleted, this.ProceduresCount);
+            Localized.Get("InstallationApp.InstallationStateCompleted") : string.Format(Localized.Get("InstallationApp.InstallationStateIncompleted"), this.ProceduresCompleted, this.ProceduresCount);
 
         #endregion
 
@@ -437,10 +466,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            base.RaiseCanExecuteChanged();
+            this.bayCarouselCalibrationBypassCommand?.RaiseCanExecuteChanged();
+            this.bayFirstLoadingUnitBypassCommand?.RaiseCanExecuteChanged();
+            this.bayHeightCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.bayProfileCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.bayShutterTestBypassCommand?.RaiseCanExecuteChanged();
+            this.beltBurnishingTestBypassCommand?.RaiseCanExecuteChanged();
+            this.cellsPanelCheckBypassCommand?.RaiseCanExecuteChanged();
+            this.externalBayCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
+            this.fullTestBypassCommand?.RaiseCanExecuteChanged();
+            this.horizontalChainCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.Source));
             this.RaisePropertyChanged(nameof(this.SubTitleLabel));
+
+            base.RaiseCanExecuteChanged();
         }
 
         private async Task UpdateSetupStatusAsync()
@@ -584,6 +624,42 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Bypassed = status.LoadFirstDrawerTest.IsBypassed,
                     Command = this.BayFirstLoadingUnitBypassCommand,
                 });
+
+                switch (this.MachineService.BayNumber)
+                {
+                    case BayNumber.BayOne:
+                        this.source.Add(new ItemListSetupProcedure()
+                        {
+                            Text = Localized.Get("InstallationApp.CompleteTestMenuTitle"),
+                            Status = status.Bay1.FullTest.InProgress ? InstallationStatus.Inprogress : status.Bay1.FullTest.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                            Bypassable = !status.Bay1.FullTest.IsCompleted,
+                            Bypassed = status.Bay1.FullTest.IsBypassed,
+                            Command = this.FullTestBypassCommand,
+                        });
+                        break;
+
+                    case BayNumber.BayTwo:
+                        this.source.Add(new ItemListSetupProcedure()
+                        {
+                            Text = Localized.Get("InstallationApp.CompleteTestMenuTitle"),
+                            Status = status.Bay2.FullTest.InProgress ? InstallationStatus.Inprogress : status.Bay2.FullTest.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                            Bypassable = !status.Bay2.FullTest.IsCompleted,
+                            Bypassed = status.Bay2.FullTest.IsBypassed,
+                            Command = this.FullTestBypassCommand,
+                        });
+                        break;
+
+                    case BayNumber.BayThree:
+                        this.source.Add(new ItemListSetupProcedure()
+                        {
+                            Text = Localized.Get("InstallationApp.CompleteTestMenuTitle"),
+                            Status = status.Bay3.FullTest.InProgress ? InstallationStatus.Inprogress : status.Bay3.FullTest.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                            Bypassable = !status.Bay3.FullTest.IsCompleted,
+                            Bypassed = status.Bay3.FullTest.IsBypassed,
+                            Command = this.FullTestBypassCommand,
+                        });
+                        break;
+                }
 
                 if (this.MachineService.Bays.Count(x => x.Number != BayNumber.ElevatorBay) > 1)
                 {

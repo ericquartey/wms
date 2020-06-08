@@ -20,7 +20,8 @@
             VerticalResolutionCalibration = SetupStepStatus.Complete,
             WeightMeasurement = SetupStepStatus.Complete,
             HorizontalChainCalibration = SetupStepStatus.Complete,
-            DepositAndPickUpTest = SetupStepStatus.Complete
+            DepositAndPickUpTest = SetupStepStatus.Complete,
+            FullTest = SetupStepStatus.Complete
         };
 
         #endregion
@@ -61,6 +62,8 @@
 
         public SetupStepStatus WeightMeasurement { get; set; }
 
-        #endregion
-    }
+        public SetupStepStatus FullTest { get; set; }
+
+    #endregion
+}
 }

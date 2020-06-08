@@ -5,7 +5,6 @@ using System.Windows;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
-using Microsoft.AppCenter.Analytics;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;
@@ -206,19 +205,23 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public void GoBackTo(string modelName, string viewModelName)
+        public void GoBackTo(string moduleName, string viewModelName)
         {
-            if (!this.navigationStack.Any(t => t.ModuleName == modelName && t.ViewModelName == viewModelName))
+            if (!this.navigationStack.Any(t => t.ModuleName == moduleName && t.ViewModelName == viewModelName))
             {
-                this.logger.Warn($"Unable to navigate back to '{modelName}.{viewModelName}' because no view with the specified name was found in the navigation stack.");
+                this.logger.Warn($"Unable to navigate back to '{moduleName}.{viewModelName}' because no view with the specified name was found in the navigation stack.");
+
+                this.GoBack();
+                this.Appear(moduleName, viewModelName);
+
                 return;
             }
 
-            if (this.navigationStack.Peek().ModuleName == modelName
+            if (this.navigationStack.Peek().ModuleName == moduleName
                 &&
                 this.navigationStack.Peek().ViewModelName == viewModelName)
             {
-                this.logger.Info($"Back navigation to '{modelName}.{viewModelName}' not performed because it matches the current view");
+                this.logger.Info($"Back navigation to '{moduleName}.{viewModelName}' not performed because it matches the current view");
                 return;
             }
 
@@ -227,7 +230,7 @@ namespace Ferretto.VW.App.Controls
 
             while (this.navigationStack.Any()
                 &&
-                this.navigationStack.Peek().ModuleName != modelName
+                this.navigationStack.Peek().ModuleName != moduleName
                 &&
                 this.navigationStack.Peek().ViewModelName != viewModelName)
             {

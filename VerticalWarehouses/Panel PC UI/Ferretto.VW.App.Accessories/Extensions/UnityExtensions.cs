@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
-using Ferretto.VW.App.Accessories.Barcode;
+using Ferretto.VW.App.Accessories.AlphaNumericBar;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.Devices.AlphaNumericBar;
-using Ferretto.VW.Devices.BarcodeReader;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
+using Ferretto.VW.Devices.BarcodeReader.Newland;
+using Ferretto.VW.Devices.LaserPointer;
 using Prism.Ioc;
-using Prism.Unity;
 using Unity;
-using Unity.Injection;
 
 namespace Ferretto.VW.App.Accessories
 {
@@ -24,7 +20,8 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterInstance<IAlphaNumericBarDriver>(new AlphaNumericBarDriver());  //TODO: da verificare, non è containerRegistry.RegisterSingleton<IAlphaNumericBarDriver>(driver)
+            containerRegistry.ConfigureAlphaNumericBarDriver();
+            containerRegistry.RegisterSingleton<IAlphaNumericBarService, AlphaNumericBarService>();
 
             return containerRegistry;
         }
@@ -36,9 +33,33 @@ namespace Ferretto.VW.App.Accessories
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
+            containerRegistry.ConfigureNewlandBarcodeReaderDriver();
             containerRegistry.RegisterSingleton<IBarcodeReaderService, BarcodeReaderService>();
-            containerRegistry.RegisterSingleton<ILoadingUnitBarcodeService, LoadingUnitBarcodeService>();
-            containerRegistry.RegisterSingleton<IPutToLightBarcodeService, PutToLightBarcodeService>();
+
+            return containerRegistry;
+        }
+
+        public static IContainerRegistry ConfigureCardReaderUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.ConfigureLaserPointerDriver();
+            containerRegistry.RegisterSingleton<ICardReaderService, KeyboarEmulatedCardReaderService>();
+
+            return containerRegistry;
+        }
+
+        public static IContainerRegistry ConfigureLaserPointerUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
 
             return containerRegistry;
         }

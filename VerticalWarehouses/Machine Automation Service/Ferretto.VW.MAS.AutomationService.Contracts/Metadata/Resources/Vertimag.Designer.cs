@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fast deposit to Bay.
+        /// </summary>
+        public static string Bay_IsFastDepositToBay {
+            get {
+                return ResourceManager.GetString("Bay_IsFastDepositToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resolution.
         /// </summary>
         public static string Bay_Resolution {
@@ -930,6 +939,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Race {
             get {
                 return ResourceManager.GetString("Race", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecondTermMultiplier.
+        /// </summary>
+        public static string SecondTermMultiplier {
+            get {
+                return ResourceManager.GetString("SecondTermMultiplier", resourceCulture);
             }
         }
         

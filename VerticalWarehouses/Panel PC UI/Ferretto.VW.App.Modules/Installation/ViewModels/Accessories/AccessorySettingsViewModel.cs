@@ -1,0 +1,177 @@
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
+using Prism.Commands;
+
+namespace Ferretto.VW.App.Installation.ViewModels
+{
+    public abstract class AccessorySettingsViewModel : BaseMainViewModel
+    {
+        #region Fields
+
+        private bool areSettingsChanged;
+
+        private string firmwareVersion;
+
+        private bool isAccessoryEnabled;
+
+        private DateTimeOffset? manufactureDate;
+
+        private string modelNumber;
+
+        private DelegateCommand saveCommand;
+
+        private string serialNumber;
+
+        #endregion
+
+        #region Constructors
+
+        protected AccessorySettingsViewModel()
+            : base(PresentationMode.Installer)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public bool AreSettingsChanged
+        {
+            get => this.areSettingsChanged;
+            set
+            {
+                if (this.SetProperty(ref this.areSettingsChanged, value))
+                {
+                    if (this.areSettingsChanged)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string FirmwareVersion
+        {
+            get => this.firmwareVersion;
+            set
+            {
+                if (this.SetProperty(ref this.firmwareVersion, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsAccessoryEnabled
+        {
+            get => this.isAccessoryEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.isAccessoryEnabled, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public DateTimeOffset? ManufactureDate
+        {
+            get => this.manufactureDate;
+            set
+            {
+                if (this.SetProperty(ref this.manufactureDate, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ModelNumber
+        {
+            get => this.modelNumber;
+            set
+            {
+                if (this.SetProperty(ref this.modelNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public System.Windows.Input.ICommand SaveCommand =>
+           this.saveCommand
+           ??
+           (this.saveCommand = new DelegateCommand(
+               async () =>
+               {
+                   try
+                   {
+                       await this.SaveAsync();
+                       this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                       this.AreSettingsChanged = false;
+                   }
+                   catch
+                   {
+                       // do nothing
+                   }
+               },
+               this.CanSave));
+
+        public string SerialNumber
+        {
+            get => this.serialNumber;
+            set
+            {
+                if (this.SetProperty(ref this.serialNumber, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected virtual bool CanSave()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.AreSettingsChanged;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.saveCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected abstract Task SaveAsync();
+
+        protected void SetDeviceInformation(MAS.AutomationService.Contracts.DeviceInformation deviceInformation)
+        {
+            if (deviceInformation is null)
+            {
+                return;
+            }
+
+            this.FirmwareVersion = deviceInformation.FirmwareVersion;
+            this.SerialNumber = deviceInformation.SerialNumber;
+            this.ManufactureDate = deviceInformation.ManufactureDate;
+            this.ModelNumber = deviceInformation.ModelNumber;
+        }
+
+        #endregion
+    }
+}

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -452,6 +451,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.tuningBayCommand?.RaiseCanExecuteChanged();
                 this.tuningChainCommand?.RaiseCanExecuteChanged();
+
+                this.tuningExtBayCommand?.RaiseCanExecuteChanged();
 
                 this.openShutterCommand?.RaiseCanExecuteChanged();
                 this.intermediateShutterCommand?.RaiseCanExecuteChanged();

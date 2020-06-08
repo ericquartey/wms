@@ -2584,7 +2584,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>No serial ports detected. Ensure the device is connected to the panel.</value>
   </data>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
-    <value>Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation. Refresh the list of system ports when done.</value>
+    <value>Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation.</value>
   </data>
   <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
     <value>Cannot find the serial port of the barcode reader? Configure the device.</value>
@@ -2671,5 +2671,44 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="StartProcedure" xml:space="preserve">
     <value>Press on START to begin the procedure</value>
+  </data>
+  <data name="NoRemovableDevicesFound" xml:space="preserve">
+    <value>No removable devices found</value>
+  </data>
+  <data name="RemovableDevicesFound" xml:space="preserve">
+    <value>Removable devices found</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>System path '{0}' not found</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Matching Pattern (regex)</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="Bay4" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Start Test</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Acquired token</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Code was recognized.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Save changes before starting the test.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Use the card on the card reader.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Received Barcode</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Check serial ports</value>
   </data>
 </root>

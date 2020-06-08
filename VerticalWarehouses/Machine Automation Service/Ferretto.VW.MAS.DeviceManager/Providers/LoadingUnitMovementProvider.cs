@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -30,9 +31,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly ISensorsProvider sensorsProvider;
+        private readonly IExternalBayProvider externalBayProvider;
 
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+        private readonly ILogger<LoadingUnitMovementProvider> logger;
 
         private readonly IShutterProvider shutterProvider;
 
@@ -43,25 +44,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public LoadingUnitMovementProvider(
             IBaysDataProvider baysDataProvider,
             ICarouselProvider carouselProvider,
+            IExternalBayProvider externalBayProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
             IErrorsProvider errorsProvider,
-            ISensorsProvider sensorsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            ILogger<LoadingUnitMovementProvider> logger)
             : base(eventAggregator)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
+            this.externalBayProvider = externalBayProvider ?? throw new ArgumentNullException(nameof(externalBayProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
-            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -73,6 +74,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public double AdjustHeightWithBayChainWeight(double height, double weightUp, double weightDown)
+        {
+            var newHeight = height;
+            if (weightUp > 0 || weightDown > 0)
+            {
+                newHeight -= (0.004 * (weightUp + (weightDown / 4)));
+                this.logger.LogInformation($"Vertical positioning to bay adjusted from {height:0.00} to {newHeight:0.00}. Upper weight {weightUp:0.00}, Down Weight {weightDown:0.00}");
+            }
+            return newHeight;
+        }
 
         public MessageStatus CarouselStatus(NotificationMessage message)
         {
@@ -105,14 +117,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit)
         {
             var bayPosition = this.baysDataProvider.GetPositionByLocation(loadingUnitPosition);
-            if (deposit)
+
+            if (bay.Carousel != null)
             {
-                return this.carouselProvider.CanElevatorDeposit(bayPosition);
+                if (deposit)
+                {
+                    return this.carouselProvider.CanElevatorDeposit(bayPosition);
+                }
+                else
+                {
+                    return this.carouselProvider.CanElevatorPickup(bayPosition);
+                }
             }
-            else
+
+            if (bay.External != null)
             {
-                return this.carouselProvider.CanElevatorPickup(bayPosition);
+                if (deposit)
+                {
+                    return this.externalBayProvider.CanElevatorDeposit(bay.Number);
+                }
+                else
+                {
+                    return this.externalBayProvider.CanElevatorPickup(bay.Number);
+                }
             }
+
+            return MachineErrorCode.NoError;
         }
 
         /// <summary>
@@ -145,6 +175,34 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void ContinuePositioning(MessageActor sender, BayNumber requestingBay)
         {
             this.elevatorProvider.ContinuePositioning(requestingBay, sender);
+        }
+
+        public MessageStatus ExternalBayStatus(NotificationMessage message)
+        {
+            if (message.Type == MessageType.Positioning
+                || message.Type == MessageType.Homing
+                || message.Type == MessageType.ShutterPositioning
+                )
+            {
+                return message.Status;
+            }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                )
+            {
+                return message.Status;
+            }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
+            }
+
+            return MessageStatus.NotSpecified;
         }
 
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
@@ -250,6 +308,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterClosedPosition(Bay bay, LoadingUnitLocation location)
         {
             var closeShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return closeShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
@@ -280,6 +344,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
         {
             var openShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return openShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
@@ -353,12 +423,30 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (axis == Axis.BayChain)
             {
-                this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                if (bay.Carousel != null)
+                {
+                    this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                }
+                if (bay.External != null)
+                {
+                    this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                }
             }
             else
             {
                 this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
             }
+        }
+
+        public bool IsExternalPositionOccupied(BayNumber bayNumber)
+        {
+            return this.externalBayProvider.IsExternalPositionOccupied(bayNumber);
+        }
+
+        public bool IsInternalPositionOccupied(BayNumber bayNumber)
+        {
+            return this.externalBayProvider.IsInternalPositionOccupied(bayNumber);
         }
 
         public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
@@ -376,7 +464,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (restore)
             {
                 var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition) + bay.ChainOffset;
+                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);// - bay.ChainOffset;
                 try
                 {
                     this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, requestingBay, sender);
@@ -401,11 +489,62 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
+        public void MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore)
+        {
+            if (restore)
+            {
+                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                var distance = bay.External.Race;
+                switch (direction)
+                {
+                    case ExternalBayMovementDirection.TowardMachine:
+                        distance = Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)); // + bay.ChainOffset;
+                        break;
+
+                    case ExternalBayMovementDirection.TowardOperator:
+                        distance -= Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)); //+ bay.ChainOffset;
+                        break;
+                }
+
+                try
+                {
+                    this.externalBayProvider.MoveManual(direction, distance, loadUnitId, false, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // we don't want to show errors here. It is managed by MissionMoveExtBayChainStep
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
+            }
+            else
+            {
+                try
+                {
+                    this.externalBayProvider.Move(direction, loadUnitId, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // we don't want to show errors here. It is managed by MissionMoveExtBayChainStep
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
+            }
+        }
+
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+                this.elevatorProvider.MoveHorizontalAuto(
+                    direction,
+                    !moveToCradle,
+                    loadUnitId,
+                    loadingUnitNetWeight: null,
+                    (moveShutter != ShutterPosition.NotSpecified),
+                    measure,
+                    requestingBay,
+                    sender,
+                    sourceBayPositionId: positionId,
+                    fastDeposit: fastDeposit);
             }
             catch (InvalidOperationException ex)
             {
@@ -561,6 +700,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             try
             {
+                if (targetBayPositionId != null)
+                {
+                    var bay = this.baysDataProvider.GetByBayPositionId(targetBayPositionId.Value);
+                    if (Math.Abs(targetHeight - bay.Positions.FirstOrDefault(p => p.IsUpper)?.Height ?? 0) < 5)
+                    {
+                        targetHeight = this.AdjustHeightWithBayChainWeight(targetHeight,
+                            bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit?.GrossWeight ?? 0,
+                            bay.Positions.FirstOrDefault(p => !p.IsUpper)?.LoadingUnit?.GrossWeight ?? 0);
+                    }
+                }
                 this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                     manualMovment: false,
                     targetHeight,

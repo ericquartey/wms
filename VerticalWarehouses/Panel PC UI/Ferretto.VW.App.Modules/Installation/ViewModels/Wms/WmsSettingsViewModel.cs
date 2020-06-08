@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -161,6 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
                 this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
+                this.RaisePropertyChanged(nameof(this.IsWmsEnabled));
                 this.AreSettingsChanged = false;
 
                 await this.CheckEndpointAsync();

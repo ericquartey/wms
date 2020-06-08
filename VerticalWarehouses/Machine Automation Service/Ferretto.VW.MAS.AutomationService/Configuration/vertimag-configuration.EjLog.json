@@ -221,9 +221,12 @@
             "IsEnabledNew": true,
             "PortName": "COM4"
           },
-          "WeightingScale": {
+          "CardReader": {
             "IsEnabledNew": true
-          }
+          },
+          /*  "WeightingScale": {
+            "IsEnabledNew": true
+          }*/
         },
         "Carousel": {
           "AssistedMovements": {
@@ -268,7 +271,6 @@
           "Id": 1
         },
         "IsActive": false,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": 1,
         "Operation": 0,
@@ -346,7 +348,6 @@
           "Id": 2
         },
         "IsActive": false,
-        "IsDouble": true,
         "IsExternal": false,
         "Number": 2,
         "Operation": 0,
@@ -766,6 +767,7 @@
         "ElevatorWeight": 230.0,
         "HalfShaftLength": 2084.0,
         "PulleyDiameter": 160.0,
+        "SecondTermMultiplier": 1,
         "ShaftDiameter": 45.0,
         "ShaftElasticity": 210000.0,
         "Id": 1

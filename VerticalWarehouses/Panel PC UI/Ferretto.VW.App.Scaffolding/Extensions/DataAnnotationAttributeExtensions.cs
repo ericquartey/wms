@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Scaffolding.Models;

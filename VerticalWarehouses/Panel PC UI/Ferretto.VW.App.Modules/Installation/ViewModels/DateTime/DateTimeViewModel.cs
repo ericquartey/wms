@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -216,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var newcurrentDateTime = await this.machineUtcTimeWebService.GetAsync();
                 currentDateTime = newcurrentDateTime.ToLocalTime();
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.canGoAutoSync = false;
                 this.IsAuto = false;
@@ -262,7 +261,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

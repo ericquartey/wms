@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -94,6 +93,8 @@ namespace Ferretto.VW.App.Controls
         }
 
         public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+
+        public bool IsMachineMoving => this.machineService?.MachineStatus?.IsMoving ?? true;
 
         public virtual bool IsWaitingForResponse
         {

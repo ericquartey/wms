@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -11,7 +8,7 @@ namespace Ferretto.VW.Devices.LaserPointer
     {
         #region Methods
 
-        LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentXPosition, double compartmentYPosition, double missionOperationItemHeight, bool isBayLowerPosition, WarehouseSide baySide);
+        LaserPoint CalculateLaserPoint(double loadingUnitWidth, double loadingUnitDepth, double compartmentWidth, double compartmentDepth, double compartmentXPosition, double compartmentYPosition, double missionOperationItemHeight, bool isBayLowerPosition, WarehouseSide baySide);
 
         bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
 
@@ -21,11 +18,13 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task<bool> HomeAsync();
 
-        Task<bool> IsConnectedAsync();
-
         Task<bool> JogAsync(LaserPointerCommands.Command JogCommand);
 
+        Task<bool> MoveAndSwitchOnAsync(LaserPoint point);
+
         Task<bool> MoveAsync(LaserPoint point);
+
+        Task<bool> ParametersAsync();
 
         Task<bool> PositionAsync(LaserSetPosition position);
 

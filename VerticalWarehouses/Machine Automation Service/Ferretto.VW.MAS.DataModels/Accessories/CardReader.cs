@@ -1,10 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Ferretto.VW.MAS.DataModels
 {
     public class CardReader : Accessory
     {
+        #region Properties
+
+        public string TokenRegex { get; set; }
+
+        #endregion
     }
 }

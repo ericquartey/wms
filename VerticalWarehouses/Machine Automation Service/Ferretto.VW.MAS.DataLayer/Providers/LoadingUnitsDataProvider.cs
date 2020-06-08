@@ -136,6 +136,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<LoadingUnit> GetAllCompacting()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .Where(x => x.Cell != null
+                        && !this.dataContext.Missions.Any(m => m.LoadUnitId == x.Id
+                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Aborted
+                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                        )
+                    .ToArray();
+            }
+        }
+
         public IEnumerable<LoadingUnit> GetAllNotTestUnits()
         {
             lock (this.dataContext)
@@ -442,6 +459,29 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 
                 this.dataContext.SaveChanges();
+            }
+        }
+
+        public void TryAdd(int loadingUnitId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
+            if (lu is null)
+            {
+                var machine = this.machineProvider.Get();
+                lock (this.dataContext)
+                {
+                    var loadingUnits = new LoadingUnit
+                    {
+                        Id = loadingUnitId,
+                        Tare = machine.LoadUnitTare,
+                        MaxNetWeight = machine.LoadUnitMaxNetWeight,
+                        Height = 0
+                    };
+
+                    this.dataContext.LoadingUnits.Add(loadingUnits);
+
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 

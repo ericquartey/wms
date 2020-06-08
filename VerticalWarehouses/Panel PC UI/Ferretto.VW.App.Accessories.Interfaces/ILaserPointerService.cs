@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.Devices;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Accessories.Interfaces
 {
-    public interface IBarcodeReaderService
+    public interface ILaserPointerService : IAccessoryService
     {
         #region Properties
 
@@ -15,18 +14,20 @@ namespace Ferretto.VW.App.Accessories
         /// <exception cref="System.NotSupportedException">An exception is thrown if the device does not support information querying.</exception>
         DeviceInformation DeviceInformation { get; }
 
-        /// <summary>
-        /// Gets the names of the active serial ports on the local machine.
-        /// </summary>
-        ObservableCollection<string> PortNames { get; }
-
         #endregion
 
         #region Methods
 
-        void Disable();
-
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         Task StartAsync();
+
+        /// <summary>
+        ///
+        /// </summary>
+        Task StopAsync();
 
         #endregion
     }

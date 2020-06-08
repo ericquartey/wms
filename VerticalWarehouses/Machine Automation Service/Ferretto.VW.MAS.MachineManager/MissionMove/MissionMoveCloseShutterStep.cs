@@ -52,8 +52,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
-            if (this.Mission.NeedHomingAxis == Axis.None
-                && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal
+                || (this.Mission.NeedHomingAxis == Axis.None
+                    && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
+                    )
                 )
             {
                 this.Mission.NeedHomingAxis = Axis.Horizontal;
@@ -127,7 +129,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                    if (bay.External != null)
+                    {
+                        newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else
+                    {
+                        newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
                 }
                 else
                 {
@@ -137,20 +148,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                         || bay.Carousel is null)
                     {
-                        if (this.Mission.MissionType == MissionType.OUT
-                            || this.Mission.MissionType == MissionType.WMS
-                            || this.Mission.MissionType == MissionType.FullTestOUT
-                            )
+                        if (bay.External != null)
                         {
-                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            // External bay movement
+                            newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                         else
                         {
-                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            if (this.Mission.MissionType == MissionType.OUT
+                                || this.Mission.MissionType == MissionType.WMS
+                                || this.Mission.MissionType == MissionType.FullTestOUT
+                                )
+                            {
+                                newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
+                            else
+                            {
+                                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
                         }
                     }
                     else
                     {
+                        // Carousel movement
                         newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }

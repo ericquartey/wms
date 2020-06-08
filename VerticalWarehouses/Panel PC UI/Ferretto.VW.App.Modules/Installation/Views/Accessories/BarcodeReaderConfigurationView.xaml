@@ -78,12 +78,12 @@
                    Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                    Text="{res:Loc InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
 
-        <ListView Grid.Row="2"
-                  Background="Transparent"
-                  BorderThickness="0"
-                  Focusable="False"
-                  ItemTemplate="{StaticResource BarcodeItemTemplate}"
-                  ItemsSource="{Binding BarcodeSteps}" />
+        <ItemsControl Grid.Row="2"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      Focusable="False"
+                      ItemTemplate="{StaticResource BarcodeItemTemplate}"
+                      ItemsSource="{Binding BarcodeSteps}" />
 
 
         <StackPanel Grid.Row="2"
@@ -103,32 +103,42 @@
                                Foreground="White"
                                Text="4" />
                 </Border>
-                <TextBlock VerticalAlignment="Center"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                           Text="Refresh System Ports" />
-                <controls:PpcButton Margin="40,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding RefreshSystemPortsCommand}"
-                                    Content="{res:Loc General.Refresh}" />
+                <StackPanel VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <TextBlock VerticalAlignment="Center"
+                               FontSize="18"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.CheckSerialPorts}" />
+
+                    <ItemsControl Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  Focusable="False"
+                                  ItemsSource="{Binding PortNames}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border MinWidth="70"
+                                        Margin="5"
+                                        Padding="10"
+                                        Background="{StaticResource FerrettoLightGray}">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               FontSize="14"
+                                               FontWeight="DemiBold"
+                                               Text="{Binding .}" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+
             </StackPanel>
 
-            <ListView Grid.Row="3"
-                      Background="Transparent"
-                      BorderBrush="Transparent"
-                      Focusable="False"
-                      ItemsSource="{Binding PortNames}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="10"
-                                Background="Gray"
-                                CornerRadius="5">
-                            <TextBlock Text="{Binding .}" />
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+
         </StackPanel>
 
     </Grid>
