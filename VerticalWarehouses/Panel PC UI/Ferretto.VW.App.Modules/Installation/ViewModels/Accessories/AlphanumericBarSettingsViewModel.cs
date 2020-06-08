@@ -326,9 +326,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+
                 if (this.deviceDriver.TestEnabled)
                 {
                     await this.deviceDriver.TestAsync(false);
+                }
+                else
+                {
+                    await this.deviceDriver.EnabledAsync(false);
                 }
 
                 return await this.deviceDriver.SetAndWriteMessageAsync(message, offset, true);

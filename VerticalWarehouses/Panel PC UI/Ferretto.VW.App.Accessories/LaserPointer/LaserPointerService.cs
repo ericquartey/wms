@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Accessories
                 {
                     var ipAddress = laserPointer.IpAddress;
                     var port = laserPointer.TcpPort;
-                    var xOffset = 0;
+                    var xOffset = laserPointer.XOffset;
                     var yOffset = laserPointer.YOffset;
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
