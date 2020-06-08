@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DevExpress.Xpf.Layout.Core;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
@@ -73,6 +74,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string itemToPickCode;
 
         private int? itemToPickId;
+
+        private string lastSearchItem;
 
         private int maxKnownIndexSelection;
 
@@ -487,6 +490,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLot,
                     this.isDistinctBySerialNumber,
                     cancellationToken);
+
+                var totalNewItems = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    0,
+                    this.searchItem,
+                    this.IsGroupbyLot,
+                    this.isDistinctBySerialNumber,
+                    cancellationToken);
+
+                if (totalNewItems.Count() <= DefaultPageSize && this.lastSearchItem == this.searchItem && this.searchItem != null)
+                {
+                    this.lastSearchItem = this.searchItem;
+                    return;
+                }
+
+                this.lastSearchItem = this.searchItem;
 
                 if (!newItems.Any())
                 {
