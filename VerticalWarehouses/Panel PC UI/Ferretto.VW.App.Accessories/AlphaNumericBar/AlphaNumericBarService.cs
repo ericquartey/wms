@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                         var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
                         this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
-                        //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(e.WmsMission.LoadingUnit.Width, compartmentSelected.XPosition.Value);
+                        await this.alphaNumericBarDriver.EnabledAsync(false);                               // force disable to reset bar
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
 
                         var message = "?";
