@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Accessory> Accessories { get; set; }
 
+        public DbSet<BayAccessories> BayAccessories { get; set; }
+
         public DbSet<BayPosition> BayPositions { get; set; }
 
         public DbSet<Bay> Bays { get; set; }

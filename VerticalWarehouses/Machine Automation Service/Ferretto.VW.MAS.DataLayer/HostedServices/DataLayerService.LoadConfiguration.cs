@@ -51,8 +51,9 @@ namespace Ferretto.VW.MAS.DataLayer
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
-                foreach (var bay in machine.Bays)
+                foreach (var bayNumber in machine.Bays.Select(b => b.Number))
                 {
+                    var bay = machine.Bays.Single(b => b.Number == bayNumber);
                     bay.Accessories = new BayAccessories();
 
                     bay.Accessories.AlphaNumericBar = new AlphaNumericBar();
@@ -76,15 +77,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.Accessories.WeightingScale = new WeightingScale();
                     dataContext.Accessories.Add(bay.Accessories.WeightingScale);
 
-                    try
-                    {
-                        dataContext.Bays.Update(bay);
-                    }
-                    catch (System.InvalidOperationException)
-                    {
-                        dataContext.AddOrUpdate(bay, f => f.Id);
-                        dataContext.AddOrUpdate(bay.Accessories, f => f.Id);
-                    }
+                    dataContext.Bays.Update(bay);
                 }
                 dataContext.SaveChanges();
             }
