@@ -275,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return "White";
 
                 default:
-                    return "Trasparent";
+                    return "Transparent";
             }
         }
 
