@@ -318,6 +318,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+                    var machine = this.dataContext.Machines.LastOrDefault();
                     foreach (var ins in instructions)
                     {
                         if (ins.InstructionStatus == MachineServiceStatus.Expired)
@@ -329,15 +330,30 @@ namespace Ferretto.VW.MAS.DataLayer
                             && ins.MaintenanceDate != null
                             )
                         {
-                            var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                            if (diff.TotalDays <= ins.Definition.MaxDays)
+                            if (ins.Definition.CounterName != null && ins.IntCounter != null)
                             {
-                                ins.InstructionStatus = MachineServiceStatus.Expired;
-                                ins.IsToDo = true;
-                                this.dataContext.Instructions.Update(ins);
+                                var diffCount = ins.IntCounter - ins.Definition.MaxRelativeCount;
+                                var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays || diffCount > diffCountPercent)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expired;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
+                                logger.Warn(Resources.General.MaintenanceStateExpiring);
                             }
-                            logger.Warn(Resources.General.MaintenanceStateExpiring);
-                            //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
+                            else
+                            {
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expired;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
+                                logger.Warn(Resources.General.MaintenanceStateExpiring);
+                            }
                         }
                         if (ins.InstructionStatus == MachineServiceStatus.Valid
                             && ins.MaintenanceDate != null

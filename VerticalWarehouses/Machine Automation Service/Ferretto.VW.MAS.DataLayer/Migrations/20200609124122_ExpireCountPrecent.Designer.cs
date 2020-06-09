@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200609122059_ExpireConutPrecent")]
-    partial class ExpireConutPrecent
+    [Migration("20200609124122_ExpireCountPrecent")]
+    partial class ExpireCountPrecent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1161,7 +1161,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ElevatorId");
 
-                    b.Property<int>("ExpireConutPrecent");
+                    b.Property<int>("ExpireCountPrecent");
 
                     b.Property<int>("ExpireDays");
 

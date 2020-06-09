@@ -1159,7 +1159,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ElevatorId");
 
-                    b.Property<int>("ExpireConutPrecent");
+                    b.Property<int>("ExpireCountPrecent");
 
                     b.Property<int>("ExpireDays");
 

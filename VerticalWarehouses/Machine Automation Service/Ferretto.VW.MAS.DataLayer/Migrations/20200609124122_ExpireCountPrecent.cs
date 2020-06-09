@@ -2,12 +2,12 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class ExpireConutPrecent : Migration
+    public partial class ExpireCountPrecent : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "ExpireConutPrecent",
+                name: "ExpireCountPrecent",
                 table: "Machines",
                 nullable: false,
                 defaultValue: 0);
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ExpireConutPrecent",
+                name: "ExpireCountPrecent",
                 table: "Machines");
         }
     }

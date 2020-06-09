@@ -3921,8 +3921,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ExpireConutPrecent", Required = Newtonsoft.Json.Required.Always)]
-        public int ExpireConutPrecent { get; set; }
+        [Newtonsoft.Json.JsonProperty("ExpireCountPrecent", Required = Newtonsoft.Json.Required.Always)]
+        public int ExpireCountPrecent { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ExpireDays", Required = Newtonsoft.Json.Required.Always)]
         public int ExpireDays { get; set; }
