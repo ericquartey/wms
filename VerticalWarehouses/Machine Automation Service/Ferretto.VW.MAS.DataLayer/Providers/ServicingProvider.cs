@@ -71,24 +71,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     //s.ServiceStatus = MachineServiceStatus.Valid;
                     this.dataContext.SaveChanges();
                 }
-                catch(Exception)
-                {
-                    //do nothing
-                }
-            }
-        }
-
-        public void SetIsToDo(int instructionId)
-        {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).IsToDo = true;
-                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
-                    this.dataContext.SaveChanges();
-                }
                 catch (Exception)
                 {
                     //do nothing
@@ -250,6 +232,45 @@ namespace Ferretto.VW.MAS.DataLayer
                 else
                 {
                     return null;
+                }
+            }
+        }
+
+        public ServicingInfo GetLastValid()
+        {
+            lock (this.dataContext)
+            {
+                int dim = this.dataContext.ServicingInfo.Count();
+
+                if (dim > 1)
+                {
+                    ServicingInfo si = this.dataContext.ServicingInfo.Where(S => S.ServiceStatus == MachineServiceStatus.Valid).LastOrDefault();
+                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+
+                    return si;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public void SetIsToDo(int instructionId)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    // Confirm setup date in actual record
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).IsToDo = true;
+                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
+                    this.dataContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    //do nothing
                 }
             }
         }

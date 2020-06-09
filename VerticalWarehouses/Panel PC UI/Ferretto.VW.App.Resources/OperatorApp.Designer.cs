@@ -1529,6 +1529,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator cycles since last maintenance / total.
+        /// </summary>
+        public static string ElevatorCycles {
+            get {
+                return ResourceManager.GetString("ElevatorCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal axle elevator.
         /// </summary>
         public static string ElevatorHorizontalAxis {
@@ -1831,6 +1840,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Height {
             get {
                 return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal axis.
+        /// </summary>
+        public static string HorizontalAxis {
+            get {
+                return ResourceManager.GetString("HorizontalAxis", resourceCulture);
             }
         }
         
@@ -4252,6 +4270,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis.
+        /// </summary>
+        public static string VerticalAxis {
+            get {
+                return ResourceManager.GetString("VerticalAxis", resourceCulture);
             }
         }
         
