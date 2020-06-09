@@ -1950,4 +1950,13 @@ Please put back any moved pieces in their original position.</value>
   <data name="ConfirmServiceMessage" xml:space="preserve">
     <value>Are you sure you want to confirm this service?</value>
   </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Elevator cycles since last maintenance / total</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Horizontal axis</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Vertical axis</value>
+  </data>
 </root>

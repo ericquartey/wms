@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
 
-                var lastServicing = await this.machineServicingWebService.GetLastConfirmedAsync();
+                var lastServicing = await this.machineServicingWebService.GetLastValidAsync();
 
                 if (lastServicing != null)
                 {
@@ -116,6 +116,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.TotalStatistics.TotalLoadUnitsInBay1 = allServicing.Select(s => s.MachineStatistics.TotalLoadUnitsInBay1).Sum();
                 this.TotalStatistics.TotalLoadUnitsInBay2 = allServicing.Select(s => s.MachineStatistics.TotalLoadUnitsInBay2).Sum();
                 this.TotalStatistics.TotalLoadUnitsInBay3 = allServicing.Select(s => s.MachineStatistics.TotalLoadUnitsInBay3).Sum();
+
+                this.TotalStatistics.TotalHorizontalAxisCycles = allServicing.Select(s => s.MachineStatistics.TotalHorizontalAxisCycles).Sum();
+                this.TotalStatistics.TotalVerticalAxisCycles = allServicing.Select(s => s.MachineStatistics.TotalVerticalAxisCycles).Sum();
 
                 foreach (var time in allServicing)
                 {
