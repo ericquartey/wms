@@ -141,6 +141,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
+                        if (this.Mission.NeedHomingAxis == Axis.None)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.BayChain;
+                        }
                         this.RestoreBayChain();
                     }
                     else
