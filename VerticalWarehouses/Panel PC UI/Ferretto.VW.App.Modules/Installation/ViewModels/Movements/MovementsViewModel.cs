@@ -470,17 +470,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.IsKeyboardOpened
-                &&
-                (this.IsMoving ||
-                 this.IsMovingElevatorBackwards ||
-                 this.IsMovingElevatorForwards ||
-                 this.IsMovingElevatorUp ||
-                 this.IsMovingElevatorDown ||
-                 this.IsCarouselOpening ||
-                 this.IsShutterMovingDown ||
-                 this.IsShutterMovingUp ||
-                 this.IsElevatorMovingToCell ||
-                 this.IsElevatorMovingToHeight);
+                //&&
+                //(this.IsMoving ||
+                // this.IsMovingElevatorBackwards ||
+                // this.IsMovingElevatorForwards ||
+                // this.IsMovingElevatorUp ||
+                // this.IsMovingElevatorDown ||
+                // this.IsCarouselOpening ||
+                // this.IsShutterMovingDown ||
+                // this.IsShutterMovingUp ||
+                // this.IsElevatorMovingToCell ||
+                // this.IsElevatorMovingToHeight)
+                ;
         }
 
         private void GoToMovementsExecuteCommand(bool isGuided)
