@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public Elevator Elevator { get; set; }
 
+        public int ExpireConutPrecent { get; set; } = 10;
+
         public int ExpireDays { get; set; } = 14;
 
         /// <summary>
