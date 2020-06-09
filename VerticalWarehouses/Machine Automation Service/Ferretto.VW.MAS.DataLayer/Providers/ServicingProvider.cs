@@ -264,8 +264,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).IsToDo = true;
-                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    instruction.IsToDo = true;
+                    instruction.InstructionStatus = MachineServiceStatus.Expiring;
+                    this.dataContext.Instructions.Update(instruction);
                     this.dataContext.SaveChanges();
                 }
                 catch (Exception)
