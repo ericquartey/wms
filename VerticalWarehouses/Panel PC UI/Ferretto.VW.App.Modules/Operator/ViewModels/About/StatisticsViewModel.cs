@@ -161,10 +161,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FragmentTotalPercent = cells.FragmentTotalPercent;
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
-                this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                //this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
                 this.UnitsInCell = unit.Count(n => n.Status == LoadingUnitStatus.InLocation);
                 this.UnitsInBay = unit.Count(n => n.Status == LoadingUnitStatus.InBay);
                 this.UnitsInElevator = unit.Count(n => n.Status == LoadingUnitStatus.InElevator);
+                this.TotalDrawers = this.unitsInCell + this.unitsInBay + this.unitsInElevator;
 
                 var cellsStatistic = await this.machineCellsWebService.GetAllAsync();
                 this.TotalCells = cellsStatistic.Count();
