@@ -90,13 +90,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("any-instruction-expired")]
         public ActionResult<bool> IsInstructionExpired()
         {
-            return this.Ok(/*this.servicingProvider.IsAnyInstructionExpired()*/);
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpired());
         }
 
         [HttpGet("any-instruction-expiring")]
         public ActionResult<bool> IsInstructionExpiring()
         {
-            return this.Ok(/*this.servicingProvider.IsAnyInstructionExpiring() */);
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpiring());
         }
 
         [HttpPost("set-IsToDo")]
