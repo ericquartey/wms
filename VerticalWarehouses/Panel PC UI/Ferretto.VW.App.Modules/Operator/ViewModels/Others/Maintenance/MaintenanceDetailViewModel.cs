@@ -263,10 +263,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (status)
             {
                 case MachineServiceStatus.Valid:
-                    return "Red";
+                    return "Green";
 
                 case MachineServiceStatus.Expired:
-                    return "Green";
+                    return "Red";
 
                 case MachineServiceStatus.Expiring:
                     return "Orange";
