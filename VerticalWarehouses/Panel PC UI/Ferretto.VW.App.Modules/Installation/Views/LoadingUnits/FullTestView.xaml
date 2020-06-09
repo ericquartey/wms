@@ -75,7 +75,8 @@
         <controls:CardSensorShutter Grid.Row="3"
                                     Grid.Column="1"
                                     Height="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
         <ctrls:PpcSpinEdit Grid.Row="3"
                            Grid.Column="2"
@@ -166,40 +167,35 @@
                                                     SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel Grid.Row="5"
-                            Grid.Column="2"
+                    Grid.Column="2"
                     Grid.ColumnSpan="2"
+                    Margin="0,0,15,0"
                     HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                     Margin="0,0,15,0"
-                            VerticalAlignment="Center" >
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
 
-            <controls:PpcButton
-                            Margin="0,10,15,10"
-                            Command="{Binding RemoveAllUnitCommand}"
-                            Content="{res:Loc InstallationApp.RemoveTestAllUnits}" />
+            <controls:PpcButton Margin="0,10,15,10"
+                                Command="{Binding RemoveAllUnitCommand}"
+                                Content="{res:Loc InstallationApp.RemoveTestAllUnits}" />
 
-            <controls:PpcButton 
-                            Margin="0,10,0,10"
-                            
-                            Command="{Binding RemoveUnitCommand}"
-                            Content="{res:Loc InstallationApp.RemoveTestUnit}" />
+            <controls:PpcButton Margin="0,10,0,10"
+                                Command="{Binding RemoveUnitCommand}"
+                                Content="{res:Loc InstallationApp.RemoveTestUnit}" />
         </StackPanel>
 
         <StackPanel Grid.Row="5"
-                            Grid.Column="0"
+                    Grid.Column="0"
                     Grid.ColumnSpan="2"
-                     HorizontalAlignment="Left"
-                    Orientation="Horizontal"
-                            VerticalAlignment="Center">
-            <controls:PpcButton 
-                            Margin="0,10,15,10"
-                            Command="{Binding AddUnitCommand}"
-                            Content="{res:Loc InstallationApp.AddTestUnit}" />
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <controls:PpcButton Margin="0,10,15,10"
+                                Command="{Binding AddUnitCommand}"
+                                Content="{res:Loc InstallationApp.AddTestUnit}" />
 
-            <controls:PpcButton 
-                            Margin="0,10,15,10"
-                            Command="{Binding AddAllUnitCommand}"
-                            Content="{res:Loc InstallationApp.AddTestAllUnit}" />
+            <controls:PpcButton Margin="0,10,15,10"
+                                Command="{Binding AddAllUnitCommand}"
+                                Content="{res:Loc InstallationApp.AddTestAllUnit}" />
 
         </StackPanel>
 

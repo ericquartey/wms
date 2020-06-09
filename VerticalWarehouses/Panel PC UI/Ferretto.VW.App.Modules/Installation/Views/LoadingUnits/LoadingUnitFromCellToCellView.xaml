@@ -74,7 +74,8 @@
         <controls:CardSensorShutter Grid.Row="3"
                                     Grid.Column="1"
                                     Height="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
         <ctrls:PpcSpinEdit Grid.Row="3"
                            Grid.Column="2"

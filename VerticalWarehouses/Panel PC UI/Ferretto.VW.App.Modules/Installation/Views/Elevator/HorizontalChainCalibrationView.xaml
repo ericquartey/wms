@@ -534,7 +534,8 @@
                                     Width="250"
                                     Height="90"
                                     MinHeight="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
         <controls:CardSensorPosition Grid.Row="5"
                                      Grid.Column="3"
                                      Width="250"

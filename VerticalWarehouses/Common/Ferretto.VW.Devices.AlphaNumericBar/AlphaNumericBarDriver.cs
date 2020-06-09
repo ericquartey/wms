@@ -376,6 +376,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.errorsQueue);
 
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
+
             if (enable)
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_ON);
@@ -416,14 +418,33 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Encode a trinh into the HTPP protocol.
+        /// Replace the Ascii characters out side the available range width a space (char '+')
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         private string Encode(string str)
         {
+            var result = "";
+
+            foreach (char c in str)
+            {
+                if ((int)c < 32 || (int)c > 125)
+                {
+                    result += "+";
+                }
+                else if ((int)c == 32)  // space
+                {
+                    result += '+';
+                }
+                else
+                {
+                    result += c;
+                }
+            }
+
+            return result;
+            //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString("+") : Uri.EscapeDataString(str).Replace("%20", "+");
             //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString(" ") : Uri.EscapeDataString(str);
-            return string.IsNullOrEmpty(str) ? Uri.EscapeDataString("+") : Uri.EscapeDataString(str).Replace("%20", "+");
             //return string.IsNullOrEmpty(str) ? HttpUtility.UrlEncode(" ", Encoding.UTF8) : HttpUtility.UrlEncode(str, Encoding.UTF8);
             //return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
         }
