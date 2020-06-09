@@ -310,7 +310,8 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (diff.TotalDays <= ins.Definition.MaxDays)
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expired;
-                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                                ins.IsToDo = true;
+                                this.dataContext.Instructions.Update(ins);
                             }
                             logger.Warn(Resources.General.MaintenanceStateExpiring);
                             //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
@@ -323,7 +324,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (diff.TotalDays <= ins.Definition.MaxDays)
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
-                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                                this.dataContext.Instructions.Update(ins);
                             }
                         }
                     }
