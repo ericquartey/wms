@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -119,6 +120,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private async Task ExecuteLogOutCommand()
         {
+            ScaffolderUserAccesLevel.IsLogged = false;
             this.IsPopupOpen = false;
             await this.authenticationService.LogOutAsync();
             await this.machineBaysWebService.DeactivateAsync();
