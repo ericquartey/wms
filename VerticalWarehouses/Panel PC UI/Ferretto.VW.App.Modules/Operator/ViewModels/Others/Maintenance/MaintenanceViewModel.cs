@@ -104,12 +104,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Valid)
                         {
-                            this.mainteinanceRequest = "Red";
+                            this.mainteinanceRequest = "Green";
                         }
 
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expired)
                         {
-                            this.mainteinanceRequest = "Green";
+                            this.mainteinanceRequest = "Red";
                         }
 
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expiring)

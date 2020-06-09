@@ -18,6 +18,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public Elevator Elevator { get; set; }
 
+        public int ExpireCountPrecent { get; set; } = 10;
+
+        public int ExpireDays { get; set; } = 14;
+
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
