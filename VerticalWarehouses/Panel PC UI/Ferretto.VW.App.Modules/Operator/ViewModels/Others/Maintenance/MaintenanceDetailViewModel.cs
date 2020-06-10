@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string instructionStatus;
 
+        private int lastInstruction = 0;
+
         private string mainteinanceRequest;
 
         private Instruction selectedInstruction;
@@ -39,8 +41,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private ServicingInfo service;
 
         private int servicingInfoId = 0;
-
-        private int lastInstruction = 0;
 
         #endregion
 
@@ -251,8 +251,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.instructions != null)
                 {
-                    this.SelectedInstruction = this.instructions.ElementAtOrDefault(this.lastInstruction);
-                    this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    if (this.lastInstruction == this.instructions.FirstOrDefault().Id || this.lastInstruction == 0)
+                    {
+                        this.SelectedInstruction = this.instructions.ElementAtOrDefault(this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
+                    else
+                    {
+                        this.SelectedInstruction = this.instructions.FirstOrDefault(s => s.Id == this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
                 }
             }
             catch (Exception)
