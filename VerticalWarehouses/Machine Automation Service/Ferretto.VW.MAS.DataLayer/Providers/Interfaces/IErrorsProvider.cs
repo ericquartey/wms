@@ -20,9 +20,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null);
 
-        MachineError Resolve(int id);
+        MachineError Resolve(int id, bool force = false);
 
-        void ResolveAll();
+        void ResolveAll(bool force = false);
 
         #endregion
     }
