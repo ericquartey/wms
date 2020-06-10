@@ -226,7 +226,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             try
             {
-                var request = WebRequest.Create(new Uri("http://" + this.ipAddress.ToString() + "/parameters.txt"));
+                var request = WebRequest.Create(new Uri($"http://{this.IpAddress}/parameters.txt"));
                 request.Timeout = 1000;
                 request.Credentials = CredentialCache.DefaultCredentials;
                 var response = request.GetResponse();

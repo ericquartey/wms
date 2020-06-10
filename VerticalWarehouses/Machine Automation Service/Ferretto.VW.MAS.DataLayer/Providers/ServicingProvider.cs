@@ -337,6 +337,27 @@ namespace Ferretto.VW.MAS.DataLayer
             return expiring;
         }
 
+        public void RefreshDescription(int servicingInfoId)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    var instruction = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == servicingInfoId).ToList();
+                    foreach (var ins in instruction)
+                    {
+                        ins.Definition.GetDescription(ins.Definition.InstructionType);
+                        this.dataContext.Instructions.Update(ins);
+                        this.dataContext.SaveChanges();
+                    }
+                }
+                catch (Exception)
+                {
+                    //do nothing
+                }
+            }
+        }
+
         public void SetIsToDo(int instructionId)
         {
             lock (this.dataContext)

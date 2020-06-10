@@ -140,11 +140,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             {
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
-                    var bay = await this.bayManager.GetBayAsync();
-
-                    if (bay.CurrentMission is null
-                        && this.alphaNumericBarDriver != null
-                        )
+                    if (this.alphaNumericBarDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
                         await this.alphaNumericBarDriver.EnabledAsync(false);

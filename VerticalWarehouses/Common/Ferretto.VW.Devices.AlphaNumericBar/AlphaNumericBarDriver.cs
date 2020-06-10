@@ -295,7 +295,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             }
-
+            
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_OFF, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
@@ -428,9 +428,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             foreach (char c in str)
             {
-                if ((int)c < 32 || (int)c > 125)
+                if (((int)c > 32 && (int)c < 126))
                 {
-                    result += "+";
+                    result += c;
                 }
                 else if ((int)c == 32)  // space
                 {
@@ -438,7 +438,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
                 else
                 {
-                    result += c;
+                    result += "+";
                 }
             }
 
