@@ -166,7 +166,23 @@ namespace Ferretto.VW.MAS.DataLayer
                             diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
                         }
                         break;
+
+                    case nameof(lastStat.TotalMissions):
+                        if (countedStat != null)
+                        {
+                            diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
+                            diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        }
+                        else
+                        {
+                            diffCount = allStat.Sum(s => s.MachineStatistics.TotalMissions);
+                        }
+                        break;
                 }
+            }
+            else
+            {
+                throw new System.ArgumentNullException(nameof(ins));
             }
             return diffCount;
         }
@@ -431,7 +447,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             && ins.MaintenanceDate != null
                             )
                         {
-                            if (ins.Definition.CounterName != null && ins.IntCounter != null)
+                            if (ins.Definition.CounterName != null)
                             {
                                 var diffCount = this.DiffCount(ins);
                                 var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
