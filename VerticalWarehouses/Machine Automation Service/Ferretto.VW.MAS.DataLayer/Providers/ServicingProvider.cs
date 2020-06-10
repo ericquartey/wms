@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<ServicingProvider> logger;
+
         private readonly IStatisticsDataProvider machineStatistics;
 
         #endregion
@@ -22,9 +24,11 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public ServicingProvider(DataLayerContext dataContext,
+            ILogger<ServicingProvider> logger,
             IStatisticsDataProvider machineStatistics)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.machineStatistics = machineStatistics ?? throw new ArgumentNullException(nameof(machineStatistics));
         }
 
@@ -133,6 +137,38 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.SaveChanges();
                 }
             }
+        }
+
+        public int DiffCount(Instruction ins)
+        {
+            var diffCount = 0;
+            var allStat = this.dataContext.ServicingInfo
+                .Include(i => i.MachineStatistics)
+                .ToArray()
+                .OrderBy(o => o.Id);
+            if (ins.Definition.CounterName != null
+                && ins.Definition.CounterName.Length > 0
+                && allStat.Any()
+                )
+            {
+                var lastStat = allStat.Last().MachineStatistics;
+                var countedStat = allStat.LastOrDefault(s => s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
+                switch (ins.Definition.CounterName)
+                {
+                    case nameof(lastStat.TotalBayChainKilometers1):
+                        if (countedStat != null)
+                        {
+                            diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
+                            diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        }
+                        else
+                        {
+                            diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
+                        }
+                        break;
+                }
+            }
+            return diffCount;
         }
 
         public ServicingInfo GetActual()
@@ -376,7 +412,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             if (ins.Definition.CounterName != null && ins.IntCounter != null)
                             {
-                                var diffCount = ins.IntCounter - ins.Definition.MaxRelativeCount;
+                                var diffCount = this.DiffCount(ins);
                                 var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
                                 if (diff.TotalDays <= ins.Definition.MaxDays || diffCount > diffCountPercent)
@@ -412,8 +448,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.logger.LogError(ex, ex.Message);
                 }
             }
         }
