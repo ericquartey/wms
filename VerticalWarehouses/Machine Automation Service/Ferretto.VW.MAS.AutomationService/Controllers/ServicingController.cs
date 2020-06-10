@@ -37,13 +37,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("set-IsToDo")]
-        public IActionResult SetIsToDo(int instructionId)
-        {
-            this.servicingProvider.SetIsToDo(instructionId);
-            return this.Ok();
-        }
-
         [HttpPost("confirm-service")]
         public IActionResult ConfirmService()
         {
@@ -86,6 +79,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<ServicingInfo> GetLastConfirmed()
         {
             return this.Ok(this.servicingProvider.GetLastConfirmed());
+        }
+
+        [HttpGet("last-valid-servicing-info")]
+        public ActionResult<ServicingInfo> GetLastValid()
+        {
+            return this.Ok(this.servicingProvider.GetLastValid());
+        }
+
+        [HttpGet("any-instruction-expired")]
+        public ActionResult<bool> IsInstructionExpired()
+        {
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpired());
+        }
+
+        [HttpGet("any-instruction-expiring")]
+        public ActionResult<bool> IsInstructionExpiring()
+        {
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpiring());
+        }
+
+        [HttpPost("set-IsToDo")]
+        public IActionResult SetIsToDo(int instructionId)
+        {
+            this.servicingProvider.SetIsToDo(instructionId);
+            return this.Ok();
         }
 
         #endregion

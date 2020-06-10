@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -60,8 +61,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).InstructionStatus = MachineServiceStatus.Completed;
-                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    instruction.InstructionStatus = MachineServiceStatus.Completed;
+                    instruction.IsDone = true;
+                    this.dataContext.Instructions.Update(instruction);
 
                     // Update record
                     //var s = new ServicingInfo();
@@ -69,24 +72,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     //s.LastServiceDate = DateTime.Now;
                     //s.NextServiceDate = DateTime.Now.AddDays((double)this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).Definition.MaxDays);
                     //s.ServiceStatus = MachineServiceStatus.Valid;
-                    this.dataContext.SaveChanges();
-                }
-                catch(Exception)
-                {
-                    //do nothing
-                }
-            }
-        }
-
-        public void SetIsToDo(int instructionId)
-        {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId).IsToDo = true;
-                    this.dataContext.Instructions.Update(this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId));
                     this.dataContext.SaveChanges();
                 }
                 catch (Exception)
@@ -154,10 +139,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo.LastOrDefault();
-                si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
-                si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                //ServicingInfo si = this.dataContext.ServicingInfo.LastOrDefault();
+                //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
+                ServicingInfo si = this.dataContext.ServicingInfo
+                   .Include(s => s.Instructions)
+                   .ThenInclude(e => e.Definition)
+                   .Include(s => s.MachineStatistics)
+                   .Where(s => s.Id == s.MachineStatisticsId).LastOrDefault();
                 return si;
             }
         }
@@ -254,6 +244,83 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public ServicingInfo GetLastValid()
+        {
+            lock (this.dataContext)
+            {
+                int dim = this.dataContext.ServicingInfo.Count();
+
+                if (dim > 1)
+                {
+                    ServicingInfo si = this.dataContext.ServicingInfo.Where(S => S.ServiceStatus == MachineServiceStatus.Valid).LastOrDefault();
+                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+
+                    return si;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public bool IsAnyInstructionExpired()
+        {
+            bool expired = false;
+
+            var service = this.dataContext.ServicingInfo.Last();
+
+            var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+            foreach (var ins in instructions)
+            {
+                if (ins.InstructionStatus == MachineServiceStatus.Expired)
+                {
+                    expired = true;
+                }
+            }
+
+            return expired;
+        }
+
+        public bool IsAnyInstructionExpiring()
+        {
+            bool expiring = false;
+
+            var service = this.dataContext.ServicingInfo.Last();
+
+            var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+            foreach (var ins in instructions)
+            {
+                if (ins.InstructionStatus == MachineServiceStatus.Expiring)
+                {
+                    expiring = true;
+                }
+            }
+
+            return expiring;
+        }
+
+        public void SetIsToDo(int instructionId)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    // Confirm setup date in actual record
+                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    instruction.IsToDo = true;
+                    instruction.InstructionStatus = MachineServiceStatus.Expiring;
+                    this.dataContext.Instructions.Update(instruction);
+                    this.dataContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    //do nothing
+                }
+            }
+        }
+
         public void UpdateServiceStatus()
         {
             lock (this.dataContext)
@@ -295,6 +362,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+                    var machine = this.dataContext.Machines.LastOrDefault();
                     foreach (var ins in instructions)
                     {
                         if (ins.InstructionStatus == MachineServiceStatus.Expired)
@@ -306,14 +374,30 @@ namespace Ferretto.VW.MAS.DataLayer
                             && ins.MaintenanceDate != null
                             )
                         {
-                            var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                            if (diff.TotalDays <= ins.Definition.MaxDays)
+                            if (ins.Definition.CounterName != null && ins.IntCounter != null)
                             {
-                                ins.InstructionStatus = MachineServiceStatus.Expired;
-                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                                var diffCount = ins.IntCounter - ins.Definition.MaxRelativeCount;
+                                var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays || diffCount > diffCountPercent)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expired;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
+                                logger.Warn(Resources.General.MaintenanceStateExpiring);
                             }
-                            logger.Warn(Resources.General.MaintenanceStateExpiring);
-                            //this.Logger.LogWarning(Resources.General.MaintenanceStateExpiring);
+                            else
+                            {
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expired;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
+                                logger.Warn(Resources.General.MaintenanceStateExpiring);
+                            }
                         }
                         if (ins.InstructionStatus == MachineServiceStatus.Valid
                             && ins.MaintenanceDate != null
@@ -323,7 +407,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (diff.TotalDays <= ins.Definition.MaxDays)
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
-                                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                                this.dataContext.Instructions.Update(ins);
                             }
                         }
                     }

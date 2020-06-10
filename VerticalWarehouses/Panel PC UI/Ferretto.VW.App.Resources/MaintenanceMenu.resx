@@ -126,6 +126,12 @@
   <data name="CompactionDescription" xml:space="preserve">
     <value>Warehouse free space optimization</value>
   </data>
+  <data name="Expired" xml:space="preserve">
+    <value>There are maintenance expired</value>
+  </data>
+  <data name="Expiring" xml:space="preserve">
+    <value>There are maintenance expiring</value>
+  </data>
   <data name="Maintenance" xml:space="preserve">
     <value>Maintenance</value>
   </data>

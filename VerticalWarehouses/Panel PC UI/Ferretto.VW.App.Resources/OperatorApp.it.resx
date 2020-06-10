@@ -1558,4 +1558,13 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ConfirmServiceMessage" xml:space="preserve">
     <value>Sei sicuro di voler confermare questo service?</value>
   </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Cicli dell'elevatore da ultima manutenzione / totale</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Asse orizzontale</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Asse verticale</value>
+  </data>
 </root>

@@ -342,7 +342,7 @@ namespace Ferretto.VW.Simulator.Services
                     }
                     if (bay != null)
                     {
-                        var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2.5);
+                        var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 5);
                         if (bayPosition != null)
                         {
                             this.MinProfileHeight.TryGetValue(bayPosition.Location, out minProfileHeight);

@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
+        private readonly IMachineServicingWebService machineServicingWebService;
+
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private readonly IMachineMissionsWebService missionsWebService;
@@ -90,6 +92,10 @@ namespace Ferretto.VW.App.Services
         private bool hasShutter;
 
         private SubscriptionToken healthStatusChangedToken;
+
+        private bool isAnyExpired;
+
+        private bool isAnyExpiring;
 
         private bool isAxisTuningCompleted;
 
@@ -151,6 +157,7 @@ namespace Ferretto.VW.App.Services
             IMachineMissionsWebService missionsWebService,
             IMachineIdentityWebService machineIdentityWebService,
             IMachineSetupStatusWebService machineSetupStatusWebService,
+            IMachineServicingWebService machineServicingWebService,
             ISessionService sessionService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
@@ -171,6 +178,7 @@ namespace Ferretto.VW.App.Services
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
 
             this.MachineStatus = new Models.MachineStatus();
 
@@ -242,6 +250,18 @@ namespace Ferretto.VW.App.Services
         {
             get => this.hasShutter;
             set => this.SetProperty(ref this.hasShutter, value);
+        }
+
+        public bool IsAnyExpired
+        {
+            get => this.isAnyExpired;
+            set => this.SetProperty(ref this.isAnyExpired, value);
+        }
+
+        public bool IsAnyExpiring
+        {
+            get => this.isAnyExpiring;
+            set => this.SetProperty(ref this.isAnyExpiring, value);
         }
 
         public bool IsAxisTuningCompleted
@@ -391,6 +411,9 @@ namespace Ferretto.VW.App.Services
                     await this.GetLoadUnits();
                     await this.GetTuningStatus();
                     await this.GetCells();
+
+                    this.IsAnyExpiring = await this.machineServicingWebService.IsInstructionExpiringAsync();
+                    this.IsAnyExpired = await this.machineServicingWebService.IsInstructionExpiredAsync();
                 }
                 catch
                 {
@@ -414,6 +437,9 @@ namespace Ferretto.VW.App.Services
                 await this.GetCells();
                 await this.machineModeService.OnUpdateServiceAsync();
                 await this.GetTuningStatus();
+
+                this.IsAnyExpiring = await this.machineServicingWebService.IsInstructionExpiringAsync();
+                this.IsAnyExpired = await this.machineServicingWebService.IsInstructionExpiredAsync();
             }
         }
 
@@ -1556,6 +1582,14 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpired)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
@@ -1574,6 +1608,14 @@ namespace Ferretto.VW.App.Services
                         else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpired)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
                         }
                         break;
 
@@ -1598,6 +1640,14 @@ namespace Ferretto.VW.App.Services
                         else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpired)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {
