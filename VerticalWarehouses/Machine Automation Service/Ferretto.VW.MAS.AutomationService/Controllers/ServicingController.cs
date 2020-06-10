@@ -113,6 +113,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("update-service-status")]
+        public IActionResult UpdateServiceStatus()
+        {
+            this.servicingProvider.UpdateServiceStatus();
+            return this.Ok();
+        }
+
         #endregion
     }
 }

@@ -161,6 +161,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            await this.machineServicingWebService.UpdateServiceStatusAsync();
+
             this.IsBackNavigationAllowed = true;
 
             this.MachineSerial = this.sessionService.MachineIdentity.SerialNumber;
@@ -176,6 +178,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ServicingInfo = lst.ToList();
 
             this.RaisePropertyChanged(nameof(this.ServicingInfo));
+
+            this.SelectedServicingInfo = this.servicingInfo.ElementAtOrDefault(0);
+
+            this.RaisePropertyChanged(nameof(this.SelectedServicingInfo));
         }
 
         protected override void RaiseCanExecuteChanged()

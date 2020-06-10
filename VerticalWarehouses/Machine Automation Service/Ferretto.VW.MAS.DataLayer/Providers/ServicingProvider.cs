@@ -141,50 +141,278 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int DiffCount(Instruction ins)
         {
-            var diffCount = 0;
-            var allStat = this.dataContext.ServicingInfo
-                .Include(i => i.MachineStatistics)
-                .ToArray()
-                .OrderBy(o => o.Id);
-            if (ins.Definition.CounterName != null
-                && ins.Definition.CounterName.Length > 0
-                && allStat.Any()
-                )
+            try
             {
-                var lastStat = allStat.Last().MachineStatistics;
-                var countedStat = allStat.LastOrDefault(s => s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
-                switch (ins.Definition.CounterName)
+                var diffCount = 0;
+                var allStat = this.dataContext.ServicingInfo
+                    .Include(i => i.MachineStatistics)
+                    .ToArray()
+                    .OrderBy(o => o.Id);
+                if (ins.Definition.CounterName != null
+                    && ins.Definition.CounterName.Length > 0
+                    && allStat.Any()
+                    )
                 {
-                    case nameof(lastStat.TotalBayChainKilometers1):
-                        if (countedStat != null)
-                        {
-                            diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
-                            diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
-                        }
-                        else
-                        {
-                            diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
-                        }
-                        break;
+                    var lastStat = allStat.Last().MachineStatistics;
+                    var countedStat = allStat.LastOrDefault(s => s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
+                    switch (ins.Definition.CounterName)
+                    {
+                        case nameof(lastStat.AreaFillPercentage):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AreaFillPercentage);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.AreaFillPercentage);
+                            }
+                            break;
 
-                    case nameof(lastStat.TotalMissions):
-                        if (countedStat != null)
-                        {
-                            diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
-                            diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
-                        }
-                        else
-                        {
-                            diffCount = allStat.Sum(s => s.MachineStatistics.TotalMissions);
-                        }
-                        break;
+                        case nameof(lastStat.AutomaticTimePercentage):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AutomaticTimePercentage);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.AutomaticTimePercentage);
+                            }
+                            break;
+
+                        //case nameof(lastStat.TotalAutomaticTime):
+                        //    if (countedStat != null)
+                        //    {
+                        //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalAutomaticTime);
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //    }
+                        //    else
+                        //    {
+                        //        diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalAutomaticTime);
+                        //    }
+                        //    break;
+
+                        case nameof(lastStat.TotalBayChainKilometers2):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers2);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers2);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalBayChainKilometers3):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers3);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers3);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalHorizontalAxisCycles):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisCycles);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalHorizontalAxisCycles);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalHorizontalAxisKilometers):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisKilometers);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalHorizontalAxisKilometers);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalLoadUnitsInBay1):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay1);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalLoadUnitsInBay1);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalLoadUnitsInBay2):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay2);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalLoadUnitsInBay2);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalLoadUnitsInBay3):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay3);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalLoadUnitsInBay3);
+                            }
+                            break;
+
+                        //case nameof(lastStat.TotalMissionTime):
+                        //    if (countedStat != null)
+                        //    {
+                        //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissionTime);
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //    }
+                        //    else
+                        //    {
+                        //        diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalMissionTime);
+                        //    }
+                        //    break;
+
+                        //case nameof(lastStat.TotalPowerOnTime):
+                        //    if (countedStat != null)
+                        //    {
+                        //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalPowerOnTime);
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //    }
+                        //    else
+                        //    {
+                        //        diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalPowerOnTime);
+                        //    }
+                        //    break;
+
+                        case nameof(lastStat.TotalVerticalAxisCycles):
+                            if (countedStat != null)
+                            {
+                                diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisCycles);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = allStat.Sum(s => s.MachineStatistics.TotalVerticalAxisCycles);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalVerticalAxisKilometers):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisKilometers);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalVerticalAxisKilometers);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalWeightBack):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightBack);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalWeightBack);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalWeightFront):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightFront);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalWeightFront);
+                            }
+                            break;
+
+                        case nameof(lastStat.UsageTimePercentage):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.UsageTimePercentage);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.UsageTimePercentage);
+                            }
+                            break;
+
+                        case nameof(lastStat.WeightCapacityPercentage):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.WeightCapacityPercentage);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.WeightCapacityPercentage);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalBayChainKilometers1):
+                            if (countedStat != null)
+                            {
+                                diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = (int)allStat.Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
+                            }
+                            break;
+
+                        case nameof(lastStat.TotalMissions):
+                            if (countedStat != null)
+                            {
+                                diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
+                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                            }
+                            else
+                            {
+                                diffCount = allStat.Sum(s => s.MachineStatistics.TotalMissions);
+                            }
+                            break;
+
+                        default:
+                            diffCount = 0;
+                            this.logger.LogWarning("Instruction.Definition.CounterName unmanaged");
+                            break;
+                    }
                 }
+                else
+                {
+                    throw new System.ArgumentNullException(nameof(ins));
+                }
+                return diffCount;
             }
-            else
+            catch (Exception)
             {
-                throw new System.ArgumentNullException(nameof(ins));
+                return 0;
             }
-            return diffCount;
         }
 
         public ServicingInfo GetActual()
@@ -215,7 +443,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (ServicingInfo si in silDB)
                 {
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
-                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                    si.Instructions = this.dataContext.Instructions.Include(e => e.Definition).Where(s => si.Id == s.ServicingInfo.Id).ToList();
                     silNew.Add(si);
                 }
 
@@ -244,7 +472,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo.Where(s => s.InstallationDate != null).FirstOrDefault();
+                ServicingInfo si = this.dataContext.ServicingInfo
+                    .Include(s => s.Instructions)
+                    .ThenInclude(e => e.Definition)
+                    .Include(s => s.MachineStatistics)
+                    .Where(s => s.InstallationDate != null).FirstOrDefault();
 
                 if (si != null)
                 {
@@ -255,7 +487,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else
                 {
-                    ServicingInfo siTot = this.dataContext.ServicingInfo.FirstOrDefault();
+                    ServicingInfo siTot = this.dataContext.ServicingInfo
+                        .Include(s => s.Instructions)
+                        .ThenInclude(e => e.Definition)
+                        .Include(s => s.MachineStatistics)
+                        .FirstOrDefault();
 
                     if (siTot == null)
                     {
@@ -283,7 +519,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo.Where(S => S.ServiceStatus == MachineServiceStatus.Completed).LastOrDefault();
+                    ServicingInfo si = this.dataContext.ServicingInfo
+                        .Include(s => s.Instructions)
+                        .ThenInclude(e => e.Definition)
+                        .Include(s => s.MachineStatistics)
+                        .Where(S => S.ServiceStatus == MachineServiceStatus.Completed).LastOrDefault();
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -304,7 +544,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo.Where(S => S.ServiceStatus == MachineServiceStatus.Valid).LastOrDefault();
+                    ServicingInfo si = this.dataContext.ServicingInfo
+                        .Include(s => s.Instructions)
+                        .ThenInclude(e => e.Definition)
+                        .Include(s => s.MachineStatistics)
+                        .Where(S => S.ServiceStatus == MachineServiceStatus.Valid).LastOrDefault();
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -434,7 +678,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
 
-                    var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
+                    var instructions = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == service.Id).ToList();
                     var machine = this.dataContext.Machines.LastOrDefault();
                     foreach (var ins in instructions)
                     {
@@ -444,10 +688,9 @@ namespace Ferretto.VW.MAS.DataLayer
                             //this.Logger.LogWarning(Resources.General.MaintenanceStateExpired);
                         }
                         if (ins.InstructionStatus == MachineServiceStatus.Expiring
-                            && ins.MaintenanceDate != null
-                            )
+                            && ins.MaintenanceDate != null)
                         {
-                            if (ins.Definition.CounterName != null)
+                            if (ins.Definition?.CounterName != null)
                             {
                                 var diffCount = this.DiffCount(ins);
                                 var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
