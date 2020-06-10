@@ -1582,13 +1582,13 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
-                        else if (this.IsAnyExpiring)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
-                        }
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {
@@ -1609,13 +1609,13 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
-                        else if (this.IsAnyExpiring)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
-                        }
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
                         }
                         break;
 
@@ -1641,13 +1641,13 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
-                        else if (this.IsAnyExpiring)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
-                        }
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else if (this.IsAnyExpiring)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
                         }
                         else
                         {

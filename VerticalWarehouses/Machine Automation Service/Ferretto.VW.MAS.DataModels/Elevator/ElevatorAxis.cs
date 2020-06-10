@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
+        public int LastCalibrationCycles { get; set; }
+
         public double LastIdealPosition { get; set; }
 
         public double LowerBound

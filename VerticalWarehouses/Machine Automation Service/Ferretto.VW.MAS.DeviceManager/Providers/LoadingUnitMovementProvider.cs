@@ -249,6 +249,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.elevatorProvider.VerticalPosition;
         }
 
+        public int GetCyclesFromCalibration()
+        {
+            return this.elevatorDataProvider.GetCyclesFromCalibration();
+        }
+
         public double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId)
         {
             double? targetPosition = null;
