@@ -427,7 +427,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             foreach (var c in str)
             {
-                if (((int)c > 32 && (int)c < 126) || (int)c == 176 || (int)c == 216)
+                if (((int)c > 32 && (int)c < 126))
                 {
                     result += Uri.EscapeDataString(c.ToString());
                 }
