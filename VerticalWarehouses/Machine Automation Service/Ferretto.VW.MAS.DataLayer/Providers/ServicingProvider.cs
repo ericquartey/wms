@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var diffCount = 0;
                 var allStat = this.dataContext.ServicingInfo
+                    .Include(i => i.Instructions)
                     .Include(i => i.MachineStatistics)
                     .ToArray()
                     .OrderBy(o => o.Id);
@@ -154,7 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     var lastStat = allStat.Last().MachineStatistics;
-                    var countedStat = allStat.LastOrDefault(s => s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
+                    var countedStat = allStat.LastOrDefault(s => s.Instructions != null && s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
                     switch (ins.Definition.CounterName)
                     {
                         case nameof(lastStat.AreaFillPercentage):
