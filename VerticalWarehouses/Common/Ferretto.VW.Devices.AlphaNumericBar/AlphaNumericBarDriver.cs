@@ -72,8 +72,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             var arrowPosition = (compartmentWidth / 2) + itemXPosition;
             var pixelOffset = (arrowPosition / this.StepLedBar) + 2;
-
-            return (int)pixelOffset;
+            return (int)Math.Round((pixelOffset));
         }
 
         /// <summary>
@@ -295,7 +294,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             }
-            
+
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_OFF, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
@@ -413,7 +412,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
         {
-            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            while (concurrentQueure.TryDequeue(out _)) { }
             return true;
         }
 
@@ -426,27 +425,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             var result = "";
 
-            foreach (char c in str)
+            foreach (var c in str)
             {
-                if (((int)c > 32 && (int)c < 126))
+                if (((int)c > 32 && (int)c < 126) || (int)c == 176 || (int)c == 216)
                 {
-                    result += c;
-                }
-                else if ((int)c == 32)  // space
-                {
-                    result += '+';
+                    result += Uri.EscapeDataString(c.ToString());
                 }
                 else
                 {
-                    result += "+";
+                    result += Uri.EscapeDataString(" ");
                 }
             }
 
             return result;
-            //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString("+") : Uri.EscapeDataString(str).Replace("%20", "+");
-            //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString(" ") : Uri.EscapeDataString(str);
-            //return string.IsNullOrEmpty(str) ? HttpUtility.UrlEncode(" ", Encoding.UTF8) : HttpUtility.UrlEncode(str, Encoding.UTF8);
-            //return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
         }
 
         /// <summary>
