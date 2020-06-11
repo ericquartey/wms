@@ -13,6 +13,7 @@
         Style="{StaticResource MainWindowStyle}"
         WindowStartupLocation="Manual"
         mc:Ignorable="d">
+
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:RoleSelectionViewModel}">
             <views:RoleSelectionView />
@@ -24,9 +25,10 @@
             <views:UpdateView />
         </DataTemplate>
     </Window.Resources>
-    <Grid Margin="15">
 
-        <ContentControl ontent="{Binding ActiveViewModel}" />
+    <Grid Margin="50">
+
+        <ContentControl Content="{Binding ActiveViewModel}" />
 
         <ctrls:PpcMessageBox Command="{Binding CloseCommand}"
                              Message="{Binding ErrorMessage}"

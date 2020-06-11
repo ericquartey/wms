@@ -26,7 +26,7 @@
 
             <TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Center"
-                       FontSize="32"
+                       FontSize="{StaticResource FontSize_ExtraLarge}"
                        Text="{Binding SoftwareVersion, StringFormat=Installazione versione {0}}" />
 
             <StackPanel Grid.Row="1"
@@ -92,7 +92,7 @@
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"
-                                       FontSize="12"
+                                       FontSize="{StaticResource FontSize_ExtraSmall}"
                                        Foreground="{Binding Status, Converter={StaticResource STCC}}"
                                        Text="{Binding Status, Converter={StaticResource STSC}}"
                                        TextAlignment="Left" />
@@ -127,21 +127,19 @@
                      Text="{Binding SelectedStep.Log, Mode=OneWay}"
                      VerticalScrollBarVisibility="Auto" />
 
-            <controls:PpcButton Grid.Column="1"
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Right"
-                                Command="{Binding AbortCommand}"
-                                Content="Annulla"
-                                Style="{StaticResource ButtonStyle}"
-                                Visibility="{Binding IsFinished, Converter={StaticResource BTVIC}}" />
+            <Button Grid.Column="1"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding AbortCommand}"
+                    Content="Annulla"
+                    Visibility="{Binding IsFinished, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Column="1"
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Right"
-                                Command="{Binding CloseCommand}"
-                                Content="Chiudi"
-                                Style="{StaticResource ButtonStyle}"
-                                Visibility="{Binding IsFinished, Converter={StaticResource BTVC}}" />
+            <Button Grid.Column="1"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding CloseCommand}"
+                    Content="Chiudi"
+                    Visibility="{Binding IsFinished, Converter={StaticResource BTVC}}" />
         </Grid>
     </Grid>
 </UserControl>

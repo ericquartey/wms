@@ -27,7 +27,7 @@
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    FontSize="36"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource TitleTextStyle}"
                    Text="Configurazione baia" />
 
         <StackPanel Grid.Row="1"
@@ -38,19 +38,19 @@
             <TextBlock x:Name="InfoInstallModelTB"
                        Grid.ColumnSpan="3"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource TitleTextStyle}"
                        Text="{Binding Machine.ModelName, StringFormat={}Macchina {0}}" />
 
             <TextBlock x:Name="InfoInstallWeightTB"
                        Grid.ColumnSpan="3"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource TitleTextStyle}"
                        Text="{Binding Machine.MaxGrossWeight, StringFormat={}Peso {0}}" />
 
             <TextBlock x:Name="InfoInstallSerialTB"
                        Grid.ColumnSpan="3"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource TitleTextStyle}"
                        Text="{Binding Machine.SerialNumber, StringFormat={}seriale {0}}" />
         </StackPanel>
 
@@ -58,7 +58,7 @@
                    Margin="0,20,0,0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource TitleTextStyle}"
                    Text="Seleziona tipo baia Panel Pc" />
 
         <StackPanel Grid.Row="4"
@@ -66,31 +66,31 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
 
-            <ctrls:PpcButton Margin="0,0,0,0"
-                             BorderBrush="{DynamicResource FerrettoLightGray}"
-                             Command="{Binding SelectBayOneCommand}"
-                             Content="Baia 1"
-                             FontSize="38"
-                             FontWeight="Light"
-                             IsEnabled="True"
-                             Style="{DynamicResource PpcButtonMenuBayStyle}"
-                             Visibility="{Binding IsBayOneVisible, Converter={StaticResource BTVC}}" />
+            <Button Margin="0,0,0,0"
+                    BorderBrush="{DynamicResource FerrettoLightGray}"
+                    Command="{Binding SelectBayOneCommand}"
+                    Content="Baia 1"
+                    FontSize="38"
+                    FontWeight="Light"
+                    IsEnabled="True"
+                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Visibility="{Binding IsBayOneVisible, Converter={StaticResource BTVC}}" />
 
-            <ctrls:PpcButton Margin="20,0,0,0"
-                             BorderBrush="{DynamicResource FerrettoLightGray}"
-                             Command="{Binding SelectBayTwoCommand}"
-                             Content="Baia 2"
-                             IsEnabled="True"
-                             Style="{DynamicResource PpcButtonMenuBayStyle}"
-                             Visibility="{Binding IsBayTwoVisible, Converter={StaticResource BTVC}}" />
+            <Button Margin="20,0,0,0"
+                    BorderBrush="{DynamicResource FerrettoLightGray}"
+                    Command="{Binding SelectBayTwoCommand}"
+                    Content="Baia 2"
+                    IsEnabled="True"
+                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Visibility="{Binding IsBayTwoVisible, Converter={StaticResource BTVC}}" />
 
-            <ctrls:PpcButton Margin="20,0,0,0"
-                             BorderBrush="{DynamicResource FerrettoLightGray}"
-                             Command="{Binding SelectBayThreeCommand}"
-                             Content="Baia 3"
-                             IsEnabled="True"
-                             Style="{DynamicResource PpcButtonMenuBayStyle}"
-                             Visibility="{Binding IsBayThreeVisible, Converter={StaticResource BTVC}}" />
+            <Button Margin="20,0,0,0"
+                    BorderBrush="{DynamicResource FerrettoLightGray}"
+                    Command="{Binding SelectBayThreeCommand}"
+                    Content="Baia 3"
+                    IsEnabled="True"
+                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Visibility="{Binding IsBayThreeVisible, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
 
@@ -98,19 +98,15 @@
                    Margin="0,20,0,0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource TitleTextStyle}"
                    Text="{Binding SelectedBayInfo}" />
 
-        <ctrls:PpcButton Grid.Row="6"
-                         Grid.ColumnSpan="3"
-                         Width="100"
-                         Height="60"
-                         Margin="15,15,15,0"
-                         HorizontalAlignment="Right"
-                         VerticalAlignment="Bottom"
-                         Command="{Binding NextCommand}"
-                         Content="Procedi"
-                         FontSize="18"
-                         Style="{StaticResource ButtonStyle}" />
+        <Button Grid.Row="6"
+                Grid.ColumnSpan="3"
+                Margin="15,15,15,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding NextCommand}"
+                Content="Procedi" />
     </Grid>
 </UserControl>
