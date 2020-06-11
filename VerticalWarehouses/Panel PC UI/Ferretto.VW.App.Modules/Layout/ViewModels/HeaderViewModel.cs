@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Modules.Layout.Presentation;
@@ -100,9 +102,14 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
                     this.Show(PresentationTypes.Theme, false);
-// #if DEBUG
-                    this.Show(PresentationTypes.Shutdown, true);
-// #endif
+
+                    var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+                    //#if DEBUG
+                    if (!fullscreen)
+                    {
+                        this.Show(PresentationTypes.Shutdown, true);
+                    }
+                    // #endif
                     break;
 
                 case PresentationMode.Menu:

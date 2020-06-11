@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
 using Prism.Modularity;
@@ -12,11 +13,28 @@ namespace Ferretto.VW.App
         public Shell()
         {
             this.InitializeComponent();
-// #if DEBUG
-            this.MouseDown += this.Shell_MouseDown;
-            this.MouseDoubleClick += this.Shell_MouseDoubleClick;
-// #endif
+            var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+            //#if DEBUG
+            if (!fullscreen)
+            {
+                this.MouseDown += this.Shell_MouseDown;
+                this.MouseDoubleClick += this.Shell_MouseDoubleClick;
+            }
+            //#endif
         }
+
+        public Shell(IModuleManager moduleManager)
+          : this()
+        {
+            _ = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
+
+            moduleManager.LoadModule(nameof(Utils.Modules.Layout));
+            moduleManager.LoadModule(nameof(Utils.Modules.Login));
+        }
+
+        #endregion
+
+        #region Methods
 
         private void Shell_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -37,15 +55,6 @@ namespace Ferretto.VW.App
             {
                 this.DragMove();
             }
-        }
-
-        public Shell(IModuleManager moduleManager)
-          : this()
-        {
-            _ = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
-
-            moduleManager.LoadModule(nameof(Utils.Modules.Layout));
-            moduleManager.LoadModule(nameof(Utils.Modules.Login));
         }
 
         #endregion
