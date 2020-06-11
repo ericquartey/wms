@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using Ferretto.VW.Installer.Core;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Converters
 {
     internal sealed class StatusToStringConverter : DependencyObject, IValueConverter
     {

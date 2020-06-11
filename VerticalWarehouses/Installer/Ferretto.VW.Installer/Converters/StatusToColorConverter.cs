@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using Ferretto.VW.Installer.Core;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Converters
 {
     internal sealed class StatusToColorConverter : DependencyObject, IValueConverter
     {
