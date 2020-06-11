@@ -33,6 +33,7 @@ namespace Ferretto.VW.Installer.ViewModels
         #endregion
 
         #region Constructors
+
         public UpdateViewModel(InstallationService installationService)
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
@@ -47,10 +48,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Properties
 
-        public ICommand AbortCommand =>
-            this.abortCommand
-            ??
-            (this.abortCommand = new RelayCommand(this.Abort, this.CanAbort));
+        public ICommand AbortCommand => this.abortCommand ??= new RelayCommand(this.Abort, this.CanAbort);
 
         public bool AbortRequested
         {
@@ -58,10 +56,7 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.abortRequested, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand CloseCommand =>
-            this.closeCommand
-            ??
-            (this.closeCommand = new RelayCommand(this.Close, this.CanClose));
+        public ICommand CloseCommand => this.closeCommand ??= new RelayCommand(this.Close, this.CanClose);
 
         public bool IsFinished
         {
