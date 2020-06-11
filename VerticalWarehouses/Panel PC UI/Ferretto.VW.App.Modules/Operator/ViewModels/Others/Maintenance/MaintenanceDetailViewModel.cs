@@ -138,9 +138,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.lastInstruction = 0;
 
-            await this.GetServicingInfo();
-
             await this.machineServicingWebService.RefreshDescriptionAsync(this.servicingInfoId);
+
+            await this.GetServicingInfo();
         }
 
         protected override void RaiseCanExecuteChanged()
