@@ -224,10 +224,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .SingleOrDefault(m =>
                         m.LoadUnitId == loadingUnitId
-                        &&
-                        m.MissionType == missionType
-                        &&
-                        m.Status == MissionStatus.New);
+                        && m.MissionType == missionType
+                        && m.Status != MissionStatus.Completed
+                        && m.Status != MissionStatus.Aborted
+                        );
 
                 if (existingMission != null)
                 {
