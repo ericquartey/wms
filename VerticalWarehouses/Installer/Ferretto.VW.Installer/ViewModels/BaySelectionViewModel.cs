@@ -9,19 +9,19 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class InstallBayViewModel : Core.BindableBase, IOperationResult
+    public class BaySelectionViewModel : BindableBase, IWizardStepViewModel
     {
         #region Fields
+
         private const string APPSETTINGS = "appSettings";
 
-        private const string APPSETTINGSBAYNUMBER = "BayNumber";
-
         private const string APPSETTINGSAUTOMATIONSERVICEURL = "AutomationService:Url";
+
+        private const string APPSETTINGSBAYNUMBER = "BayNumber";
 
         private readonly InstallationService installationService;
 
         private bool canProcede;
-
 
         private bool isSuccessful;
 
@@ -33,15 +33,15 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private RelayCommand selectBayTwoCommand;
 
-        private string selectedBayInfo;
-
         private Bay selectedBay;
+
+        private string selectedBayInfo;
 
         #endregion
 
         #region Constructors
 
-        public InstallBayViewModel(InstallationService installationService)
+        public BaySelectionViewModel(InstallationService installationService)
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
         }
@@ -49,17 +49,6 @@ namespace Ferretto.VW.Installer.ViewModels
         #endregion
 
         #region Properties
-        public Bay SelectedBay
-        {
-            get => this.selectedBay;
-            set => this.SetProperty(ref this.selectedBay, value);
-        }
-
-        public string SelectedBayInfo
-        {
-            get => this.selectedBayInfo;
-            set => this.SetProperty(ref this.selectedBayInfo, value);
-        }
 
         public bool IsBayOneVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayOne) != null);
 
@@ -91,6 +80,18 @@ namespace Ferretto.VW.Installer.ViewModels
                 ??
                 (this.selectBayTwoCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayTwo), this.CanSelectBay));
 
+        public Bay SelectedBay
+        {
+            get => this.selectedBay;
+            set => this.SetProperty(ref this.selectedBay, value);
+        }
+
+        public string SelectedBayInfo
+        {
+            get => this.selectedBayInfo;
+            set => this.SetProperty(ref this.selectedBayInfo, value);
+        }
+
         public virtual string Title { get; set; }
 
         #endregion
@@ -114,7 +115,6 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.SelectedBay = bayFound;
                 this.SelectedBayInfo = $"Baia {(int)bayFound.Number} selezionata";
             }
-
 
             this.RaiseCanExecuteChanged();
         }
@@ -166,7 +166,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.installationService.UpdateMachineRole();
                 this.installationService.LoadSteps();
                 this.SavePanelPcConfig();
-                this.installationService.SetOperation(OperationMode.Update);
+                this.installationService.SetOperation(WizardStep.Update);
                 this.isSuccessful = true;
             }
             catch
@@ -174,11 +174,16 @@ namespace Ferretto.VW.Installer.ViewModels
             }
         }
 
+        private void RaiseCanExecuteChanged()
+        {
+            this.nextCommand.RaiseCanExecuteChanged();
+        }
+
         private void SavePanelPcConfig()
         {
             var xmlDoc = new XmlDocument();
 
-            var panelPcFileConfig = $"..\\{ConfigurationManager.AppSettings.GetInstallPpcPath()}\\{ConfigurationManager.AppSettings.GetIGetInstallPpcFilePath()}.config";
+            var panelPcFileConfig = $"..\\{ConfigurationManager.AppSettings.GetPpcDirName()}\\{ConfigurationManager.AppSettings.GetPpcFileName()}.config";
             xmlDoc.Load(panelPcFileConfig);
 
             foreach (XmlElement element in xmlDoc.DocumentElement)
@@ -199,11 +204,6 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             xmlDoc.Save(panelPcFileConfig);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.nextCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
