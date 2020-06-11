@@ -100,7 +100,7 @@
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedServicingInfo.ServiceStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                         ContentText="{Binding SelectedServicingInfo.ServiceStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, Converter={StaticResource MSSEC}}"
                                          LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageStateMachine}" />
             </Grid>
 
@@ -293,7 +293,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column6"
                                             Width="150"
-                                            Binding="{Binding Path=ServiceStatus}"
+                                            Binding="{Binding Path=ServiceStatus, Converter={StaticResource MSSEC}}"
                                             Header="{res:Loc OperatorApp.ServiceStatus}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">

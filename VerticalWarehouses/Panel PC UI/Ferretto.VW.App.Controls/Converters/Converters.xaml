@@ -14,6 +14,7 @@
                                     Hide="True" />
     <conv:BooleanNegationConverter x:Key="BNC" />
     <conv:Int32ToStringConverter x:Key="I32TSC" />
+    <conv:DoubleNullableToProgressValueConverter x:Key="DNTPV" />
 
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
