@@ -121,7 +121,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
 
-            return this.CanConfirmOnEmpty;
+            //return this.CanConfirmOnEmpty;
+            return false;
         }
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()
