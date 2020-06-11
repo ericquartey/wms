@@ -31,7 +31,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> DimAsync(int dimension);
 
-        Task<bool> EnabledAsync(bool value);
+        Task<bool> EnabledAsync(bool value, bool force = true);
 
         Task<bool> HelpAsync();
 

@@ -175,20 +175,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Send a ENABLE command.
-        ///
-        /// N.B. Not use enable=true, because duplicate message
+        ///  Send a ENABLE command.
         /// </summary>
-        /// <param name="enable"></param>
+        /// <param name="enable">Set the enable</param>
+        /// <param name="force">If true force the enable command</param>
         /// <returns></returns>
-        public async Task<bool> EnabledAsync(bool enable)
+        public async Task<bool> EnabledAsync(bool enable, bool force = true)
         {
-            if (enable == this.barEnabled)
+            this.ClearConcurrentQueue(this.errorsQueue);
+
+            if (enable == this.barEnabled && !force)
             {
                 return true;
             }
-
-            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {

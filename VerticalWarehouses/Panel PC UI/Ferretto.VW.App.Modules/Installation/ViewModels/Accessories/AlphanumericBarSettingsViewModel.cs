@@ -225,6 +225,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IpAddress = bayAccessories.AlphaNumericBar.IpAddress;
                     this.Port = bayAccessories.AlphaNumericBar.TcpPort;
                     this.Size = bayAccessories.AlphaNumericBar.Size;
+                    this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
 
@@ -329,10 +330,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.deviceDriver.TestAsync(false);
                 }
-                else
-                {
-                    await this.deviceDriver.EnabledAsync(false);
-                }
+
+                await this.deviceDriver.EnabledAsync(false);
 
                 return await this.deviceDriver.SetAndWriteMessageAsync(message, offset, true);
             }
