@@ -114,6 +114,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public string Error { get; }
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
