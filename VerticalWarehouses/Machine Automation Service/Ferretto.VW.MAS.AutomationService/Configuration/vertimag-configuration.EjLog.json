@@ -454,6 +454,7 @@
             "TargetDistanceAfterZero": 30.0,
             "Id": 4
           },
+          "LastCalibrationCycles": 0,
           "Offset": 350.0,
           "Orientation": 1,
           "ProfileCalibrateLength": 0.0,

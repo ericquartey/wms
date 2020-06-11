@@ -262,6 +262,7 @@
             "TcpPort": 17221,
             "Type": "Ang"
           },
+          "LastCalibrationCycles": 0,
           "LastIdealPosition": 1438.0,
           "LowerBound": 350.0,
           "ManualMovements": {
@@ -320,6 +321,7 @@
             "TcpPort": 0,
             "Type": "Acu"
           },
+          "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
           "LowerBound": 0.0,
           "ManualMovements": {

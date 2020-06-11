@@ -709,11 +709,47 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expire Count Percent.
+        /// </summary>
+        public static string Machine_ExpireCountPrecent {
+            get {
+                return ResourceManager.GetString("Machine_ExpireCountPrecent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expire Days.
+        /// </summary>
+        public static string Machine_ExpireDays {
+            get {
+                return ResourceManager.GetString("Machine_ExpireDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Machine_Height {
             get {
                 return ResourceManager.GetString("Machine_Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Cycles To Calibrate.
+        /// </summary>
+        public static string Machine_HorizontalCyclesToCalibrate {
+            get {
+                return ResourceManager.GetString("Machine_HorizontalCyclesToCalibrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Position To Calibrate.
+        /// </summary>
+        public static string Machine_HorizontalPositionToCalibrate {
+            get {
+                return ResourceManager.GetString("Machine_HorizontalPositionToCalibrate", resourceCulture);
             }
         }
         

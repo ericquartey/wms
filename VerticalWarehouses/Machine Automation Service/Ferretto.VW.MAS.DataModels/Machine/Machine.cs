@@ -27,6 +27,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double Height { get; set; }
 
+        public int HorizontalCyclesToCalibrate { get; set; } = 10;
+
+        public int HorizontalPositionToCalibrate { get; set; } = 3000;
+
         /// <summary>
         /// Load Unit maximum height, in millimeters
         /// </summary>

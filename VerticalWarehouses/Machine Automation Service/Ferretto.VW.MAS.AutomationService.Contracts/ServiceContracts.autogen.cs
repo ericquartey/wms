@@ -3958,6 +3958,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HorizontalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int HorizontalCyclesToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int HorizontalPositionToCalibrate { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxHeight { get; set; }
     
@@ -4059,6 +4065,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int LastCalibrationCycles { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }

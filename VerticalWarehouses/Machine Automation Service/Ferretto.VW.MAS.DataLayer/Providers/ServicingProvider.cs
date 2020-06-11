@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var diffCount = 0;
                 var allStat = this.dataContext.ServicingInfo
+                    .Include(i => i.Instructions)
                     .Include(i => i.MachineStatistics)
                     .ToArray()
                     .OrderBy(o => o.Id);
@@ -154,7 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     var lastStat = allStat.Last().MachineStatistics;
-                    var countedStat = allStat.LastOrDefault(s => s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
+                    var countedStat = allStat.LastOrDefault(s => s.Instructions != null && s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
                     switch (ins.Definition.CounterName)
                     {
                         case nameof(lastStat.AreaFillPercentage):
@@ -693,12 +694,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (ins.Definition?.CounterName != null)
                             {
                                 var diffCount = this.DiffCount(ins);
-                                var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
+                                //var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                                if (diff.TotalDays <= ins.Definition.MaxDays || diffCount > diffCountPercent)
+                                if (diff.TotalDays <= ins.Definition.MaxDays || diffCount <= 0)
                                 {
                                     ins.InstructionStatus = MachineServiceStatus.Expired;
-                                    ins.IsToDo = true;
                                     this.dataContext.Instructions.Update(ins);
                                 }
                                 logger.Warn(Resources.General.MaintenanceStateExpiring);
@@ -709,7 +709,6 @@ namespace Ferretto.VW.MAS.DataLayer
                                 if (diff.TotalDays <= ins.Definition.MaxDays)
                                 {
                                     ins.InstructionStatus = MachineServiceStatus.Expired;
-                                    ins.IsToDo = true;
                                     this.dataContext.Instructions.Update(ins);
                                 }
                                 logger.Warn(Resources.General.MaintenanceStateExpiring);
@@ -719,11 +718,27 @@ namespace Ferretto.VW.MAS.DataLayer
                             && ins.MaintenanceDate != null
                             )
                         {
-                            var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                            if (diff.TotalDays <= ins.Definition.MaxDays)
+                            if (ins.Definition?.CounterName != null)
                             {
-                                ins.InstructionStatus = MachineServiceStatus.Expiring;
-                                this.dataContext.Instructions.Update(ins);
+                                var diffCount = this.DiffCount(ins);
+                                var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays + machine.ExpireDays || diffCount >= diffCountPercent)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expiring;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
+                            }
+                            else
+                            {
+                                var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
+                                if (diff.TotalDays <= ins.Definition.MaxDays + machine.ExpireDays)
+                                {
+                                    ins.InstructionStatus = MachineServiceStatus.Expiring;
+                                    ins.IsToDo = true;
+                                    this.dataContext.Instructions.Update(ins);
+                                }
                             }
                         }
                     }
