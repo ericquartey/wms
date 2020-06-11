@@ -16,14 +16,14 @@
                 Background="{StaticResource FerrettoDarkGray}">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="50,50,50,0"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                           Style="{StaticResource TitleTextStyle}">
                     An error occurred
                 </TextBlock>
                 <TextBlock Margin="50"
                            Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                            Text="{Binding ErrorMessage}" />
-                <local:PpcButton Command="{Binding CloseCommand}"
-                                 Content="Abort" />
+                <Button Command="{Binding CloseCommand}"
+                        Content="Abort" />
             </StackPanel>
 
         </Border>

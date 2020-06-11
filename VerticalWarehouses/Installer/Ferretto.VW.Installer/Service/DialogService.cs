@@ -8,16 +8,20 @@ namespace Ferretto.VW.Installer.Service
 {
     public static class DialogService
     {
+        #region Fields
 
         private const string DefaultFilter = "All Files|*.*";
+
+        #endregion
+
+        #region Methods
 
         public static string[] BrowseFile(
             string title = null,
             string defaultFileName = null,
             string defaultExtension = null,
             string extDescription = null,
-            string initialDirectory = null,
-            bool multiselect = false)
+            string initialDirectory = null)
         {
             Filters<string, string> extFilters = null;
 
@@ -32,7 +36,7 @@ namespace Ferretto.VW.Installer.Service
                 extFilters.Add(defaultExtension, extDescription);
             }
 
-            return BrowseFile(title, defaultFileName, defaultExtension, extFilters, initialDirectory, multiselect);
+            return BrowseFile(title, defaultFileName, defaultExtension, extFilters, initialDirectory);
         }
 
         public static string[] BrowseFile(
@@ -40,17 +44,15 @@ namespace Ferretto.VW.Installer.Service
             string defaultFileName,
             string defaultExtension,
             Filters<string, string> extFilters,
-            string initialDirectory,
-            bool multiselect = false)
+            string initialDirectory)
         {
-
             var dialog = new OpenFileDialog()
             {
                 Title = title,
                 CheckFileExists = true,
                 CheckPathExists = true,
                 InitialDirectory = initialDirectory,
-                Multiselect = multiselect,
+                Multiselect = false,
             };
 
             SetDialogProperties(dialog, defaultExtension, defaultFileName, extFilters);
@@ -61,6 +63,23 @@ namespace Ferretto.VW.Installer.Service
             }
 
             return null;
+        }
+
+        private static string GetExtension(string extension)
+        {
+            extension = extension.Trim();
+
+            if (extension.StartsWith("*.") == false)
+            {
+                extension = "*." + extension;
+            }
+
+            if (extension.StartsWith("."))
+            {
+                extension = "*" + extension;
+            }
+
+            return extension;
         }
 
         private static void SetDialogProperties(
@@ -110,30 +129,18 @@ namespace Ferretto.VW.Installer.Service
             }
         }
 
-        private static string GetExtension(string extension)
-        {
-
-            extension = extension.Trim();
-
-            if (extension.StartsWith("*.") == false)
-            {
-                extension = "*." + extension;
-            }
-
-            if (extension.StartsWith("."))
-            {
-                extension = "*" + extension;
-            }
-
-            return extension;
-        }
+        #endregion
     }
 
     public class Filters<T1, T2> : List<Tuple<T1, T2>>
     {
+        #region Methods
+
         public void Add(T1 item1, T2 item2)
         {
             base.Add(new Tuple<T1, T2>(item1, item2));
         }
+
+        #endregion
     }
 }

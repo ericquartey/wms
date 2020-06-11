@@ -9,7 +9,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class BaySelectionViewModel : BindableBase, IWizardStepViewModel
+    public class BaySelectionViewModel : BindableBase, IOperationResult
     {
         #region Fields
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public bool IsSuccessful => this.isSuccessful;
 
-        public MAS.DataModels.Machine Machine => this.installationService.MasConfiguration.Machine;
+        public Machine Machine => this.installationService.MasConfiguration.Machine;
 
         public ICommand NextCommand =>
                 this.nextCommand
@@ -166,7 +166,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.installationService.UpdateMachineRole();
                 this.installationService.LoadSteps();
                 this.SavePanelPcConfig();
-                this.installationService.SetOperation(WizardStep.Update);
+                this.installationService.SetStage(OperationStage.Update);
                 this.isSuccessful = true;
             }
             catch
