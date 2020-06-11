@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IElevatorProvider elevatorProvider;
+
         private readonly IErrorsProvider errorsProvider;
 
         private readonly ILoadingUnitsDataProvider loadingUnitProvider;
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
         }
 
         #endregion
@@ -179,7 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.PersistElevatorPosition(
                     this.machineData.MessageData.TargetBayPositionId,
                     this.machineData.MessageData.TargetCellId,
-                    this.machineData.MessageData.TargetPosition);
+                    this.elevatorProvider.VerticalPosition);
             }
 
             var inverterIndex = this.machineData.CurrentInverterIndex;
