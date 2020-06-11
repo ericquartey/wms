@@ -12,10 +12,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -24,38 +20,39 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-
         <TextBlock x:Name="Title"
                    Grid.ColumnSpan="3"
-                   FontSize="{StaticResource FontSize_ExtraLarge}"
-                   Style="{StaticResource TitleTextStyle}"
+                   FontSize="{DynamicResource FontSize_ExtraLarge}"
+                   Style="{DynamicResource TitleTextStyle}"
                    Text="Installazione Software Vertimag" />
 
         <TextBlock x:Name="AppVersionLabel"
                    Grid.Row="1"
-                   Style="{StaticResource LabelTextStyle}"
+                   Margin="0,0,30,0"
+                   Style="{DynamicResource LabelTextStyle}"
                    Text="Application Version" />
 
         <TextBlock x:Name="AppVersionValue"
                    Grid.Row="2"
-                   Margin="0,20,0,0"
-                   Style="{StaticResource TitleTextStyle}"
+                   Style="{DynamicResource TitleTextStyle}"
                    Text="{Binding UiVersion}" />
 
         <TextBlock x:Name="ServiceVersionLabel"
                    Grid.Row="1"
                    Grid.Column="1"
-                   Style="{StaticResource LabelTextStyle}"
+                   Margin="0,0,30,0"
+                   Style="{DynamicResource LabelTextStyle}"
                    Text="Service Version" />
 
         <TextBlock x:Name="ServiceVersionValue"
                    Grid.Row="2"
                    Grid.Column="1"
-                   Style="{StaticResource TitleTextStyle}"
+                   Style="{DynamicResource TitleTextStyle}"
                    Text="{Binding ServiceVersion}" />
 
         <StackPanel Grid.Row="4"
                     Grid.ColumnSpan="2"
+                    Margin="0,30,0,0"
                     Orientation="Vertical">
             <RadioButton Content="Baia Master"
                          GroupName="test"
@@ -75,7 +72,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_Large}"
-                           Style="{StaticResource TitleTextStyle}"
+                           Style="{DynamicResource TitleTextStyle}"
                            Text="Apri file di configurazione" />
                 <Button Grid.Column="1"
                         Margin="20,0,20,0"
@@ -86,7 +83,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_Normal}"
-                           Style="{StaticResource TitleTextStyle}"
+                           Style="{DynamicResource TitleTextStyle}"
                            Text="{Binding MessageMaster}"
                            TextWrapping="Wrap" />
             </Grid>
@@ -110,7 +107,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                FontSize="{DynamicResource FontSize_Large}"
-                               Style="{StaticResource TitleTextStyle}"
+                               Style="{DynamicResource TitleTextStyle}"
                                Text="IP servizio di automazione " />
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -135,7 +132,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_Normal}"
-                           Style="{StaticResource TitleTextStyle}"
+                           Style="{DynamicResource TitleTextStyle}"
                            Text="{Binding MessageSlave}"
                            TextWrapping="Wrap" />
             </Grid>

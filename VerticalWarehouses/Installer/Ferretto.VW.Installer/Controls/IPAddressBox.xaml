@@ -38,7 +38,7 @@
         </Grid.ColumnDefinitions>
         <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
                  IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
+                 Style="{DynamicResource ByteTextBox}"
                  Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPATSC}, ConverterParameter=0, Mode=TwoWay}">
             <!--<interactivity:Interaction.Behaviors>
                 <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
@@ -48,11 +48,11 @@
             </interactivity:Interaction.Behaviors>-->
         </TextBox>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IPAddressDot}" />
+                   Style="{DynamicResource IPAddressDot}" />
         <TextBox Grid.Column="2"
                  IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
                  IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
+                 Style="{DynamicResource ByteTextBox}"
                  Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPATSC}, ConverterParameter=1, Mode=TwoWay}">
             <!--<interactivity1:Interaction.Behaviors>
                 <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
@@ -62,11 +62,11 @@
             </interactivity1:Interaction.Behaviors>-->
         </TextBox>
         <TextBlock Grid.Column="3"
-                   Style="{StaticResource IPAddressDot}" />
+                   Style="{DynamicResource IPAddressDot}" />
         <TextBox Grid.Column="4"
                  IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
                  IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
+                 Style="{DynamicResource ByteTextBox}"
                  Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPATSC}, ConverterParameter=2, Mode=TwoWay}">
             <!--<interactivity:Interaction.Behaviors>
                 <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
@@ -76,11 +76,11 @@
             </interactivity:Interaction.Behaviors>-->
         </TextBox>
         <TextBlock Grid.Column="5"
-                   Style="{StaticResource IPAddressDot}" />
+                   Style="{DynamicResource IPAddressDot}" />
         <TextBox Grid.Column="6"
                  IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
                  IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
+                 Style="{DynamicResource ByteTextBox}"
                  Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPATSC}, ConverterParameter=3, Mode=TwoWay}">
             <!--<interactivity:Interaction.Behaviors>
                 <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />

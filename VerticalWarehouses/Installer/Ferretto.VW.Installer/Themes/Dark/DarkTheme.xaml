@@ -7,30 +7,30 @@
     <Color x:Key="SuccessColor">#008b00</Color>
 
     <SolidColorBrush x:Key="SuccessBrush"
-                     Color="{StaticResource SuccessColor}" />
+                     Color="{DynamicResource SuccessColor}" />
     <SolidColorBrush x:Key="DarkGrayBrush"
-                     Color="{StaticResource DarkGrayColor}" />
+                     Color="{DynamicResource DarkGrayColor}" />
     <SolidColorBrush x:Key="BackgroundBrush"
-                     Color="{StaticResource MediumGrayColor}" />
+                     Color="{DynamicResource MediumGrayColor}" />
     <SolidColorBrush x:Key="BorderBrush"
-                     Color="{StaticResource LightGrayColor}" />
+                     Color="{DynamicResource LightGrayColor}" />
     <SolidColorBrush x:Key="ForegroundBrush"
                      Color="White" />
     <SolidColorBrush x:Key="ForegroundHighlightBrush"
-                     Color="{StaticResource LightGrayColor}" />
+                     Color="{DynamicResource LightGrayColor}" />
     <SolidColorBrush x:Key="BackgroundHighlightBrush"
-                     Color="{StaticResource LightGrayColor}" />
+                     Color="{DynamicResource LightGrayColor}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrush"
-                     Color="{StaticResource MediumGrayColor}" />
+                     Color="{DynamicResource MediumGrayColor}" />
 
     <Style TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
     </Style>
 
     <Style x:Key="MainWindowStyle"
            TargetType="Window">
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
@@ -40,47 +40,47 @@
     <Style x:Key="TextBoxConsoleStyle"
            TargetType="TextBox">
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Background" Value="{StaticResource DarkGrayBrush}" />
+        <Setter Property="Background" Value="{DynamicResource DarkGrayBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="Consolas" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
     <Style x:Key="RichTextBoxConsoleStyle"
            TargetType="RichTextBox">
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Background" Value="{StaticResource DarkGrayBrush}" />
+        <Setter Property="Background" Value="{DynamicResource DarkGrayBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="Consolas" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
     <Style x:Key="HeadingTextBlockStyle"
            TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Large}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
         <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
 
     </Style>
 
     <Style x:Key="SubHeadingTextBlockStyle"
            TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Small}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundHighlightBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundHighlightBrush}" />
     </Style>
 
 
     <Style x:Key="SidePanelListBoxStyle"
            TargetType="ListBox">
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Small}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
         <Setter Property="Margin" Value="0,0,10,0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
@@ -108,18 +108,18 @@
         <Setter Property="Height" Value="60" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Large}" />
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
 
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}" />
+                <Setter Property="Background" Value="{DynamicResource ForegroundBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{StaticResource DarkGrayBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource BorderBrush}" />
+                <Setter Property="Background" Value="{DynamicResource DarkGrayBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource BorderBrush}" />
                 <Setter Property="BorderThickness" Value="0" />
             </Trigger>
         </Style.Triggers>

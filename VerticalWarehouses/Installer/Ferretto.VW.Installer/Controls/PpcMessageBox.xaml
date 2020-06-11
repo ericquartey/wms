@@ -13,14 +13,14 @@
         <Border Margin="0,100,0,100"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
-                Background="{StaticResource FerrettoDarkGray}">
+                Background="{DynamicResource FerrettoDarkGray}">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="50,50,50,0"
-                           Style="{StaticResource TitleTextStyle}">
+                           Style="{DynamicResource TitleTextStyle}">
                     An error occurred
                 </TextBlock>
                 <TextBlock Margin="50"
-                           Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                           Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
                            Text="{Binding ErrorMessage}" />
                 <Button Command="{Binding CloseCommand}"
                         Content="Abort" />

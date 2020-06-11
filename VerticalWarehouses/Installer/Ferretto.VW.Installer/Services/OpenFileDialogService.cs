@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Win32;
 
-namespace Ferretto.VW.Installer.Service
+namespace Ferretto.VW.Installer.Services
 {
-    public static class DialogService
+    public static class OpenFileDialogService
     {
         #region Fields
 

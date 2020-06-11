@@ -334,7 +334,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                var msg = $" Error wrting configuration file \"{configurationFilePath}\"";
+                var msg = $"Error wrting configuration file \"{configurationFilePath}\"";
                 this.logger.Error(ex, msg);
                 throw new InvalidOperationException(msg);
             }

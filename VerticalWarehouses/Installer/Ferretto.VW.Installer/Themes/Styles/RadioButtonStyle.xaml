@@ -26,15 +26,12 @@
     <Style x:Key="RadioButtonLabelTextStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-        <Setter Property="Margin" Value="0,0,0,20" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
     </Style>
 
     <Style TargetType="{x:Type RadioButton}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -43,25 +40,28 @@
                                      Background="{TemplateBinding Background}">
                         <BulletDecorator.Bullet>
                             <Grid Width="32"
-                                  Height="32"
-                                  Margin="0,-94,0,0">
+                                  Height="32">
+
                                 <!--  Define size of the Bullet  -->
                                 <!--  The two borders  -->
                                 <Border Name="RadioOuter"
                                         Background="Transparent"
-                                        BorderBrush="{TemplateBinding Foreground}"
+                                        BorderBrush="{DynamicResource FerrettoPureWhite}"
                                         BorderThickness="2"
                                         CornerRadius="24" />
+
                                 <Border Name="RadioMark"
                                         Margin="8"
-                                        Background="{TemplateBinding Foreground}"
-                                        CornerRadius="24"
+                                        Background="{DynamicResource FerrettoPureWhite}"
+                                        CornerRadius="27"
                                         Visibility="Hidden" />
                             </Grid>
                         </BulletDecorator.Bullet>
                         <!--  Text element  -->
                         <TextBlock Name="RadioLabel"
-                                   Style="{StaticResource RadioButtonLabelTextStyle}">
+                                   Margin="15,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource RadioButtonLabelTextStyle}">
                             <ContentPresenter />
                         </TextBlock>
                     </BulletDecorator>

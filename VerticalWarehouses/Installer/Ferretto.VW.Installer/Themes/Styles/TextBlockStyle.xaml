@@ -9,10 +9,10 @@
 
     <Style x:Key="HeadingTextBlockStyle"
            TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource FontSize_Large}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
         <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
     </Style>
 
     <Style x:Key="TitleTextStyle"
@@ -26,9 +26,8 @@
 
     <Style x:Key="LabelTextStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
-        <Setter Property="Margin" Value="0,0,0,20" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>

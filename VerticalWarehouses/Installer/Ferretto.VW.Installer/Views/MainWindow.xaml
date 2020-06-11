@@ -10,7 +10,7 @@
         Title="{x:Static res:Resources.MainWindowTitle}"
         Width="1024"
         Height="768"
-        Style="{StaticResource MainWindowStyle}"
+        Style="{DynamicResource MainWindowStyle}"
         WindowStartupLocation="Manual"
         mc:Ignorable="d">
 

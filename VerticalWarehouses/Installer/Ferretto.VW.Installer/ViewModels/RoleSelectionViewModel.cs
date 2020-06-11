@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
-using Ferretto.VW.Installer.Service;
+using Ferretto.VW.Installer.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -135,7 +135,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenFileAsync()
         {
-            var selectedFileNames = DialogService.BrowseFile(
+            var selectedFileNames = OpenFileDialogService.BrowseFile(
                 "Scegli file di configurazione",
                 string.Empty,
                 "json",
@@ -155,13 +155,13 @@ namespace Ferretto.VW.Installer.ViewModels
                     var configurationFilePath = Path.Combine(
                         ConfigurationManager.AppSettings.GetUpdateTempPath(),
                         ConfigurationManager.AppSettings.GetMasDirName(),
-                        @"\Configuration\vertimag-configuration.json");
+                        @"Configuration\vertimag-configuration.json");
 
                     this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
 
                     this.isMasConfigurationValid = true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     this.isMasConfigurationValid = false;
                 }
@@ -301,6 +301,9 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             this.IsMasConfiguration = true;
+
+            this.UiVersion = this.installationService.PanelPcVersion;
+            this.ServiceVersion = this.installationService.MasVersion;
         }
 
         private void LoadMachineConfiguration(string configuration)

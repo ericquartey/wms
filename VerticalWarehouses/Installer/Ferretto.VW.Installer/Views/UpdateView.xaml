@@ -8,7 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <UserControl.Cursor>
-        <Binding Converter="{StaticResource BTCIC}"
+        <Binding Converter="{DynamicResource BTCIC}"
                  Path="IsFinished" />
     </UserControl.Cursor>
     <Grid Margin="10">
@@ -26,7 +26,7 @@
 
             <TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_ExtraLarge}"
+                       FontSize="{DynamicResource FontSize_ExtraLarge}"
                        Text="{Binding SoftwareVersion, StringFormat=Installazione versione {0}}" />
 
             <StackPanel Grid.Row="1"
@@ -40,7 +40,7 @@
                                        Foreground="{Binding SelectedStep.Status, Converter={StaticResource STCC}}"
                                        Kind="{Binding SelectedStep.Status, Converter={StaticResource STIC}}" />
 
-                <TextBlock Style="{StaticResource HeadingTextBlockStyle}"
+                <TextBlock Style="{DynamicResource HeadingTextBlockStyle}"
                            Text="{Binding SelectedStep.Title}" />
 
 
@@ -48,7 +48,7 @@
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Margin="34,0,0,10"
-                       Style="{StaticResource SubHeadingTextBlockStyle}"
+                       Style="{DynamicResource SubHeadingTextBlockStyle}"
                        Text="{Binding SelectedStep.Description}" />
 
             <ListBox Grid.Row="1"
@@ -56,7 +56,7 @@
                      ItemsSource="{Binding Steps}"
                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                      SelectedItem="{Binding SelectedStep, Mode=TwoWay}"
-                     Style="{StaticResource SidePanelListBoxStyle}">
+                     Style="{DynamicResource SidePanelListBoxStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -92,7 +92,7 @@
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"
-                                       FontSize="{StaticResource FontSize_ExtraSmall}"
+                                       FontSize="{DynamicResource FontSize_ExtraSmall}"
                                        Foreground="{Binding Status, Converter={StaticResource STCC}}"
                                        Text="{Binding Status, Converter={StaticResource STSC}}"
                                        TextAlignment="Left" />
@@ -102,13 +102,13 @@
                                          Grid.ColumnSpan="2"
                                          Height="3"
                                          Margin="0,3,10,0"
-                                         Background="{StaticResource BackgroundBrush}"
+                                         Background="{DynamicResource BackgroundBrush}"
                                          BorderThickness="0"
                                          Foreground="{Binding Status, Converter={StaticResource STCC}}"
                                          Maximum="100"
                                          Value="{Binding ProgressPercentage}">
                                 <ProgressBar.Visibility>
-                                    <MultiBinding Converter="{StaticResource IPTVC}">
+                                    <MultiBinding Converter="{DynamicResource IPTVC}">
                                         <Binding Path="Status" />
                                         <Binding Path="ProgressPercentage" />
                                     </MultiBinding>
@@ -123,7 +123,7 @@
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      HorizontalScrollBarVisibility="Auto"
-                     Style="{StaticResource TextBoxConsoleStyle}"
+                     Style="{DynamicResource TextBoxConsoleStyle}"
                      Text="{Binding SelectedStep.Log, Mode=OneWay}"
                      VerticalScrollBarVisibility="Auto" />
 
