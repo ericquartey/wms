@@ -1,11 +1,11 @@
 ﻿<Application x:Class="Ferretto.VW.Installer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Ferretto.VW.Installer"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Converters/Converters.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/DarkSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
