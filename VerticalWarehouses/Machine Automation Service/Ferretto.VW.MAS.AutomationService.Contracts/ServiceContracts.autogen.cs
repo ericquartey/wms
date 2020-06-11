@@ -1658,11 +1658,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsInstructionExpiringAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> RefreshDescriptionAsync(int servicingInfoId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> RefreshDescriptionAsync(int servicingInfoId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetIsToDoAsync(int instructionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetIsToDoAsync(int instructionId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateServiceStatusAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateServiceStatusAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -3944,6 +3958,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HorizontalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int HorizontalCyclesToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int HorizontalPositionToCalibrate { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxHeight { get; set; }
     
@@ -4045,6 +4065,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int LastCalibrationCycles { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }

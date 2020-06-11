@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return newError;
         }
 
-        public MachineError Resolve(int id)
+        public MachineError Resolve(int id, bool force = false)
         {
             lock (this.dataContext)
             {
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(id);
                 }
 
-                if (!this.IsErrorStillActive(error.Code))
+                if (force || !this.IsErrorStillActive(error.Code))
                 {
                     error.ResolutionDate = DateTime.Now;
                     this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void ResolveAll()
+        public void ResolveAll(bool force = false)
         {
             IEnumerable<int> errors;
             lock (this.dataContext)
@@ -293,7 +293,7 @@ namespace Ferretto.VW.MAS.DataLayer
                    .Select(e => e.Id)
                    .ToArray();
             }
-            errors.ToList().ForEach(id => this.Resolve(id));
+            errors.ToList().ForEach(id => this.Resolve(id, force));
         }
 
         private bool IsErrorStillActive(int code)

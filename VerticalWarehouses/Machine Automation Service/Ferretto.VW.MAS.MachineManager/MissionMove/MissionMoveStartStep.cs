@@ -163,6 +163,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
                     }
+                    if (this.Mission.NeedHomingAxis == Axis.None)
+                    {
+                        var machine = this.MachineProvider.Get();
+                        if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+                            )
+                        {
+                            this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        }
+                    }
                 }
                 else if (sourceBayPositionId != null)
                 {
@@ -183,13 +193,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.CloseShutterBayNumber = bay.Number;
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, bayPosition.Location);
-                    }
-                    else if (this.Mission.NeedHomingAxis == Axis.None
-                        && this.Mission.MissionType == MissionType.LoadUnitOperation
-                        && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
-                        )
-                    {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
                     }
                 }
 

@@ -12,10 +12,10 @@ namespace Ferretto.VW.App
         public Shell()
         {
             this.InitializeComponent();
-#if DEBUG
+// #if DEBUG
             this.MouseDown += this.Shell_MouseDown;
             this.MouseDoubleClick += this.Shell_MouseDoubleClick;
-#endif
+// #endif
         }
 
         private void Shell_MouseDoubleClick(object sender, MouseButtonEventArgs e)

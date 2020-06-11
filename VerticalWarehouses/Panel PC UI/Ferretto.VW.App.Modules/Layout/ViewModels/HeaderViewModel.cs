@@ -26,11 +26,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #endregion
 
+        #region Properties
+
         public ICommand GoToMenuCommand =>
             this.goToMenuCommand
             ??
             (this.goToMenuCommand = new DelegateCommand(
                 this.GoToMenu, this.CanGoToMenu));
+
+        #endregion
 
         #region Methods
 
@@ -45,20 +49,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance<PresentationMachinePowerSwitch>());
             this.States.Add(this.GetInstance<PresentationError>());
             this.States.Add(this.GetInstance<PresentationDebug>());
-        }
-
-        private void GoToMenu()
-        {
-            this.NavigationService.Appear(
-                    nameof(Utils.Modules.Menu),
-                    Utils.Modules.Menu.MAIN_MENU,
-                    data: this.Data,
-                    trackCurrentView: true);
-        }
-
-        private bool CanGoToMenu()
-        {
-            return ScaffolderUserAccesLevel.IsLogged;
         }
 
         public override void UpdateChanges(PresentationChangedMessage presentation)
@@ -110,9 +100,9 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
                     this.Show(PresentationTypes.Theme, false);
-#if DEBUG
+// #if DEBUG
                     this.Show(PresentationTypes.Shutdown, true);
-#endif
+// #endif
                     break;
 
                 case PresentationMode.Menu:
@@ -147,6 +137,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.Help:
                     break;
             }
+        }
+
+        private bool CanGoToMenu()
+        {
+            return ScaffolderUserAccesLevel.IsLogged;
+        }
+
+        private void GoToMenu()
+        {
+            this.NavigationService.Appear(
+                    nameof(Utils.Modules.Menu),
+                    Utils.Modules.Menu.MAIN_MENU,
+                    data: this.Data,
+                    trackCurrentView: true);
         }
 
         #endregion

@@ -99,10 +99,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.servicingProvider.IsAnyInstructionExpiring());
         }
 
+        [HttpPost("refresh-description")]
+        public IActionResult RefreshDescription(int servicingInfoId)
+        {
+            this.servicingProvider.RefreshDescription(servicingInfoId);
+            return this.Ok();
+        }
+
         [HttpPost("set-IsToDo")]
         public IActionResult SetIsToDo(int instructionId)
         {
             this.servicingProvider.SetIsToDo(instructionId);
+            return this.Ok();
+        }
+
+        [HttpPost("update-service-status")]
+        public IActionResult UpdateServiceStatus()
+        {
+            this.servicingProvider.UpdateServiceStatus();
             return this.Ok();
         }
 

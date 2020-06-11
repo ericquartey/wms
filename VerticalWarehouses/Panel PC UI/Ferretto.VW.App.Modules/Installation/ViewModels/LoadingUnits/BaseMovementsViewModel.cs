@@ -71,6 +71,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public int? CurrentMissionId { get; private set; }
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;

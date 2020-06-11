@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string instructionStatus;
 
+        private int lastInstruction = 0;
+
         private string mainteinanceRequest;
 
         private Instruction selectedInstruction;
@@ -134,6 +136,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.servicingInfoId = (int)this.Data;
 
+            this.lastInstruction = 0;
+
+            await this.machineServicingWebService.RefreshDescriptionAsync(this.servicingInfoId);
+
             await this.GetServicingInfo();
         }
 
@@ -192,6 +198,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                this.lastInstruction = this.selectedInstruction.Id;
                 await this.machineServicingWebService.ConfirmInstructionAsync(this.SelectedInstruction.Id);
             }
             catch (Exception)
@@ -210,6 +217,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
+                    this.lastInstruction = this.selectedInstruction.Id;
                     await this.machineServicingWebService.ConfirmServiceAsync();
                 }
             }
@@ -222,6 +230,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                this.lastInstruction = this.selectedInstruction.Id;
                 await this.machineServicingWebService.SetIsToDoAsync(this.SelectedInstruction.Id);
             }
             catch (Exception)
@@ -239,6 +248,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.instructions = this.Service.Instructions.ToList();
                 this.RaisePropertyChanged(nameof(this.Instructions));
+
+                if (this.instructions != null)
+                {
+                    if (this.lastInstruction == this.instructions.FirstOrDefault().Id || this.lastInstruction == 0)
+                    {
+                        this.SelectedInstruction = this.instructions.ElementAtOrDefault(this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
+                    else
+                    {
+                        this.SelectedInstruction = this.instructions.FirstOrDefault(s => s.Id == this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
+                }
             }
             catch (Exception)
             {

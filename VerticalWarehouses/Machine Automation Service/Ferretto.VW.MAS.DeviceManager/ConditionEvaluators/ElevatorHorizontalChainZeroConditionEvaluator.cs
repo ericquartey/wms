@@ -25,7 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public bool IsSatisfied()
         {
-            return this.machineResourcesProvider.IsSensorZeroOnCradle || this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
+            return (this.machineResourcesProvider.IsDrawerCompletelyOnCradle && !this.machineResourcesProvider.IsSensorZeroOnCradle)
+                    || (this.machineResourcesProvider.IsDrawerCompletelyOffCradle && this.machineResourcesProvider.IsSensorZeroOnCradle);
         }
 
         #endregion

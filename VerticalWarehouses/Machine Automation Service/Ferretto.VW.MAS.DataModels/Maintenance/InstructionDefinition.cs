@@ -38,159 +38,159 @@ namespace Ferretto.VW.MAS.DataModels
             switch (instructionType)
             {
                 case InstructionType.AirFiltersCheck:
-                    this.Description = Resources.Instructions.AirFiltersCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("AirFiltersCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.BearingsCheck:
-                    this.Description = Resources.Instructions.BearingsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("BearingsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.BearingsGrease:
-                    this.Description = Resources.Instructions.BearingsGrease;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("BearingsGrease", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.BeltAdjust:
-                    this.Description = Resources.Instructions.BeltAdjust;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("BeltAdjust", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.BeltFasten:
-                    this.Description = Resources.Instructions.BeltFasten;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("BeltFasten", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.BeltSubstitute:
-                    this.Description = Resources.Instructions.BeltSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("BeltSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.CableChainCheck:
-                    this.Description = Resources.Instructions.CableChainCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("CableChainCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.CablesCheck:
-                    this.Description = Resources.Instructions.CablesCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("CablesCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ChainAdjust:
-                    this.Description = Resources.Instructions.ChainAdjust;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ChainAdjust", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ChainGrease:
-                    this.Description = Resources.Instructions.ChainGrease;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ChainGrease", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ChainSubstitute:
-                    this.Description = Resources.Instructions.ChainSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ChainSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ContactorsSubstitute:
-                    this.Description = Resources.Instructions.ContactorsSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ContactorsSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ElectricalComponentsCheck:
-                    this.Description = Resources.Instructions.ElectricalComponentsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ElectricalComponentsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.FirstCellCheck:
-                    this.Description = Resources.Instructions.FirstCellCeck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("FirstCellCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.GuidesCheck:
-                    this.Description = Resources.Instructions.GuidesCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("GuidesCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.GuidesSubstitute:
-                    this.Description = Resources.Instructions.GuidesSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("GuidesSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.LampsCheck:
-                    this.Description = Resources.Instructions.LampsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("LampsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.LinkCheck:
-                    this.Description = Resources.Instructions.LinkCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("LinkCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.LinksGrease:
-                    this.Description = Resources.Instructions.LinksGrease;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("LinksGrease", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.LinkSubstitute:
-                    this.Description = Resources.Instructions.LinkSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("LinkSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MicroSwitchesCheck:
-                    this.Description = Resources.Instructions.MicroSwitchesCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MicroSwitchesCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MicroSwitchesMount:
-                    this.Description = Resources.Instructions.MicroSwitchesMount;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MicroSwitchesMount", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MicroSwitchesSubstitute:
-                    this.Description = Resources.Instructions.MicroSwitchesSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MicroSwitchesSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MotorChainAdjust:
-                    this.Description = Resources.Instructions.MotorChainAdjust;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MotorChainAdjust", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MotorChainGrease:
-                    this.Description = Resources.Instructions.MotorChainGrease;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MotorChainGrease", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MotorChainSubstitute:
-                    this.Description = Resources.Instructions.MotorChainSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MotorChainSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MotorGearOil:
-                    this.Description = Resources.Instructions.MotorGearOil;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MotorGearOil", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.MotorGearSubstitute:
-                    this.Description = Resources.Instructions.MotorGearSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("MotorGearSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.OpticalSensorsClean:
-                    this.Description = Resources.Instructions.OpticalSensorsClean;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("OpticalSensorsClean", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.OpticalSensorsMount:
-                    this.Description = Resources.Instructions.OpticalSensorsMount;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("OpticalSensorsMount", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.PinPawlFastenersCheck:
-                    this.Description = Resources.Instructions.PinPawlFastenersCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("PinPawlFastenersCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.PinPawlFastenersSubstitute:
-                    this.Description = Resources.Instructions.PinPawlFastenersSubstitute;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("PinPawlFastenersSubstitute", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.PlasticCamsCheck:
-                    this.Description = Resources.Instructions.PlasticCamsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("PlasticCamsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.RandomCellCheck:
-                    this.Description = Resources.Instructions.RandomCellCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("RandomCellCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.SensorCheck:
-                    this.Description = Resources.Instructions.SensorCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("SensorCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.SensorsClean:
-                    this.Description = Resources.Instructions.SensorsClean;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("SensorsClean", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.SensorsMount:
-                    this.Description = Resources.Instructions.SensorsMount;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("SensorsMount", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.ShaftCheck:
-                    this.Description = Resources.Instructions.ShaftCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("ShaftCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.SupportsCheck:
-                    this.Description = Resources.Instructions.SupportsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("SupportsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 case InstructionType.Undefined:
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DataModels
                     break;
 
                 case InstructionType.WheelsCheck:
-                    this.Description = Resources.Instructions.WheelsCheck;
+                    this.Description = Resources.Instructions.ResourceManager.GetString("WheelsCheck", CommonUtils.Culture.Actual);
                     break;
 
                 default:

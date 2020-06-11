@@ -11,7 +11,9 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            AlphaNumericBarSize size;
+            Enum.TryParse(value.ToString(), out size);
+            switch (size)
             {
                 case AlphaNumericBarSize.ExtraLarge:
                     return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXL");
