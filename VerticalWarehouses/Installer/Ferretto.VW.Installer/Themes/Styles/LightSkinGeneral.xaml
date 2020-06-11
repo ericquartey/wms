@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <FontFamily x:Key="PpcFontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
@@ -27,7 +26,7 @@
     <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
+    <FontFamily x:Key="TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <FontFamily x:Key="VWAPP_GridFont">pack://application:,,,/Fonts/#Microsoft-sans-serif.ttf</FontFamily>
 
