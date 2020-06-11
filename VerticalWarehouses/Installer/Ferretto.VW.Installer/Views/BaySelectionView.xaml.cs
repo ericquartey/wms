@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.Installer.Views
 {
-    public partial class InstallBayView
+    public partial class BaySelectionView
     {
         #region Constructors
 
-        public InstallBayView()
+        public BaySelectionView()
         {
             this.InitializeComponent();
         }
