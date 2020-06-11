@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.Installer.Views
 {
-    public partial class InstallTypeView
+    public partial class RoleSelectionView
     {
         #region Constructors
 
-        public InstallTypeView()
+        public RoleSelectionView()
         {
             this.InitializeComponent();
         }
