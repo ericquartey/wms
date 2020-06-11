@@ -2,6 +2,21 @@
 {
     public class LaserPoint
     {
+        #region Fields
+
+        public const int SPEED_DEFAULT = 100;
+
+        #endregion
+
+        #region Constructors
+
+        public LaserPoint()
+        {
+            this.Speed = SPEED_DEFAULT;
+        }
+
+        #endregion
+
         #region Properties
 
         public int Speed { get; set; }
