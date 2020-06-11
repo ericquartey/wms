@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Converters
 {
     public class BooleanNegationConverter : DependencyObject, IValueConverter
     {

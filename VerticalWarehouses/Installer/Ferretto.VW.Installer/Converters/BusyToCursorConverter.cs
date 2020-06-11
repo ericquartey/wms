@@ -1,10 +1,16 @@
 ﻿using System;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Converters
 {
     public class BusyToCursorConverter : System.Windows.Data.IValueConverter
     {
+        #region Properties
+
         public bool Invert { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -27,5 +33,7 @@ namespace Ferretto.VW.Installer
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

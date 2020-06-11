@@ -5,8 +5,7 @@
       "number": 1,
       "title": "Imposta chiavi di registro",
       "description": "Cambia, aggiunge chiavi di registro per configurazione iniziale.",
-      "script": "$adpater = netsh.exe interface ip show address \"Ethernet\"; if ($adpater) {NetSh.exe interface set interface name=\"Ethernet\" newname=\"Ethernet-Machine\";}; Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
-      //"script": "timeout /T 2", // ** fake
+      "script": "$adpater = netsh.exe interface ip show address \"Ethernet\"; if ($adpater) {NetSh.exe interface set interface name=\"Ethernet\" newname=\"Ethernet-Machine\";}; Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Installer:DirName)\\$(Installer:FileName)\" /RL HIGHEST /F",
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -16,7 +15,6 @@
       "title": "Creazione cartelle database",
       "description": "Creazione cartelle 'Database' su dischi E,F",
       "script": "New-Item -ItemType Directory -Path E:\\Database;New-Item -ItemType Directory -Path F:\\Database",
-      //"script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -26,7 +24,6 @@
       "title": "Imposta indirizzo ip su scheda ethernet 'Ethernet-Machine'",
       "description": "Imposta indirizzo ip e subnet su scheda ethernet che si interfaccia con la macchina.",
       "script": "netsh interface ipv4 set address name=\"Ethernet-Machine\"  static $(Install:Parameter:PpcIpaddress) 255.255.255.0 store=persistent",
-      //"script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -35,9 +32,8 @@
       "number": 4,
       "title": "Installazione servizio automazione",
       "description": "Crea il servizio di automazione da avviare con l'accensione del PanelPc",
-      "script": "New-Service -name $(MAS:ServiceName) -binaryPathName \"$(Install:Root:Path)\\$(Install:MAS:Path)\\$(Install:MAS:FilePath) --service\" -displayName \"$(MAS:Service:DisplayName)\" -description \"$(MAS:Service:Description)\" -startupType AutomaticDelayedStart",
-      "rollbackScript": "sc.exe delete $(MAS:ServiceName)",
-      //"script": "timeout /T 2", // ** fake
+      "script": "New-Service -name $(MAS:Service:Name) -binaryPathName \"$(Install:Root:Path)\\$(MAS:DirName)\\$(MAS:FileName) --service\" -displayName \"$(MAS:Service:DisplayName)\" -description \"$(MAS:Service:Description)\" -startupType AutomaticDelayedStart",
+      "rollbackScript": "sc.exe delete $(MAS:Service:Name)",
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -49,17 +45,14 @@
       "script": "uwfmgr filter disable",
       "rollbackScript": "uwfmgr filter enable",
       "setupMode": "UpdateAndRestore"
-      //"script": "timeout /T 2", // ** fake
-      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 6,
       "title": "Auto-avvio installer",
       "description": "Imposta l'installatore in avvio automatico.",
-      "Script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
-      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
-      //"script": "timeout /T 2", // ** fake
+      "Script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Installer:DirName)\\$(Installer:FileName)\" /RL HIGHEST /F",
+      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(PPC:DirName)\\$(PPC:FileName)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
       "setupMode": "UpdateAndRestore",
       "skipOnResume": "true"
     },
@@ -69,7 +62,6 @@
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
       "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      //"script": "timeout /T 2", // ** fake
       "setupMode": "UpdateAndRestore",
       "skipOnResume": "true"
     },
@@ -79,9 +71,7 @@
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia disabilitata.",
       "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-CimInstance -className  UWF_Filter -Namespace $NAMESPACE;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disabled.\"};",
-      //"script": "timeout /T 2", // ** fake
       "rollbackScript": "true",
-      //"rollbackScript": "timeout /T 2" // ** fake
       "setupMode": "UpdateAndRestore"
     },
     {
@@ -89,19 +79,17 @@
       "number": 9,
       "title": "Ferma il MAS",
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
-      "script": "Stop-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
+      "script": "Stop-Service \"$(MAS:Service:Name)\"",
+      "rollbackScript": "Start-Service \"$(MAS:Service:Name)\"",
       "machineRole": "Master",
       "setupMode": "UpdateAndRestore"
-      //"script": "timeout /T 2", // ** fake
-      //rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
       "number": 10,
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
-      "automationServicePath": "$(Install:Root:Path)\\$(Install:MAS:Path)",
+      "automationServicePath": "$(Install:Root:Path)\\$(MAS:DirName)",
       "backupPath": "$(Backup:Root:Path)\\Staging",
       "machineRole": "Master",
       "setupMode": "UpdateAndRestore"
@@ -111,7 +99,7 @@
       "number": 11,
       "title": "Ripristino database",
       "description": "Sostituisce i files di database esistenti con quelli di backup",
-      "script": "$AppSettings = \"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json\";$primDbStageFile = \"$(Backup:Root:Path)\\staging\\primary.db\";$secDbStageFile = \"$(Backup:Root:Path)\\staging\\secondary.db\";$json_object = Get-Content -Raw -Path $AppSettings | ConvertFrom-Json;$primDbName = $json_object.ConnectionStrings.AutomationServicePrimary;$secDbName = $json_object.ConnectionStrings.AutomationServiceSecondary;$primFileDbName = $primDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$secFileDbName = $secDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$primDbFilePath =  \"E:\\database\\\" +  ([io.fileinfo]$primFileDbName).Name;$secDbFileName = \"F:\\database\\\" + ([io.fileinfo]$secFileDbName).Name;Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force",
+      "script": "$AppSettings = \"$(Backup:Root:Path)\\Staging\\$(MAS:DirName)\\appsettings.json\";$primDbStageFile = \"$(Backup:Root:Path)\\staging\\primary.db\";$secDbStageFile = \"$(Backup:Root:Path)\\staging\\secondary.db\";$json_object = Get-Content -Raw -Path $AppSettings | ConvertFrom-Json;$primDbName = $json_object.ConnectionStrings.AutomationServicePrimary;$secDbName = $json_object.ConnectionStrings.AutomationServiceSecondary;$primFileDbName = $primDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$secFileDbName = $secDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$primDbFilePath =  \"E:\\database\\\" +  ([io.fileinfo]$primFileDbName).Name;$secDbFileName = \"F:\\database\\\" + ([io.fileinfo]$secFileDbName).Name;Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force",
       "machineRole": "master",
       "setupMode": "Restore"
     },
@@ -120,9 +108,8 @@
       "number": 12,
       "title": "Backup applicazione",
       "description": "Sposta l'applicazione nella cartella di backup",
-      "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Copy-Item $installer $stageInstaller -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse;Remove-Item $installer -Force -Recurse",
-      //"script": "timeout /T 2", // ** fake
-      "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Install:Installer:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";$installer=\"$(Install:Root:Path)\\$(Install:Installer:Path)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse;Remove-Item $stageInstaller -Force -Recurse",
+      "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(MAS:DirName)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(PPC:DirName)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Installer:DirName)\";$as=\"$(Install:Root:Path)\\$(MAS:DirName)\";$ppc=\"$(Install:Root:Path)\\$(PPC:DirName)\";$installer=\"$(Install:Root:Path)\\$(Installer:DirName)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Copy-Item $installer $stageInstaller -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse;Remove-Item $installer -Force -Recurse",
+      "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(MAS:DirName)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(PPC:DirName)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Installer:DirName)\";$as=\"$(Install:Root:Path)\\$(MAS:DirName)\";$ppc=\"$(Install:Root:Path)\\$(PPC:DirName)\";$installer=\"$(Install:Root:Path)\\$(Installer:DirName)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse;Remove-Item $stageInstaller -Force -Recurse",
       "setupMode": "UpdateAndRestore"
     },
     {
@@ -130,8 +117,8 @@
       "number": 13,
       "title": "Creazione ZIP",
       "description": "Crea un archivio zip con il backup della versione corrente.",
-      "script": "if(Test-Path $(Backup:Root:Path)\\Current_Version_Backup.zip -PathType Leaf){del $(Backup:Root:Path)\\Current_Version_Backup.zip}; Add-Type -assembly \"system.io.compression.filesystem\";[io.compression.zipfile]::CreateFromDirectory(\"$(Backup:Root:Path)\\staging\", \"$(Backup:Root:Path)\\Current_Version_Backup.zip\", [System.IO.Compression.CompressionLevel]::Optimal, \"\")",
-      "rollbackScript": "if (Test-Path $(Backup:Root:Path)\\Current_Version_Backup.zip -PathType Leaf){Remove-Item $(Backup:Root:Path)\\Current_Version_Backup.zip}",
+      "script": "scripts/zip_current_version.ps1",
+      "rollbackScript": "scripts/zip_current_version.rollback.ps1",
       "setupMode": "update"
     },
     {
@@ -139,35 +126,33 @@
       "number": 14,
       "title": "Copia nuova versione",
       "description": "Copia la nuova versione nella cartella di destinazione dell'installazione.",
-      "script": "Copy-Item $(Update:Temp:Path)\\$(Install:MAS:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:PPC:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:Installer:Path) $(Install:Root:Path) -recurse -Exclude \"steps-snapshot.json\"",
-      "rollbackScript": "Remove-Item $(Install:Root:Path)\\$(Install:MAS:Path) -recurse;Remove-Item $(Install:Root:Path)\\$(Install:PPC:Path) -recurse;Remove-Item $(Install:Root:Path)\\$(Install:Installer:Path) -recurse;"
+      "script": "Copy-Item $(Update:Temp:Path)\\$(MAS:DirName) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(PPC:DirName) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Installer:DirName) $(Install:Root:Path) -recurse -Exclude \"steps-snapshot.json\"",
+      "rollbackScript": "Remove-Item $(Install:Root:Path)\\$(MAS:DirName) -recurse;Remove-Item $(Install:Root:Path)\\$(PPC:DirName) -recurse;Remove-Item $(Install:Root:Path)\\$(Installer:DirName) -recurse;"
     },
     /*{
       "$type": "Ferretto.VW.Installer.Core.MergeAppConfig, Ferretto.VW.Installer.Core",
       "number": 15,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
-      "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config",
-      "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
+      "newPathName": "$(Install:Root:Path)\\$(PPC:DirName)\\Ferretto.VW.App.exe.config",
+      "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(PPC:DirName)\\Ferretto.VW.App.exe.config"
     },*/
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 15,
       "title": "Aggiorna App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
-      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = $NewAppConfigFile + \".orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\" + $node.key + \"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
-      "rollbackScript": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";if (Test-Path $NewAppConfigFileOrig) { Rename-item –path $NewAppConfigFileOrig –newname $($NewAppConfigFile) -Force  };",
+      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(PPC:DirName)\\$(PPC:FileName).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(PPC:DirName)\\$(PPC:FileName).config\";$NewAppConfigFileOrig = $NewAppConfigFile + \".orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\" + $node.key + \"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
+      "rollbackScript": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(PPC:DirName)\\$(PPC:FileName).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";if (Test-Path $NewAppConfigFileOrig) { Rename-item –path $NewAppConfigFileOrig –newname $($NewAppConfigFile) -Force  };",
       "setupMode": "update"
-      //"script": "timeout /T 2", // ** fake
-      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 16,
       "title": "Aggiorna MAS",
       "description": "Aggiorna il file di configurazione del MAS.",
-      "script": "function Join-Objects($source, $extend){ if($source.GetType().Name -eq \"PSCustomObject\" -and $extend.GetType().Name -eq \"PSCustomObject\"){ foreach($Property in $source | Get-Member -type NoteProperty, Property){ if($extend.$($Property.Name) -eq $null){ continue; } $source.$($Property.Name) = Join-Objects $source.$($Property.Name) $extend.$($Property.Name)  } } else{ $source = $extend;};if($source.GetType().Name -eq \"Object[]\" -and $source.Count -lt 2){ return ,$source} else {return $source } };function AddPropertyRecurse($source, $toExtend){  if($source.GetType().Name -eq \"PSCustomObject\") { foreach($Property in $source | Get-Member -type NoteProperty, Property){if($toExtend.$($Property.Name) -eq $null) { $toExtend | Add-Member -MemberType NoteProperty -Value $source.$($Property.Name) -Name $Property.Name  } else{ $toExtend.$($Property.Name) = AddPropertyRecurse $source.$($Property.Name) $toExtend.$($Property.Name) }}} return $toExtend};function Json-Merge($source, $extend){ $merged = Join-Objects $source $extend; return $merged;};$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.json\";$CurrAppsettingsFile = \"$(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json\";$NewAppSettingFileCopy = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.orig\";$1 = Get-Content -Raw -Path $NewAppSettingsFile | ConvertFrom-Json;$2 = Get-Content -Path $CurrAppsettingsFile| ConvertFrom-Json;$3 = Json-Merge $1 $2;Copy-Item -Path $NewAppsettingsFile -Destination $NewAppSettingFileCopy;$3 | ConvertTo-Json -depth 100 | Out-File $NewAppsettingsFile",
-      "rollbackScript": "$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.json\";$NewAppsettingsFileOrig = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.orig\";if (Test-Path $NewAppsettingsFileOrig) { Rename-item –path $NewAppsettingsFileOrig –newname $($NewAppsettingsFile) -Force  };",
+      "script": "function Join-Objects($source, $extend){ if($source.GetType().Name -eq \"PSCustomObject\" -and $extend.GetType().Name -eq \"PSCustomObject\"){ foreach($Property in $source | Get-Member -type NoteProperty, Property){ if($extend.$($Property.Name) -eq $null){ continue; } $source.$($Property.Name) = Join-Objects $source.$($Property.Name) $extend.$($Property.Name)  } } else{ $source = $extend;};if($source.GetType().Name -eq \"Object[]\" -and $source.Count -lt 2){ return ,$source} else {return $source } };function AddPropertyRecurse($source, $toExtend){  if($source.GetType().Name -eq \"PSCustomObject\") { foreach($Property in $source | Get-Member -type NoteProperty, Property){if($toExtend.$($Property.Name) -eq $null) { $toExtend | Add-Member -MemberType NoteProperty -Value $source.$($Property.Name) -Name $Property.Name  } else{ $toExtend.$($Property.Name) = AddPropertyRecurse $source.$($Property.Name) $toExtend.$($Property.Name) }}} return $toExtend};function Json-Merge($source, $extend){ $merged = Join-Objects $source $extend; return $merged;};$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.json\";$CurrAppsettingsFile = \"$(Install:Root:Path)\\$(MAS:DirName)\\appsettings.json\";$NewAppSettingFileCopy = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.orig\";$1 = Get-Content -Raw -Path $NewAppSettingsFile | ConvertFrom-Json;$2 = Get-Content -Path $CurrAppsettingsFile| ConvertFrom-Json;$3 = Json-Merge $1 $2;Copy-Item -Path $NewAppsettingsFile -Destination $NewAppSettingFileCopy;$3 | ConvertTo-Json -depth 100 | Out-File $NewAppsettingsFile",
+      "rollbackScript": "$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.json\";$NewAppsettingsFileOrig = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.orig\";if (Test-Path $NewAppsettingsFileOrig) { Rename-item –path $NewAppsettingsFileOrig –newname $($NewAppsettingsFile) -Force  };",
       "setupMode": "update",
       "machineRole": "master"
     },
@@ -176,11 +161,9 @@
       "number": 17,
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
-      "script": "Start-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\"",
+      "script": "scripts/run_mas.ps1",
+      "rollbackScript": "scripts/run_mas.rollback.ps1",
       "machineRole": "master"
-      //"script": "timeout /T 2", // ** fake
-      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
@@ -253,8 +236,8 @@
       "number": 25,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
-      "Script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
-      "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F"
+      "Script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(PPC:DirName)\\$(PPC:FileName)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+      "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Installer:DirName)\\$(Installer:FileName)\" /RL HIGHEST /F"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",

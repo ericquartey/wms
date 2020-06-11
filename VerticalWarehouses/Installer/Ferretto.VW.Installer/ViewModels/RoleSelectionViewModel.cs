@@ -7,13 +7,13 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
-using Ferretto.VW.Installer.Service;
+using Ferretto.VW.Installer.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class InstallTypeViewModel : Core.BindableBase, IOperationResult
+    internal sealed class RoleSelectionViewModel : BindableBase, IOperationResult
     {
         #region Fields
 
@@ -29,8 +29,6 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool isSlaveConfigurationValid;
 
-        private bool isSuccessful;
-
         private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
@@ -39,21 +37,25 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private string messageMaster;
 
+        private string messageSlave;
+
         private RelayCommand nextCommand;
 
         private RelayCommand openFileCommand;
 
-        private string messageSlave;
+        private string serviceVersion;
+
+        private string uiVersion;
 
         #endregion
 
         #region Constructors
 
-        public InstallTypeViewModel(InstallationService installationService)
+        public RoleSelectionViewModel(InstallationService installationService)
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
-            this.Inistialize();
+            this.Initialize();
         }
 
         #endregion
@@ -61,19 +63,11 @@ namespace Ferretto.VW.Installer.ViewModels
         #region Properties
 
         public ICommand CheckMasConfigurationCommand =>
-                                this.checkMasConfigurationCommand
-                                ??
-                                (this.checkMasConfigurationCommand = new RelayCommand(async () => await this.EvaluateCanNextAsync(), this.CanCheckMasConfiguration));
+            this.checkMasConfigurationCommand ??= new RelayCommand(
+                async () => await this.EvaluateCanNextAsync(),
+                this.CanCheckMasConfiguration);
 
-        public virtual string DefaultExt { get; set; }
-
-        public virtual string DefaultFileName { get; set; }
-
-        public virtual bool DialogResult { get; protected set; }
-
-        public virtual string Filter { get; set; }
-
-        public virtual int FilterIndex { get; set; }
+        public bool DialogResult { get; protected set; }
 
         public bool IsMasConfiguration
         {
@@ -81,7 +75,9 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.isMasConfiguration, value, async () => await this.EvaluateCanNextAsync());
         }
 
-        public bool IsSuccessful => this.isSuccessful;
+        public bool IsSuccessful { get; private set; }
+
+        public string MachineConfigurationFileName { get; protected set; }
 
         public IPAddress MasIpAddress
         {
@@ -102,26 +98,36 @@ namespace Ferretto.VW.Installer.ViewModels
         }
 
         public ICommand NextCommand =>
-                        this.nextCommand
-                ??
-                (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
+            this.nextCommand
+            ??
+            (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
 
         public ICommand OpenFileCommand =>
-                                this.openFileCommand
-                        ??
-                        (this.openFileCommand = new RelayCommand(async () => await this.OpenFileAsync(), this.CanOpenFile));
+            this.openFileCommand
+            ??
+            (this.openFileCommand = new RelayCommand(
+                async () => await this.OpenFileAsync(),
+                this.CanOpenFile));
 
-        public virtual bool OverwritePrompt { get; set; }
+        public string PanelPcVersion
+        {
+            get => this.uiVersion;
+            set => this.SetProperty(ref this.uiVersion, value);
+        }
 
-        public string MasVersion => $"Machine automation service ver.{this.installationService?.MasVersion}";
-
-        public string PanelPcVersion => $"Panel pc ver.{this.installationService?.PanelPcVersion}";
-
-        public virtual string ResultFileName { get; protected set; }
+        public string ServiceVersion
+        {
+            get => this.serviceVersion;
+            set => this.SetProperty(ref this.serviceVersion, value);
+        }
 
         public string SoftwareVersion => string.Format("Welcome to installation {0}", this.installationService?.SoftwareVersion);
 
-        public virtual string Title { get; set; }
+        public string UiVersion
+        {
+            get => this.uiVersion;
+            set => this.SetProperty(ref this.uiVersion, value);
+        }
 
         #endregion
 
@@ -129,37 +135,49 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenFileAsync()
         {
-            var resultFiles = DialogService.BrowseFile("Scegli file di configurazione", string.Empty, "json", "File di configuirazione");
+            var selectedFileNames = OpenFileDialogService.BrowseFile(
+                "Scegli file di configurazione",
+                string.Empty,
+                "json",
+                "File di configuirazione");
 
-            if ((resultFiles?.Length == 1) == false)
+            if (selectedFileNames?.Length == 1)
             {
-                this.ResultFileName = string.Empty;
-                this.isMasConfigurationValid = false;
+                var fileName = selectedFileNames.First();
+
+                try
+                {
+                    using var sr = new StreamReader(fileName);
+                    var fileContents = sr.ReadToEnd();
+
+                    this.LoadMachineConfiguration(fileContents);
+
+                    var configurationFilePath = Path.Combine(
+                        ConfigurationManager.AppSettings.GetUpdateTempPath(),
+                        ConfigurationManager.AppSettings.GetMasDirName(),
+                        @"Configuration\vertimag-configuration.json");
+
+                    this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
+
+                    this.isMasConfigurationValid = true;
+                }
+                catch (Exception ex)
+                {
+                    this.isMasConfigurationValid = false;
+                }
             }
             else
             {
-                var file = resultFiles.First();
-
-                var sr = new StreamReader(file);
-                var fileContents = sr.ReadToEnd();
-
-                this.isMasConfigurationValid = this.LoadConfiguration(fileContents);
-
-                if (this.isMasConfigurationValid)
-                {
-                    var configurationFilePath = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{ConfigurationManager.AppSettings.GetInstallMasPath()}\\Configuration\\vertimag-configuration.json";
-                    this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
-                }
+                this.MachineConfigurationFileName = string.Empty;
+                this.isMasConfigurationValid = false;
             }
 
             await this.EvaluateCanNextAsync();
         }
 
-
-
         public void Save()
         {
-            this.isSuccessful = true;
+            this.IsSuccessful = true;
         }
 
         private bool CanCheckMasConfiguration()
@@ -230,7 +248,16 @@ namespace Ferretto.VW.Installer.ViewModels
                     if (this.masIpEndpoint != null)
                     {
                         var masConfiguration = await this.GetConfigurationFromMasAsync(this.masIpEndpoint);
-                        this.isSlaveConfigurationValid = this.LoadConfiguration(masConfiguration);
+
+                        try
+                        {
+                            this.LoadMachineConfiguration(masConfiguration);
+                            this.isSlaveConfigurationValid = true;
+                        }
+                        catch
+                        {
+                            this.isSlaveConfigurationValid = false;
+                        }
                     }
                 }
                 this.canNext = this.isSlaveConfigurationValid;
@@ -264,15 +291,8 @@ namespace Ferretto.VW.Installer.ViewModels
             return null;
         }
 
-        private void Inistialize()
+        private void Initialize()
         {
-            this.Filter = "Conf. files (.json)|*.json";
-            this.FilterIndex = 1;
-            this.Title = "Caricamento file di configurazione";
-            this.DefaultExt = "json";
-            this.DefaultFileName = "Configurazione";
-            this.OverwritePrompt = true;
-
             this.RaisePropertyChanged(nameof(this.SoftwareVersion));
 
             if (IPAddress.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress(), out var ip))
@@ -281,33 +301,31 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             this.IsMasConfiguration = true;
+
+            this.UiVersion = this.installationService.PanelPcVersion;
+            this.ServiceVersion = this.installationService.MasVersion;
         }
 
-        private bool LoadConfiguration(string configuration)
+        private void LoadMachineConfiguration(string configuration)
         {
-            try
+            var jsonObject = JObject.Parse(configuration);
+
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
+
+            this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
+
+            if (this.masConfiguration is null)
             {
-                var jsonObject = JObject.Parse(configuration);
-
-                var settings = new JsonSerializerSettings();
-                settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
-
-                this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
-
-                return !(this.masConfiguration is null);
+                throw new Exception("Could not load configuration. File is empty.");
             }
-            catch
-            {
-            }
-
-            return false;
         }
 
         private void Next()
         {
             this.installationService.SetConfiguration(this.masIpAddress, this.masConfiguration);
 
-            this.installationService.SetOperation(OperationMode.InstallBay);
+            this.installationService.SetStage(OperationStage.BaySelection);
         }
 
         private void RaiseCanExecuteChanged()
