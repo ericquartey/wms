@@ -72,9 +72,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (bayNumber != BayNumber.None)
                     {
                         var bay = this.BaysDataProvider.GetByNumber(bayNumber);
-                        if (bay.Shutter.Type != ShutterType.NotSpecified)
+                        if (bay.Shutter != null &&
+                            bay.Shutter.Type != ShutterType.NotSpecified)
                         {
-                            var shutterInverter = bay.Shutter.Inverter.Index;
+                            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
@@ -143,9 +144,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (bayNumber != BayNumber.None)
                     {
                         var bay = this.BaysDataProvider.GetByNumber(bayNumber);
-                        if (bay.Shutter.Type != ShutterType.NotSpecified)
+                        if (bay.Shutter != null &&
+                            bay.Shutter.Type != ShutterType.NotSpecified)
                         {
-                            var shutterInverter = bay.Shutter.Inverter.Index;
+                            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != ShutterPosition.Closed
                                  && shutterPosition != ShutterPosition.Half
@@ -159,6 +161,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.CloseShutterBayNumber = bayNumber;
                                 this.Mission.CloseShutterPosition = ShutterPosition.Closed;
                             }
+                        }
+                    }
+                    if (this.Mission.NeedHomingAxis == Axis.None)
+                    {
+                        var machine = this.MachineProvider.Get();
+                        if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+                            )
+                        {
+                            this.Mission.NeedHomingAxis = Axis.Horizontal;
                         }
                     }
                 }
@@ -181,13 +193,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.CloseShutterBayNumber = bay.Number;
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, bayPosition.Location);
-                    }
-                    else if (this.Mission.NeedHomingAxis == Axis.None
-                        && this.Mission.MissionType == MissionType.LoadUnitOperation
-                        && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
-                        )
-                    {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
                     }
                 }
 

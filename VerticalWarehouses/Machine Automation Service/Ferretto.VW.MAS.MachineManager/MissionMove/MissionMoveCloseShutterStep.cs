@@ -52,8 +52,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
-            if (this.Mission.NeedHomingAxis == Axis.None
-                && Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) > 3000
+            var machine = this.MachineProvider.Get();
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal
+                || (this.Mission.NeedHomingAxis == Axis.None
+                    && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+                        )
+                    )
                 )
             {
                 this.Mission.NeedHomingAxis = Axis.Horizontal;

@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -841,7 +842,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+        //public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
+        {
+            var shutter = this.GetByNumber(bayNumber).Shutter;
+            if (shutter == null)
+            {
+                return InverterIndex.None;
+            }
+
+            return shutter.Inverter.Index;
+        }
 
         public bool IsMissionInBay(Mission mission)
         {
@@ -1036,7 +1047,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
                 if (loadingUnit is null)
                 {
-                    throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
+                    loadingUnit = this.InsertLoadingUnit(loadingUnitId.Value);  //TODO: must be fixed
+                    //throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
                 }
 
                 loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InBay;
@@ -1212,6 +1224,35 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
+
+        /// <summary>
+        /// TODO, this method it's dublicated because the insert in LoadUnitDataProvider generate a circural ref error
+        /// </summary>
+        /// <param name="loadingUnitsId"></param>
+        /// <returns></returns>
+        private LoadingUnit InsertLoadingUnit(int loadingUnitsId)
+        {
+            this.logger.LogWarning("InsertLoadingUnit, loading unit is null, try do instance a newer");
+            var loadingUnits = new LoadingUnit();
+
+            var machine = this.machineProvider.Get();
+            lock (this.dataContext)
+            {
+                loadingUnits = new LoadingUnit
+                {
+                    Id = loadingUnitsId,
+                    Tare = machine.LoadUnitTare,
+                    MaxNetWeight = machine.LoadUnitMaxNetWeight,
+                    Height = 0
+                };
+
+                this.dataContext.LoadingUnits.Add(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+
+            return loadingUnits;
+        }
 
         private void Update(Bay bay)
         {

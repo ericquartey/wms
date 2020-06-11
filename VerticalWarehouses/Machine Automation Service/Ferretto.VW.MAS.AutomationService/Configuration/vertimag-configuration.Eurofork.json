@@ -1155,6 +1155,7 @@
             "Type": "Ang"
           },
           "LastIdealPosition": 3969.0,
+          "LastCalibrationCycles": 0,
           "LowerBound": 445.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -1206,6 +1207,7 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "Id": 2,
+          "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.011340330507664476,
           "LowerBound": 0.0,
           "ManualMovements": {

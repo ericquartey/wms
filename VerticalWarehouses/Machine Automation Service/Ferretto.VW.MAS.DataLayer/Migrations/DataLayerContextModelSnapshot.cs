@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
+                    b.Property<bool>("IsFastDepositToBay");
+
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -324,6 +326,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("HomingFastSpeed");
 
                     b.Property<int?>("InverterId");
+
+                    b.Property<int>("LastCalibrationCycles");
 
                     b.Property<double>("LastIdealPosition");
 
@@ -945,6 +949,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double?>("DoubleCounter");
 
+                    b.Property<int>("InstructionStatus");
+
                     b.Property<int?>("IntCounter");
 
                     b.Property<bool>("IsDone");
@@ -1155,7 +1161,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ElevatorId");
 
+                    b.Property<int>("ExpireCountPrecent");
+
+                    b.Property<int>("ExpireDays");
+
                     b.Property<double>("Height");
+
+                    b.Property<int>("HorizontalCyclesToCalibrate");
+
+                    b.Property<int>("HorizontalPositionToCalibrate");
 
                     b.Property<double>("LoadUnitMaxHeight");
 

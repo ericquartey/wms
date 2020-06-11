@@ -11,11 +11,14 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class FullTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
@@ -110,6 +113,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public string Error { get; }
+
+        public bool HasShutter => this.MachineService.HasShutter;
 
         public bool IsExecutingProcedure
         {

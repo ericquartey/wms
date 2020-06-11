@@ -72,8 +72,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             var arrowPosition = (compartmentWidth / 2) + itemXPosition;
             var pixelOffset = (arrowPosition / this.StepLedBar) + 2;
-
-            return (int)pixelOffset;
+            return (int)Math.Round((pixelOffset));
         }
 
         /// <summary>
@@ -176,20 +175,19 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         }
 
         /// <summary>
-        /// Send a ENABLE command.
-        ///
-        /// N.B. Not use enable=true, because duplicate message
+        ///  Send a ENABLE command.
         /// </summary>
-        /// <param name="enable"></param>
+        /// <param name="enable">Set the enable</param>
+        /// <param name="force">If true force the enable command</param>
         /// <returns></returns>
-        public async Task<bool> EnabledAsync(bool enable)
+        public async Task<bool> EnabledAsync(bool enable, bool force = true)
         {
-            if (enable == this.barEnabled)
+            this.ClearConcurrentQueue(this.errorsQueue);
+
+            if (enable == this.barEnabled && !force)
             {
                 return true;
             }
-
-            this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -376,6 +374,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.errorsQueue);
 
+            this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
+
             if (enable)
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_ON);
@@ -411,21 +411,32 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
         {
-            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            while (concurrentQueure.TryDequeue(out _)) { }
             return true;
         }
 
         /// <summary>
-        /// Encode a trinh into the HTPP protocol.
+        /// Replace the Ascii characters out side the available range width a space (char '+')
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         private string Encode(string str)
         {
-            //return string.IsNullOrEmpty(str) ? Uri.EscapeDataString(" ") : Uri.EscapeDataString(str);
-            return string.IsNullOrEmpty(str) ? Uri.EscapeDataString("+") : Uri.EscapeDataString(str).Replace("%20", "+");
-            //return string.IsNullOrEmpty(str) ? HttpUtility.UrlEncode(" ", Encoding.UTF8) : HttpUtility.UrlEncode(str, Encoding.UTF8);
-            //return string.IsNullOrEmpty(str) ? WebUtility.HtmlEncode(" ") : WebUtility.HtmlEncode(str);
+            var result = "";
+
+            foreach (var c in str)
+            {
+                if (((int)c > 32 && (int)c < 126))
+                {
+                    result += Uri.EscapeDataString(c.ToString());
+                }
+                else
+                {
+                    result += Uri.EscapeDataString(" ");
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

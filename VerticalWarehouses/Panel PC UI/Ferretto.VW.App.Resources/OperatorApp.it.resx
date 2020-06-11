@@ -1531,4 +1531,40 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="DrawerCompactingWarning" xml:space="preserve">
     <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
   </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Conferma riga</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Asse</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>BayNumber</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>CounterName</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Stato riga</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Esegui riga</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Sei sicuro di voler confermare questo service?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Cicli dell'elevatore da ultima manutenzione / totale</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Asse orizzontale</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Asse verticale</value>
+  </data>
 </root>

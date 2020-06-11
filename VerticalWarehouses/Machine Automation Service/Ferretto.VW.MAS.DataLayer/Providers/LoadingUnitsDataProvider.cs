@@ -145,7 +145,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(l => l.Cell)
                     .ThenInclude(c => c.Panel)
                     .Where(x => x.Cell != null
-                        && !this.dataContext.Missions.Any(m => m.LoadUnitId == x.Id))
+                        && !this.dataContext.Missions.Any(m => m.LoadUnitId == x.Id
+                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Aborted
+                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                        )
                     .ToArray();
             }
         }

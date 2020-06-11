@@ -86,14 +86,21 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-#if DEBUG
-                Application.Current.Shutdown();
-#else
-                var processStartInfo = new ProcessStartInfo("shutdown", "/s /t 5");
-                processStartInfo.CreateNoWindow = true;
-                processStartInfo.UseShellExecute = false;
-                Process.Start(processStartInfo);
-#endif
+                var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+                //#if DEBUG
+                if (!fullscreen)
+                {
+                    System.Windows.Application.Current.Shutdown();
+                }
+                //#else
+                else
+                {
+                    var processStartInfo = new System.Diagnostics.ProcessStartInfo("shutdown", "/s /t 5");
+                    processStartInfo.CreateNoWindow = true;
+                    processStartInfo.UseShellExecute = false;
+                    System.Diagnostics.Process.Start(processStartInfo);
+                }
+                //#endif
                 return true;
             }
             catch

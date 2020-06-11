@@ -135,6 +135,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             if (this.machineData.AxisToCalibrate == Axis.Vertical)
             {
                 this.machineData.VerticalStartingPosition = this.elevatorProvider.VerticalPosition;
+                // check again the conditions
+                if (!(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    )
+                {
+                    if (this.machineData.ShowErrors)
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                    }
+
+                    this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
+                }
             }
 
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType);

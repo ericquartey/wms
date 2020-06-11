@@ -245,7 +245,7 @@
                                                      Color2="Green"
                                                      Maximum="100"
                                                      Minimum="0"
-                                                     Value="{Binding CyclesPercent, Mode=OneWay}" />
+                                                     Value="{Binding CyclesPercent, Mode=OneWay, Converter={StaticResource DNTPV}}" />
 
                         </Grid>
                     </Border>
@@ -479,7 +479,8 @@
                                     Width="230"
                                     Height="90"
                                     MinHeight="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"

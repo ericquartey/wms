@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Services
 
         private bool closed;
 
+        private bool exist = false;
+
         private bool midWay;
 
         private bool open;
@@ -31,6 +33,8 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         public bool Closed { get => this.closed; set => this.SetProperty(ref this.closed, value); }
+
+        public bool HasShutter { get => this.exist; set => this.SetProperty(ref this.exist, value); }
 
         public bool MidWay { get => this.midWay; set => this.SetProperty(ref this.midWay, value); }
 

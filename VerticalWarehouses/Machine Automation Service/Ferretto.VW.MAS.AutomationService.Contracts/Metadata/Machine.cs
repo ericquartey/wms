@@ -27,11 +27,31 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [PullToRoot, Unfold]
             public Elevator Elevator { get; set; }
 
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ExpireCountPrecent))]
+            [Id(11)]
+            public double ExpireCountPrecent { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ExpireDays))]
+            [Id(12)]
+            public double ExpireDays { get; set; }
+
             [Editable(false)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             [Id(3)]
             public double Height { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_HorizontalCyclesToCalibrate))]
+            [Id(9)]
+            public double HorizontalCyclesToCalibrate { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_HorizontalPositionToCalibrate))]
+            [Id(10)]
+            public double HorizontalPositionToCalibrate { get; set; }
 
             [Editable(true)]
             [Unit("mm")]

@@ -12,12 +12,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class ServicingController : ControllerBase
     {
+        #region Fields
+
         private readonly IServicingProvider servicingProvider;
+
+        #endregion
+
+        #region Constructors
 
         public ServicingController(
             IServicingProvider servicingProvider)
         {
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
+        }
+
+        #endregion
+
+        #region Methods
+
+        [HttpPost("confirm-instruction")]
+        public IActionResult ConfirmInstruction(int instructionId)
+        {
+            this.servicingProvider.ConfirmInstruction(instructionId);
+            return this.Ok();
         }
 
         [HttpPost("confirm-service")]
@@ -63,5 +80,46 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             return this.Ok(this.servicingProvider.GetLastConfirmed());
         }
+
+        [HttpGet("last-valid-servicing-info")]
+        public ActionResult<ServicingInfo> GetLastValid()
+        {
+            return this.Ok(this.servicingProvider.GetLastValid());
+        }
+
+        [HttpGet("any-instruction-expired")]
+        public ActionResult<bool> IsInstructionExpired()
+        {
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpired());
+        }
+
+        [HttpGet("any-instruction-expiring")]
+        public ActionResult<bool> IsInstructionExpiring()
+        {
+            return this.Ok(this.servicingProvider.IsAnyInstructionExpiring());
+        }
+
+        [HttpPost("refresh-description")]
+        public IActionResult RefreshDescription(int servicingInfoId)
+        {
+            this.servicingProvider.RefreshDescription(servicingInfoId);
+            return this.Ok();
+        }
+
+        [HttpPost("set-IsToDo")]
+        public IActionResult SetIsToDo(int instructionId)
+        {
+            this.servicingProvider.SetIsToDo(instructionId);
+            return this.Ok();
+        }
+
+        [HttpPost("update-service-status")]
+        public IActionResult UpdateServiceStatus()
+        {
+            this.servicingProvider.UpdateServiceStatus();
+            return this.Ok();
+        }
+
+        #endregion
     }
 }

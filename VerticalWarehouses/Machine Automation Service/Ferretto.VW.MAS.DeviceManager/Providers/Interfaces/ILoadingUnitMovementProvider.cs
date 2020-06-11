@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        double AdjustHeightWithBayChainWeight(double height, double weightUp, double weightDown);
+
         MessageStatus CarouselStatus(NotificationMessage message);
 
         MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit);
@@ -27,6 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         double GetCurrentHorizontalPosition();
 
         double GetCurrentVerticalPosition();
+
+        int GetCyclesFromCalibration();
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
 
@@ -52,7 +56,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 

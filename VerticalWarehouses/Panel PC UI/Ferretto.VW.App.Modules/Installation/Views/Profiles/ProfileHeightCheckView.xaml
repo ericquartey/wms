@@ -505,12 +505,12 @@
                        Stretch="Uniform" />
 
                 <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="15,15,0,0"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding OpenShutterCommand}"
-                                        Content="{res:Loc InstallationApp.GateOpen}"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                    Grid.Column="1"
+                                    Margin="15,15,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="{res:Loc InstallationApp.GateOpen}"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
@@ -884,7 +884,8 @@
                                     Width="230"
                                     Height="90"
                                     MinHeight="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"

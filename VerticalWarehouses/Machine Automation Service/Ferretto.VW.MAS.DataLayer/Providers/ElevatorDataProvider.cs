@@ -231,6 +231,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetCyclesFromCalibration(Orientation orientation = Orientation.Horizontal)
+        {
+            lock (this.dataContext)
+            {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(orientation.ToString());
+                }
+                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                return Math.Abs(cycles - axis.LastCalibrationCycles);
+            }
+        }
+
         public IEnumerable<ElevatorAxis> GetElevatorAxes()
         {
             lock (this.dataContext)
@@ -429,6 +443,29 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateLastCalibrationCycles(Orientation orientation = Orientation.Horizontal)
+        {
+            lock (this.dataContext)
+            {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(orientation.ToString());
+                }
+
+                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                axis.LastCalibrationCycles = cycles;
+
+                this.dataContext.SaveChanges();
+
+                this.cache.Remove(GetAxisCacheKey(orientation));
+                if (orientation == Orientation.Horizontal)
+                {
+                    this.NotifyElevatorPositionChanged(useCachedValue: true);
+                }
             }
         }
 

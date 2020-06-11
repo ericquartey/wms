@@ -443,7 +443,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             var compensation = this.elevatorProvider.HorizontalPosition - axis.LastIdealPosition;
             if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
             {
-                this.Logger.LogWarning($"Do not use compensation for large errors {compensation:0.2} > offset {axis.ChainOffset}");
+                this.Logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
                 compensation = 0;
             }
             var switchPosition = profileSteps.Select(s => this.elevatorProvider.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
@@ -456,8 +456,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 $"measure: {measure}; " +
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
-                $"scalingFactor: {scalingFactor:0.4}; " +
-                $"compensation: {compensation:0.2}");
+                $"scalingFactor: {scalingFactor:0.0000}; " +
+                $"compensation: {compensation:0.00}");
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

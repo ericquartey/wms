@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Accessories
                 {
                     var ipAddress = laserPointer.IpAddress;
                     var port = laserPointer.TcpPort;
-                    var xOffset = 0;
+                    var xOffset = laserPointer.XOffset;
                     var yOffset = laserPointer.YOffset;
                     var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
@@ -137,12 +137,10 @@ namespace Ferretto.VW.App.Accessories
         {
             try
             {
+                this.logger.Debug($"OnMissionChangeAsync");
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
-                    var bay = await this.bayManager.GetBayAsync();
-                    if (bay.CurrentMission is null
-                        && this.laserPointerDriver != null
-                        )
+                    if (this.laserPointerDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
                         await this.laserPointerDriver.EnabledAsync(false, false);

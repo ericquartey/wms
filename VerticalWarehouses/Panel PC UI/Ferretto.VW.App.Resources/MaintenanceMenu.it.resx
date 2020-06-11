@@ -126,6 +126,12 @@
   <data name="CompactionDescription" xml:space="preserve">
     <value>Ottimizzazione dello spazio di magazzino</value>
   </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Ci sono manutenzioni scadute</value>
+  </data>
+  <data name="Expiring" xml:space="preserve">
+    <value>Ci sono manutenzioni in scadenza</value>
+  </data>
   <data name="Maintenance" xml:space="preserve">
     <value>Manutenzione</value>
   </data>

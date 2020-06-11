@@ -156,6 +156,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
         {
+            if (inverterIndex == InverterIndex.None)
+            {
+                return ShutterPosition.NotSpecified;
+            }
+
             var inverterStatus = new AglInverterStatus(inverterIndex, this.serviceScopeFactory);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);

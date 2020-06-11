@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Modules.Layout.Presentation;
@@ -26,11 +28,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #endregion
 
+        #region Properties
+
         public ICommand GoToMenuCommand =>
             this.goToMenuCommand
             ??
             (this.goToMenuCommand = new DelegateCommand(
                 this.GoToMenu, this.CanGoToMenu));
+
+        #endregion
 
         #region Methods
 
@@ -45,20 +51,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance<PresentationMachinePowerSwitch>());
             this.States.Add(this.GetInstance<PresentationError>());
             this.States.Add(this.GetInstance<PresentationDebug>());
-        }
-
-        private void GoToMenu()
-        {
-            this.NavigationService.Appear(
-                    nameof(Utils.Modules.Menu),
-                    Utils.Modules.Menu.MAIN_MENU,
-                    data: this.Data,
-                    trackCurrentView: true);
-        }
-
-        private bool CanGoToMenu()
-        {
-            return ScaffolderUserAccesLevel.IsLogged;
         }
 
         public override void UpdateChanges(PresentationChangedMessage presentation)
@@ -110,9 +102,14 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
                     this.Show(PresentationTypes.Theme, false);
-#if DEBUG
-                    this.Show(PresentationTypes.Shutdown, true);
-#endif
+
+                    var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+                    //#if DEBUG
+                    if (!fullscreen)
+                    {
+                        this.Show(PresentationTypes.Shutdown, true);
+                    }
+                    // #endif
                     break;
 
                 case PresentationMode.Menu:
@@ -147,6 +144,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.Help:
                     break;
             }
+        }
+
+        private bool CanGoToMenu()
+        {
+            return ScaffolderUserAccesLevel.IsLogged;
+        }
+
+        private void GoToMenu()
+        {
+            this.NavigationService.Appear(
+                    nameof(Utils.Modules.Menu),
+                    Utils.Modules.Menu.MAIN_MENU,
+                    data: this.Data,
+                    trackCurrentView: true);
         }
 
         #endregion

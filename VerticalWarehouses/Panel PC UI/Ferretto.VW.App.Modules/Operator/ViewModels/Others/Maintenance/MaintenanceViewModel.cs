@@ -104,12 +104,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Valid)
                         {
-                            this.mainteinanceRequest = "Red";
+                            this.mainteinanceRequest = "Green";
                         }
 
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expired)
                         {
-                            this.mainteinanceRequest = "Green";
+                            this.mainteinanceRequest = "Red";
                         }
 
                         if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expiring)
@@ -161,6 +161,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            await this.machineServicingWebService.UpdateServiceStatusAsync();
+
             this.IsBackNavigationAllowed = true;
 
             this.MachineSerial = this.sessionService.MachineIdentity.SerialNumber;
@@ -176,6 +178,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ServicingInfo = lst.ToList();
 
             this.RaisePropertyChanged(nameof(this.ServicingInfo));
+
+            this.SelectedServicingInfo = this.servicingInfo.ElementAtOrDefault(0);
+
+            this.RaisePropertyChanged(nameof(this.SelectedServicingInfo));
         }
 
         protected override void RaiseCanExecuteChanged()

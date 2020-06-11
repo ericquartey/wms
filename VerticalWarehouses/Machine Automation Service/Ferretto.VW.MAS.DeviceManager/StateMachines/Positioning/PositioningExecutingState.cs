@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
                             distance = Math.Abs(this.elevatorProvider.VerticalPosition - this.verticalStartingPosition);
-                            if (distance > 50)
+                            if (distance > 100)
                             {
                                 machineProvider.UpdateVerticalAxisStatistics(distance);
                             }
@@ -946,7 +946,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                         var distance = Math.Abs(this.elevatorProvider.VerticalPosition - this.verticalStartingPosition);
-                        if (distance > 50)
+                        if (distance > 100)
                         {
                             machineProvider.UpdateVerticalAxisStatistics(distance);
                         }

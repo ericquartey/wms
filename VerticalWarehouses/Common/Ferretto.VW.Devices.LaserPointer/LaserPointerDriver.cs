@@ -17,8 +17,6 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public const int PORT_DEFAULT = 2020;
 
-        public const int SPEED_DEFAULT = 100;
-
         private const string NEW_LINE = "\r\n";
 
         private readonly ConcurrentQueue<string> errorsQueue;
@@ -82,24 +80,25 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();loadingUnitWidth: {loadingUnitWidth}, loadingUnitDepth {loadingUnitDepth}");
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentWidth: {compartmentWidth}, compartmentDepth {compartmentDepth}");
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentXPosition: {compartmentXPosition}, compartmentYPosition {compartmentYPosition}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();compartmentXPosition: {compartmentXPosition}, compartmentYPosition {compartmentYPosition}, missionOperationItemHeight {missionOperationItemHeight}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();xOffser: {this.xOffset}, yOffset {this.yOffset}, zOffsetLow {this.zOffsetLowerPosition}, zOffsetUp {this.zOffsetUpperPosition} baySide {baySide} ");
 
-            result.X = (int)((loadingUnitWidth / 2) - compartmentXPosition - (compartmentWidth / 2)) + (int)this.xOffset;
-            result.Y = (int)((loadingUnitDepth / 2) - compartmentYPosition - (compartmentDepth / 2)) + (int)this.yOffset;
+            result.X = (int)Math.Round((loadingUnitWidth / 2) - compartmentXPosition - (compartmentWidth / 2) + this.xOffset);
+            result.Y = -1 * (int)Math.Round((loadingUnitDepth / 2) - compartmentYPosition - (compartmentDepth / 2) + this.yOffset);
 
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();X: {result.X}");
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;CalculateLaserPoint();Y: {result.Y}");
 
             if (baySide == WarehouseSide.Back)
             {
-                result.X = (-1) * result.X;
-                result.Y = (-1) * result.Y;
+                result.X = -1 * result.X;
+                result.Y = -1 * result.Y;
             }
 
             result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
-            result.Z -= (int)missionOperationItemHeight;
+            result.Z -= (int)Math.Round(missionOperationItemHeight);
 
-            result.Speed = SPEED_DEFAULT;
+            result.Speed = LaserPoint.SPEED_DEFAULT;
             return result;
         }
 
@@ -225,7 +224,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             try
             {
-                var request = WebRequest.Create(new Uri("http://" + this.ipAddress.ToString() + "/parameters.txt"));
+                var request = WebRequest.Create(new Uri($"http://{this.IpAddress}/parameters.txt"));
                 request.Timeout = 1000;
                 request.Credentials = CredentialCache.DefaultCredentials;
                 var response = request.GetResponse();

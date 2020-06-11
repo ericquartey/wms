@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -32,9 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IExternalBayProvider externalBayProvider;
 
-        private readonly ISensorsProvider sensorsProvider;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+        private readonly ILogger<LoadingUnitMovementProvider> logger;
 
         private readonly IShutterProvider shutterProvider;
 
@@ -50,10 +49,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
             IErrorsProvider errorsProvider,
-            ISensorsProvider sensorsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            ILogger<LoadingUnitMovementProvider> logger)
             : base(eventAggregator)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
@@ -64,8 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
-            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -77,6 +74,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public double AdjustHeightWithBayChainWeight(double height, double weightUp, double weightDown)
+        {
+            var newHeight = height;
+            if (weightUp > 0 || weightDown > 0)
+            {
+                newHeight -= (0.004 * (weightUp + (weightDown / 4)));
+                this.logger.LogInformation($"Vertical positioning to bay adjusted from {height:0.00} to {newHeight:0.00}. Upper weight {weightUp:0.00}, Down Weight {weightDown:0.00}");
+            }
+            return newHeight;
+        }
 
         public MessageStatus CarouselStatus(NotificationMessage message)
         {
@@ -241,6 +249,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.elevatorProvider.VerticalPosition;
         }
 
+        public int GetCyclesFromCalibration()
+        {
+            return this.elevatorDataProvider.GetCyclesFromCalibration();
+        }
+
         public double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId)
         {
             double? targetPosition = null;
@@ -300,6 +313,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterClosedPosition(Bay bay, LoadingUnitLocation location)
         {
             var closeShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return closeShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
@@ -330,6 +349,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
         {
             var openShutter = ShutterPosition.NotSpecified;
+
+            if (bay.Shutter == null)
+            {
+                return openShutter;
+            }
+
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
@@ -510,11 +535,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)
         {
             try
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
+                this.elevatorProvider.MoveHorizontalAuto(
+                    direction,
+                    !moveToCradle,
+                    loadUnitId,
+                    loadingUnitNetWeight: null,
+                    (moveShutter != ShutterPosition.NotSpecified),
+                    measure,
+                    requestingBay,
+                    sender,
+                    sourceBayPositionId: positionId,
+                    fastDeposit: fastDeposit);
             }
             catch (InvalidOperationException ex)
             {
@@ -670,6 +705,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             try
             {
+                if (targetBayPositionId != null)
+                {
+                    var bay = this.baysDataProvider.GetByBayPositionId(targetBayPositionId.Value);
+                    if (Math.Abs(targetHeight - bay.Positions.FirstOrDefault(p => p.IsUpper)?.Height ?? 0) < 5)
+                    {
+                        targetHeight = this.AdjustHeightWithBayChainWeight(targetHeight,
+                            bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit?.GrossWeight ?? 0,
+                            bay.Positions.FirstOrDefault(p => !p.IsUpper)?.LoadingUnit?.GrossWeight ?? 0);
+                    }
+                }
                 this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                     manualMovment: false,
                     targetHeight,

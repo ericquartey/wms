@@ -9,6 +9,10 @@
     <DefineConstants>CHECK_BAY_SENSOR</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>CHECK_BAY_SENSOR</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="StateMachines\RepetitiveHorizontalMovements\RepetitiveHorizontalMovementsStartOldState.cs" />
   </ItemGroup>

@@ -54,7 +54,7 @@
             <controls:CardSensorShutter Grid.Row="5"
                                         Width="250"
                                         Margin="0,0,15,0"
-                                        Visibility="{Binding MachineService.HasShutter, Converter={StaticResource BTVC}}" />
+                                        Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
         </Grid>
 
         <Grid Grid.Column="1">

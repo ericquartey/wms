@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
@@ -44,6 +45,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             var bayNumber = this.Mission.TargetBay;
+            var fastDeposit = true;
             switch (this.Mission.LoadUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
@@ -58,10 +60,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var baySource = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                         if (baySource != null
+                            && baySource.Shutter != null
                             && baySource.Shutter.Type != ShutterType.NotSpecified
                             )
                         {
-                            var shutterInverter = baySource.Shutter.Inverter.Index;
+                            var shutterInverter = (baySource.Shutter != null) ? baySource.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                             if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
                                 && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
                                 )
@@ -105,6 +108,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                         }
+                        if (!bay.IsFastDepositToBay
+                            && (bay.Carousel == null
+                                || bay.Positions.Any(p => p.IsUpper && p.Location == this.Mission.LoadUnitDestination)
+                                )
+                            )
+                        {
+                            fastDeposit = false;
+                        }
 #endif
                     }
                     break;
@@ -126,7 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogInformation($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition} Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, false, this.Mission.OpenShutterPosition, false, MessageActor.MachineManager, bayNumber, this.Mission.LoadUnitId, null);
+                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, false, this.Mission.OpenShutterPosition, false, MessageActor.MachineManager, bayNumber, this.Mission.LoadUnitId, null, fastDeposit);
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);

@@ -151,6 +151,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis.
+        /// </summary>
+        public static string Axis {
+            get {
+                return ResourceManager.GetString("Axis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -291,6 +300,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayNumberElevatorBay {
             get {
                 return ResourceManager.GetString("BayNumberElevatorBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BayNumber.
+        /// </summary>
+        public static string BayNumberHeader {
+            get {
+                return ResourceManager.GetString("BayNumberHeader", resourceCulture);
             }
         }
         
@@ -664,6 +682,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm row.
+        /// </summary>
+        public static string ConfirmInstruction {
+            get {
+                return ResourceManager.GetString("ConfirmInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm on empty.
         /// </summary>
         public static string ConfirmOnEmpty {
@@ -687,6 +714,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmService {
             get {
                 return ResourceManager.GetString("ConfirmService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to confirm this service?.
+        /// </summary>
+        public static string ConfirmServiceMessage {
+            get {
+                return ResourceManager.GetString("ConfirmServiceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CounterName.
+        /// </summary>
+        public static string CounterName {
+            get {
+                return ResourceManager.GetString("CounterName", resourceCulture);
             }
         }
         
@@ -1484,6 +1529,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator cycles since last maintenance / total.
+        /// </summary>
+        public static string ElevatorCycles {
+            get {
+                return ResourceManager.GetString("ElevatorCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal axle elevator.
         /// </summary>
         public static string ElevatorHorizontalAxis {
@@ -1570,6 +1624,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ExecutableListsRows {
             get {
                 return ResourceManager.GetString("ExecutableListsRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute row.
+        /// </summary>
+        public static string ExecuteRow {
+            get {
+                return ResourceManager.GetString("ExecuteRow", resourceCulture);
             }
         }
         
@@ -1781,6 +1844,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal axis.
+        /// </summary>
+        public static string HorizontalAxis {
+            get {
+                return ResourceManager.GetString("HorizontalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal calibration in progress.
         /// </summary>
         public static string HorizontalCalibration {
@@ -1858,6 +1930,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Instruction {
             get {
                 return ResourceManager.GetString("Instruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row status.
+        /// </summary>
+        public static string InstructionState {
+            get {
+                return ResourceManager.GetString("InstructionState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string InstructionStatus {
+            get {
+                return ResourceManager.GetString("InstructionStatus", resourceCulture);
             }
         }
         
@@ -4180,6 +4270,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis.
+        /// </summary>
+        public static string VerticalAxis {
+            get {
+                return ResourceManager.GetString("VerticalAxis", resourceCulture);
             }
         }
         

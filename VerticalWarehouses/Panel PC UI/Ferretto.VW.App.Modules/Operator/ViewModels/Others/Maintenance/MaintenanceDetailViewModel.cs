@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -17,13 +18,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly Services.IDialogService dialogService;
+
         private readonly IMachineServicingWebService machineServicingWebService;
+
+        private DelegateCommand confirmInstructionCommand;
 
         private DelegateCommand confirmServiceCommand;
 
-        private List<Instruction> instructions;
+        private DelegateCommand executeRowCommand;
+
+        private List<Instruction> instructions = new List<Instruction>();
+
+        private string instructionStatus;
+
+        private int lastInstruction = 0;
 
         private string mainteinanceRequest;
+
+        private Instruction selectedInstruction;
 
         private ServicingInfo service;
 
@@ -33,9 +46,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public MaintenanceDetailViewModel(IMachineServicingWebService machineServicingWebService)
+        public MaintenanceDetailViewModel(
+            IMachineServicingWebService machineServicingWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
         }
 
@@ -43,18 +59,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public ICommand ConfirmInstructionCommand =>
+           this.confirmInstructionCommand
+           ??
+           (this.confirmInstructionCommand = new DelegateCommand(
+              async () => await this.ConfirmInstructionAsync(), this.CanConfirmInstruction));
+
         public ICommand ConfirmServiceCommand =>
-           this.confirmServiceCommand
+                   this.confirmServiceCommand
            ??
            (this.confirmServiceCommand = new DelegateCommand(
               async () => await this.ConfirmServiceAsync(), this.CanConfirmService));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public List<Instruction> Instructions
+        public ICommand ExecuteRowCommand =>
+                           this.executeRowCommand
+           ??
+           (this.executeRowCommand = new DelegateCommand(
+              async () => await this.ExecuteRowAsync(), this.CanExecuteRow));
+
+        public List<Instruction> Instructions => new List<Instruction>(this.instructions);
+
+        public string InstructionStatus
         {
-            get => this.instructions;
-            set => this.SetProperty(ref this.instructions, value);
+            get => this.instructionStatus;
+            set => this.SetProperty(ref this.instructionStatus, value);
         }
 
         public string MainteinanceRequest
@@ -63,34 +93,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.mainteinanceRequest, value);
         }
 
+        public Instruction SelectedInstruction
+        {
+            get => this.selectedInstruction;
+            set
+            {
+                if (this.SetProperty(ref this.selectedInstruction, value, this.RaiseCanExecuteChanged))
+                {
+                    if (this.selectedInstruction != null)
+                    {
+                        this.instructionStatus = this.SetStatusColor(this.selectedInstruction.InstructionStatus);
+
+                        this.RaisePropertyChanged(nameof(this.InstructionStatus));
+                    }
+                }
+            }
+        }
+
         public ServicingInfo Service
         {
             get => this.service;
             set
             {
-                this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged);
-
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Valid)
+                if (this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged))
                 {
-                    this.mainteinanceRequest = "Red";
-                }
+                    this.mainteinanceRequest = this.SetStatusColor(this.service.ServiceStatus);
 
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Expired)
-                {
-                    this.mainteinanceRequest = "Green";
+                    this.RaisePropertyChanged(nameof(this.MainteinanceRequest));
                 }
-
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Expiring)
-                {
-                    this.mainteinanceRequest = "Orange";
-                }
-
-                if (this.service.ServiceStatus == MAS.AutomationService.Contracts.MachineServiceStatus.Completed)
-                {
-                    this.mainteinanceRequest = "White";
-                }
-
-                this.RaisePropertyChanged(nameof(this.MainteinanceRequest));
             }
         }
 
@@ -106,30 +136,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.servicingInfoId = (int)this.Data;
 
-            await this.GetServicingInfo();
+            this.lastInstruction = 0;
 
-            await this.GetGridElement();
+            await this.machineServicingWebService.RefreshDescriptionAsync(this.servicingInfoId);
+
+            await this.GetServicingInfo();
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             this.confirmServiceCommand?.RaiseCanExecuteChanged();
+            this.confirmInstructionCommand?.RaiseCanExecuteChanged();
+            this.executeRowCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
 
-        private bool CanConfirmService()
+        private bool CanConfirmInstruction()
         {
             try
             {
-                if (this.Instructions != null && (this.Instructions.Where(s => s.IsDone && s.IsToDo).Count() == this.Instructions.Count) && this.Service.ServiceStatus != MachineServiceStatus.Completed)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return this.SelectedInstruction != null &&
+                    !this.SelectedInstruction.IsDone &&
+                    this.SelectedInstruction.IsToDo &&
+                    this.SelectedInstruction.InstructionStatus != MachineServiceStatus.Completed;
             }
             catch (Exception)
             {
@@ -137,22 +167,101 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private bool CanConfirmService()
+        {
+            try
+            {
+                return this.Instructions.Any() &&
+                    (this.Instructions.Where(s => !s.IsDone && s.IsToDo).Count() == this.Instructions.Count) &&
+                    this.Service.ServiceStatus != MachineServiceStatus.Completed;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private bool CanExecuteRow()
+        {
+            try
+            {
+                return this.SelectedInstruction != null &&
+                    !this.SelectedInstruction.IsToDo;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async Task ConfirmInstructionAsync()
+        {
+            try
+            {
+                this.lastInstruction = this.selectedInstruction.Id;
+                await this.machineServicingWebService.ConfirmInstructionAsync(this.SelectedInstruction.Id);
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                await this.GetServicingInfo();
+            }
+        }
+
         private async Task ConfirmServiceAsync()
         {
             try
             {
-                await this.machineServicingWebService.ConfirmServiceAsync();
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.lastInstruction = this.selectedInstruction.Id;
+                    await this.machineServicingWebService.ConfirmServiceAsync();
+                }
             }
             catch (Exception)
             {
             }
         }
 
-        private async Task GetGridElement()
+        private async Task ExecuteRowAsync()
         {
             try
             {
-                this.Instructions = this.Service.Instructions.ToList();
+                this.lastInstruction = this.selectedInstruction.Id;
+                await this.machineServicingWebService.SetIsToDoAsync(this.SelectedInstruction.Id);
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                await this.GetServicingInfo();
+            }
+        }
+
+        private void GetGridElement()
+        {
+            try
+            {
+                this.instructions = this.Service.Instructions.ToList();
+                this.RaisePropertyChanged(nameof(this.Instructions));
+
+                if (this.instructions != null)
+                {
+                    if (this.lastInstruction == this.instructions.FirstOrDefault().Id || this.lastInstruction == 0)
+                    {
+                        this.SelectedInstruction = this.instructions.ElementAtOrDefault(this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
+                    else
+                    {
+                        this.SelectedInstruction = this.instructions.FirstOrDefault(s => s.Id == this.lastInstruction);
+                        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
+                    }
+                }
             }
             catch (Exception)
             {
@@ -164,9 +273,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.Service = await this.machineServicingWebService.GetByIdAsync(this.servicingInfoId);
+
+                this.GetGridElement();
             }
             catch (Exception)
             {
+            }
+        }
+
+        private string SetStatusColor(MachineServiceStatus status)
+        {
+            switch (status)
+            {
+                case MachineServiceStatus.Valid:
+                    return "Green";
+
+                case MachineServiceStatus.Expired:
+                    return "Red";
+
+                case MachineServiceStatus.Expiring:
+                    return "Orange";
+
+                case MachineServiceStatus.Completed:
+                    return "White";
+
+                default:
+                    return "Transparent";
             }
         }
 

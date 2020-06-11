@@ -671,7 +671,8 @@
                                     Width="230"
                                     Height="90"
                                     MinHeight="90"
-                                    Margin="0,15,15,0" />
+                                    Margin="0,15,15,0"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"

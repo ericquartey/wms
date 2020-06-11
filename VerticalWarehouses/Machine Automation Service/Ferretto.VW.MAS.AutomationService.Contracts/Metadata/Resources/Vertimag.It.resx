@@ -186,6 +186,9 @@
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>Esterna</value>
   </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Deposito veloce in baia</value>
+  </data>
   <data name="Bay_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
   </data>
@@ -330,8 +333,20 @@
   <data name="Machine_CategoryDescription" xml:space="preserve">
     <value>Permette di modificare i parametri strutturali della macchina.</value>
   </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Anticipo % di scadenza dei contatori delle manutenzioni</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Anticipo di scadenza dei giorni delle manutenzioni</value>
+  </data>
   <data name="Machine_Height" xml:space="preserve">
     <value>Altezza</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Cicli dell'asse orizzontale per la calibrazione</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Posizione dell'asse orizzontale per la calibrazione</value>
   </data>
   <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
     <value>Altezza massima cassetto</value>

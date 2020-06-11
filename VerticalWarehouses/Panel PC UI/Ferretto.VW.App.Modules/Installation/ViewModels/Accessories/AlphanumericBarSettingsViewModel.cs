@@ -219,14 +219,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.Data is BayAccessories bayAccessories)
                 {
-                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew;
-
                     this.IsWaitingForResponse = true;
 
                     this.IsAccessoryEnabled = bayAccessories.AlphaNumericBar.IsEnabledNew;
                     this.IpAddress = bayAccessories.AlphaNumericBar.IpAddress;
                     this.Port = bayAccessories.AlphaNumericBar.TcpPort;
                     this.Size = bayAccessories.AlphaNumericBar.Size;
+                    this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
 
@@ -326,10 +325,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+
                 if (this.deviceDriver.TestEnabled)
                 {
                     await this.deviceDriver.TestAsync(false);
                 }
+
+                await this.deviceDriver.EnabledAsync(false);
 
                 return await this.deviceDriver.SetAndWriteMessageAsync(message, offset, true);
             }

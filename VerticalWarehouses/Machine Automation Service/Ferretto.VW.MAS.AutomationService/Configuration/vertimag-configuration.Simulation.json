@@ -63,13 +63,11 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 3,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
           "Speed": 140.0
         },
         "Inverter": {
@@ -125,13 +123,11 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 3,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
           "Speed": 140.0
         },
         "IoDevice": {
@@ -238,6 +234,7 @@
             //]
           },
           "LastIdealPosition": 1970.0,
+          "LastCalibrationCycles": 0,
           "LowerBound": 350.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -284,6 +281,7 @@
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
+          "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
           "LowerBound": 0.0,
           "ManualMovements": {
