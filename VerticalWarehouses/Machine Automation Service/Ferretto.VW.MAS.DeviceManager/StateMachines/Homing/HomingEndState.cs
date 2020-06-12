@@ -131,7 +131,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
                 {
-                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                    var machineVolatileDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                    var bayChainPosition = machineVolatileDataProvider.GetBayEncoderPosition(this.machineData.TargetBay);
+                    var baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                    baysDataProvider.UpdateLastIdealPosition(bayChainPosition, this.machineData.RequestingBay);
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.Horizontal)
                 {

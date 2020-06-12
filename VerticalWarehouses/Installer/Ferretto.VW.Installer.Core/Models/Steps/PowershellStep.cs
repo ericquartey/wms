@@ -15,7 +15,16 @@ namespace Ferretto.VW.Installer.Core
 
         #region Constructors
 
-        public PowershellStep(int number, string title, string description, string rollbackScript, string script, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
+        public PowershellStep(
+            int number,
+            string title,
+            string description,
+            string rollbackScript,
+            string script,
+            string log,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume)
             : base(number, title, description, rollbackScript, script, log, machineRole, setupMode, skipOnResume)
         {
         }
@@ -48,19 +57,17 @@ namespace Ferretto.VW.Installer.Core
 
             try
             {
-                using (var shell = PowerShell.Create())
-                {
-                    shell.AddScript(command);
+                using var shell = PowerShell.Create();
+                shell.AddScript(command);
 
-                    var output = new PSDataCollection<PSObject>();
-                    output.DataAdded += (object snd, DataAddedEventArgs evt) => this.output_DataAdded(snd, evt, shell);
-                    var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
-                    if (shell.HadErrors)
-                    {
-                        this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
-                        this.LogError("Errors encountered while running the script.");
-                        return false;
-                    }
+                using var output = new PSDataCollection<PSObject>();
+                output.DataAdded += (object snd, DataAddedEventArgs evt) => this.OnDataAdded(snd, evt, shell);
+                var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
+                if (shell.HadErrors)
+                {
+                    this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
+                    this.LogError("Errors encountered while running the script.");
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -73,8 +80,7 @@ namespace Ferretto.VW.Installer.Core
             return true;
         }
 
-
-        void output_DataAdded(object snd, DataAddedEventArgs evt, PowerShell shell)
+        private void OnDataAdded(object snd, DataAddedEventArgs evt, PowerShell shell)
         {
             var col = (PSDataCollection<PSObject>)snd;
             var rsl = col.ReadAll();

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -32,35 +31,39 @@ namespace Ferretto.VW.Installer.Core
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly string stepsFileName;
+
         private Step activeStep;
 
         private bool isRollbackInProgress;
+
+        private bool isStartedFromSnapShot;
+
+        private MachineRole machineRole;
 
         private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
 
-        private IPAddress ppcIpAddress;
-
         private string masVersion;
 
-        private OperationMode operationMode;
+        private OperationStage operationMode;
 
         private string panelPcVersion;
 
-        private string softwareVersion;
+        private IPAddress ppcIpAddress;
 
         private SetupMode setupMode;
 
-        private MachineRole machineRole;
+        private string softwareVersion;
 
-        private readonly string fileName;
+        #endregion
 
-        private bool isStartedFromSnapShot;
+        #region Constructors
 
         public InstallationService(string fileName)
         {
-            this.fileName = fileName;
+            this.stepsFileName = fileName;
         }
 
         #endregion
@@ -85,24 +88,17 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
         }
 
-        [JsonIgnore]
-        public MAS.DataModels.VertimagConfiguration MasConfiguration => this.masConfiguration;
-
-        [JsonIgnore]
-        public IPAddress MasIpAddress => this.masIpAddress;
-
-        public SetupMode SetupMode
-        {
-            get => this.setupMode;
-            private set => this.SetProperty(ref this.setupMode, value);
-        }
-
         public MachineRole MachineRole
         {
             get => this.machineRole;
             private set => this.SetProperty(ref this.machineRole, value);
         }
 
+        [JsonIgnore]
+        public MAS.DataModels.VertimagConfiguration MasConfiguration => this.masConfiguration;
+
+        [JsonIgnore]
+        public IPAddress MasIpAddress => this.masIpAddress;
 
         public string MasVersion
         {
@@ -110,7 +106,7 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.masVersion, value);
         }
 
-        public OperationMode OperationMode
+        public OperationStage OperationStage
         {
             get => this.operationMode;
             private set => this.SetProperty(ref this.operationMode, value);
@@ -120,6 +116,12 @@ namespace Ferretto.VW.Installer.Core
         {
             get => this.panelPcVersion;
             private set => this.SetProperty(ref this.panelPcVersion, value);
+        }
+
+        public SetupMode SetupMode
+        {
+            get => this.setupMode;
+            private set => this.SetProperty(ref this.setupMode, value);
         }
 
         public string SoftwareVersion
@@ -163,6 +165,55 @@ namespace Ferretto.VW.Installer.Core
             return true;
         }
 
+        public void GetInfoFromSnapShot()
+        {
+            try
+            {
+                this.isStartedFromSnapShot = true;
+                var stepsJsonFile = File.ReadAllText(this.stepsFileName);
+                var parsedObject = JObject.Parse(stepsJsonFile);
+                this.IsRollbackInProgress = (bool)parsedObject[nameof(this.IsRollbackInProgress)].ToObject<bool>();
+                this.SetupMode = (SetupMode)parsedObject[nameof(this.SetupMode)].ToObject<SetupMode>();
+            }
+            catch (Exception ex)
+            {
+                var msg = $" Unable to read/assign data from Snapshot file \"{this.stepsFileName}\"";
+                this.logger.Error(ex, msg);
+                throw new InvalidOperationException(msg);
+            }
+        }
+
+        public void GetInstallerParameters()
+        {
+            try
+            {
+                this.masIpAddress = null;
+                this.ppcIpAddress = null;
+
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var masIpAddress = config.AppSettings.Settings["Install:Parameter:MasIpaddress"].Value;
+                if (!string.IsNullOrEmpty(masIpAddress)
+                    &&
+                    IPAddress.TryParse(masIpAddress.ToString(), out var masIpAddressFound))
+                {
+                    this.masIpAddress = masIpAddressFound;
+                }
+
+                var ppcIpAddress = config.AppSettings.Settings["Install:Parameter:PpcIpaddress"].Value;
+                if (!string.IsNullOrEmpty(ppcIpAddress)
+                  &&
+                  IPAddress.TryParse(ppcIpAddress.ToString(), out var ppcIpAddressFound))
+                {
+                    this.ppcIpAddress = ppcIpAddressFound;
+                }
+            }
+            catch (Exception)
+            {
+                this.masIpAddress = null;
+                this.ppcIpAddress = null;
+            }
+        }
+
         public Step GetNextStepToExecute()
         {
             return this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
@@ -170,12 +221,35 @@ namespace Ferretto.VW.Installer.Core
 
         public void LoadMasVersion()
         {
-            this.MasVersion = this.GetVersion("../panelpc_app/properties/app.manifest");
+            this.MasVersion = this.GetVersionFromManifest("../panelpc_app/properties/app.manifest");
         }
 
         public void LoadPanelPcVersion()
         {
-            this.PanelPcVersion = this.GetVersion("../automation_service/properties/app.manifest");
+            this.PanelPcVersion = this.GetVersionFromManifest("../automation_service/properties/app.manifest");
+        }
+
+        public void LoadSteps()
+        {
+            this.logger.Debug($"Loading execution steps from '{Path.Combine(Directory.GetCurrentDirectory(), this.stepsFileName)}' ...");
+            try
+            {
+                var stepsJsonFile = File.ReadAllText(this.stepsFileName);
+                var serviceAnon = new { Steps = Array.Empty<Step>() };
+                serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
+                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any || ((this.setupMode == SetupMode.Update || this.setupMode == SetupMode.Restore) && s.SetupMode == SetupMode.UpdateAndRestore))
+                                                          &&
+                                                          (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
+                                                          .OrderBy(s => s.Number).ToArray();
+
+                this.logger.Debug($"Steps loaded (total: {this.Steps.Count()}).");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"Error loading steps from file.");
+                throw new InvalidOperationException(
+                                  $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
+            }
         }
 
         public async Task RunAsync()
@@ -252,15 +326,52 @@ namespace Ferretto.VW.Installer.Core
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
+        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
+        {
+            try
+            {
+                File.WriteAllText(configurationFilePath, fileContents);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Error wrting configuration file \"{configurationFilePath}\"";
+                this.logger.Error(ex, msg);
+                throw new InvalidOperationException(msg);
+            }
+        }
+
+        public void SetArgsStartup()
+        {
+            var args = Environment.GetCommandLineArgs();
+            foreach (var arg in args)
+            {
+                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
+                {
+                    this.logger.Info("Application launched as 'update' mode.");
+                    this.SetupMode = SetupMode.Update;
+                }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == RESTOREARG)
+                {
+                    this.logger.Info("Application launched as 'restore' mode.");
+                    this.SetupMode = SetupMode.Restore;
+                }
+                else
+                {
+                    this.logger.Info("Application launched as 'install' mode.");
+                    this.SetupMode = SetupMode.Install;
+                }
+            }
+        }
+
         public void SetConfiguration(IPAddress masIpAddress, MAS.DataModels.VertimagConfiguration masConfiguration)
         {
             this.masIpAddress = masIpAddress;
             this.masConfiguration = masConfiguration;
         }
 
-        public void SetOperation(OperationMode operationMode)
+        public void SetStage(OperationStage stage)
         {
-            this.OperationMode = operationMode;
+            this.OperationStage = stage;
         }
 
         public void Start()
@@ -271,20 +382,25 @@ namespace Ferretto.VW.Installer.Core
 
             if (this.isStartedFromSnapShot)
             {
-                this.OperationMode = OperationMode.Update;
+                this.OperationStage = OperationStage.Update;
                 return;
             }
 
             if (this.setupMode == SetupMode.Install)
             {
-                this.OperationMode = OperationMode.ImstallType;
+                this.OperationStage = OperationStage.RoleSelection;
             }
             else if (this.setupMode == SetupMode.Update
                      ||
                      this.setupMode == SetupMode.Restore)
             {
-                this.OperationMode = OperationMode.Update;
+                this.OperationStage = OperationStage.Update;
             }
+        }
+
+        public void UpdateMachineRole()
+        {
+            this.MachineRole = (this.masIpAddress.Equals(this.ppcIpAddress)) ? MachineRole.Master : MachineRole.Slave;
         }
 
         private void CheckToSkipCurrentStartingStep()
@@ -307,31 +423,33 @@ namespace Ferretto.VW.Installer.Core
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
         }
 
-        private string GetVersion(string fullPath)
+        private string GetVersionFromManifest(string fullPath)
         {
+            this.logger.Debug($"Retrieving software version from manifest '{fullPath}' ...");
             try
             {
-                using (var reader = new StreamReader(fullPath))
+                using var reader = new StreamReader(fullPath);
+                using var xmlReader = XmlReader.Create(reader);
+                while (xmlReader.Read())
                 {
-                    using (var xmlReader = XmlReader.Create(reader))
+                    if (xmlReader.NodeType == XmlNodeType.Element
+                        &&
+                        xmlReader.Name == "assemblyIdentity")
                     {
-                        while (xmlReader.Read())
+                        if (xmlReader.HasAttributes)
                         {
-                            if (xmlReader.NodeType == XmlNodeType.Element
-                                &&
-                                xmlReader.Name == "assemblyIdentity")
-                            {
-                                if (xmlReader.HasAttributes)
-                                {
-                                    return xmlReader.GetAttribute("version");
-                                }
-                            }
+                            var version = xmlReader.GetAttribute("version");
+
+                            this.logger.Debug($"Found software version '{version}'.");
+
+                            return version;
                         }
                     }
                 }
             }
             catch
             {
+                this.logger.Error("Could not retrieve software version.");
             }
 
             return null;
@@ -339,7 +457,7 @@ namespace Ferretto.VW.Installer.Core
 
         private void LoadSoftwareVersion()
         {
-            this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
+            this.SoftwareVersion = this.GetVersionFromManifest("./properties/app.manifest");
         }
 
         private void RaiseInstallationFinished(bool success)
@@ -355,117 +473,6 @@ namespace Ferretto.VW.Installer.Core
             {
                 throw new InvalidOperationException(
                     $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
-            }
-        }
-
-        public void SetArgsStartup()
-        {
-            var args = Environment.GetCommandLineArgs();
-            foreach (var arg in args)
-            {
-                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
-                {
-                    this.SetupMode = SetupMode.Update;
-                }
-                else if (arg.ToLower(CultureInfo.InvariantCulture) == RESTOREARG)
-                {
-                    this.SetupMode = SetupMode.Restore;
-                }
-                else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
-                {
-                    this.SetupMode = SetupMode.Install;
-                }
-            }
-        }
-
-        public void UpdateMachineRole()
-        {
-            this.MachineRole = (this.masIpAddress.Equals(this.ppcIpAddress)) ? MachineRole.Master : MachineRole.Slave;
-        }
-
-        public void GetInstallerParameters()
-        {
-            try
-            {
-                this.masIpAddress = null;
-                this.ppcIpAddress = null;
-
-                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var masIpAddress = config.AppSettings.Settings["Install:Parameter:MasIpaddress"].Value;
-                if (!string.IsNullOrEmpty(masIpAddress)
-                    &&
-                    IPAddress.TryParse(masIpAddress.ToString(), out var masIpAddressFound))
-                {
-                    this.masIpAddress = masIpAddressFound;
-                }
-
-                var ppcIpAddress = config.AppSettings.Settings["Install:Parameter:PpcIpaddress"].Value;
-                if (!string.IsNullOrEmpty(ppcIpAddress)
-                  &&
-                  IPAddress.TryParse(ppcIpAddress.ToString(), out var ppcIpAddressFound))
-                {
-                    this.ppcIpAddress = ppcIpAddressFound;
-                }
-            }
-            catch (Exception)
-            {
-                this.masIpAddress = null;
-                this.ppcIpAddress = null;
-            }
-        }
-
-
-
-        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
-        {
-            try
-            {
-                File.WriteAllText(configurationFilePath, fileContents);
-            }
-            catch (Exception ex)
-            {
-                var msg = $" Error wrting configuration file \"{configurationFilePath}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
-        }
-
-        public void GetInfoFromSnapShot()
-        {
-            try
-            {
-                this.isStartedFromSnapShot = true;
-                var stepsJsonFile = File.ReadAllText(this.fileName);
-                var parsedObject = JObject.Parse(stepsJsonFile);
-                this.IsRollbackInProgress = (bool)parsedObject[nameof(this.IsRollbackInProgress)].ToObject<bool>();
-                this.SetupMode = (SetupMode)parsedObject[nameof(this.SetupMode)].ToObject<SetupMode>();
-            }
-            catch (Exception ex)
-            {
-                var msg = $" Unable to read/assign data from Snapshot file \"{this.fileName}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
-        }
-
-
-        public void LoadSteps()
-        {
-            try
-            {
-                var stepsJsonFile = File.ReadAllText(this.fileName);
-                var serviceAnon = new { Steps = Array.Empty<Step>() };
-                serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any || ((this.setupMode == SetupMode.Update || this.setupMode == SetupMode.Restore) && s.SetupMode == SetupMode.UpdateAndRestore))
-                                                          &&
-                                                          (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
-                                                          .OrderBy(s => s.Number).ToArray();
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex, $" Error loading steps {Directory.GetCurrentDirectory()}");
-                throw new InvalidOperationException(
-                                  $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
             }
         }
 

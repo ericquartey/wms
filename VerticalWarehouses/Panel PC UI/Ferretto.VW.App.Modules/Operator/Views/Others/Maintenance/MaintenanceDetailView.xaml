@@ -293,19 +293,22 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmServiceCommand}"
-                                Content="{res:Loc OperatorApp.ConfirmService}" />
+                                Content="{res:Loc OperatorApp.ConfirmService}"
+                                Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Margin="0,15,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmInstructionCommand}"
-                                Content="{res:Loc OperatorApp.ConfirmInstruction}" />
+                                Content="{res:Loc OperatorApp.ConfirmInstruction}"
+                                Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Margin="0,15,10,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Command="{Binding ExecuteRowCommand}"
-                                Content="{res:Loc OperatorApp.ExecuteRow}" />
+                                Content="{res:Loc OperatorApp.ExecuteRow}"
+                                Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
         </Grid>
 
     </Grid>

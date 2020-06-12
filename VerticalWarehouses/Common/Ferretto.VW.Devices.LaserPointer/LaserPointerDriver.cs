@@ -17,8 +17,6 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public const int PORT_DEFAULT = 2020;
 
-        public const int SPEED_DEFAULT = 100;
-
         private const string NEW_LINE = "\r\n";
 
         private readonly ConcurrentQueue<string> errorsQueue;
@@ -100,7 +98,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
             result.Z -= (int)Math.Round(missionOperationItemHeight);
 
-            result.Speed = SPEED_DEFAULT;
+            result.Speed = LaserPoint.SPEED_DEFAULT;
             return result;
         }
 

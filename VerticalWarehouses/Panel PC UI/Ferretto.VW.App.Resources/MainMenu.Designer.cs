@@ -142,6 +142,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movements.
+        /// </summary>
+        public static string Movements {
+            get {
+                return ResourceManager.GetString("Movements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MOVE.
+        /// </summary>
+        public static string MovementsAbbreviation {
+            get {
+                return ResourceManager.GetString("MovementsAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor status, machine reset, more.
+        /// </summary>
+        public static string MovementsDescription {
+            get {
+                return ResourceManager.GetString("MovementsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picking.
         /// </summary>
         public static string Operation {

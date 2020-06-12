@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
@@ -15,8 +16,8 @@ namespace Ferretto.VW.Installer.Core
                 throw new ArgumentNullException(nameof(script));
             }
 
-            this.Script = script;
-            this.RollbackScript = rollbackScript;
+            this.Script = LoadScript(script);
+            this.RollbackScript = LoadScript(rollbackScript);
         }
 
         #endregion
@@ -58,6 +59,16 @@ namespace Ferretto.VW.Installer.Core
         }
 
         protected abstract Task<bool> TryRunCommandlineAsync(string command);
+
+        private static string LoadScript(string script)
+        {
+            if (File.Exists(script))
+            {
+                return File.ReadAllText(script);
+            }
+
+            return script;
+        }
 
         #endregion
     }
