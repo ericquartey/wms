@@ -288,7 +288,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         // Carousel bay movement
-                        newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        if (this.Mission.MissionType == MissionType.Manual)
+                        {
+                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                        else
+                        {
+                            newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
                     }
                 }
             }
