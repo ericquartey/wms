@@ -178,11 +178,11 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FirstCellCeck.
+        ///   Looks up a localized string similar to FirstCellCheck.
         /// </summary>
-        public static string FirstCellCeck {
+        public static string FirstCellCheck {
             get {
-                return ResourceManager.GetString("FirstCellCeck", resourceCulture);
+                return ResourceManager.GetString("FirstCellCheck", resourceCulture);
             }
         }
         
