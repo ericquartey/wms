@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -42,6 +43,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int servicingInfoId = 0;
 
+        private ISessionService sessionService;
+
+        private bool isOperator;
+
         #endregion
 
         #region Constructors
@@ -53,6 +58,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
         }
 
         #endregion
@@ -86,6 +92,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.instructionStatus;
             set => this.SetProperty(ref this.instructionStatus, value);
         }
+
+        public bool IsOperator
+        {
+            get => this.isOperator;
+            set => this.SetProperty(ref this.isOperator, value);
+        }
+
 
         public string MainteinanceRequest
         {
@@ -131,6 +144,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.isOperator = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+
+            this.RaisePropertyChanged(nameof(this.IsOperator));
 
             this.IsBackNavigationAllowed = true;
 
