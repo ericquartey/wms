@@ -1,12 +1,12 @@
 ﻿namespace Ferretto.VW.Installer.Core
 {
-    public enum OperationMode
+    public enum OperationStage
     {
         None,
 
-        ImstallType,
+        RoleSelection,
 
-        InstallBay,
+        BaySelection,
 
         Update
     }

@@ -7,98 +7,31 @@ namespace Ferretto.VW.Installer
     {
         #region Fields
 
-        private const string InstallRootPath = "Install:Root:Path";
-
-        private const string UpdateTempPath = "Update:Temp:Path";
-
         private const string InstallBay1Ipaddress = "Install:Bay1:Ipaddress";
 
         private const string InstallBay2Ipaddress = "Install:Bay2:Ipaddress";
 
         private const string InstallBay3Ipaddress = "Install:Bay3:Ipaddress";
 
-        private const string InstallDefaultMasIpaddressName = "Install:Default:MasIpaddress";
+        private const string InstallDefaultMasIpAddressName = "Install:Default:MasIpaddress";
 
-        private const string InstallDefaultMasIpportName = "Install:Default:MasIpport";
+        private const string InstallDefaultMasIpPortName = "Install:Default:MasIpport";
 
-        private const string InstallPpcPath = "Install:PPC:Path";
+        private const string InstallerDirNameKey = "Installer:DirName";
 
-        private const string InstallPpcFilePath = "Install:PPC:FilePath";
+        private const string InstallRootPath = "Install:Root:Path";
 
+        private const string MasDirNameKey = "MAS:DirName";
 
-        private const string InstallMasPath = "Install:MAS:Path";
+        private const string PpcDirNameKey = "PPC:DirName";
+
+        private const string PpcFileNameKey = "PPC:FileName";
+
+        private const string UpdateTempPath = "Update:Temp:Path";
 
         #endregion
 
         #region Methods
-
-        public static string GetIGetInstallPpcFilePath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                return appSettings.Get(InstallPpcFilePath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{InstallPpcFilePath}' is not specified or invalid.", ex);
-            }
-        }
-
-        public static string GetInstallPpcPath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                return appSettings.Get(InstallPpcPath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{InstallPpcPath}' is not specified or invalid.", ex);
-            }
-        }
-
-        public static string GetInstallRootPath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                return appSettings.Get(InstallRootPath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{InstallRootPath}' is not specified or invalid.", ex);
-            }
-        }
-
-        public static string GetUpdateTempPath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                return appSettings.Get(UpdateTempPath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{UpdateTempPath}' is not specified or invalid.", ex);
-            }
-        }
 
         public static string GetInstallBay1Ipaddress(this NameValueCollection appSettings)
         {
@@ -160,11 +93,11 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                return appSettings.Get(InstallDefaultMasIpaddressName);
+                return appSettings.Get(InstallDefaultMasIpAddressName);
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration key '{InstallDefaultMasIpaddressName}' is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{InstallDefaultMasIpAddressName}' is not specified or invalid.", ex);
             }
         }
 
@@ -177,15 +110,15 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                return appSettings.Get(InstallDefaultMasIpportName);
+                return appSettings.Get(InstallDefaultMasIpPortName);
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration key '{InstallDefaultMasIpportName}' is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{InstallDefaultMasIpPortName}' is not specified or invalid.", ex);
             }
         }
 
-        public static string GetInstallMasPath(this NameValueCollection appSettings)
+        public static string GetInstallerDirName(this NameValueCollection appSettings)
         {
             if (appSettings is null)
             {
@@ -194,11 +127,96 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                return appSettings.Get(InstallMasPath);
+                return appSettings.Get(InstallerDirNameKey);
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration key '{InstallMasPath}' is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{InstallerDirNameKey}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetInstallRootPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(InstallRootPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{InstallRootPath}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetMasDirName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(MasDirNameKey);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{MasDirNameKey}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetPpcDirName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(PpcDirNameKey);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{PpcDirNameKey}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetPpcFileName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(PpcFileNameKey);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{PpcFileNameKey}' is not specified or invalid.", ex);
+            }
+        }
+
+        public static string GetUpdateTempPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(UpdateTempPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{UpdateTempPath}' is not specified or invalid.", ex);
             }
         }
 

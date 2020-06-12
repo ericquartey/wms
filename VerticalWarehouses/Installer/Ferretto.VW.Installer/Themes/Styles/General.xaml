@@ -1,31 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
-                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
-    <sys:Double x:Key="PpcButtonWidth">160</sys:Double>
-    <sys:Double x:Key="PpcButtonHeight">60</sys:Double>
-
-    <sys:Double x:Key="PpcButtonHomeWidth">250</sys:Double>
-    <sys:Double x:Key="PpcButtonHomeHeight">150</sys:Double>
-
-    <sys:Double x:Key="FontSize_Very_Small">10</sys:Double>
+    <sys:Double x:Key="FontSize_ExtraSmall">12</sys:Double>
     <sys:Double x:Key="FontSize_Small">14</sys:Double>
     <sys:Double x:Key="FontSize_Normal">16</sys:Double>
-    <sys:Double x:Key="FontSize_High">18</sys:Double>
-    <sys:Double x:Key="FontSize_Very_High">28</sys:Double>
-
-    <CornerRadius x:Key="PpcCornerRadius"
-                  BottomLeft="0"
-                  BottomRight="0"
-                  TopLeft="0"
-                  TopRight="0" />
-
-    <Thickness x:Key="PpcBorderThickness"
-               Bottom="2"
-               Left="2"
-               Right="2"
-               Top="2" />
+    <sys:Double x:Key="FontSize_Large">18</sys:Double>
+    <sys:Double x:Key="FontSize_ExtraLarge">28</sys:Double>
 
 </ResourceDictionary>

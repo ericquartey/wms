@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Ferretto.VW.Installer.Converters">
+
+    <converters:BoolToVisibilityConverter x:Key="BTVC" />
+    <converters:BoolToVisibilityConverter x:Key="BTVIC"
+                                          Invert="True" />
+    <converters:BoolToVisibilityConverter x:Key="BTVHC"
+                                          Hide="True" />
+    <converters:BooleanNegationConverter x:Key="BNC" />
+    <converters:BusyToCursorConverter x:Key="BTCC" />
+    <converters:BusyToCursorConverter x:Key="BTCIC"
+                                      Invert="True" />
+
+    <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
+    <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                               Invert="True" />
+
+    <converters:StatusToIconNameConverter x:Key="STIC" />
+    <converters:StatusToColorConverter x:Key="STCC" />
+    <converters:TimespanConverter x:Key="TSC" />
+    <converters:StatusToFocusableConverter x:Key="STFC" />
+    <converters:InProgressToVisibilityConverter x:Key="IPTVC" />
+    <converters:StatusToStringConverter x:Key="STSC" />
+
+    <converters:IPAddressToStringConverter x:Key="IPATSC" />
+
+</ResourceDictionary>
