@@ -5002,6 +5002,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator.
+        /// </summary>
+        public static string Operator {
+            get {
+                return ResourceManager.GetString("Operator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical axis origin.
         /// </summary>
         public static string OriginVerticalAxis {

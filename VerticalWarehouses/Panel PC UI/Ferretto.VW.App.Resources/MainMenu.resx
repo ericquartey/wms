@@ -144,6 +144,15 @@
   <data name="MaintenanceDescription" xml:space="preserve">
     <value>Maintenance, compact drawers, update</value>
   </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Movements</value>
+  </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>MOVE</value>
+  </data>
+  <data name="MovementsDescription" xml:space="preserve">
+    <value>Sensor status, machine reset, more</value>
+  </data>
   <data name="Operation" xml:space="preserve">
     <value>Picking</value>
   </data>

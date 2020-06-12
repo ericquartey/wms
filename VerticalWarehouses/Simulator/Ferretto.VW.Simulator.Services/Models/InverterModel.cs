@@ -1050,7 +1050,14 @@ namespace Ferretto.VW.Simulator.Services.Models
                     }
                 }
 
-                this.AxisPosition = 0;
+                if (this.InverterRole > InverterRole.ElevatorChain)
+                {
+                    this.AxisPosition = this.Machine.Bays.FirstOrDefault(b => b.Carousel != null).ChainOffset;
+                }
+                else
+                {
+                    this.AxisPosition = 0;
+                }
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }

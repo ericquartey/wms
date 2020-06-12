@@ -2711,4 +2711,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CheckSerialPorts" xml:space="preserve">
     <value>Check serial ports</value>
   </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
 </root>

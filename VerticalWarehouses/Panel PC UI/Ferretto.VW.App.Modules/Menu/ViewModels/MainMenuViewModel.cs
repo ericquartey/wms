@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuMaintenanceCommand;
 
+        private DelegateCommand menuMovementsCommand;
+
         private DelegateCommand menuOperationCommand;
 
         #endregion
@@ -68,6 +70,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Installation,
 
             About,
+
+            Movements,
         }
 
         #endregion
@@ -103,6 +107,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
+                this.CanExecuteCommand));
+
+        public ICommand MenuMovementsCommand =>
+            this.menuMovementsCommand
+            ??
+            (this.menuMovementsCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Movements),
                 this.CanExecuteCommand));
 
         public ICommand MenuOperationCommand =>
@@ -150,6 +161,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuInstalationCommand?.RaiseCanExecuteChanged();
             this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
             this.menuOperationCommand?.RaiseCanExecuteChanged();
+            this.menuMovementsCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.MachineIdentity));
             this.RaisePropertyChanged(nameof(this.BayNumber));
@@ -194,6 +206,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.About.GENERAL,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.Movements:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.MOVEMENTS,
                             data: null,
                             trackCurrentView: true);
                         break;

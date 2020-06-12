@@ -434,6 +434,16 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="PpcButtonOperatorTabStyle"
+           BasedOn="{StaticResource PpcButtonTabStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="PpcButtonStopStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">

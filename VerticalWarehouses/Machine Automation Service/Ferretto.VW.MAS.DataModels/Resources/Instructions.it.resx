@@ -156,8 +156,8 @@
   <data name="ElectricalComponentsCheck" xml:space="preserve">
     <value>ElectricalComponentsCheck</value>
   </data>
-  <data name="FirstCellCeck" xml:space="preserve">
-    <value>FirstCellCeck</value>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>FirstCellCheck</value>
   </data>
   <data name="GuidesCheck" xml:space="preserve">
     <value>GuidesCheck</value>
