@@ -240,7 +240,7 @@
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding Service.ServiceStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                         ContentText="{Binding Service.ServiceStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, Converter={StaticResource MSSEC}}"
                                          LabelText="{Resources:Loc OperatorApp.MaintenanceMainPageStateMachine}" />
             </Grid>
 
