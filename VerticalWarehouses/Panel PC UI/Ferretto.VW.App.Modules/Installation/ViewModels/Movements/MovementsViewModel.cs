@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToMovementsManualCommand;
 
+        private DelegateCommand goToOperatorCommand;
+
         private DelegateCommand goToStatusSensorsCommand;
 
         private SubscriptionToken homingToken;
@@ -153,6 +155,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.GoToMovementsExecuteCommand(false),
                 this.CanGoToMovementsManualExecuteCommand));
 
+        public ICommand GoToOperatorCommand =>
+            this.goToOperatorCommand
+            ??
+            (this.goToOperatorCommand = new DelegateCommand(
+                () => this.GoToOperatorExecuteCommand(this.IsOperator),
+                this.CanGoToMovementsManualExecuteCommand));
+
         public ICommand GoToStatusSensorsCommand =>
             this.goToStatusSensorsCommand
             ??
@@ -196,9 +205,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isExternalBayMoving, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsMovementsGuided => this.isMovementsGuided;
+        public bool IsMovementsGuided => this.isMovementsGuided && !this.IsOperator;
 
-        public bool IsMovementsManual => !this.isMovementsGuided;
+        public bool IsMovementsManual => !this.isMovementsGuided && !this.IsOperator;
+
+        public bool IsOperator => Modules.Login.ScaffolderUserAccesLevel.User == UserAccessLevel.Operator;
 
         public override bool IsWaitingForResponse
         {
@@ -404,6 +415,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.goToMovementsGuidedCommand?.RaiseCanExecuteChanged();
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
+            this.goToOperatorCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
             this.lightCommand?.RaiseCanExecuteChanged();
@@ -423,6 +435,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.MachineStatus));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsOperator));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
         }
 
@@ -469,7 +482,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStopMoving()
         {
             return
-                !this.IsKeyboardOpened
+                !this.IsKeyboardOpened &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
                 //&&
                 //(this.IsMoving ||
                 // this.IsMovingElevatorBackwards ||
@@ -499,6 +513,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsOperator));
+        }
+
+        private void GoToOperatorExecuteCommand(bool isOperator)
+        {
+            if (isOperator)
+            {
+                this.Title = Localized.Get("InstallationApp.Operator");
+            }
+
+            this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
+            this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsOperator));
         }
 
         private void OnBayLightChanged(object sender, BayLightChangedEventArgs e)
