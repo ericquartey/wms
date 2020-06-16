@@ -688,7 +688,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 this.ProceduresCompleted = this.source.Count(c => c.Status == InstallationStatus.Complete);
 
-                this.SetupListCompleted = !this.source.Where(c => c.Text != "Conferma collaudo").Any(c => c.Status != InstallationStatus.Complete);
+                var confirmSetupString = Localized.Get("InstallationApp.ConfirmSetup");
+                this.SetupListCompleted = !this.source.Where(c => c.Text != confirmSetupString).Any(c => c.Status != InstallationStatus.Complete);
 
                 this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
