@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
@@ -155,7 +154,7 @@ namespace Ferretto.VW.Installer.ViewModels
                         break;
 
                     case OperationStage.Update:
-                        this.ActiveViewModel = this.updateViewModel ?? (this.updateViewModel = new UpdateViewModel(this.installationService));
+                        this.ActiveViewModel = this.updateViewModel ?? (this.updateViewModel = new StepsViewModel(this.installationService));
                         break;
 
                     default:

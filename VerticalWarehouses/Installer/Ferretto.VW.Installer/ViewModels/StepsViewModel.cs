@@ -10,7 +10,7 @@ using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    internal sealed class UpdateViewModel : BindableBase, IOperationResult
+    internal sealed class StepsViewModel : BindableBase, IOperationResult
     {
         #region Fields
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Constructors
 
-        public UpdateViewModel(InstallationService installationService)
+        public StepsViewModel(InstallationService installationService)
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
