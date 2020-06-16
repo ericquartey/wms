@@ -1537,7 +1537,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConfirmSetup.
+        ///   Looks up a localized string similar to Confirm setup.
         /// </summary>
         public static string ConfirmSetup {
             get {
@@ -5324,6 +5324,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PreviousPanel {
             get {
                 return ResourceManager.GetString("PreviousPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Printer name.
+        /// </summary>
+        public static string PrinterName {
+            get {
+                return ResourceManager.GetString("PrinterName", resourceCulture);
             }
         }
         
