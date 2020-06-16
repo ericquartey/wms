@@ -47,16 +47,6 @@ namespace Ferretto.VW.App.Services
             return (BayNumber)Enum.Parse(typeof(BayNumber), bayNumberString);
         }
 
-        public static string GetLabelPrinterName(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            return appSettings.Get("Devices:LabelPrinter");
-        }
-
         public static bool GetOverrideSetupStatus(this NameValueCollection appSettings)
         {
             if (appSettings is null)

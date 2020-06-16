@@ -5319,6 +5319,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Printer name.
+        /// </summary>
+        public static string PrinterName {
+            get {
+                return ResourceManager.GetString("PrinterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Procedure completed..
         /// </summary>
         public static string ProcedureCompleted {

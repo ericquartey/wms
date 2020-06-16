@@ -2622,4 +2622,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
     <value>Sparare questi codici a barre per configurare il lettore Newland in emulazione seriale.</value>
   </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Nome stampante</value>
+  </data>
 </root>

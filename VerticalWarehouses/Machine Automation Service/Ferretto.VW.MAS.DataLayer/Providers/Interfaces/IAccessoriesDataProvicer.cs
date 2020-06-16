@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex);
 
+        void UpdateLabelPrinterSettings(BayNumber bayNumber, bool isEnabled, string printerName);
+
         void UpdateLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
 
         #endregion
