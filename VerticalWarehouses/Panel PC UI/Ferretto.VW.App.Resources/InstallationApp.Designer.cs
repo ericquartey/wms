@@ -1537,7 +1537,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConfirmSetup.
+        ///   Looks up a localized string similar to Confirm setup.
         /// </summary>
         public static string ConfirmSetup {
             get {
@@ -4998,6 +4998,15 @@ namespace Ferretto.VW.App.Resources {
         public static string OperationAborted {
             get {
                 return ResourceManager.GetString("OperationAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator.
+        /// </summary>
+        public static string Operator {
+            get {
+                return ResourceManager.GetString("Operator", resourceCulture);
             }
         }
         

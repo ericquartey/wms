@@ -469,7 +469,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (restore)
             {
                 var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);// - bay.ChainOffset;
+                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);
                 try
                 {
                     this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, requestingBay, sender);

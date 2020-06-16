@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmReasonCommand;
 
-        private double? inputQuantity;
+        private int? inputQuantity;
 
         private bool isBusyRequestingItemPick;
 
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public double? InputQuantity
+        public int? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);

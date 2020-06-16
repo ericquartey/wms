@@ -196,6 +196,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (loadUnitOnBoard != null
                     && loadUnitOnBoard.Id == this.Mission.LoadUnitId
+                    && loadUnitOnBoard.Height > 0
                     )
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");

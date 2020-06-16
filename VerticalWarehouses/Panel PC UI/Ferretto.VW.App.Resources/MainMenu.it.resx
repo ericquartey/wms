@@ -144,6 +144,15 @@
   <data name="MaintenanceDescription" xml:space="preserve">
     <value>Manutenzione, compattazione cassetti, aggiornamento</value>
   </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Movimenti</value>
+  </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>MOVE</value>
+  </data>
+  <data name="MovementsDescription" xml:space="preserve">
+    <value>Stato sensori, reset macchina, altro</value>
+  </data>
   <data name="Operation" xml:space="preserve">
     <value>Picking</value>
   </data>

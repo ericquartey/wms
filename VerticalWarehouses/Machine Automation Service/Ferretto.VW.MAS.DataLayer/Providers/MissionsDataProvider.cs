@@ -399,7 +399,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var mission = this.dataContext.Missions.SingleOrDefault(m => m.WmsId == id);
+                var mission = this.dataContext.Missions.SingleOrDefault(m => m.WmsId == id
+                    && m.Status != MissionStatus.Completed
+                    && m.Status != MissionStatus.Aborted);
                 if (mission is null)
                 {
                     throw new EntityNotFoundException(nameof(mission));

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DevExpress.Mvvm.POCO;
 using DevExpress.Xpf.Layout.Core;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
@@ -463,6 +464,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.ExecuteItemPickAsync();
             }
+
+            this.selectedItem = null;
+            this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
         public async Task SearchItemAsync(int skip, CancellationToken cancellationToken)

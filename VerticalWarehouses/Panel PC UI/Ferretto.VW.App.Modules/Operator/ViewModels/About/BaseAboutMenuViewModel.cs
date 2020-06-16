@@ -3,6 +3,10 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Prism.Commands;
+using Ferretto.VW.App;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using System;
+using CommonServiceLocator;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -14,21 +18,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand diagnosticsCommand;
 
-        private DelegateCommand userCommand;
-
         private DelegateCommand generalCommand;
 
         private bool isAlarmActive;
 
         private bool isDiagnosticsActive;
 
-        private bool isUserActive;
-
         private bool isGeneralActive;
 
         private bool isStatisticsActive;
 
+        private bool isUserActive;
+
+        private ISessionService sessionService;
+
         private DelegateCommand statisticsCommand;
+
+        private DelegateCommand userCommand;
 
         #endregion
 
@@ -37,6 +43,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public BaseAboutMenuViewModel()
             : base(PresentationMode.Menu)
         {
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
         }
 
         #endregion
@@ -75,13 +82,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 () => this.ExecuteCommand(Menu.Diagnostics),
                 this.CanExecuteCommand));
 
-        public ICommand UserCommand =>
-            this.userCommand
-            ??
-            (this.userCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.User),
-                this.CanExecuteCommand));
-
         public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand GeneralCommand =>
@@ -102,12 +102,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isDiagnosticsActive, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsUserActive
-        {
-            get => this.isUserActive;
-            set => this.SetProperty(ref this.isUserActive, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsGeneralActive
         {
             get => this.isGeneralActive;
@@ -120,12 +114,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isStatisticsActive, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsUserActive
+        {
+            get => this.isUserActive;
+            set => this.SetProperty(ref this.isUserActive, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand StatisticsCommand =>
             this.statisticsCommand
             ??
             (this.statisticsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Statistics),
                 this.CanExecuteCommand));
+
+        public ICommand UserCommand =>
+            this.userCommand
+            ??
+            (this.userCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.User),
+                this.CanExecuteUserCommand));
 
         #endregion
 
@@ -138,6 +145,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
+
             this.IsBackNavigationAllowed = true;
 
             this.IsAlarmActive = false;
@@ -186,6 +195,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanExecuteCommand()
         {
             return true; // temp 20200212 : prevent to display empty pages alarms, diagnostics and statistics
+        }
+
+        private bool CanExecuteUserCommand()
+        {
+            return this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin || this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support;
         }
 
         private void ExecuteCommand(Menu menu)

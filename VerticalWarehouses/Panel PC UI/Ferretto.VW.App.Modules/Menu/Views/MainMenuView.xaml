@@ -122,6 +122,22 @@
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="02" />
 
+            <controls:PpcMenuButton Title="{res:Loc MainMenu.Movements}"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="400"
+                                    Height="120"
+                                    Margin="15"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Abbreviation="{res:Loc MainMenu.MovementsAbbreviation}"
+                                    Command="{Binding MenuMovementsCommand}"
+                                    Description="{res:Loc MainMenu.MovementsDescription}"
+                                    Kind="Creation"
+                                    MenuBrush="{StaticResource FerrettoRed}"
+                                    Number="04"
+                                    Permission="Operator" />
+
             <controls:PpcMenuButton Title="{res:Loc MainMenu.Installation}"
                                     Grid.Row="1"
                                     Grid.Column="1"
@@ -141,12 +157,12 @@
         </Grid>
 
         <controls:PpcBayBadge x:Name="BayBadge"
-            Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           Margin="15,15,30,-47"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Bottom"
-                           BayNumber="{Binding BayNumber}" />
+                              Grid.RowSpan="2"
+                              Grid.ColumnSpan="2"
+                              Margin="15,15,30,-47"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              BayNumber="{Binding BayNumber}" />
 
     </Grid>
 </ctrls:View>
