@@ -35,6 +35,9 @@
     <None Update="Properties\app.manifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\*.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="steps.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

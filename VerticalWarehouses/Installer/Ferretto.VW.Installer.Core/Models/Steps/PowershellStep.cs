@@ -80,14 +80,14 @@ namespace Ferretto.VW.Installer.Core
             return true;
         }
 
-        private void OnDataAdded(object snd, DataAddedEventArgs evt, PowerShell shell)
+        private void OnDataAdded(object sender, DataAddedEventArgs evt, PowerShell shell)
         {
-            var col = (PSDataCollection<PSObject>)snd;
+            var col = (PSDataCollection<PSObject>)sender;
             var rsl = col.ReadAll();
 
             foreach (var r in rsl)
             {
-                this.LogInformation(r.ToString());
+                this.LogInformation($"> {r}");
             }
 
             var p = shell.Streams.Progress.LastOrDefault();

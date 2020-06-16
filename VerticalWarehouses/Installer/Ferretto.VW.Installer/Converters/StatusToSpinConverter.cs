@@ -6,7 +6,7 @@ using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer.Converters
 {
-    internal sealed class StatusToIconNameConverter : DependencyObject, IValueConverter
+    internal sealed class StatusToSpinConverter : DependencyObject, IValueConverter
     {
         #region Methods
 
@@ -17,17 +17,7 @@ namespace Ferretto.VW.Installer.Converters
                 throw new ArgumentException($"The converter accepts only values of type {nameof(StepStatus)}", nameof(value));
             }
 
-            switch ((StepStatus)value)
-            {
-                case StepStatus.Done: return "CheckCircle";
-                case StepStatus.Failed: return "AlertCircle";
-                case StepStatus.ToDo: return "Clock";
-                case StepStatus.InProgress: return "AutoRenew";//"PlayCircle";
-                case StepStatus.RollingBack: return "ArrowLeftDropCircle";
-                case StepStatus.RolledBack: return "SkipPreviousCircle";
-                case StepStatus.RollbackFailed: return "CloseCircle";
-                default: return "CircleOutline";
-            }
+            return value is StepStatus.InProgress;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

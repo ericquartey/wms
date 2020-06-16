@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
-    <Grid>
+    <Grid Margin="50">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,40 +21,39 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="Title"
-                   Grid.ColumnSpan="3"
-                   FontSize="{DynamicResource FontSize_ExtraLarge}"
+                   Grid.ColumnSpan="2"
                    Style="{DynamicResource TitleTextStyle}"
                    Text="Installazione Software Vertimag" />
 
         <TextBlock x:Name="AppVersionLabel"
                    Grid.Row="1"
-                   Margin="0,0,30,0"
+                   Margin="0,0,25,0"
                    Style="{DynamicResource LabelTextStyle}"
                    Text="Application Version" />
 
         <TextBlock x:Name="AppVersionValue"
                    Grid.Row="2"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Text="{Binding UiVersion}" />
+                   Style="{DynamicResource ValueTextStyle}"
+                   Text="{Binding UiVersion, TargetNullValue=Unknown}" />
 
         <TextBlock x:Name="ServiceVersionLabel"
                    Grid.Row="1"
                    Grid.Column="1"
-                   Margin="0,0,30,0"
                    Style="{DynamicResource LabelTextStyle}"
                    Text="Service Version" />
 
         <TextBlock x:Name="ServiceVersionValue"
                    Grid.Row="2"
                    Grid.Column="1"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Text="{Binding ServiceVersion}" />
+                   Style="{DynamicResource ValueTextStyle}"
+                   Text="{Binding ServiceVersion, TargetNullValue=Unknown}" />
 
         <StackPanel Grid.Row="4"
                     Grid.ColumnSpan="2"
-                    Margin="0,30,0,0"
+                    Margin="0,50,0,0"
                     Orientation="Vertical">
-            <RadioButton Content="Baia Master"
+            <RadioButton Margin="0,0,0,25"
+                         Content="Baia Principale"
                          GroupName="test"
                          IsChecked="{Binding IsMasConfiguration, Mode=TwoWay}" />
 
@@ -67,30 +66,31 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0"
-                           Margin="0,25"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           FontSize="{DynamicResource FontSize_Large}"
-                           Style="{DynamicResource TitleTextStyle}"
-                           Text="Apri file di configurazione" />
+                <StackPanel Margin="50,0,0,0"
+                            Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Left"
+                               Style="{DynamicResource LabelTextStyle}"
+                               Text="File di configurazione selezionato" />
+                    <TextBlock HorizontalAlignment="Left"
+                               Style="{DynamicResource ValueTextStyle}"
+                               Text="{Binding MachineConfigurationFileName, TargetNullValue=Nessuno}" />
+                </StackPanel>
+
                 <Button Grid.Column="1"
-                        Margin="20,0,20,0"
                         Command="{Binding OpenFileCommand}"
-                        Content="Apri file" />
+                        Content="Seleziona file" />
                 <TextBlock Grid.Row="1"
                            Grid.ColumnSpan="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           FontSize="{DynamicResource FontSize_Normal}"
-                           Style="{DynamicResource TitleTextStyle}"
+                           Style="{DynamicResource ValueTextStyle}"
                            Text="{Binding MessageMaster}"
                            TextWrapping="Wrap" />
             </Grid>
 
-            <RadioButton Content="Baia Slave"
+            <RadioButton Margin="0,0,0,25"
+                         Content="Baia Secondaria"
                          GroupName="test" />
-
 
             <Grid IsEnabled="{Binding IsMasConfiguration, Converter={StaticResource BNC}}">
                 <Grid.RowDefinitions>
@@ -102,30 +102,26 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Grid.Row="0"
-                               Margin="0,25"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               FontSize="{DynamicResource FontSize_Large}"
-                               Style="{DynamicResource TitleTextStyle}"
-                               Text="IP servizio di automazione " />
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Margin="50,25"
+                                Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Style="{DynamicResource LabelTextStyle}"
+                                   Text="Indirizzo IP della Baia Principale" />
                         <ctrls:IPAddressBox Width="460"
                                             Height="60"
-                                            Margin="20,0"
+                                            Margin="0,20,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             FontSize="34"
                                             IPAddress="{Binding MasIpAddress, Mode=TwoWay}" />
-                        <Button Grid.Column="1"
-                                Margin="10,0,0,10"
-                                Command="{Binding CheckMasConfigurationCommand}"
-                                Content="Carica" />
-                    </Grid>
+                    </StackPanel>
+
+                    <Button HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding CheckMasConfigurationCommand}"
+                            Content="Carica" />
+
                 </StackPanel>
                 <TextBlock Grid.Row="1"
                            Grid.ColumnSpan="2"
@@ -139,8 +135,7 @@
         </StackPanel>
 
         <Button Grid.Row="7"
-                Grid.ColumnSpan="3"
-                Margin="15,15,15,0"
+                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding NextCommand}"
