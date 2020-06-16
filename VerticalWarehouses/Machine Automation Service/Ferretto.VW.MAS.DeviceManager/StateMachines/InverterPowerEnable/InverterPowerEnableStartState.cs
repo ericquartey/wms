@@ -116,6 +116,13 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
         {
             this.Logger.LogDebug($"Start with requested state: {this.machineData.Enable} Bay: {this.machineData.TargetBay}");
 
+            // If none inverters are configured for the current bay then move to end state
+            if (!this.machineData.BayInverters.Any())
+            {
+                this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData, this.Logger));
+                return;
+            }
+
             var commandMessage = new FieldCommandMessage(
                 null,
                 $"InverterPowerEnable Start State Field Command",
