@@ -258,7 +258,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set
             {
                 this.SetProperty(ref this.isInputQuantityValid, value);
-                this.CanConfirmPartialOperation = !this.isInputQuantityValid && this.inputQuantity.Value != 0;
+                this.CanConfirmPartialOperation = !this.isInputQuantityValid;
             }
         }
 
@@ -569,7 +569,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        
+        public async Task ConfirmOperationCanceledAsync()
+        {
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsBusyConfirmingPartialOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.ShowNotification(Localized.Get("OperatorApp.OperationCancelledConfirmed"));
+
+                // ?????????????? this.NavigationService.GoBack();
+                // this.MissionOperation = null;
+                // this.Mission = null;
+                await this.MissionOperationsService.RefreshAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsBusyConfirmingPartialOperation = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         public async Task ConfirmPartialOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -603,34 +630,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        public async Task ConfirmOperationCanceledAsync()
-        {
-            try
-            {
-                this.IsBusyConfirmingOperation = true;
-                this.IsBusyConfirmingPartialOperation = true;
-                this.IsWaitingForResponse = true;
-                this.ClearNotifications();
-
-                this.ShowNotification(Localized.Get("OperatorApp.OperationCancelledConfirmed"));
-
-                // ?????????????? this.NavigationService.GoBack();
-                // this.MissionOperation = null;
-                // this.Mission = null;
-                await this.MissionOperationsService.RefreshAsync();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.IsBusyConfirmingOperation = false;
-                this.IsBusyConfirmingPartialOperation = false;
-            }
-            finally
-            {
                 this.IsWaitingForResponse = false;
             }
         }

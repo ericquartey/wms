@@ -3608,6 +3608,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Present quantity.
+        /// </summary>
+        public static string PresentQuantity {
+            get {
+                return ResourceManager.GetString("PresentQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Production date.
         /// </summary>
         public static string ProductionDate {

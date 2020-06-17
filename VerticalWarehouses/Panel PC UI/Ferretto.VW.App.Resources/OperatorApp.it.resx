@@ -1573,4 +1573,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ConfirmPresent" xml:space="preserve">
     <value>Conferma Presente</value>
   </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Quantità presente</value>
+  </data>
 </root>

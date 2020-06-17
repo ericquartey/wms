@@ -82,9 +82,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override Task OnAppearedAsync()
         {
             //this.CanInputAvailableQuantity = true;
-            //this.CanInputQuantity = true;
+            this.CanInputQuantity = false;
             //this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
-            //this.RaisePropertyChanged(nameof(this.CanInputQuantity));
+            this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
             this.Compartments = null;
             this.SelectedCompartment = null;
@@ -120,23 +120,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
-            this.CanConfirmOnEmpty =
-                this.MissionOperation != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.CanInputQuantity
-                &&
-                this.InputQuantity.Value == 0;
-
-            this.RaisePropertyChanged(nameof(this.CanConfirmOnEmpty));
-
             this.CanConfirm =
                 this.MissionOperation != null
                 &&
@@ -152,11 +135,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.IsInputQuantityValid
                 &&
-                this.InputQuantity.Value > 0;
+                this.InputQuantity.Value >= 0;
 
             this.RaisePropertyChanged(nameof(this.CanConfirm));
 
-            //return this.CanConfirmOnEmpty;
+            //return this.CanConfirm;
             return false;
         }
 
