@@ -1017,6 +1017,33 @@
   "Machine": {
     "Bays": [
       {
+        "Accessories": {
+          "AlphaNumericBar": {
+            "IsEnabledNew": false,
+            "IpAddress": "127.0.0.1",
+            "TcpPort": 1234,
+            "Size": "Medium"
+          },
+          "LabelPrinter": {
+            "IsEnabledNew": false,
+            "Name": "Microsoft Print to PDF"
+          },
+          "LaserPointer": {
+            "IsEnabledNew": false,
+            "IpAddress": "127.0.0.1",
+            "TcpPort": 12020
+          },
+          "BarcodeReader": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
+          },
+          "CardReader": {
+            "IsEnabledNew": false
+          }
+          /*  "WeightingScale": {
+            "IsEnabledNew": true
+          }*/
+        },
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
