@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Office.Drawing;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -22,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineAccessoriesWebService machineAccessoriesWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -47,6 +50,7 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineMissionsWebService missionsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMachineAccessoriesWebService machineAccessoriesWebService,
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient)
         {
@@ -54,7 +58,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
-
+            this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -85,10 +89,11 @@ namespace Ferretto.VW.App.Modules.Operator
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
             {
+                var labelPrinterName = await this.GetLabelPrinterNameAsync();
                 await this.missionOperationsWebService.CompleteAsync(
                     operationId,
                     quantity,
-                    ConfigurationManager.AppSettings.GetLabelPrinterName());
+                    labelPrinterName);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -123,10 +128,11 @@ namespace Ferretto.VW.App.Modules.Operator
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
             {
+                var labelPrinterName = await this.GetLabelPrinterNameAsync();
                 await this.missionOperationsWebService.PartiallyCompleteAsync(
                     operationId,
                     quantity,
-                    ConfigurationManager.AppSettings.GetLabelPrinterName());
+                    labelPrinterName);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -180,6 +186,17 @@ namespace Ferretto.VW.App.Modules.Operator
                         false);
 
             await this.RefreshActiveMissionAsync();
+        }
+
+        private async Task<string> GetLabelPrinterNameAsync()
+        {
+            var accessories = await this.machineAccessoriesWebService.GetAllAsync();
+            if (!accessories.LabelPrinter.IsEnabledNew)
+            {
+                return null;
+            }
+
+            return accessories.LabelPrinter.Name;
         }
 
         private async Task OnAssignedMissionChangedAsync(object sender, AssignedMissionChangedEventArgs e)

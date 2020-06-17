@@ -143,6 +143,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateLabelPrinterSettings(BayNumber bayNumber, bool isEnabled, string printerName)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.LabelPrinter)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.LabelPrinter.IsEnabledNew = isEnabled;
+                bay.Accessories.LabelPrinter.Name = printerName;
+
+                this.dataContext.Accessories.Update(bay.Accessories.LabelPrinter);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)
         {
             lock (this.dataContext)

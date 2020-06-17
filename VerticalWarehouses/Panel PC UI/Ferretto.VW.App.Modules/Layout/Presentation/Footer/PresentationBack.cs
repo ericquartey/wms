@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -15,7 +17,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Constructors
 
-        public PresentationBack(INavigationService navigationService)
+        public PresentationBack(
+            INavigationService navigationService)
             : base(PresentationTypes.Back)
         {
             if (navigationService is null)
@@ -36,17 +39,32 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            if (this.navigationService.GetActiveView() is INavigableView view
+            if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN)
+            {
+                //this.navigationService.GoBack();
+
+                NavigationItemSearch.OnItemSearchMainView = true;
+
+                this.navigationService.GoBackTo(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.ItemOperations.WAIT);
+            }
+            else
+            {
+                if (this.navigationService.GetActiveView() is INavigableView view
                 &&
                 !string.IsNullOrEmpty(view.ParentModuleName)
                 &&
                 !string.IsNullOrEmpty(view.ParentViewName))
-            {
-                this.navigationService.Appear(view.ParentModuleName, view.ParentViewName, null, false);
-            }
-            else
-            {
-                this.navigationService.GoBack();
+                {
+                    //NavigationItemSearch.OnItemSearchMainView = false;
+                    this.navigationService.Appear(view.ParentModuleName, view.ParentViewName, null, false);
+                }
+                else
+                {
+                    //NavigationItemSearch.OnItemSearchMainView = false;
+                    this.navigationService.GoBack();
+                }
             }
 
             return Task.CompletedTask;

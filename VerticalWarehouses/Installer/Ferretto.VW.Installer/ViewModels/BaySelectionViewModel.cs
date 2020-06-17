@@ -19,6 +19,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private const string APPSETTINGSBAYNUMBER = "BayNumber";
 
+        private readonly RelayCommand goBackCommand;
+
         private readonly InstallationService installationService;
 
         private bool canProcede;
@@ -44,11 +46,15 @@ namespace Ferretto.VW.Installer.ViewModels
         public BaySelectionViewModel(InstallationService installationService)
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+
+            this.goBackCommand = new RelayCommand(this.GoBack);
         }
 
         #endregion
 
         #region Properties
+
+        public ICommand GoBackCommand => this.goBackCommand;
 
         public bool IsBayOneVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayOne) != null);
 
@@ -157,6 +163,11 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             return null;
+        }
+
+        private void GoBack()
+        {
+            this.installationService.SetStage(OperationStage.RoleSelection);
         }
 
         private void Next()

@@ -1,4 +1,12 @@
 {
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:63299/",
+      "sslPort": 0
+    }
+  },
   "profiles": {
     "MAS (Simulation)": {
       "commandName": "Project",
@@ -52,6 +60,12 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Todesco"
+      }
+    },
+    "MAS (Essetre)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Essetre"
       }
     }
   }

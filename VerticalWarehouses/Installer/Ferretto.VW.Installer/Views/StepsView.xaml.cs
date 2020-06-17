@@ -1,14 +1,13 @@
 ﻿namespace Ferretto.VW.Installer.Views
 {
-    public partial class UpdateView
+    public partial class StepsView
     {
         #region Constructors
 
-        public UpdateView()
+        public StepsView()
         {
             this.InitializeComponent();
         }
-
 
         #endregion
     }

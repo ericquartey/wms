@@ -86,6 +86,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("laber-printer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateLabelPrinterSettings(bool isEnabled, string printerName)
+        {
+            this.accessoriesDataProvider.UpdateLabelPrinterSettings(this.BayNumber, isEnabled, printerName);
+
+            return this.Ok();
+        }
+
         [HttpPut("laser-pointer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]

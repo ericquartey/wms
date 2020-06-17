@@ -12,6 +12,8 @@
     <converters:BusyToCursorConverter x:Key="BTCIC"
                                       Invert="True" />
 
+    <converters:StatusToSpinConverter x:Key="StatusToSpinConverter" />
+
     <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
     <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
     <converters:ReferenceToVisibilityConverter x:Key="RTVIC"

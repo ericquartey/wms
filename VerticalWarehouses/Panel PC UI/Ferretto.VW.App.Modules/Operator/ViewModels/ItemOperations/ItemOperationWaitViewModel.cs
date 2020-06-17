@@ -21,6 +21,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineService machineService;
 
+        private readonly IOperatorNavigationService operatorNavigationService;
+
+        private readonly ISessionService sessionService;
+
         private int count;
 
         private bool isGridVisible;
@@ -46,10 +50,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemOperationWaitViewModel(
+            ISessionService sessionService,
+            IOperatorNavigationService operatorNavigationService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineService machineService)
             : base(PresentationMode.Operator)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
@@ -186,6 +194,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.operatorNavigationService.NavigateToDrawerViewUnit();
 
             this.RaisePropertyChanged(nameof(this.MoveVisible));
 

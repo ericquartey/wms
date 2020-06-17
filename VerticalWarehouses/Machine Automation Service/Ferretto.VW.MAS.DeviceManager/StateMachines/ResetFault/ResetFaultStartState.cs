@@ -86,6 +86,14 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
         public override void Start()
         {
             this.Logger.LogDebug($"Start {this.GetType().Name}");
+
+            // If none inverters are configured for the current bay then move to end state
+            if (!this.machineData.BayInverters.Any())
+            {
+                this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.stateData, this.Logger));
+                return;
+            }
+
             var commandMessage = new FieldCommandMessage(
                 null,
                 $"Reset Inverter Fault",

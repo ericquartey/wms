@@ -22,7 +22,7 @@ namespace Ferretto.VW.Installer.Converters
                 case StepStatus.Done: return "CheckCircle";
                 case StepStatus.Failed: return "AlertCircle";
                 case StepStatus.ToDo: return "Clock";
-                case StepStatus.InProgress: return "PlayCircle";
+                case StepStatus.InProgress: return "AutoRenew";//"PlayCircle";
                 case StepStatus.RollingBack: return "ArrowLeftDropCircle";
                 case StepStatus.RolledBack: return "SkipPreviousCircle";
                 case StepStatus.RollbackFailed: return "CloseCircle";

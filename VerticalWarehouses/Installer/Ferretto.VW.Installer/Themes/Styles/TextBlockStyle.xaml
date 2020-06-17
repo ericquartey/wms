@@ -19,7 +19,7 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_ExtraLarge}" />
-        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="Padding" Value="0,0,0,20" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
@@ -28,6 +28,14 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="ValueTextStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>

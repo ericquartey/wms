@@ -29,6 +29,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool isSlaveConfigurationValid;
 
+        private string machineConfigurationFileName;
+
         private MAS.DataModels.VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
@@ -77,7 +79,11 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public bool IsSuccessful { get; private set; }
 
-        public string MachineConfigurationFileName { get; protected set; }
+        public string MachineConfigurationFileName
+        {
+            get => this.machineConfigurationFileName;
+            set => this.SetProperty(ref this.machineConfigurationFileName, value);
+        }
 
         public IPAddress MasIpAddress
         {
@@ -160,15 +166,17 @@ namespace Ferretto.VW.Installer.ViewModels
                     this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
 
                     this.isMasConfigurationValid = true;
+                    this.MachineConfigurationFileName = fileName;
                 }
                 catch (Exception ex)
                 {
+                    this.MachineConfigurationFileName = null;
                     this.isMasConfigurationValid = false;
                 }
             }
             else
             {
-                this.MachineConfigurationFileName = string.Empty;
+                this.MachineConfigurationFileName = null;
                 this.isMasConfigurationValid = false;
             }
 

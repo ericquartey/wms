@@ -2625,4 +2625,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Operator" xml:space="preserve">
     <value>Operatore</value>
   </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Nome stampante</value>
+  </data>
 </root>

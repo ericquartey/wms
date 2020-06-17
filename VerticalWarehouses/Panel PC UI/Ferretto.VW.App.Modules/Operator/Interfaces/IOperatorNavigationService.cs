@@ -4,9 +4,11 @@
     {
         #region Methods
 
+        void NavigateToDrawerView();
+
         void NavigateToDrawerViewBase();
 
-        void NavigateToDrawerView();
+        void NavigateToDrawerViewUnit();
 
         void NavigateToOperatorMenu();
 

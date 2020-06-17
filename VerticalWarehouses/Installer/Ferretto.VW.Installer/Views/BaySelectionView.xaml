@@ -5,8 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
-    <Grid x:Name="Root"
-          Margin="50">
+    <Grid Margin="50">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,39 +17,42 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
         <TextBlock x:Name="Title"
-                   Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
-                   FontSize="36"
+                   FontSize="{DynamicResource FontSize_ExtraLarge}"
                    Style="{DynamicResource TitleTextStyle}"
-                   Text="Configurazione baia" />
+                   Text="Selezione della Baia" />
 
         <StackPanel Grid.Row="1"
                     Margin="0,20,0,0"
                     HorizontalAlignment="Left"
                     Orientation="Vertical">
 
-            <TextBlock x:Name="InfoInstallModelTB"
-                       Grid.ColumnSpan="3"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}"
-                       Text="{Binding Machine.ModelName, StringFormat={}Macchina {0}}" />
+            <TextBlock x:Name="ModelNameLabel"
+                       Style="{DynamicResource LabelTextStyle}"
+                       Text="Modello" />
 
-            <TextBlock x:Name="InfoInstallWeightTB"
-                       Grid.ColumnSpan="3"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}"
-                       Text="{Binding Machine.MaxGrossWeight, StringFormat={}Peso {0}}" />
+            <TextBlock x:Name="ModelNameValue"
+                       Style="{DynamicResource ValueTextStyle}"
+                       Text="{Binding Machine.ModelName}" />
 
-            <TextBlock x:Name="InfoInstallSerialTB"
-                       Grid.ColumnSpan="3"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}"
-                       Text="{Binding Machine.SerialNumber, StringFormat={}seriale {0}}" />
+            <TextBlock x:Name="SerialNumberLabel"
+                       Margin="0,15,0,0"
+                       Style="{DynamicResource LabelTextStyle}"
+                       Text="Numero di Serie" />
+
+            <TextBlock x:Name="SerialNumberValue"
+                       Style="{DynamicResource ValueTextStyle}"
+                       Text="{Binding Machine.SerialNumber}" />
+
+            <TextBlock x:Name="MaxGrossWeightLabel"
+                       Margin="0,15,0,0"
+                       Style="{DynamicResource LabelTextStyle}"
+                       Text="Portata Massima Lorda" />
+
+            <TextBlock x:Name="MaxGrossWeightValue"
+                       Style="{DynamicResource ValueTextStyle}"
+                       Text="{Binding Machine.MaxGrossWeight, StringFormat={}{0}kg}" />
         </StackPanel>
 
         <TextBlock Grid.Row="3"
@@ -58,7 +60,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{DynamicResource TitleTextStyle}"
-                   Text="Seleziona tipo baia Panel Pc" />
+                   Text="Seleziona il numero di questa baia" />
 
         <StackPanel Grid.Row="4"
                     Margin="0,20,0,0"
@@ -69,26 +71,21 @@
                     BorderBrush="{DynamicResource FerrettoLightGray}"
                     Command="{Binding SelectBayOneCommand}"
                     Content="Baia 1"
-                    FontSize="38"
-                    FontWeight="Light"
-                    IsEnabled="True"
-                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Style="{DynamicResource ButtonBayStyle}"
                     Visibility="{Binding IsBayOneVisible, Converter={StaticResource BTVC}}" />
 
             <Button Margin="20,0,0,0"
                     BorderBrush="{DynamicResource FerrettoLightGray}"
                     Command="{Binding SelectBayTwoCommand}"
                     Content="Baia 2"
-                    IsEnabled="True"
-                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Style="{DynamicResource ButtonBayStyle}"
                     Visibility="{Binding IsBayTwoVisible, Converter={StaticResource BTVC}}" />
 
             <Button Margin="20,0,0,0"
                     BorderBrush="{DynamicResource FerrettoLightGray}"
                     Command="{Binding SelectBayThreeCommand}"
                     Content="Baia 3"
-                    IsEnabled="True"
-                    Style="{DynamicResource PpcButtonMenuBayStyle}"
+                    Style="{DynamicResource ButtonBayStyle}"
                     Visibility="{Binding IsBayThreeVisible, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
@@ -101,11 +98,15 @@
                    Text="{Binding SelectedBayInfo}" />
 
         <Button Grid.Row="6"
-                Grid.ColumnSpan="3"
-                Margin="15,15,15,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding NextCommand}"
-                Content="Procedi" />
+                Content="Continua" />
+
+        <Button Grid.Row="6"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Command="{Binding GoBackCommand}"
+                Content="Indietro" />
     </Grid>
 </UserControl>

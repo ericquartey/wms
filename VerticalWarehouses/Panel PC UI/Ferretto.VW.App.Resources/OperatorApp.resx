@@ -1959,4 +1959,14 @@ Please put back any moved pieces in their original position.</value>
   <data name="VerticalAxis" xml:space="preserve">
     <value>Vertical axis</value>
   </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Partial Confirmation</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Confirm Present</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Present quantity</value>
+    <comment>Label</comment>
+  </data>
 </root>
