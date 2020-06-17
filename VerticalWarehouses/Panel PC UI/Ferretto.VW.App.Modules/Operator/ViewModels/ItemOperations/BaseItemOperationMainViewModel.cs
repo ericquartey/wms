@@ -22,7 +22,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private double? availableQuantity;
 
@@ -88,6 +92,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public BaseItemOperationMainViewModel(
             IMachineItemsWebService itemsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
@@ -95,6 +101,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
+            this.compartmentsWebService = compartmentsWebService;
+            this.missionOperationsWebService = missionOperationsWebService;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -738,7 +746,39 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmPresentOperationAsync()
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The present quantity should have a value");
+
+            try
+            {
+                //this.IsBusyConfirmingPartialOperation = true;
+                //this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Inventory);
+
+                await this.compartmentsWebService.UpdateItemStockAsync(
+                        this.SelectedCompartment.Id,
+                        int.Parse(this.ItemId),
+                        this.AvailableQuantity.Value,
+                        reasons.First().Id,
+                        "update present quantity");
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                //this.IsBusyConfirmingPartialOperation = false;
+                //this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void GetLoadingUnitDetails()
@@ -757,6 +797,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
                     c.Id == this.MissionOperation.CompartmentId);
             }
+            //
         }
 
         private string GetNoLongerOperationMessageByType()

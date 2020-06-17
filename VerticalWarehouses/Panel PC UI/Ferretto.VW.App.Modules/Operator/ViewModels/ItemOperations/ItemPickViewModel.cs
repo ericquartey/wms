@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
@@ -35,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService)
             : base(
                   itemsWebService,
+                  compartmentsWebService,
+                  missionOperationsWebService,
                   bayManager,
                   eventAggregator,
                   missionOperationsService,

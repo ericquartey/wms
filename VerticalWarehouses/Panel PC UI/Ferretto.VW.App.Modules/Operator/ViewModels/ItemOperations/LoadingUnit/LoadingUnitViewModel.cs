@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
+        private readonly INavigationService navigationService;
+
         private readonly IOperatorNavigationService operatorNavigationService;
 
         private DelegateCommand cancelReasonCommand;
@@ -74,6 +76,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitViewModel(
+            INavigationService navigationService,
             IMachineItemsWebService itemsWebService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineCompartmentsWebService compartmentsWebService,
@@ -86,6 +89,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider)
             : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
@@ -415,7 +419,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
                 }
 
-                this.NavigationService.GoBackTo(
+                this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Operator),
                     Utils.Modules.Operator.ItemOperations.WAIT);
 
