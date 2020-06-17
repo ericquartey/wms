@@ -105,6 +105,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -165,10 +166,21 @@
                 </Border>
             </Border>
 
-            <Border Grid.Row="1"
+            <ctrls:PpcSpinEdit Grid.Row="1"
+                               Width="230"
+                               Height="90"
+                               Margin="15,8,15,0"
+                               EditValue="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding QuantityIncrement}"
+                               IsEnabled="{Binding CanInputAvailableQuantity}"
+                               LabelText="{resources:Loc OperatorApp.Quantity}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
+
+            <Border Grid.Row="2"
                     Height="90"
                     MinHeight="90"
-                    Margin="15,15,15,0"
+                    Margin="15,8,15,0"
                     Background="{DynamicResource PpcBackground}">
                 <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                         BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -207,10 +219,10 @@
             </Border>
 
 
-            <ctrls:PpcSpinEdit Grid.Row="2"
+            <ctrls:PpcSpinEdit Grid.Row="3"
                                Width="230"
                                Height="90"
-                               Margin="15,15,15,0"
+                               Margin="15,8,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
@@ -218,7 +230,7 @@
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                MinValue="0" />
 
-            <Border Grid.Row="2"
+            <!--<Border Grid.Row="3"
                     Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">
                 <iconPacks:PackIconMaterial Width="18"
                                             Height="18"
@@ -226,20 +238,21 @@
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
                                             Foreground="{Binding IsInputQuantityValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                            IsEnabled="{Binding IsInputQuantityEnabled}"
                                             Kind="{Binding IsInputQuantityValid, Converter={StaticResource BoolToValidationIconConverter}}"
                                             Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}" />
-            </Border>
+            </Border>-->
 
-            <controls:PpcButton Grid.Row="3"
-                                Margin="15,15,15,0"
+            <controls:PpcButton Grid.Row="4"
+                                Margin="15,8,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ShowDetailsCommand}"
                                 Content="{resources:Loc OperatorApp.Details}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Row="3"
-                                Margin="15,15,15,0"
+            <controls:PpcButton Grid.Row="4"
+                                Margin="15,8,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCanceledCommand}"
@@ -247,8 +260,8 @@
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Margin="15,15,15,0"
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding EmptyOperationCommand}"
@@ -257,16 +270,34 @@
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Margin="15,15,15,0"
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmPartialOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPartial}"
+                                IsBusy="{Binding IsBusyConfirmingPartialOperation}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmPresentOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPresent}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCommand}"
                                 Content="{resources:Loc OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
-                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVIC}}" />
-
+                                Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
 
         </Grid>
     </Grid>

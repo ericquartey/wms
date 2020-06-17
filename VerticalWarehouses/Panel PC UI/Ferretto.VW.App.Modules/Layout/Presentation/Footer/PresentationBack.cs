@@ -41,13 +41,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN)
             {
-                this.navigationService.GoBack();
+                //this.navigationService.GoBack();
 
-                this.navigationService.Appear(
+                NavigationItemSearch.OnItemSearchMainView = true;
+
+                this.navigationService.GoBackTo(
                                 nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.ItemOperations.WAIT,
-                                null,
-                                trackCurrentView: true);
+                                Utils.Modules.Operator.ItemOperations.WAIT);
             }
             else
             {
@@ -57,10 +57,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 &&
                 !string.IsNullOrEmpty(view.ParentViewName))
                 {
+                    //NavigationItemSearch.OnItemSearchMainView = false;
                     this.navigationService.Appear(view.ParentModuleName, view.ParentViewName, null, false);
                 }
                 else
                 {
+                    //NavigationItemSearch.OnItemSearchMainView = false;
                     this.navigationService.GoBack();
                 }
             }

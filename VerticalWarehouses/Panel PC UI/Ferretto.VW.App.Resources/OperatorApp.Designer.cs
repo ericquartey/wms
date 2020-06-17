@@ -709,6 +709,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Partial Confirmation.
+        /// </summary>
+        public static string ConfirmPartial {
+            get {
+                return ResourceManager.GetString("ConfirmPartial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Present.
+        /// </summary>
+        public static string ConfirmPresent {
+            get {
+                return ResourceManager.GetString("ConfirmPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm service.
         /// </summary>
         public static string ConfirmService {

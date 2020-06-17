@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool canConfirm;
+
         private bool canConfirmOnEmpty;
 
         private DelegateCommand emptyOperationCommand;
@@ -46,6 +48,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPick.ToString();
 
+        public bool CanConfirm
+        {
+            get => this.canConfirm;
+            set => this.SetProperty(ref this.canConfirm, value);
+        }
+
         public bool CanConfirmOnEmpty
         {
             get => this.canConfirmOnEmpty;
@@ -73,6 +81,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override Task OnAppearedAsync()
         {
+            //this.CanInputAvailableQuantity = true;
+            //this.CanInputQuantity = true;
+            //this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
+            //this.RaisePropertyChanged(nameof(this.CanInputQuantity));
+
             this.Compartments = null;
             this.SelectedCompartment = null;
 
@@ -84,6 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            this.AvailableQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -117,9 +131,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.HasValue
                 &&
-                this.InputQuantity.Value > 0
+                this.CanInputQuantity
                 &&
-                this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+                this.InputQuantity.Value == 0;
+
+            this.RaisePropertyChanged(nameof(this.CanConfirmOnEmpty));
+
+            this.CanConfirm =
+                this.MissionOperation != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.CanInputQuantity
+                &&
+                this.IsInputQuantityValid
+                &&
+                this.InputQuantity.Value > 0;
+
+            this.RaisePropertyChanged(nameof(this.CanConfirm));
 
             //return this.CanConfirmOnEmpty;
             return false;
