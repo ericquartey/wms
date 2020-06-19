@@ -78,8 +78,9 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedCell.BlockLevel, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="BlockLevel"
+                                     LabelText="{res:Loc ApplicationApp.BlockLevel}"
                                      Visibility="Collapsed" />
+                <!--  LabelText="BlockLevel"  -->
 
                 <StackPanel Grid.Column="1"
                             Margin="0,5,5,5"
@@ -87,7 +88,8 @@
                             VerticalAlignment="Stretch">
                     <TextBlock Margin="5,0,5,0"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="Block Level" />
+                               Text="{res:Loc InstallationApp.BlockLevel}" />
+                    <!--  Text="Block Level" />  -->
                     <ComboBox Margin="5,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
@@ -101,7 +103,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedCell.Position, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="Position" />
+                                     LabelText="{res:Loc InstallationApp.Position}" />
+                <!--  LabelText="Position" />  -->
 
             </Grid>
         </Border>

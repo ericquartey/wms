@@ -2679,4 +2679,22 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Tare" xml:space="preserve">
     <value>Tara (kg)</value>
   </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Livello blocco</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Falso</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Libera</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Pannello Id</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Vero</value>
+  </data>
 </root>
