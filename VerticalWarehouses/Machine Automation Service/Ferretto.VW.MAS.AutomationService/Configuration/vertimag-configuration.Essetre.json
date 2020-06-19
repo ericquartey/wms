@@ -170,7 +170,7 @@
           },
           "LastIdealPosition": 0.0,
           "LastCalibrationCycles": 0,
-          "LowerBound": 445.0,
+          "LowerBound": 442.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
@@ -185,7 +185,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 5529.0,
+          "UpperBound": 5500.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,
@@ -474,7 +474,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300.0,
-        "ElevatorWeight": 230.0,
+        "ElevatorWeight": 243.0,
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
@@ -483,13 +483,13 @@
         "ShaftElasticity": 210000.0
       }
     },
-    "Height": 5845.0,
+    "Height": 5861.0,
     "Id": 2,
     "LoadUnitMaxHeight": 395.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 150.0,
     "LoadUnitTare": 125.0,
-    "MaxGrossWeight": 46288.0,
+    "MaxGrossWeight": 70000.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H5845",
     "Panels": [
       {
@@ -1706,7 +1706,7 @@
             "PanelId": 29,
             "Priority": 281,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 283,
@@ -1761,14 +1761,6 @@
             "Position": 5670,
             "PanelId": 29,
             "Priority": 295,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 297,
-            "Position": 5695,
-            "PanelId": 29,
-            "Priority": 297,
             "IsFree": true,
             "BlockLevel": "SpaceOnly"
           }
@@ -3568,7 +3560,7 @@
             "PanelId": 42,
             "Priority": 418,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 420,
@@ -3629,14 +3621,6 @@
             "Position": 5670,
             "PanelId": 44,
             "Priority": 432,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 434,
-            "Position": 5695,
-            "PanelId": 44,
-            "Priority": 434,
             "IsFree": true,
             "BlockLevel": "SpaceOnly"
           }

@@ -94,7 +94,7 @@
           },
           "LastIdealPosition": 0.0,
           "LastCalibrationCycles": 0,
-          "LowerBound": 445.0,
+          "LowerBound": 442.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
@@ -398,7 +398,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300.0,
-        "ElevatorWeight": 230.0,
+        "ElevatorWeight": 243.0,
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
@@ -407,13 +407,13 @@
         "ShaftElasticity": 210000.0
       }
     },
-    "Height": 5845.0,
+    "Height": 8261.0,
     "Id": 2,
     "LoadUnitMaxHeight": 695.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 125.0,
-    "LoadUnitTare": 104.0,
-    "MaxGrossWeight": 46288.0,
+    "LoadUnitTare": 120.0,
+    "MaxGrossWeight": 70000.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL550-BIS-H8261",
     "Panels": [
       {
@@ -2513,22 +2513,6 @@
             "Position": 8070,
             "PanelId": 49,
             "Priority": 487,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 489,
-            "Position": 8095,
-            "PanelId": 49,
-            "Priority": 489,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 491,
-            "Position": 8120,
-            "PanelId": 49,
-            "Priority": 491,
             "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
@@ -5220,24 +5204,7 @@
             "Priority": 624,
             "IsFree": true,
             "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 626,
-            "Position": 8095,
-            "PanelId": 64,
-            "Priority": 626,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 628,
-            "Position": 8120,
-            "PanelId": 64,
-            "Priority": 628,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
           }
-
         ]
       }
     ],
