@@ -2679,4 +2679,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Tare" xml:space="preserve">
     <value>Tara (kg)</value>
   </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Sensore attivo</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Sensore disattivato</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legenda</value>
+  </data>
 </root>
