@@ -93,7 +93,7 @@
                     <ComboBox Margin="5,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
-                              ItemsSource="{Binding BlockLevels}"
+                              ItemsSource="{Binding BlockLevels, Converter={StaticResource EBLLC}}"
                               SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                               Style="{DynamicResource PpcComboBoxStyle}" />
                 </StackPanel>

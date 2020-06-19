@@ -64,7 +64,8 @@
                                     Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     Command="{Binding ClosedShutterCommand}"
-                                    Content="{res:Loc InstallationApp.GateClose}">
+                                    Content="{res:Loc InstallationApp.GateClose}"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                     <controls:PpcButton.Style>
                         <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                                TargetType="{x:Type controls:PpcButton}">
@@ -158,7 +159,8 @@
                         <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
-                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
+                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                               Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                         <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationGateOpen}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
@@ -168,7 +170,8 @@
                                     Grid.ColumnSpan="2"
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
-                                    Content="{res:Loc InstallationApp.GateOpen}" />
+                                    Content="{res:Loc InstallationApp.GateOpen}"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
