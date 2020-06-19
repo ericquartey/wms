@@ -3644,7 +3644,7 @@
       }
     ],
     "SerialNumber": "MV20-0012",
-    "Simulation": true
+    "Simulation": false
   },
   "MachineStatistics": [
   ],
