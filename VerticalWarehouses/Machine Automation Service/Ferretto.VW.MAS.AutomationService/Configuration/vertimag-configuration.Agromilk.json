@@ -7,9 +7,9 @@
         "Accessories": {
           "AlphaNumericBar": {
             "IsEnabledNew": false,
-            "IpAddress": "127.0.0.1",
-            "TcpPort": 1234,
-            "Size": "Medium"
+            "IpAddress": "192.168.101.11",
+            "TcpPort": 2020,
+            "Size": "ExtraLarge"
           },
           "LabelPrinter": {
             "IsEnabledNew": false,
@@ -17,8 +17,8 @@
           },
           "LaserPointer": {
             "IsEnabledNew": false,
-            "IpAddress": "127.0.0.1",
-            "TcpPort": 12020
+            "IpAddress": "192.168.101.13",
+            "TcpPort": 2020
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
