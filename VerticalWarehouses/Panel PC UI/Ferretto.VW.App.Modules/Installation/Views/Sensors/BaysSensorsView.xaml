@@ -15,6 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <views:SensorsNavigationView />
@@ -39,8 +40,8 @@
                        Text="{x:Static res:InstallationApp.Bays}" />-->
 
             <StackPanel Grid.Row="1"
-                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVIC}}"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVIC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{res:Loc InstallationApp.Bay1}" />
@@ -74,8 +75,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1"
-                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVC}}"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Visibility="{Binding IsBayExternalPresent, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{res:Loc InstallationApp.ExternalBay}" />
@@ -166,5 +167,32 @@
                                            Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
             </StackPanel>
         </Grid>
+
+        <StackPanel Grid.Column="2">
+            <Border Margin="0,0,15,0"
+                    VerticalAlignment="Top"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Margin="10,10,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{res:Loc InstallationApp.Legend}" />
+                        <controls:PpcSensorControl Grid.Row="1"
+                                                   SensorState="True"
+                                                   Text="{res:Loc InstallationApp.ActiveSensor}" />
+                        <controls:PpcSensorControl Grid.Row="2"
+                                                   SensorState="False"
+                                                   Text="{res:Loc InstallationApp.DeactivatedSensor}" />
+                    </Grid>
+                </Border>
+            </Border>
+        </StackPanel>
     </Grid>
 </ctrls:View>

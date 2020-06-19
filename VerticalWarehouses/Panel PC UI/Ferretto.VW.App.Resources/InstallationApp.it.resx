@@ -2682,8 +2682,17 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="BlockLevel" xml:space="preserve">
     <value>Livello blocco</value>
   </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Sensore attivo</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Sensore disattivato</value>
+  </data>
   <data name="False" xml:space="preserve">
     <value>Falso</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legenda</value>
   </data>
   <data name="IsFree" xml:space="preserve">
     <value>Libera</value>

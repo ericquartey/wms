@@ -160,6 +160,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sensor active.
+        /// </summary>
+        public static string ActiveSensor {
+            get {
+                return ResourceManager.GetString("ActiveSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actual position.
         /// </summary>
         public static string ActualPosition {
@@ -1803,6 +1812,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor deactivated.
+        /// </summary>
+        public static string DeactivatedSensor {
+            get {
+                return ResourceManager.GetString("DeactivatedSensor", resourceCulture);
             }
         }
         
@@ -3936,6 +3954,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LeftSideMeasurement {
             get {
                 return ResourceManager.GetString("LeftSideMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        public static string Legend {
+            get {
+                return ResourceManager.GetString("Legend", resourceCulture);
             }
         }
         

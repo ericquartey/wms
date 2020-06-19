@@ -12,10 +12,12 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
+
     <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <views:SensorsNavigationView />
@@ -95,5 +97,33 @@
             </StackPanel>
 
         </Grid>
+
+        <StackPanel Grid.Column="2">
+            <Border Margin="0,0,15,0"
+                    VerticalAlignment="Top"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Margin="10,10,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{res:Loc InstallationApp.Legend}" />
+                        <controls:PpcSensorControl Grid.Row="1"
+                                                   SensorState="True"
+                                                   Text="{res:Loc InstallationApp.ActiveSensor}" />
+                        <controls:PpcSensorControl Grid.Row="2"
+                                                   SensorState="False"
+                                                   Text="{res:Loc InstallationApp.DeactivatedSensor}" />
+                    </Grid>
+                </Border>
+            </Border>
+        </StackPanel>
+
     </Grid>
 </ctrls:View>
