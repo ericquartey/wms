@@ -32,8 +32,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty CardBadge3Property =
             DependencyProperty.Register(nameof(CardBadge3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty CardBayPositionProperty =
+            DependencyProperty.Register(nameof(CardBayPosition), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
         public static readonly DependencyProperty CardDescriptionProperty =
-            DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+                    DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardLuDownProperty =
             DependencyProperty.Register(nameof(CardLuDown), typeof(LoadingUnit), typeof(CardSensor));
@@ -46,9 +49,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty CardSensorLabel3Property =
             DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
-
-        public static readonly DependencyProperty CardBayPositionProperty =
-            DependencyProperty.Register(nameof(CardBayPosition), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardTextProperty =
             DependencyProperty.Register(nameof(CardText), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
@@ -95,6 +95,8 @@ namespace Ferretto.VW.App.Controls.Controls
             }
 
             this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
+
+            this.HasCarousel = this.MachineService.HasCarousel;
         }
 
         #endregion
@@ -154,6 +156,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardBadge3LabelProperty, value);
         }
 
+        public string CardBayPosition
+        {
+            get => (string)this.GetValue(CardBayPositionProperty);
+            set => this.SetValue(CardBayPositionProperty, value);
+        }
+
         public string CardDescription
         {
             get => (string)this.GetValue(CardDescriptionProperty);
@@ -190,12 +198,6 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardSensorLabel3Property, value);
         }
 
-        public string CardBayPosition
-        {
-            get => (string)this.GetValue(CardBayPositionProperty);
-            set => this.SetValue(CardBayPositionProperty, value);
-        }
-
         public string CardText
         {
             get => (string)this.GetValue(CardTextProperty);
@@ -207,6 +209,8 @@ namespace Ferretto.VW.App.Controls.Controls
             get => (string)this.GetValue(CardValueProperty);
             set => this.SetValue(CardValueProperty, value);
         }
+
+        public bool HasCarousel { get; set; }
 
         public string LuHeight
         {
