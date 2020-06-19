@@ -736,6 +736,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Block level.
+        /// </summary>
+        public static string BlockLevel {
+            get {
+                return ResourceManager.GetString("BlockLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boarding not performed due to missing drawer.
         /// </summary>
         public static string BoardingNotExecutedMissingDrawer {
@@ -2572,6 +2581,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to False.
+        /// </summary>
+        public static string False {
+            get {
+                return ResourceManager.GetString("False", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed rate.
         /// </summary>
         public static string FeedRate {
@@ -3855,6 +3873,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IpAutomationService {
             get {
                 return ResourceManager.GetString("IpAutomationService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free.
+        /// </summary>
+        public static string IsFree {
+            get {
+                return ResourceManager.GetString("IsFree", resourceCulture);
             }
         }
         
@@ -5218,6 +5245,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Panel Id.
+        /// </summary>
+        public static string PanelId {
+            get {
+                return ResourceManager.GetString("PanelId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PanelPc current version.
         /// </summary>
         public static string PanelPcCurrentVersion {
@@ -5486,6 +5522,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PrinterName {
             get {
                 return ResourceManager.GetString("PrinterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string Priority {
+            get {
+                return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
         
@@ -7070,6 +7115,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayWeight {
             get {
                 return ResourceManager.GetString("TrayWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True.
+        /// </summary>
+        public static string True {
+            get {
+                return ResourceManager.GetString("True", resourceCulture);
             }
         }
         

@@ -176,8 +176,9 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
-                                    Binding="{Binding Path=BlockLevel}"
-                                    Header="Status">
+                                    Binding="{Binding Path=BlockLevel, Converter={StaticResource EBLC}}"
+                                    Header="{resources:Loc InstallationApp.Status}">
+                    <!--  Header="Status">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -204,7 +205,8 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=Position}"
-                                    Header="Position">
+                                    Header="{resources:Loc InstallationApp.Position}">
+                    <!--  Header="Position">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -229,8 +231,9 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=Side}"
-                                    Header="Lato">
+                                    Binding="{Binding Path=Side, Converter={StaticResource EWSC}}"
+                                    Header="{resources:Loc InstallationApp.Side}">
+                    <!--  Header="Lato">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -256,7 +259,8 @@
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
                                     Binding="{Binding Path=PanelId}"
-                                    Header="PanelId">
+                                    Header="{resources:Loc InstallationApp.PanelId}">
+                    <!--  Header="PanelId">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -282,7 +286,8 @@
                 <DataGridTextColumn x:Name="Column6"
                                     Width="1*"
                                     Binding="{Binding Path=Priority}"
-                                    Header="Priority">
+                                    Header="{resources:Loc InstallationApp.Priority}">
+                    <!--  Header="Priority">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -307,8 +312,9 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column7"
                                     Width="1*"
-                                    Binding="{Binding Path=IsFree}"
-                                    Header="IsFree">
+                                    Binding="{Binding Path=IsFree, Converter={StaticResource BTSC}}"
+                                    Header="{resources:Loc InstallationApp.IsFree}">
+                    <!--  Header="IsFree">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
