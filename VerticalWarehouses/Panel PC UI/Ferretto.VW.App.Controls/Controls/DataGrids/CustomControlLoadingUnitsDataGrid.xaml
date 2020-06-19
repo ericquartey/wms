@@ -176,7 +176,8 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=CellId}"
-                                    Header="CellId">
+                                    Header="{Resources:Loc InstallationApp.Cell}">
+                    <!--  Header="CellId">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -203,7 +204,8 @@
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
                                     Binding="{Binding Path=Code}"
-                                    Header="Code">
+                                    Header="{Resources:Loc InstallationApp.Code}">
+                    <!--  "Code">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -229,7 +231,8 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
                                     Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                                    Header="Weight">
+                                    Header="{Resources:Loc InstallationApp.Weight}">
+                    <!--  Header="Weight">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -255,7 +258,8 @@
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
                                     Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                    Header="Height">
+                                    Header="{Resources:Loc InstallationApp.Height}">
+                    <!--  Header="Height">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -280,8 +284,9 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=Status}"
-                                    Header="Status">
+                                    Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                                    Header="{Resources:Loc InstallationApp.Status}">
+                    <!--  Header="Status">  -->
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />

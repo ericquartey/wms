@@ -175,8 +175,7 @@
                                IsEnabled="{Binding CanInputAvailableQuantity}"
                                LabelText="{resources:Loc OperatorApp.PresentQuantity}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MinValue="0"
-                               Visibility="Hidden" />
+                               MinValue="0" />
 
             <Border Grid.Row="2"
                     Height="90"
@@ -226,7 +225,7 @@
                                Margin="15,8,15,0"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Increment="{Binding QuantityIncrement}"
-                               IsEnabled="False"
+                               IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                MinValue="0" />
