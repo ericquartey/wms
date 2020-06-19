@@ -30,6 +30,7 @@
                                    Invert="True" />
 
     <conv:EnumBlockLevelConverter x:Key="EBLC" />
+    <conv:EnumBlockLevelListConverter x:Key="EBLLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />
     <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
     <conv:ImageToSourceConverter x:Key="ITSC" />

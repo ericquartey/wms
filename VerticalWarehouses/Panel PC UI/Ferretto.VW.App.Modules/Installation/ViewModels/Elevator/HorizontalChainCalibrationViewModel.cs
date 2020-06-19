@@ -156,6 +156,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
 
         public double? ChainOffset => Math.Abs(this.MachineService.Bay.ChainOffset);
@@ -786,8 +788,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   this.SensorsService.ShutterSensors.Open &&
-                   this.SensorsService.BayZeroChain;
+                   (this.SensorsService.ShutterSensors.Open || !this.HasShutter) &&
+                   (this.SensorsService.BayZeroChain || !this.MachineService.HasCarousel);
         }
 
         //        this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
