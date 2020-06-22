@@ -154,7 +154,13 @@
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               ItemsSource="{Binding Sizes}"
                               SelectedValue="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              Style="{DynamicResource PpcComboBoxStyle}" />
+                              Style="{DynamicResource PpcComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource ANBSEC}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
 
                     <!--</Border>-->
                 </StackPanel>

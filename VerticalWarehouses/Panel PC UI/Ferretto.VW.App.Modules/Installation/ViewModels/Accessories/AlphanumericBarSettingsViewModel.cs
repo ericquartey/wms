@@ -94,11 +94,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.size;
             set
             {
-                if (this.SetProperty(ref this.size, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
+                    if (this.SetProperty(ref this.size, value))
+                    {
+                        this.AreSettingsChanged = true;
+                        this.RaiseCanExecuteChanged();
+                    }
             }
         }
 
@@ -203,13 +203,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.testOffIsChecked;
             set
             {
-                if (this.SetProperty(ref this.testOffIsChecked, value))
-                {
-                    if (value)
+                    if (this.SetProperty(ref this.testOffIsChecked, value))
                     {
-                        _ = this.DoTestLedAsync(false);
+                        if (value)
+                        {
+                            _ = this.DoTestLedAsync(false);
+                        }
                     }
-                }
             }
         }
 
@@ -241,10 +241,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
 
                     this.TestArrowOffset = this.deviceDriver.CalculateOffsetArrowMiddlePosition();
-
-                    bayAccessories.AlphaNumericBar.Size = AlphaNumericBarSize.ExtraLarge;
-
-                    this.Size = bayAccessories.AlphaNumericBar.Size;
                 }
                 else
                 {
@@ -263,6 +259,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             await base.OnDataRefreshAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.Size));
+            this.RaisePropertyChanged(nameof(this.Sizes));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
 
         protected override async Task SaveAsync()
