@@ -88,10 +88,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override Task OnAppearedAsync()
         {
-            //this.CanInputAvailableQuantity = true;
-            //this.CanInputQuantity = false;
-            //this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
-            //this.RaisePropertyChanged(nameof(this.CanInputQuantity));
+            this.CanInputAvailableQuantity = false;
+            this.CanInputQuantity = false;
+            this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
+            this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
             this.Compartments = null;
             this.SelectedCompartment = null;
