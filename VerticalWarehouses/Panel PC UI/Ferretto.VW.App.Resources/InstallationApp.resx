@@ -2796,4 +2796,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="True" xml:space="preserve">
     <value>True</value>
   </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>BayChain</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>HorizontalAndVertical</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
 </root>
