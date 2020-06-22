@@ -94,7 +94,7 @@
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               ItemsSource="{Binding BlockLevels, Converter={StaticResource EBLLC}}"
-                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource EBLC}}"
                               Style="{DynamicResource PpcComboBoxStyle}" />
                 </StackPanel>
 

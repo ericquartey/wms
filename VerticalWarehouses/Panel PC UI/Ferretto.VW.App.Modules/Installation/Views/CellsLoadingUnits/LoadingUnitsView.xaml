@@ -112,7 +112,7 @@
                 <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     InputText="{Binding SelectedLU.IsIntoMachine, Converter={StaticResource BTSC}}"
                                      IsEnabled="False"
                                      LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
                 <!--  LabelText="IsIntoMachine" />  -->
@@ -131,8 +131,8 @@
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               IsEnabled="{Binding IsEditStatus}"
-                              ItemsSource="{Binding Status}"
-                              SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              ItemsSource="{Binding Status, Converter={StaticResource LUSLEC}}"
+                              SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource LUSEC}}"
                               Style="{DynamicResource PpcComboBoxStyle}" />
                 </StackPanel>
 
