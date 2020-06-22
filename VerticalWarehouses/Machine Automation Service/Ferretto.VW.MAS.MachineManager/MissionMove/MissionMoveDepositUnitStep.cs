@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Logger.LogError(ErrorDescriptions.LoadUnitShutterClosed);
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
 
-                                this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
+                                this.OnStop(StopRequestReason.Error, moveBackward: true);
                                 break;
                             }
                         }
@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationRunningStop:
                     {
-                        this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
+                        this.OnStop(StopRequestReason.Error, moveBackward: true);
                     }
                     break;
             }
