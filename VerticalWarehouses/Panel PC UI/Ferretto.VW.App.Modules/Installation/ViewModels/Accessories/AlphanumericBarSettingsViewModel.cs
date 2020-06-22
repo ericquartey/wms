@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
@@ -99,6 +101,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public IEnumerable<AlphaNumericBarSize> Sizes => Enum.GetValues(typeof(AlphaNumericBarSize)).OfType<AlphaNumericBarSize>().ToList();
 
         public bool TestArrowIsChecked
         {
@@ -237,6 +241,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
 
                     this.TestArrowOffset = this.deviceDriver.CalculateOffsetArrowMiddlePosition();
+
+                    bayAccessories.AlphaNumericBar.Size = AlphaNumericBarSize.ExtraLarge;
+
+                    this.Size = bayAccessories.AlphaNumericBar.Size;
                 }
                 else
                 {
