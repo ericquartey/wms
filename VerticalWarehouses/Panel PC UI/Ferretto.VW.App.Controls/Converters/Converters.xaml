@@ -5,6 +5,7 @@
 
     <!--  converters  -->
     <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
+    <conv:AlphaNumericBarSizeListEnumConverter x:Key="ANBSLEC" />
 
     <conv:BoolToThicknessConverter x:Key="BTTC" />
     <conv:BoolToVisibilityConverter x:Key="BTVC" />

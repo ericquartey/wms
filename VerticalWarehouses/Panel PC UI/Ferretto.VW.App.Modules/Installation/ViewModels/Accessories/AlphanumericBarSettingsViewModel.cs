@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
@@ -92,13 +94,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.size;
             set
             {
-                if (this.SetProperty(ref this.size, value))
-                {
-                    this.AreSettingsChanged = true;
-                    this.RaiseCanExecuteChanged();
-                }
+                    if (this.SetProperty(ref this.size, value))
+                    {
+                        this.AreSettingsChanged = true;
+                        this.RaiseCanExecuteChanged();
+                    }
             }
         }
+
+        public IEnumerable<AlphaNumericBarSize> Sizes => Enum.GetValues(typeof(AlphaNumericBarSize)).OfType<AlphaNumericBarSize>().ToList();
 
         public bool TestArrowIsChecked
         {
@@ -199,13 +203,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.testOffIsChecked;
             set
             {
-                if (this.SetProperty(ref this.testOffIsChecked, value))
-                {
-                    if (value)
+                    if (this.SetProperty(ref this.testOffIsChecked, value))
                     {
-                        _ = this.DoTestLedAsync(false);
+                        if (value)
+                        {
+                            _ = this.DoTestLedAsync(false);
+                        }
                     }
-                }
             }
         }
 
@@ -255,6 +259,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             await base.OnDataRefreshAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.Size));
+            this.RaisePropertyChanged(nameof(this.Sizes));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
 
         protected override async Task SaveAsync()

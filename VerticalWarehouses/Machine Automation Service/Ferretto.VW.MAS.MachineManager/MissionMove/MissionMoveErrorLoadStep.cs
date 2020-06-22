@@ -261,8 +261,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    // always invert direction when loading from bay
-                    this.Mission.NeedMovingBackward = true;
+                    //// always invert direction and do homing when loading from bay
+                    //this.Mission.NeedMovingBackward = true;
+                    //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {

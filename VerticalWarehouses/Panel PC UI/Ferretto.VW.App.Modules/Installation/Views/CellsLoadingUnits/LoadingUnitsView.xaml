@@ -131,9 +131,15 @@
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               IsEnabled="{Binding IsEditStatus}"
-                              ItemsSource="{Binding Status, Converter={StaticResource LUSLEC}}"
-                              SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource LUSEC}}"
-                              Style="{DynamicResource PpcComboBoxStyle}" />
+                              ItemsSource="{Binding Status}"
+                              SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              Style="{DynamicResource PpcComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource LUSEC}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <controls:PpcTextBox Grid.Row="1"

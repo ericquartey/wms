@@ -93,9 +93,15 @@
                     <ComboBox Margin="5,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
-                              ItemsSource="{Binding BlockLevels, Converter={StaticResource EBLLC}}"
-                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource EBLC}}"
-                              Style="{DynamicResource PpcComboBoxStyle}" />
+                              ItemsSource="{Binding BlockLevels}"
+                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              Style="{DynamicResource PpcComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource EBLC}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <controls:PpcTextBox Grid.Column="2"

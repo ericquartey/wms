@@ -29,7 +29,8 @@ namespace Ferretto.VW.App.Controls.Converters
                     return Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest");
 
                 default:
-                    return ((BlockLevel)value).ToString();
+                    return Resources.Localized.Get("OperatorApp.BlockLevelUndefined");
+                    //return ((BlockLevel)value).ToString();
             }
         }
 
