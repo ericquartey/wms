@@ -2628,4 +2628,82 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="PrinterName" xml:space="preserve">
     <value>Nome stampante</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Altezza</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Peso</value>
+  </data>
+  <data name="CellId" xml:space="preserve">
+    <value>Cella Id</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>In Baia</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>In Elevatore</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>In Locazione</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Movimento a Baia</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Movimento a Locazione</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Indefinito</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Peso lordo (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>In macchina</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Max peso netto (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Conteggio missioni</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Tara (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Livello blocco</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Sensore attivo</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Sensore disattivato</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Falso</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legenda</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Libera</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Pannello Id</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Vero</value>
+  </data>
 </root>

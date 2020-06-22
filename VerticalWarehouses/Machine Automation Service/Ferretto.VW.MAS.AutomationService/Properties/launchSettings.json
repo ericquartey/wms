@@ -67,6 +67,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Essetre"
       }
+    },
+    "MAS (Agromilk)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Agromilk"
+      }
     }
   }
 }

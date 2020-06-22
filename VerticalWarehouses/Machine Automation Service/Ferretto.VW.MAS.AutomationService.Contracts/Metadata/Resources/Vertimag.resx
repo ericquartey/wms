@@ -369,6 +369,9 @@
   <data name="Machine_SerialNumber" xml:space="preserve">
     <value>Serial Number</value>
   </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>Simulation</value>
+  </data>
   <data name="ManualMovements" xml:space="preserve">
     <value>Manual Movements</value>
   </data>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -28,13 +29,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  loadingUnitsWebService,
                   itemsWebService,
+                  compartmentsWebService,
+                  missionOperationsWebService,
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
@@ -81,9 +88,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override Task OnAppearedAsync()
         {
-            //this.CanInputAvailableQuantity = true;
+            this.CanInputAvailableQuantity = false;
             this.CanInputQuantity = false;
-            //this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
+            this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
             this.Compartments = null;
@@ -135,7 +142,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.IsInputQuantityValid
                 &&
-                this.InputQuantity.Value >= 0;
+                this.InputQuantity.Value > 0;
 
             this.RaisePropertyChanged(nameof(this.CanConfirm));
 

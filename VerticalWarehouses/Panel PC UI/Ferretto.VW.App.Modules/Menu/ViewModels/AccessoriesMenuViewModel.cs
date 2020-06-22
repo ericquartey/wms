@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -69,7 +70,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanOpenSettings(string viewModel)
         {
-            return this.CanExecuteCommand();
+            // return this.CanExecuteCommand();
+
+            return
+                (this.MachineModeService.MachinePower == MachinePowerState.Powered
+                ||
+                this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
         }
 
         private void OpenSettings(string viewModel)

@@ -22,13 +22,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPutViewModel(
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  loadingUnitsWebService,
                   itemsWebService,
+                  compartmentsWebService,
+                  missionOperationsWebService,
                   bayManager,
                   eventAggregator,
                   missionOperationsService,

@@ -817,6 +817,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulation.
+        /// </summary>
+        public static string Machine_Simulation {
+            get {
+                return ResourceManager.GetString("Machine_Simulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual Movements.
         /// </summary>
         public static string ManualMovements {
