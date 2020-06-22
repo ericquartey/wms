@@ -187,6 +187,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;
         }
 
