@@ -52,7 +52,7 @@
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="0"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding TuningChainCommand}"
@@ -61,7 +61,7 @@
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     HorizontalAlignment="Center"
                                     Command="{Binding ClosedShutterCommand}"
                                     Content="{res:Loc InstallationApp.GateClose}"
