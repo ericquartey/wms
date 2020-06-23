@@ -663,7 +663,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.findZeroPosition[(int)this.findZeroStep] = chainPosition.Value;
                                             this.findZeroStep++;
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
-                                            this.FindZeroNextPosition((this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value) / 2);
+                                            this.FindZeroNextPosition(((this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value) / 2)
+                                                + axis.ChainOffset
+                                                //+ (this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - this.findZeroPosition[(int)HorizontalCalibrationStep.BackwardFindZeroSensor])
+                                                );
                                         }
                                         break;
                                 }

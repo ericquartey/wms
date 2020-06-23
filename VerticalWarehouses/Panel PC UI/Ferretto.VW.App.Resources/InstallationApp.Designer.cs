@@ -448,6 +448,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BayChain.
+        /// </summary>
+        public static string BayChain {
+            get {
+                return ResourceManager.GetString("BayChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BayChainHorizontalPosition.
         /// </summary>
         public static string BayChainHorizontalPosition {
@@ -3049,6 +3058,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal.
+        /// </summary>
+        public static string Horizontal {
+            get {
+                return ResourceManager.GetString("Horizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HorizontalAndVertical.
+        /// </summary>
+        public static string HorizontalAndVertical {
+            get {
+                return ResourceManager.GetString("HorizontalAndVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Axis.
         /// </summary>
         public static string HorizontalAxis {
@@ -5070,6 +5097,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NoInstallationFileFound {
             get {
                 return ResourceManager.GetString("NoInstallationFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
@@ -7376,6 +7412,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerifyWeightController {
             get {
                 return ResourceManager.GetString("VerifyWeightController", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical.
+        /// </summary>
+        public static string Vertical {
+            get {
+                return ResourceManager.GetString("Vertical", resourceCulture);
             }
         }
         

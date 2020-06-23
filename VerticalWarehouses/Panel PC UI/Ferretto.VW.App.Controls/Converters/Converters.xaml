@@ -38,6 +38,7 @@
 
 
     <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+    <conv:AxisToStringConverter x:Key="ATSC" />
     <conv:MachineServiceStatusEnumConverter x:Key="MSSEC" />
     <conv:LoadingUnitStatusEnumConverter x:Key="LUSEC" />
     <conv:LoadingUnitStatusListEnumConverter x:Key="LUSLEC" />
