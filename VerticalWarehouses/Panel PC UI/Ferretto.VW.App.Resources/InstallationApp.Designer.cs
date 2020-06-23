@@ -3157,6 +3157,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Difference.
+        /// </summary>
+        public static string HorizontalChainDifference {
+            get {
+                return ResourceManager.GetString("HorizontalChainDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original.
+        /// </summary>
+        public static string HorizontalChainOriginalDistance {
+            get {
+                return ResourceManager.GetString("HorizontalChainOriginalDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Homing Completed.
         /// </summary>
         public static string HorizontalHomingCompleted {
@@ -3211,7 +3229,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perform the chain calibration procedure.
+        ///   Looks up a localized string similar to Perform the chain calibration procedure. The horizontal zero sensor must be active..
         /// </summary>
         public static string HorizzontalChainCalibrationProcedureRequired {
             get {

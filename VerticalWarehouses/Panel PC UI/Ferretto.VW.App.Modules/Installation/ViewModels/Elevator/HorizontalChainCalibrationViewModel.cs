@@ -721,8 +721,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 this.CanBaseExecute()
-                &&
-                !this.IsShutterMoving
+                //&& !this.IsShutterMoving
                 && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
                 this.SensorsService.ShutterSensors != null
@@ -853,7 +852,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
-                this.IsShutterMoving = true;
+                //this.IsShutterMoving = true;
                 this.IsExecutingProcedure = true;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

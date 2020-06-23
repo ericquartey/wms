@@ -2350,10 +2350,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Calibrazione orizzontale catena</value>
   </data>
   <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
-    <value>Effetua la calibrazione orizzontale della catena </value>
+    <value>Esegui la calibrazione orizzontale della catena </value>
   </data>
   <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
-    <value>Esegui la procedura di taratura della catena</value>
+    <value>Esegui la procedura di taratura della catena. Il sensore di zero orizzontale deve essere attivo.</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
     <value>La funzione di calibrazione orizzontale della catena permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
@@ -2365,10 +2365,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Conferma procedura</value>
   </data>
   <data name="Measured" xml:space="preserve">
-    <value>Measured</value>
+    <value>Misurata</value>
   </data>
   <data name="MisurationDone" xml:space="preserve">
-    <value>Misurazione effetuata</value>
+    <value>Misurazione eseguita</value>
   </data>
   <data name="MisurationDoneDescription" xml:space="preserve">
     <value>Applicare la seguente misurazione alla macchina</value>
@@ -2713,7 +2713,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Orizzontale</value>
   </data>
   <data name="HorizontalAndVertical" xml:space="preserve">
-    <value>Horizzontale e verticale</value>
+    <value>Orizzontale e verticale</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Nessuno</value>
@@ -2726,5 +2726,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ElevatorBay" xml:space="preserve">
     <value>Elevatore in baia</value>
+  </data>
+  <data name="HorizontalChainDifference" xml:space="preserve">
+    <value>Differenza</value>
+  </data>
+  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
+    <value>Originale</value>
   </data>
 </root>

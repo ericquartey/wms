@@ -2423,7 +2423,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Performs the horizontal calibration of the chain</value>
   </data>
   <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
-    <value>Perform the chain calibration procedure</value>
+    <value>Perform the chain calibration procedure. The horizontal zero sensor must be active.</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
     <value>The chain horizontal calibration function allows you to calibrate the correct value through its specific procedure. The procedure works in successive steps until correct completion.</value>
@@ -2816,5 +2816,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ElevatorBay" xml:space="preserve">
     <value>Elevator bay</value>
+  </data>
+  <data name="HorizontalChainDifference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
+    <value>Original</value>
   </data>
 </root>

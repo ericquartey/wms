@@ -129,8 +129,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetProperty(ref this.availableQuantity, value, () =>
                 {
                     this.RaiseCanExecuteChanged();
-                    //this.CanInputAvailableQuantity = true;
-                    //this.CanConfirmPresent = true;
+                    this.CanInputAvailableQuantity = true;
+                    this.CanConfirmPresent = true;
                     this.CanInputQuantity = false;
                 });
             }
@@ -822,13 +822,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 catch (Exception)
                 {
-                    //this.CanInputAvailableQuantity = true;
+                    this.CanInputAvailableQuantity = true;
                     this.CanInputQuantity = true;
                     this.AvailableQuantity = null;
                 }
             }
 
-            //this.CanInputAvailableQuantity = true;
+            this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
         }
 
