@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large.
         /// </summary>
         public static string AlphaNumericBarSizeL {
@@ -2154,6 +2163,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ElevatorBack {
             get {
                 return ResourceManager.GetString("ElevatorBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator bay.
+        /// </summary>
+        public static string ElevatorBay {
+            get {
+                return ResourceManager.GetString("ElevatorBay", resourceCulture);
             }
         }
         

@@ -37,6 +37,8 @@
     <conv:ImageToSourceConverter x:Key="ITSC" />
 
 
+
+    <conv:BayNumberToStringConverter x:Key="BNTSC" />
     <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
     <conv:AxisToStringConverter x:Key="ATSC" />
     <conv:MachineServiceStatusEnumConverter x:Key="MSSEC" />

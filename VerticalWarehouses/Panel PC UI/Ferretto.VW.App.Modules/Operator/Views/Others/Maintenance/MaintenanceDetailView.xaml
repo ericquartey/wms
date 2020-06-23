@@ -124,7 +124,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column10"
                                             Width="120"
-                                            Binding="{Binding Path=Definition.BayNumber}"
+                                            Binding="{Binding Path=Definition.BayNumber, Converter={StaticResource BNTSC}}"
                                             Header="{res:Loc OperatorApp.BayNumber}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
