@@ -2817,6 +2817,18 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ElevatorBay" xml:space="preserve">
     <value>Elevator bay</value>
   </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Total load units in bay 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Total load units in bay 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Total load units in bay 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Total missions</value>
+  </data>
   <data name="HorizontalChainDifference" xml:space="preserve">
     <value>Difference</value>
   </data>

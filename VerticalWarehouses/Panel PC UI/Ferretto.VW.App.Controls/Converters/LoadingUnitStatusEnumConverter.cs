@@ -38,7 +38,42 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var blk = LoadingUnitStatus.Undefined;
+
+            if (value is string strValue)
+            {
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_Undefined"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.Undefined;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_InBay"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.InBay;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_InElevator"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.InElevator;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_InLocation"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.InLocation;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_OnMovementToBay"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.OnMovementToBay;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("InstallationApp.LoadingUnitStatus_OnMovementToLocation"), StringComparison.CurrentCulture))
+                {
+                    blk = LoadingUnitStatus.OnMovementToLocation;
+                }
+            }
+
+            return blk;
         }
 
         #endregion

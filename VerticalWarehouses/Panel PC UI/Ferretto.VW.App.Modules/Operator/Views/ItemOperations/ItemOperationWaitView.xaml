@@ -110,7 +110,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column40"
                                                 Width="1*"
-                                                Binding="{Binding Path=Status}"
+                                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
                                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -196,7 +196,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn x:Name="Column4"
                                                 Width="1*"
-                                                Binding="{Binding Path=Status}"
+                                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
                                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">

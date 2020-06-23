@@ -180,7 +180,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column11"
                                             Width="150"
-                                            Binding="{Binding Path=Definition.CounterName}"
+                                            Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
                                             Header="{res:Loc OperatorApp.CounterName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
