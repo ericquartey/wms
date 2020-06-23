@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly INavigationService navigationService;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -29,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
+        private readonly IOperatorNavigationService operatorNavigationService;
 
         private double? availableQuantity;
 
@@ -97,6 +101,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public BaseItemOperationMainViewModel(
+            INavigationService navigationService,
+            IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IMachineCompartmentsWebService compartmentsWebService,
@@ -111,6 +117,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.compartmentsWebService = compartmentsWebService;
             this.missionOperationsWebService = missionOperationsWebService;
             this.loadingUnitsWebService = loadingUnitsWebService;
+            this.operatorNavigationService = operatorNavigationService;
+            this.navigationService = navigationService;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -577,6 +585,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.ShowOperationCanceledMessage();
                 }
+
+                this.navigationService.GoBackTo(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.WAIT);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -642,6 +654,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.ShowOperationCanceledMessage();
                 }
+
+                this.navigationService.GoBackTo(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.WAIT);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -780,6 +796,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         "update present quantity");
 
                 //await this.MissionOperationsService.RecallLoadingUnitAsync(this.loadingUnitId.Value);
+
+                this.NavigationService.GoBack();
+                this.operatorNavigationService.NavigateToDrawerViewConfirmPresent();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
