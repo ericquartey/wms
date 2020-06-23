@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool canConfirm;
+
         private bool canConfirmOnEmpty;
 
         private DelegateCommand emptyOperationCommand;
@@ -26,13 +29,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            INavigationService navigationService,
+            IOperatorNavigationService operatorNavigationService,
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  navigationService,
+                  operatorNavigationService,
+                  loadingUnitsWebService,
                   itemsWebService,
+                  compartmentsWebService,
+                  missionOperationsWebService,
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
@@ -45,6 +58,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public override string ActiveContextName => OperationalContext.ItemPick.ToString();
+
+        public bool CanConfirm
+        {
+            get => this.canConfirm;
+            set => this.SetProperty(ref this.canConfirm, value);
+        }
 
         public bool CanConfirmOnEmpty
         {
@@ -73,6 +92,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override Task OnAppearedAsync()
         {
+            this.CanInputAvailableQuantity = true;
+            this.CanInputQuantity = false;
+            this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
+            this.RaisePropertyChanged(nameof(this.CanInputQuantity));
+
             this.Compartments = null;
             this.SelectedCompartment = null;
 
@@ -84,6 +108,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            this.AvailableQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -106,7 +131,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
-            this.CanConfirmOnEmpty =
+            this.CanConfirm =
                 this.MissionOperation != null
                 &&
                 !this.IsWaitingForResponse
@@ -117,11 +142,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.HasValue
                 &&
-                this.InputQuantity.Value > 0
+                this.CanInputQuantity
                 &&
-                this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+                this.IsInputQuantityValid
+                &&
+                this.InputQuantity.Value > 0;
 
-            //return this.CanConfirmOnEmpty;
+            this.RaisePropertyChanged(nameof(this.CanConfirm));
+
+            //return this.CanConfirm;
             return false;
         }
 

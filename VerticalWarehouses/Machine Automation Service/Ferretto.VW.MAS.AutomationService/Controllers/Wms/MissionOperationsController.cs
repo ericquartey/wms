@@ -99,6 +99,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(missionOperationsCount);
         }
 
+        [HttpGet("get-unit-id")]
+        public ActionResult<int> GetUnitId(int missionId)
+        {
+            var missionOperationsCount = this.missionOperationsProvider.GetUnitId(missionId, this.BayNumber);
+
+            return this.Ok(missionOperationsCount);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
         {

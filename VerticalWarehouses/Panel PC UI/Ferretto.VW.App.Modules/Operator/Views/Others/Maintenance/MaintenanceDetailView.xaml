@@ -91,7 +91,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column3"
                                             Width="100"
-                                            Binding="{Binding Path=IsToDo}"
+                                            Binding="{Binding Path=IsToDo, Converter={StaticResource BTSC}}"
                                             Header="{res:Loc OperatorApp.IsToDo}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -102,7 +102,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column4"
                                             Width="100"
-                                            Binding="{Binding Path=IsDone}"
+                                            Binding="{Binding Path=IsDone, Converter={StaticResource BTSC}}"
                                             Header="{res:Loc OperatorApp.IsDone}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -113,7 +113,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column9"
                                             Width="100"
-                                            Binding="{Binding Path=Definition.Axis}"
+                                            Binding="{Binding Path=Definition.Axis, Converter={StaticResource ATSC}}"
                                             Header="{res:Loc OperatorApp.Axis}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -124,7 +124,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column10"
                                             Width="120"
-                                            Binding="{Binding Path=Definition.BayNumber}"
+                                            Binding="{Binding Path=Definition.BayNumber, Converter={StaticResource BNTSC}}"
                                             Header="{res:Loc OperatorApp.BayNumber}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -135,7 +135,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column8"
                                             Width="100"
-                                            Binding="{Binding Path=InstructionStatus}"
+                                            Binding="{Binding Path=InstructionStatus, Converter={StaticResource MSSEC}}"
                                             Header="{res:Loc OperatorApp.InstructionStatus}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -180,7 +180,7 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column11"
                                             Width="150"
-                                            Binding="{Binding Path=Definition.CounterName}"
+                                            Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
                                             Header="{res:Loc OperatorApp.CounterName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
@@ -282,7 +282,7 @@
                 <controls:PpcLabeledText Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedInstruction.InstructionStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                         ContentText="{Binding SelectedInstruction.InstructionStatus, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, Converter={StaticResource MSSEC}}"
                                          LabelText="{res:Loc OperatorApp.InstructionState}" />
             </Grid>
         </Grid>

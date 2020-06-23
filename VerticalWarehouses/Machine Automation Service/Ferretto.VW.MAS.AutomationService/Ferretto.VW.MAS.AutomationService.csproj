@@ -37,6 +37,9 @@
       <Content Update="appsettings.*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+      <Content Update="appsettings.Agromilk.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Update="appsettings.Essetre.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

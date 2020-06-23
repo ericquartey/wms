@@ -31,41 +31,7 @@
             "IsEnabledNew": true
           }*/
         },
-        "Carousel": {
-          "AssistedMovements": {
-            "FeedRate": 1.0,
-            "Id": 1
-          },
-          "ElevatorDistance": 448.216880625668,
-          "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 22.0,
-          "Id": 1,
-          "LastIdealPosition": 0.0,
-          "ManualMovements": {
-            "FeedRate": 0.1,
-            "Id": 2
-          }
-        },
-        "ChainOffset": -8.0,
-        "EmptyLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Id": 3,
-          "Speed": 140.0
-        },
-        "FullLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Id": 6,
-          "Speed": 130.0
-        },
-        "Inverter": {
-          "Id": 1,
-          "Index": "Slave3",
-          "Parameters": [],
-          "TcpPort": 0,
-          "Type": "Acu"
-        },
+        "ChainOffset": 0.0,
         "IoDevice": {
           "Id": 1,
           "Index": "IoDevice1",
@@ -78,56 +44,14 @@
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 445.0,
-            "Id": 1,
-            "IsUpper": false,
-            "Location": "InternalBay1Down",
-            "LocationUpDown": "Down",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 395.0,
-            "ProfileOffset": 0.0
-          },
-          {
-            "Height": 888.0,
-            "Id": 2,
-            "IsUpper": true,
+            "Height": 785.0,
             "Location": "InternalBay1Up",
-            "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 395.0,
-            "ProfileOffset": 25.0
+            "MaxSingleHeight": 695.0,
+            "ProfileOffset": 50.0
           }
         ],
         "Resolution": 296.2282068,
-        "Shutter": {
-          "AssistedMovements": {
-            "FeedRate": 0.2,
-            "HighSpeedDurationClose": 14.0,
-            "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 6.0,
-            "HighSpeedHalfDurationOpen": 7.0,
-            "Id": 2,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
-          "Id": 1,
-          "Inverter": {
-            "Id": 2,
-            "Index": "Slave2",
-            "Parameters": [],
-            "TcpPort": 0,
-            "Type": "Agl"
-          },
-          "ManualMovements": {
-            "FeedRate": 0.1,
-            "HighSpeedDurationClose": 0.0,
-            "HighSpeedDurationOpen": 0.0,
-            "Id": 1,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
-          "Type": "ThreeSensors"
-        },
         "Side": "Front",
         "Status": "Idle"
       }
@@ -185,7 +109,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 5500.0,
+          "UpperBound": 7900.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,
@@ -483,14 +407,14 @@
         "ShaftElasticity": 210000.0
       }
     },
-    "Height": 5861.0,
+    "Height": 8261.0,
     "Id": 2,
-    "LoadUnitMaxHeight": 395.0,
-    "LoadUnitMaxNetWeight": 800.0,
-    "LoadUnitMinHeight": 150.0,
-    "LoadUnitTare": 125.0,
+    "LoadUnitMaxHeight": 695.0,
+    "LoadUnitMaxNetWeight": 550.0,
+    "LoadUnitMinHeight": 125.0,
+    "LoadUnitTare": 120.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H5845",
+    "ModelName": "VERTIMAG (NEW 2020) 103XL550-BIS-H8261",
     "Panels": [
       {
         "Side": "front",
@@ -1714,7 +1638,7 @@
             "PanelId": 29,
             "Priority": 283,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 285,
@@ -1722,7 +1646,7 @@
             "PanelId": 29,
             "Priority": 285,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 287,
@@ -1730,7 +1654,7 @@
             "PanelId": 29,
             "Priority": 287,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 289,
@@ -1738,7 +1662,7 @@
             "PanelId": 29,
             "Priority": 289,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 291,
@@ -1746,7 +1670,7 @@
             "PanelId": 29,
             "Priority": 291,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 293,
@@ -1754,7 +1678,7 @@
             "PanelId": 29,
             "Priority": 293,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 295,
@@ -1762,8 +1686,837 @@
             "PanelId": 29,
             "Priority": 295,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 297,
+            "Position": 5695,
+            "PanelId": 29,
+            "Priority": 297,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 299,
+            "Position": 5720,
+            "PanelId": 29,
+            "Priority": 299,
+            "IsFree": true,
+            "BlockLevel": "None"
           }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 31,
+        "Cells": [
+          {
+            "Id": 301,
+            "Position": 5745,
+            "PanelId": 31,
+            "Priority": 301,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 303,
+            "Position": 5770,
+            "PanelId": 31,
+            "Priority": 303,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 305,
+            "Position": 5795,
+            "PanelId": 31,
+            "Priority": 305,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 307,
+            "Position": 5820,
+            "PanelId": 31,
+            "Priority": 307,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 309,
+            "Position": 5845,
+            "PanelId": 31,
+            "Priority": 309,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 311,
+            "Position": 5870,
+            "PanelId": 31,
+            "Priority": 311,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 313,
+            "Position": 5895,
+            "PanelId": 31,
+            "Priority": 313,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 315,
+            "Position": 5920,
+            "PanelId": 31,
+            "Priority": 315,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 317,
+            "Position": 5945,
+            "PanelId": 31,
+            "Priority": 317,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 319,
+            "Position": 5970,
+            "PanelId": 31,
+            "Priority": 319,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 33,
+        "Cells": [
+          {
+            "Id": 321,
+            "Position": 5995,
+            "PanelId": 33,
+            "Priority": 321,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 323,
+            "Position": 6020,
+            "PanelId": 33,
+            "Priority": 323,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 325,
+            "Position": 6045,
+            "PanelId": 33,
+            "Priority": 325,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 327,
+            "Position": 6070,
+            "PanelId": 33,
+            "Priority": 327,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 329,
+            "Position": 6095,
+            "PanelId": 33,
+            "Priority": 329,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 331,
+            "Position": 6120,
+            "PanelId": 33,
+            "Priority": 331,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 333,
+            "Position": 6145,
+            "PanelId": 33,
+            "Priority": 333,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 335,
+            "Position": 6170,
+            "PanelId": 33,
+            "Priority": 335,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 337,
+            "Position": 6195,
+            "PanelId": 33,
+            "Priority": 337,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 339,
+            "Position": 6220,
+            "PanelId": 33,
+            "Priority": 339,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 35,
+        "Cells": [
+          {
+            "Id": 341,
+            "Position": 6245,
+            "PanelId": 35,
+            "Priority": 341,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 343,
+            "Position": 6270,
+            "PanelId": 35,
+            "Priority": 343,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 345,
+            "Position": 6295,
+            "PanelId": 35,
+            "Priority": 345,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 347,
+            "Position": 6320,
+            "PanelId": 35,
+            "Priority": 347,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 349,
+            "Position": 6345,
+            "PanelId": 35,
+            "Priority": 349,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 351,
+            "Position": 6370,
+            "PanelId": 35,
+            "Priority": 351,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 353,
+            "Position": 6395,
+            "PanelId": 35,
+            "Priority": 353,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 355,
+            "Position": 6420,
+            "PanelId": 35,
+            "Priority": 355,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 357,
+            "Position": 6445,
+            "PanelId": 35,
+            "Priority": 357,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 359,
+            "Position": 6470,
+            "PanelId": 35,
+            "Priority": 359,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 37,
+        "Cells": [
+          {
+            "Id": 361,
+            "Position": 6495,
+            "PanelId": 37,
+            "Priority": 361,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 363,
+            "Position": 6520,
+            "PanelId": 37,
+            "Priority": 363,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 365,
+            "Position": 6545,
+            "PanelId": 37,
+            "Priority": 365,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 367,
+            "Position": 6570,
+            "PanelId": 37,
+            "Priority": 367,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 369,
+            "Position": 6595,
+            "PanelId": 37,
+            "Priority": 369,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 371,
+            "Position": 6620,
+            "PanelId": 37,
+            "Priority": 371,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 373,
+            "Position": 6645,
+            "PanelId": 37,
+            "Priority": 373,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 375,
+            "Position": 6670,
+            "PanelId": 37,
+            "Priority": 375,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 377,
+            "Position": 6695,
+            "PanelId": 37,
+            "Priority": 377,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 379,
+            "Position": 6720,
+            "PanelId": 37,
+            "Priority": 379,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 39,
+        "Cells": [
+          {
+            "Id": 381,
+            "Position": 6745,
+            "PanelId": 39,
+            "Priority": 381,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 383,
+            "Position": 6770,
+            "PanelId": 39,
+            "Priority": 383,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 385,
+            "Position": 6795,
+            "PanelId": 39,
+            "Priority": 385,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 387,
+            "Position": 6820,
+            "PanelId": 39,
+            "Priority": 387,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 389,
+            "Position": 6845,
+            "PanelId": 39,
+            "Priority": 389,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 391,
+            "Position": 6870,
+            "PanelId": 39,
+            "Priority": 391,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 393,
+            "Position": 6895,
+            "PanelId": 39,
+            "Priority": 393,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 395,
+            "Position": 6920,
+            "PanelId": 39,
+            "Priority": 395,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 397,
+            "Position": 6945,
+            "PanelId": 39,
+            "Priority": 397,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 399,
+            "Position": 6970,
+            "PanelId": 39,
+            "Priority": 399,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 41,
+        "Cells": [
+          {
+            "Id": 401,
+            "Position": 6995,
+            "PanelId": 41,
+            "Priority": 401,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 403,
+            "Position": 7020,
+            "PanelId": 41,
+            "Priority": 403,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 405,
+            "Position": 7045,
+            "PanelId": 41,
+            "Priority": 405,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 407,
+            "Position": 7070,
+            "PanelId": 41,
+            "Priority": 407,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 409,
+            "Position": 7095,
+            "PanelId": 41,
+            "Priority": 409,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 411,
+            "Position": 7120,
+            "PanelId": 41,
+            "Priority": 411,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 413,
+            "Position": 7145,
+            "PanelId": 41,
+            "Priority": 413,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 415,
+            "Position": 7170,
+            "PanelId": 41,
+            "Priority": 415,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 417,
+            "Position": 7195,
+            "PanelId": 41,
+            "Priority": 417,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 419,
+            "Position": 7220,
+            "PanelId": 41,
+            "Priority": 419,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 43,
+        "Cells": [
+          {
+            "Id": 421,
+            "Position": 7245,
+            "PanelId": 43,
+            "Priority": 421,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 423,
+            "Position": 7270,
+            "PanelId": 43,
+            "Priority": 423,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 425,
+            "Position": 7295,
+            "PanelId": 43,
+            "Priority": 425,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 427,
+            "Position": 7320,
+            "PanelId": 43,
+            "Priority": 427,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 429,
+            "Position": 7345,
+            "PanelId": 43,
+            "Priority": 429,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 431,
+            "Position": 7370,
+            "PanelId": 43,
+            "Priority": 431,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 433,
+            "Position": 7395,
+            "PanelId": 43,
+            "Priority": 433,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 435,
+            "Position": 7420,
+            "PanelId": 43,
+            "Priority": 435,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 437,
+            "Position": 7445,
+            "PanelId": 43,
+            "Priority": 437,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 439,
+            "Position": 7470,
+            "PanelId": 43,
+            "Priority": 439,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 45,
+        "Cells": [
+          {
+            "Id": 441,
+            "Position": 7495,
+            "PanelId": 45,
+            "Priority": 441,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 443,
+            "Position": 7520,
+            "PanelId": 45,
+            "Priority": 443,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 445,
+            "Position": 7545,
+            "PanelId": 45,
+            "Priority": 445,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 447,
+            "Position": 7570,
+            "PanelId": 45,
+            "Priority": 447,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 449,
+            "Position": 7595,
+            "PanelId": 45,
+            "Priority": 449,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 451,
+            "Position": 7620,
+            "PanelId": 45,
+            "Priority": 451,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 453,
+            "Position": 7645,
+            "PanelId": 45,
+            "Priority": 453,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 455,
+            "Position": 7670,
+            "PanelId": 45,
+            "Priority": 455,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 457,
+            "Position": 7695,
+            "PanelId": 45,
+            "Priority": 457,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 459,
+            "Position": 7720,
+            "PanelId": 45,
+            "Priority": 459,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 47,
+        "Cells": [
+          {
+            "Id": 461,
+            "Position": 7745,
+            "PanelId": 47,
+            "Priority": 461,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 463,
+            "Position": 7770,
+            "PanelId": 47,
+            "Priority": 463,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 465,
+            "Position": 7795,
+            "PanelId": 47,
+            "Priority": 465,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 467,
+            "Position": 7820,
+            "PanelId": 47,
+            "Priority": 467,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 469,
+            "Position": 7845,
+            "PanelId": 47,
+            "Priority": 469,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 471,
+            "Position": 7870,
+            "PanelId": 47,
+            "Priority": 471,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 473,
+            "Position": 7895,
+            "PanelId": 47,
+            "Priority": 473,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 475,
+            "Position": 7920,
+            "PanelId": 47,
+            "Priority": 475,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 477,
+            "Position": 7945,
+            "PanelId": 47,
+            "Priority": 477,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 479,
+            "Position": 7970,
+            "PanelId": 47,
+            "Priority": 479,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          }
+        ]
+      },
+      {
+        "Side": "front",
+        "Id": 49,
+        "Cells": [
+          {
+            "Id": 481,
+            "Position": 7995,
+            "PanelId": 49,
+            "Priority": 481,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 483,
+            "Position": 8020,
+            "PanelId": 49,
+            "Priority": 483,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 485,
+            "Position": 8045,
+            "PanelId": 49,
+            "Priority": 485,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 487,
+            "Position": 8070,
+            "PanelId": 49,
+            "Priority": 487,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          }
+
         ]
       },
       {
@@ -3568,7 +4321,7 @@
             "PanelId": 42,
             "Priority": 420,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           }
         ]
       },
@@ -3582,7 +4335,7 @@
             "PanelId": 44,
             "Priority": 422,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 424,
@@ -3590,7 +4343,7 @@
             "PanelId": 44,
             "Priority": 424,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 426,
@@ -3598,7 +4351,7 @@
             "PanelId": 44,
             "Priority": 426,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 428,
@@ -3606,7 +4359,7 @@
             "PanelId": 44,
             "Priority": 428,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 430,
@@ -3614,7 +4367,7 @@
             "PanelId": 44,
             "Priority": 430,
             "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "None"
           },
           {
             "Id": 432,
@@ -3622,12 +4375,840 @@
             "PanelId": 44,
             "Priority": 432,
             "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 434,
+            "Position": 5695,
+            "PanelId": 44,
+            "Priority": 434,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 436,
+            "Position": 5720,
+            "PanelId": 44,
+            "Priority": 436,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 438,
+            "Position": 5745,
+            "PanelId": 44,
+            "Priority": 438,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 440,
+            "Position": 5770,
+            "PanelId": 44,
+            "Priority": 440,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 46,
+        "Cells": [
+          {
+            "Id": 442,
+            "Position": 5795,
+            "PanelId": 46,
+            "Priority": 442,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 444,
+            "Position": 5820,
+            "PanelId": 46,
+            "Priority": 444,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 446,
+            "Position": 5845,
+            "PanelId": 46,
+            "Priority": 446,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 448,
+            "Position": 5870,
+            "PanelId": 46,
+            "Priority": 448,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 450,
+            "Position": 5895,
+            "PanelId": 46,
+            "Priority": 450,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 452,
+            "Position": 5920,
+            "PanelId": 46,
+            "Priority": 452,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 454,
+            "Position": 5945,
+            "PanelId": 46,
+            "Priority": 454,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 456,
+            "Position": 5970,
+            "PanelId": 46,
+            "Priority": 456,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 458,
+            "Position": 5995,
+            "PanelId": 46,
+            "Priority": 458,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 460,
+            "Position": 6020,
+            "PanelId": 46,
+            "Priority": 460,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 48,
+        "Cells": [
+          {
+            "Id": 462,
+            "Position": 6045,
+            "PanelId": 48,
+            "Priority": 462,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 464,
+            "Position": 6070,
+            "PanelId": 48,
+            "Priority": 464,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 466,
+            "Position": 6095,
+            "PanelId": 48,
+            "Priority": 466,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 468,
+            "Position": 6120,
+            "PanelId": 48,
+            "Priority": 468,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 470,
+            "Position": 6145,
+            "PanelId": 48,
+            "Priority": 470,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 472,
+            "Position": 6170,
+            "PanelId": 48,
+            "Priority": 472,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 474,
+            "Position": 6195,
+            "PanelId": 48,
+            "Priority": 474,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 476,
+            "Position": 6220,
+            "PanelId": 48,
+            "Priority": 476,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 478,
+            "Position": 6245,
+            "PanelId": 48,
+            "Priority": 478,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 480,
+            "Position": 6270,
+            "PanelId": 48,
+            "Priority": 480,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 50,
+        "Cells": [
+          {
+            "Id": 482,
+            "Position": 6295,
+            "PanelId": 50,
+            "Priority": 482,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 484,
+            "Position": 6320,
+            "PanelId": 50,
+            "Priority": 484,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 486,
+            "Position": 6345,
+            "PanelId": 50,
+            "Priority": 486,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 488,
+            "Position": 6370,
+            "PanelId": 50,
+            "Priority": 488,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 490,
+            "Position": 6395,
+            "PanelId": 50,
+            "Priority": 490,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 492,
+            "Position": 6420,
+            "PanelId": 50,
+            "Priority": 492,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 494,
+            "Position": 6445,
+            "PanelId": 50,
+            "Priority": 494,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 496,
+            "Position": 6470,
+            "PanelId": 50,
+            "Priority": 496,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 498,
+            "Position": 6495,
+            "PanelId": 50,
+            "Priority": 498,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 500,
+            "Position": 6520,
+            "PanelId": 50,
+            "Priority": 500,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 52,
+        "Cells": [
+          {
+            "Id": 502,
+            "Position": 6545,
+            "PanelId": 52,
+            "Priority": 502,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 504,
+            "Position": 6570,
+            "PanelId": 52,
+            "Priority": 504,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 506,
+            "Position": 6595,
+            "PanelId": 52,
+            "Priority": 506,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 508,
+            "Position": 6620,
+            "PanelId": 52,
+            "Priority": 508,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 510,
+            "Position": 6645,
+            "PanelId": 52,
+            "Priority": 510,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 512,
+            "Position": 6670,
+            "PanelId": 52,
+            "Priority": 512,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 514,
+            "Position": 6695,
+            "PanelId": 52,
+            "Priority": 514,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 516,
+            "Position": 6720,
+            "PanelId": 52,
+            "Priority": 516,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 518,
+            "Position": 6745,
+            "PanelId": 52,
+            "Priority": 518,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 520,
+            "Position": 6770,
+            "PanelId": 52,
+            "Priority": 520,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 54,
+        "Cells": [
+          {
+            "Id": 522,
+            "Position": 6795,
+            "PanelId": 54,
+            "Priority": 522,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 524,
+            "Position": 6820,
+            "PanelId": 54,
+            "Priority": 524,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 526,
+            "Position": 6845,
+            "PanelId": 54,
+            "Priority": 526,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 528,
+            "Position": 6870,
+            "PanelId": 54,
+            "Priority": 528,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 530,
+            "Position": 6895,
+            "PanelId": 54,
+            "Priority": 530,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 532,
+            "Position": 6920,
+            "PanelId": 54,
+            "Priority": 532,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 534,
+            "Position": 6945,
+            "PanelId": 54,
+            "Priority": 534,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 536,
+            "Position": 6970,
+            "PanelId": 54,
+            "Priority": 536,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 538,
+            "Position": 6995,
+            "PanelId": 54,
+            "Priority": 538,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 540,
+            "Position": 7020,
+            "PanelId": 54,
+            "Priority": 540,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 56,
+        "Cells": [
+          {
+            "Id": 542,
+            "Position": 7045,
+            "PanelId": 56,
+            "Priority": 542,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 544,
+            "Position": 7070,
+            "PanelId": 56,
+            "Priority": 544,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 546,
+            "Position": 7095,
+            "PanelId": 56,
+            "Priority": 546,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 548,
+            "Position": 7120,
+            "PanelId": 56,
+            "Priority": 548,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 550,
+            "Position": 7145,
+            "PanelId": 56,
+            "Priority": 550,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 552,
+            "Position": 7170,
+            "PanelId": 56,
+            "Priority": 552,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 554,
+            "Position": 7195,
+            "PanelId": 56,
+            "Priority": 554,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 556,
+            "Position": 7220,
+            "PanelId": 56,
+            "Priority": 556,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 558,
+            "Position": 7245,
+            "PanelId": 56,
+            "Priority": 558,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 560,
+            "Position": 7270,
+            "PanelId": 56,
+            "Priority": 560,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 58,
+        "Cells": [
+          {
+            "Id": 562,
+            "Position": 7295,
+            "PanelId": 58,
+            "Priority": 562,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 564,
+            "Position": 7320,
+            "PanelId": 58,
+            "Priority": 564,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 566,
+            "Position": 7345,
+            "PanelId": 58,
+            "Priority": 566,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 568,
+            "Position": 7370,
+            "PanelId": 58,
+            "Priority": 568,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 570,
+            "Position": 7395,
+            "PanelId": 58,
+            "Priority": 570,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 572,
+            "Position": 7420,
+            "PanelId": 58,
+            "Priority": 572,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 574,
+            "Position": 7445,
+            "PanelId": 58,
+            "Priority": 574,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 576,
+            "Position": 7470,
+            "PanelId": 58,
+            "Priority": 576,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 578,
+            "Position": 7495,
+            "PanelId": 58,
+            "Priority": 578,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 580,
+            "Position": 7520,
+            "PanelId": 58,
+            "Priority": 580,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 60,
+        "Cells": [
+          {
+            "Id": 582,
+            "Position": 7545,
+            "PanelId": 60,
+            "Priority": 582,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 584,
+            "Position": 7570,
+            "PanelId": 60,
+            "Priority": 584,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 586,
+            "Position": 7595,
+            "PanelId": 60,
+            "Priority": 586,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 588,
+            "Position": 7620,
+            "PanelId": 60,
+            "Priority": 588,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 590,
+            "Position": 7645,
+            "PanelId": 60,
+            "Priority": 590,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 592,
+            "Position": 7670,
+            "PanelId": 60,
+            "Priority": 592,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 594,
+            "Position": 7695,
+            "PanelId": 60,
+            "Priority": 594,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 596,
+            "Position": 7720,
+            "PanelId": 60,
+            "Priority": 596,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 598,
+            "Position": 7745,
+            "PanelId": 60,
+            "Priority": 598,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 600,
+            "Position": 7770,
+            "PanelId": 60,
+            "Priority": 600,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 62,
+        "Cells": [
+          {
+            "Id": 602,
+            "Position": 7795,
+            "PanelId": 62,
+            "Priority": 602,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 604,
+            "Position": 7820,
+            "PanelId": 62,
+            "Priority": 604,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 606,
+            "Position": 7845,
+            "PanelId": 62,
+            "Priority": 606,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 608,
+            "Position": 7870,
+            "PanelId": 62,
+            "Priority": 608,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 610,
+            "Position": 7895,
+            "PanelId": 62,
+            "Priority": 610,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 612,
+            "Position": 7920,
+            "PanelId": 62,
+            "Priority": 612,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          },
+          {
+            "Id": 614,
+            "Position": 7945,
+            "PanelId": 62,
+            "Priority": 614,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          },
+          {
+            "Id": 616,
+            "Position": 7970,
+            "PanelId": 62,
+            "Priority": 616,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          },
+          {
+            "Id": 618,
+            "Position": 7995,
+            "PanelId": 62,
+            "Priority": 618,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          },
+          {
+            "Id": 620,
+            "Position": 8020,
+            "PanelId": 62,
+            "Priority": 620,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 64,
+        "Cells": [
+          {
+            "Id": 622,
+            "Position": 8045,
+            "PanelId": 64,
+            "Priority": 622,
+            "IsFree": true,
+            "BlockLevel": "SpaceOnly"
+          },
+          {
+            "Id": 624,
+            "Position": 8070,
+            "PanelId": 64,
+            "Priority": 624,
+            "IsFree": true,
             "BlockLevel": "SpaceOnly"
           }
         ]
       }
     ],
-    "SerialNumber": "MV20-0012",
+    "SerialNumber": "MV20-0055",
     "Simulation": false
   },
   "MachineStatistics": [

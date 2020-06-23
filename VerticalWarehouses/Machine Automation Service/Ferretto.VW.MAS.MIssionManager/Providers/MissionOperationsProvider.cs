@@ -142,6 +142,20 @@ namespace Ferretto.VW.MAS.MissionManager
             return await this.missionOperationsWmsWebService.GetAllReasonsAsync(type);
         }
 
+        public int GetUnitId(int missionId, BayNumber bayNumber)
+        {
+            try
+            {
+                return this.missionsDataProvider
+                .GetAllActiveMissions()
+                .Where(m => m.Id == missionId).LastOrDefault().LoadUnitId;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>

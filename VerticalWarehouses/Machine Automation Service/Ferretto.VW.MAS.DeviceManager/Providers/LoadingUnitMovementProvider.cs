@@ -154,6 +154,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="restore"></param>
         public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore, ShutterPosition shutterPosition = ShutterPosition.Closed)
         {
+            // The operation cannot be executed if shutter does not exist
+            if (this.baysDataProvider.GetShutterInverterIndex(requestingBay) == InverterDriver.Contracts.InverterIndex.None)
+            {
+                return;
+            }
+
             try
             {
                 this.shutterProvider.MoveTo(shutterPosition, requestingBay, sender);
@@ -661,6 +667,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore)
         {
+            // The operation cannot be executed if shutter does not exist
+            if (this.baysDataProvider.GetShutterInverterIndex(requestingBay) == InverterDriver.Contracts.InverterIndex.None)
+            {
+                return;
+            }
+
             if (restore)
             {
                 this.shutterProvider.Move(ShutterMovementDirection.Up, bypassConditions: false, requestingBay, sender);

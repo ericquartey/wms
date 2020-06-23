@@ -1567,4 +1567,29 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="VerticalAxis" xml:space="preserve">
     <value>Asse verticale</value>
   </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Conferma Parziale</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Conferma Presente</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Quantità presente</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Occorre test</value>
+    <comment>BlockLevel</comment>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Nessuna</value>
+    <comment>Block Level</comment>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Solo spazio</value>
+    <comment>Block Level</comment>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Non definito</value>
+    <comment>Block Level</comment>
+  </data>
 </root>

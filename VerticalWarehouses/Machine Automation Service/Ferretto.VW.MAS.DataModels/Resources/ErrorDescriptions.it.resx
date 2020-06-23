@@ -355,7 +355,7 @@
     <value>Nessun errore</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>Barrirea di sicurezza impegnata</value>
+    <value>Barriera di sicurezza impegnata</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Pulsante di emergenza premuto</value>

@@ -210,6 +210,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool HasStepChainCalibration => this.currentStep is HorizontalChainCalibrationStep.ChainCalibration;
 
         public bool HasStepConfirmAdjustment => this.currentStep is HorizontalChainCalibrationStep.ConfirmAdjustment;
@@ -719,11 +721,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 this.CanBaseExecute()
-                &&
-                !this.IsShutterMoving
+                //&& !this.IsShutterMoving
                 && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
                 &&
-                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
+                this.SensorsService.ShutterSensors != null
+                &&
+                !this.SensorsService.ShutterSensors.Closed;
         }
 
         private bool CanComplete()
@@ -786,8 +789,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   this.SensorsService.ShutterSensors.Open &&
-                   this.SensorsService.BayZeroChain;
+                   (this.SensorsService.ShutterSensors.Open || !this.HasShutter) &&
+                   (this.SensorsService.BayZeroChain || !this.MachineService.HasCarousel);
         }
 
         //        this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
@@ -804,8 +807,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //                await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
         private bool CanStop()
         {
-            return
-                this.IsMoving;
+            if (this.CurrentStep == HorizontalChainCalibrationStep.RunningCalibration)
+            {
+                return !this.IsKeyboardOpened
+                        &&
+                        this.MachineModeService.MachinePower == MachinePowerState.Powered;
+            }
+            else
+            {
+                return this.IsMoving;
+            }
         }
 
         //        // devo controllare che non sia cambiata dai parametri o altre baie
@@ -841,7 +852,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Closed);
-                this.IsShutterMoving = true;
+                //this.IsShutterMoving = true;
                 this.IsExecutingProcedure = true;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

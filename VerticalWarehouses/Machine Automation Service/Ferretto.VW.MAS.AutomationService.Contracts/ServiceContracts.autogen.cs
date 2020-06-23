@@ -2007,6 +2007,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetByBayCountAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetUnitIdAsync(int missionId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetUnitIdAsync(int missionId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MissionOperation> GetByIdAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2121,6 +2128,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class AlphaNumericBar : TcpIpAccessory
     {
         [Newtonsoft.Json.JsonProperty("Size", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AlphaNumericBarSize Size { get; set; }
     
         public string ToJson() 
@@ -2138,15 +2147,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AlphaNumericBarSize
     {
-        ExtraSmall = 51,
+        [System.Runtime.Serialization.EnumMember(Value = @"ExtraSmall")]
+        ExtraSmall = 0,
     
-        Small = 64,
+        [System.Runtime.Serialization.EnumMember(Value = @"Small")]
+        Small = 1,
     
-        Medium = 80,
+        [System.Runtime.Serialization.EnumMember(Value = @"Medium")]
+        Medium = 2,
     
-        Large = 96,
+        [System.Runtime.Serialization.EnumMember(Value = @"Large")]
+        Large = 3,
     
-        ExtraLarge = 112,
+        [System.Runtime.Serialization.EnumMember(Value = @"ExtraLarge")]
+        ExtraLarge = 4,
     
     }
     

@@ -104,6 +104,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.NavigateToDrawerViewBase(goToWaitViewIfBayIsEmpty: true);
         }
 
+        public void NavigateToDrawerViewConfirmPresent()
+        {
+            this.NavigateToDrawerViewConfirmPresent(goToWaitViewIfBayIsEmpty: true);
+        }
+
         public void NavigateToDrawerViewUnit()
         {
             this.NavigateToDrawerViewUnit(goToWaitViewIfBayIsEmpty: true);
@@ -316,7 +321,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        private void NavigateToDrawerViewUnit(bool goToWaitViewIfBayIsEmpty)
+        private void NavigateToDrawerViewConfirmPresent(bool goToWaitViewIfBayIsEmpty)
         {
             var activeViewModelName = this.GetActiveViewModelName();
             if (!this.IsOperatorViewModel(activeViewModelName))
@@ -332,30 +337,67 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 var currentMission = this.missionOperationsService.ActiveMachineMission;
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                this.loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
-                var recallUnitId = this.missionOperationsService.RecallLoadingUnitId();
-                var isRecallUnit = this.missionOperationsService.IsRecallLoadingUnitId();
-
-                if (loadingUnit != null || this.loadingUnitInBay != null)
+                if (loadingUnit != null)
                 {
-                    if (this.lastLu == recallUnitId)
-                    {
-                        this.lastLu = 0;
-                    }
+                    this.lastActiveUnitId = loadingUnit.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
+                else if(currentMission != null)
+                {
+                    this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            null,
+                            trackCurrentView: true);
+                }
+            }
+        }
 
-                    if (loadingUnit != null)
-                    {
-                        this.lastActiveUnitId = loadingUnit.Id;
-                        this.NavigateToLoadingUnitDetails(loadingUnit.Id);
-                    }
-                    else if ((this.lastLu != this.loadingUnitInBay.Id) && isRecallUnit == false)
-                    {
-                        this.lastActiveUnitId = this.loadingUnitInBay.Id;
-                        this.NavigateToLoadingUnitDetails(this.loadingUnitInBay.Id);
+        private void NavigateToDrawerViewUnit(bool goToWaitViewIfBayIsEmpty)
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
 
-                        if (recallUnitId != 0)
+            if (NavigationItemSearch.OnItemSearchMainView)
+            {
+                NavigationItemSearch.OnItemSearchMainView = false;
+                if (!this.IsOperatorViewModel(activeViewModelName))
+                {
+                    return;
+                }
+
+                if (this.missionOperationsService.ActiveWmsOperation != null)
+                {
+                    this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
+                }
+                else
+                {
+                    var currentMission = this.missionOperationsService.ActiveMachineMission;
+                    var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+                    this.loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
+                    var recallUnitId = this.missionOperationsService.RecallLoadingUnitId();
+                    var isRecallUnit = this.missionOperationsService.IsRecallLoadingUnitId();
+
+                    if (loadingUnit != null || this.loadingUnitInBay != null)
+                    {
+                        if (this.lastLu == recallUnitId)
                         {
-                            this.lastLu = this.loadingUnitInBay.Id;
+                            this.lastLu = 0;
+                        }
+
+                        if (loadingUnit != null)
+                        {
+                            this.lastActiveUnitId = loadingUnit.Id;
+                            this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                        }
+                        else if ((this.lastLu != this.loadingUnitInBay.Id) && isRecallUnit == false)
+                        {
+                            this.lastActiveUnitId = this.loadingUnitInBay.Id;
+                            this.NavigateToLoadingUnitDetails(this.loadingUnitInBay.Id);
+
+                            if (recallUnitId != 0)
+                            {
+                                this.lastLu = this.loadingUnitInBay.Id;
+                            }
                         }
                     }
                 }

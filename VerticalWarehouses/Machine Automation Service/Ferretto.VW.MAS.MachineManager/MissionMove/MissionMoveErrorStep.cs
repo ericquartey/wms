@@ -440,7 +440,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            if (shutterPosition != ShutterPosition.Opened
+            if (shutterInverter != InverterIndex.None
+                && shutterPosition != ShutterPosition.Opened
                 && shutterPosition != ShutterPosition.Closed)
             {
                 this.Mission.RestoreConditions = true;

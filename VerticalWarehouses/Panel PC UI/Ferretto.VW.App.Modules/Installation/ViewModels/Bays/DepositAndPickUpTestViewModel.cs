@@ -327,7 +327,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                            this.moveToOpenShutterCommand
            ??
            (this.moveToOpenShutterCommand = new DelegateCommand(
-               () => this.CurrentStep = DepositAndPickUpStep.OpenShutter,
+               () =>
+               {
+                   if (this.MachineService.HasShutter)
+                   {
+                       this.CurrentStep = DepositAndPickUpStep.OpenShutter;
+                   }
+                   else
+                   {
+                       this.CurrentStep = DepositAndPickUpStep.CycleTest;
+                   }
+               },
                this.CanMoveToOpenShutter));
 
         public int? NewErrorValue

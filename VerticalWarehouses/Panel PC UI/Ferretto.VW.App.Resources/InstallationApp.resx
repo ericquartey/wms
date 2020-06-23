@@ -2423,7 +2423,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Performs the horizontal calibration of the chain</value>
   </data>
   <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
-    <value>Perform the chain calibration procedure</value>
+    <value>Perform the chain calibration procedure. The horizontal zero sensor must be active.</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
     <value>The chain horizontal calibration function allows you to calibrate the correct value through its specific procedure. The procedure works in successive steps until correct completion.</value>
@@ -2717,5 +2717,122 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="PrinterName" xml:space="preserve">
     <value>Printer name</value>
     <comment>Button text</comment>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="CellId" xml:space="preserve">
+    <value>Cell Id</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>In Bay</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>In Elevator</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>In Location</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Movement To Bay</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Movement To Location</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Gross Weight (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>Into machine</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Max net weight (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Missions count</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Tare (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Block level</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Sensor active</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Sensor deactivated</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Panel Id</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>BayChain</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>HorizontalAndVertical</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Elevator bay</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Total load units in bay 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Total load units in bay 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Total load units in bay 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Total missions</value>
+  </data>
+  <data name="HorizontalChainDifference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
+    <value>Original</value>
   </data>
 </root>

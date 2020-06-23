@@ -89,7 +89,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Code}"
                                      IsEnabled="False"
-                                     LabelText="Code" />
+                                     LabelText="{res:Loc InstallationApp.Code}" />
+                <!--  LabelText="Code" />  -->
 
                 <controls:PpcTextBox Grid.Column="2"
                                      Grid.ColumnSpan="3"
@@ -97,21 +98,24 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="Description" />
+                                     LabelText="{res:Loc InstallationApp.Description}" />
+                <!--  LabelText="Description" />  -->
 
                 <controls:PpcTextBox Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.MissionsCount, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="MissionsCount" />
+                                     LabelText="{res:Loc InstallationApp.MissionsCount}" />
+                <!--  LabelText="MissionsCount" />  -->
 
                 <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     InputText="{Binding SelectedLU.IsIntoMachine, Converter={StaticResource BTSC}}"
                                      IsEnabled="False"
-                                     LabelText="IsIntoMachine" />
+                                     LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
+                <!--  LabelText="IsIntoMachine" />  -->
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -121,14 +125,21 @@
                             IsEnabled="{Binding IsEditStatus}">
                     <TextBlock Margin="0,0,5,0"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="Status" />
+                               Text="{res:Loc InstallationApp.Status}" />
+                    <!--  Text="Status" />  -->
                     <ComboBox Margin="0,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               IsEnabled="{Binding IsEditStatus}"
                               ItemsSource="{Binding Status}"
                               SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              Style="{DynamicResource PpcComboBoxStyle}" />
+                              Style="{DynamicResource PpcComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource LUSEC}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -137,7 +148,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedBayPositionId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEditStatus}"
-                                     LabelText="BayPositionId">
+                                     LabelText="{res:Loc InstallationApp.BayPosition}">
+                    <!--  LabelText="BayPositionId">  -->
                     <controls:PpcTextBox.Style>
                         <Style TargetType="{x:Type controls:PpcTextBox}">
                             <Setter Property="Visibility" Value="Collapsed" />
@@ -157,7 +169,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.CellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="CellId">
+                                     LabelText="{res:Loc InstallationApp.Cell}">
+                    <!--  LabelText="CellId">  -->
                     <controls:PpcTextBox.Style>
                         <Style TargetType="{x:Type controls:PpcTextBox}">
                             <Setter Property="Visibility" Value="Visible" />
@@ -181,7 +194,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="Height">
+                                     LabelText="{res:Loc InstallationApp.Height}">
+                    <!--  LabelText="Height">  -->
                     <controls:PpcTextBox.Style>
                         <Style TargetType="{x:Type controls:PpcTextBox}">
                             <Setter Property="Visibility" Value="Visible" />
@@ -205,7 +219,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.MaxNetWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="MaxNetWeight" />
+                                     LabelText="{res:Loc InstallationApp.MaxNetWeight}" />
+                <!--  LabelText="MaxNetWeight" />  -->
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="4"
@@ -213,7 +228,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.GrossWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="GrossWeight" />
+                                     LabelText="{res:Loc InstallationApp.GrossWeight}" />
+                <!--  LabelText="GrossWeight" />  -->
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="5"
@@ -221,7 +237,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Tare, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="Tare" />
+                                     LabelText="{res:Loc InstallationApp.Tare}" />
+                <!--  LabelText="Tare" />  -->
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="6"
@@ -229,7 +246,8 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.NetWeight}"
                                      IsEnabled="False"
-                                     LabelText="NetWeight" />
+                                     LabelText="{res:Loc InstallationApp.NetWeight}" />
+                <!--  LabelText="NetWeight" />  -->
 
 
             </Grid>
