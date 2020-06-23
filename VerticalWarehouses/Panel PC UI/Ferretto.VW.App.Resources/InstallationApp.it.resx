@@ -2721,4 +2721,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Vertical" xml:space="preserve">
     <value>Verticale</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Elevatore in baia</value>
+  </data>
 </root>
