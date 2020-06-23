@@ -1,135 +1,120 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Properties;
 using Ferretto.VW.Installer.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Microsoft.Win32;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    internal sealed class RoleSelectionViewModel : BindableBase, IOperationResult
+    internal sealed class RoleSelectionViewModel : BindableBase, IOperationResult, IViewModel
     {
         #region Fields
 
-        private readonly InstallationService installationService;
+        private readonly IInstallationService installationService;
 
-        private bool canNext;
+        private readonly Command loadConfigurationCommand;
 
-        private RelayCommand checkMasConfigurationCommand;
+        private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private bool isMasConfiguration;
+        private readonly IMachineConfigurationService machineConfigurationService;
 
-        private bool isMasConfigurationValid;
+        private readonly Command navigateToNextPageCommand;
 
-        private bool isSlaveConfigurationValid;
+        private readonly INavigationService navigationService;
 
-        private string machineConfigurationFileName;
+        private readonly Command openFileCommand;
 
-        private MAS.DataModels.VertimagConfiguration masConfiguration;
+        private readonly INotificationService notificationService;
 
-        private IPAddress masIpAddress;
+        private bool isLoadingMachineConfiguration;
 
-        private IPEndPoint masIpEndpoint;
+        private bool isMasterRoleSelected = true;
 
-        private string messageMaster;
+        private string? machineConfigurationFileName;
 
-        private string messageSlave;
+        private string? serviceUrl;
 
-        private RelayCommand nextCommand;
+        private string? serviceVersion;
 
-        private RelayCommand openFileCommand;
-
-        private string serviceVersion;
-
-        private string uiVersion;
+        private string? uiVersion;
 
         #endregion
 
         #region Constructors
 
-        public RoleSelectionViewModel(InstallationService installationService)
+        public RoleSelectionViewModel(
+            INavigationService navigationService,
+            IInstallationService installationService,
+            INotificationService statusBarService,
+            IMachineConfigurationService machineConfigurationService)
         {
-            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            this.navigationService = navigationService;
+            this.installationService = installationService;
+            this.machineConfigurationService = machineConfigurationService;
+            this.notificationService = statusBarService;
 
-            this.Initialize();
+            this.navigateToNextPageCommand = new Command(async () => await this.NavigateToNextPageAsync(), this.CanNavigateToNextPage);
+            this.openFileCommand = new Command(
+                async () => await this.OpenConfigurationFileAsync(),
+                this.CanOpenFile);
+            this.loadConfigurationCommand = new Command(
+                async () => await this.LoadConfigurationAsync(),
+                this.CanLoadConfiguration);
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand CheckMasConfigurationCommand =>
-            this.checkMasConfigurationCommand ??= new RelayCommand(
-                async () => await this.EvaluateCanNextAsync(),
-                this.CanCheckMasConfiguration);
-
-        public bool DialogResult { get; protected set; }
-
-        public bool IsMasConfiguration
+        public bool IsLoadingMachineConfiguration
         {
-            get => this.isMasConfiguration;
-            set => this.SetProperty(ref this.isMasConfiguration, value, async () => await this.EvaluateCanNextAsync());
+            get => this.isLoadingMachineConfiguration;
+            set => this.SetProperty(ref this.isLoadingMachineConfiguration, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMasterRoleSelected
+        {
+            get => this.isMasterRoleSelected;
+            set => this.SetProperty(ref this.isMasterRoleSelected, value, this.SwitchRoleSelection);
         }
 
         public bool IsSuccessful { get; private set; }
 
-        public string MachineConfigurationFileName
+        public ICommand LoadConfigurationCommand => this.loadConfigurationCommand;
+
+        public string? MachineConfigurationFileName
         {
             get => this.machineConfigurationFileName;
             set => this.SetProperty(ref this.machineConfigurationFileName, value);
         }
 
-        public IPAddress MasIpAddress
+        public ICommand NavigateToNextPageCommand => this.navigateToNextPageCommand;
+
+        public ICommand OpenFileCommand => this.openFileCommand;
+
+        public string? ServiceUrl
         {
-            get => this.masIpAddress;
-            set => this.SetProperty(ref this.masIpAddress, value, this.EvaluateCheckMasHost);
+            get => this.serviceUrl;
+            set => this.SetProperty(ref this.serviceUrl, value, () =>
+            {
+                this.machineConfigurationService.ClearConfiguration();
+                this.RaiseCanExecuteChanged();
+            });
         }
 
-        public string MessageMaster
-        {
-            get => this.messageMaster;
-            set => this.SetProperty(ref this.messageMaster, value);
-        }
-
-        public string MessageSlave
-        {
-            get => this.messageSlave;
-            set => this.SetProperty(ref this.messageSlave, value);
-        }
-
-        public ICommand NextCommand =>
-            this.nextCommand
-            ??
-            (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
-
-        public ICommand OpenFileCommand =>
-            this.openFileCommand
-            ??
-            (this.openFileCommand = new RelayCommand(
-                async () => await this.OpenFileAsync(),
-                this.CanOpenFile));
-
-        public string PanelPcVersion
-        {
-            get => this.uiVersion;
-            set => this.SetProperty(ref this.uiVersion, value);
-        }
-
-        public string ServiceVersion
+        public string? ServiceVersion
         {
             get => this.serviceVersion;
             set => this.SetProperty(ref this.serviceVersion, value);
         }
 
-        public string SoftwareVersion => string.Format("Welcome to installation {0}", this.installationService?.SoftwareVersion);
-
-        public string UiVersion
+        public string? UiVersion
         {
             get => this.uiVersion;
             set => this.SetProperty(ref this.uiVersion, value);
@@ -139,207 +124,178 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Methods
 
-        public async Task OpenFileAsync()
+        public async Task OnAppearAsync()
         {
-            var selectedFileNames = OpenFileDialogService.BrowseFile(
-                "Scegli file di configurazione",
-                string.Empty,
-                "json",
-                "File di configuirazione");
+            this.ServiceUrl = ConfigurationManager.AppSettings.GetInstallDefaultMasUrl().ToString();
 
-            if (selectedFileNames?.Length == 1)
+            await this.LoadManifestFilesAsync();
+        }
+
+        public Task OnDisappearAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
+        }
+
+        public async Task OpenConfigurationFileAsync()
+        {
+            this.logger.Debug("User is selecting a vertimag configuration file ...");
+
+            this.IsLoadingMachineConfiguration = true;
+
+            var dialog = new OpenFileDialog()
             {
-                var fileName = selectedFileNames.First();
+                DefaultExt = "*.json",
+                Filter = $"{Resources.VertimagConfigurationFiles}|*.json|{Resources.AllFiles}|*.*",
+                Title = Resources.SelectVertimagConfigurationFile,
+                Multiselect = false
+            };
+
+            var actionConfirmed = dialog.ShowDialog();
+            if (actionConfirmed.HasValue
+                &&
+                actionConfirmed.Value
+                &&
+                dialog.FileName != null)
+            {
+                this.logger.Debug($"User selected vertimag configuration file '{dialog.FileName}'.");
 
                 try
                 {
-                    using var sr = new StreamReader(fileName);
-                    var fileContents = sr.ReadToEnd();
-
-                    this.LoadMachineConfiguration(fileContents);
+                    await this.machineConfigurationService.LoadFromFileAsync(dialog.FileName);
 
                     var configurationFilePath = Path.Combine(
                         ConfigurationManager.AppSettings.GetUpdateTempPath(),
                         ConfigurationManager.AppSettings.GetMasDirName(),
-                        @"Configuration\vertimag-configuration.json");
+                        "Configuration",
+                        "vertimag-configuration.json");
 
-                    this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
+                    await this.machineConfigurationService.SaveToFileAsync(configurationFilePath);
 
-                    this.isMasConfigurationValid = true;
-                    this.MachineConfigurationFileName = fileName;
+                    this.MachineConfigurationFileName = dialog.FileName;
                 }
-                catch (Exception ex)
+                catch
                 {
+                    this.notificationService.SetErrorMessage("Unable to load configuration from file.");
                     this.MachineConfigurationFileName = null;
-                    this.isMasConfigurationValid = false;
+                }
+                finally
+                {
+                    this.IsLoadingMachineConfiguration = false;
                 }
             }
             else
             {
+                this.logger.Debug("User canceled Vertimag configuration file selection.");
+
+                this.machineConfigurationService.ClearConfiguration();
                 this.MachineConfigurationFileName = null;
-                this.isMasConfigurationValid = false;
+                this.IsLoadingMachineConfiguration = false;
             }
-
-            await this.EvaluateCanNextAsync();
         }
 
-        public void Save()
-        {
-            this.IsSuccessful = true;
-        }
+        private bool CanLoadConfiguration() =>
+            !string.IsNullOrWhiteSpace(this.ServiceUrl)
+            &&
+            !this.IsLoadingMachineConfiguration;
 
-        private bool CanCheckMasConfiguration()
-        {
-            return this.masIpEndpoint != null;
-        }
-
-        private bool CanNext()
-        {
-            return this.canNext;
-        }
+        private bool CanNavigateToNextPage() =>
+            !this.IsLoadingMachineConfiguration
+            &&
+            this.machineConfigurationService.Configuration != null
+            &&
+            Uri.TryCreate(this.serviceUrl, UriKind.Absolute, out var _);
 
         private bool CanOpenFile()
         {
-            return true;
+            return !this.IsLoadingMachineConfiguration;
         }
 
-        private IPEndPoint CheckMasHost()
+        private async Task LoadConfigurationAsync()
         {
-            this.MessageSlave = string.Empty;
-            int? ipPort = null;
+            if (this.serviceUrl is null)
+            {
+                this.logger.Warn("Cannot load configuration from web service because the ServiceUrl is null");
+                return;
+            }
+
             try
             {
-                if (int.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpport(), out var port))
-                {
-                    ipPort = port;
-                    var ipEndpoint = new IPEndPoint(this.masIpAddress, port);
-
-                    var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, false);
-                    var result = sock.BeginConnect(ipEndpoint, null, null);
-                    var success = result.AsyncWaitHandle.WaitOne(50, true);
-                    if (!success)
-                    {
-                        ipEndpoint = null;
-                    }
-                    sock.Close();
-
-                    return ipEndpoint;
-                }
+                this.IsLoadingMachineConfiguration = true;
+                await this.machineConfigurationService.LoadFromWebServiceAsync(new Uri(this.serviceUrl));
             }
             catch
             {
-                this.MessageSlave = $"Servizio di automazione non raggiungibile, host: {this.masIpAddress?.ToString()}:{ipPort}";
+                this.notificationService.SetErrorMessage("Unable to load configuration from web service.");
             }
-
-            return null;
-        }
-
-        private async Task EvaluateCanNextAsync()
-        {
-            this.canNext = false;
-
-            if (this.isMasConfiguration)
+            finally
             {
-                this.MessageMaster = string.Empty;
-                if (this.isMasConfigurationValid)
-                {
-                    this.canNext = true;
-                }
+                this.IsLoadingMachineConfiguration = false;
             }
-
-            if (!this.isMasConfiguration)
-            {
-                this.isSlaveConfigurationValid = !(this.masIpEndpoint is null);
-                if (this.isSlaveConfigurationValid)
-                {
-                    if (this.masIpEndpoint != null)
-                    {
-                        var masConfiguration = await this.GetConfigurationFromMasAsync(this.masIpEndpoint);
-
-                        try
-                        {
-                            this.LoadMachineConfiguration(masConfiguration);
-                            this.isSlaveConfigurationValid = true;
-                        }
-                        catch
-                        {
-                            this.isSlaveConfigurationValid = false;
-                        }
-                    }
-                }
-                this.canNext = this.isSlaveConfigurationValid;
-            }
-
-            this.RaiseCanExecuteChanged();
         }
 
-        private void EvaluateCheckMasHost()
-        {
-            this.masIpEndpoint = this.CheckMasHost();
-            this.RaiseCanExecuteChanged();
-        }
-
-        private async Task<string> GetConfigurationFromMasAsync(IPEndPoint ipEndPoint)
+        private async Task LoadManifestFilesAsync()
         {
             try
             {
-                using (var httpClient = new System.Net.Http.HttpClient())
-                {
-                    //httpClient.GetAsync.BaseAddress = new Uri("http://" + ipEndPoint.ToString());
-                    var httpResponseMessage = await httpClient.GetAsync(new Uri($"http://{ipEndPoint.Address}:{ipEndPoint.Port}/api/Configuration"));
-                    return await httpResponseMessage.Content.ReadAsStringAsync();
-                }
+                var uiManifestFile = Path.Combine(
+                    ConfigurationManager.AppSettings.GetUpdateTempPath(),
+                    ConfigurationManager.AppSettings.GetPpcDirName(),
+                    "properties",
+                    "app.manifest");
+                var uiManifest = await AppManifest.FromFileAsync(uiManifestFile);
+                this.UiVersion = uiManifest?.AssemblyIdentityVersion;
+
+                var serviceManifestFile = Path.Combine(
+                    ConfigurationManager.AppSettings.GetUpdateTempPath(),
+                    ConfigurationManager.AppSettings.GetMasDirName(),
+                    "properties",
+                    "app.manifest");
+                var serviceManifest = await AppManifest.FromFileAsync(serviceManifestFile);
+                this.ServiceVersion = serviceManifest?.AssemblyIdentityVersion;
             }
-            catch (Exception ex)
+            catch
             {
-                this.MessageSlave = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
-            }
-
-            return null;
-        }
-
-        private void Initialize()
-        {
-            this.RaisePropertyChanged(nameof(this.SoftwareVersion));
-
-            if (IPAddress.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress(), out var ip))
-            {
-                this.MasIpAddress = ip;
-            }
-
-            this.IsMasConfiguration = true;
-
-            this.UiVersion = this.installationService.PanelPcVersion;
-            this.ServiceVersion = this.installationService.MasVersion;
-        }
-
-        private void LoadMachineConfiguration(string configuration)
-        {
-            var jsonObject = JObject.Parse(configuration);
-
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
-
-            this.masConfiguration = JsonConvert.DeserializeObject<MAS.DataModels.VertimagConfiguration>(jsonObject.ToString(), settings);
-
-            if (this.masConfiguration is null)
-            {
-                throw new Exception("Could not load configuration. File is empty.");
+                this.notificationService.SetErrorMessage("Error loading manifest files.");
             }
         }
 
-        private void Next()
+        private async Task NavigateToNextPageAsync()
         {
-            this.installationService.SetConfiguration(this.masIpAddress, this.masConfiguration);
+            if (this.ServiceUrl is null)
+            {
+                this.logger.Warn("Cannot navigate to next page because the ServiceUrl is null");
 
-            this.installationService.SetStage(OperationStage.BaySelection);
+                return;
+            }
+
+            this.installationService.SetConfiguration(new Uri(this.ServiceUrl));
+
+            var viewModel = new BaySelectionViewModel(
+                Container.GetInstallationService(),
+                NavigationService.GetInstance(),
+                NotificationService.GetInstance(),
+                Container.GetMachineConfigurationService());
+
+            await this.navigationService.NavigateToAsync(viewModel);
         }
 
         private void RaiseCanExecuteChanged()
         {
-            this.checkMasConfigurationCommand?.RaiseCanExecuteChanged();
-            this.nextCommand?.RaiseCanExecuteChanged();
+            this.loadConfigurationCommand.RaiseCanExecuteChanged();
+            this.navigateToNextPageCommand.RaiseCanExecuteChanged();
+            this.openFileCommand.RaiseCanExecuteChanged();
+        }
+
+        
+
+        private void SwitchRoleSelection()
+        {
+            this.machineConfigurationService.ClearConfiguration();
+
+            this.MachineConfigurationFileName = null;
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

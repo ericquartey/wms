@@ -1,91 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NLog;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.Core
 {
-    public sealed class InstallationService : BindableBase
+    internal sealed class InstallationService : BindableBase, IInstallationService
     {
         #region Fields
-
-        private const string INSTALLARG = "--install";
-
-        private const string RESTOREARG = "--restore";
-
-        private const string UPDATEARG = "--update";
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Newtonsoft.Json.Formatting.Indented
+            Formatting = Formatting.Indented
         };
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string stepsFileName;
+        private readonly ISetupModeService setupModeService;
 
-        private Step activeStep;
+        private Step? activeStep;
 
         private bool isRollbackInProgress;
 
-        private bool isStartedFromSnapShot;
+        private bool isStarted;
 
         private MachineRole machineRole;
 
-        private MAS.DataModels.VertimagConfiguration masConfiguration;
+        private Uri? masUrl;
 
-        private IPAddress masIpAddress;
+        private string? masVersion;
 
-        private string masVersion;
+        private string? panelPcVersion;
 
-        private OperationStage operationMode;
+        private IPAddress? ppcIpAddress;
 
-        private string panelPcVersion;
-
-        private IPAddress ppcIpAddress;
-
-        private SetupMode setupMode;
-
-        private string softwareVersion;
+        private string? softwareVersion;
 
         #endregion
 
         #region Constructors
 
-        public InstallationService(string fileName)
+        public InstallationService(ISetupModeService setupModeService)
         {
-            this.stepsFileName = fileName;
+            if (setupModeService is null)
+            {
+                throw new ArgumentNullException(nameof(setupModeService));
+            }
+
+            this.setupModeService = setupModeService;
         }
 
         #endregion
 
         #region Events
 
-        public event EventHandler<InstallationFinishedEventArgs> Finished;
+        public event EventHandler<InstallationFinishedEventArgs>? Finished;
 
         #endregion
 
         #region Properties
 
-        public Step ActiveStep
+        public Step? ActiveStep
         {
             get => this.activeStep;
             private set => this.SetProperty(ref this.activeStep, value);
         }
 
+        public string? InstallerVersion
+        {
+            get => this.softwareVersion;
+            private set => this.SetProperty(ref this.softwareVersion, value);
+        }
+
         public bool IsRollbackInProgress
         {
             get => this.isRollbackInProgress;
-            private set => this.SetProperty(ref this.isRollbackInProgress, value);
+            private set => this.SetProperty(ref this.isRollbackInProgress, value, () => this.logger.Debug($"IsRollbackInProgress = {value}"));
         }
 
         public MachineRole MachineRole
@@ -94,199 +93,266 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.machineRole, value);
         }
 
-        [JsonIgnore]
-        public MAS.DataModels.VertimagConfiguration MasConfiguration => this.masConfiguration;
+        public Uri? MasUrl => this.masUrl;
 
-        [JsonIgnore]
-        public IPAddress MasIpAddress => this.masIpAddress;
-
-        public string MasVersion
+        public string? MasVersion
         {
             get => this.masVersion;
             private set => this.SetProperty(ref this.masVersion, value);
         }
 
-        public OperationStage OperationStage
-        {
-            get => this.operationMode;
-            private set => this.SetProperty(ref this.operationMode, value);
-        }
-
-        public string PanelPcVersion
+        public string? PanelPcVersion
         {
             get => this.panelPcVersion;
             private set => this.SetProperty(ref this.panelPcVersion, value);
         }
 
-        public SetupMode SetupMode
-        {
-            get => this.setupMode;
-            private set => this.SetProperty(ref this.setupMode, value);
-        }
-
-        public string SoftwareVersion
-        {
-            get => this.softwareVersion;
-            private set => this.SetProperty(ref this.softwareVersion, value);
-        }
-
-        public IEnumerable<Step> Steps { get; private set; }
+        public IEnumerable<Step> Steps { get; private set; } = new List<Step>();
 
         #endregion
 
         #region Methods
 
-        public static InstallationService GetInstance(string fileName)
-        {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentException("message", nameof(fileName));
-            }
-
-            return new InstallationService(fileName);
-        }
-
         public void Abort()
         {
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException();
+            }
+
             this.IsRollbackInProgress = true;
         }
 
         public bool CanStart()
         {
-            if (this.SetupMode == SetupMode.Any)
+            System.Diagnostics.Debug.Assert(this.setupModeService.Mode != SetupMode.Any);
+
+            if (this.Steps.All(s => s.Execution.StartTime.HasValue))
             {
-                if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
-                {
-                    this.logger.Debug("Nothing to do, update/installation in progress.");
-                    return false;
-                }
+                this.logger.Debug("Nothing to do, update/installation in progress.");
+                return false;
             }
 
             return true;
         }
 
-        public void GetInfoFromSnapShot()
+        public async Task DeserializeAsync(string sourceFileName)
         {
-            try
+            if (this.isStarted)
             {
-                this.isStartedFromSnapShot = true;
-                var stepsJsonFile = File.ReadAllText(this.stepsFileName);
-                var parsedObject = JObject.Parse(stepsJsonFile);
-                this.IsRollbackInProgress = (bool)parsedObject[nameof(this.IsRollbackInProgress)].ToObject<bool>();
-                this.SetupMode = (SetupMode)parsedObject[nameof(this.SetupMode)].ToObject<SetupMode>();
+                throw new InvalidOperationException();
             }
-            catch (Exception ex)
-            {
-                var msg = $" Unable to read/assign data from Snapshot file \"{this.stepsFileName}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
+
+            this.GetInstallerParameters();
+
+            this.InstallerVersion = (await AppManifest.FromFileAsync("./properties/app.manifest"))?.AssemblyIdentityVersion;
+            this.PanelPcVersion = (await AppManifest.FromFileAsync("../automation_service/properties/app.manifest"))?.AssemblyIdentityVersion;
+            this.MasVersion = (await AppManifest.FromFileAsync("../panelpc_app/properties/app.manifest"))?.AssemblyIdentityVersion;
+
+            await this.LoadStepsAsync(sourceFileName);
         }
 
         public void GetInstallerParameters()
         {
             try
             {
-                this.masIpAddress = null;
-                this.ppcIpAddress = null;
-
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var masIpAddress = config.AppSettings.Settings["Install:Parameter:MasIpaddress"].Value;
-                if (!string.IsNullOrEmpty(masIpAddress)
-                    &&
-                    IPAddress.TryParse(masIpAddress.ToString(), out var masIpAddressFound))
+                var masUrlString = config.AppSettings.Settings["MAS:BaseUrl"].Value;
+                if (Uri.TryCreate(masUrlString, UriKind.Absolute, out var masUrl))
                 {
-                    this.masIpAddress = masIpAddressFound;
+                    this.masUrl = masUrl;
+                }
+                else
+                {
+                    this.masUrl = null;
                 }
 
-                var ppcIpAddress = config.AppSettings.Settings["Install:Parameter:PpcIpaddress"].Value;
-                if (!string.IsNullOrEmpty(ppcIpAddress)
-                  &&
-                  IPAddress.TryParse(ppcIpAddress.ToString(), out var ppcIpAddressFound))
+                var ppcIpAddressString = config.AppSettings.Settings["Install:Parameter:PpcIpAddress"].Value;
+                if (IPAddress.TryParse(ppcIpAddressString, out var ppcIpAddress))
                 {
-                    this.ppcIpAddress = ppcIpAddressFound;
+                    this.ppcIpAddress = ppcIpAddress;
                 }
+                else
+                {
+                    this.ppcIpAddress = null;
+                }
+
+                this.UpdateMachineRole();
             }
             catch (Exception)
             {
-                this.masIpAddress = null;
+                this.masUrl = null;
                 this.ppcIpAddress = null;
             }
         }
 
-        public Step GetNextStepToExecute()
+        public async Task LoadStepsAsync(string sourceFileName)
         {
-            return this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
-        }
+            this.logger.Debug($"Loading execution steps from '{Path.Combine(Directory.GetCurrentDirectory(), sourceFileName)}' ...");
 
-        public void LoadMasVersion()
-        {
-            this.MasVersion = this.GetVersionFromManifest("../panelpc_app/properties/app.manifest");
-        }
-
-        public void LoadPanelPcVersion()
-        {
-            this.PanelPcVersion = this.GetVersionFromManifest("../automation_service/properties/app.manifest");
-        }
-
-        public void LoadSteps()
-        {
-            this.logger.Debug($"Loading execution steps from '{Path.Combine(Directory.GetCurrentDirectory(), this.stepsFileName)}' ...");
             try
             {
-                var stepsJsonFile = File.ReadAllText(this.stepsFileName);
-                var serviceAnon = new { Steps = Array.Empty<Step>() };
-                serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-                this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any || ((this.setupMode == SetupMode.Update || this.setupMode == SetupMode.Restore) && s.SetupMode == SetupMode.UpdateAndRestore))
-                                                          &&
-                                                          (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
-                                                          .OrderBy(s => s.Number).ToArray();
+                var jsonFile = await File.ReadAllTextAsync(sourceFileName);
+                var serviceSnapshot = new
+                {
+                    Steps = Array.Empty<Step>(),
+                    IsRollbackInProgress = false,
+                    SetupMode = this.setupModeService.Mode,
+                    ActiveStep = (Step?) null,
+                };
 
+                serviceSnapshot = JsonConvert.DeserializeAnonymousType(
+                    jsonFile,
+                    serviceSnapshot,
+                    SerializerSettings);
+
+                this.setupModeService.Mode = serviceSnapshot.SetupMode != SetupMode.Any
+                    ? serviceSnapshot.SetupMode
+                    : this.setupModeService.Mode;
+
+                this.IsRollbackInProgress = serviceSnapshot.IsRollbackInProgress;
+
+                var mode = this.setupModeService.Mode;
+                this.Steps = serviceSnapshot.Steps
+                    .Where(s =>
+                        (s.SetupMode == mode || s.SetupMode == SetupMode.Any || ((mode is SetupMode.Update || mode is SetupMode.Restore) && s.SetupMode is SetupMode.UpdateAndRestore))
+                        &&
+                        (s.MachineRole == MachineRole.Any || s.MachineRole == this.machineRole))
+                    .OrderBy(s => s.Number)
+                    .ToArray();
+
+                if(serviceSnapshot.ActiveStep != null)
+                { 
+                    this.ActiveStep = this.Steps.SingleOrDefault(s => s.Number == serviceSnapshot.ActiveStep.Number);
+                    this.logger.Debug($"Step #{this.ActiveStep?.Number} was restored as the active step.");
+                }
+
+                this.logger.Debug($"Setup mode is now '{this.setupModeService.Mode}'.");
                 this.logger.Debug($"Steps loaded (total: {this.Steps.Count()}).");
+                foreach (var step in this.Steps)
+                {
+                    this.logger.Debug($"Step #{step.Number} '{step.Title}' [{step.Execution.Status}]");
+                }
             }
             catch (Exception ex)
             {
                 this.logger.Error(ex, $"Error loading steps from file.");
                 throw new InvalidOperationException(
-                                  $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
+                    $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
             }
         }
 
-        public async Task RunAsync()
+        public void Run()
         {
+            if(this.isStarted)
+            {
+                this.logger.Warn("Unable to start installation because installation is already started.");
+                return;
+            }
+
             if (!this.Steps.Any())
             {
                 throw new InvalidOperationException("Unable to execute setup because no steps are available.");
             }
 
-            if (this.Steps.Any(s => s.Status == StepStatus.RollbackFailed))
+            if (this.Steps.Any(s => s.Execution.Status == StepStatus.RollbackFailed))
             {
                 this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because rollback failed.");
             }
 
-            if (this.Steps.Any(s => s.Status == StepStatus.InProgress))
+            if (this.Steps.Any(s => s.Execution.Status == StepStatus.InProgress))
             {
                 this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was in progress.");
             }
 
-            if (this.Steps.Any(s => s.Status == StepStatus.RollingBack))
+            if (this.Steps.Any(s => s.Execution.Status == StepStatus.RollingBack))
             {
                 this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
+            this.isStarted = true;
             this.CheckToSkipCurrentStartingStep();
 
+            this.logger.Debug("All conditions met to start installation.");
+
+            var runThread = new Thread(new ThreadStart(async () => await this.RunThreadAsync()));
+            runThread.Name = "Installation Steps";
+            runThread.Start();
+        }
+
+        public void SetConfiguration(Uri masUrl)
+        {
+            this.masUrl = masUrl;
+        }
+
+        private void CheckToSkipCurrentStartingStep()
+        {
+            var stepInProgress = this.Steps.SingleOrDefault(s =>
+                s.Execution.Status == StepStatus.InProgress
+                &&
+                s.SkipOnResume);
+
+            if (stepInProgress != null)
+            {
+                this.logger.Debug($"Step #{stepInProgress.Number} - {stepInProgress.Title} was in progress: marking it as done.");
+
+                stepInProgress.Execution.Status = StepStatus.Done;
+                this.ActiveStep = stepInProgress;
+                this.RaisePropertyChanged(nameof(this.ActiveStep));
+            }
+        }
+
+        private void Dump()
+        {
+            this.logger.Debug("Taking snapshot of installation status ...");
+
+            var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
+
+            const string OldFileName = "steps-snapshot.old.json";
+            if (File.Exists("steps-snapshot.json"))
+            {
+                File.Move("steps-snapshot.json", OldFileName, true);
+            }
+
+            File.WriteAllText("steps-snapshot.json", objectString);
+
+            if (File.Exists(OldFileName))
+            {
+                File.Delete(OldFileName);
+            }
+
+            this.logger.Debug("Snapshot taken.");
+        }
+
+        private void RaiseInstallationFinished(bool success)
+        {
+            this.Finished?.Invoke(this, new InstallationFinishedEventArgs(success));
+        }
+
+        private async Task RollbackStep(Step stepToRollback)
+        {
+            await stepToRollback.RollbackAsync();
+            this.Dump();
+            if (stepToRollback.Execution.Status is StepStatus.RollbackFailed)
+            {
+                throw new InvalidOperationException(
+                    $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
+            }
+        }
+
+        private async Task RunThreadAsync()
+        {
             try
             {
-                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.IsRollbackInProgress)
+                while (this.Steps.Any(s => s.Execution.Status != StepStatus.Done) || this.IsRollbackInProgress)
                 // stop when all steps are done or when the first step was rolled back
                 {
                     if (this.IsRollbackInProgress)
                     {
-                        this.ActiveStep = this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault();
+                        this.ActiveStep = this.Steps.TakeWhile(s => s.Execution.Status != StepStatus.RolledBack).LastOrDefault();
 
                         if (this.ActiveStep != null)
                         {
@@ -301,13 +367,16 @@ namespace Ferretto.VW.Installer.Core
                     }
                     else
                     {
-                        this.ActiveStep = this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
-                        this.ActiveStep.Status = StepStatus.Start;
+                        this.ActiveStep = this.Steps.FirstOrDefault(s => s.Execution.Status == StepStatus.ToDo);
+                        this.ActiveStep.Execution.Status = StepStatus.Start;
                         this.Dump();
+
                         this.RaisePropertyChanged(nameof(this.ActiveStep));
+
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
-                        if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
+
+                        if (this.ActiveStep.Execution.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
                             {
@@ -316,164 +385,30 @@ namespace Ferretto.VW.Installer.Core
                             }
                         }
                     }
+
+                    await Task.Delay(500);
                 }
-            }
-            catch
-            {
-                this.RaiseInstallationFinished(false);
-            }
 
-            this.RaiseInstallationFinished(!this.IsRollbackInProgress);
-        }
-
-        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
-        {
-            try
-            {
-                File.WriteAllText(configurationFilePath, fileContents);
+                this.RaiseInstallationFinished(!this.IsRollbackInProgress);
             }
             catch (Exception ex)
             {
-                var msg = $"Error wrting configuration file \"{configurationFilePath}\"";
-                this.logger.Error(ex, msg);
-                throw new InvalidOperationException(msg);
-            }
-        }
+                this.logger.Error(ex);
 
-        public void SetArgsStartup()
-        {
-            var args = Environment.GetCommandLineArgs();
-            foreach (var arg in args)
+                this.RaiseInstallationFinished(false);
+                throw;
+            }
+            finally
             {
-                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
-                {
-                    this.logger.Info("Application launched as 'update' mode.");
-                    this.SetupMode = SetupMode.Update;
-                }
-                else if (arg.ToLower(CultureInfo.InvariantCulture) == RESTOREARG)
-                {
-                    this.logger.Info("Application launched as 'restore' mode.");
-                    this.SetupMode = SetupMode.Restore;
-                }
-                else
-                {
-                    this.logger.Info("Application launched as 'install' mode.");
-                    this.SetupMode = SetupMode.Install;
-                }
+                this.isStarted = false;
             }
         }
 
-        public void SetConfiguration(IPAddress masIpAddress, MAS.DataModels.VertimagConfiguration masConfiguration)
+        private void UpdateMachineRole()
         {
-            this.masIpAddress = masIpAddress;
-            this.masConfiguration = masConfiguration;
-        }
-
-        public void SetStage(OperationStage stage)
-        {
-            this.OperationStage = stage;
-        }
-
-        public void Start()
-        {
-            this.LoadSoftwareVersion();
-            this.LoadPanelPcVersion();
-            this.LoadMasVersion();
-
-            if (this.isStartedFromSnapShot)
-            {
-                this.OperationStage = OperationStage.Update;
-                return;
-            }
-
-            if (this.setupMode == SetupMode.Install)
-            {
-                this.OperationStage = OperationStage.RoleSelection;
-            }
-            else if (this.setupMode == SetupMode.Update
-                     ||
-                     this.setupMode == SetupMode.Restore)
-            {
-                this.OperationStage = OperationStage.Update;
-            }
-        }
-
-        public void UpdateMachineRole()
-        {
-            this.MachineRole = (this.masIpAddress.Equals(this.ppcIpAddress)) ? MachineRole.Master : MachineRole.Slave;
-        }
-
-        private void CheckToSkipCurrentStartingStep()
-        {
-            var stepInProgress = this.Steps.SingleOrDefault(s => s.Status == StepStatus.Start
-                                                                 &&
-                                                                 s.SkipOnResume);
-            if (!(stepInProgress is null))
-            {
-                stepInProgress.Status = StepStatus.Done;
-                this.ActiveStep = stepInProgress;
-                this.RaisePropertyChanged(nameof(this.ActiveStep));
-            }
-        }
-
-        private void Dump()
-        {
-            var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
-
-            System.IO.File.WriteAllText("steps-snapshot.json", objectString);
-        }
-
-        private string GetVersionFromManifest(string fullPath)
-        {
-            this.logger.Debug($"Retrieving software version from manifest '{fullPath}' ...");
-            try
-            {
-                using var reader = new StreamReader(fullPath);
-                using var xmlReader = XmlReader.Create(reader);
-                while (xmlReader.Read())
-                {
-                    if (xmlReader.NodeType == XmlNodeType.Element
-                        &&
-                        xmlReader.Name == "assemblyIdentity")
-                    {
-                        if (xmlReader.HasAttributes)
-                        {
-                            var version = xmlReader.GetAttribute("version");
-
-                            this.logger.Debug($"Found software version '{version}'.");
-
-                            return version;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                this.logger.Error("Could not retrieve software version.");
-            }
-
-            return null;
-        }
-
-        private void LoadSoftwareVersion()
-        {
-            this.SoftwareVersion = this.GetVersionFromManifest("./properties/app.manifest");
-        }
-
-        private void RaiseInstallationFinished(bool success)
-        {
-            this.Finished?.Invoke(this, new InstallationFinishedEventArgs(success));
-        }
-
-        private async Task RollbackStep(Step stepToRollback)
-        {
-            await stepToRollback.RollbackAsync();
-            this.Dump();
-            if (stepToRollback.Status is StepStatus.RollbackFailed)
-            {
-                throw new InvalidOperationException(
-                    $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
-            }
+            this.MachineRole = this.masUrl?.Host?.Equals(this.ppcIpAddress) == true
+                ? MachineRole.Master
+                : MachineRole.Slave;
         }
 
         #endregion

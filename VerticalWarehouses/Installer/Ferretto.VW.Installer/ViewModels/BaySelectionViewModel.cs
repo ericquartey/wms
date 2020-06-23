@@ -1,220 +1,212 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Services;
 using Ferretto.VW.MAS.DataModels;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class BaySelectionViewModel : BindableBase, IOperationResult
+    public class BaySelectionViewModel : BindableBase, IOperationResult, IViewModel
     {
         #region Fields
 
-        private const string APPSETTINGS = "appSettings";
+        private const string AutomationServiceUrlKey = "AutomationService:Url";
 
-        private const string APPSETTINGSAUTOMATIONSERVICEURL = "AutomationService:Url";
+        private const string BayNumberKey = "BayNumber";
 
-        private const string APPSETTINGSBAYNUMBER = "BayNumber";
+        private readonly Command goBackCommand;
 
-        private readonly RelayCommand goBackCommand;
+        private readonly IInstallationService installationService;
 
-        private readonly InstallationService installationService;
+        private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private bool canProcede;
+        private readonly IMachineConfigurationService machineConfigurationService;
+
+        private readonly Command navigateToNextPageCommand;
+
+        private readonly INavigationService navigationService;
+
+        private readonly INotificationService notificationService;
 
         private bool isSuccessful;
 
-        private RelayCommand nextCommand;
-
-        private RelayCommand selectBayOneCommand;
-
-        private RelayCommand selectBayThreeCommand;
-
-        private RelayCommand selectBayTwoCommand;
-
-        private Bay selectedBay;
-
-        private string selectedBayInfo;
+        private Bay? selectedBay;
 
         #endregion
 
         #region Constructors
 
-        public BaySelectionViewModel(InstallationService installationService)
+        public BaySelectionViewModel(
+            IInstallationService installationService,
+            INavigationService navigationService,
+            INotificationService notificationService,
+            IMachineConfigurationService machineConfigurationService)
         {
-            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            this.installationService = installationService;
+            this.navigationService = navigationService;
+            this.machineConfigurationService = machineConfigurationService;
+            this.notificationService = notificationService;
 
-            this.goBackCommand = new RelayCommand(this.GoBack);
+            this.goBackCommand = new Command(this.GoBack);
+            this.navigateToNextPageCommand = new Command(
+                async () => await this.NavigateToNextPageAsync(),
+                this.CanNavigateToNextPage);
         }
 
         #endregion
 
         #region Properties
 
+        public IEnumerable<Bay>? Bays => this.machineConfigurationService.Configuration?.Machine?.Bays;
+
         public ICommand GoBackCommand => this.goBackCommand;
-
-        public bool IsBayOneVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayOne) != null);
-
-        public bool IsBayThreeVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayThree) != null);
-
-        public bool IsBayTwoVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayTwo) != null);
 
         public bool IsSuccessful => this.isSuccessful;
 
-        public Machine Machine => this.installationService.MasConfiguration.Machine;
+        public Machine? Machine => this.machineConfigurationService.Configuration?.Machine;
 
-        public ICommand NextCommand =>
-                this.nextCommand
-                ??
-                (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
+        public ICommand NextCommand => this.navigateToNextPageCommand;
 
-        public ICommand SelectBayOneCommand =>
-                this.selectBayOneCommand
-                ??
-                (this.selectBayOneCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayOne), this.CanSelectBay));
-
-        public ICommand SelectBayThreeCommand =>
-                this.selectBayThreeCommand
-                ??
-                (this.selectBayThreeCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayThree), this.CanSelectBay));
-
-        public ICommand SelectBayTwoCommand =>
-                this.selectBayTwoCommand
-                ??
-                (this.selectBayTwoCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayTwo), this.CanSelectBay));
-
-        public Bay SelectedBay
+        public Bay? SelectedBay
         {
             get => this.selectedBay;
-            set => this.SetProperty(ref this.selectedBay, value);
+            set => this.SetProperty(ref this.selectedBay, value, this.RaiseCanExecuteChanged);
         }
-
-        public string SelectedBayInfo
-        {
-            get => this.selectedBayInfo;
-            set => this.SetProperty(ref this.selectedBayInfo, value);
-        }
-
-        public virtual string Title { get; set; }
 
         #endregion
 
         #region Methods
 
-        public void Save()
+        public Task OnAppearAsync()
         {
-            this.isSuccessful = true;
+            this.SelectedBay = this.Bays?.FirstOrDefault();
+
+            return Task.CompletedTask;
         }
 
-        public void SelectBay(BayNumber bayNumber)
+        public Task OnDisappearAsync()
         {
-            this.canProcede = false;
-            if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
+            // do nothing
+            return Task.CompletedTask;
+        }
+
+        private static string GetBayIpAddress(BayNumber number)
+        {
+            return number switch
             {
-                var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
-                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
-                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);
-                this.canProcede = true;
-                this.SelectedBay = bayFound;
-                this.SelectedBayInfo = $"Baia {(int)bayFound.Number} selezionata";
-            }
-
-            this.RaiseCanExecuteChanged();
+                BayNumber.BayOne => ConfigurationManager.AppSettings.GetInstallBay1Ipaddress(),
+                BayNumber.BayTwo => ConfigurationManager.AppSettings.GetInstallBay2Ipaddress(),
+                BayNumber.BayThree => ConfigurationManager.AppSettings.GetInstallBay3Ipaddress(),
+                _ => throw new InvalidOperationException("The specified bay number is not valid."),
+            };
         }
 
-        private void AddAppConfig(string parameter, string keyValue)
-        {
-            if (string.IsNullOrEmpty(keyValue))
-            {
-                throw new ArgumentException($"On parameter {parameter}, value is null or empty");
-            }
-
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings.Remove(parameter);
-            config.AppSettings.Settings.Add(new KeyValueConfigurationElement(parameter, keyValue));
-            config.Save(ConfigurationSaveMode.Modified);
-        }
-
-        private bool CanNext()
-        {
-            return this.canProcede;
-        }
-
-        private bool CanSelectBay()
-        {
-            return (this.installationService.MasConfiguration != null);
-        }
-
-        private string GetBayIpaddress(BayNumber number)
-        {
-            switch (number)
-            {
-                case BayNumber.BayOne:
-                    return ConfigurationManager.AppSettings.GetInstallBay1Ipaddress();
-
-                case BayNumber.BayTwo:
-                    return ConfigurationManager.AppSettings.GetInstallBay2Ipaddress();
-
-                case BayNumber.BayThree:
-                    return ConfigurationManager.AppSettings.GetInstallBay3Ipaddress();
-            }
-
-            return null;
-        }
+        private bool CanNavigateToNextPage() =>
+            this.SelectedBay != null
+            &&
+            this.installationService.MasUrl != null;
 
         private void GoBack()
         {
-            this.installationService.SetStage(OperationStage.RoleSelection);
+            this.navigationService.NavigateBack();
         }
 
-        private void Next()
+        private async Task NavigateToNextPageAsync()
         {
             try
             {
-                this.installationService.UpdateMachineRole();
-                this.installationService.LoadSteps();
-                this.SavePanelPcConfig();
-                this.installationService.SetStage(OperationStage.Update);
+                this.SaveInstallerAppConfig();
+                this.SavePanelPcAppConfig();
+
+                await this.navigationService.NavigateToAsync(new StepsViewModel(Container.GetInstallationService()));
                 this.isSuccessful = true;
             }
             catch
             {
+                this.notificationService.SetErrorMessage("Cannot start installation.");
+            }
+        }
+
+        private void PersistConfigurationKey(string keyName, string keyValue, string? applicationPath = null)
+        {
+            this.logger.Debug($"Saving configuration key '{keyName}'='{keyValue}'. ");
+
+            try
+            {
+                var config = applicationPath is null
+                    ? ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
+                    : ConfigurationManager.OpenExeConfiguration(applicationPath);
+
+                config.AppSettings.Settings.Remove(keyName);
+                config.AppSettings.Settings.Add(new KeyValueConfigurationElement(keyName, keyValue));
+                config.Save(ConfigurationSaveMode.Modified);
+
+                ConfigurationManager.RefreshSection("appSettings");
+
+                this.logger.Debug($"Configuration file '{config.FilePath}' updated. ");
+            }
+            catch
+            {
+                this.logger.Error($"Cannot save configuration key '{keyName}'. ");
+
+                throw;
             }
         }
 
         private void RaiseCanExecuteChanged()
         {
-            this.nextCommand.RaiseCanExecuteChanged();
+            this.navigateToNextPageCommand.RaiseCanExecuteChanged();
         }
 
-        private void SavePanelPcConfig()
+        private void SaveInstallerAppConfig()
         {
-            var xmlDoc = new XmlDocument();
-
-            var panelPcFileConfig = $"..\\{ConfigurationManager.AppSettings.GetPpcDirName()}\\{ConfigurationManager.AppSettings.GetPpcFileName()}.config";
-            xmlDoc.Load(panelPcFileConfig);
-
-            foreach (XmlElement element in xmlDoc.DocumentElement)
+            if (this.SelectedBay is null)
             {
-                if (element.Name == APPSETTINGS)
-                {
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSBAYNUMBER) is XmlElement bayNumberNode)
-                    {
-                        bayNumberNode.Attributes["value"].Value = ((int)this.selectedBay.Number).ToString();
-                    }
-
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Attributes["key"].Value == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
-                    {
-                        var masIp = (this.installationService.MasIpAddress is null) ? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() : this.installationService.MasIpAddress.ToString();
-                        ipMasNode.Attributes["value"].Value = $"http://{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
-                    }
-                }
+                throw new InvalidOperationException("Cannot save PanelPC configuration because the SelectedBay is null");
             }
 
-            xmlDoc.Save(panelPcFileConfig);
+            if (this.installationService.MasUrl is null)
+            {
+                throw new InvalidOperationException("Cannot save PanelPC configuration because the MasUrl is null");
+            }
+
+            var bayIpaddress = GetBayIpAddress(this.SelectedBay.Number);
+            this.PersistConfigurationKey("Install:Parameter:PpcIpAddress", bayIpaddress);
+        }
+
+        private void SavePanelPcAppConfig()
+        {
+            if (this.SelectedBay is null)
+            {
+                throw new InvalidOperationException("Cannot save PanelPC configuration because the SelectedBay is null");
+            }
+
+            if (this.installationService.MasUrl is null)
+            {
+                throw new InvalidOperationException("Cannot save PanelPC configuration because the MasUrl is null");
+            }
+
+            var panelPcConfigFileName = System.IO.Path.Combine(
+                "..",
+                ConfigurationManager.AppSettings.GetPpcDirName(),
+                ConfigurationManager.AppSettings.GetPpcFileName());
+
+            this.logger.Debug($"Updating application configuration for executable '{panelPcConfigFileName}' ...");
+
+            var bayNumber = (int)this.SelectedBay.Number;
+            var masUrl = this.installationService.MasUrl;
+
+            this.PersistConfigurationKey(BayNumberKey, bayNumber.ToString(), panelPcConfigFileName);
+            this.PersistConfigurationKey(AutomationServiceUrlKey, masUrl.ToString(), panelPcConfigFileName);
+
+            this.logger.Debug($"Application configuration updated.");
         }
 
         #endregion

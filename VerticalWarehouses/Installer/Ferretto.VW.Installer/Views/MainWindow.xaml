@@ -33,6 +33,7 @@
         <ctrls:PpcMessageBox Command="{Binding CloseCommand}"
                              Message="{Binding ErrorMessage}"
                              Visibility="{Binding HasError, Converter={StaticResource BTVC}}" />
+
     </Grid>
 
 </Window>

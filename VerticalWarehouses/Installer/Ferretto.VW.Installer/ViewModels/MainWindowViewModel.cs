@@ -2,52 +2,86 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Services;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, IViewModel
     {
-        private const string StepsSnapshotFileName = "steps-snapshot.json";
+        #region Fields
 
         private const string StepsDefinitionFileName = "steps.json";
 
-        #region Fields
+        private const string StepsSnapshotFileName = "steps-snapshot.json";
 
         private readonly ICommand closeCommand;
 
+        private readonly IInstallationService installationService;
+
         private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private IOperationResult baySelectionViewModel;
+        private readonly INavigationService navigationService;
 
-        private IOperationResult activeViewModel;
+        private readonly ISetupModeService setupModeService;
 
-        private string errorMessage;
+        private readonly INotificationService statusBarService;
+
+        private IViewModel? activeViewModel;
+
+        private string? errorMessage;
 
         private bool hasError;
-
-        private InstallationService installationService;
-
-        private IOperationResult roleSelectionViewModel;
-
-        private IOperationResult updateViewModel;
 
         #endregion
 
         #region Constructors
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(
+            INavigationService navigationService,
+            IInstallationService installationService,
+            ISetupModeService setupModeService,
+            INotificationService statusBarService)
         {
-            this.closeCommand = new RelayCommand(this.Close);
+            if (navigationService is null)
+            {
+                throw new ArgumentNullException(nameof(navigationService));
+            }
+
+            if (installationService is null)
+            {
+                throw new ArgumentNullException(nameof(installationService));
+            }
+
+            if (setupModeService is null)
+            {
+                throw new ArgumentNullException(nameof(setupModeService));
+            }
+
+            if (statusBarService is null)
+            {
+                throw new ArgumentNullException(nameof(statusBarService));
+            }
+
+            this.setupModeService = setupModeService;
+            this.installationService = installationService;
+            this.navigationService = navigationService;
+            this.statusBarService = statusBarService;
+            this.navigationService.PropertyChanged += this.OnNavigationServicePropertyChanged;
+
+            this.closeCommand = new Command(this.Close);
         }
 
         #endregion
 
         #region Properties
 
-        public IOperationResult ActiveViewModel
+        public IViewModel? ActiveViewModel
         {
             get => this.activeViewModel;
             set => this.SetProperty(ref this.activeViewModel, value);
@@ -55,7 +89,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public ICommand CloseCommand => this.closeCommand;
 
-        public string ErrorMessage
+        public string? ErrorMessage
         {
             get => this.errorMessage;
             set => this.SetProperty(ref this.errorMessage, value);
@@ -71,96 +105,35 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Methods
 
-        public void StartInstallation()
+        public async Task OnAppearAsync()
         {
-            var installerDirName = ConfigurationManager.AppSettings.GetInstallerDirName();
-            var installerLocation = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{installerDirName}";
+            await this.StartInstallationAsync();
+        }
 
-#if !DEBUG
-            if (!Directory.Exists(installerLocation))
-                {
-                    this.ShowError($"Folder '{installerLocation}' does not exists.");
-                    return;
-                }
-
-            Directory.SetCurrentDirectory(installerLocation);
-#endif
-            var stepsFileFound = false;
-
-            try
-            {
-                if (File.Exists(StepsSnapshotFileName))
-                {
-                    this.installationService = new InstallationService(StepsSnapshotFileName);
-                    this.installationService.GetInfoFromSnapShot();
-                    stepsFileFound = true;
-                }
-                else if (File.Exists(StepsDefinitionFileName))
-                {
-                    this.installationService = new InstallationService(StepsDefinitionFileName);
-                    stepsFileFound = true;
-                }
-
-                if (stepsFileFound)
-                {
-                    this.installationService.SetArgsStartup();
-
-                    this.installationService.GetInstallerParameters();
-
-                    this.installationService.UpdateMachineRole();
-
-                    this.installationService.LoadSteps();
-
-                    this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-
-                    if (!this.installationService.CanStart())
-                    {
-                        this.Close();
-                    }
-
-                    this.installationService.Start();
-                }
-                else
-                {
-                    this.ShowError($"Steps file not found in folder '{Directory.GetCurrentDirectory()}'.");
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowError($"Unable to initialize installation: {ex.Message}");
-            }
+        public Task OnDisappearAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         private void Close()
         {
-            Application.Current.Shutdown(this.ActiveViewModel?.IsSuccessful == true ? 0 : -1);
+            Application.Current.Shutdown((this.ActiveViewModel as IOperationResult)?.IsSuccessful == true ? 0 : -1);
         }
 
-        private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnNavigationServicePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(OperationStage))
+            if (e.PropertyName != nameof(this.navigationService.ActiveViewModel))
             {
-                switch (this.installationService.OperationStage)
-                {
-                    case OperationStage.None:
-                        throw new InvalidOperationException("Can't change on current mode:Operation type not supported.");
-
-                    case OperationStage.RoleSelection:
-                        this.ActiveViewModel = (this.roleSelectionViewModel ??= new RoleSelectionViewModel(this.installationService));
-                        break;
-
-                    case OperationStage.BaySelection:
-                        this.ActiveViewModel = (this.baySelectionViewModel ??= new BaySelectionViewModel(this.installationService));
-                        break;
-
-                    case OperationStage.Update:
-                        this.ActiveViewModel = this.updateViewModel ?? (this.updateViewModel = new StepsViewModel(this.installationService));
-                        break;
-
-                    default:
-                        break;
-                }
+                return;
             }
+
+            this.ActiveViewModel = this.navigationService.ActiveViewModel;
+        }
+
+        private void OnStatusBarServicePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowError(string message)
@@ -168,6 +141,92 @@ namespace Ferretto.VW.Installer.ViewModels
             this.logger.Error(message);
             this.HasError = true;
             this.ErrorMessage = message;
+        }
+
+        private async Task StartInstallationAsync()
+        {
+            var installerDirName = ConfigurationManager.AppSettings.GetInstallerDirName();
+
+            var installerLocation = Path.Combine(
+                ConfigurationManager.AppSettings.GetUpdateTempPath(),
+                installerDirName);
+
+#if !DEBUG
+            if (!Directory.Exists(installerLocation))
+            {
+                this.ShowError($"Folder '{installerLocation}' does not exists.");
+                return;
+            }
+
+            Directory.SetCurrentDirectory(installerLocation);
+#endif
+            var stepsFileFound = false;
+            var snapshotFileFound = false;
+            var sourceFileName = StepsSnapshotFileName;
+
+            if (File.Exists(StepsSnapshotFileName))
+            {
+                stepsFileFound = true;
+                snapshotFileFound = true;
+            }
+            else if (File.Exists(StepsDefinitionFileName))
+            {
+                sourceFileName = StepsDefinitionFileName;
+                stepsFileFound = true;
+            }
+
+            if (!stepsFileFound)
+            {
+                this.ShowError($"Steps file not found in folder '{Directory.GetCurrentDirectory()}'.");
+                return;
+            }
+
+            try
+            {
+                await this.installationService.DeserializeAsync(sourceFileName);
+
+                switch (this.setupModeService.Mode)
+                {
+                    case SetupMode.Install:
+                        {
+                            if(snapshotFileFound)
+                            {
+                                var viewModel = new StepsViewModel(
+                                    Core.Container.GetInstallationService());
+
+                                await this.navigationService.NavigateToAsync(viewModel);
+                            }
+                            else
+                            {
+                                var viewModel = new RoleSelectionViewModel(
+                                    NavigationService.GetInstance(),
+                                    Core.Container.GetInstallationService(),
+                                    NotificationService.GetInstance(),
+                                    Core.Container.GetMachineConfigurationService());
+
+                                await this.navigationService.NavigateToAsync(viewModel);
+
+                            }
+
+                            break;
+                        }
+
+                    case SetupMode.Update:
+                    case SetupMode.Restore:
+                        {
+                            var viewModel = new StepsViewModel(
+                                Core.Container.GetInstallationService());
+
+                            await this.navigationService.NavigateToAsync(viewModel);
+
+                            break;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowError($"Unable to initialize installation: {ex.Message}");
+            }
         }
 
         #endregion

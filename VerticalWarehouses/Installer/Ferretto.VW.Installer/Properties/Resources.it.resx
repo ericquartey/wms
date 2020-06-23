@@ -120,4 +120,73 @@
   <data name="Abort" xml:space="preserve">
     <value>Annulla</value>
   </data>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Sconosciuta</value>
+  </data>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Installazione Software Vertimag</value>
+  </data>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Versione Servizio in Background</value>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Versione Interfaccia Utente</value>
+  </data>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Seleziona il file di configurazione del Vertimag</value>
+  </data>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>File di configurazione Vertimag</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Tutti i file</value>
+  </data>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Baia Principale</value>
+  </data>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Indirizzo Baia Principale</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Nessun file selezionato</value>
+  </data>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>File di configurazione</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Seleziona file</value>
+  </data>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Baia Secondaria</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Carica</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continua</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Selezione Baia</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modello</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Numero di Serie</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Portata Massima Lorda</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Seleziona il numero di questa baia</value>
+  </data>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Installazione Software Vertimag</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Vai Indietro</value>
+  </data>
 </root>

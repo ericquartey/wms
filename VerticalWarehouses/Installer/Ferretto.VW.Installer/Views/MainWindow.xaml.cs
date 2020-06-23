@@ -1,60 +1,71 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Services;
 using Ferretto.VW.Installer.ViewModels;
 
 namespace Ferretto.VW.Installer.Views
 {
     public partial class MainWindow : Window
     {
+        #region Constructors
+
         public MainWindow()
         {
             this.InitializeComponent();
 
             this.LockWindowPosition();
 
-            this.Loaded += this.OnMainWindowLoaded;
+            this.Loaded += async (sender, e) => await this.OnWindowLoadedAsync();
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            this.DataContext = new MainWindowViewModel(
+                NavigationService.GetInstance(),
+                Container.GetInstallationService(),
+                Container.GetSetupModeService(),
+                NotificationService.GetInstance());
         }
 
         private void LockWindowPosition()
         {
 #if !DEBUG
-            this.Top = 0;
-            this.Left = 0;
-            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
-            this.Height = SystemParameters.PrimaryScreenHeight;
+            this.WindowState = WindowState.Maximized;
+
 #else
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            this.MouseDown += this.Shell_MouseDown;
+            this.MouseDown += this.OnWindowMouseDown;
 #endif
         }
 
-#if DEBUG
-
-        private void Shell_MouseDown(object sender, MouseButtonEventArgs e)
+        private async Task OnWindowLoadedAsync()
         {
-            if (e.ChangedButton == MouseButton.Left)
+            var viewModel = this.DataContext as IViewModel;
+
+            await viewModel.OnAppearAsync();
+        }
+
+#if DEBUG
+        private void OnWindowMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton is MouseButton.Left)
             {
                 this.DragMove();
             }
         }
-
 #endif
 
-        private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
-        {
-            var viewModel = this.DataContext as MainWindowViewModel;
+        #endregion
 
-            viewModel.StartInstallation();
-        }
-
-        protected override void OnInitialized(System.EventArgs e)
-        {
-            base.OnInitialized(e);
-
-            this.DataContext = new MainWindowViewModel();
-        }
     }
 }

@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <StartupObject>Ferretto.VW.Installer.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>    
@@ -38,6 +39,15 @@
     <None Update="Scripts\*.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Update="steps.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

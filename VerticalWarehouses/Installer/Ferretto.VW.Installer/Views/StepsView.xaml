@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:Ferretto.VW.Installer.Controls"
              mc:Ignorable="d">
     <UserControl.Cursor>
         <Binding Converter="{StaticResource BTCIC}"
@@ -27,9 +27,9 @@
                                        Height="18"
                                        Margin="0,0,10,0"
                                        VerticalAlignment="Center"
-                                       Foreground="{Binding Status, Converter={StaticResource STCC}}"
-                                       Kind="{Binding Status, Converter={StaticResource STIC}}"
-                                       Spin="{Binding Status, Converter={StaticResource StatusToSpinConverter}}" />
+                                       Foreground="{Binding Execution.Status, Converter={StaticResource STCC}}"
+                                       Kind="{Binding Execution.Status, Converter={StaticResource STIC}}"
+                                       Spin="{Binding Execution.Status, Converter={StaticResource StatusToSpinConverter}}" />
 
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
@@ -42,14 +42,14 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Foreground="{StaticResource FerrettoPureWhite}"
-                           Text="{Binding Duration, Converter={StaticResource TSC}}" />
+                           Text="{Binding Execution.Duration, Converter={StaticResource TSC}}" />
 
                 <TextBlock Grid.Row="1"
                            Grid.Column="1"
                            VerticalAlignment="Center"
                            FontSize="{DynamicResource FontSize_ExtraSmall}"
-                           Foreground="{Binding Status, Converter={StaticResource STCC}}"
-                           Text="{Binding Status, Converter={StaticResource STSC}}"
+                           Foreground="{Binding Execution.Status, Converter={StaticResource STCC}}"
+                           Text="{Binding Execution.Status, Converter={StaticResource STSC}}"
                            TextAlignment="Left" />
 
                 <ProgressBar Grid.Row="2"
@@ -59,12 +59,12 @@
                              Margin="0,3,10,0"
                              Background="{DynamicResource BackgroundBrush}"
                              BorderThickness="0"
-                             Foreground="{Binding Status, Converter={StaticResource STCC}}"
+                             Foreground="{Binding Execution.Status, Converter={StaticResource STCC}}"
                              Maximum="100"
                              Value="{Binding ProgressPercentage}">
                     <ProgressBar.Visibility>
                         <MultiBinding Converter="{StaticResource IPTVC}">
-                            <Binding Path="Status" />
+                            <Binding Path="Execution.Status" />
                             <Binding Path="ProgressPercentage" />
                         </MultiBinding>
                     </ProgressBar.Visibility>
@@ -98,8 +98,9 @@
                 <icon:PackIconMaterial Width="24"
                                        Height="24"
                                        VerticalAlignment="Center"
-                                       Foreground="{Binding SelectedStep.Status, Converter={StaticResource STCC}}"
-                                       Kind="{Binding SelectedStep.Status, Converter={StaticResource STIC}}" />
+                                       Foreground="{Binding SelectedStep.Execution.Status, Converter={StaticResource STCC}}"
+                                       Spin="{Binding SelectedStep.Execution.Status, Converter={StaticResource StatusToSpinConverter}}"
+                                       Kind="{Binding SelectedStep.Execution.Status, Converter={StaticResource STIC}}" />
 
                 <TextBlock Style="{DynamicResource HeadingTextBlockStyle}"
                            Text="{Binding SelectedStep.Title}" />
@@ -124,7 +125,7 @@
                      Grid.Column="1"
                      HorizontalScrollBarVisibility="Auto"
                      Style="{DynamicResource TextBoxConsoleStyle}"
-                     Text="{Binding SelectedStep.Log, Mode=OneWay}"
+                     Text="{Binding SelectedStep.Execution.Log, Mode=OneWay}"
                      VerticalScrollBarVisibility="Auto" />
 
             <Button Grid.Column="1"
@@ -140,6 +141,9 @@
                     Command="{Binding CloseCommand}"
                     Content="Chiudi"
                     Visibility="{Binding IsFinished, Converter={StaticResource BTVC}}" />
+
+            <controls:StatusBar Grid.Row="6"></controls:StatusBar>
+
         </Grid>
     </Grid>
 </UserControl>
