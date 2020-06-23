@@ -9,7 +9,8 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Controls.Converters
 {
-    public class AxisToStringConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(string))]
+    public class CounterNameConverter : IValueConverter
     {
         #region Methods
 
@@ -17,17 +18,17 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             switch (value)
             {
-                case Axis.BayChain:
-                    return Resources.Localized.Get("InstallationApp.BayChain");
+                case "TotalLoadUnitsInBay1":
+                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay1");
 
-                case Axis.Horizontal:
-                    return Resources.Localized.Get("InstallationApp.Horizontal");
+                case "TotalLoadUnitsInBay2":
+                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay2");
 
-                case Axis.HorizontalAndVertical:
-                    return Resources.Localized.Get("InstallationApp.HorizontalAndVertical");
+                case "TotalLoadUnitsInBay3":
+                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay3");
 
-                case Axis.Vertical:
-                    return Resources.Localized.Get("InstallationApp.Vertical");
+                case "TotalMissions":
+                    return Resources.Localized.Get("InstallationApp.TotalMissions");
 
                 default: //None
                     return Resources.Localized.Get("InstallationApp.None");

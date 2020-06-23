@@ -7092,6 +7092,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 1.
+        /// </summary>
+        public static string TotalLoadUnitsInBay1 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 2.
+        /// </summary>
+        public static string TotalLoadUnitsInBay2 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 3.
+        /// </summary>
+        public static string TotalLoadUnitsInBay3 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total missions.
+        /// </summary>
+        public static string TotalMissions {
+            get {
+                return ResourceManager.GetString("TotalMissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total panels.
         /// </summary>
         public static string TotalPanels {
