@@ -29,13 +29,44 @@ namespace Ferretto.VW.App.Controls.Converters
                     return Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest");
 
                 default:
-                    return ((BlockLevel)value).ToString();
+                    return Resources.Localized.Get("OperatorApp.BlockLevelUndefined");
+                    //return ((BlockLevel)value).ToString();
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            var blk = BlockLevel.Undefined;
+
+            if (value is string strValue)
+            {
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelUndefined"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.Undefined;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelNone"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.None;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelSpaceOnly"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.SpaceOnly;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelBlocked"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.Blocked;
+                }
+
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.NeedsTest;
+                }
+            }
+
+            return blk;
         }
 
         #endregion
