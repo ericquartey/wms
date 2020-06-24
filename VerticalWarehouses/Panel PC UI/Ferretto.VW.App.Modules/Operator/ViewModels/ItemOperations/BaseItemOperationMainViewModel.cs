@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly INavigationService navigationService;
-
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -31,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
+        private readonly INavigationService navigationService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
@@ -86,6 +86,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double loadingUnitWidth;
 
+        private double missionRequestedQuantity;
+
         private SubscriptionToken missionToken;
 
         private bool resetFieldsOnNextAction;
@@ -138,7 +140,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                     this.CanInputAvailableQuantity = true;
-                    this.CanConfirmPresent = true;
+                    this.CanConfirmPresent = (value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock);
                     this.CanInputQuantity = false;
                 });
             }
@@ -322,6 +324,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
         }
 
+        public double MissionRequestedQuantity
+        {
+            get => this.missionRequestedQuantity;
+            set => this.SetProperty(ref this.missionRequestedQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
         public TrayControlCompartment SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -363,7 +371,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     case nameof(this.InputQuantity):
                         {
-                            if (this.InputQuantity != null && this.InputQuantity != this.MissionOperation?.RequestedQuantity)
+                            if (this.InputQuantity != null && this.InputQuantity != this.MissionRequestedQuantity)
                             {
                                 return columnName;
                             }
@@ -436,7 +444,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
+                this.InputQuantity.Value == this.MissionRequestedQuantity;
         }
 
         public virtual bool CanConfirmOperationCanceled()
@@ -466,7 +474,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
+                this.InputQuantity.Value == this.MissionRequestedQuantity;
 
             return !visibility;
         }
@@ -707,6 +715,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         ThreadOption.UIThread,
                         false);
 
+            await this.MissionOperationsService.RefreshAsync();
             await this.GetLoadingUnitDetailsAsync();
         }
 
@@ -837,7 +846,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                     itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                     this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id).SingleOrDefault();
-                    this.AvailableQuantity = this.selectedCompartmentDetail.Stock;
+                    this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
                 }
                 catch (Exception)
                 {
@@ -913,8 +922,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputSerialNumber = null;
             this.InputLot = null;
             this.InputItemCode = null;
-            this.InputQuantity = this.MissionOperation?.RequestedQuantity;
-            this.AvailableQuantity = this.MissionOperation?.RequestedQuantity; //to fix
+            this.InputQuantity = this.MissionRequestedQuantity;
+            this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }
 
         #endregion

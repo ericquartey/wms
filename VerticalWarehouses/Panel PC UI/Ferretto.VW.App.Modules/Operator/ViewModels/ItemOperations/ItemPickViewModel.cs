@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override Task OnAppearedAsync()
         {
             this.CanInputAvailableQuantity = true;
-            this.CanInputQuantity = false;
+            this.CanInputQuantity = true;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
@@ -107,8 +107,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
-            this.AvailableQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            if (this.MissionOperation != null)
+            {
+                if (this.MissionOperation != null)
+                {
+                    this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+                }
+                this.InputQuantity = this.MissionRequestedQuantity;
+                this.AvailableQuantity = this.MissionRequestedQuantity;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()

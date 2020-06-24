@@ -772,7 +772,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
-                MovementType.Relative,
+                MovementType.Absolute,
                 MovementMode.HorizontalCalibration,
                 targetPosition,
                 speed,

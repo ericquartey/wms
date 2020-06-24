@@ -470,7 +470,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void FindZeroNextPosition(double targetPosition)
         {
-            this.machineData.MessageData.TargetPosition = targetPosition;
+            this.machineData.MessageData.TargetPosition += targetPosition;
             var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
             var inverterMessage = new FieldCommandMessage(
@@ -665,7 +665,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
                                             this.FindZeroNextPosition(((this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value) / 2)
                                                 + axis.ChainOffset
-                                                //+ (this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - this.findZeroPosition[(int)HorizontalCalibrationStep.BackwardFindZeroSensor])
                                                 );
                                         }
                                         break;
@@ -1004,7 +1003,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogDebug($"Send Horizontal calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Original Distance {profileOriginalDistance:0.0000}, measured {measured:0.0000}");
 
                         var notificationMessage = new NotificationMessage(
-                            new ProfileCalibrationMessageData(profileOriginalDistance, measured-profileOriginalDistance, measured),
+                            new ProfileCalibrationMessageData(profileOriginalDistance, measured - profileOriginalDistance, measured),
                             $"Horizontal calibration result",
                             MessageActor.AutomationService,
                             MessageActor.DeviceManager,

@@ -43,7 +43,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (targetPosition.HasValue && this.data.IsHorizontalCalibrate)
             {
                 this.data.TargetPosition = (int)targetPosition.Value;
-                this.data.TargetSpeed[0] /= 2;
             }
             this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}, targetPosition {targetPosition:0.00}");
         }
