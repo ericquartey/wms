@@ -113,8 +113,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
                 }
+
                 this.InputQuantity = this.MissionRequestedQuantity;
                 this.AvailableQuantity = this.MissionRequestedQuantity;
+
+                this.RaisePropertyChanged(nameof(this.InputQuantity));
+                this.RaisePropertyChanged(nameof(this.AvailableQuantity));
             }
         }
 
