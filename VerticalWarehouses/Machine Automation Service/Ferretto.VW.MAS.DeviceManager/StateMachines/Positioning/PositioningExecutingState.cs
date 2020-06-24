@@ -470,7 +470,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void FindZeroNextPosition(double targetPosition)
         {
-            this.machineData.MessageData.TargetPosition += targetPosition;
+            this.machineData.MessageData.TargetPosition = targetPosition;
             var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
             var inverterMessage = new FieldCommandMessage(
@@ -653,7 +653,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.findZeroStep++;
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
                                             var invertDirection = (this.machineData.MessageData.TargetPosition > 0) ? -1 : 1;
-                                            this.FindZeroNextPosition(Math.Abs(axis.ChainOffset) * 20 * invertDirection);
+                                            this.FindZeroNextPosition(chainPosition.Value + Math.Abs(axis.ChainOffset) * 20 * invertDirection);
                                         }
                                         break;
 
@@ -665,6 +665,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
                                             this.FindZeroNextPosition(((this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value) / 2)
                                                 + axis.ChainOffset
+                                                + chainPosition.Value
                                                 );
                                         }
                                         break;
