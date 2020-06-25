@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Services;
 using NLog;
 
 #nullable enable
@@ -24,6 +25,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly INotificationService notificationService;
+
         private bool abortRequested;
 
         private bool isFinished;
@@ -38,8 +41,21 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Constructors
 
-        public StepsViewModel(IInstallationService installationService)
+        public StepsViewModel(
+            IInstallationService installationService,
+            INotificationService notificationService)
         {
+            if (installationService is null)
+            {
+                throw new ArgumentNullException(nameof(installationService));
+            }
+
+            if (notificationService is null)
+            {
+                throw new ArgumentNullException(nameof(notificationService));
+            }
+
+            this.notificationService = notificationService;
             this.installationService = installationService;
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
             this.installationService.Finished += this.OnInstallationFinished;
@@ -96,6 +112,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public Task OnAppearAsync()
         {
+            this.notificationService.ClearMessage();
+
             this.StartInstallation();
 
             return Task.CompletedTask;
@@ -110,7 +128,7 @@ namespace Ferretto.VW.Installer.ViewModels
         public void StartInstallation()
         {
             this.logger.Info("Starting installation ...");
-      
+
             try
             {
                 this.IsFinished = false;
@@ -120,7 +138,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
                 this.installationService.Run();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.IsSuccessful = false;
                 this.IsFinished = true;
@@ -156,7 +174,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() => {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
                 if (e.PropertyName == nameof(IInstallationService.ActiveStep))
                 {
                     this.SelectedStep = this.installationService.ActiveStep;
@@ -167,11 +186,20 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void OnInstallationFinished(object? sender, InstallationFinishedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() => {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
                 this.IsFinished = true;
                 this.IsSuccessful = e.Success;
+
+                if (this.IsSuccessful)
+                {
+                    this.notificationService.SetMessage("Installation complete.");
+                }
+                else
+                {
+                    this.notificationService.SetErrorMessage("Installation failed.");
+                }
             });
-            
         }
 
         private void RaiseCanExecuteChanged()

@@ -88,6 +88,8 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             this.SelectedBay = this.Bays?.FirstOrDefault();
 
+            this.notificationService.ClearMessage();
+
             return Task.CompletedTask;
         }
 
@@ -125,12 +127,16 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.SaveInstallerAppConfig();
                 this.SavePanelPcAppConfig();
 
-                await this.navigationService.NavigateToAsync(new StepsViewModel(Container.GetInstallationService()));
+                var viewModel = new StepsViewModel(
+                    Container.GetInstallationService(),
+                    NotificationService.GetInstance());
+
+                await this.navigationService.NavigateToAsync(viewModel);
                 this.isSuccessful = true;
             }
-            catch
+            catch(Exception ex)
             {
-                this.notificationService.SetErrorMessage("Cannot start installation.");
+                this.notificationService.SetErrorMessage($"Cannot start installation.{Environment.NewLine}{ex.Message}");
             }
         }
 

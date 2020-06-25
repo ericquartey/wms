@@ -64,7 +64,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 async () => await this.OpenConfigurationFileAsync(),
                 this.CanOpenFile);
             this.loadConfigurationCommand = new Command(
-                async () => await this.LoadConfigurationAsync(),
+                async () => await this.LoadConfigurationFromServiceAsync(),
                 this.CanLoadConfiguration);
         }
 
@@ -124,11 +124,16 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Methods
 
-        public async Task OnAppearAsync()
+        public Task OnAppearAsync()
         {
             this.ServiceUrl = ConfigurationManager.AppSettings.GetInstallDefaultMasUrl().ToString();
 
-            await this.LoadManifestFilesAsync();
+            this.UiVersion = this.installationService.PanelPcVersion;
+            this.ServiceVersion = this.installationService.MasVersion;
+
+            this.notificationService.ClearMessage();
+
+            return Task.CompletedTask;
         }
 
         public Task OnDisappearAsync()
@@ -139,6 +144,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenConfigurationFileAsync()
         {
+            this.notificationService.ClearMessage();
+
             this.logger.Debug("User is selecting a vertimag configuration file ...");
 
             this.IsLoadingMachineConfiguration = true;
@@ -165,7 +172,8 @@ namespace Ferretto.VW.Installer.ViewModels
                     await this.machineConfigurationService.LoadFromFileAsync(dialog.FileName);
 
                     var configurationFilePath = Path.Combine(
-                        ConfigurationManager.AppSettings.GetUpdateTempPath(),
+                        Directory.GetCurrentDirectory(),
+                        "..",
                         ConfigurationManager.AppSettings.GetMasDirName(),
                         "Configuration",
                         "vertimag-configuration.json");
@@ -173,10 +181,12 @@ namespace Ferretto.VW.Installer.ViewModels
                     await this.machineConfigurationService.SaveToFileAsync(configurationFilePath);
 
                     this.MachineConfigurationFileName = dialog.FileName;
+
+                    this.notificationService.SetMessage("Configuration file loaded.");
                 }
-                catch
+                catch(Exception ex)
                 {
-                    this.notificationService.SetErrorMessage("Unable to load configuration from file.");
+                    this.notificationService.SetErrorMessage($"Unable to load configuration from file.{Environment.NewLine}{ex.Message}");
                     this.MachineConfigurationFileName = null;
                 }
                 finally
@@ -211,7 +221,7 @@ namespace Ferretto.VW.Installer.ViewModels
             return !this.IsLoadingMachineConfiguration;
         }
 
-        private async Task LoadConfigurationAsync()
+        private async Task LoadConfigurationFromServiceAsync()
         {
             if (this.serviceUrl is null)
             {
@@ -223,40 +233,16 @@ namespace Ferretto.VW.Installer.ViewModels
             {
                 this.IsLoadingMachineConfiguration = true;
                 await this.machineConfigurationService.LoadFromWebServiceAsync(new Uri(this.serviceUrl));
+
+                this.notificationService.SetMessage("Configuration loaded.");
             }
-            catch
+            catch(Exception ex)
             {
-                this.notificationService.SetErrorMessage("Unable to load configuration from web service.");
+                this.notificationService.SetErrorMessage($"Unable to load configuration from web service.{Environment.NewLine}{ex.Message}");
             }
             finally
             {
                 this.IsLoadingMachineConfiguration = false;
-            }
-        }
-
-        private async Task LoadManifestFilesAsync()
-        {
-            try
-            {
-                var uiManifestFile = Path.Combine(
-                    ConfigurationManager.AppSettings.GetUpdateTempPath(),
-                    ConfigurationManager.AppSettings.GetPpcDirName(),
-                    "properties",
-                    "app.manifest");
-                var uiManifest = await AppManifest.FromFileAsync(uiManifestFile);
-                this.UiVersion = uiManifest?.AssemblyIdentityVersion;
-
-                var serviceManifestFile = Path.Combine(
-                    ConfigurationManager.AppSettings.GetUpdateTempPath(),
-                    ConfigurationManager.AppSettings.GetMasDirName(),
-                    "properties",
-                    "app.manifest");
-                var serviceManifest = await AppManifest.FromFileAsync(serviceManifestFile);
-                this.ServiceVersion = serviceManifest?.AssemblyIdentityVersion;
-            }
-            catch
-            {
-                this.notificationService.SetErrorMessage("Error loading manifest files.");
             }
         }
 
@@ -286,8 +272,6 @@ namespace Ferretto.VW.Installer.ViewModels
             this.navigateToNextPageCommand.RaiseCanExecuteChanged();
             this.openFileCommand.RaiseCanExecuteChanged();
         }
-
-        
 
         private void SwitchRoleSelection()
         {

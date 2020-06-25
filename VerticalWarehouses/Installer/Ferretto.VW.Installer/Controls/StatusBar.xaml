@@ -1,14 +1,27 @@
 ﻿<UserControl x:Class="Ferretto.VW.Installer.Controls.StatusBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.Installer.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Border>
-            <TextBlock Text="{Binding Message}"></TextBlock>
+             xmlns:converters="clr-namespace:Ferretto.VW.Installer.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid Name="InnerGrid">
+        <Grid.Resources>
+            <converters:BoolToBrushConverter x:Key="ErrorBrushConverter"
+                                             FalseBrush="{StaticResource FerrettoGreen}"
+                                             TrueBrush="{StaticResource FerrettoRed}" />
+        </Grid.Resources>
+        <Border Padding="25"
+                Background="{Binding IsError, Converter={StaticResource ErrorBrushConverter}}"
+                BorderThickness="0"
+                Visibility="{Binding Message, Converter={StaticResource RTVC}}">
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="{DynamicResource FontSize_Large}"
+                       Foreground="{DynamicResource FerrettoPureWhite}"
+                       Text="{Binding Message}"
+                       TextWrapping="Wrap" />
         </Border>
     </Grid>
 </UserControl>

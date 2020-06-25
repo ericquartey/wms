@@ -14,6 +14,10 @@ namespace Ferretto.VW.Installer.Services
 
         void SetMessage(string message);
 
+        public bool IsError { get; }
+
+        public string? Message { get; }
+
         #endregion
     }
 }
