@@ -56,6 +56,7 @@
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
     <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
+    <None Remove="Views\ItemSearch\ItemSearchDetailView - Copy.xaml" />
     <None Remove="Views\LogsExportView.xaml" />
     <None Remove="Views\Others\LoadingUnitMissionDataGridView.xaml" />
     <None Remove="Views\Others\LoadingUnitsMissionsView.xaml" />
@@ -97,6 +98,9 @@
     </Compile>
     <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchUnitsView.xaml.cs">
+      <DependentUpon>ItemSearchUnitsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\LoadingUnitMissionDataGridView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

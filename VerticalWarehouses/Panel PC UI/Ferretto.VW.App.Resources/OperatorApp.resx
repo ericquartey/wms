@@ -1969,4 +1969,13 @@ Please put back any moved pieces in their original position.</value>
     <value>Present quantity</value>
     <comment>Label</comment>
   </data>
+  <data name="Article" xml:space="preserve">
+    <value>Article: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
 </root>
