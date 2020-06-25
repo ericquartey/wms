@@ -57,7 +57,7 @@
                     <DataGridTextColumn x:Name="Column1"
                                         Width="1*"
                                         Binding="{Binding Path=LoadingUnitId}"
-                                        Header="Cassetto">
+                                        Header="{Resources:Loc OperatorApp.Unit}">
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -74,7 +74,7 @@
                     <DataGridTextColumn x:Name="Column2"
                                         Width="1*"
                                         Binding="{Binding Path=Stock}"
-                                        Header="Stock">
+                                        Header="{Resources:Loc OperatorApp.Quantity}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center" />

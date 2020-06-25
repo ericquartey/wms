@@ -1598,4 +1598,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Units" xml:space="preserve">
     <value>Cassetti</value>
   </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Cassetto</value>
+  </data>
 </root>

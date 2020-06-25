@@ -1975,4 +1975,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="Units" xml:space="preserve">
     <value>Units</value>
   </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
 </root>
