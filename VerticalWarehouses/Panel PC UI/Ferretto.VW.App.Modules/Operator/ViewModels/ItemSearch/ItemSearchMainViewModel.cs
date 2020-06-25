@@ -102,6 +102,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private CancellationTokenSource tokenSource;
 
+        private DelegateCommand unitsPageCommand;
+
         #endregion
 
         #region Constructors
@@ -239,12 +241,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public ICommand ItemDetailButtonCommand =>
-            this.showItemDetailsCommand
+        public ICommand UnitsPageCommand =>
+            this.unitsPageCommand
             ??
-            (this.showItemDetailsCommand = new DelegateCommand(
-                () => this.ShowItemDetails(this.SelectedItem),
-                this.CanShowItemDetails));
+            (this.unitsPageCommand = new DelegateCommand(
+                () => this.ShowUnitsPage(this.SelectedItem),
+                this.CanShowUnitsPage));
 
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
 
@@ -323,6 +325,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedItemTxt;
             set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand ItemDetailButtonCommand =>
+           this.showItemDetailsCommand
+           ??
+           (this.showItemDetailsCommand = new DelegateCommand(
+               () => this.ShowItemDetails(this.SelectedItem),
+               this.CanShowItemDetails));
 
         #endregion
 
@@ -584,6 +593,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+            this.unitsPageCommand?.RaiseCanExecuteChanged();
 
             this.confirmReasonCommand?.RaiseCanExecuteChanged();
         }
@@ -666,6 +676,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedItem != null;
         }
 
+        private bool CanShowUnitsPage()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.SelectedItem != null;
+        }
+        
         private async Task OnProductsChangedAsync(ProductsChangedEventArgs e)
         {
             await this.RefreshItemsAsync();
@@ -827,6 +845,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private void ShowUnitsPage(ItemInfo item)
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemSearch.UNITS,
+                item,
+                trackCurrentView: true);
         }
 
         private async Task TriggerSearchAsync()
