@@ -211,7 +211,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding MissionOperation.RequestedQuantity}"
+                                   Text="{Binding MissionRequestedQuantity}"
                                    TextWrapping="Wrap" />
 
                     </Grid>

@@ -80,7 +80,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            if (this.MissionOperation != null)
+            {
+                this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            }
+            this.InputQuantity = this.MissionRequestedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -123,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+                this.InputQuantity.Value < this.MissionRequestedQuantity;
         }
 
         private async Task PartiallyCompleteOnFullCompartmentAsync()

@@ -254,7 +254,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
 
                         var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        this.targetPosition = axis.ProfileCalibrateLength;
+                        this.targetPosition = axis.ProfileCalibrateLength + this.horizontalStartingPosition;
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
@@ -653,7 +653,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.findZeroStep++;
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
                                             var invertDirection = (this.machineData.MessageData.TargetPosition > 0) ? -1 : 1;
-                                            this.FindZeroNextPosition(Math.Abs(axis.ChainOffset) * 20 * invertDirection);
+                                            this.FindZeroNextPosition(chainPosition.Value + Math.Abs(axis.ChainOffset) * 20 * invertDirection);
                                         }
                                         break;
 
@@ -665,7 +665,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Logger.LogInformation($"Horizontal calibration step {this.findZeroStep}, Value {chainPosition:0.0000}");
                                             this.FindZeroNextPosition(((this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - chainPosition.Value) / 2)
                                                 + axis.ChainOffset
-                                                //+ (this.findZeroPosition[(int)HorizontalCalibrationStep.ForwardLeaveZeroSensor] - this.findZeroPosition[(int)HorizontalCalibrationStep.BackwardFindZeroSensor])
+                                                + chainPosition.Value
                                                 );
                                         }
                                         break;
@@ -1004,7 +1004,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogDebug($"Send Horizontal calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Original Distance {profileOriginalDistance:0.0000}, measured {measured:0.0000}");
 
                         var notificationMessage = new NotificationMessage(
-                            new ProfileCalibrationMessageData(profileOriginalDistance, measured-profileOriginalDistance, measured),
+                            new ProfileCalibrationMessageData(profileOriginalDistance, measured - profileOriginalDistance, measured),
                             $"Horizontal calibration result",
                             MessageActor.AutomationService,
                             MessageActor.DeviceManager,

@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 if (!this.Inverter.PositionStatusWord.SetPointAcknowledge)
                 {
                     // go to new target position
-                    this.Logger.LogDebug($"Relative Target changed to {this.data.TargetPosition}");
+                    this.Logger.LogDebug($"New Target changed to {this.data.TargetPosition}");
                     this.data.IsProfileCalibrateDone = true;
 
                     this.ParentStateMachine.ChangeState(
