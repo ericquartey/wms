@@ -16,6 +16,12 @@ namespace Ferretto.VW.Installer
         public App()
         {
             this.DispatcherUnhandledException += this.OnUnhandledException;
+
+#if DEBUG
+            System.Globalization.CultureInfo.CurrentUICulture
+                = System.Globalization.CultureInfo.CurrentCulture
+                = new System.Globalization.CultureInfo("it-IT");
+#endif
         }
 
         #endregion
@@ -24,7 +30,13 @@ namespace Ferretto.VW.Installer
 
         private void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            this.logger.Error("Unhandled exception.");
             this.logger.Error(e.Exception);
+
+#if !DEBUG
+            // mark the exception as handled to avoid crashing the application
+            e.Handled = true;
+#endif
             LogManager.Flush();
         }
 

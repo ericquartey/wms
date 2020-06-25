@@ -3,7 +3,7 @@ Set-Location "C:\Users\Alessandro\source\repos\ferretto\VW\VerticalWarehouses\Pi
 Remove-Item "staging\*" -Recurse
 Remove-Item "sfx_options.txt"
 
-$buildVersion = Get-Date -Format "yyyy_MM_dd_HH_mm"
+$buildVersion = (Get-Date).ToString("MM.dd.HH.mm")
 $configuration = "Release"
 $runtime = "win10-x64"
 

@@ -13,6 +13,7 @@
                                       Invert="True" />
 
     <converters:StatusToSpinConverter x:Key="StatusToSpinConverter" />
+    <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
 
     <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
     <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />

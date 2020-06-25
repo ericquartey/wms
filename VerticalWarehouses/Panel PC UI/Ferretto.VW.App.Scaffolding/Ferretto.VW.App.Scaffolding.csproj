@@ -60,9 +60,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Modules\Login\Ferretto.VW.App.Modules.Login.csproj" />
   </ItemGroup>
 

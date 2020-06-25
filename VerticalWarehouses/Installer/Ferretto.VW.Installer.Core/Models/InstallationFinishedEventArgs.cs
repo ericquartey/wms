@@ -1,5 +1,7 @@
 ﻿using System;
 
+#nullable enable
+
 namespace Ferretto.VW.Installer.Core
 {
     public class InstallationFinishedEventArgs : EventArgs

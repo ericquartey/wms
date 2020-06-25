@@ -10,8 +10,17 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public MergeAppConfig(int number, string title, string description, string newPathName, string oldPathName, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+        public MergeAppConfig(
+            int number,
+            string title,
+            string description,
+            string newPathName,
+            string oldPathName,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             this.NewPathName = InterpolateVariables(newPathName);
             this.OldPathName = InterpolateVariables(oldPathName);
@@ -39,7 +48,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.Failed);
             }
         }
@@ -54,7 +63,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.RollbackFailed);
             }
         }
@@ -144,12 +153,12 @@ namespace Ferretto.VW.Installer.Core
             }
 
             var targetNode = targetDocument.CreateNode(oldNode.NodeType, oldNode.Name, oldNode.NamespaceURI);
-            this.LogInformation($"Creating node: {targetNode.Name}");
+            this.Execution.LogInformation($"Creating node: {targetNode.Name}");
             MergeAttributes(oldNode, newNode, targetDocument, targetNode);
 
             var childsFromOld = oldNode.ChildNodes.Cast<XmlNode>().ToArray();
             var childsFromNew = newNode.ChildNodes.Cast<XmlNode>().ToArray();
-            this.LogInformation($"Node {oldNode.Name}: old# {childsFromOld.Length} new {childsFromNew.Length}.");
+            this.Execution.LogInformation($"Node {oldNode.Name}: old# {childsFromOld.Length} new {childsFromNew.Length}.");
 
             var uniquesFromOld = childsFromOld.Where(ch => !childsFromNew.Any(chb => chb.Name == ch.Name)).ToArray();
             var uniquesFromNew = childsFromNew.Where(ch => !childsFromOld.Any(chb => chb.Name == ch.Name)).ToArray();
@@ -174,7 +183,7 @@ namespace Ferretto.VW.Installer.Core
                 nn => nn.Name,
                 (on, nn) => new { on, nn }).ToArray();
 
-            this.LogInformation($"Node {oldNode.Name}: there are {duplicateNodes.Length} nodes.");
+            this.Execution.LogInformation($"Node {oldNode.Name}: there are {duplicateNodes.Length} nodes.");
             foreach (var duplicateNode in duplicateNodes)
             {
                 var mergedNode = this.MergeNodes(duplicateNode.on, duplicateNode.nn, targetDocument);

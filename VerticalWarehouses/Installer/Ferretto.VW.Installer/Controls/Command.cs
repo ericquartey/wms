@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Ferretto.VW.Installer
 {
-    public class RelayCommand : ICommand
+    public class Command : ICommand
     {
         #region Fields
 
@@ -17,7 +17,7 @@ namespace Ferretto.VW.Installer
 
         #region Constructors
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public Command(Action execute, Func<bool> canExecute = null)
         {
             this.execute = execute;
             this.canExecute = canExecute;
