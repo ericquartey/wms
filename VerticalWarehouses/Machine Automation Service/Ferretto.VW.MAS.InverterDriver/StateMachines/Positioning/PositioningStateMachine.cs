@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.data.TargetPosition = (int)targetPosition.Value;
             }
-            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}, targetPosition {targetPosition:0.00}");
+            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}, targetPosition {this.data.TargetPosition:0.00}");
         }
 
         /// <inheritdoc />

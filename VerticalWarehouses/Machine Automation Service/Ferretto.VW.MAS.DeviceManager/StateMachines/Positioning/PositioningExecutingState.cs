@@ -254,7 +254,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
 
                         var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        this.targetPosition = axis.ProfileCalibrateLength;
+                        this.targetPosition = axis.ProfileCalibrateLength + this.horizontalStartingPosition;
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
