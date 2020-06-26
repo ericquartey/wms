@@ -1,6 +1,7 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
-  "LoadingUnits": [],
+  "LoadingUnits": [
+  ],
   "Machine": {
     "Bays": [
       {
@@ -82,7 +83,7 @@
             "Speed": 550.0
           },
           "HomingCreepSpeed": 6.0,
-          "HomingFastSpeed": 25.0,
+          "HomingFastSpeed": 40.0,
           "Id": 1,
           "Inverter": {
             "Id": 3,
@@ -92,8 +93,8 @@
             "TcpPort": 17221,
             "Type": "Ang"
           },
-          "LastIdealPosition": 0.0,
           "LastCalibrationCycles": 0,
+          "LastIdealPosition": 895.0,
           "LowerBound": 442.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -109,7 +110,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 7900.0,
+          "UpperBound": 6545.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,
@@ -129,7 +130,7 @@
           },
           "BrakeActivatePercent": 0.0,
           "BrakeReleaseTime": 0.0,
-          "ChainOffset": -6.5,
+          "ChainOffset": -9.5,
           "EmptyLoadMovement": {
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
@@ -147,7 +148,7 @@
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
-          "LowerBound": 0.0,
+          "LowerBound": -4000.0,
           "ManualMovements": {
             "FeedRate": 0.04,
             "FeedRateAfterZero": 0.3,
@@ -158,125 +159,11 @@
           "Offset": 0.0,
           "Orientation": "Horizontal",
           "ProfileCalibrateLength": 900.0,
-          "ProfileCalibratePosition": 300,
+          "ProfileCalibratePosition": 124,
           "ProfileCalibrateSpeed": 30.0,
           "Profiles": [
             {
               "Id": 1,
-              "Name": "LongPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 7,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 630.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 13,
-                  "Number": 1,
-                  "Position": 250.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 12,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 11,
-                  "Number": 3,
-                  "Position": 1200.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 10,
-                  "Number": 4,
-                  "Position": 1411.5,
-                  "Speed": 650.0
-                }
-              ],
-              "TotalDistance": 1411.5
-            },
-            {
-              "Id": 2,
-              "Name": "ShortPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 23,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 630.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 22,
-                  "Number": 1,
-                  "Position": 250.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 16,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 21,
-                  "Number": 3,
-                  "Position": 1200.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 20,
-                  "Number": 4,
-                  "Position": 1411.5,
-                  "Speed": 650.0
-                }
-              ],
-              "TotalDistance": 1411.5
-            },
-            {
-              "Id": 3,
               "Name": "ShortDeposit",
               "Steps": [
                 {
@@ -306,7 +193,7 @@
                   "Deceleration": 0.0,
                   "Id": 17,
                   "Number": 2,
-                  "Position": 1000.0,
+                  "Position": 740.0,
                   "Speed": 650.0
                 },
                 {
@@ -316,7 +203,7 @@
                   "Deceleration": 0.0,
                   "Id": 25,
                   "Number": 3,
-                  "Position": 1200.0,
+                  "Position": 1000.0,
                   "Speed": 100.0
                 },
                 {
@@ -326,11 +213,125 @@
                   "Deceleration": 0.0,
                   "Id": 15,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1216.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1216.0
+            },
+            {
+              "Id": 2,
+              "Name": "LongPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 8,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 630.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 14,
+                  "Number": 1,
+                  "Position": 300.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 13,
+                  "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 12,
+                  "Number": 3,
+                  "Position": 900.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 11,
+                  "Number": 4,
+                  "Position": 1216.0,
+                  "Speed": 650.0
+                }
+              ],
+              "TotalDistance": 1216.0
+            },
+            {
+              "Id": 3,
+              "Name": "ShortPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 23,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 630.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 22,
+                  "Number": 1,
+                  "Position": 300.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 21,
+                  "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 16,
+                  "Number": 3,
+                  "Position": 900.0,
+                  "Speed": 650.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 20,
+                  "Number": 4,
+                  "Position": 1216.0,
+                  "Speed": 650.0
+                }
+              ],
+              "TotalDistance": 1216.0
             },
             {
               "Id": 4,
@@ -341,7 +342,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 9,
+                  "Id": 10,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -351,7 +352,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 8,
+                  "Id": 9,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 650.0
@@ -361,9 +362,9 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 14,
+                  "Id": 7,
                   "Number": 2,
-                  "Position": 1000.0,
+                  "Position": 740.0,
                   "Speed": 650.0
                 },
                 {
@@ -373,7 +374,7 @@
                   "Deceleration": 0.0,
                   "Id": 24,
                   "Number": 3,
-                  "Position": 1200.0,
+                  "Position": 1000.0,
                   "Speed": 100.0
                 },
                 {
@@ -383,22 +384,22 @@
                   "Deceleration": 0.0,
                   "Id": 26,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1216.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1216.0
             }
           ],
-          "Resolution": 88.18085145,
-          "UpperBound": 1.0
+          "Resolution": 88.3038477,
+          "UpperBound": 4000.0
         }
       ],
       "Id": 1,
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300.0,
-        "ElevatorWeight": 243.0,
+        "ElevatorWeight": 232.0,
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
@@ -407,14 +408,18 @@
         "ShaftElasticity": 210000.0
       }
     },
-    "Height": 8261.0,
-    "Id": 2,
+    "ExpireCountPrecent": 10,
+    "ExpireDays": 14,
+    "Height": 7261.0,
+    "HorizontalCyclesToCalibrate": 10,
+    "HorizontalPositionToCalibrate": 3000,
+    "Id": 3,
     "LoadUnitMaxHeight": 695.0,
-    "LoadUnitMaxNetWeight": 550.0,
+    "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 125.0,
-    "LoadUnitTare": 120.0,
-    "MaxGrossWeight": 70000.0,
-    "ModelName": "VERTIMAG (NEW 2020) 103XL550-BIS-H8261",
+    "LoadUnitTare": 104.0,
+    "MaxGrossWeight": 58767.0,
+    "ModelName": "NEW VERTIMAG 84XL800-GIO H7261",
     "Panels": [
       {
         "Side": "front",
@@ -2116,7 +2121,7 @@
             "PanelId": 39,
             "Priority": 395,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 397,
@@ -2124,7 +2129,7 @@
             "PanelId": 39,
             "Priority": 397,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 399,
@@ -2132,7 +2137,7 @@
             "PanelId": 39,
             "Priority": 399,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           }
         ]
       },
@@ -2146,7 +2151,7 @@
             "PanelId": 41,
             "Priority": 401,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 403,
@@ -2154,7 +2159,7 @@
             "PanelId": 41,
             "Priority": 403,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 405,
@@ -2162,357 +2167,13 @@
             "PanelId": 41,
             "Priority": 405,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 407,
             "Position": 7070,
             "PanelId": 41,
             "Priority": 407,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 409,
-            "Position": 7095,
-            "PanelId": 41,
-            "Priority": 409,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 411,
-            "Position": 7120,
-            "PanelId": 41,
-            "Priority": 411,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 413,
-            "Position": 7145,
-            "PanelId": 41,
-            "Priority": 413,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 415,
-            "Position": 7170,
-            "PanelId": 41,
-            "Priority": 415,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 417,
-            "Position": 7195,
-            "PanelId": 41,
-            "Priority": 417,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 419,
-            "Position": 7220,
-            "PanelId": 41,
-            "Priority": 419,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 43,
-        "Cells": [
-          {
-            "Id": 421,
-            "Position": 7245,
-            "PanelId": 43,
-            "Priority": 421,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 423,
-            "Position": 7270,
-            "PanelId": 43,
-            "Priority": 423,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 425,
-            "Position": 7295,
-            "PanelId": 43,
-            "Priority": 425,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 427,
-            "Position": 7320,
-            "PanelId": 43,
-            "Priority": 427,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 429,
-            "Position": 7345,
-            "PanelId": 43,
-            "Priority": 429,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 431,
-            "Position": 7370,
-            "PanelId": 43,
-            "Priority": 431,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 433,
-            "Position": 7395,
-            "PanelId": 43,
-            "Priority": 433,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 435,
-            "Position": 7420,
-            "PanelId": 43,
-            "Priority": 435,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 437,
-            "Position": 7445,
-            "PanelId": 43,
-            "Priority": 437,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 439,
-            "Position": 7470,
-            "PanelId": 43,
-            "Priority": 439,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 45,
-        "Cells": [
-          {
-            "Id": 441,
-            "Position": 7495,
-            "PanelId": 45,
-            "Priority": 441,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 443,
-            "Position": 7520,
-            "PanelId": 45,
-            "Priority": 443,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 445,
-            "Position": 7545,
-            "PanelId": 45,
-            "Priority": 445,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 447,
-            "Position": 7570,
-            "PanelId": 45,
-            "Priority": 447,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 449,
-            "Position": 7595,
-            "PanelId": 45,
-            "Priority": 449,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 451,
-            "Position": 7620,
-            "PanelId": 45,
-            "Priority": 451,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 453,
-            "Position": 7645,
-            "PanelId": 45,
-            "Priority": 453,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 455,
-            "Position": 7670,
-            "PanelId": 45,
-            "Priority": 455,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 457,
-            "Position": 7695,
-            "PanelId": 45,
-            "Priority": 457,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 459,
-            "Position": 7720,
-            "PanelId": 45,
-            "Priority": 459,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 47,
-        "Cells": [
-          {
-            "Id": 461,
-            "Position": 7745,
-            "PanelId": 47,
-            "Priority": 461,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 463,
-            "Position": 7770,
-            "PanelId": 47,
-            "Priority": 463,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 465,
-            "Position": 7795,
-            "PanelId": 47,
-            "Priority": 465,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 467,
-            "Position": 7820,
-            "PanelId": 47,
-            "Priority": 467,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 469,
-            "Position": 7845,
-            "PanelId": 47,
-            "Priority": 469,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 471,
-            "Position": 7870,
-            "PanelId": 47,
-            "Priority": 471,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 473,
-            "Position": 7895,
-            "PanelId": 47,
-            "Priority": 473,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 475,
-            "Position": 7920,
-            "PanelId": 47,
-            "Priority": 475,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 477,
-            "Position": 7945,
-            "PanelId": 47,
-            "Priority": 477,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 479,
-            "Position": 7970,
-            "PanelId": 47,
-            "Priority": 479,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 49,
-        "Cells": [
-          {
-            "Id": 481,
-            "Position": 7995,
-            "PanelId": 49,
-            "Priority": 481,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 483,
-            "Position": 8020,
-            "PanelId": 49,
-            "Priority": 483,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 485,
-            "Position": 8045,
-            "PanelId": 49,
-            "Priority": 485,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 487,
-            "Position": 8070,
-            "PanelId": 49,
-            "Priority": 487,
             "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
@@ -4805,7 +4466,7 @@
             "PanelId": 54,
             "Priority": 532,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 534,
@@ -4813,7 +4474,7 @@
             "PanelId": 54,
             "Priority": 534,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 536,
@@ -4821,7 +4482,7 @@
             "PanelId": 54,
             "Priority": 536,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 538,
@@ -4829,7 +4490,7 @@
             "PanelId": 54,
             "Priority": 538,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 540,
@@ -4837,7 +4498,7 @@
             "PanelId": 54,
             "Priority": 540,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           }
         ]
       },
@@ -4851,7 +4512,7 @@
             "PanelId": 56,
             "Priority": 542,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 544,
@@ -4859,357 +4520,13 @@
             "PanelId": 56,
             "Priority": 544,
             "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 546,
-            "Position": 7095,
-            "PanelId": 56,
-            "Priority": 546,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 548,
-            "Position": 7120,
-            "PanelId": 56,
-            "Priority": 548,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 550,
-            "Position": 7145,
-            "PanelId": 56,
-            "Priority": 550,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 552,
-            "Position": 7170,
-            "PanelId": 56,
-            "Priority": 552,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 554,
-            "Position": 7195,
-            "PanelId": 56,
-            "Priority": 554,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 556,
-            "Position": 7220,
-            "PanelId": 56,
-            "Priority": 556,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 558,
-            "Position": 7245,
-            "PanelId": 56,
-            "Priority": 558,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 560,
-            "Position": 7270,
-            "PanelId": 56,
-            "Priority": 560,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 58,
-        "Cells": [
-          {
-            "Id": 562,
-            "Position": 7295,
-            "PanelId": 58,
-            "Priority": 562,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 564,
-            "Position": 7320,
-            "PanelId": 58,
-            "Priority": 564,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 566,
-            "Position": 7345,
-            "PanelId": 58,
-            "Priority": 566,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 568,
-            "Position": 7370,
-            "PanelId": 58,
-            "Priority": 568,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 570,
-            "Position": 7395,
-            "PanelId": 58,
-            "Priority": 570,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 572,
-            "Position": 7420,
-            "PanelId": 58,
-            "Priority": 572,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 574,
-            "Position": 7445,
-            "PanelId": 58,
-            "Priority": 574,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 576,
-            "Position": 7470,
-            "PanelId": 58,
-            "Priority": 576,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 578,
-            "Position": 7495,
-            "PanelId": 58,
-            "Priority": 578,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 580,
-            "Position": 7520,
-            "PanelId": 58,
-            "Priority": 580,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 60,
-        "Cells": [
-          {
-            "Id": 582,
-            "Position": 7545,
-            "PanelId": 60,
-            "Priority": 582,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 584,
-            "Position": 7570,
-            "PanelId": 60,
-            "Priority": 584,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 586,
-            "Position": 7595,
-            "PanelId": 60,
-            "Priority": 586,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 588,
-            "Position": 7620,
-            "PanelId": 60,
-            "Priority": 588,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 590,
-            "Position": 7645,
-            "PanelId": 60,
-            "Priority": 590,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 592,
-            "Position": 7670,
-            "PanelId": 60,
-            "Priority": 592,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 594,
-            "Position": 7695,
-            "PanelId": 60,
-            "Priority": 594,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 596,
-            "Position": 7720,
-            "PanelId": 60,
-            "Priority": 596,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 598,
-            "Position": 7745,
-            "PanelId": 60,
-            "Priority": 598,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 600,
-            "Position": 7770,
-            "PanelId": 60,
-            "Priority": 600,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 62,
-        "Cells": [
-          {
-            "Id": 602,
-            "Position": 7795,
-            "PanelId": 62,
-            "Priority": 602,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 604,
-            "Position": 7820,
-            "PanelId": 62,
-            "Priority": 604,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 606,
-            "Position": 7845,
-            "PanelId": 62,
-            "Priority": 606,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 608,
-            "Position": 7870,
-            "PanelId": 62,
-            "Priority": 608,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 610,
-            "Position": 7895,
-            "PanelId": 62,
-            "Priority": 610,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 612,
-            "Position": 7920,
-            "PanelId": 62,
-            "Priority": 612,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 614,
-            "Position": 7945,
-            "PanelId": 62,
-            "Priority": 614,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 616,
-            "Position": 7970,
-            "PanelId": 62,
-            "Priority": 616,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 618,
-            "Position": 7995,
-            "PanelId": 62,
-            "Priority": 618,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 620,
-            "Position": 8020,
-            "PanelId": 62,
-            "Priority": 620,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 64,
-        "Cells": [
-          {
-            "Id": 622,
-            "Position": 8045,
-            "PanelId": 64,
-            "Priority": 622,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 624,
-            "Position": 8070,
-            "PanelId": 64,
-            "Priority": 624,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
+            "BlockLevel": "Spaceonly"
           }
         ]
       }
     ],
-    "SerialNumber": "MV20-0055",
-    "Simulation": false
+    "SerialNumber": "MV20-0058",
+    "Simulation": true
   },
   "MachineStatistics": [
   ],
