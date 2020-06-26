@@ -4,13 +4,6 @@ parameters:
 
 steps:
 
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
-  inputs:
-    packageType: sdk
-    version: 2.2.207
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-
 - template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
   parameters:
     RestoreSolution: 'VerticalWarehouses/Simulator.sln'
