@@ -14,41 +14,20 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public struct ItemInUnits
-    {
-        #region Fields
-
-        public ItemInfo Item;
-
-        public LoadingUnit Unit;
-
-        #endregion
-    }
-
     [Warning(WarningsArea.Picking)]
     public class ItemSearchUnitsViewModel : BaseOperatorViewModel
     {
         #region Fields
 
-        private readonly IBayManager bayManager;
-
         private readonly IMachineItemsWebService itemsWebService;
 
-        private readonly IMissionOperationsService missionOperationsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
-
-        private readonly INavigationService navigationService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
-
-        private bool isBusyRecallLoadingUnit;
+        private DelegateCommand callLoadingUnitCommand;
 
         private ItemInfo item;
 
         private IEnumerable<Compartment> itemUnits;
-
-        private DelegateCommand recallLoadingUnitCommand;
 
         private Compartment selectedItemUnits;
 
@@ -57,20 +36,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemSearchUnitsViewModel(
-            INavigationService navigationService,
-            IMissionOperationsService missionOperationsService,
-            IWmsDataProvider wmsDataProvider,
-            IMachineItemsWebService itemsWebService,
-            IMachineMissionOperationsWebService missionOperationsWebService,
-            IBayManager bayManager)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineItemsWebService itemsWebService)
             : base(PresentationMode.Operator)
         {
-            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
-            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
-            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
@@ -78,12 +49,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ItemsSearch.ToString();
-
-        public bool IsBusyRecallLoadingUnit
-        {
-            get => this.isBusyRecallLoadingUnit;
-            set => this.SetProperty(ref this.isBusyRecallLoadingUnit, value, this.RaiseCanExecuteChanged);
-        }
 
         public ItemInfo Item
         {
@@ -106,12 +71,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemUnits, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand RecallLoadingUnitCommand =>
-            this.recallLoadingUnitCommand
+        public ICommand LoadingUnitCallCommand =>
+            this.callLoadingUnitCommand
             ??
-            (this.recallLoadingUnitCommand = new DelegateCommand(
-                async () => await this.RecallLoadingUnitAsync(),
-                this.CanRecallLoadingUnit));
+            (this.callLoadingUnitCommand = new DelegateCommand(
+                async () => await this.CallLoadingUnitAsync(),
+                this.CanCallLoadingUnit));
 
         public Compartment SelectedItemUnits
         {
@@ -123,9 +88,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+        public async Task CallLoadingUnitAsync()
+        {
+            if (this.SelectedItemUnits?.LoadingUnitId == null)
+            {
+                this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedItemUnits.LoadingUnitId);
+
+                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedItemUnits.LoadingUnitId), Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.SelectedItemUnits = null;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         public override void Disappear()
         {
             this.Item = null;
+
+            this.ItemUnits = null;
 
             base.Disappear();
         }
@@ -141,45 +135,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ItemUnits = await this.itemsWebService.GetCompartmentsAsync(this.Item.Id);
 
             this.RaisePropertyChanged(nameof(this.ItemUnits));
-        }
 
-        public async Task RecallLoadingUnitAsync()
-        {
-            try
+            if (this.ItemUnits.Any())
             {
-                this.IsBusyRecallLoadingUnit = true;
-                this.IsWaitingForResponse = true;
-
-                var activeOperation = this.missionOperationsService.ActiveWmsOperation;
-                this.Logger.Debug($"User requested recall of loading unit.");
-
-                if (activeOperation != null)
-                {
-                    var canComplete = await this.missionOperationsService.CompleteAsync(activeOperation.Id, 1);
-                    if (!canComplete)
-                    {
-                        this.Logger.Debug($"Operation '{activeOperation.Id}' cannot be completed, forcing recall of loading unit.");
-
-                        await this.missionOperationsService.RecallLoadingUnitAsync(this.SelectedItemUnits.LoadingUnitId);
-                    }
-                }
-                else
-                {
-                    await this.missionOperationsService.RecallLoadingUnitAsync(this.SelectedItemUnits.LoadingUnitId);
-                }
-
-                this.navigationService.GoBackTo(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-                this.IsBusyRecallLoadingUnit = false;
+                this.SelectedItemUnits = this.ItemUnits.FirstOrDefault();
+                this.RaisePropertyChanged(nameof(this.SelectedItemUnits));
             }
         }
 
@@ -187,15 +147,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanRecallLoadingUnit()
+        private bool CanCallLoadingUnit()
         {
             return
-                !this.isBusyRecallLoadingUnit
+                this.SelectedItemUnits?.LoadingUnitId != null
                 &&
-                (this.SelectedItemUnits?.LoadingUnitId != null);
+                !this.IsWaitingForResponse;
         }
 
         #endregion
