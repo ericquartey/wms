@@ -1,13 +1,19 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
-
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     internal class PowerOnSwitchOnState : InverterStateBase
     {
+        #region Fields
+
+        private DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public PowerOnSwitchOnState(
@@ -24,6 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Power On Switch on Inverter {this.InverterStatus.SystemIndex}");
             this.InverterStatus.CommonControlWord.SwitchOn = true;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
@@ -31,6 +38,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            this.startTime = DateTime.UtcNow;
         }
 
         /// <inheritdoc />
@@ -50,13 +58,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var responseReceived = false;
-
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
@@ -68,12 +74,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(new PowerOnEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-
-                    responseReceived = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:PowerOnSwitchOnState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(
+                        new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
 
-            return responseReceived;
+            return true;
         }
 
         #endregion
