@@ -108,7 +108,7 @@
                 <i:Interaction.Behaviors>
                     <behaviors:TextBoxAutoSelectBehavior />
                     <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                             KeyboardLabel="Note" />
+                                                             KeyboardLabel="{res:Loc InstallationApp.WmsHostAddress}" />
                 </i:Interaction.Behaviors>
             </TextBox>
             <controls:PpcButton Grid.Row="1"

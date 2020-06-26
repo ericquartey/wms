@@ -90,8 +90,8 @@
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Command="{Binding RecallLoadingUnitCommand}"
-                            Content="{Resources:Loc OperatorApp.RecallDrawer}"
-                            IsBusy="{Binding IsBusyRecallLoadingUnit}" />
+                            Command="{Binding LoadingUnitCallCommand}"
+                            Content="{Resources:Loc OperatorApp.ImmediateDrawerCallDrawerCall}"
+                            Style="{StaticResource ConfirmButton}" />
     </Grid>
 </ctrls:View>
