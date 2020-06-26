@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -43,6 +42,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<ItemDetails>> GetByIdAsync(int id)
         {
             return this.Ok(await this.itemsWmsWebService.GetByIdAsync(id));
+        }
+
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
+        {
+            return this.Ok(await this.itemsWmsWebService.GetCompartmentsAsync(id));
         }
 
         [HttpPost("{id}/pick")]

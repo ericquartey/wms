@@ -21,11 +21,11 @@ namespace Ferretto.VW.Installer.Core
             string description,
             string rollbackScript,
             string script,
-            string log,
             MachineRole machineRole,
             SetupMode setupMode,
-            bool skipOnResume)
-            : base(number, title, description, rollbackScript, script, log, machineRole, setupMode, skipOnResume)
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, rollbackScript, script, machineRole, setupMode, skipOnResume, skipRollback)
         {
         }
 
@@ -52,8 +52,8 @@ namespace Ferretto.VW.Installer.Core
 
             command = InterpolateVariables(command);
 
-            this.LogInformation("");
-            this.LogInformation($"ps> {command}");
+            this.Execution.LogInformation("");
+            this.Execution.LogInformation($"ps> {command}");
 
             try
             {
@@ -65,14 +65,14 @@ namespace Ferretto.VW.Installer.Core
                 var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
                 if (shell.HadErrors)
                 {
-                    this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
-                    this.LogError("Errors encountered while running the script.");
+                    this.Execution.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
+                    this.Execution.LogError("Errors encountered while running the script.");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
 
                 return false;
             }
@@ -85,9 +85,10 @@ namespace Ferretto.VW.Installer.Core
             var col = (PSDataCollection<PSObject>)sender;
             var rsl = col.ReadAll();
 
-            foreach (var r in rsl)
+            foreach (var row in rsl)
             {
-                this.LogInformation($"> {r}");
+                var rowString = row.ToString();
+                this.Execution.LogInformation($"> {rowString.Replace("\0", "")}");
             }
 
             var p = shell.Streams.Progress.LastOrDefault();

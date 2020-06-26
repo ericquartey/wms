@@ -8,8 +8,16 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public MasHealthCheckStep(int number, string title, string description, int timeout, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+        public MasHealthCheckStep(
+            int number,
+            string title,
+            string description,
+            int timeout,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             this.Timeout = timeout;
         }
@@ -38,15 +46,15 @@ namespace Ferretto.VW.Installer.Core
                 {
                     try
                     {
-                        this.LogInformation($"HTTP GET {requestUri}");
+                        this.Execution.LogInformation($"HTTP GET {requestUri}");
                         var message = await httpClient.GetAsync(requestUri);
                         status = await message.Content.ReadAsStringAsync();
 
-                        this.LogInformation($"HTTP response: '{status}'");
+                        this.Execution.LogInformation($"HTTP response: '{status}'");
                     }
                     catch
                     {
-                        this.LogInformation("HTTP request failed.");
+                        this.Execution.LogInformation("HTTP request failed.");
                     }
 
                     isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
@@ -55,7 +63,7 @@ namespace Ferretto.VW.Installer.Core
                 }
                 while (!isHealthy && (DateTime.Now - startTime).TotalMilliseconds < this.Timeout);
 
-                this.LogInformation(isHealthy
+                this.Execution.LogInformation(isHealthy
                     ? "Service is healthy."
                     : $"Service was not healthy after {this.Timeout}ms.");
 
@@ -67,7 +75,7 @@ namespace Ferretto.VW.Installer.Core
 
         protected override Task<StepStatus> OnRollbackAsync()
         {
-            this.LogInformation("Nulla da annullare in questo step.");
+            this.Execution.LogInformation("Nulla da annullare in questo step.");
 
             return Task.FromResult(StepStatus.RolledBack);
         }

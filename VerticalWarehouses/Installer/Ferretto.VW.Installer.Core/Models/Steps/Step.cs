@@ -5,7 +5,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Installer.Core.Models.Steps;
 using NLog;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -15,32 +18,19 @@ namespace Ferretto.VW.Installer.Core
 
         private const string EmbeddedInstallationFilePath = "EmbeddedInstallationFilePath";
 
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly StringBuilder stringBuilder = new StringBuilder();
-
-        private TimeSpan? duration;
-
-        private DateTime? endTime;
-
-        private DateTime? startTime;
-
-        private StepStatus status;
-
         #endregion
 
         #region Constructors
 
-        public Step(int number, string title, string description, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
+        public Step(int number, string title, string description, MachineRole machineRole, SetupMode setupMode, bool skipOnResume, bool skipRollback)
         {
             this.Title = title;
             this.Number = number;
             this.MachineRole = machineRole;
             this.SetupMode = setupMode;
             this.Description = description;
-            this.Log = log;
             this.SkipOnResume = skipOnResume;
-
+            this.SkipRollback = skipRollback;
         }
 
         #endregion
@@ -49,34 +39,7 @@ namespace Ferretto.VW.Installer.Core
 
         public string Description { get; }
 
-        public TimeSpan? Duration
-        {
-            get => this.duration;
-            set => this.SetProperty(ref this.duration, value);
-        }
-
-        public DateTime? EndTime
-        {
-            get => this.endTime;
-            set
-            {
-                if (this.SetProperty(ref this.endTime, value))
-                {
-                    this.duration = this.endTime.HasValue && this.startTime.HasValue ? this.endTime - this.startTime : null;
-                }
-            }
-        }
-
-        public string Log
-        {
-            get => this.stringBuilder.ToString();
-            private set
-            {
-                this.stringBuilder.Clear();
-                this.stringBuilder.Append(value);
-                this.RaisePropertyChanged();
-            }
-        }
+        public StepExecution Execution { get; set; } = new StepExecution();
 
         public MachineRole MachineRole { get; }
 
@@ -84,21 +47,16 @@ namespace Ferretto.VW.Installer.Core
 
         public SetupMode SetupMode { get; }
 
+        /// <summary>
+        /// When true, it specifies that, if the installation was resumed from a snapshot and the current step is active,
+        /// then it should not be executed, but considered as completed instead.
+        /// </summary>
         public bool SkipOnResume { get; }
 
-        public bool SkipRollback { get; set; }
-
-        public DateTime? StartTime
-        {
-            get => this.startTime;
-            set => this.SetProperty(ref this.startTime, value);
-        }
-
-        public StepStatus Status
-        {
-            get => this.status;
-            set => this.SetProperty(ref this.status, value);
-        }
+        /// <summary>
+        /// When true, it specifies that, in case of error on this step, the rollback procedure shall not be started.
+        /// </summary>
+        public bool SkipRollback { get; }
 
         public string Title { get; }
 
@@ -135,7 +93,7 @@ namespace Ferretto.VW.Installer.Core
                     }
                 }
 
-                interpolatedValue = interpolatedValue.Replace(match.Value, varValue);
+                interpolatedValue = interpolatedValue.Replace(match.Value, varValue, StringComparison.Ordinal);
                 match = match.NextMatch();
             }
 
@@ -144,113 +102,69 @@ namespace Ferretto.VW.Installer.Core
 
         public async Task ApplyAsync()
         {
-            if (this.Status is StepStatus.Done || this.Status is StepStatus.InProgress)
+            if (this.Execution.Status is StepStatus.Done || this.Execution.Status is StepStatus.InProgress)
             {
-                throw new InvalidOperationException($"Step '{this.Title}' cannot be executed because its status is {this.Status}.");
+                throw new InvalidOperationException($"Step '{this.Title}' cannot be executed because its status is {this.Execution.Status}.");
             }
 
-            this.LogInformation($"Avvio dello step '{this.Title}'.");
+            this.Execution.LogInformation($"Avvio dello step '{this.Title}'.");
 
-            this.StartTime = DateTime.Now;
+            this.Execution.StartTime = DateTime.Now;
             var timer = new Timer(this.OnTimerTick, null, 0, 500);
 
-            this.Status = StepStatus.InProgress;
+            this.Execution.Status = StepStatus.InProgress;
 
             try
             {
-                this.Status = await this.OnApplyAsync();
+                this.Execution.Status = await this.OnApplyAsync();
                 timer.Dispose();
-                this.EndTime = DateTime.Now;
-                this.LogInformation($"Step completato con stato '{this.Status}'.");
+                this.Execution.EndTime = DateTime.Now;
+                this.Execution.LogInformation($"Step completato con stato '{this.Execution.Status}'.");
             }
             catch (Exception ex)
             {
-                this.Status = StepStatus.Failed;
-                this.LogError($"Step fallito inaspettatamente: {ex.Message}");
+                this.Execution.Status = StepStatus.Failed;
+                this.Execution.LogError($"Step fallito inaspettatamente: {ex.Message}");
                 timer.Dispose();
             }
         }
 
         public async Task RollbackAsync()
         {
-            if (this.Status != StepStatus.Failed && this.Status != StepStatus.Done)
+            if (this.Execution.Status != StepStatus.Failed && this.Execution.Status != StepStatus.Done)
             {
-                throw new InvalidOperationException($"Step '{this.Title}' cannot be rolled back because its status is {this.Status}.");
+                throw new InvalidOperationException($"Step '{this.Title}' cannot be rolled back because its status is {this.Execution.Status}.");
             }
 
-            this.LogInformation("Avvio rollback.");
+            this.Execution.LogInformation("Avvio rollback.");
 
-            this.Status = StepStatus.RollingBack;
+            this.Execution.Status = StepStatus.RollingBack;
 
             try
             {
-                this.Status = await this.OnRollbackAsync();
-                this.LogInformation($"Rollback of step completed with status {this.Status}.");
+                this.Execution.Status = await this.OnRollbackAsync();
+                this.Execution.LogInformation($"Rollback of step completed with status {this.Execution.Status}.");
             }
             catch
             {
-                this.LogInformation("Rollback dello step fallito inaspettatamente.");
+                this.Execution.LogInformation("Rollback dello step fallito inaspettatamente.");
 
-                this.Status = StepStatus.RollbackFailed;
+                this.Execution.Status = StepStatus.RollbackFailed;
             }
         }
 
         public override string ToString()
         {
-            return $"{this.Number}: {this.Title} ({this.Status})" ?? base.ToString();
-        }
-
-        protected void LogChar(char message)
-        {
-            if (message == '\0')
-            {
-                return;
-            }
-
-            this.stringBuilder.Append(message);
-            this.RaisePropertyChanged(nameof(this.Log));
-        }
-
-        protected void LogError(string message)
-        {
-            if (!this.stringBuilder.ToString().EndsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
-            {
-                this.stringBuilder.Append(Environment.NewLine);
-            }
-
-            this.stringBuilder
-                .Append($@"{message}")
-
-                .Append(Environment.NewLine);
-
-            this.logger.Error(message);
-
-            this.RaisePropertyChanged(nameof(this.Log));
-        }
-
-        protected void LogInformation(string message)
-        {
-            if (!this.stringBuilder.ToString().EndsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
-            {
-                this.stringBuilder.Append(Environment.NewLine);
-            }
-
-            this.stringBuilder
-              .Append($"{message}")
-              .Append(Environment.NewLine);
-
-            this.logger.Debug(message);
-
-            this.RaisePropertyChanged(nameof(this.Log));
+            return $"{this.Number}: {this.Title} ({this.Execution.Status})";
         }
 
         protected abstract Task<StepStatus> OnApplyAsync();
 
         protected abstract Task<StepStatus> OnRollbackAsync();
 
-        private void OnTimerTick(object state)
+        private void OnTimerTick(object? state)
         {
-            this.Duration = DateTime.Now - this.StartTime;
+            this.Execution.Duration = DateTime.Now - this.Execution.StartTime;
         }
 
         #endregion
