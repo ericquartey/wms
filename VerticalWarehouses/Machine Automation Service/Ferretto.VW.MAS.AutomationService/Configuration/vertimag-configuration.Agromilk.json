@@ -212,11 +212,11 @@
                   "Deceleration": 0.0,
                   "Id": 10,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 650.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 2,
@@ -269,11 +269,11 @@
                   "Deceleration": 0.0,
                   "Id": 20,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 650.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 3,
@@ -326,11 +326,11 @@
                   "Deceleration": 0.0,
                   "Id": 15,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 4,
@@ -383,11 +383,11 @@
                   "Deceleration": 0.0,
                   "Id": 26,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             }
           ],
           "Resolution": 88.18085145,

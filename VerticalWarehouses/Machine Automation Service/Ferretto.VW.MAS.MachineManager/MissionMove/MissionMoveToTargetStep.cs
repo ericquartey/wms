@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
-            else if(measure && destinationHeight >= this.MachineProvider.GetHeight() - 500)
+            else if (measure && this.LoadingUnitMovementProvider.GetCurrentVerticalPosition() >= this.MachineProvider.GetHeight() - 500)
             {
                 measure = false;
             }

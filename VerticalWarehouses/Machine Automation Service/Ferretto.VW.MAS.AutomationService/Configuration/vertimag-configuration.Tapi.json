@@ -110,7 +110,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 6545.0,
+          "UpperBound": 5300.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,
@@ -413,13 +413,13 @@
     "Height": 7261.0,
     "HorizontalCyclesToCalibrate": 10,
     "HorizontalPositionToCalibrate": 3000,
-    "Id": 3,
+    "Id": 2,
     "LoadUnitMaxHeight": 695.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 125.0,
     "LoadUnitTare": 104.0,
-    "MaxGrossWeight": 58767.0,
-    "ModelName": "NEW VERTIMAG 84XL800-BIS H7261",
+    "MaxGrossWeight": 70000.0,
+    "ModelName": "NEW VERTIMAG 84XL800-BIS H5661",
     "Panels": [
       {
         "Side": "front",
@@ -1573,7 +1573,7 @@
             "PanelId": 27,
             "Priority": 267,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 269,
@@ -1581,7 +1581,7 @@
             "PanelId": 27,
             "Priority": 269,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 271,
@@ -1589,7 +1589,7 @@
             "PanelId": 27,
             "Priority": 271,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 273,
@@ -1597,7 +1597,7 @@
             "PanelId": 27,
             "Priority": 273,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 275,
@@ -1605,7 +1605,7 @@
             "PanelId": 27,
             "Priority": 275,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 277,
@@ -1613,7 +1613,7 @@
             "PanelId": 27,
             "Priority": 277,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 279,
@@ -1621,563 +1621,8 @@
             "PanelId": 27,
             "Priority": 279,
             "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 29,
-        "Cells": [
-          {
-            "Id": 281,
-            "Position": 5495,
-            "PanelId": 29,
-            "Priority": 281,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 283,
-            "Position": 5520,
-            "PanelId": 29,
-            "Priority": 283,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 285,
-            "Position": 5545,
-            "PanelId": 29,
-            "Priority": 285,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 287,
-            "Position": 5570,
-            "PanelId": 29,
-            "Priority": 287,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 289,
-            "Position": 5595,
-            "PanelId": 29,
-            "Priority": 289,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 291,
-            "Position": 5620,
-            "PanelId": 29,
-            "Priority": 291,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 293,
-            "Position": 5645,
-            "PanelId": 29,
-            "Priority": 293,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 295,
-            "Position": 5670,
-            "PanelId": 29,
-            "Priority": 295,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 297,
-            "Position": 5695,
-            "PanelId": 29,
-            "Priority": 297,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 299,
-            "Position": 5720,
-            "PanelId": 29,
-            "Priority": 299,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 31,
-        "Cells": [
-          {
-            "Id": 301,
-            "Position": 5745,
-            "PanelId": 31,
-            "Priority": 301,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 303,
-            "Position": 5770,
-            "PanelId": 31,
-            "Priority": 303,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 305,
-            "Position": 5795,
-            "PanelId": 31,
-            "Priority": 305,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 307,
-            "Position": 5820,
-            "PanelId": 31,
-            "Priority": 307,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 309,
-            "Position": 5845,
-            "PanelId": 31,
-            "Priority": 309,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 311,
-            "Position": 5870,
-            "PanelId": 31,
-            "Priority": 311,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 313,
-            "Position": 5895,
-            "PanelId": 31,
-            "Priority": 313,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 315,
-            "Position": 5920,
-            "PanelId": 31,
-            "Priority": 315,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 317,
-            "Position": 5945,
-            "PanelId": 31,
-            "Priority": 317,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 319,
-            "Position": 5970,
-            "PanelId": 31,
-            "Priority": 319,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 33,
-        "Cells": [
-          {
-            "Id": 321,
-            "Position": 5995,
-            "PanelId": 33,
-            "Priority": 321,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 323,
-            "Position": 6020,
-            "PanelId": 33,
-            "Priority": 323,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 325,
-            "Position": 6045,
-            "PanelId": 33,
-            "Priority": 325,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 327,
-            "Position": 6070,
-            "PanelId": 33,
-            "Priority": 327,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 329,
-            "Position": 6095,
-            "PanelId": 33,
-            "Priority": 329,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 331,
-            "Position": 6120,
-            "PanelId": 33,
-            "Priority": 331,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 333,
-            "Position": 6145,
-            "PanelId": 33,
-            "Priority": 333,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 335,
-            "Position": 6170,
-            "PanelId": 33,
-            "Priority": 335,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 337,
-            "Position": 6195,
-            "PanelId": 33,
-            "Priority": 337,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 339,
-            "Position": 6220,
-            "PanelId": 33,
-            "Priority": 339,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 35,
-        "Cells": [
-          {
-            "Id": 341,
-            "Position": 6245,
-            "PanelId": 35,
-            "Priority": 341,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 343,
-            "Position": 6270,
-            "PanelId": 35,
-            "Priority": 343,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 345,
-            "Position": 6295,
-            "PanelId": 35,
-            "Priority": 345,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 347,
-            "Position": 6320,
-            "PanelId": 35,
-            "Priority": 347,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 349,
-            "Position": 6345,
-            "PanelId": 35,
-            "Priority": 349,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 351,
-            "Position": 6370,
-            "PanelId": 35,
-            "Priority": 351,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 353,
-            "Position": 6395,
-            "PanelId": 35,
-            "Priority": 353,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 355,
-            "Position": 6420,
-            "PanelId": 35,
-            "Priority": 355,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 357,
-            "Position": 6445,
-            "PanelId": 35,
-            "Priority": 357,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 359,
-            "Position": 6470,
-            "PanelId": 35,
-            "Priority": 359,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 37,
-        "Cells": [
-          {
-            "Id": 361,
-            "Position": 6495,
-            "PanelId": 37,
-            "Priority": 361,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 363,
-            "Position": 6520,
-            "PanelId": 37,
-            "Priority": 363,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 365,
-            "Position": 6545,
-            "PanelId": 37,
-            "Priority": 365,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 367,
-            "Position": 6570,
-            "PanelId": 37,
-            "Priority": 367,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 369,
-            "Position": 6595,
-            "PanelId": 37,
-            "Priority": 369,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 371,
-            "Position": 6620,
-            "PanelId": 37,
-            "Priority": 371,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 373,
-            "Position": 6645,
-            "PanelId": 37,
-            "Priority": 373,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 375,
-            "Position": 6670,
-            "PanelId": 37,
-            "Priority": 375,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 377,
-            "Position": 6695,
-            "PanelId": 37,
-            "Priority": 377,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 379,
-            "Position": 6720,
-            "PanelId": 37,
-            "Priority": 379,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 39,
-        "Cells": [
-          {
-            "Id": 381,
-            "Position": 6745,
-            "PanelId": 39,
-            "Priority": 381,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 383,
-            "Position": 6770,
-            "PanelId": 39,
-            "Priority": 383,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 385,
-            "Position": 6795,
-            "PanelId": 39,
-            "Priority": 385,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 387,
-            "Position": 6820,
-            "PanelId": 39,
-            "Priority": 387,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 389,
-            "Position": 6845,
-            "PanelId": 39,
-            "Priority": 389,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 391,
-            "Position": 6870,
-            "PanelId": 39,
-            "Priority": 391,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 393,
-            "Position": 6895,
-            "PanelId": 39,
-            "Priority": 393,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 395,
-            "Position": 6920,
-            "PanelId": 39,
-            "Priority": 395,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 397,
-            "Position": 6945,
-            "PanelId": 39,
-            "Priority": 397,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 399,
-            "Position": 6970,
-            "PanelId": 39,
-            "Priority": 399,
-            "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
-        ]
-      },
-      {
-        "Side": "front",
-        "Id": 41,
-        "Cells": [
-          {
-            "Id": 401,
-            "Position": 6995,
-            "PanelId": 41,
-            "Priority": 401,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 403,
-            "Position": 7020,
-            "PanelId": 41,
-            "Priority": 403,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 405,
-            "Position": 7045,
-            "PanelId": 41,
-            "Priority": 405,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 407,
-            "Position": 7070,
-            "PanelId": 41,
-            "Priority": 407,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          }
-
         ]
       },
       {
@@ -3918,7 +3363,7 @@
             "PanelId": 42,
             "Priority": 404,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 406,
@@ -3926,7 +3371,7 @@
             "PanelId": 42,
             "Priority": 406,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 408,
@@ -3934,7 +3379,7 @@
             "PanelId": 42,
             "Priority": 408,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 410,
@@ -3942,7 +3387,7 @@
             "PanelId": 42,
             "Priority": 410,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 412,
@@ -3950,7 +3395,7 @@
             "PanelId": 42,
             "Priority": 412,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 414,
@@ -3958,7 +3403,7 @@
             "PanelId": 42,
             "Priority": 414,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
             "Id": 416,
@@ -3966,566 +3411,12 @@
             "PanelId": 42,
             "Priority": 416,
             "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 418,
-            "Position": 5495,
-            "PanelId": 42,
-            "Priority": 418,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 420,
-            "Position": 5520,
-            "PanelId": 42,
-            "Priority": 420,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 44,
-        "Cells": [
-          {
-            "Id": 422,
-            "Position": 5545,
-            "PanelId": 44,
-            "Priority": 422,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 424,
-            "Position": 5570,
-            "PanelId": 44,
-            "Priority": 424,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 426,
-            "Position": 5595,
-            "PanelId": 44,
-            "Priority": 426,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 428,
-            "Position": 5620,
-            "PanelId": 44,
-            "Priority": 428,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 430,
-            "Position": 5645,
-            "PanelId": 44,
-            "Priority": 430,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 432,
-            "Position": 5670,
-            "PanelId": 44,
-            "Priority": 432,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 434,
-            "Position": 5695,
-            "PanelId": 44,
-            "Priority": 434,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 436,
-            "Position": 5720,
-            "PanelId": 44,
-            "Priority": 436,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 438,
-            "Position": 5745,
-            "PanelId": 44,
-            "Priority": 438,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 440,
-            "Position": 5770,
-            "PanelId": 44,
-            "Priority": 440,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 46,
-        "Cells": [
-          {
-            "Id": 442,
-            "Position": 5795,
-            "PanelId": 46,
-            "Priority": 442,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 444,
-            "Position": 5820,
-            "PanelId": 46,
-            "Priority": 444,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 446,
-            "Position": 5845,
-            "PanelId": 46,
-            "Priority": 446,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 448,
-            "Position": 5870,
-            "PanelId": 46,
-            "Priority": 448,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 450,
-            "Position": 5895,
-            "PanelId": 46,
-            "Priority": 450,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 452,
-            "Position": 5920,
-            "PanelId": 46,
-            "Priority": 452,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 454,
-            "Position": 5945,
-            "PanelId": 46,
-            "Priority": 454,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 456,
-            "Position": 5970,
-            "PanelId": 46,
-            "Priority": 456,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 458,
-            "Position": 5995,
-            "PanelId": 46,
-            "Priority": 458,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 460,
-            "Position": 6020,
-            "PanelId": 46,
-            "Priority": 460,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 48,
-        "Cells": [
-          {
-            "Id": 462,
-            "Position": 6045,
-            "PanelId": 48,
-            "Priority": 462,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 464,
-            "Position": 6070,
-            "PanelId": 48,
-            "Priority": 464,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 466,
-            "Position": 6095,
-            "PanelId": 48,
-            "Priority": 466,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 468,
-            "Position": 6120,
-            "PanelId": 48,
-            "Priority": 468,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 470,
-            "Position": 6145,
-            "PanelId": 48,
-            "Priority": 470,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 472,
-            "Position": 6170,
-            "PanelId": 48,
-            "Priority": 472,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 474,
-            "Position": 6195,
-            "PanelId": 48,
-            "Priority": 474,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 476,
-            "Position": 6220,
-            "PanelId": 48,
-            "Priority": 476,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 478,
-            "Position": 6245,
-            "PanelId": 48,
-            "Priority": 478,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 480,
-            "Position": 6270,
-            "PanelId": 48,
-            "Priority": 480,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 50,
-        "Cells": [
-          {
-            "Id": 482,
-            "Position": 6295,
-            "PanelId": 50,
-            "Priority": 482,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 484,
-            "Position": 6320,
-            "PanelId": 50,
-            "Priority": 484,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 486,
-            "Position": 6345,
-            "PanelId": 50,
-            "Priority": 486,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 488,
-            "Position": 6370,
-            "PanelId": 50,
-            "Priority": 488,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 490,
-            "Position": 6395,
-            "PanelId": 50,
-            "Priority": 490,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 492,
-            "Position": 6420,
-            "PanelId": 50,
-            "Priority": 492,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 494,
-            "Position": 6445,
-            "PanelId": 50,
-            "Priority": 494,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 496,
-            "Position": 6470,
-            "PanelId": 50,
-            "Priority": 496,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 498,
-            "Position": 6495,
-            "PanelId": 50,
-            "Priority": 498,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 500,
-            "Position": 6520,
-            "PanelId": 50,
-            "Priority": 500,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 52,
-        "Cells": [
-          {
-            "Id": 502,
-            "Position": 6545,
-            "PanelId": 52,
-            "Priority": 502,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 504,
-            "Position": 6570,
-            "PanelId": 52,
-            "Priority": 504,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 506,
-            "Position": 6595,
-            "PanelId": 52,
-            "Priority": 506,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 508,
-            "Position": 6620,
-            "PanelId": 52,
-            "Priority": 508,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 510,
-            "Position": 6645,
-            "PanelId": 52,
-            "Priority": 510,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 512,
-            "Position": 6670,
-            "PanelId": 52,
-            "Priority": 512,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 514,
-            "Position": 6695,
-            "PanelId": 52,
-            "Priority": 514,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 516,
-            "Position": 6720,
-            "PanelId": 52,
-            "Priority": 516,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 518,
-            "Position": 6745,
-            "PanelId": 52,
-            "Priority": 518,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 520,
-            "Position": 6770,
-            "PanelId": 52,
-            "Priority": 520,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 54,
-        "Cells": [
-          {
-            "Id": 522,
-            "Position": 6795,
-            "PanelId": 54,
-            "Priority": 522,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 524,
-            "Position": 6820,
-            "PanelId": 54,
-            "Priority": 524,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 526,
-            "Position": 6845,
-            "PanelId": 54,
-            "Priority": 526,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 528,
-            "Position": 6870,
-            "PanelId": 54,
-            "Priority": 528,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 530,
-            "Position": 6895,
-            "PanelId": 54,
-            "Priority": 530,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 532,
-            "Position": 6920,
-            "PanelId": 54,
-            "Priority": 532,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 534,
-            "Position": 6945,
-            "PanelId": 54,
-            "Priority": 534,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 536,
-            "Position": 6970,
-            "PanelId": 54,
-            "Priority": 536,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 538,
-            "Position": 6995,
-            "PanelId": 54,
-            "Priority": 538,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 540,
-            "Position": 7020,
-            "PanelId": 54,
-            "Priority": 540,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 56,
-        "Cells": [
-          {
-            "Id": 542,
-            "Position": 7045,
-            "PanelId": 56,
-            "Priority": 542,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 544,
-            "Position": 7070,
-            "PanelId": 56,
-            "Priority": 544,
-            "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
         ]
       }
     ],
-    "SerialNumber": "MV20-0058",
+    "SerialNumber": "MV20-0060",
     "Simulation": true
   },
   "MachineStatistics": [
