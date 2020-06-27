@@ -6,12 +6,18 @@ parameters:
 
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    packageType: sdk
+    version: 2.2.207
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: ${{ parameters.RestoreBuildProjects }} 
+    projects: ${{ parameters.RestoreBuildProjects }}
     feedsToUse: config
     nugetConfigPath: nuget.config
 
@@ -22,7 +28,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
-    projects: ${{ parameters.RestoreBuildProjects }} 
+    projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
 
 
