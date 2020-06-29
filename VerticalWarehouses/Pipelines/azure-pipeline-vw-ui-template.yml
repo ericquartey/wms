@@ -14,7 +14,7 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- script: dotnet build "Panel PC UI\Ferretto.VW.App\Ferretto.VW.App.csproj" --configuration Debug --framework net471
+- script: dotnet build "VerticalWarehouses/Panel PC UI/Ferretto.VW.App/Ferretto.VW.App.csproj" --configuration Debug --framework net471
   displayName: 'dotnet build'
 
 
