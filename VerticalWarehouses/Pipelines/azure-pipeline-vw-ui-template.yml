@@ -14,8 +14,8 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- script: dotnet restore --framework net471 'VerticalWarehouses/PanelPC.sln'
-  displayName: 'dotnet restore (${{ parameters.BuildConfiguration }})'
+- script: dotnet restore 'VerticalWarehouses/PanelPC.sln'
+  displayName: 'dotnet restore'
 
 
 - task: VSBuild@1
