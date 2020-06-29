@@ -14,7 +14,7 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- script: dotnet restore "VerticalWarehouses/Panel PC.sln"
+- script: dotnet restore "VerticalWarehouses/PanelPC.sln"
   displayName: 'dotnet restore'
 
 
