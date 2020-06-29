@@ -14,6 +14,10 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
+- script: dotnet restore --configuration ${{ parameters.BuildConfiguration }} --framework net471 'VerticalWarehouses/PanelPC.sln'
+  displayName: 'dotnet publish ($(buildConfiguration))'
+
+
 - task: VSBuild@1
   displayName: 'Build PanelPC.sln'
   inputs:
