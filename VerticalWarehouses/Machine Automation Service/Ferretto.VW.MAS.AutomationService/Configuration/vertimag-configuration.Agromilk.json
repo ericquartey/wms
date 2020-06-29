@@ -17,7 +17,7 @@
           },
           "LaserPointer": {
             "IsEnabledNew": false,
-            "IpAddress": "192.168.101.13",
+            "IpAddress": "192.168.0.13",
             "TcpPort": 2020
           },
           "BarcodeReader": {
@@ -147,7 +147,7 @@
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
-          "LowerBound": 0.0,
+          "LowerBound": -4000.0,
           "ManualMovements": {
             "FeedRate": 0.04,
             "FeedRateAfterZero": 0.3,
@@ -391,7 +391,7 @@
             }
           ],
           "Resolution": 88.18085145,
-          "UpperBound": 1.0
+          "UpperBound": 4000.0
         }
       ],
       "Id": 1,

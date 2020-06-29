@@ -223,7 +223,7 @@
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
-          "LowerBound": 0.0,
+          "LowerBound": -4000.0,
           "ManualMovements": {
             "FeedRate": 0.04,
             "FeedRateAfterZero": 0.3,
@@ -467,7 +467,7 @@
             }
           ],
           "Resolution": 88.18085145,
-          "UpperBound": 1.0
+          "UpperBound": 4000.0
         }
       ],
       "Id": 1,
