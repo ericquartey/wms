@@ -11,7 +11,7 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 
-    - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
