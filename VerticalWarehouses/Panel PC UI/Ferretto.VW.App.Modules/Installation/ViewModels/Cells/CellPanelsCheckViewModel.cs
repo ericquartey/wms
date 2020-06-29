@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private int lastPanel;
+
         private readonly IMachineCellPanelsWebService machineCellPanelsWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
@@ -322,6 +324,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.themeChangedToken?.Dispose();
                 this.themeChangedToken = null;
             }
+
+                this.lastPanel = this.currentPanelNumber;
         }
 
         public override async Task OnAppearedAsync()
@@ -332,9 +336,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
+            if (this.lastPanel != 0)
+            {
+                this.CurrentPanelNumber = this.lastPanel;
+            }
+
             if (this.CurrentStep == CellPanelsCheckStep.MeasuredBack && this.CurrentPanel.Side != WarehouseSide.Back)
             {
                 this.CurrentStep = CellPanelsCheckStep.MeasuredFront;
+                this.RaisePropertyChanged(nameof(this.CurrentStep));
+            }
+            else if(this.CurrentStep == CellPanelsCheckStep.MeasuredFront && this.CurrentPanel.Side != WarehouseSide.Front)
+            {
+                this.CurrentStep = CellPanelsCheckStep.MeasuredBack;
                 this.RaisePropertyChanged(nameof(this.CurrentStep));
             }
         }
