@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            INavigationService navigationService,
+            IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineCompartmentsWebService compartmentsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
@@ -38,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  navigationService,
+                  operatorNavigationService,
                   loadingUnitsWebService,
                   itemsWebService,
                   compartmentsWebService,
@@ -88,8 +92,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override Task OnAppearedAsync()
         {
-            this.CanInputAvailableQuantity = false;
-            this.CanInputQuantity = false;
+            this.CanInputAvailableQuantity = true;
+            this.CanInputQuantity = true;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
@@ -103,8 +107,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
-            this.AvailableQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            if (this.MissionOperation != null)
+            {
+                if (this.MissionOperation != null)
+                {
+                    this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+                }
+
+                this.InputQuantity = this.MissionRequestedQuantity;
+                this.AvailableQuantity = this.MissionRequestedQuantity;
+
+                this.RaisePropertyChanged(nameof(this.InputQuantity));
+                this.RaisePropertyChanged(nameof(this.AvailableQuantity));
+            }
         }
 
         protected override void RaiseCanExecuteChanged()

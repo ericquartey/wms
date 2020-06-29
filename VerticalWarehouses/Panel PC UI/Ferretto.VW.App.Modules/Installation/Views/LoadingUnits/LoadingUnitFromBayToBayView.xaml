@@ -82,7 +82,8 @@
         <Border Grid.Row="3"
                 Grid.Column="2"
                 Margin="0,15,15,0"
-                Background="{DynamicResource PpcBackground}">
+                Background="{DynamicResource PpcBackground}"
+                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
 

@@ -112,7 +112,7 @@
                 <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     InputText="{Binding SelectedLU.IsIntoMachine, Converter={StaticResource BTSC}}"
                                      IsEnabled="False"
                                      LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
                 <!--  LabelText="IsIntoMachine" />  -->
@@ -133,7 +133,13 @@
                               IsEnabled="{Binding IsEditStatus}"
                               ItemsSource="{Binding Status}"
                               SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              Style="{DynamicResource PpcComboBoxStyle}" />
+                              Style="{DynamicResource PpcComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource LUSEC}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <controls:PpcTextBox Grid.Row="1"

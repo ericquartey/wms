@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large.
         /// </summary>
         public static string AlphaNumericBarSizeL {
@@ -444,6 +453,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayCalibration {
             get {
                 return ResourceManager.GetString("BayCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BayChain.
+        /// </summary>
+        public static string BayChain {
+            get {
+                return ResourceManager.GetString("BayChain", resourceCulture);
             }
         }
         
@@ -2149,6 +2167,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator bay.
+        /// </summary>
+        public static string ElevatorBay {
+            get {
+                return ResourceManager.GetString("ElevatorBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator down.
         /// </summary>
         public static string ElevatorDown {
@@ -3049,6 +3076,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal.
+        /// </summary>
+        public static string Horizontal {
+            get {
+                return ResourceManager.GetString("Horizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HorizontalAndVertical.
+        /// </summary>
+        public static string HorizontalAndVertical {
+            get {
+                return ResourceManager.GetString("HorizontalAndVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Axis.
         /// </summary>
         public static string HorizontalAxis {
@@ -3112,6 +3157,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Difference.
+        /// </summary>
+        public static string HorizontalChainDifference {
+            get {
+                return ResourceManager.GetString("HorizontalChainDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original.
+        /// </summary>
+        public static string HorizontalChainOriginalDistance {
+            get {
+                return ResourceManager.GetString("HorizontalChainOriginalDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Homing Completed.
         /// </summary>
         public static string HorizontalHomingCompleted {
@@ -3166,7 +3229,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perform the chain calibration procedure.
+        ///   Looks up a localized string similar to Perform the chain calibration procedure. The horizontal zero sensor must be active..
         /// </summary>
         public static string HorizzontalChainCalibrationProcedureRequired {
             get {
@@ -4777,6 +4840,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mount camera.
+        /// </summary>
+        public static string MountCamera {
+            get {
+                return ResourceManager.GetString("MountCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move.
         /// </summary>
         public static string Move {
@@ -4800,6 +4872,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MoveBayToBayMenuTitle {
             get {
                 return ResourceManager.GetString("MoveBayToBayMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move the camera to the correct position.
+        /// </summary>
+        public static string MoveCamera {
+            get {
+                return ResourceManager.GetString("MoveCamera", resourceCulture);
             }
         }
         
@@ -5070,6 +5151,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NoInstallationFileFound {
             get {
                 return ResourceManager.GetString("NoInstallationFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
@@ -7038,6 +7128,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 1.
+        /// </summary>
+        public static string TotalLoadUnitsInBay1 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 2.
+        /// </summary>
+        public static string TotalLoadUnitsInBay2 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total load units in bay 3.
+        /// </summary>
+        public static string TotalLoadUnitsInBay3 {
+            get {
+                return ResourceManager.GetString("TotalLoadUnitsInBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total missions.
+        /// </summary>
+        public static string TotalMissions {
+            get {
+                return ResourceManager.GetString("TotalMissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total panels.
         /// </summary>
         public static string TotalPanels {
@@ -7376,6 +7502,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerifyWeightController {
             get {
                 return ResourceManager.GetString("VerifyWeightController", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical.
+        /// </summary>
+        public static string Vertical {
+            get {
+                return ResourceManager.GetString("Vertical", resourceCulture);
             }
         }
         

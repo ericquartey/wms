@@ -72,7 +72,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column6"
                                 Width="1*"
-                                Binding="{Binding Path=Status}"
+                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">

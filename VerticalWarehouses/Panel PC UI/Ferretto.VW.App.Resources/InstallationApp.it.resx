@@ -2350,10 +2350,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Calibrazione orizzontale catena</value>
   </data>
   <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
-    <value>Effetua la calibrazione orizzontale della catena </value>
+    <value>Esegui la calibrazione orizzontale della catena </value>
   </data>
   <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
-    <value>Esegui la procedura di taratura della catena</value>
+    <value>Esegui la procedura di taratura della catena. Il sensore di zero orizzontale deve essere attivo.</value>
   </data>
   <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
     <value>La funzione di calibrazione orizzontale della catena permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
@@ -2365,10 +2365,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Conferma procedura</value>
   </data>
   <data name="Measured" xml:space="preserve">
-    <value>Measured</value>
+    <value>Misurata</value>
   </data>
   <data name="MisurationDone" xml:space="preserve">
-    <value>Misurazione effetuata</value>
+    <value>Misurazione eseguita</value>
   </data>
   <data name="MisurationDoneDescription" xml:space="preserve">
     <value>Applicare la seguente misurazione alla macchina</value>
@@ -2705,5 +2705,50 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="True" xml:space="preserve">
     <value>Vero</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Baia catena</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Orizzontale</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Orizzontale e verticale</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Verticale</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Elevatore in baia</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Cassetti totali in baia 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Cassetti totali in baia 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Cassetti totali in baia 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Missioni totali</value>
+  </data>
+  <data name="HorizontalChainDifference" xml:space="preserve">
+    <value>Differenza</value>
+  </data>
+  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
+    <value>Originale</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Montare telecamera</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Sposta la telecamera nella posizione corretta</value>
   </data>
 </root>

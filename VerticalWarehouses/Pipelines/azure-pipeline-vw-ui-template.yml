@@ -4,21 +4,11 @@ parameters:
 
 steps:
 
-- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
-  parameters:
-    RestoreSolution: '**/VerticalWarehouses.sln'
-
-
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- task: VSBuild@1
-  displayName: 'Build PanelPC.sln'
-  inputs:
-    solution: 'VerticalWarehouses/PanelPC.sln'
-    platform: ${{ parameters.BuildPlatform }}
-    configuration: ${{ parameters.BuildConfiguration }}
-    msbuildArchitecture: x64
+- script: dotnet build "VerticalWarehouses/Panel PC UI/Ferretto.VW.App/Ferretto.VW.App.csproj" --configuration Debug --framework net471
+  displayName: 'dotnet build'
 
 
 - task: PublishSymbols@2

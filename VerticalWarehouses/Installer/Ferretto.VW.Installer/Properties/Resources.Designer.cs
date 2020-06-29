@@ -70,11 +70,209 @@ namespace Ferretto.VW.Installer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ferretto Installer.
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        public static string AllFiles {
+            get {
+                return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Interface Version.
+        /// </summary>
+        public static string ApplicationVersion {
+            get {
+                return ResourceManager.GetString("ApplicationVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay Selection.
+        /// </summary>
+        public static string BaySelection {
+            get {
+                return ResourceManager.GetString("BaySelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue.
+        /// </summary>
+        public static string Continue {
+            get {
+                return ResourceManager.GetString("Continue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go Back.
+        /// </summary>
+        public static string GoBack {
+            get {
+                return ResourceManager.GetString("GoBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} kg.
+        /// </summary>
+        public static string KilogramsValueFormat {
+            get {
+                return ResourceManager.GetString("KilogramsValueFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string Load {
+            get {
+                return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ferretto Vertimag Setup.
         /// </summary>
         public static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Bay.
+        /// </summary>
+        public static string MasterBay {
+            get {
+                return ResourceManager.GetString("MasterBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Bay Address.
+        /// </summary>
+        public static string MasterBayAddress {
+            get {
+                return ResourceManager.GetString("MasterBayAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Gross Capacity.
+        /// </summary>
+        public static string MaximumGrossCapacity {
+            get {
+                return ResourceManager.GetString("MaximumGrossCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string Model {
+            get {
+                return ResourceManager.GetString("Model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file selected.
+        /// </summary>
+        public static string NoFileSelected {
+            get {
+                return ResourceManager.GetString("NoFileSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration file.
+        /// </summary>
+        public static string SelectedConfigurationFile {
+            get {
+                return ResourceManager.GetString("SelectedConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select File.
+        /// </summary>
+        public static string SelectFile {
+            get {
+                return ResourceManager.GetString("SelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Number of this Bay.
+        /// </summary>
+        public static string SelectNumberOfThisBay {
+            get {
+                return ResourceManager.GetString("SelectNumberOfThisBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select vertimag configuration file.
+        /// </summary>
+        public static string SelectVertimagConfigurationFile {
+            get {
+                return ResourceManager.GetString("SelectVertimagConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        public static string SerialNumber {
+            get {
+                return ResourceManager.GetString("SerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Service Version.
+        /// </summary>
+        public static string ServiceVersion {
+            get {
+                return ResourceManager.GetString("ServiceVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slave Bay.
+        /// </summary>
+        public static string SlaveBay {
+            get {
+                return ResourceManager.GetString("SlaveBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string UnknownVersion {
+            get {
+                return ResourceManager.GetString("UnknownVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag configuration files.
+        /// </summary>
+        public static string VertimagConfigurationFiles {
+            get {
+                return ResourceManager.GetString("VertimagConfigurationFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag Software Installation.
+        /// </summary>
+        public static string VertimagSoftwareInstallation {
+            get {
+                return ResourceManager.GetString("VertimagSoftwareInstallation", resourceCulture);
             }
         }
     }

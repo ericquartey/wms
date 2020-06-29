@@ -52,7 +52,7 @@
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="0"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding TuningChainCommand}"
@@ -61,7 +61,7 @@
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     HorizontalAlignment="Center"
                                     Command="{Binding ClosedShutterCommand}"
                                     Content="{res:Loc InstallationApp.GateClose}"
@@ -302,17 +302,17 @@
                                        Height="90"
                                        Margin="0,0,10,15"
                                        HorizontalAlignment="Center"
-                                       EditValue="{Binding ProfileCalibrateDistance, Mode=OneWay}"
+                                       EditValue="{Binding ProfileStartDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="{res:Loc InstallationApp.ProfileCalibrateDistance}"
+                                       LabelText="{res:Loc InstallationApp.HorizontalChainOriginalDistance}"
                                        Visibility="Visible" />
                     <ctrls:PpcSpinEdit Width="180"
                                        Height="90"
                                        Margin="0,0,0,15"
                                        HorizontalAlignment="Center"
-                                       EditValue="{Binding ProfileStartDistance, Mode=OneWay}"
+                                       EditValue="{Binding ProfileCalibrateDistance, Mode=OneWay}"
                                        IsEnabled="false"
-                                       LabelText="{res:Loc InstallationApp.ProfileStartDistance}"
+                                       LabelText="{res:Loc InstallationApp.HorizontalChainDifference}"
                                        Visibility="Visible" />
                 </StackPanel>
 

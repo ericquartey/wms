@@ -3,14 +3,25 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace Ferretto.VW.Installer.Core
 {
     internal class CommandlineStep : ShellStep
     {
         #region Constructors
 
-        public CommandlineStep(int number, string title, string description, string rollbackScript, string script, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, rollbackScript, script, log, machineRole, setupMode, skipOnResume)
+        public CommandlineStep(
+            int number,
+            string title,
+            string description,
+            string rollbackScript,
+            string script,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, rollbackScript, script, machineRole, setupMode, skipOnResume, skipRollback)
         {
         }
 
@@ -27,47 +38,41 @@ namespace Ferretto.VW.Installer.Core
 
             command = InterpolateVariables(command);
 
-            using (var process = new System.Diagnostics.Process())
-            {
-                process.StartInfo.FileName = "cmd.exe";
-                process.StartInfo.Arguments = $"/C {command}";
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.ErrorDialog = false;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
+            using var process = new System.Diagnostics.Process();
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.Arguments = $"/C {command}";
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.ErrorDialog = false;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
 
-                this.LogInformation($"cmd> {command}");
+            this.Execution.LogInformation($"cmd> {command}");
 
-                process.Start();
-                var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
-                thread.Start(process.StandardOutput);
-                process.WaitForExit();
-                thread.Join();
+            process.Start();
+            var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
+            thread.Start(process.StandardOutput);
+            process.WaitForExit();
+            thread.Join();
 
-                return Task.FromResult(process.ExitCode >= 0);
-            }
+            return Task.FromResult(process.ExitCode >= 0);
         }
 
-        private void ReadStandardOutput(object obj)
+        private void ReadStandardOutput(object? obj)
         {
-            var inputStream = obj as StreamReader;
-
-            if (inputStream is null)
+            if (obj is StreamReader inputStream)
             {
-                return;
-            }
-
-            try
-            {
-                while (!inputStream.EndOfStream)
+                try
                 {
-                    this.LogChar((char)inputStream.Read());
+                    while (!inputStream.EndOfStream)
+                    {
+                        this.Execution.LogChar((char)inputStream.Read());
+                    }
                 }
-            }
-            catch
-            {
-                // do nothing
+                catch
+                {
+                    // do nothing
+                };
             }
         }
 

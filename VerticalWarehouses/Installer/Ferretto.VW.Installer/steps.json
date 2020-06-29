@@ -3,63 +3,63 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 1,
-      "title": "Disabilita sospensione",
-      "description": "Modifica le impostazioni della gestione di risparmio energetico per evitare che la macchina si sospenda.",
-      "script": "scripts/setup_power_options.ps1",
-      "skipOnResume": "true"
+      "title": "Disabilita UWF",
+      "description": "Disabilita, se attivo, il filtro UWF prima di procedere con l'installazione.",
+      "script": "scripts/check_uwf_off.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 2,
-      "title": "Imposta auto-logon",
-      "description": "Imposta l'utente predefinito per il logon automatico.",
-      "script": "scripts/set_auto_logon.ps1",
-      "skipOnResume": "true"
+      "title": "Disabilita sospensione",
+      "description": "Modifica le impostazioni della gestione di risparmio energetico per evitare che la macchina si sospenda.",
+      "script": "scripts/setup_power_options.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 3,
-      "title": "Rimuovi sfondo login",
-      "description": "Rimuove l'immagine di sfondo sulla schermata di login utente.",
-      "script": "scripts/remove_logon_background.ps1",
-      "skipOnResume": "true"
+      "title": "Imposta auto-logon",
+      "description": "Imposta l'utente predefinito per il logon automatico.",
+      "script": "scripts/set_auto_logon.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 4,
-      "title": "Disabilita il firewall",
-      "description": "Modifica le impostazioni del firewall in modo che il pannello non blocchi alcun traffico di rete.",
-      "script": "scripts/disable_firewall.ps1",
-      "skipOnResume": "true"
+      "title": "Rimuovi sfondo login",
+      "description": "Rimuove l'immagine di sfondo sulla schermata di login utente.",
+      "script": "scripts/remove_logon_background.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 5,
-      "title": "Configura UWF (registro)",
-      "description": "Modifica le impostazioni del filtro di protezione del registro di sistema.",
-      "script": "scripts/setup_uwf_registry.ps1",
-      "skipOnResume": "true"
+      "title": "Disabilita il firewall",
+      "description": "Modifica le impostazioni del firewall in modo che il pannello non blocchi alcun traffico di rete.",
+      "script": "scripts/disable_firewall.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 6,
-      "title": "Configura UWF (file)",
-      "description": "Modifica le impostazioni del filtro di protezione del disco fisso.",
-      "script": "scripts/setup_uwf_files.ps1",
-      "skipOnResume": "true"
+      "title": "Configura UWF (registro)",
+      "description": "Modifica le impostazioni del filtro di protezione del registro di sistema.",
+      "script": "scripts/setup_uwf_registry.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 7,
-      "title": "Verifica dischi",
-      "description": "Verifica che i dischi di destinazione siano vuoti.",
-      "script": "scripts/check_volumes.ps1",
-      "setupMode": "install",
-      "skipOnResume": "true"
+      "title": "Configura UWF (file)",
+      "description": "Modifica le impostazioni del filtro di protezione del disco fisso.",
+      "script": "scripts/setup_uwf_files.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 8,
+      "title": "Verifica dischi",
+      "description": "Verifica che i dischi di destinazione siano vuoti.",
+      "script": "scripts/check_volumes.ps1",
+      "setupMode": "install"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 9,
       "title": "Auto-avvio installer",
       "description": "Imposta il programma di installazione in modo che parta al prossimo riavvio.",
       "script": "scripts/autostart_installer.ps1",
@@ -68,7 +68,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 9,
+      "number": 10,
       "title": "Imposta modalità touch",
       "description": "Modifica il comportamento del tocco prolungato sullo schermo.",
       "script": "scripts/set_touch_behaviour.ps1",
@@ -77,7 +77,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 10,
+      "number": 11,
       "title": "Creazione cartelle database",
       "description": "Creazione cartelle del database",
       "script": "scripts/create_db_folders.ps1",
@@ -86,7 +86,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 11,
+      "number": 12,
       "title": "Aggiorna indirizzi IP",
       "description": "Imposta indirizzo ip e subnet su scheda ethernet che si interfaccia con la macchina.",
       "script": "scripts/set_ethernet_address.ps1",
@@ -95,7 +95,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 12,
+      "number": 13,
       "title": "Creazione servizio",
       "description": "Crea il servizio di automazione da avviare con l'accensione del PanelPc",
       "script": "scripts/create_mas.ps1",
@@ -105,7 +105,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 13,
+      "number": 14,
       "title": "Disabilita UWF",
       "description": "Disabilita la protezione del disco fisso (Unified Write Filter) per permettere l'aggiornamento.",
       "script": "uwfmgr.exe filter disable",
@@ -114,7 +114,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 14,
+      "number": 15,
       "title": "Auto-avvio installer",
       "description": "Imposta il programma di installazione in modo che parta al prossimo riavvio.",
       "script": "scripts/autostart_installer.ps1",
@@ -123,7 +123,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 15,
+      "number": 16,
       "title": "Rimuovi auto-avvio applicazione",
       "description": "Rimuove l'auto-avvio dell'applicazione del PanelPC.",
       "Script": "scripts/remove_app_autostart.ps1",
@@ -133,7 +133,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 16,
+      "number": 17,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
@@ -142,7 +142,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 17,
+      "number": 18,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia disabilitata.",
       "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-CimInstance -className  UWF_Filter -Namespace $NAMESPACE;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disabled.\"};",
@@ -151,7 +151,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 18,
+      "number": 19,
       "title": "Ferma il MAS",
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
       "script": "scripts/stop_mas.ps1",
@@ -161,7 +161,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
-      "number": 19,
+      "number": 20,
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
       "automationServicePath": "$(Install:Root:Path)\\$(MAS:DirName)",
@@ -171,7 +171,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 20,
+      "number": 21,
       "title": "Ripristino database",
       "description": "Sostituisce i files di database esistenti con quelli di backup",
       "script": "$AppSettings = \"$(Backup:Root:Path)\\Staging\\$(MAS:DirName)\\appsettings.json\";$primDbStageFile = \"$(Backup:Root:Path)\\staging\\primary.db\";$secDbStageFile = \"$(Backup:Root:Path)\\staging\\secondary.db\";$json_object = Get-Content -Raw -Path $AppSettings | ConvertFrom-Json;$primDbName = $json_object.ConnectionStrings.AutomationServicePrimary;$secDbName = $json_object.ConnectionStrings.AutomationServiceSecondary;$primFileDbName = $primDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$secFileDbName = $secDbName.Replace(\"Data Source='\", \"\").TrimEnd(\"'\");$primDbFilePath =  \"E:\\database\\\" +  ([io.fileinfo]$primFileDbName).Name;$secDbFileName = \"F:\\database\\\" + ([io.fileinfo]$secFileDbName).Name;Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force",
@@ -180,7 +180,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 21,
+      "number": 22,
       "title": "Backup applicazione",
       "description": "Sposta l'applicazione nella cartella di backup",
       "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(MAS:DirName)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(PPC:DirName)\";$stageInstaller=\"$(Backup:Root:Path)\\Staging\\$(Installer:DirName)\";$as=\"$(Install:Root:Path)\\$(MAS:DirName)\";$ppc=\"$(Install:Root:Path)\\$(PPC:DirName)\";$installer=\"$(Install:Root:Path)\\$(Installer:DirName)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Copy-Item $installer $stageInstaller -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse;Remove-Item $installer -Force -Recurse",
@@ -189,7 +189,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 22,
+      "number": 23,
       "title": "Creazione ZIP",
       "description": "Crea un archivio zip con il backup della versione corrente.",
       "script": "scripts/zip_current_version.ps1",
@@ -198,7 +198,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 23,
+      "number": 24,
       "title": "Copia nuova versione",
       "description": "Copia la nuova versione nella cartella di destinazione dell'installazione.",
       "script": "scripts/copy_new_app.ps1",
@@ -214,7 +214,7 @@
     },*/
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 24,
+      "number": 25,
       "title": "Aggiorna App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(PPC:DirName)\\$(PPC:FileName).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(PPC:DirName)\\$(PPC:FileName).config\";$NewAppConfigFileOrig = $NewAppConfigFile + \".orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\" + $node.key + \"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
@@ -223,7 +223,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 25,
+      "number": 26,
       "title": "Aggiorna MAS",
       "description": "Aggiorna il file di configurazione del MAS.",
       "script": "function Join-Objects($source, $extend){ if($source.GetType().Name -eq \"PSCustomObject\" -and $extend.GetType().Name -eq \"PSCustomObject\"){ foreach($Property in $source | Get-Member -type NoteProperty, Property){ if($extend.$($Property.Name) -eq $null){ continue; } $source.$($Property.Name) = Join-Objects $source.$($Property.Name) $extend.$($Property.Name)  } } else{ $source = $extend;};if($source.GetType().Name -eq \"Object[]\" -and $source.Count -lt 2){ return ,$source} else {return $source } };function AddPropertyRecurse($source, $toExtend){  if($source.GetType().Name -eq \"PSCustomObject\") { foreach($Property in $source | Get-Member -type NoteProperty, Property){if($toExtend.$($Property.Name) -eq $null) { $toExtend | Add-Member -MemberType NoteProperty -Value $source.$($Property.Name) -Name $Property.Name  } else{ $toExtend.$($Property.Name) = AddPropertyRecurse $source.$($Property.Name) $toExtend.$($Property.Name) }}} return $toExtend};function Json-Merge($source, $extend){ $merged = Join-Objects $source $extend; return $merged;};$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.json\";$CurrAppsettingsFile = \"$(Install:Root:Path)\\$(MAS:DirName)\\appsettings.json\";$NewAppSettingFileCopy = \"$(Update:Temp:Path)\\$(MAS:DirName)\\appsettings.orig\";$1 = Get-Content -Raw -Path $NewAppSettingsFile | ConvertFrom-Json;$2 = Get-Content -Path $CurrAppsettingsFile| ConvertFrom-Json;$3 = Json-Merge $1 $2;Copy-Item -Path $NewAppsettingsFile -Destination $NewAppSettingFileCopy;$3 | ConvertTo-Json -depth 100 | Out-File $NewAppsettingsFile",
@@ -233,7 +233,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 26,
+      "number": 27,
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione così che il database venga aggiornato.",
       "script": "scripts/run_mas.ps1",
@@ -242,7 +242,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
-      "number": 27,
+      "number": 28,
       "title": "Verifica stato del MAS",
       "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
       "url": "$(MAS:BaseUrl)/health/live",
@@ -251,7 +251,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 28,
+      "number": 29,
       "title": "Cancella backup precedente",
       "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
@@ -260,7 +260,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 29,
+      "number": 30,
       "title": "Rinomina backup corrente",
       "description": "Rinomina lo zip della versione corrente.",
       "script": "Rename-Item $(Backup:Root:Path)\\Current_Version_Backup.zip $(Backup:Root:Path)\\Backup.zip",
@@ -269,7 +269,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 30,
+      "number": 31,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
@@ -277,8 +277,15 @@
       "skipRollback": true
     },
     {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 32,
+      "title": "Nascondi Taskbar",
+      "description": "Modifica le impostazioni della barra delle applicazioni così che sia nascosta in automatico.",
+      "script": "scripts/set_taskbar_behaviour.ps1"
+    },
+    {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 31,
+      "number": 33,
       "title": "Abilita UWF",
       "description": "Abilita la protezione del disco fisso per sigillare il PanelPC.",
       "script": "uwfmgr.exe filter enable",
@@ -287,7 +294,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 32,
+      "number": 34,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
@@ -295,22 +302,22 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 33,
+      "number": 35,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia abilitata.",
       "script": "scripts/check_uwf_on.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 34,
+      "number": 36,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
       "Script": "scripts/set_app_autostart.ps1",
       "rollbackScript": "scripts/set_app_autostart.rollback.ps1"
     },
     {
-      "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 35,
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 37,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",

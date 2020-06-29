@@ -1,28 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <UseWPF>true</UseWPF>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NOT_CHECK_BAY_SENSOR</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BarCode" Version="2020.5.0" />
@@ -39,10 +26,6 @@
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,145 +37,5 @@
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
     <ProjectReference Include="..\Menu\Ferretto.VW.App.Modules.Menu.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml" />
-    <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
-    <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
-    <None Remove="Views\Accessories\AlphanumericBarSettingsView.xaml" />
-    <None Remove="Views\Accessories\BarcodeReaderConfigurationView.xaml" />
-    <None Remove="Views\Accessories\BarcodeReaderSettingsView.xaml" />
-    <None Remove="Views\Accessories\CardReaderSettingsView.xaml" />
-    <None Remove="Views\Accessories\DeviceInformationView.xaml" />
-    <None Remove="Views\Accessories\LabelPrinterSettingsView.xaml" />
-    <None Remove="Views\Accessories\LaserPointerSettingsView.xaml" />
-    <None Remove="Views\Accessories\TokenReaderSettingsView.xaml" />
-    <None Remove="Views\Accessories\WeightingScaleSettingsView.xaml" />
-    <None Remove="Views\Bays\BayCheckView.xaml" />
-    <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
-    <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
-    <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
-    <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
-    <None Remove="Views\Cells\CellsHeightCheckView.xaml" />
-    <None Remove="Views\DateTime\DateTimeView.xaml" />
-    <None Remove="Views\Elevator\VerticalOffsetCalibrationView.xaml" />
-    <None Remove="Views\Inverters\InvertersParametersImportView.xaml" />
-    <None Remove="Views\Inverters\ParametersInverterDetailsView.xaml" />
-    <None Remove="Views\LoadingUnits\FullTestView.xaml" />
-    <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
-    <None Remove="Views\Movements\MovementsView.xaml" />
-    <None Remove="Views\Parameters\ImportExportFeatures.xaml" />
-    <None Remove="Views\Parameters\ParametersImportView.xaml" />
-    <None Remove="Views\Profiles\ProfileHeightCheckView.xaml" />
-    <None Remove="Views\Wms\WmsSettingsView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="HelpWindows\HelpMainMenu.xaml.cs">
-      <DependentUpon>HelpMainMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
-      <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\AlphanumericBarSettingsView - Copy.xaml.cs">
-      <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\LabelPrinterSettingsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\WeightingScaleSettingsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\TokenReaderSettingsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\CardReaderSettingsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\DeviceInformationView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Bays\ExternalBayCalibrationView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Inverters\InvertersParametersImportView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\BarcodeReaderConfigurationView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Inverters\ParametersInverterDetailsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Inverters\ParameterInverterView.xaml.cs">
-      <DependentUpon>ParameterInverterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewsAndViewModels\SingleViews\UsersView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="ViewsAndViewModels\SingleViews\UpdateView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Accessories\AlphanumericBarSettingsView.xaml.cs">
-      <DependentUpon>AlphaNumericBarSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Bays\BayCheckView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Cells\CellsHeightCheckView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Elevator\HorizontalChainCalibrationView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Elevator\VerticalOffsetCalibrationView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\DateTime\DateTimeView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">
-      <DependentUpon>LoadingUnitFromBayToBayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\LoadingUnits\FullTestView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Movements\MovementsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Elevator\VerticalResolutionCalibrationView.xaml.cs">
-      <DependentUpon>VerticalResolutionCalibrationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Parameters\ImportExportFeatures.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Parameters\ParametersImportView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Profiles\ProfileHeightCheckView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Wms\WmsSettingsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
-  </Target>
 
 </Project>

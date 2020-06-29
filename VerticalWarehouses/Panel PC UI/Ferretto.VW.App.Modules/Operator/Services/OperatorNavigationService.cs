@@ -104,6 +104,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.NavigateToDrawerViewBase(goToWaitViewIfBayIsEmpty: true);
         }
 
+        public void NavigateToDrawerViewConfirmPresent()
+        {
+            this.NavigateToDrawerViewConfirmPresent(goToWaitViewIfBayIsEmpty: true);
+        }
+
         public void NavigateToDrawerViewUnit()
         {
             this.NavigateToDrawerViewUnit(goToWaitViewIfBayIsEmpty: true);
@@ -312,6 +317,38 @@ namespace Ferretto.VW.App.Modules.Operator
                             null,
                             trackCurrentView: true);
                     }
+                }
+            }
+        }
+
+        private void NavigateToDrawerViewConfirmPresent(bool goToWaitViewIfBayIsEmpty)
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
+            if (!this.IsOperatorViewModel(activeViewModelName))
+            {
+                return;
+            }
+
+            if (this.missionOperationsService.ActiveWmsOperation != null)
+            {
+                this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
+            }
+            else
+            {
+                var currentMission = this.missionOperationsService.ActiveMachineMission;
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+                if (loadingUnit != null)
+                {
+                    this.lastActiveUnitId = loadingUnit.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
+                else if(currentMission != null)
+                {
+                    this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            null,
+                            trackCurrentView: true);
                 }
             }
         }

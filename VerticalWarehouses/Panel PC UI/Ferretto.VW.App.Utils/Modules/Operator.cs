@@ -70,6 +70,8 @@
 
             public const string MAIN = "ItemSearchMainViewModel";
 
+            public const string UNITS = "ItemSearchUnitsViewModel";
+
             #endregion
         }
 

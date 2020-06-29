@@ -196,6 +196,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.GoToBayCommandAsync(),
                 this.CanGoToBayCommand));
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool HasStepElevatorPosition => this.currentStep is ProfileCheckStep.ElevatorPosition;
 
         public bool HasStepInitialize => this.currentStep is ProfileCheckStep.Initialize;
@@ -639,13 +641,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMensurationDx()
         {
             return this.CanBaseExecute() &&
-                   this.SensorsService.ShutterSensors.Open;
+                   (this.SensorsService.ShutterSensors.Open || !this.HasShutter);
         }
 
         private bool CanMensurationSx()
         {
             return this.CanBaseExecute() &&
-                   this.SensorsService.ShutterSensors.Open;
+                   (this.SensorsService.ShutterSensors.Open || !this.HasShutter);
         }
 
         private bool CanMoveToElevatorPosition()

@@ -21,8 +21,17 @@ namespace Ferretto.VW.Installer.Core
 
         #region Constructors
 
-        public DbBackupStep(int number, string title, string description, string automationServicePath, string backupPath, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-                            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+        public DbBackupStep(
+            int number,
+            string title,
+            string description,
+            string automationServicePath,
+            string backupPath,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             this.AutomationServicePath = InterpolateVariables(automationServicePath);
             this.BackupPath = InterpolateVariables(backupPath);
@@ -47,7 +56,7 @@ namespace Ferretto.VW.Installer.Core
 
             try
             {
-                this.LogInformation($"Loading settings from '{appSettingsPath}' ...");
+                this.Execution.LogInformation($"Loading settings from '{appSettingsPath}' ...");
 
                 var appSettingsString = File.ReadAllText(appSettingsPath);
                 var appSettings = JsonConvert.DeserializeObject<AppSettings>(appSettingsString);
@@ -59,9 +68,9 @@ namespace Ferretto.VW.Installer.Core
 
                 if (File.Exists(appSettingsProductionPath))
                 {
-                    this.LogInformation($"Found additional settings in '{appSettingsProductionPath}'.");
+                    this.Execution.LogInformation($"Found additional settings in '{appSettingsProductionPath}'.");
 
-                    this.LogError($"This configuration is not supported. Please manually merge the two files.");
+                    this.Execution.LogError($"This configuration is not supported. Please manually merge the two files.");
 
                     return Task.FromResult(StepStatus.Failed);
                 }
@@ -70,21 +79,21 @@ namespace Ferretto.VW.Installer.Core
                 {
                     this.primaryDbPath = Path.Combine(this.AutomationServicePath, this.primaryDbPath);
                 }
-                this.LogInformation($"Backing up database file '{this.primaryDbPath}' ...");
+                this.Execution.LogInformation($"Backing up database file '{this.primaryDbPath}' ...");
                 File.Copy(this.primaryDbPath, Path.Combine(this.BackupPath, PrimaryDbName), true);
 
                 if (!Path.IsPathRooted(this.secondaryDbPath))
                 {
                     this.secondaryDbPath = Path.Combine(this.AutomationServicePath, this.secondaryDbPath);
                 }
-                this.LogInformation($"Backing up database file '{this.secondaryDbPath}' ...");
+                this.Execution.LogInformation($"Backing up database file '{this.secondaryDbPath}' ...");
                 File.Copy(this.secondaryDbPath, Path.Combine(this.BackupPath, SecondaryDbName), true);
 
                 return Task.FromResult(StepStatus.Done);
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.Failed);
             }
         }
@@ -108,7 +117,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.RollbackFailed);
             }
         }

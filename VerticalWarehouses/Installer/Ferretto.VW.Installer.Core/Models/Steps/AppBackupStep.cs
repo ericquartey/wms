@@ -8,8 +8,17 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public AppBackupStep(int number, string title, string description, string appRootPath, string backupPath, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+        public AppBackupStep(
+            int number,
+            string title,
+            string description,
+            string appRootPath,
+            string backupPath,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             this.AppRootPath = InterpolateVariables(appRootPath);
             this.BackupPath = InterpolateVariables(backupPath);
@@ -46,13 +55,13 @@ namespace Ferretto.VW.Installer.Core
                 this.SubStep = 1;
                 if (Directory.Exists(this.BackupPath))
                 {
-                    this.LogInformation($"Eliminazione del percorso di destinazione '{this.BackupPath}' ...");
+                    this.Execution.LogInformation($"Eliminazione del percorso di destinazione '{this.BackupPath}' ...");
                     Directory.Delete(this.BackupPath, recursive: true);
                 }
 
                 this.SubStep = 2;
 
-                this.LogInformation($"Spostamento della cartella sorgente '{this.AppRootPath}' nella cartella '{this.BackupPath}' ...");
+                this.Execution.LogInformation($"Spostamento della cartella sorgente '{this.AppRootPath}' nella cartella '{this.BackupPath}' ...");
 
                 Directory.Move(this.AppRootPath, this.BackupPath);
 
@@ -62,7 +71,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.Failed);
             }
         }
@@ -75,13 +84,13 @@ namespace Ferretto.VW.Installer.Core
                 {
                     if (Directory.Exists(this.BackupPath))
                     {
-                        this.LogInformation($"Spostamento della cartella sorgente '{this.BackupPath}' nella cartella '{this.AppRootPath}' ...");
+                        this.Execution.LogInformation($"Spostamento della cartella sorgente '{this.BackupPath}' nella cartella '{this.AppRootPath}' ...");
 
                         Directory.Move(this.BackupPath, Directory.GetParent(this.AppRootPath).FullName);
                     }
                     else
                     {
-                        this.LogInformation($"Nulla da ripristinare in questo step.");
+                        this.Execution.LogInformation($"Nulla da ripristinare in questo step.");
                     }
                 }
 
@@ -89,7 +98,7 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.LogError(ex.Message);
+                this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.RollbackFailed);
             }
         }

@@ -1,12 +1,9 @@
-﻿$NAMESPACE = "root\standardcimv2\embedded"
-$uwfInstance = Get-CimInstance -className "UWF_Filter" -Namespace $NAMESPACE
+﻿$outUwf = uwfmgr.exe filter get-config
+$outUwf2 = ($outUwf -replace "\0", '') | Select-String -Pattern "FILTER STATE(.*)"
 
-if(!$uwfInstance)
-{
-    throw "UWF is NOT installed."
-}
+$uwfCurrentEnabled = $outUwf2[0] -match "ON"
 
-if(!$uwfInstance.CurrentEnabled)
+if(!$uwfCurrentEnabled)
 {
     throw "UWF is disabled."
 }

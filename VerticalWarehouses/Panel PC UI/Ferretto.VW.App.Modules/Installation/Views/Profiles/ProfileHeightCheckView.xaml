@@ -246,7 +246,8 @@
                                         VerticalAlignment="Center"
                                         Command="{Binding OpenShutterCommand}"
                                         Content="{res:Loc InstallationApp.GateOpen}"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                        Style="{StaticResource WizardIntoButton}"
+                                        Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
                     <controls:PpcButton Margin="15,15,0,0"
                                         Command="{Binding MensurationDxCommand}"
@@ -510,7 +511,8 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
                                     Content="{res:Loc InstallationApp.GateOpen}"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"

@@ -121,6 +121,72 @@
     <value>Abort</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
-    <value>Ferretto Installer</value>
+    <value>Ferretto Vertimag Setup</value>
+  </data>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Vertimag Software Installation</value>
+  </data>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Background Service Version</value>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>User Interface Version</value>
+  </data>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Select vertimag configuration file</value>
+  </data>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Vertimag configuration files</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Master Bay</value>
+  </data>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Slave Bay</value>
+  </data>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Configuration file</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Master Bay Address</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Bay Selection</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Maximum Gross Capacity</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Select the Number of this Bay</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Go Back</value>
   </data>
 </root>

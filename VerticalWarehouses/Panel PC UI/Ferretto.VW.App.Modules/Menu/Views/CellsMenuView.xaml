@@ -86,7 +86,8 @@
                                         IsBypassed="{Binding IsCellsHeightCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellsHeightCheckProcedure}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="Collapsed" />
 
                     <controls:PpcButton Title="{res:Loc InstallationApp.ChangeCellBlockObsoleteMenuTitle}"
                                         Margin="0,0,30,30"
@@ -96,7 +97,8 @@
                                         Command="{Binding CellsBlockTuningCommand}"
                                         Content="{res:Loc InstallationApp.ChangeCellBlockObsoleteMenuDescription}"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="Collapsed" />
 
                     <controls:PpcButton Title="{res:Loc InstallationApp.CellTestMenuTitle}"
                                         Margin="0,0,30,30"

@@ -168,6 +168,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
@@ -228,7 +229,7 @@
                 <Border Grid.Row="2"
                         Height="90"
                         MinHeight="90"
-                        Margin="15,15,15,0"
+                        Margin="15,7,15,0"
                         Background="{DynamicResource PpcBackground}">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -269,7 +270,7 @@
 
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Height="90"
-                                   Margin="15,15,15,0"
+                                   Margin="15,7,15,0"
                                    HorizontalAlignment="Stretch"
                                    EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Increment="{Binding SelectedItem.PickIncrement}"
@@ -281,20 +282,27 @@
                             Orientation="Horizontal">
 
                     <controls:PpcButton Width="80"
-                                        Margin="15,15,0,0"
+                                        Margin="15,7,0,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
                                         Command="{Binding ItemDetailButtonCommand}"
                                         Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
 
-                    <controls:PpcButton Margin="15,15,15,0"
+                    <controls:PpcButton Margin="15,7,15,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
-                                        Command="{Binding RequestItemPickCommand}"
-                                        Content="{Resources:Loc OperatorApp.ItemSearchCall}"
-                                        IsBusy="{Binding IsBusyRequestingItemPick}"
-                                        Style="{StaticResource ConfirmButton}" />
+                                        Command="{Binding UnitsPageCommand}"
+                                        Content="{Resources:Loc OperatorApp.Units}" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="5"
+                                    Margin="15,7,15,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding RequestItemPickCommand}"
+                                    Content="{Resources:Loc OperatorApp.ItemSearchCall}"
+                                    IsBusy="{Binding IsBusyRequestingItemPick}"
+                                    Style="{StaticResource ConfirmButton}" />
             </Grid>
 
         </Grid>
