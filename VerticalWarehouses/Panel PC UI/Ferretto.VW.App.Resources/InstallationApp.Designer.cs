@@ -4840,6 +4840,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mount camera.
+        /// </summary>
+        public static string MountCamera {
+            get {
+                return ResourceManager.GetString("MountCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move.
         /// </summary>
         public static string Move {
@@ -4863,6 +4872,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MoveBayToBayMenuTitle {
             get {
                 return ResourceManager.GetString("MoveBayToBayMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move the camera to the correct position.
+        /// </summary>
+        public static string MoveCamera {
+            get {
+                return ResourceManager.GetString("MoveCamera", resourceCulture);
             }
         }
         

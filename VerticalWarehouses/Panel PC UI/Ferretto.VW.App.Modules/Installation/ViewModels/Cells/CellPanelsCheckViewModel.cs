@@ -19,7 +19,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         Inizialize,
 
-        Measured,
+        MeasuredFront,
+
+        MeasuredBack,
     }
 
     [Warning(WarningsArea.Installation)]
@@ -204,7 +206,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
 
-        public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
+        public bool HasStepMeasuredBack => this.currentStep is CellPanelsCheckStep.MeasuredBack;
+
+        public bool HasStepMeasuredFront => this.currentStep is CellPanelsCheckStep.MeasuredFront;
 
         public bool IsCanStartPosition => this.CanBaseExecute();
 
@@ -327,6 +331,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.UpdateStatusButtonFooter();
 
             await base.OnAppearedAsync();
+
+            if (this.CurrentStep == CellPanelsCheckStep.MeasuredBack && this.CurrentPanel.Side != WarehouseSide.Back)
+            {
+                this.CurrentStep = CellPanelsCheckStep.MeasuredFront;
+                this.RaisePropertyChanged(nameof(this.CurrentStep));
+            }
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -476,6 +486,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private WarehouseSide GetNextPanelSide(int count)
+        {
+            return this.Panels.ElementAtOrDefault(count).Side;
+        }
+
+        private WarehouseSide GetPrevPanelSide(int count)
+        {
+            return this.Panels.ElementAtOrDefault(count - 2).Side;
+        }
+
         private async Task GoToCellHeightAsync()
         {
             try
@@ -516,17 +536,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CellPanelsCheckStep.Inizialize:
                     if (e.Next)
                     {
-                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                        this.CurrentStep = CellPanelsCheckStep.MeasuredFront;
                     }
 
                     break;
 
-                case CellPanelsCheckStep.Measured:
-                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+                case CellPanelsCheckStep.MeasuredFront:
+                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count() && this.GetNextPanelSide(this.CurrentPanelNumber) == WarehouseSide.Back)
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.CurrentStep = CellPanelsCheckStep.MeasuredBack;
+                    }
+                    else if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
                     {
                         this.CurrentPanelNumber++;
 
                         this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.CurrentPanelNumber > 1 && this.GetNextPanelSide(this.CurrentPanelNumber) == WarehouseSide.Back)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.CurrentStep = CellPanelsCheckStep.MeasuredBack;
                     }
                     else if (e.Back && this.CurrentPanelNumber > 1)
                     {
@@ -537,6 +569,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     else if (e.Back && this.CurrentPanelNumber == 1)
                     {
                         this.CurrentStep = CellPanelsCheckStep.Inizialize;
+                    }
+
+                    this.Displacement = 0;
+
+                    break;
+
+                case CellPanelsCheckStep.MeasuredBack:
+                    if (e.Next && this.CurrentPanelNumber < this.Panels.Count() && this.GetNextPanelSide(this.CurrentPanelNumber) == WarehouseSide.Front)
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.CurrentStep = CellPanelsCheckStep.MeasuredFront;
+                    }
+                    else if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
+                    {
+                        this.CurrentPanelNumber++;
+
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else if (e.Back && this.GetPrevPanelSide(this.CurrentPanelNumber) == WarehouseSide.Front)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.CurrentStep = CellPanelsCheckStep.MeasuredFront;
+                    }
+                    else if (e.Back && this.CurrentPanelNumber > 1)
+                    {
+                        this.CurrentPanelNumber--;
+
+                        this.RaiseCanExecuteChanged();
                     }
 
                     this.Displacement = 0;
@@ -584,7 +646,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                        (m) =>
                        {
                            this.RaisePropertyChanged(nameof(this.HasStepInitialize));
-                           this.RaisePropertyChanged(nameof(this.HasStepMeasured));
+                           this.RaisePropertyChanged(nameof(this.HasStepMeasuredFront));
+                           this.RaisePropertyChanged(nameof(this.HasStepMeasuredBack));
                        },
                        ThreadOption.UIThread,
                        false);
@@ -599,7 +662,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, true);
                     break;
 
-                case CellPanelsCheckStep.Measured:
+                case CellPanelsCheckStep.MeasuredFront:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CellPanelsCheckStep.MeasuredBack:
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, true);
                     break;
@@ -608,7 +676,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowAbortStep(true, true);
 
             this.RaisePropertyChanged(nameof(this.HasStepInitialize));
-            this.RaisePropertyChanged(nameof(this.HasStepMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepMeasuredFront));
+            this.RaisePropertyChanged(nameof(this.HasStepMeasuredBack));
         }
 
         #endregion

@@ -2835,4 +2835,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizontalChainOriginalDistance" xml:space="preserve">
     <value>Original</value>
   </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Mount camera</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Move the camera to the correct position</value>
+  </data>
 </root>
