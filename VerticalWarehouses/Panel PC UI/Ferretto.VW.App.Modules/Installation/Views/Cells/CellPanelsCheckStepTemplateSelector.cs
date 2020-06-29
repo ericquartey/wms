@@ -6,9 +6,17 @@ namespace Ferretto.VW.App.Installation.Views
 {
     public class CellPanelsCheckStepTemplateSelector : DataTemplateSelector
     {
+        #region Properties
+
         public DataTemplate EnumInizialize { get; set; }
 
-        public DataTemplate EnumMeasured { get; set; }
+        public DataTemplate EnumMeasuredBack { get; set; }
+
+        public DataTemplate EnumMeasuredFront { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -18,11 +26,16 @@ namespace Ferretto.VW.App.Installation.Views
                 case CellPanelsCheckStep.Inizialize:
                     return this.EnumInizialize;
 
-                case CellPanelsCheckStep.Measured:
-                    return this.EnumMeasured;
+                case CellPanelsCheckStep.MeasuredFront:
+                    return this.EnumMeasuredFront;
+
+                case CellPanelsCheckStep.MeasuredBack:
+                    return this.EnumMeasuredBack;
             }
 
             return base.SelectTemplate(item, container);
         }
+
+        #endregion
     }
 }
