@@ -41,8 +41,4 @@
     <Resource Include="Barcode\Resources\*.png" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="mkdir ..\Ferretto.VW.App\publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) ..\Ferretto.VW.App\publish\$(ConfigurationName)\&#xD;&#xA;copy bin\$(ConfigurationName)\net471\Ferretto.VW.Devices.*.* ..\Ferretto.VW.App\publish\$(ConfigurationName)\" />
-  </Target>
-
 </Project>

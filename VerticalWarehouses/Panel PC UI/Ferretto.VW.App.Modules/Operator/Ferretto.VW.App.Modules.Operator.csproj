@@ -1,22 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <UseWPF>true</UseWPF>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Web" />
   </ItemGroup>
 
    <ItemGroup>
@@ -37,32 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ViewModels\About\ParametersExportView.xaml" />
-    <None Remove="Views\AboutMenuView.xaml" />
-    <None Remove="Views\About\AlarmView.xaml" />
-    <None Remove="Views\About\CountersView.xaml" />
-    <None Remove="Views\About\DiagnosticsView.xaml" />
-    <None Remove="Views\About\GeneralView.xaml" />
-    <None Remove="Views\About\StatisticsView.xaml" />
-    <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
-    <None Remove="Views\ItemSearch\ItemSearchDetailView - Copy.xaml" />
-    <None Remove="Views\LogsExportView.xaml" />
-    <None Remove="Views\Others\LoadingUnitMissionDataGridView.xaml" />
-    <None Remove="Views\Others\LoadingUnitsMissionsView.xaml" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj" />
     <ProjectReference Include="..\..\..\Common\Ferretto.VW.Devices.LaserPointer\Ferretto.VW.Devices.LaserPointer.csproj" />
     <ProjectReference Include="..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
@@ -70,54 +36,5 @@
     <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Update="Views\About\AlarmsExportView.xaml.cs">
-      <DependentUpon>AlarmsExportView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\About\CountersView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\About\DiagnosticsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\About\StatisticsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\About\AlarmView.xaml.cs">
-      <DependentUpon>AlarmView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\About\GeneralView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ItemOperations\LoadingUnitView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ItemOperations\LoadingUnit\LoadingUnitInfoView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ItemSearch\ItemSearchUnitsView.xaml.cs">
-      <DependentUpon>ItemSearchUnitsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Others\LoadingUnitMissionDataGridView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Others\LoadingUnitsMissionsView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-  </ItemGroup>
- 
-  <ItemGroup>
-    <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-   
-  </Target>
 
 </Project>

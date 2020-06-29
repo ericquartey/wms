@@ -14,17 +14,8 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- script: dotnet restore "VerticalWarehouses/PanelPC.sln"
-  displayName: 'dotnet restore'
-
-
-- task: VSBuild@1
-  displayName: 'Build PanelPC.sln'
-  inputs:
-    solution: 'VerticalWarehouses/PanelPC.sln'
-    platform: ${{ parameters.BuildPlatform }}
-    configuration: ${{ parameters.BuildConfiguration }}
-    msbuildArchitecture: x64
+- script: dotnet build "Panel PC UI\Ferretto.VW.App\Ferretto.VW.App.csproj" --configuration Debug --framework net471
+  displayName: 'dotnet build'
 
 
 - task: PublishSymbols@2
