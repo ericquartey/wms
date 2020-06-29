@@ -10,12 +10,8 @@ steps:
     version: 2.2.207
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
-  parameters:
-    RestoreSolution: '**/VerticalWarehouses.sln'
 
-
-- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+    - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
