@@ -77,12 +77,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var responseReceived = false;
 
             if (message.IsError)
             {
@@ -93,14 +92,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
-                    this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
+                if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &&
+                    this.InverterStatus.CommonStatusWord.IsQuickStopTrue &&
                     this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
                     )
                 {
                     this.ParentStateMachine.ChangeState(
                         new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    responseReceived = true;
                 }
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                 {
@@ -109,7 +107,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                         new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
-            return responseReceived;
+            return true;
         }
 
         #endregion

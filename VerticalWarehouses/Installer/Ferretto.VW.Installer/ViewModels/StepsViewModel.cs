@@ -1,32 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.Installer.Services;
+using NLog;
+
+#nullable enable
 
 namespace Ferretto.VW.Installer.ViewModels
 {
-    internal sealed class StepsViewModel : BindableBase, IOperationResult
+    internal sealed class StepsViewModel : BindableBase, IOperationResult, IViewModel
     {
         #region Fields
 
-        private readonly InstallationService installationService;
+        private readonly Command abortCommand;
 
-        private RelayCommand abortCommand;
+        private readonly Command closeCommand;
+
+        private readonly IInstallationService installationService;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly INotificationService notificationService;
 
         private bool abortRequested;
-
-        private RelayCommand closeCommand;
 
         private bool isFinished;
 
         private bool isSuccessful;
 
-        private Step selectedStep;
+        private Step? selectedStep;
 
         private FlowDocument selectedStepLog = new FlowDocument();
 
@@ -34,21 +41,34 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Constructors
 
-        public StepsViewModel(InstallationService installationService)
+        public StepsViewModel(
+            IInstallationService installationService,
+            INotificationService notificationService)
         {
-            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            if (installationService is null)
+            {
+                throw new ArgumentNullException(nameof(installationService));
+            }
 
+            if (notificationService is null)
+            {
+                throw new ArgumentNullException(nameof(notificationService));
+            }
+
+            this.notificationService = notificationService;
+            this.installationService = installationService;
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-            this.installationService.Finished += this.OnInstallationServiceFinished;
+            this.installationService.Finished += this.OnInstallationFinished;
 
-            this.StartInstallation();
+            this.abortCommand = new Command(this.Abort, this.CanAbort);
+            this.closeCommand = new Command(this.Close, this.CanClose);
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand AbortCommand => this.abortCommand ??= new RelayCommand(this.Abort, this.CanAbort);
+        public ICommand AbortCommand => this.abortCommand;
 
         public bool AbortRequested
         {
@@ -56,7 +76,7 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.abortRequested, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand CloseCommand => this.closeCommand ??= new RelayCommand(this.Close, this.CanClose);
+        public ICommand CloseCommand => this.closeCommand;
 
         public bool IsFinished
         {
@@ -70,7 +90,7 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.isSuccessful, value);
         }
 
-        public Step SelectedStep
+        public Step? SelectedStep
         {
             get => this.selectedStep;
             set => this.SetProperty(ref this.selectedStep, value);
@@ -82,7 +102,7 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.selectedStepLog, value);
         }
 
-        public string SoftwareVersion => this.installationService.SoftwareVersion;
+        public string? SoftwareVersion => this.installationService.InstallerVersion;
 
         public IEnumerable<Step> Steps => this.installationService.Steps;
 
@@ -90,35 +110,56 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Methods
 
+        public Task OnAppearAsync()
+        {
+            this.notificationService.ClearMessage();
+
+            this.StartInstallation();
+
+            return Task.CompletedTask;
+        }
+
+        public Task OnDisappearAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
+        }
+
         public void StartInstallation()
         {
-            new Thread(
-                new ThreadStart(async () =>
-                {
-                    try
-                    {
-                        await this.installationService.RunAsync();
-                    }
-                    catch
-                    {
-                        this.IsSuccessful = false;
-                        this.IsFinished = true;
-                    }
-                })).Start();
+            this.logger.Info("Starting installation ...");
+
+            try
+            {
+                this.IsFinished = false;
+                this.IsSuccessful = false;
+                this.AbortRequested = false;
+                this.SelectedStep = null;
+
+                this.installationService.Run();
+            }
+            catch (Exception ex)
+            {
+                this.IsSuccessful = false;
+                this.IsFinished = true;
+
+                this.logger.Error(ex, "Error while running installation.");
+            }
         }
 
         private void Abort()
         {
-            this.AbortRequested = true;
-
             this.installationService.Abort();
 
-            this.RaiseCanExecuteChanged();
+            this.AbortRequested = true;
         }
 
         private bool CanAbort()
         {
-            return !this.installationService.IsRollbackInProgress;
+            return
+                !this.installationService.IsRollbackInProgress
+                &&
+                !this.AbortRequested;
         }
 
         private bool CanClose()
@@ -133,26 +174,38 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.InstallationService.ActiveStep))
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                this.SelectedStep = this.installationService.ActiveStep;
-                this.RaiseCanExecuteChanged();
-            }
+                if (e.PropertyName == nameof(IInstallationService.ActiveStep))
+                {
+                    this.SelectedStep = this.installationService.ActiveStep;
+                    this.RaiseCanExecuteChanged();
+                }
+            });
         }
 
-        private void OnInstallationServiceFinished(object sender, InstallationFinishedEventArgs e)
+        private void OnInstallationFinished(object? sender, InstallationFinishedEventArgs e)
         {
-            this.IsFinished = true;
-            this.IsSuccessful = e.Success;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.IsFinished = true;
+                this.IsSuccessful = e.Success;
+
+                if (this.IsSuccessful)
+                {
+                    this.notificationService.SetMessage("Installation complete.");
+                }
+                else
+                {
+                    this.notificationService.SetErrorMessage("Installation failed.");
+                }
+            });
         }
 
         private void RaiseCanExecuteChanged()
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.closeCommand?.RaiseCanExecuteChanged();
-                    this.abortCommand?.RaiseCanExecuteChanged();
-                }), DispatcherPriority.Background);
+            this.closeCommand.RaiseCanExecuteChanged();
+            this.abortCommand.RaiseCanExecuteChanged();
         }
 
         #endregion

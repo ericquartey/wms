@@ -1,8 +1,12 @@
 ﻿<UserControl x:Class="Ferretto.VW.Installer.Views.BaySelectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.Installer.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.Installer.Properties"
+             Background="{DynamicResource BackgroundBrush}"
              mc:Ignorable="d">
 
     <Grid Margin="50">
@@ -17,20 +21,28 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
         <TextBlock x:Name="Title"
+                   Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_ExtraLarge}"
                    Style="{DynamicResource TitleTextStyle}"
-                   Text="Selezione della Baia" />
+                   Text="{x:Static res:Resources.BaySelection}" />
 
         <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
                     Margin="0,20,0,0"
                     HorizontalAlignment="Left"
                     Orientation="Vertical">
 
             <TextBlock x:Name="ModelNameLabel"
                        Style="{DynamicResource LabelTextStyle}"
-                       Text="Modello" />
+                       Text="{x:Static res:Resources.Model}" />
 
             <TextBlock x:Name="ModelNameValue"
                        Style="{DynamicResource ValueTextStyle}"
@@ -39,7 +51,7 @@
             <TextBlock x:Name="SerialNumberLabel"
                        Margin="0,15,0,0"
                        Style="{DynamicResource LabelTextStyle}"
-                       Text="Numero di Serie" />
+                       Text="{x:Static res:Resources.SerialNumber}" />
 
             <TextBlock x:Name="SerialNumberValue"
                        Style="{DynamicResource ValueTextStyle}"
@@ -48,65 +60,123 @@
             <TextBlock x:Name="MaxGrossWeightLabel"
                        Margin="0,15,0,0"
                        Style="{DynamicResource LabelTextStyle}"
-                       Text="Portata Massima Lorda" />
+                       Text="{x:Static res:Resources.MaximumGrossCapacity}" />
 
             <TextBlock x:Name="MaxGrossWeightValue"
                        Style="{DynamicResource ValueTextStyle}"
-                       Text="{Binding Machine.MaxGrossWeight, StringFormat={}{0}kg}" />
+                       Text="{Binding Machine.MaxGrossWeight, StringFormat={x:Static res:Resources.KilogramsValueFormat}}" />
         </StackPanel>
 
         <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="3"
                    Margin="0,20,0,0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{DynamicResource TitleTextStyle}"
-                   Text="Seleziona il numero di questa baia" />
+                   Text="{x:Static res:Resources.SelectNumberOfThisBay}" />
 
-        <StackPanel Grid.Row="4"
-                    Margin="0,20,0,0"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
+        <ListView Grid.Row="4"
+                  Grid.ColumnSpan="3"
+                  Margin="0,20,0,0"
+                  HorizontalAlignment="Center"
+                  Background="Transparent"
+                  BorderBrush="Transparent"
+                  ItemsSource="{Binding Bays}"
+                  SelectedItem="{Binding SelectedBay, Mode=TwoWay}">
+            <ListView.Resources>
+                <Style x:Key="FocusVisual">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Rectangle SnapsToDevicePixels="true"
+                                           Stroke="Transparent"
+                                           StrokeDashArray="1 2"
+                                           StrokeThickness="0" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
 
-            <Button Margin="0,0,0,0"
-                    BorderBrush="{DynamicResource FerrettoLightGray}"
-                    Command="{Binding SelectBayOneCommand}"
-                    Content="Baia 1"
-                    Style="{DynamicResource ButtonBayStyle}"
-                    Visibility="{Binding IsBayOneVisible, Converter={StaticResource BTVC}}" />
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
 
-            <Button Margin="20,0,0,0"
-                    BorderBrush="{DynamicResource FerrettoLightGray}"
-                    Command="{Binding SelectBayTwoCommand}"
-                    Content="Baia 2"
-                    Style="{DynamicResource ButtonBayStyle}"
-                    Visibility="{Binding IsBayTwoVisible, Converter={StaticResource BTVC}}" />
+                                <Border Width="150"
+                                        Height="150"
+                                        Margin="10"
+                                        Background="{DynamicResource BackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="2">
 
-            <Button Margin="20,0,0,0"
-                    BorderBrush="{DynamicResource FerrettoLightGray}"
-                    Command="{Binding SelectBayThreeCommand}"
-                    Content="Baia 3"
-                    Style="{DynamicResource ButtonBayStyle}"
-                    Visibility="{Binding IsBayThreeVisible, Converter={StaticResource BTVC}}" />
+                                    <StackPanel Orientation="Vertical">
 
-        </StackPanel>
+                                        <icon:PackIconMaterial x:Name="bayIcon"
+                                                               Width="24"
+                                                               Margin="25"
+                                                               Height="24"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{DynamicResource ForegroundBrush}"
+                                                               Kind="CheckBold"
+                                                               Visibility="Hidden" />
 
-        <TextBlock Grid.Row="5"
-                   Margin="0,20,0,0"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Text="{Binding SelectedBayInfo}" />
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </StackPanel>
+
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="bayIcon" Property="Visibility" Value="Visible" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{DynamicResource FontSize_Large}"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding Number}" />
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
 
         <Button Grid.Row="6"
+                Grid.Column="2"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding NextCommand}"
-                Content="Continua" />
+                Content="{x:Static res:Resources.Continue}" />
 
         <Button Grid.Row="6"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding GoBackCommand}"
-                Content="Indietro" />
+                Content="{x:Static res:Resources.GoBack}" />
     </Grid>
 </UserControl>

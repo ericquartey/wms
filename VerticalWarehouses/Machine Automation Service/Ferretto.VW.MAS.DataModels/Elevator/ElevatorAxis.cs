@@ -46,11 +46,6 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.lowerBound;
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Lower bound cannot be negative.");
-                }
-
                 this.lowerBound = value;
             }
         }

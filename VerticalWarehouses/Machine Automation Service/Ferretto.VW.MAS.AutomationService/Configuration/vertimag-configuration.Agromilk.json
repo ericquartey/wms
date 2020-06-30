@@ -17,7 +17,7 @@
           },
           "LaserPointer": {
             "IsEnabledNew": false,
-            "IpAddress": "192.168.101.13",
+            "IpAddress": "192.168.0.13",
             "TcpPort": 2020
           },
           "BarcodeReader": {
@@ -147,7 +147,7 @@
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
-          "LowerBound": 0.0,
+          "LowerBound": -4000.0,
           "ManualMovements": {
             "FeedRate": 0.04,
             "FeedRateAfterZero": 0.3,
@@ -212,11 +212,11 @@
                   "Deceleration": 0.0,
                   "Id": 10,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 650.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 2,
@@ -269,11 +269,11 @@
                   "Deceleration": 0.0,
                   "Id": 20,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 650.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 3,
@@ -326,11 +326,11 @@
                   "Deceleration": 0.0,
                   "Id": 15,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             },
             {
               "Id": 4,
@@ -383,15 +383,15 @@
                   "Deceleration": 0.0,
                   "Id": 26,
                   "Number": 4,
-                  "Position": 1411.5,
+                  "Position": 1443.0,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1411.5
+              "TotalDistance": 1443.0
             }
           ],
           "Resolution": 88.18085145,
-          "UpperBound": 1.0
+          "UpperBound": 4000.0
         }
       ],
       "Id": 1,
@@ -5427,7 +5427,7 @@
   "Wms": {
     "Id": -1,
     "IsEnabled": false,
-    "IsTimeSyncEnabled": false,
+    "IsTimeSyncEnabled": true,
     "LastWmsTimeSync": "2020-03-06T13:29:04.1028916+00:00",
     "ServiceUrl": "http://172.22.24.197:10000/",
     "TimeSyncIntervalMilliseconds": 10000

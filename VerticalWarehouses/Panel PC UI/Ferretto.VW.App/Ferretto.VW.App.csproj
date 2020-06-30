@@ -40,6 +40,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Accessories\Ferretto.VW.App.Accessories.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Installation\Ferretto.VW.App.Modules.Installation.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Layout\Ferretto.VW.App.Modules.Layout.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Login\Ferretto.VW.App.Modules.Login.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Menu\Ferretto.VW.App.Modules.Menu.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
   </ItemGroup>
 

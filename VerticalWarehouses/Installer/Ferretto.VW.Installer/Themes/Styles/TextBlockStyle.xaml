@@ -38,6 +38,7 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSize_Large}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Padding" Value="0,5,0,0" />
     </Style>
 
 </ResourceDictionary>

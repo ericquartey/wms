@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                                 break;
                         }
 
-                        message += e.WmsOperation.RequestedQuantity + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
+                        message += (e.WmsOperation.RequestedQuantity - e.WmsOperation.DispatchedQuantity) + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
                         message = message.Trim();
 
                         var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);

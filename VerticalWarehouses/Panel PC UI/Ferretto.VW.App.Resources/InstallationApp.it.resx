@@ -2745,6 +2745,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizontalChainOriginalDistance" xml:space="preserve">
     <value>Originale</value>
   </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Montare telecamera</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Sposta la telecamera nella posizione corretta</value>
+  </data>
   <data name="SendScreenSnapshot" xml:space="preserve">
     <value>Invia snapshot dello schermo</value>
   </data>

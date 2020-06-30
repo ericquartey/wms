@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Net;
 
 namespace Ferretto.VW.Installer
 {
@@ -13,9 +14,7 @@ namespace Ferretto.VW.Installer
 
         private const string InstallBay3Ipaddress = "Install:Bay3:Ipaddress";
 
-        private const string InstallDefaultMasIpAddressName = "Install:Default:MasIpaddress";
-
-        private const string InstallDefaultMasIpPortName = "Install:Default:MasIpport";
+        private const string InstallDefaultMasUrl = "Install:Default:MasUrl";
 
         private const string InstallerDirNameKey = "Installer:DirName";
 
@@ -84,40 +83,26 @@ namespace Ferretto.VW.Installer
             }
         }
 
-        public static string GetInstallDefaultMasIpaddress(this NameValueCollection appSettings)
+        public static Uri GetInstallDefaultMasUrl(this NameValueCollection appSettings)
         {
             if (appSettings is null)
             {
                 throw new ArgumentNullException(nameof(appSettings));
             }
 
-            try
+            var uriString = appSettings.Get(InstallDefaultMasUrl);
+            if (Uri.TryCreate(uriString, UriKind.Absolute, out var uri))
             {
-                return appSettings.Get(InstallDefaultMasIpAddressName);
+                return uri;
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception($"The configuration key '{InstallDefaultMasIpAddressName}' is not specified or invalid.", ex);
-            }
-        }
-
-        public static string GetInstallDefaultMasIpport(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                return appSettings.Get(InstallDefaultMasIpPortName);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{InstallDefaultMasIpPortName}' is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{InstallDefaultMasUrl}' is not specified or invalid.");
             }
         }
 
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public static string GetInstallerDirName(this NameValueCollection appSettings)
         {
             if (appSettings is null)

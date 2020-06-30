@@ -8,16 +8,25 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public ShellStep(int number, string title, string description, string rollbackScript, string script, string log, MachineRole machineRole, SetupMode setupMode, bool skipOnResume)
-            : base(number, title, description, log, machineRole, setupMode, skipOnResume)
+        public ShellStep(
+            int number,
+            string title,
+            string description,
+            string rollbackScript,
+            string script,
+            MachineRole machineRole,
+            SetupMode setupMode,
+            bool skipOnResume,
+            bool skipRollback)
+            : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             if (script is null)
             {
                 throw new ArgumentNullException(nameof(script));
             }
 
-            this.Script = LoadScript(script);
-            this.RollbackScript = LoadScript(rollbackScript);
+            this.Script = script; 
+            this.RollbackScript = rollbackScript;
         }
 
         #endregion
@@ -34,7 +43,8 @@ namespace Ferretto.VW.Installer.Core
 
         protected override async Task<StepStatus> OnApplyAsync()
         {
-            var success = await this.TryRunCommandlineAsync(this.Script);
+            var script = LoadScriptFromFile(this.Script);
+            var success = await this.TryRunCommandlineAsync(script);
 
             return
                 success
@@ -46,11 +56,13 @@ namespace Ferretto.VW.Installer.Core
         {
             if (string.IsNullOrWhiteSpace(this.RollbackScript))
             {
-                this.LogInformation("Nulla da annullare in questo step.");
+                this.Execution.LogInformation("Nulla da annullare in questo step.");
                 return StepStatus.RolledBack;
             }
 
-            var success = await this.TryRunCommandlineAsync(this.RollbackScript);
+            var script = LoadScriptFromFile(this.RollbackScript);
+
+            var success = await this.TryRunCommandlineAsync(script);
 
             return
                 success
@@ -60,7 +72,7 @@ namespace Ferretto.VW.Installer.Core
 
         protected abstract Task<bool> TryRunCommandlineAsync(string command);
 
-        private static string LoadScript(string script)
+        private static string LoadScriptFromFile(string script)
         {
             if (File.Exists(script))
             {

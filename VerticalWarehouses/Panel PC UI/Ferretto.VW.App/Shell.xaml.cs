@@ -17,7 +17,9 @@ namespace Ferretto.VW.App
             //#if DEBUG
             if (!fullscreen)
             {
+                //#if DEBUG
                 this.MouseDown += this.Shell_MouseDown;
+                //#endif
                 this.MouseDoubleClick += this.Shell_MouseDoubleClick;
             }
             //#endif
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App
             }
         }
 
+        //#if DEBUG
+
         private void Shell_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -58,5 +62,7 @@ namespace Ferretto.VW.App
         }
 
         #endregion
+
+        //#endif
     }
 }

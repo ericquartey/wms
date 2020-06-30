@@ -90,24 +90,6 @@ namespace Ferretto.VW.App
             base.OnExit(e);
         }
 
-        private void DeactivateAccessories()
-        {
-            try
-            {
-                var barcodeReaderService = this.Container.Resolve<IBarcodeReaderService>();
-                this.logger.Info("Deactivating barcode reader on application exit.");
-
-                Task
-                    .Run(async () => await barcodeReaderService.StopAsync().ConfigureAwait(false))
-                    .GetAwaiter()
-                    .GetResult();
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex);
-            }
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!AppCheck.Start())
@@ -191,6 +173,24 @@ namespace Ferretto.VW.App
             NLog.LogManager.Shutdown();
         }
 
+        private void DeactivateAccessories()
+        {
+            try
+            {
+                var barcodeReaderService = this.Container.Resolve<IBarcodeReaderService>();
+                this.logger.Info("Deactivating barcode reader on application exit.");
+
+                Task
+                    .Run(async () => await barcodeReaderService.StopAsync().ConfigureAwait(false))
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
         private void DeactivateBay()
         {
             try
@@ -239,7 +239,7 @@ namespace Ferretto.VW.App
             Localized.Instance.AddResourceManager(LoadLogin.ResourceManager);
             Localized.Instance.AddResourceManager(MainMenu.ResourceManager);
             Localized.Instance.AddResourceManager(MaintenanceMenu.ResourceManager);
-            Localized.Instance.AddResourceManager(Menu.ResourceManager);
+            Localized.Instance.AddResourceManager(VW.App.Resources.Menu.ResourceManager);
             Localized.Instance.AddResourceManager(OperatorApp.ResourceManager);
             Localized.Instance.AddResourceManager(SensorCard.ResourceManager);
             Localized.Instance.AddResourceManager(ServiceHealthProbe.ResourceManager);
