@@ -6,31 +6,11 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-
-- script: dotnet build "VerticalWarehouses/Panel PC UI/Ferretto.VW.App/Ferretto.VW.App.csproj" --configuration Debug --framework net471
-  displayName: 'dotnet build'
-
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: 'VerticalWarehouses/Panel PC UI/**/bin/**/*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'VerticalWarehouses/Panel PC UI/**/bin/${{ parameters.BuildConfiguration }}/**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
+- script: dotnet publish "VerticalWarehouses/Panel PC UI/Ferretto.VW.App/Ferretto.VW.App.csproj" --configuration ${{ parameters.BuildConfiguration }} --framework net471
+  displayName: 'dotnet build & publish (${{ parameters.BuildConfiguration }})'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Panel PC App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/Ferretto.VW.App/bin/${{ parameters.BuildConfiguration }}/net471'
+    PathtoPublish: '$(system.defaultworkingdirectory)/VerticalWarehouses/Panel PC UI/Ferretto.VW.App/bin/${{ parameters.BuildConfiguration }}/net471/publish'
     ArtifactName: 'panelpc_app'
-
-
