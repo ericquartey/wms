@@ -2745,4 +2745,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizontalChainOriginalDistance" xml:space="preserve">
     <value>Originale</value>
   </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Invia snapshot dello schermo</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Invia logs</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Trasmissione videate</value>
+  </data>
 </root>

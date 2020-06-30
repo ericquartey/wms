@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Controls
             return true;
         }
 
-        protected void RaiseCanExecuteChanged()
+        protected virtual void RaiseCanExecuteChanged()
         {
             this.executeCommand?.RaiseCanExecuteChanged();
         }

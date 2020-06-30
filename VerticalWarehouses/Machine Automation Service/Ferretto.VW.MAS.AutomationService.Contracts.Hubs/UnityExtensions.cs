@@ -10,7 +10,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this IContainerRegistry container,
             System.Uri webServiceUrl,
             string operatorHubPath,
-            string installationHubPath)
+            string installationHubPath,
+            string telemetryHubPath)
         {
             if (container is null)
             {
@@ -23,9 +24,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             }
 
             var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
+            var telemetryHubUrl = new System.Uri(webServiceUrl, telemetryHubPath);
 
             container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
             container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(webServiceUrl, installationHubPath));
+            container.RegisterInstance<ITelemetryHubClient>(new TelemetryHubClient(telemetryHubUrl));
 
             return container;
         }
@@ -44,6 +47,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             containerProvider
                 .Resolve<IOperatorHubClient>()
                 .ConnectAsync();
+
+            //containerProvider
+            //   .Resolve<ITelemetryHubClient>()
+            //   .ConnectAsync(true);
 
             return containerProvider;
         }

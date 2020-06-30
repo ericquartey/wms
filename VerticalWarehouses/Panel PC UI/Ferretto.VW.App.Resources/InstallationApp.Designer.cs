@@ -6282,6 +6282,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screen cast.
+        /// </summary>
+        public static string ScreenCast {
+            get {
+                return ResourceManager.GetString("ScreenCast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security.
         /// </summary>
         public static string Security {
@@ -6350,6 +6359,24 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectUpperBound {
             get {
                 return ResourceManager.GetString("SelectUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send logs.
+        /// </summary>
+        public static string SendLog {
+            get {
+                return ResourceManager.GetString("SendLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send screen snapshot.
+        /// </summary>
+        public static string SendScreenSnapshot {
+            get {
+                return ResourceManager.GetString("SendScreenSnapshot", resourceCulture);
             }
         }
         

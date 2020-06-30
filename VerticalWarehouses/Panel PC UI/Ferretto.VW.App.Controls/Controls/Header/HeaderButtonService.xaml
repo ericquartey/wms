@@ -1,0 +1,53 @@
+﻿<ctrls:PpcControl x:Class="Ferretto.VW.App.Controls.Controls.HeaderServiceButton"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
+                  xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+                  PresentationType="Service"
+                  mc:Ignorable="d">
+
+    <Grid Name="LayoutRoot">
+        <!--ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"-->
+        <controls:PpcButton x:Name="ServiceButtonRoot"
+                            Width="100"
+                            Height="60"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding ExecuteCommand}"
+                            Content="{res:Loc InstallationApp.SendLog}"
+                            IsBusy="{Binding IsScreenCast}"/>
+
+        <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
+               Margin="0,20"
+               VerticalAlignment="Top"
+               AllowsTransparency="True"
+               IsOpen="{Binding IsServiceOptionsVisible}"
+               PlacementTarget="{Binding ElementName=ServiceButtonRoot}">
+            <StackPanel>
+                <controls:PpcButton Width="220"
+                          
+                                    Command="{Binding SendScreenSnapshotCommand}"
+                                    Content="{res:Loc InstallationApp.SendScreenSnapshot}">
+                                            
+                    
+                </controls:PpcButton>
+
+                <controls:PpcButton Width="220"
+                                    Margin="0 -2 0 0"
+                                    HorizontalContentAlignment="Left"
+                                    Command="{Binding SendLogCommand}"
+                                    Content="{res:Loc InstallationApp.SendLog}" />
+
+                <controls:PpcButton Width="220"
+                                    Margin="0 -2 0 0"
+                                    HorizontalContentAlignment="Left"
+                                    Command="{Binding ScreenCastCommand}"
+                                    Content="{res:Loc InstallationApp.ScreenCast}"
+                                    Style="{DynamicResource PpcButtonServiceScreenCastStyle}" />
+
+            </StackPanel>
+        </Popup>
+    </Grid>
+</ctrls:PpcControl>

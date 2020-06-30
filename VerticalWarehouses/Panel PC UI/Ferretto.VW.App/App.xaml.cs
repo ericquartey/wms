@@ -135,9 +135,10 @@ namespace Ferretto.VW.App
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
+            var telemetryHubPath = ConfigurationManager.AppSettings.GetAutomationServiceTelemetryHubPath();
 
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
-            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath, telemetryHubPath);
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = new HttpClient();
