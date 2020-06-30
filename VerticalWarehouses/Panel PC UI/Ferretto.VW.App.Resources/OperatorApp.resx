@@ -1978,4 +1978,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="Unit" xml:space="preserve">
     <value>Unit</value>
   </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
 </root>

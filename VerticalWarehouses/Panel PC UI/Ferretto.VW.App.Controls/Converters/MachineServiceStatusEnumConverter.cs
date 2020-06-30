@@ -22,6 +22,9 @@ namespace Ferretto.VW.App.Controls.Converters
                 case MachineServiceStatus.Valid:
                     return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Valid");
 
+                case MachineServiceStatus.Completed:
+                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Completed");
+
                 default:
                     return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Unknown");
             }

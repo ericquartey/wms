@@ -2546,6 +2546,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string MachineServiceStatus_Completed {
+            get {
+                return ResourceManager.GetString("MachineServiceStatus_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired.
         /// </summary>
         public static string MachineServiceStatus_Expired {

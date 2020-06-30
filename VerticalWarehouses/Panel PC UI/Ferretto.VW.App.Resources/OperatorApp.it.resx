@@ -1601,4 +1601,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Unit" xml:space="preserve">
     <value>Cassetto</value>
   </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Completato</value>
+  </data>
 </root>
