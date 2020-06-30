@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+#if !DEBUG
+using System.Configuration;
+#endif
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
