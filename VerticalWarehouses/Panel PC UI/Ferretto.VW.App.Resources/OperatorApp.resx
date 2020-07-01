@@ -1981,4 +1981,8 @@ Please put back any moved pieces in their original position.</value>
   <data name="MachineServiceStatus_Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Under Weight</value>
+    <comment>Block Level</comment>
+  </data>
 </root>

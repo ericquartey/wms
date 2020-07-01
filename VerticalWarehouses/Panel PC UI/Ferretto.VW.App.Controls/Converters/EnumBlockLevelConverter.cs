@@ -28,6 +28,9 @@ namespace Ferretto.VW.App.Controls.Converters
                 case BlockLevel.NeedsTest:
                     return Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest");
 
+                case BlockLevel.UnderWeight:
+                    return Resources.Localized.Get("OperatorApp.BlockLevelUnderWeight");
+
                 default:
                     return Resources.Localized.Get("OperatorApp.BlockLevelUndefined");
                     //return ((BlockLevel)value).ToString();
@@ -63,6 +66,10 @@ namespace Ferretto.VW.App.Controls.Converters
                 if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelNeedsTest"), StringComparison.CurrentCulture))
                 {
                     return BlockLevel.NeedsTest;
+                }
+                if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelUnderWeight"), StringComparison.CurrentCulture))
+                {
+                    return BlockLevel.UnderWeight;
                 }
             }
 
