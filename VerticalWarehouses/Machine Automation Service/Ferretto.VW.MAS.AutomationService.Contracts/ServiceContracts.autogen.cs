@@ -3598,6 +3598,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"NeedsTest")]
         NeedsTest = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"UnderWeight")]
+        UnderWeight = 5,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]

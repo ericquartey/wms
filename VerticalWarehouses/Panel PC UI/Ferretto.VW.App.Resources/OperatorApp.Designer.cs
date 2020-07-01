@@ -376,6 +376,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Under Weight.
+        /// </summary>
+        public static string BlockLevelUnderWeight {
+            get {
+                return ResourceManager.GetString("BlockLevelUnderWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {

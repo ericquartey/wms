@@ -1,10 +1,14 @@
 ﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class LoadingUnit : DataModel, IValidable
     {
         #region Fields
+
+        [JsonIgnore]
+        private const double VeryHeavyLoadUnit = 0.85;
 
         private double grossWeight;
 
@@ -64,6 +68,9 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsInFullTest { get; set; }
 
         public bool IsIntoMachine { get; set; }
+
+        [JsonIgnore]
+        public bool IsVeryHeavy => this.NetWeight > this.MaxNetWeight * VeryHeavyLoadUnit;
 
         /// <summary>
         /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.

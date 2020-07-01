@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
@@ -105,8 +104,9 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 loadUnitHeight = loadUnit.Height;
             }
+
             var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
-                    && c.Position >= cell.Position
+                    && (c.Position >= cell.Position - (loadUnit.IsVeryHeavy ? CellHeight : 0))
                     && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance
                     );
             if (!cellsInRange.Any())
@@ -129,13 +129,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 var lastPosition = cellsFrom.LastOrDefault().Position;
                 return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadUnit.Cell.Position)
                     || (!c.IsFree && c.Position > lastPosition)
-                    || c.BlockLevel == BlockLevel.Blocked
+                    || c.IsNotAvailable
                     || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
                     );
             }
 
             return !cellsInRange.Any(c => !c.IsFree
-                || c.BlockLevel == BlockLevel.Blocked
+                || c.IsNotAvailable
                 || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
                 );
         }
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (loadingUnit.Cell is null)
             {
-                this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnit.Id} not in cell! ");
+                this.logger.LogError($"FindDownCell for compacting: LU {loadingUnit.Id} not in cell! ");
                 throw new EntityNotFoundException();
             }
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
@@ -159,12 +159,24 @@ namespace Ferretto.VW.MAS.DataLayer
             var cellId = -1;
             foreach (var cell in cells)
             {
-                if (cell.BlockLevel == BlockLevel.Blocked
+                if (cell.IsNotAvailable
                     || cell.BlockLevel == BlockLevel.NeedsTest
                     || !cell.IsFree
                     )
                 {
                     break;
+                }
+                if (loadingUnit.IsVeryHeavy)
+                {
+                    var prev = cells.FirstOrDefault(c => c.Position < cell.Position);
+                    if (prev is null
+                        || prev.IsNotAvailable
+                        || prev.BlockLevel == BlockLevel.NeedsTest
+                        || !prev.IsFree
+                        )
+                    {
+                        break;
+                    }
                 }
                 cellId = cell.Id;
             }
@@ -253,6 +265,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadUnitHeight = loadUnit.Height;
             }
 
+            if (loadUnit.IsVeryHeavy)
+            {
+                loadUnitHeight += CellHeight;
+                if (compactingType != CompactingType.NoCompacting)
+                {
+                    this.logger.LogDebug($"FindEmptyCell: height extended to {loadUnitHeight} for heavy LU {loadingUnitId}, weight {loadUnit.NetWeight}");
+                }
+            }
+
             using (var availableCell = new BlockingCollection<AvailableCell>())
             {
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
@@ -278,7 +299,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         var lastCellPosition = cellsFollowing.Last().Position;
                         if (cellsFollowing.Count() > 1)
                         {
-                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked || c.BlockLevel == BlockLevel.NeedsTest);
+                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || c.BlockLevel == BlockLevel.NeedsTest);
                             if (firstUnavailable != null)
                             {
                                 lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
@@ -333,8 +354,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 // start from lower cells
-                var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First();
+                var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                    .ThenBy(t => t.Cell.Priority)
+                    .First();
                 var cellId = foundCell.Cell.Id;
+                if (loadUnit.IsVeryHeavy)
+                {
+                    // return second cell for heavy LU
+                    cellId = cells.First(c => c.Side == foundCell.Cell.Side && c.Position > foundCell.Cell.Position).Id;
+                }
                 this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
@@ -534,6 +562,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (loadingUnitId is null)
                 {
+                    // set occupied cells to free
                     if (cell.LoadingUnit is null)
                     {
                         return;
@@ -546,7 +575,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .Where(c =>
                             c.Panel.Side == cell.Side
                             &&
-                            c.Position >= cell.Position
+                            (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight: 0))
                             &&
                             c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                         .ToArray();
@@ -569,7 +598,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
 
-                    foreach (var occupiedCell in occupiedCells)
+                    foreach (var occupiedCell in occupiedCells.Where(c => c.Position >= cell.Position || c.BlockLevel == BlockLevel.UnderWeight))
                     {
                         if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != loadingUnit.Id)
                         {
@@ -583,10 +612,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         occupiedCell.IsFree = true;
                         occupiedCell.LoadingUnit = null;
+                        if (occupiedCell.BlockLevel == BlockLevel.UnderWeight)
+                        {
+                            occupiedCell.BlockLevel = BlockLevel.None;
+                        }
                     }
                 }
                 else
                 {
+                    // set free cells to occupied
                     if (cell.BlockLevel == BlockLevel.SpaceOnly)
                     {
                         throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheTargetCellIsSpaceOnly", CommonUtils.Culture.Actual));
@@ -624,7 +658,7 @@ namespace Ferretto.VW.MAS.DataLayer
                        .Where(c =>
                            c.Panel.Side == cell.Side
                            &&
-                           c.Position >= cell.Position
+                           (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight : 0))
                            &&
                            c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                        .ToArray();
@@ -640,6 +674,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         if (freeCell.BlockLevel == BlockLevel.Blocked)
                         {
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheLoadingCannotOccupyABlockedCell", CommonUtils.Culture.Actual));
+                        }
+                        if (freeCell.Position < cell.Position)
+                        {
+                            freeCell.BlockLevel = BlockLevel.UnderWeight;
                         }
                     }
 

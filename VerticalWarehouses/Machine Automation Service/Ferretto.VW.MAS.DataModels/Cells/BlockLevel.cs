@@ -19,5 +19,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         // the cell must be tested in the "first load unit" test. After testing the BlockLevel returns to None.
         NeedsTest,
+
+        // the cell must be free because the next cell is occupied by a very heavy LU
+        UnderWeight
     }
 }
