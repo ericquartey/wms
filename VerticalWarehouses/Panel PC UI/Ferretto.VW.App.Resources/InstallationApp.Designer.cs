@@ -6156,6 +6156,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save cell.
+        /// </summary>
+        public static string SaveCell {
+            get {
+                return ResourceManager.GetString("SaveCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save changes before starting the test..
         /// </summary>
         public static string SaveChangesBeforeStartingTest {

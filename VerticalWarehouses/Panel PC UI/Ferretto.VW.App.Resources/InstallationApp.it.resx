@@ -2760,4 +2760,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ScreenCast" xml:space="preserve">
     <value>Trasmissione videate</value>
   </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Salva cella</value>
+  </data>
 </root>
