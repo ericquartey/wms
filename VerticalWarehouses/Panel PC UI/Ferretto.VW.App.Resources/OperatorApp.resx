@@ -226,7 +226,7 @@
     <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
-    <value>Other</value>
+    <value>Settings</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerActivityPickingPageHeader" xml:space="preserve">

@@ -199,7 +199,7 @@
     <value>Ricerca articolo</value>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
-    <value>Altro</value>
+    <value>Impostazioni</value>
   </data>
   <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Operazione di prelievo.</value>

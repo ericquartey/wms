@@ -262,10 +262,10 @@
     <value>Movements</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Other</value>
+    <value>Settings</value>
   </data>
   <data name="OtherMenuName" xml:space="preserve">
-    <value>Menu Other</value>
+    <value>Menu Settings</value>
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Units</value>
