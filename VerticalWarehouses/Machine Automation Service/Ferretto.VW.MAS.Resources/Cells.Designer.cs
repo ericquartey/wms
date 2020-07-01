@@ -124,6 +124,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified cell cannot fit the load unit.
+        /// </summary>
+        public static string TheSpecifiedCellCannotFitTheLoadUnit {
+            get {
+                return ResourceManager.GetString("TheSpecifiedCellCannotFitTheLoadUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified cell is not within the elevator&apos;s vertical bounds..
         /// </summary>
         public static string TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds {
@@ -138,6 +147,15 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights {
             get {
                 return ResourceManager.GetString("TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Specified height is out of the elevator vertical bounds.
+        /// </summary>
+        public static string TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds {
+            get {
+                return ResourceManager.GetString("TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds", resourceCulture);
             }
         }
         

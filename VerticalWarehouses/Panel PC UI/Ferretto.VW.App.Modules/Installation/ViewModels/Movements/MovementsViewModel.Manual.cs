@@ -69,13 +69,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPolicyBypassed;
 
+        private DelegateCommand isPolicyBypassedCommand;
+
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
 
         private DelegateCommand lightCommand;
-
-        private DelegateCommand isPolicyBypassedCommand;
 
         private string lightIcon;
 
@@ -442,6 +442,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.CanBaseExecute() &&
                    this.InputHeight.HasValue &&
+                   this.moveToHeightPolicy?.IsAllowed == true &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.InputHeight.GetValueOrDefault());
         }
 
@@ -615,6 +616,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                      ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                      !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                      !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                     !(this.SensorsService.IsExtraVertical && !this.SensorsService.IsZeroVertical) && // overrun
                                      !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
@@ -625,6 +627,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                        ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                        !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                        !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                       !(this.SensorsService.IsExtraVertical && this.SensorsService.IsZeroVertical) && // underrun
                                        !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 

@@ -153,4 +153,10 @@
   <data name="TheCellIsNotFree" xml:space="preserve">
     <value>La cella non è libera</value>
   </data>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>La cella specificata non può contenere il cassetto sull'elevatore</value>
+  </data>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>L'altezza specificata non è situata entro i limiti verticali dell'elevatore.</value>
+  </data>
 </root>

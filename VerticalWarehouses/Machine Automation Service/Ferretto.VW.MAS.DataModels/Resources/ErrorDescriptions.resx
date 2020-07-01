@@ -397,7 +397,7 @@
     <value>Invalid {0} Axis movement Speed configuration</value>
   </data>
   <data name="ElevatorOverrunDetected" xml:space="preserve">
-    <value>Positioning error at top or bottom side</value>
+    <value>Positioning error at top side</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
     <value>External bay is occupied</value>
@@ -410,5 +410,8 @@
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
     <value>Errore altezza</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Positioning error at bottom side</value>
   </data>
 </root>

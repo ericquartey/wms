@@ -388,7 +388,7 @@
     <value>La posizione selezionata della baia non è valida</value>
   </data>
   <data name="ElevatorOverrunDetected" xml:space="preserve">
-    <value>L'elevatore ha raggiunto il sensore di oltrecorsa</value>
+    <value>L'elevatore ha raggiunto il sensore di oltrecorsa in alto</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
     <value>La baia esterna è occupata</value>
@@ -407,5 +407,8 @@
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
     <value>Il cassetto è troppo alto per questa baia. Prelevalo con un'altra baia o muovilo manualmente</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>L'elevatore ha raggiunto il sensore di oltrecorsa in basso</value>
   </data>
 </root>

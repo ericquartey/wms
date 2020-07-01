@@ -250,11 +250,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Positioning error at top or bottom side.
+        ///   Looks up a localized string similar to Positioning error at top side.
         /// </summary>
         public static string ElevatorOverrunDetected {
             get {
                 return ResourceManager.GetString("ElevatorOverrunDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positioning error at bottom side.
+        /// </summary>
+        public static string ElevatorUnderrunDetected {
+            get {
+                return ResourceManager.GetString("ElevatorUnderrunDetected", resourceCulture);
             }
         }
         

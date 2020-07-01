@@ -457,6 +457,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveToHeightAsync(double height);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveToHeightAsync(double height, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2990,11 +2997,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ElevatorOverrunDetected = 75,
     
-        ExternalBayEmpty = 76,
+        ElevatorUnderrunDetected = 76,
     
-        ExternalBayOccupied = 77,
+        ExternalBayEmpty = 77,
     
-        WmsError = 78,
+        ExternalBayOccupied = 78,
+    
+        WmsError = 79,
     
         InverterErrorBaseCode = 1000,
     
