@@ -2272,16 +2272,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DeviceInformation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public DeviceInformation DeviceInformation { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsConfigured", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use the IsConfiguredNew field instead.")]
-        public string IsConfigured { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("IsConfiguredNew", Required = Newtonsoft.Json.Required.Always)]
         public bool IsConfiguredNew { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsEnabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use the IsEnabledNew field instead.")]
-        public string IsEnabled { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsEnabledNew", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnabledNew { get; set; }

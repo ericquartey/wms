@@ -116,8 +116,15 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public override async Task OnLoadedAsync()
         {
-            var bay = await this.bayManagerService.GetBayAsync();
-            this.bayNumber = bay.Number;
+            try
+            {
+                var bay = await this.bayManagerService.GetBayAsync();
+                this.bayNumber = bay.Number;
+            }
+            catch
+            {
+                // TODO please fix this
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
