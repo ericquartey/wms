@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineServicingWebService machineServicingWebService;
+
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly UsbWatcherService usbWatcherService;
@@ -42,11 +44,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersExportViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
+        public ParametersExportViewModel(IMachineConfigurationWebService machineConfigurationWebService,
+            UsbWatcherService usb,
+            IMachineServicingWebService machineServicingWebService)
                 : base(PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
+            this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
         }
 
         #endregion
@@ -174,8 +179,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.RaisePropertyChanged();
 
                 // fetch latest version
-                var output = this.ExportingConfiguration;
+                var output = this.ExportingConfiguration as VertimagConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
+
+                output = await this.UpdateOutputAsync(output);
 
                 var settings = new JsonSerializerSettings()
                 {
@@ -218,6 +225,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 try
                 {
                     var vertimag = this.Data as VertimagConfiguration;
+
                     var fullPath = vertimag.Filename(value, false);// this.GetFullPath(value, vertimag.Machine.SerialNumber);
                     hasConflict = File.Exists(fullPath);
                 }
@@ -242,6 +250,40 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 // no need to await for this
                 this.NavigationService.GoBackSafelyAsync();
+            }
+        }
+
+        private async Task<VertimagConfiguration> UpdateOutputAsync(VertimagConfiguration output)
+        {
+            var outsafe = output;
+            try
+            {
+                //fix null Accessories
+                for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                {
+                    if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
+                    {
+                        var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
+                        output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
+                    }
+                }
+
+                //fix null Instructions
+                var service = await this.machineServicingWebService.GetAllAsync();
+
+                for (int i = 0; i < output.ServicingInfo.Count(); i++)
+                {
+                    if (output.ServicingInfo.ElementAtOrDefault(i).Instructions == null)
+                    {
+                        output.ServicingInfo.ElementAtOrDefault(i).Instructions = service.Where(w => w.Id == output.ServicingInfo.ElementAtOrDefault(i).Id).LastOrDefault().Instructions;
+                    }
+                }
+
+                return output;
+            }
+            catch (Exception)
+            {
+                return outsafe;
             }
         }
 
