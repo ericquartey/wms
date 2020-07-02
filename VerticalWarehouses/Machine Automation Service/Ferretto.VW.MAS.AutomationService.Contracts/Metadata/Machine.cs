@@ -37,7 +37,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(12)]
             public double ExpireDays { get; set; }
 
-            [Editable(false)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             [Id(3)]
@@ -52,6 +51,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_HorizontalPositionToCalibrate))]
             [Id(10)]
             public double HorizontalPositionToCalibrate { get; set; }
+
+            [Editable(false)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Id))]
+            [Id(14)]
+            public bool Id { get; set; }
 
             [Editable(true)]
             [Unit("mm")]
