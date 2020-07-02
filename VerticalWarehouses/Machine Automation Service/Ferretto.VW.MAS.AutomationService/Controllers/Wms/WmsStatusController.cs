@@ -66,6 +66,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.IsEnabled);
         }
 
+        [HttpGet("is-time-sync-enabled")]
+        public ActionResult<bool> IsTimeSyncEnabled()
+        {
+            return this.Ok(this.wmsSettingsProvider.IsTimeSyncEnabled);
+        }
+
         [HttpPut]
         public async Task UpdateAsync(bool isEnabled, string httpUrl)
         {

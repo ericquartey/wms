@@ -112,6 +112,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.HealthStatus = HealthStatus.Unknown;
                     }
+                    else
+                    {
+                        if (this.wmsStatusWebService.IsTimeSyncEnabledAsync().Result == false)
+                        {
+                            this.wmsStatusWebService.UpdateWmsTimeSettingsAsync();
+                        }
+                    }
 
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
@@ -252,7 +259,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.IsWmsEnabled)
                 {
                     await this.CheckEndpointAsync();
-                    await this.wmsStatusWebService.UpdateWmsTimeSettingsAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
