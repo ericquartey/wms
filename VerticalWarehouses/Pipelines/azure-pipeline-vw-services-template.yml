@@ -15,7 +15,7 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }} 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj'
+- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }} "VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj"
   displayName: 'dotnet publish (${{ parameters.BuildConfiguration }})'
 
 - task: PublishBuildArtifacts@1
