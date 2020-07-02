@@ -182,6 +182,17 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public void TimeSyncIntervalMillisecondsUpdate()
+        {
+            lock (this.dataContext)
+            {
+                var wms = this.dataContext.WmsSettings.Single();
+                wms.TimeSyncIntervalMilliseconds = wms.TimeSyncIntervalMilliseconds / 1000;
+                this.dataContext.WmsSettings.Update(wms);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }

@@ -113,6 +113,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.HealthStatus = HealthStatus.Unknown;
                     }
 
+                    if (this.isWmsEnabled)
+                    {
+                        this.wmsStatusWebService.UpdateWmsTimeSettingsAsync();
+                    }
+
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
                 }
