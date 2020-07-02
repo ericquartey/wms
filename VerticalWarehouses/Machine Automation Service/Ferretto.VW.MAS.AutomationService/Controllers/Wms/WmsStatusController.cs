@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task UpdateWmsTimeSettingsAsync()
         {
             this.wmsSettingsProvider.IsTimeSyncEnabled = true;
-            this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate();
+            // this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate();
         }
 
         #endregion
