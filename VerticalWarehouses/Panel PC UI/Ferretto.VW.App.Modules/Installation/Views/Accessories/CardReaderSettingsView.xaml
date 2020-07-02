@@ -38,8 +38,7 @@
             <RowDefinition x:Name="Row3_Input" />
             <RowDefinition x:Name="Row4_Tokens_Title"
                            Height="Auto" />
-            <RowDefinition x:Name="Row5_Tokens"
-                            />
+            <RowDefinition x:Name="Row5_Tokens" />
             <RowDefinition x:Name="Row6_Save"
                            Height="Auto" />
         </Grid.RowDefinitions>
@@ -55,6 +54,7 @@
                               Margin="0,15,0,0"
                               VerticalAlignment="Center"
                               IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                              IsEnabled="{Binding IsEnabled}"
                               LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
         <controls:PpcTextBox Grid.Row="2"
@@ -115,7 +115,7 @@
                    FontSize="14"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{res:Loc InstallationApp.AcquiredToken}" />
-        
+
         <ItemsControl Grid.Row="5"
                       Grid.ColumnSpan="2"
                       Background="Transparent"
