@@ -72,6 +72,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.IsTimeSyncEnabled);
         }
 
+        [HttpGet("get-time-sync-interval-milliseconds")]
+        public ActionResult<int> GetTimeSyncIntervalMilliseconds()
+        {
+            return this.Ok(this.wmsSettingsProvider.TimeSyncIntervalMilliseconds);
+        }
+
         [HttpPut]
         public async Task UpdateAsync(bool isEnabled, string httpUrl)
         {
@@ -85,10 +91,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPut("update-wms-time-settings")]
-        public async Task UpdateWmsTimeSettingsAsync()
+        public async Task UpdateIsTimeSyncEnabledAsync()
         {
             this.wmsSettingsProvider.IsTimeSyncEnabled = true;
-            // this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate();
+        }
+
+        [HttpPost("time-sync-interval-milliseconds-update")]
+        public async Task UpdateTimeSyncIntervalMilliseconds(int seconds)
+        {
+            if (seconds != null)
+            {
+                throw new ArgumentException("The value must be specified");
+            }
+
+            this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate(seconds);
         }
 
         #endregion

@@ -3247,6 +3247,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hours refresh.
+        /// </summary>
+        public static string HoursRefresh {
+            get {
+                return ResourceManager.GetString("HoursRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {

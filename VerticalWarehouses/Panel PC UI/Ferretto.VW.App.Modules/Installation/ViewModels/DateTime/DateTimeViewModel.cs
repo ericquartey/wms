@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineUtcTimeWebService machineUtcTimeWebService;
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
         private bool canGoAutoSync;
 
         private ushort? day;
@@ -38,16 +40,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveCommand;
 
+        private int timeSyncMilliseconds;
+
         private ushort? year;
 
         #endregion
 
         #region Constructors
 
-        public DateTimeViewModel(IMachineUtcTimeWebService machineUtcTimeWebService)
+        public DateTimeViewModel(IMachineUtcTimeWebService machineUtcTimeWebService,
+            IMachineWmsStatusWebService wmsStatusWebService)
             : base(PresentationMode.Installer)
         {
             this.machineUtcTimeWebService = machineUtcTimeWebService ?? throw new ArgumentNullException(nameof(machineUtcTimeWebService));
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
 
             this.IsAuto = true;
         }
@@ -93,6 +99,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.isAuto, value))
                 {
                     this.isManual = !this.isAuto;
+
+                    if (this.isAuto)
+                    {
+                        this.wmsStatusWebService.UpdateIsTimeSyncEnabledAsync();
+                    }
+
                     ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
                     this.RaisePropertyChanged(nameof(this.IsManual));
                 }
@@ -156,6 +168,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public int TimeSyncMilliseconds
+        {
+            get => this.timeSyncMilliseconds;
+            set => this.SetProperty(ref this.timeSyncMilliseconds, value, this.RaiseCanExecuteChanged);
+        }
+
         public ushort? Year
         {
             get => this.year;
@@ -202,6 +220,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             DateTimeOffset? currentDateTime = null;
             try
             {
+                this.TimeSyncMilliseconds = (int)(this.wmsStatusWebService.GetTimeSyncIntervalMillisecondsAsync().Result * Math.Pow(2.7778, -7));
+
                 this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
                 this.IsManualEnabled = true;
 
@@ -257,6 +277,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (!this.isAuto)
                 {
                     await this.machineUtcTimeWebService.SetAsync(newDateTime.Value);
+                }
+
+                if (this.isAuto)
+                {
+                    await this.wmsStatusWebService.UpdateTimeSyncIntervalMillisecondsAsync((int)(this.timeSyncMilliseconds * Math.Pow(3.6, 6)));
                 }
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));

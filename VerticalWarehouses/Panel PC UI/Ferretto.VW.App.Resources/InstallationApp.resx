@@ -2853,4 +2853,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SaveCell" xml:space="preserve">
     <value>Save cell</value>
   </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Hours refresh</value>
+  </data>
 </root>

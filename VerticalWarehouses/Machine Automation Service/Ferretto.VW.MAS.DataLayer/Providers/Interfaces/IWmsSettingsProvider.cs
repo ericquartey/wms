@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         WmsSettings GetAll();
 
-        void TimeSyncIntervalMillisecondsUpdate();
+        void TimeSyncIntervalMillisecondsUpdate(int seconds);
 
         #endregion
     }
