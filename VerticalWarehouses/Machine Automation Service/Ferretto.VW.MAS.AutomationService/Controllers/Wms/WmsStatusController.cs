@@ -78,6 +78,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
         }
 
+        [HttpPut("update-wms-time-settings")]
+        public async Task UpdateWmsTimeSettingsAsync()
+        {
+            this.wmsSettingsProvider.IsTimeSyncEnabled = true;
+            this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate();
+        }
+
         #endregion
     }
 }

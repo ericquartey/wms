@@ -252,6 +252,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.IsWmsEnabled)
                 {
                     await this.CheckEndpointAsync();
+                    await this.wmsStatusWebService.UpdateWmsTimeSettingsAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
