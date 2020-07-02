@@ -348,6 +348,9 @@
   <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
     <value>Horizontal Position To Calibrate</value>
   </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Machine Id</value>
+  </data>
   <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
     <value>Max Drawer Height</value>
   </data>
