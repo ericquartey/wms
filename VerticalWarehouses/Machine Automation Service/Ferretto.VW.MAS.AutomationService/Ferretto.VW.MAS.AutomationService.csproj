@@ -85,8 +85,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Ferretto.VW.Common.Hubs\Ferretto.VW.Common.Hubs.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\Utility\Ferretto.VW.Telemetry.Contracts.Hub\Ferretto.VW.Telemetry.Contracts.Hub.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DateTime\Ferretto.VW.MAS.TimeManagement.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />

@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.Telemetry.Contracts.Hub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -15,22 +14,18 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationTelemetryService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
-        #region Fields
-
-        private readonly ITelemetryHubClient telemetryHub;
-
-        #endregion
+        //private readonly ITelemetryHubClient telemetryHub;
 
         #region Constructors
 
         public NotificationTelemetryService(
             IEventAggregator eventAggregator,
-            ITelemetryHubClient telemetryHub,
+            //ITelemetryHubClient telemetryHub,
             ILogger<NotificationTelemetryService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
+            //this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
         }
 
         #endregion
@@ -43,9 +38,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var dataHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryHubClient>();
+                //var dataHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryHubClient>();
 
-                dataHubClient.ConnectionStatusChanged += this.OnHubConnectionStatusChanged1;
+                //dataHubClient.ConnectionStatusChanged += this.OnHubConnectionStatusChanged1;
             }
         }
 
