@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
@@ -49,13 +50,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Methods
 
-        public async Task ConnectAsync()
+        public async Task ConnectAsync(bool useMessagePackProtocol)
         {
             while (this.connection?.State != HubConnectionState.Connected)
             {
                 try
                 {
-                    this.Initialize();
+                    this.Initialize(useMessagePackProtocol);
 
                     System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': establishing connection ... ");
 
@@ -85,9 +86,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             await this.connection.SendAsync(methodName);
         }
 
+        public async Task SendAsync(string methodName, object arg1)
+        {
+            await this.connection.SendAsync(methodName, arg1);
+        }
+
+        public async Task SendAsync(string methodName, object arg1, object arg2)
+        {
+            await this.connection.SendAsync(methodName, arg1, arg2);
+        }
+
         protected abstract void RegisterEvents(HubConnection connection);
 
-        private void Initialize()
+        private void Initialize(bool useMessagePackProtocol)
         {
             if (this.connection != null)
             {
@@ -96,6 +107,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             var connectionBuilder = new HubConnectionBuilder()
                 .WithUrl(this.endpoint.AbsoluteUri);
+
+            if (useMessagePackProtocol)
+            {
+                connectionBuilder.AddMessagePackProtocol();
+            }
 
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -114,7 +130,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             {
                 this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
 
-                await this.ConnectAsync();
+                await this.ConnectAsync(useMessagePackProtocol);
             };
         }
 

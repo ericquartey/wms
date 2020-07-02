@@ -159,7 +159,8 @@
                     BorderThickness="0,10,10,10">
                 <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                         BorderThickness="{DynamicResource PpcBorderThickness}">
-                    <Grid Margin="5">
+                    <Grid Margin="5"
+                          VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -211,23 +212,23 @@
                     BorderThickness="10">
                 <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                         BorderThickness="{DynamicResource PpcBorderThickness}">
-                    <Grid>
+                    <Grid VerticalAlignment="Center">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
 
-                        <TextBlock Margin="10,25,10,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Bottom"
+                        <TextBlock Margin="10,5"
+                                   VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                                    Text="{Resources:Loc OperatorApp.MachineNumber}"
                                    TextAlignment="Left" />
 
                         <TextBlock Grid.Row="1"
-                                   Margin="10,0,10,10"
+                                   Margin="10,5"
+                                   VerticalAlignment="Center"
                                    Style="{DynamicResource VWAPP_ViewInformationTitleTextBlockStyle}"
                                    Text="{Binding Model.Id}" />
                     </Grid>

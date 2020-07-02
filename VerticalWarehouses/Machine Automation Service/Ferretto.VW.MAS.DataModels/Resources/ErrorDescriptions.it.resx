@@ -397,7 +397,7 @@
     <value>Configurazione velocità movimento asse {0} non valida.</value>
   </data>
   <data name="ElevatorOverrunDetected" xml:space="preserve">
-    <value>Errore di posizionamento all'estremità superiore o inferiore</value>
+    <value>Errore di posizionamento all'estremità superiore</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
     <value>Baia esterna occupata</value>
@@ -410,5 +410,8 @@
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
     <value>Spostamento non valido</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Errore di posizionamento all'estremità inferiore</value>
   </data>
 </root>

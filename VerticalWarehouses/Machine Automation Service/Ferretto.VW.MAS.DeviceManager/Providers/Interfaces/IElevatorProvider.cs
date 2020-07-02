@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         ActionPolicy CanMoveToBayPosition(int bayPositionId, BayNumber bayNumber);
 
         ActionPolicy CanMoveToCell(int cellId);
-
+        ActionPolicy CanMoveToHeight(double height);
         ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber, bool isGuided);
 
         ActionPolicy CanUnloadToCell(int cellId);

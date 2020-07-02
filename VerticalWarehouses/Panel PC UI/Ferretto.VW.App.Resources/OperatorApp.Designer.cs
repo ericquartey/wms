@@ -376,6 +376,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Under Weight.
+        /// </summary>
+        public static string BlockLevelUnderWeight {
+            get {
+                return ResourceManager.GetString("BlockLevelUnderWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {
@@ -2546,6 +2555,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string MachineServiceStatus_Completed {
+            get {
+                return ResourceManager.GetString("MachineServiceStatus_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired.
         /// </summary>
         public static string MachineServiceStatus_Expired {
@@ -3320,7 +3338,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string NavigationMainMenuOther {
             get {

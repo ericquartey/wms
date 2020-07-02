@@ -484,7 +484,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     && newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
                                     )
                                 {
-                                    var errorCode = MachineErrorCode.ElevatorOverrunDetected;
+                                    var errorCode = (newSensorStatus[(int)InverterSensors.ANG_ZeroElevatorSensor]) ? MachineErrorCode.ElevatorUnderrunDetected : MachineErrorCode.ElevatorOverrunDetected;
                                     using (var scope = this.serviceScopeFactory.CreateScope())
                                     {
                                         scope.ServiceProvider

@@ -2751,4 +2751,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="MoveCamera" xml:space="preserve">
     <value>Sposta la telecamera nella posizione corretta</value>
   </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Invia snapshot dello schermo</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Invia logs</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Trasmissione videate</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Salva cella</value>
+  </data>
 </root>

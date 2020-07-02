@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Methods
 
-        Task ConnectAsync();
+        Task ConnectAsync(bool useMessagePackProtocol = false);
 
         Task DisconnectAsync();
 

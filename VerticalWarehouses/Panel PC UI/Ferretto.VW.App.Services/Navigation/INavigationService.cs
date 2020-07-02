@@ -18,6 +18,8 @@
 
         INavigableViewModel GetActiveViewModel();
 
+        byte[] GetScreenshot();
+
         void GoBack();
 
         void GoBackTo(string modelName, string viewModelName);
