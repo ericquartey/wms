@@ -200,7 +200,8 @@ namespace Ferretto.VW.App.Controls
 
                 bitmap.Render(dv);
 
-                var encoder = new PngBitmapEncoder();
+                var encoder = new JpegBitmapEncoder();
+                encoder.QualityLevel = 70;
                 using (var myStream = new MemoryStream())
                 {
                     encoder.Frames.Add(BitmapFrame.Create(bitmap));

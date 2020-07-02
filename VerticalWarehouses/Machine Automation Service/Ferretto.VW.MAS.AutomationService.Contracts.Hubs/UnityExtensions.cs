@@ -1,4 +1,6 @@
 ﻿using Prism.Ioc;
+using Prism.Unity;
+using Unity;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -10,8 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this IContainerRegistry container,
             System.Uri webServiceUrl,
             string operatorHubPath,
-            string installationHubPath,
-            string telemetryHubPath)
+            string installationHubPath)
         {
             if (container is null)
             {
@@ -23,12 +24,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 throw new System.ArgumentNullException(nameof(webServiceUrl));
             }
 
-            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
-            var telemetryHubUrl = new System.Uri(webServiceUrl, telemetryHubPath);
+            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);            
 
             container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
             container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(webServiceUrl, installationHubPath));
-            container.RegisterInstance<ITelemetryHubClient>(new TelemetryHubClient(telemetryHubUrl));
 
             return container;
         }
@@ -47,10 +46,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             containerProvider
                 .Resolve<IOperatorHubClient>()
                 .ConnectAsync();
-
-            //containerProvider
-            //   .Resolve<ITelemetryHubClient>()
-            //   .ConnectAsync(true);
 
             return containerProvider;
         }

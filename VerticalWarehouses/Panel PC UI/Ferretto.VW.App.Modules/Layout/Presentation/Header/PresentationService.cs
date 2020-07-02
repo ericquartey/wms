@@ -1,14 +1,13 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Telemetry.Contracts.Hub;
+using Ferretto.VW.Telemetry.Contracts.Hub.Model;
+using NLog;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Layout
@@ -20,6 +19,8 @@ namespace Ferretto.VW.App.Modules.Layout
         private const int SCREENSHOTDELAY = 1000;
 
         private readonly IBayManager bayManagerService;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly INavigationService navigationService;
 
@@ -116,8 +117,8 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public override async Task OnLoadedAsync()
         {
-            var bay = await this.bayManagerService.GetBayAsync();
-            this.bayNumber = bay.Number;
+            //var bay = await this.bayManagerService.GetBayAsync();
+            //this.bayNumber = BayNumber.BayOne;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -152,13 +153,15 @@ namespace Ferretto.VW.App.Modules.Layout
                              try
                              {
                                  var screenshot = this.navigationService.GetScreenshot();
-                                 await this.telemetryHubClient.SendScreenshotAsync(this.bayNumber, screenshot);
+                                 //await this.telemetryHubClient.SendScreenshotAsync((int)this.bayNumber, new Screenshot() { Image = screenshot });
+                                 await this.telemetryHubClient.SendScreenshotAsync((int)this.bayNumber, screenshot);
                              }
                              catch (Exception ex)
                              {
+                                 this.logger.Error(ex);
                              }
                          });
-                    await Task.Delay(SCREENSHOTDELAY);
+                    await Task.Delay(200);
                 }
                 while (this.isScreenCast);
             });
@@ -167,14 +170,22 @@ namespace Ferretto.VW.App.Modules.Layout
         private async Task SendLogAsync()
         {
             this.IsServiceOptionsVisible = false;
-            await this.telemetryHubClient.SendLogsAsync(this.bayNumber);
+            await this.telemetryHubClient.SendLogsAsync((int)this.bayNumber);
         }
 
         private async Task SendScreenSnapshotAsync()
         {
-            this.IsServiceOptionsVisible = false;
-            var screenshot = this.navigationService.GetScreenshot();
-            await this.telemetryHubClient.SendScreenshotAsync(this.bayNumber, screenshot);
+            try
+            {
+                this.IsServiceOptionsVisible = false;
+                var screenshot = this.navigationService.GetScreenshot();
+                //await this.telemetryHubClient.SendScreenshotAsync((int)this.bayNumber, new Screenshot() { Image = screenshot });
+                await this.telemetryHubClient.SendScreenshotAsync((int)this.bayNumber, screenshot);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
         }
 
         #endregion

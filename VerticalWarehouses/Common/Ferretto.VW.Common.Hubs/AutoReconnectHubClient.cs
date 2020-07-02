@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+namespace Ferretto.VW.Common.Hubs
 {
     public abstract class AutoReconnectHubClient : IAutoReconnectHubClient
     {

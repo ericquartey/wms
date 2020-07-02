@@ -12,6 +12,7 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -112,15 +113,21 @@ namespace Ferretto.VW.App
             base.OnStartup(e);
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            this.Container.UseTelemetryHubs();
+        }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            var telemetryHubPath = ConfigurationManager.AppSettings.GetAutomationServiceTelemetryHubPath();
 
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
-            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath, telemetryHubPath);
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = new HttpClient();
@@ -131,6 +138,10 @@ namespace Ferretto.VW.App
 
                 return client;
             });
+
+            // Telemetry
+            var telemetryHubPathUri = ConfigurationManager.AppSettings.GetTelemetryHubPath();
+            containerRegistry.RegisterTelemetryHub(telemetryHubPathUri);
 
             // UI controls services
             containerRegistry.RegisterUiControlServices(
