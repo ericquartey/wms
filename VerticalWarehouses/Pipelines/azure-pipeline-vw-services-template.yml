@@ -1,7 +1,5 @@
 parameters:
   BuildConfiguration: 'debug'
-  RestoreBuildProjects: '**/*.csproj'
-  TestProjects: 'VerticalWarehouses/**/*Tests.csproj'
   TargetFramework: 'netcoreapp2.2'
   RuntimeIdentifier: 'win10-x64'
 
@@ -15,11 +13,11 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }} "VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj"
+- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --verbosity diagnostic --self-contained --framework ${{ parameters.TargetFramework }} "VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj"
   displayName: 'dotnet publish (${{ parameters.BuildConfiguration }})'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Machine Automation Service'
+  displayName: 'Publish Artifact: automation_service'
   inputs:
     PathtoPublish: 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
     ArtifactName: 'automation_service'
