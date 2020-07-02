@@ -57,6 +57,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
+                this.IsEnabled = this.CanEnable();
+                this.RaisePropertyChanged(nameof(this.IsEnabled));
+
                 if (this.Data is BayAccessories bayAccessories)
                 {
                     this.IsAccessoryEnabled = bayAccessories.LabelPrinter.IsEnabledNew;

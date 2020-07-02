@@ -315,7 +315,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException();
                 }
-                var heightMm = (profile * this.kMul) + this.kSum;
+                var heightMm = (profile * this.kMulNew) + this.kSumNew;
                 var heightClass = (int)Math.Round(heightMm);
                 heightClass = (heightClass / ProfileStep) * ProfileStep
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)

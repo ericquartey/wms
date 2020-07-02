@@ -2850,4 +2850,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ScreenCast" xml:space="preserve">
     <value>Screen cast</value>
   </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Save cell</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Hours refresh</value>
+  </data>
 </root>

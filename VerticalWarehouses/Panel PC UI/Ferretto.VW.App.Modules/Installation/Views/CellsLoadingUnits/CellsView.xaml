@@ -131,7 +131,7 @@
                                 Margin="0"
                                 HorizontalAlignment="Right"
                                 Command="{Binding SaveCommand}"
-                                Content="{res:Loc InstallationApp.SaveUnit}" />
+                                Content="{res:Loc InstallationApp.SaveCell}" />
 
 
         </Grid>

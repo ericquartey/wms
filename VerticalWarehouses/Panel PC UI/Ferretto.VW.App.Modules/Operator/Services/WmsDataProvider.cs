@@ -61,18 +61,25 @@ namespace Ferretto.VW.App.Modules.Operator
                 throw new InvalidOperationException(Resources.Localized.Get("General.AreaMachineUnknow"));
             }
 
-            var bay = await this.bayManager.GetBayAsync();
-
-            await this.itemWebService.PickAsync(itemId, new ItemOptions
+            try
             {
-                AreaId = this.bayManager.Identity.AreaId.Value,
-                BayId = bay.Id,
-                MachineId = this.bayManager.Identity.Id,
-                RequestedQuantity = requestedQuantity,
-                RunImmediately = true,
-                ReasonId = reasonId,
-                ReasonNotes = reasonNotes,
-            });
+                var bay = await this.bayManager.GetBayAsync();
+
+                await this.itemWebService.PickAsync(itemId, new ItemOptions
+                {
+                    AreaId = this.bayManager.Identity.AreaId.Value,
+                    BayId = bay.Id,
+                    MachineId = this.bayManager.Identity.Id,
+                    RequestedQuantity = requestedQuantity,
+                    RunImmediately = true,
+                    ReasonId = reasonId,
+                    ReasonNotes = reasonNotes,
+                });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                // do nothing
+            }
         }
 
         public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
@@ -82,18 +89,25 @@ namespace Ferretto.VW.App.Modules.Operator
                 return;
             }
 
-            var bay = await this.bayManager.GetBayAsync();
-
-            await this.itemWebService.PutAsync(itemId, new ItemOptions
+            try
             {
-                AreaId = this.bayManager.Identity.AreaId.Value,
-                BayId = bay.Id,
-                MachineId = this.bayManager.Identity.Id,
-                RequestedQuantity = requestedQuantity,
-                RunImmediately = true,
-                ReasonId = reasonId,
-                ReasonNotes = reasonNotes,
-            });
+                var bay = await this.bayManager.GetBayAsync();
+
+                await this.itemWebService.PutAsync(itemId, new ItemOptions
+                {
+                    AreaId = this.bayManager.Identity.AreaId.Value,
+                    BayId = bay.Id,
+                    MachineId = this.bayManager.Identity.Id,
+                    RequestedQuantity = requestedQuantity,
+                    RunImmediately = true,
+                    ReasonId = reasonId,
+                    ReasonNotes = reasonNotes,
+                });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                // do nothing
+            }
         }
 
         public void Start()

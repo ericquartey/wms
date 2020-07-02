@@ -89,6 +89,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveToCellPolicy;
 
+        private ActionPolicy moveToHeightPolicy;
+
         private DelegateCommand moveToLoadingUnitHeightCommand;
 
         private DelegateCommand openShutterCommand;

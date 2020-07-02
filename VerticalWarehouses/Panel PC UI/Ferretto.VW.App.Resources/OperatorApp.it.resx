@@ -199,7 +199,7 @@
     <value>Ricerca articolo</value>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
-    <value>Altro</value>
+    <value>Impostazioni</value>
   </data>
   <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Operazione di prelievo.</value>
@@ -1578,7 +1578,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="BlockLevelNeedsTest" xml:space="preserve">
     <value>Occorre test</value>
-    <comment>BlockLevel</comment>
+    <comment>Block Level</comment>
   </data>
   <data name="BlockLevelNone" xml:space="preserve">
     <value>Nessuna</value>
@@ -1600,5 +1600,12 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Cassetto</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Completato</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Sotto Peso</value>
+    <comment>Block Level</comment>
   </data>
 </root>

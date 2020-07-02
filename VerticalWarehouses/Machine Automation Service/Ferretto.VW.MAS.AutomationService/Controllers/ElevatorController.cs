@@ -95,6 +95,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorProvider.CanMoveToCell(cellId));
         }
 
+        [HttpGet("vertical/can-move-to-height")]
+        public ActionResult<ActionPolicy> CanMoveToHeight(double height)
+        {
+            return this.Ok(this.elevatorProvider.CanMoveToHeight(height));
+        }
+
         [HttpGet("horizontal/can-unload-to-bay/{bayPositionId}")]
         public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId, bool isGuided)
         {

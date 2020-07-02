@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private string firmwareVersion;
 
         private bool isAccessoryEnabled;
+
+        private bool isEnabled;
 
         private DateTimeOffset? manufactureDate;
 
@@ -75,6 +78,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.isAccessoryEnabled, value))
                 {
                     this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get => this.isEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.isEnabled, value))
+                {
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -141,6 +156,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public bool CanEnable()
+        {
+            return
+                (this.MachineModeService.MachinePower == MachinePowerState.Powered
+                ||
+                this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+        }
 
         protected virtual bool CanSave()
         {

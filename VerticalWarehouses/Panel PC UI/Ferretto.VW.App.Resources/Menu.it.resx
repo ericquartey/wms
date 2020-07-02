@@ -262,10 +262,10 @@
     <value>Movimenti</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Altro</value>
+    <value>Impostazioni</value>
   </data>
   <data name="OtherMenuName" xml:space="preserve">
-    <value>Menu Altro</value>
+    <value>Menu Impostazioni</value>
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Cassetti</value>
