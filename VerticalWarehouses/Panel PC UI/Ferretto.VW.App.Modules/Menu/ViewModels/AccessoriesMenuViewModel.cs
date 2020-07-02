@@ -77,6 +77,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 ||
                 this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
                 &&
+                this.MachineModeService.MachineMode == MachineMode.Manual
+                &&
                 (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
                 ||
                 this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
