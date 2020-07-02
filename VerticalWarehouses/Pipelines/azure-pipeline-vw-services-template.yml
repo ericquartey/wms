@@ -3,7 +3,7 @@ parameters:
   RestoreBuildProjects: '**/*.csproj'
   TestProjects: 'VerticalWarehouses/**/*Tests.csproj'
   TargetFramework: 'netcoreapp2.2'
-
+  RuntimeIdentifier: 'win10-x64'
 
 steps:
 - task: UseDotNet@2
@@ -13,22 +13,13 @@ steps:
     version: 2.2.207
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
-  inputs:
-    command: restore
-    projects: ${{ parameters.RestoreBuildProjects }}
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-
-
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime win10-x64 --self-contained --framework ${{ parameters.TargetFramework }} 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj'
+- script: dotnet publish -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }} 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/Ferretto.VW.MAS.AutomationService.csproj'
   displayName: 'dotnet publish (${{ parameters.BuildConfiguration }})'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Machine Automation Service'
   inputs:
-    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win10-x64/publish'
+    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/Ferretto.VW.MAS.AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
     ArtifactName: 'automation_service'
