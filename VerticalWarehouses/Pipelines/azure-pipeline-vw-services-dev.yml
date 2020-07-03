@@ -16,6 +16,3 @@ steps:
 - template: azure-pipeline-vw-services-template.yml
   parameters:
     BuildConfiguration: 'debug'
-    RestoreBuildProjects: '**/Ferretto.VW.MAS.AutomationService.csproj'
-    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*.Tests.csproj'
-    TargetFramework: 'netcoreapp2.2'

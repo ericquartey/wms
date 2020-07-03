@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+namespace Ferretto.VW.Common.Hubs
 {
     public interface IAutoReconnectHubClient
     {

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer;
@@ -81,6 +82,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseDataLayer();
 
+            //app.UseTelemetryHub();
+
             app.UseMvc();
         }
 
@@ -147,10 +150,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMissionManager();
 
             services.AddHostedService<NotificationRelayService>();
+            services.AddHostedService<NotificationTelemetryService>();
 
             services.AddScoped<IInverterProvider, InverterProvider>();
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();
             services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
+
+            //var telemetryUrl = this.Configuration.GetValue<string>("Telemetry:Url");
+            //services.AddTelemetryHub(new Uri(telemetryUrl));
         }
 
         private static void AddWmsServices(IServiceCollection services)
