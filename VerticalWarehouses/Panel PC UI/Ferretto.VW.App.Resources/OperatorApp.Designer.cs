@@ -4211,6 +4211,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total missions.
+        /// </summary>
+        public static string TotalMissionsHeader {
+            get {
+                return ResourceManager.GetString("TotalMissionsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total time of active missions since last maintenance / total.
         /// </summary>
         public static string TotalMissionsTime {

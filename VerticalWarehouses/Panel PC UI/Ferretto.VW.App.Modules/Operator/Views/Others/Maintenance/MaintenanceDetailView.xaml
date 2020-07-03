@@ -220,8 +220,8 @@
                                      Margin="10,15,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding Service.TotalMission, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
-                                     LabelText="{res:Loc OperatorApp.TotalMission}" />
+                                     ContentText="{Binding Service.TotalMissions, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{res:Loc OperatorApp.TotalMissionsHeader}" />
 
             <Grid Grid.Column="2"
                   Margin="10,15,0,0">
