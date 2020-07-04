@@ -658,8 +658,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="loadingUnitGrossWeight">This weight is stored in LoadingUnits table before the movement.</param>
         /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter
         ///                             the scope is to wait for the shutter to open or close before moving </param>
-        /// <param name="requestingBay"></param>
-        /// <param name="sender"></param>
+        /// <param name="requestingBay">the requesting bay</param>
+        /// <param name="sender">The sender of message</param>
         public void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
             bool isLoadingUnitOnBoard,
@@ -675,172 +675,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? sourceBayPositionId = null,
             bool fastDeposit = true)
         {
-            if (loadingUnitId.HasValue
-                &&
-                loadingUnitGrossWeight.HasValue)
+            if (!this.machineVolatileDataProvider.IsOneTonMachine.Value)
             {
-                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
+                // Perform the horizontal movement for regular machine (no combined movements)
+                this.MoveHorizontalAuto_ForRegularMachine(
+                    direction,
+                    isLoadingUnitOnBoard,
+                    loadingUnitId,
+                    loadingUnitGrossWeight,
+                    waitContinue,
+                    measure,
+                    requestingBay,
+                    sender,
+                    targetCellId,
+                    targetBayPositionId,
+                    sourceCellId,
+                    sourceBayPositionId,
+                    fastDeposit);
             }
-
-            var sensors = this.sensorsProvider.GetAll();
-
-            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
-                ? IOMachineSensors.ZeroPawlSensorOneTon
-                : IOMachineSensors.ZeroPawlSensor;
-
-            if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
+            else
             {
-                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual));
+                // Perform the horizontal movement for 1 Ton machine (with combined movements)
+                this.MoveHorizontalAuto_ForOneTonMachine(
+                    direction,
+                    isLoadingUnitOnBoard,
+                    loadingUnitId,
+                    loadingUnitGrossWeight,
+                    waitContinue,
+                    measure,
+                    requestingBay,
+                    sender,
+                    targetCellId,
+                    targetBayPositionId,
+                    sourceCellId,
+                    sourceBayPositionId,
+                    fastDeposit);
             }
-            if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
-            {
-                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual));
-            }
-
-            if (measure && isLoadingUnitOnBoard)
-            {
-                this.logger.LogWarning($"Do not measure profile on full elevator!");
-                measure = false;
-            }
-
-            var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
-
-            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
-            var profileSteps = axis.Profiles
-                .Single(p => p.Name == profileType)
-                .Steps
-                .OrderBy(s => s.Number);
-
-            if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
-            {
-                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-                if (loadUnit != null)
-                {
-                    loadingUnitId = loadUnit.Id;
-                }
-            }
-
-            // if weight is unknown we move as full weight
-            double scalingFactor = 1;
-            if (loadingUnitId.HasValue
-                && !measure
-                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
-                && fastDeposit
-                )
-            {
-                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
-                if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
-                {
-                    if (loadUnit.GrossWeight < loadUnit.Tare)
-                    {
-                        scalingFactor = 0;
-                    }
-                    else
-                    {
-                        scalingFactor = (loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight;
-                    }
-                }
-            }
-            foreach (var profileStep in profileSteps)
-            {
-                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
-            }
-
-            // if direction is Forwards then height increments, otherwise it decrements
-            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
-
-            var speed = profileSteps.Select(s => s.Speed).ToArray();
-            var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
-            var deceleration = profileSteps.Select(s => s.Acceleration).ToArray();
-
-            // we use compensation for small errors only (large errors come from new database)
-            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
-            if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
-            {
-                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
-                compensation = 0;
-            }
-            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
-
-            var targetPosition = switchPosition.Last();
-
-            this.logger.LogInformation($"MoveHorizontalAuto: ProfileType: {profileType}; " +
-                $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
-                $"direction: {direction}; " +
-                $"measure: {measure}; " +
-                $"waitContinue: {waitContinue}; " +
-                $"loadUnitId: {loadingUnitId}; " +
-                $"scalingFactor: {scalingFactor:0.0000}; " +
-                $"compensation: {compensation:0.00}");
-
-            var messageData = new PositioningMessageData(
-                Axis.Horizontal,
-                MovementType.TableTarget,
-                (measure ? MovementMode.PositionAndMeasureProfile : MovementMode.Position),
-                targetPosition,
-                speed,
-                acceleration,
-                deceleration,
-                switchPosition,
-                direction,
-                waitContinue)
-            {
-                TargetCellId = targetCellId,
-                TargetBayPositionId = targetBayPositionId,
-                SourceCellId = sourceCellId,
-                SourceBayPositionId = sourceBayPositionId,
-            };
-
-            if (loadingUnitId.HasValue)
-            {
-                messageData.LoadingUnitId = loadingUnitId;
-            }
-
-            this.PublishCommand(
-                messageData,
-                $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.DeviceManager,
-                sender,
-                MessageType.Positioning,
-                requestingBay,
-                BayNumber.ElevatorBay);
-
-            //if (!this.machineVolatileDataProvider.IsOneTonMachine.Value)
-            //{
-            //    // Perform the horizontal movement for regular machine (no combined movements)
-            //    this.MoveHorizontalAuto_ForRegularMachine(
-            //        direction,
-            //        isLoadingUnitOnBoard,
-            //        loadingUnitId,
-            //        loadingUnitGrossWeight,
-            //        waitContinue,
-            //        measure,
-            //        requestingBay,
-            //        sender,
-            //        targetCellId,
-            //        targetBayPositionId,
-            //        sourceCellId,
-            //        sourceBayPositionId,
-            //        fastDeposit);
-            //}
-            //else
-            //{
-            //    // Perform the horizontal movement for 1 Ton machine (with combined movements)
-            //    this.MoveHorizontalAuto_ForOneTonMachine(
-            //        direction,
-            //        isLoadingUnitOnBoard,
-            //        loadingUnitId,
-            //        loadingUnitGrossWeight,
-            //        waitContinue,
-            //        measure,
-            //        requestingBay,
-            //        sender,
-            //        targetCellId,
-            //        targetBayPositionId,
-            //        sourceCellId,
-            //        sourceBayPositionId,
-            //        fastDeposit);
-            //}
         }
 
         public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
@@ -1523,6 +1393,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return bayPosition.LoadingUnit != null && arePresenceSensorsActive;
         }
 
+        /// <summary>
+        /// Moves the horizontal chain of the elevator to load or unload a LoadUnit for the machine of 1 Ton.
+        /// It uses a combination of indipendently horizontal movement and vertical movement.
+        /// </summary>
         private void MoveHorizontalAuto_ForOneTonMachine(
             HorizontalMovementDirection direction,
             bool isLoadingUnitOnBoard,
@@ -1746,6 +1620,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        /// <summary>
+        /// Moves the horizontal chain of the elevator to load or unload a LoadUnit for the all machines, but the 1 Ton.
+        /// </summary>
         private void MoveHorizontalAuto_ForRegularMachine(
                                                                                                                                                                                             HorizontalMovementDirection direction,
             bool isLoadingUnitOnBoard,

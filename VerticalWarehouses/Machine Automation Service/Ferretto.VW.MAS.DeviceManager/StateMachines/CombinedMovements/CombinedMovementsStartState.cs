@@ -98,8 +98,9 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             this.isHorizontalPositioningDone = false;
             this.isVerticalPositioningDone = false;
 
+            this.Logger.LogDebug($"1:Start Method Start Horizontal movement and Vertical movement");
+
             var horizontalMessageData = this.machineData.MessageData.HorizontalPositioningMessageData;
-            this.Logger.LogDebug($"Horizontal movement :");
 
             // Send message to move the horizontal axis
             var message = new CommandMessage(
@@ -114,7 +115,6 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             this.ParentStateMachine.PublishCommandMessage(message);
 
             var verticalMessageData = this.machineData.MessageData.VerticalPositioningMessageData;
-            this.Logger.LogDebug($"Vertical movement :");
 
             // Send message to move the vertical axis
             message = new CommandMessage(
