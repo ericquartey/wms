@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -208,7 +209,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
                                 this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");
-                                if (notification.Type == MessageType.Positioning)
+
+                                var bChangeLoadUnitPosition = false;
+                                bChangeLoadUnitPosition = (notification.Type == MessageType.Positioning && !this.MachineVolatileDataProvider.IsOneTonMachine.Value) ||
+                                                         (notification.Type == MessageType.CombinedMovements && this.MachineVolatileDataProvider.IsOneTonMachine.Value);
+                                if (bChangeLoadUnitPosition)
                                 {
                                     this.LoadUnitChangePosition();
                                 }
@@ -261,7 +266,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, false);
                             }
 
-                            if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                            var isMovementEnded = (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning) && !(this.MachineVolatileDataProvider.IsOneTonMachine.Value)) ||
+                                         (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.CombinedMovements) && (this.MachineVolatileDataProvider.IsOneTonMachine.Value));
+
+                            if (isMovementEnded
                                 && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
                                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                                 )

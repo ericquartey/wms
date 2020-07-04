@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements.Interfaces
+﻿namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements.Interfaces
 {
-    internal interface ICombinedMovementsStateData
+    internal interface ICombinedMovementsStateData : IStateData
     {
     }
 }

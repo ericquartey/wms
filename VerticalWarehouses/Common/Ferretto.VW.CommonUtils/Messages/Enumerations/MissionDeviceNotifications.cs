@@ -15,5 +15,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
         Shutter = 2,
 
         Homing = 4,
+
+        CombinedMovements = 8
     }
 }

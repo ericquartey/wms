@@ -109,6 +109,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<InverterProgrammingMessageData>>(
                 nameof(IInstallationHub.InverterProgrammingChanged), this.OnInverterProgramming);
+
+            connection.On<NotificationMessageUI<CombinedMovementsMessageData>>(
+                nameof(IInstallationHub.CombinedMovementsNotify), this.OnCombinedMovementsNotify);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -122,6 +125,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnCombinedMovementsNotify(NotificationMessageUI<CombinedMovementsMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

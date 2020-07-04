@@ -2822,6 +2822,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Homing")]
         Homing = 8,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CombinedMovements")]
+        CombinedMovements = 16,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]

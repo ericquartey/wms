@@ -66,6 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.InverterStop:
                 case MessageType.ShutterPositioning:
                 case MessageType.Homing:
+                case MessageType.CombinedMovements:
                     lock (this.syncObject)
                     {
                         missionMoveProvider.OnNotification(message, serviceProvider);

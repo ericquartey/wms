@@ -104,6 +104,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             return beltElongation + shaftTorsion;
         }
 
+        public double ComputeDisplacement(double targetPosition, double weight)
+        {
+            var shaftTorsion = this.ComputeShaftTorsion(weight);
+            var beltElongation = this.ComputeBeltElongation(weight, targetPosition);
+
+            return beltElongation + shaftTorsion;
+        }
+
         public int ComputePositioningValues(
             IInverterStatusBase inverter,
             IPositioningFieldMessageData positioningData,

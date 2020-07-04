@@ -9,19 +9,23 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements.Interfaces
 {
-    internal interface ICombinedMovementsMachineData
+    internal interface ICombinedMovementsMachineData : IMachineData
     {
         #region Properties
 
         IBaysDataProvider BaysDataProvider { get; }
 
-        //InverterIndex CurrentInverterIndex { get; }
-
-        int ExecutedSteps { get; set; }
-
         IMachineResourcesProvider MachineSensorStatus { get; }
 
         ICombinedMovementsMessageData MessageData { get; set; }
+
+        bool OnHorizontalPositioningError { get; set; }
+
+        bool OnHorizontalPositioningStopped { get; set; }
+
+        bool OnVerticalPositioningError { get; set; }
+
+        bool OnVerticalPositioningStopped { get; set; }
 
         MessageActor Requester { get; }
 

@@ -77,6 +77,8 @@ namespace Ferretto.VW.App.Services
 
         private IEnumerable<Cell> cells;
 
+        private SubscriptionToken combinedMovementsChangedToken;
+
         private SubscriptionToken elevatorPositionChangedToken;
 
         private bool executedInitialization;
@@ -518,6 +520,9 @@ namespace Ferretto.VW.App.Services
 
                 this.positioningOperationChangedToken?.Dispose();
                 this.positioningOperationChangedToken = null;
+
+                this.combinedMovementsChangedToken?.Dispose();
+                this.combinedMovementsChangedToken = null;
 
                 this.healthStatusChangedToken?.Dispose();
                 this.healthStatusChangedToken = null;
@@ -1249,6 +1254,15 @@ namespace Ferretto.VW.App.Services
                 ??
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async (e) => await this.OnDataChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.combinedMovementsChangedToken = this.combinedMovementsChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<CombinedMovementsMessageData>>()
                     .Subscribe(
                         async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -712,7 +713,7 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (bayNumber)
             {
                 case BayNumber.BayOne:
-                    returnValue = InverterIndex.MainInverter;
+                    returnValue = (this.machineVolatileDataProvider.IsOneTonMachine.Value) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                     break;
 
                 case BayNumber.BayTwo:

@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MessageStatus.OperationExecuting:
                     switch (message.Type)
                     {
-                        case FieldMessageType.InverterStatusUpdate when message.Data is InverterStatusUpdateFieldMessageData:
+                        case FieldMessageType.InverterStatusUpdate:
                             this.OnInverterStatusUpdated(message);
                             break;
                     }
@@ -813,7 +813,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.PositionAndMeasureWeight:
                 case MovementMode.ProfileCalibration:
                     {
-                        this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
+                        this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode, Movement axis: {this.machineData.MessageData.AxisMovement}");
                         this.machineData.ExecutedSteps = this.performedCycles;
 
                         var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();

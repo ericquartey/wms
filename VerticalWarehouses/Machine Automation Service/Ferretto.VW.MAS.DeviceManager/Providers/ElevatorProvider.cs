@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -8,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -26,6 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IErrorsProvider errorsProvider;
+
+        private readonly IInvertersProvider invertersProvider;
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
@@ -60,7 +64,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
             IShutterProvider shutterProvider,
-            ILoadingUnitsDataProvider loadingUnitsDataProvider)
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IInvertersProvider invertersProvider)
             : base(eventAggregator)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -75,6 +80,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.invertersProvider = invertersProvider ?? throw new ArgumentNullException(nameof(invertersProvider));
         }
 
         #endregion
@@ -747,6 +753,43 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.Positioning,
                 requestingBay,
                 BayNumber.ElevatorBay);
+
+            //if (!this.machineVolatileDataProvider.IsOneTonMachine.Value)
+            //{
+            //    // Perform the horizontal movement for regular machine (no combined movements)
+            //    this.MoveHorizontalAuto_ForRegularMachine(
+            //        direction,
+            //        isLoadingUnitOnBoard,
+            //        loadingUnitId,
+            //        loadingUnitGrossWeight,
+            //        waitContinue,
+            //        measure,
+            //        requestingBay,
+            //        sender,
+            //        targetCellId,
+            //        targetBayPositionId,
+            //        sourceCellId,
+            //        sourceBayPositionId,
+            //        fastDeposit);
+            //}
+            //else
+            //{
+            //    // Perform the horizontal movement for 1 Ton machine (with combined movements)
+            //    this.MoveHorizontalAuto_ForOneTonMachine(
+            //        direction,
+            //        isLoadingUnitOnBoard,
+            //        loadingUnitId,
+            //        loadingUnitGrossWeight,
+            //        waitContinue,
+            //        measure,
+            //        requestingBay,
+            //        sender,
+            //        targetCellId,
+            //        targetBayPositionId,
+            //        sourceCellId,
+            //        sourceBayPositionId,
+            //        fastDeposit);
+            //}
         }
 
         public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
@@ -1427,6 +1470,376 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 : this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
 
             return bayPosition.LoadingUnit != null && arePresenceSensorsActive;
+        }
+
+        private void MoveHorizontalAuto_ForOneTonMachine(
+            HorizontalMovementDirection direction,
+            bool isLoadingUnitOnBoard,
+            int? loadingUnitId,
+            double? loadingUnitGrossWeight,
+            bool waitContinue,
+            bool measure,
+            BayNumber requestingBay,
+            MessageActor sender,
+            int? targetCellId = null,
+            int? targetBayPositionId = null,
+            int? sourceCellId = null,
+            int? sourceBayPositionId = null,
+            bool fastDeposit = true)
+        {
+            if (loadingUnitId.HasValue
+                &&
+                loadingUnitGrossWeight.HasValue)
+            {
+                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
+            }
+
+            var sensors = this.sensorsProvider.GetAll();
+
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
+                ? IOMachineSensors.ZeroPawlSensorOneTon
+                : IOMachineSensors.ZeroPawlSensor;
+
+            if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
+            {
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual));
+            }
+            if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
+            {
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual));
+            }
+
+            if (measure && isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not measure profile on full elevator!");
+                measure = false;
+            }
+
+            var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
+
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+
+            if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
+            {
+                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit != null)
+                {
+                    loadingUnitId = loadUnit.Id;
+                }
+            }
+
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue
+                && !measure
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                && fastDeposit
+                )
+            {
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
+                {
+                    if (loadUnit.GrossWeight < loadUnit.Tare)
+                    {
+                        scalingFactor = 0;
+                    }
+                    else
+                    {
+                        scalingFactor = (loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight;
+                    }
+                }
+            }
+            foreach (var profileStep in profileSteps)
+            {
+                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
+            }
+
+            // if direction is Forwards then height increments, otherwise it decrements
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
+
+            var speed = profileSteps.Select(s => s.Speed).ToArray();
+            var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
+            var deceleration = profileSteps.Select(s => s.Acceleration).ToArray();
+
+            // we use compensation for small errors only (large errors come from new database)
+            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
+            if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
+            {
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
+                compensation = 0;
+            }
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
+
+            var targetPosition = switchPosition.Last();
+
+            this.logger.LogInformation($"MoveHorizontalAuto: ProfileType: {profileType}; " +
+                $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
+                $"direction: {direction}; " +
+                $"measure: {measure}; " +
+                $"waitContinue: {waitContinue}; " +
+                $"loadUnitId: {loadingUnitId}; " +
+                $"scalingFactor: {scalingFactor:0.0000}; " +
+                $"compensation: {compensation:0.00}");
+
+            var horizontalMovementMessageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.TableTarget,
+                (measure ? MovementMode.PositionAndMeasureProfile : MovementMode.Position),
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction,
+                waitContinue)
+            {
+                TargetCellId = targetCellId,
+                TargetBayPositionId = targetBayPositionId,
+                SourceCellId = sourceCellId,
+                SourceBayPositionId = sourceBayPositionId,
+            };
+
+            if (loadingUnitId.HasValue)
+            {
+                horizontalMovementMessageData.LoadingUnitId = loadingUnitId;
+            }
+
+            // Get the displacement along vertical axis
+            var grossWeight = 0.0d;
+            if (loadingUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
+                grossWeight = loadUnit.GrossWeight;
+            }
+            var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight);
+            displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement} mm [targetPosition: {this.VerticalPosition + displacement} mm], weight load unit: {grossWeight} kg");
+
+            var manualVerticalParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
+
+            // Check this
+            var movementVerticalParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical, isLoadingUnitOnBoard);
+
+            // Calculate the speed according to the space and time (time referred to the horizontal movement: t = space/speed)
+            var accelerationVertical = new[] { movementVerticalParameters.Acceleration };
+            var decelerationVertical = new[] { movementVerticalParameters.Deceleration };
+
+            var feedRate = manualVerticalParameters.FeedRateAfterZero;
+
+            // Calculate time [s] to perform the horizontal movement
+            var nItems = profileSteps.Count();
+            var time = 0.0d; var lastPosTmp = 0.0d;
+            for (var i = 0; i < nItems; i++)
+            {
+                time += (switchPosition[i] - lastPosTmp) / speed[i];
+                lastPosTmp = switchPosition[i];
+            }
+
+            var speedVertical = new[] { Math.Abs(displacement) / time };  // time = space / speed [s]
+
+            var switchPositionVertical = new[] { 0.0 };
+
+            // -------------------------
+            // Vertical movement message
+            var verticalMovementMessageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.Position,
+                (this.VerticalPosition + displacement),
+                speedVertical,
+                accelerationVertical,
+                decelerationVertical,
+                switchPositionVertical,
+                HorizontalMovementDirection.Forwards)
+            {
+                LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id,
+                FeedRate = (sender == MessageActor.AutomationService ? feedRate : 1),
+                ComputeElongation = false,
+                TargetBayPositionId = targetBayPositionId,
+                TargetCellId = targetCellId,
+                WaitContinue = false,
+                IsPickupMission = false
+            };
+
+            this.logger.LogInformation(
+                $"MoveToVerticalPosition: {MovementMode.Position}; " +
+                $"manualMovement: {false}; " +
+                $"targetPosition: {this.VerticalPosition + displacement}; [displacement: {displacement}]" +
+                $"homing: {false}; " +
+                $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
+                $"speed: {speedVertical[0]:0.00}; " +
+                $"acceleration: {accelerationVertical[0]:0.00}; " +
+                $"deceleration: {decelerationVertical[0]:0.00}; " +
+                $"speed w/o feedRate: {movementVerticalParameters.Speed:0.00}; " +
+                $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
+                $"Load Unit gross weight {grossWeight}");
+
+            // --------------------------
+            // Combined movements message
+            var combinedMovementsMessageData = new CombinedMovementsMessageData(
+                horizontalMovementMessageData,
+                verticalMovementMessageData);
+
+            // Publish message to execute the combined movements
+            this.PublishCommand(
+                combinedMovementsMessageData,
+                $"Execute Combined Movements Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.CombinedMovements,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
+        private void MoveHorizontalAuto_ForRegularMachine(
+                                                                                                                                                                                            HorizontalMovementDirection direction,
+            bool isLoadingUnitOnBoard,
+            int? loadingUnitId,
+            double? loadingUnitGrossWeight,
+            bool waitContinue,
+            bool measure,
+            BayNumber requestingBay,
+            MessageActor sender,
+            int? targetCellId = null,
+            int? targetBayPositionId = null,
+            int? sourceCellId = null,
+            int? sourceBayPositionId = null,
+            bool fastDeposit = true)
+        {
+            if (loadingUnitId.HasValue
+                &&
+                loadingUnitGrossWeight.HasValue)
+            {
+                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
+            }
+
+            var sensors = this.sensorsProvider.GetAll();
+
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
+                ? IOMachineSensors.ZeroPawlSensorOneTon
+                : IOMachineSensors.ZeroPawlSensor;
+
+            if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
+            {
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual));
+            }
+            if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
+            {
+                throw new InvalidOperationException(Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual));
+            }
+
+            if (measure && isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not measure profile on full elevator!");
+                measure = false;
+            }
+
+            var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
+
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+
+            if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
+            {
+                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit != null)
+                {
+                    loadingUnitId = loadUnit.Id;
+                }
+            }
+
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue
+                && !measure
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                && fastDeposit
+                )
+            {
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
+                {
+                    if (loadUnit.GrossWeight < loadUnit.Tare)
+                    {
+                        scalingFactor = 0;
+                    }
+                    else
+                    {
+                        scalingFactor = (loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight;
+                    }
+                }
+            }
+            foreach (var profileStep in profileSteps)
+            {
+                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
+            }
+
+            // if direction is Forwards then height increments, otherwise it decrements
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
+
+            var speed = profileSteps.Select(s => s.Speed).ToArray();
+            var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
+            var deceleration = profileSteps.Select(s => s.Acceleration).ToArray();
+
+            // we use compensation for small errors only (large errors come from new database)
+            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
+            if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
+            {
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
+                compensation = 0;
+            }
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
+
+            var targetPosition = switchPosition.Last();
+
+            this.logger.LogInformation($"MoveHorizontalAuto: ProfileType: {profileType}; " +
+                $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
+                $"direction: {direction}; " +
+                $"measure: {measure}; " +
+                $"waitContinue: {waitContinue}; " +
+                $"loadUnitId: {loadingUnitId}; " +
+                $"scalingFactor: {scalingFactor:0.0000}; " +
+                $"compensation: {compensation:0.00}");
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.TableTarget,
+                (measure ? MovementMode.PositionAndMeasureProfile : MovementMode.Position),
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction,
+                waitContinue)
+            {
+                TargetCellId = targetCellId,
+                TargetBayPositionId = targetBayPositionId,
+                SourceCellId = sourceCellId,
+                SourceBayPositionId = sourceBayPositionId,
+            };
+
+            if (loadingUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadingUnitId;
+            }
+
+            // Publish the command to execute the movement
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
         }
 
         private void MoveToVerticalPosition(

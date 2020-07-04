@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.Homing;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
@@ -85,6 +86,41 @@ namespace Ferretto.VW.MAS.DeviceManager
                     message.RequestingBay,
                     MessageStatus.OperationEnd);
                 this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            }
+        }
+
+        private void ProcessCombinedMovemets(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            System.Diagnostics.Debug.Assert(
+                message.Data is ICombinedMovementsMessageData,
+                "Message data should be consistent with message.Type");
+
+            var data = message.Data as ICombinedMovementsMessageData;
+            var targetBay = BayNumber.ElevatorBay;
+
+            if (this.currentStateMachines.Any(x => x.BayNumber == targetBay && !(x is ShutterPositioningStateMachine)))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Combined Movements state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var currentStateMachine = new CombinedMovementsStateMachine(
+                    message.Source,
+                    message.RequestingBay,
+                    targetBay,
+                    data,
+                    this.machineResourcesProvider,
+                    this.EventAggregator,
+                    this.Logger,
+                    baysDataProvider,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
             }
         }
 
@@ -277,8 +313,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (this.currentStateMachines.Any(
                     x => x.BayNumber == targetBay &&
+                    !(x is PositioningStateMachine) &&
                     !(x is ShutterPositioningStateMachine) &&
-                    !(x is RepetitiveHorizontalMovementsStateMachine)))
+                    !(x is RepetitiveHorizontalMovementsStateMachine) &&
+                    !(x is CombinedMovementsStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
             }
