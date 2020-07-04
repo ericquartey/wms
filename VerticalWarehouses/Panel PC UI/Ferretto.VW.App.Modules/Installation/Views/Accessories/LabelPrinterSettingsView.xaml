@@ -1,11 +1,11 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.LabelPrinterSettingsView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="700"
             d:DesignWidth="1024"
@@ -42,15 +42,16 @@
                               Margin="0,15,0,0"
                               VerticalAlignment="Center"
                               IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                              IsEnabled="{Binding IsEnabled}"
                               LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
 
-        <controls:PpcTextBox Grid.Row="2"                                     
-                   Margin="0,5,0,0"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Stretch"
-                   InputText="{Binding PrinterName, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                   IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}"
-                   LabelText="{x:Static res:InstallationApp.PrinterName}" />
+        <controls:PpcTextBox Grid.Row="2"
+                             Margin="0,5,0,0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding PrinterName, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.PrinterName}" />
 
         <controls:PpcButton x:Name="Save"
                             Grid.Row="7"

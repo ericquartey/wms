@@ -226,7 +226,7 @@
     <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
-    <value>Other</value>
+    <value>Settings</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
@@ -1977,5 +1977,15 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Unit</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Under Weight</value>
+    <comment>Block Level</comment>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Total missions</value>
   </data>
 </root>

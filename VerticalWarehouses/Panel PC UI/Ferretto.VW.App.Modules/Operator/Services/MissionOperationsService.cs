@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using DevExpress.Office.Drawing;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;

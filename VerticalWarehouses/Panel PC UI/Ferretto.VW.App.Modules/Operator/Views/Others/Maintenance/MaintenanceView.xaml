@@ -79,8 +79,8 @@
                                      Margin="10,15,15,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding Statistics.TotalMission, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
-                                     LabelText="{res:Loc OperatorApp.TotalMission}" />
+                                     ContentText="{Binding SelectedServicingInfo.TotalMissions, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                     LabelText="{res:Loc OperatorApp.TotalMissionsHeader}" />
 
             <Grid Grid.Row="0"
                   Grid.Column="3"
@@ -282,8 +282,8 @@
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column5"
                                             Width="150"
-                                            Binding="{Binding Path=TotalMission}"
-                                            Header="{res:Loc OperatorApp.TotalMission}">
+                                            Binding="{Binding Path=TotalMissions}"
+                                            Header="{res:Loc OperatorApp.TotalMissionsHeader}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />

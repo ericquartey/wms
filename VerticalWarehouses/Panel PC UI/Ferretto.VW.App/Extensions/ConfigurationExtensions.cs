@@ -57,6 +57,16 @@ namespace Ferretto.VW.App
             return new Uri(appSettings.Get("AutomationService:Url"));
         }
 
+        public static Uri GetTelemetryHubPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return new Uri(appSettings.Get("TelemetryService:Hubs:Path"));
+        }
+
         #endregion
     }
 }

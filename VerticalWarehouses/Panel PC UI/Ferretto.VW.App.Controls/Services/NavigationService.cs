@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
@@ -166,6 +169,49 @@ namespace Ferretto.VW.App.Controls
             if (activeView is View view && view.DataContext is ViewModelBase viewModel)
             {
                 return viewModel;
+            }
+
+            return null;
+        }
+
+        public byte[] GetScreenshot()
+        {
+            try
+            {
+                var frameworkElement = Application.Current.MainWindow;
+                var relativeBounds = VisualTreeHelper.GetDescendantBounds(frameworkElement);
+                var areaWidth = frameworkElement.RenderSize.Width;
+                var areaHeight = frameworkElement.RenderSize.Height;
+                var xLeft = relativeBounds.X;
+                var xRight = xLeft + areaWidth;
+                var yTop = relativeBounds.Y;
+                var yBottom = yTop + areaHeight;
+                var bitmap = new RenderTargetBitmap(
+                    (int)Math.Round(xRight, MidpointRounding.AwayFromZero),
+                    (int)Math.Round(yBottom, MidpointRounding.AwayFromZero),
+                    96, 96, PixelFormats.Default);
+
+                var dv = new DrawingVisual();
+                using (var ctx = dv.RenderOpen())
+                {
+                    var vb = new VisualBrush(frameworkElement);
+                    ctx.DrawRectangle(vb, null, new Rect(new System.Windows.Point(xLeft, yTop), new System.Windows.Point(xRight, yBottom)));
+                }
+
+                bitmap.Render(dv);
+
+                var encoder = new JpegBitmapEncoder();
+                encoder.QualityLevel = 70;
+                using (var myStream = new MemoryStream())
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(myStream);
+                    return myStream.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"Cannot get screenshot from MainWindow.");
             }
 
             return null;

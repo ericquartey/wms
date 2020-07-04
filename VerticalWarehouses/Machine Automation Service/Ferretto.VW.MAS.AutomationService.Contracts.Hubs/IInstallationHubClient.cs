@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.Common.Hubs;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {

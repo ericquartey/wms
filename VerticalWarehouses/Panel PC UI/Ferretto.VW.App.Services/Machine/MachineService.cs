@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IHealthProbeService healthProbeService;
 
+        private readonly Dictionary<Axis, bool> isHomingStarted;
+
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
@@ -106,8 +108,6 @@ namespace Ferretto.VW.App.Services
         private bool isDisposed;
 
         private bool isHoming;
-
-        private Dictionary<Axis, bool> isHomingStarted;
 
         private bool isMissionInError;
 

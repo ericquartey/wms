@@ -502,7 +502,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Other {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menu Other.
+        ///   Looks up a localized string similar to Menu Settings.
         /// </summary>
         public static string OtherMenuName {
             get {

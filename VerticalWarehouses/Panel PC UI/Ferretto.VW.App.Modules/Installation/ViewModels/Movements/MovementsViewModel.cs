@@ -645,6 +645,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                 }
 
+                if (this.InputHeight.HasValue)
+                {
+                    Debug.WriteLine("-->:RefreshActionPoliciesAsync:inputHeight");
+
+                    this.moveToHeightPolicy = await this.machineElevatorWebService.CanMoveToHeightAsync(this.InputHeight.Value).ConfigureAwait(false);
+                    this.moveToHeightCommand?.RaiseCanExecuteChanged();
+                }
+
                 if (this.HasCarousel)
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:carousel");

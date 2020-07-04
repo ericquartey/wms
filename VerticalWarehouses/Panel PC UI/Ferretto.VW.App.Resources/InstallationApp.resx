@@ -2835,4 +2835,25 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="HorizontalChainOriginalDistance" xml:space="preserve">
     <value>Original</value>
   </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Mount camera</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Move the camera to the correct position</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Send screen snapshot</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Send logs</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Screen cast</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Save cell</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Hours refresh</value>
+  </data>
 </root>

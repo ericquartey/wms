@@ -3247,6 +3247,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hours refresh.
+        /// </summary>
+        public static string HoursRefresh {
+            get {
+                return ResourceManager.GetString("HoursRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {
@@ -4840,6 +4849,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mount camera.
+        /// </summary>
+        public static string MountCamera {
+            get {
+                return ResourceManager.GetString("MountCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move.
         /// </summary>
         public static string Move {
@@ -4863,6 +4881,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MoveBayToBayMenuTitle {
             get {
                 return ResourceManager.GetString("MoveBayToBayMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move the camera to the correct position.
+        /// </summary>
+        public static string MoveCamera {
+            get {
+                return ResourceManager.GetString("MoveCamera", resourceCulture);
             }
         }
         
@@ -6138,6 +6165,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save cell.
+        /// </summary>
+        public static string SaveCell {
+            get {
+                return ResourceManager.GetString("SaveCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save changes before starting the test..
         /// </summary>
         public static string SaveChangesBeforeStartingTest {
@@ -6282,6 +6318,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screen cast.
+        /// </summary>
+        public static string ScreenCast {
+            get {
+                return ResourceManager.GetString("ScreenCast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security.
         /// </summary>
         public static string Security {
@@ -6350,6 +6395,24 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectUpperBound {
             get {
                 return ResourceManager.GetString("SelectUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send logs.
+        /// </summary>
+        public static string SendLog {
+            get {
+                return ResourceManager.GetString("SendLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send screen snapshot.
+        /// </summary>
+        public static string SendScreenSnapshot {
+            get {
+                return ResourceManager.GetString("SendScreenSnapshot", resourceCulture);
             }
         }
         

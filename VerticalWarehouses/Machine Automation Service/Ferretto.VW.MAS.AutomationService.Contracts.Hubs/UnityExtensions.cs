@@ -1,4 +1,6 @@
 ﻿using Prism.Ioc;
+using Prism.Unity;
+using Unity;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -22,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 throw new System.ArgumentNullException(nameof(webServiceUrl));
             }
 
-            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
+            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);            
 
             container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
             container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(webServiceUrl, installationHubPath));

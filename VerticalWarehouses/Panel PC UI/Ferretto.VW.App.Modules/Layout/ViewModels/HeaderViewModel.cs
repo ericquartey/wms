@@ -6,6 +6,7 @@ using DevExpress.Mvvm;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -13,17 +14,24 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineErrorsService machineErrorsService;
 
         private DevExpress.Mvvm.DelegateCommand goToMenuCommand;
+
+        private bool isServiceUser;
 
         #endregion
 
         #region Constructors
 
-        public HeaderViewModel(IMachineErrorsService machineErrorsService)
+        public HeaderViewModel(IMachineErrorsService machineErrorsService,
+                               IAuthenticationService authenticationService)
         {
             this.machineErrorsService = machineErrorsService;
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
         }
 
         #endregion
@@ -51,6 +59,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance<PresentationMachinePowerSwitch>());
             this.States.Add(this.GetInstance<PresentationError>());
             this.States.Add(this.GetInstance<PresentationDebug>());
+            this.States.Add(this.GetInstance<PresentationService>());
         }
 
         public override void UpdateChanges(PresentationChangedMessage presentation)
@@ -102,6 +111,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
                     this.Show(PresentationTypes.Theme, false);
+                    this.Show(PresentationTypes.Service, this.isServiceUser);
 
                     var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
                     //#if DEBUG
@@ -119,6 +129,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
                     this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
+                    this.Show(PresentationTypes.Service, this.isServiceUser);
                     break;
 
                 case PresentationMode.Installer:
@@ -128,6 +139,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
                     this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
+                    this.Show(PresentationTypes.Service, this.isServiceUser);
                     // this.Show(PresentationTypes.Debug, true);
 
                     break;
@@ -139,11 +151,18 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
                     this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
+                    this.Show(PresentationTypes.Service, this.isServiceUser);
                     break;
 
                 case PresentationMode.Help:
                     break;
             }
+        }
+
+        private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
+        {
+            this.isServiceUser = e.AccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support;
+            //this.isServiceUser = true;
         }
 
         private bool CanGoToMenu()

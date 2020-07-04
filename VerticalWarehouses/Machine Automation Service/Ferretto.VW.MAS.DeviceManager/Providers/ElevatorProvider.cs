@@ -370,6 +370,57 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
             }
 
+            // check the load unit profile
+            if (loadingUnit != null)
+            {
+                var lastCell = this.cellsProvider.GetAll().LastOrDefault(c => c.Side == targetCell.Side);
+                if (lastCell.Position + 25 < targetCell.Position + loadingUnit.Height)
+                {
+                    return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellCannotFitTheLoadUnit", CommonUtils.Culture.Actual) };
+                }
+            }
+            return ActionPolicy.Allowed;
+        }
+
+        public ActionPolicy CanMoveToHeight(double height)
+        {
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
+            {
+                return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds", CommonUtils.Culture.Actual) };
+            }
+
+            var isChainInZeroPosition = this.machineResourcesProvider.IsSensorZeroOnCradle;
+            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle; // && loadingUnit != null;
+            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle; // && loadingUnit is null;
+            if (!(isElevatorFull && !isChainInZeroPosition) && !(isElevatorEmpty && isChainInZeroPosition))
+            {
+                if (!isElevatorEmpty)
+                {
+                    return new ActionPolicy
+                    {
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual),
+                    };
+                }
+                else if (!isElevatorFull)
+                {
+                    return new ActionPolicy
+                    {
+                        Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual),
+                    };
+                }
+            }
+
+            // check the load unit profile
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnit != null)
+            {
+                var lastCell = this.cellsProvider.GetAll().LastOrDefault();
+                if (lastCell.Position + 25 < height + loadingUnit.Height)
+                {
+                    return new ActionPolicy { Reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellCannotFitTheLoadUnit", CommonUtils.Culture.Actual) };
+                }
+            }
             return ActionPolicy.Allowed;
         }
 

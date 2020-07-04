@@ -223,11 +223,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The elevator is positioned on the overrun sensor..
+        ///   Looks up a localized string similar to The elevator is positioned on the overrun top sensor..
         /// </summary>
         public static string ElevatorOverrunDetected {
             get {
                 return ResourceManager.GetString("ElevatorOverrunDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The elevator is positioned on the overrun bottom sensor..
+        /// </summary>
+        public static string ElevatorUnderrunDetected {
+            get {
+                return ResourceManager.GetString("ElevatorUnderrunDetected", resourceCulture);
             }
         }
         

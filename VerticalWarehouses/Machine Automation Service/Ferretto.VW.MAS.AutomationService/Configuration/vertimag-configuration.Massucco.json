@@ -110,7 +110,7 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 6545.0,
+          "UpperBound": 6900.0,
           "WeightMeasurement": {
             "Id": 1,
             "MeasureConst0": -723.53,
@@ -418,7 +418,7 @@
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 125.0,
     "LoadUnitTare": 104.0,
-    "MaxGrossWeight": 58767.0,
+    "MaxGrossWeight": 70000.0,
     "ModelName": "NEW VERTIMAG 84XL800-GIO H7261",
     "Panels": [
       {
@@ -4526,7 +4526,7 @@
       }
     ],
     "SerialNumber": "MV20-0057",
-    "Simulation": true
+    "Simulation": false
   },
   "MachineStatistics": [
   ],

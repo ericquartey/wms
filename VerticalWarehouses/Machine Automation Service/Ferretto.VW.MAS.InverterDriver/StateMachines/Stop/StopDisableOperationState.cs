@@ -1,13 +1,19 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
-
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
     internal class StopDisableOperationState : InverterStateBase
     {
+        #region Fields
+
+        private DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public StopDisableOperationState(
@@ -25,6 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         public override void Start()
         {
             this.Logger.LogDebug($"Stop Inverter Disable Operation {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.EnableOperation = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
@@ -66,6 +73,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                     this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     //this.ParentStateMachine.ChangeState(new StopQuickStopState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:StopDisableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
             return returnValue;
