@@ -153,6 +153,9 @@
   <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
     <value>Successfully requested loading unit {0}.</value>
   </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>LoadUnit on  board has invalid height</value>
+  </data>
   <data name="MachineNotManual" xml:space="preserve">
     <value>The machine is not in manual...</value>
   </data>

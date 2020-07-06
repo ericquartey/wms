@@ -584,6 +584,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
+                this.selectedLoadingUnit.Height > 0
+                &&
                 this.moveToCellPolicy?.IsAllowed == true
                 &&
                 !this.SensorsService.Sensors.LuPresentInMachineSide
@@ -600,6 +602,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.CanBaseExecute()
                     &&
                     this.SelectedLoadingUnit != null
+                    &&
+                    this.selectedLoadingUnit.Height > 0
                     &&
                     this.MachineStatus.EmbarkedLoadingUnit != null
                     &&
