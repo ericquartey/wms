@@ -275,20 +275,20 @@
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Command="{Binding ConfirmPartialOperationCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmPartial}"
-                                IsBusy="{Binding IsBusyConfirmingPartialOperation}"
+                                Command="{Binding ConfirmPresentOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPresent}"
                                 Style="{StaticResource ConfirmButton}"
-                                Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Command="{Binding ConfirmPresentOperationCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmPresent}"
+                                Command="{Binding ConfirmPartialOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPartial}"
+                                IsBusy="{Binding IsBusyConfirmingPartialOperation}"
                                 Style="{StaticResource ConfirmButton}"
-                                Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
@@ -303,7 +303,7 @@
             <StackPanel Grid.Row="5"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
                 <TextBlock Grid.Row="5"
-                           Margin="15,5,20,0"
+                           Margin="15,5,15,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            FontSize="{StaticResource FontSize_Small}"

@@ -677,7 +677,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 }
 
                 if (canComplete)
@@ -807,6 +807,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanConfirmPresentOperation()
         {
             this.CanConfirmPresent = !this.IsWaitingForResponse
+                &&
+                this.CanInputAvailableQuantity
                 &&
                 this.MissionOperation != null
                 &&
