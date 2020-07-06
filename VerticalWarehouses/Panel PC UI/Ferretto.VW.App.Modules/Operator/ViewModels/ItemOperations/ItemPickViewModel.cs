@@ -22,10 +22,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand emptyOperationCommand;
 
-        private MissionOperation lastMissionOperation;
-
-        private CompartmentDetails lastSelectedCompartmentDetail;
-
         private string measureUnitTxt;
 
         #endregion
@@ -170,9 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.CanInputQuantity
                 &&
-                this.IsInputQuantityValid
-                &&
-                this.InputQuantity.Value > 0;
+                this.InputQuantity.Value == this.MissionRequestedQuantity;
 
             this.RaisePropertyChanged(nameof(this.CanConfirm));
 
@@ -189,7 +183,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.CanInputQuantity
                 &&
-                this.InputQuantity.Value < this.MissionRequestedQuantity;
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value != this.MissionRequestedQuantity
+                &&
+                this.InputQuantity.Value <= this.AvailableQuantity;
 
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
 
@@ -235,10 +233,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         if (this.lastMissionOperation.RequestedQuantity != this.MissionOperation.RequestedQuantity)
                         {
-                                //this.MissionOperation.RequestedQuantity = this.lastMissionOperation.RequestedQuantity;
-                                //this.RaisePropertyChanged(nameof(this.MissionOperation));
-                                this.InputQuantity = this.lastMissionOperation.RequestedQuantity;
-                                this.RaisePropertyChanged(nameof(this.InputQuantity));
+                            //this.MissionOperation.RequestedQuantity = this.lastMissionOperation.RequestedQuantity;
+                            //this.RaisePropertyChanged(nameof(this.MissionOperation));
+                            this.InputQuantity = this.lastMissionOperation.RequestedQuantity;
+                            this.RaisePropertyChanged(nameof(this.InputQuantity));
                         }
                     }
                     else

@@ -246,7 +246,7 @@
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ShowDetailsCommand}"
                                 Content="{resources:Loc OperatorApp.Details}"
@@ -254,7 +254,7 @@
 
             <controls:PpcButton Grid.Row="4"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCanceledCommand}"
                                 Content="{resources:Loc OperatorApp.CancelPick}"
@@ -263,7 +263,7 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding EmptyOperationCommand}"
                                 Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
@@ -273,7 +273,7 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmPartialOperationCommand}"
                                 Content="{resources:Loc OperatorApp.ConfirmPartial}"
@@ -283,7 +283,7 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmPresentOperationCommand}"
                                 Content="{resources:Loc OperatorApp.ConfirmPresent}"
@@ -292,13 +292,32 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ConfirmOperationCommand}"
                                 Content="{resources:Loc OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
+
+            <StackPanel Grid.Row="5"
+                        Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
+                <TextBlock Grid.Row="5"
+                           Margin="15,5,20,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{resources:Loc OperatorApp.CloseLine}" />
+
+                <controls:PpcCheckBox Grid.Row="5"
+                                      Margin="15,5,20,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Bottom"
+                                      IsChecked="{Binding CloseLine, Mode=TwoWay}" />
+            </StackPanel>
+
+
 
         </Grid>
     </Grid>
