@@ -170,7 +170,7 @@
                                Width="230"
                                Height="90"
                                Margin="15,8,15,0"
-                               EditValue="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               EditValue="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputAvailableQuantity}"
                                LabelText="{resources:Loc OperatorApp.PresentQuantity}"
