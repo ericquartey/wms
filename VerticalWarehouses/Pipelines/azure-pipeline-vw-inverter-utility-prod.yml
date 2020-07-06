@@ -14,3 +14,5 @@ pool:
 
 steps:
 - template: azure-pipeline-vw-inverter-utility-template.yml
+  parameters:      
+    BuildConfiguration: 'release'
