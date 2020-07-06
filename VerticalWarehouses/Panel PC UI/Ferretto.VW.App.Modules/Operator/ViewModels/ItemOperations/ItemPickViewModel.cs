@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.CanInputQuantity
                 &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity;
+                this.InputQuantity.Value < this.MissionRequestedQuantity;
 
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
 
