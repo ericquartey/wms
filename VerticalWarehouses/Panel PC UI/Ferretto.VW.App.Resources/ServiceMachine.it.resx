@@ -153,6 +153,9 @@
   <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
     <value>Richiesta cassetto {0} completata correttamente.</value>
   </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Il cassetto a bordo elevatore ha altezza errata</value>
+  </data>
   <data name="MachineNotManual" xml:space="preserve">
     <value>La macchina non è in manuale...</value>
   </data>

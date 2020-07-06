@@ -169,6 +169,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnit on  board has invalid height.
+        /// </summary>
+        public static string LoadUnitOnBoardHasInvalidHeight {
+            get {
+                return ResourceManager.GetString("LoadUnitOnBoardHasInvalidHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The machine is not in manual....
         /// </summary>
         public static string MachineNotManual {

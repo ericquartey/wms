@@ -146,7 +146,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                     this.CanInputAvailableQuantity = true;
-                    this.CanConfirmPresent = (value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock);
+                    //this.CanConfirmPresent = (value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock);
                     this.CanInputQuantity = false;
                 });
             }
@@ -806,7 +806,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmPresentOperation()
         {
-            return true;
+            this.CanConfirmPresent = !this.IsWaitingForResponse
+                &&
+                this.MissionOperation != null
+                &&
+                !this.IsBusyAbortingOperation
+                //&&
+                //!this.IsBusyConfirmingOperation
+                &&
+                !this.IsOperationConfirmed
+                &&
+                !this.isOperationCanceled;
+            return this.CanConfirmPresent;
         }
 
         private async Task ConfirmPresentOperationAsync()
