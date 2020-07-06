@@ -161,6 +161,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.RaisePropertyChanged(nameof(this.CanConfirm));
 
+            this.CanConfirmPartialOperation =
+                this.MissionOperation != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.CanInputQuantity
+                &&
+                this.InputQuantity.Value != this.MissionRequestedQuantity;
+
+            this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
+
             //return this.CanConfirm;
             return false;
         }
