@@ -61,6 +61,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToCellHeightCommand;
 
+        private DelegateCommand goToMeasuredFront;
+
         private bool onGoToCell;
 
         private IEnumerable<CellPanel> panels;
@@ -206,6 +208,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.GoToCellHeightAsync(),
                this.CanGoToCellHeight));
 
+        public ICommand GoToMeasuredFront =>
+           this.goToMeasuredFront
+           ??
+           (this.goToMeasuredFront = new DelegateCommand(
+               () => this.CurrentStep = CellPanelsCheckStep.MeasuredFront,
+               this.CanGoToMeasuredFront));
+
         public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
 
         public bool HasStepMeasuredBack => this.currentStep is CellPanelsCheckStep.MeasuredBack;
@@ -306,6 +315,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        private bool CanGoToMeasuredFront()
+        {
+            return this.CanBaseExecute();
+        }
 
         public override void Disappear()
         {
