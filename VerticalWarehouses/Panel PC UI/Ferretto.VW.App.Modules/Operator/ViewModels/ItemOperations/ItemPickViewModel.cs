@@ -96,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.lastMissionOperation.RequestedQuantity = this.InputQuantity.Value;
+            this.lastMissionOperation.RequestedQuantity = this.InputQuantity.Value + this.MissionOperation.DispatchedQuantity;
 
             this.lastSelectedCompartmentDetail.Stock = this.AvailableQuantity.Value;
 
@@ -228,22 +228,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.lastMissionOperation == null)
                 {
                     this.lastMissionOperation = this.MissionOperation;
+                    this.lastMissionOperation.RequestedQuantity = this.MissionRequestedQuantity;
                 }
                 else if (this.MissionOperation != null)
                 {
                     if (this.lastMissionOperation.MissionId == this.MissionOperation.MissionId && this.lastMissionOperation.ItemCode == this.MissionOperation.ItemCode)
                     {
-                        if (this.lastMissionOperation.RequestedQuantity != this.MissionOperation.RequestedQuantity)
+                        if (this.lastMissionOperation.RequestedQuantity != this.MissionRequestedQuantity)
                         {
                                 //this.MissionOperation.RequestedQuantity = this.lastMissionOperation.RequestedQuantity;
                                 //this.RaisePropertyChanged(nameof(this.MissionOperation));
-                                this.InputQuantity = this.lastMissionOperation.RequestedQuantity;
+                                this.InputQuantity = this.lastMissionOperation.RequestedQuantity - this.lastMissionOperation.DispatchedQuantity;
                                 this.RaisePropertyChanged(nameof(this.InputQuantity));
                         }
                     }
                     else
                     {
                         this.lastMissionOperation = this.MissionOperation;
+                        this.lastMissionOperation.RequestedQuantity = this.MissionRequestedQuantity;
                     }
                 }
 
