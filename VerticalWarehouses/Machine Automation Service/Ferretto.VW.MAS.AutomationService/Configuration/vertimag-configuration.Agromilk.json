@@ -1369,7 +1369,7 @@
     "Id": 2,
     "LoadUnitMaxHeight": 695.0,
     "LoadUnitMaxNetWeight": 550.0,
-    "LoadUnitMinHeight": 150.0,
+    "LoadUnitMinHeight": 125.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 70000.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL550-BIS-H8261",
