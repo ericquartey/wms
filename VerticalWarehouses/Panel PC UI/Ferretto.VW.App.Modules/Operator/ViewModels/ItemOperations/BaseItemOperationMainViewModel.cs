@@ -506,7 +506,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
-                        this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
+                        //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
@@ -539,7 +539,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
-                        this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
+                        //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
@@ -923,7 +923,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputLot = null;
             this.InputItemCode = null;
             this.InputQuantity = this.MissionRequestedQuantity;
-            this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
+            //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }
 
         #endregion
