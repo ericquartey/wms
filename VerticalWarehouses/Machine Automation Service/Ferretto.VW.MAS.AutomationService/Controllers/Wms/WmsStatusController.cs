@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.ServiceUrl?.ToString());
         }
 
+        [HttpGet("get-time-sync-interval-milliseconds")]
+        public ActionResult<int> GetTimeSyncIntervalMilliseconds()
+        {
+            return this.Ok(this.wmsSettingsProvider.TimeSyncIntervalMilliseconds);
+        }
+
         [HttpGet("enabled")]
         public ActionResult<bool> IsEnabled()
         {
@@ -70,12 +76,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> IsTimeSyncEnabled()
         {
             return this.Ok(this.wmsSettingsProvider.IsTimeSyncEnabled);
-        }
-
-        [HttpGet("get-time-sync-interval-milliseconds")]
-        public ActionResult<int> GetTimeSyncIntervalMilliseconds()
-        {
-            return this.Ok(this.wmsSettingsProvider.TimeSyncIntervalMilliseconds);
         }
 
         [HttpPut]
@@ -99,9 +99,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("time-sync-interval-milliseconds-update")]
         public async Task UpdateTimeSyncIntervalMilliseconds(int seconds)
         {
-            if (seconds != null)
+            if (seconds <= 0)
             {
-                throw new ArgumentException("The value must be specified");
+                throw new ArgumentException("The time interval must be positive");
             }
 
             this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate(seconds);

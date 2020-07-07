@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity
+                this.InputQuantity.Value < this.MissionRequestedQuantity
                 &&
                 this.InputQuantity.Value <= this.AvailableQuantity;
 
@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if (this.lastMissionOperation == null)
+                if (this.lastMissionOperation == null && this.MissionOperation != null)
                 {
                     this.lastMissionOperation = this.MissionOperation;
                     this.lastMissionOperation.RequestedQuantity = this.MissionRequestedQuantity;
@@ -247,11 +247,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (this.lastSelectedCompartmentDetail == null)
+                if (this.lastSelectedCompartmentDetail == null && this.SelectedCompartmentDetail != null && this.MissionOperation != null)
                 {
                     this.lastSelectedCompartmentDetail = this.SelectedCompartmentDetail;
                 }
-                else if (this.SelectedCompartmentDetail != null)
+                else if (this.SelectedCompartmentDetail != null && this.MissionOperation != null)
                 {
                     if (this.lastSelectedCompartmentDetail.ItemCode == this.SelectedCompartmentDetail.ItemCode)
                     {

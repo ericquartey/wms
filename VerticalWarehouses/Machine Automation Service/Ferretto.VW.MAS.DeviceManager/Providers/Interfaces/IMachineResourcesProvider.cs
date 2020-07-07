@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsAntiIntrusionBarrierBay3 { get; }
 
+        bool IsDeviceManagerBusy { get; }
+
         bool IsDrawerCompletelyOffCradle { get; }
 
         bool IsDrawerCompletelyOnCradle { get; }

@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
@@ -47,7 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.Single().IsEnabled;
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().IsEnabled;
                 }
             }
             set
@@ -84,7 +85,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.Single().IsTimeSyncEnabled;
+                        return this.dataContext.WmsSettings.AsNoTracking().Single().IsTimeSyncEnabled;
                     }
                 }
 
@@ -111,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.Single().LastWmsTimeSync;
+                        return this.dataContext.WmsSettings.AsNoTracking().Single().LastWmsTimeSync;
                     }
                 }
 
@@ -136,7 +137,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 if (this.dataLayerService.IsReady)
                 {
-                    return this.dataContext.WmsSettings.Single().ServiceUrl ?? DefaultUri;
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().ServiceUrl ?? DefaultUri;
                 }
 
                 return DefaultUri;
@@ -162,7 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.Single().TimeSyncIntervalMilliseconds;
+                        return this.dataContext.WmsSettings.AsNoTracking().Single().TimeSyncIntervalMilliseconds;
                     }
                 }
 
@@ -178,7 +179,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             lock (this.dataContext)
             {
-                return this.dataContext.WmsSettings.Single();
+                return this.dataContext.WmsSettings.AsNoTracking().Single();
             }
         }
 
