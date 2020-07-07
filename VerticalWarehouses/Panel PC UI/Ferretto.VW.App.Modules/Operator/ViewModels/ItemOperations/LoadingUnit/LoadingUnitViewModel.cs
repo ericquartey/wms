@@ -406,7 +406,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (activeOperation != null)
                 {
-                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
+                    var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId && ic.ItemId == activeOperation.ItemId)?.Stock ?? activeOperation.RequestedQuantity;
+
+                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, quantity);
                     if (!canComplete)
                     {
                         this.Logger.Debug($"Operation '{activeOperation.Id}' cannot be completed, forcing recall of loading unit.");
