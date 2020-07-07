@@ -10,13 +10,19 @@ namespace Ferretto.VW.Common.Hubs
     {
         #region Fields
 
-        private const int DefaultMaxReconnectTimeout = 5000;
+        private const int DefaultMaxReconnectTimeout = 5 * 1000;
+
+        private const int DefaultRetriesBeforeThrottle = 10;
+
+        private const int DefaultThrottledReconnectTimeout = 60 * 1000;
 
         private static readonly Random Random = new Random();
 
         private readonly Uri endpoint;
 
         private HubConnection connection;
+
+        private int failedRetries;
 
         #endregion
 
@@ -52,6 +58,8 @@ namespace Ferretto.VW.Common.Hubs
 
         public async Task ConnectAsync(bool useMessagePackProtocol)
         {
+            this.failedRetries = 0;
+
             while (this.connection?.State != HubConnectionState.Connected)
             {
                 try
@@ -68,6 +76,7 @@ namespace Ferretto.VW.Common.Hubs
                 }
                 catch
                 {
+                    this.failedRetries++;
                     System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': connection lost.");
                     await this.WaitForReconnectionAsync();
                 }
@@ -136,12 +145,21 @@ namespace Ferretto.VW.Common.Hubs
 
         private async Task WaitForReconnectionAsync()
         {
-            var reconnectionTime = Random.Next(
-                this.MaxReconnectTimeoutMilliseconds / 2,
-                this.MaxReconnectTimeoutMilliseconds);
+            var isReconnectionThrottled = this.failedRetries > DefaultRetriesBeforeThrottle;
+            if (isReconnectionThrottled)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                  $"Hub '{this.endpoint}': reconnection is throttled.");
+            }
+
+            var reconnectionTime = isReconnectionThrottled
+                ? DefaultThrottledReconnectTimeout
+                : Random.Next(
+                    this.MaxReconnectTimeoutMilliseconds / 2,
+                    this.MaxReconnectTimeoutMilliseconds);
 
             System.Diagnostics.Debug.WriteLine(
-                $"Hub '{this.endpoint}': reconnecting in {reconnectionTime / 1000.0:0.0} seconds ... ");
+                $"Hub '{this.endpoint}': reconnecting in {reconnectionTime / 1000.0:0.0} seconds (retry #{this.failedRetries}) ... ");
 
             await Task.Delay(reconnectionTime);
         }

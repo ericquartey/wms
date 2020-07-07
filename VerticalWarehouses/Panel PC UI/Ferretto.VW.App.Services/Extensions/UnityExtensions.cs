@@ -29,6 +29,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
             containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
+            containerRegistry.RegisterSingleton<IUsbWatcherService, UsbWatcherService>();
 
             containerRegistry.RegisterSingleton<ILocalizationService, LocalizationService>();
 

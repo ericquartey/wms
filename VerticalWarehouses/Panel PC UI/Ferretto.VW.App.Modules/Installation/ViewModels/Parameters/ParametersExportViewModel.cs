@@ -9,7 +9,6 @@ using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -20,11 +19,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineServicingWebService machineServicingWebService;
-
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly UsbWatcherService usbWatcherService;
+        private readonly IMachineServicingWebService machineServicingWebService;
+
+        private readonly IUsbWatcherService usbWatcherService;
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
@@ -45,9 +44,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public ParametersExportViewModel(IMachineConfigurationWebService machineConfigurationWebService,
-            UsbWatcherService usb,
+            IUsbWatcherService usb,
             IMachineServicingWebService machineServicingWebService)
-                : base(PresentationMode.Installer)
+            : base(PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
@@ -120,16 +119,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcherService.DrivesChange -= this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Dispose();
+            this.usbWatcherService.DrivesChanged -= this.UsbWatcherService_DrivesChange;
+            this.usbWatcherService.Disable();
 
             base.Disappear();
         }
 
         public override Task OnAppearedAsync()
         {
-            this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Start();
+            this.usbWatcherService.DrivesChanged += this.UsbWatcherService_DrivesChange;
+            this.usbWatcherService.Enable();
 
 #if DEBUG
             this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
@@ -240,19 +239,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.exportCommand?.RaiseCanExecuteChanged();
         }
 
-        private void UsbWatcherService_DrivesChange(object sender, DrivesChangeEventArgs e)
-        {
-            var drives = this.availableDrives = ((UsbWatcherService)sender).Drives.Writable() ?? Array.Empty<DriveInfo>();
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
-            if (!drives.Any())
-            {
-                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
-
-                // no need to await for this
-                this.NavigationService.GoBackSafelyAsync();
-            }
-        }
-
         private async Task<VertimagConfiguration> UpdateOutputAsync(VertimagConfiguration output)
         {
             var outsafe = output;
@@ -284,6 +270,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             catch (Exception)
             {
                 return outsafe;
+            }
+        }
+
+        private void UsbWatcherService_DrivesChange(object sender, DrivesChangedEventArgs e)
+        {
+            this.availableDrives = this.usbWatcherService.Drives.Writable();
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+            if (!this.availableDrives.Any())
+            {
+                this.ShowNotification(Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
+
+                // no need to await for this
+                this.NavigationService.GoBackSafelyAsync();
             }
         }
 

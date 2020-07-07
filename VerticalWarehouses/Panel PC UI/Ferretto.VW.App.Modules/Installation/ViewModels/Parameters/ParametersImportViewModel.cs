@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -20,9 +20,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineConfigurationWebService _machineConfigurationWebService;
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly UsbWatcherService _usbWatcher;
+        private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
@@ -40,11 +40,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersImportViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
-            : base(Services.PresentationMode.Installer)
+        public ParametersImportViewModel(
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IUsbWatcherService usbWatcher)
+            : base(PresentationMode.Installer)
         {
-            this._machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
-            this._usbWatcher = usb;
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.usbWatcher = usbWatcher;
         }
 
         #endregion
@@ -124,8 +126,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this._usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
-            this._usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Disable();
+
             base.Disappear();
         }
 
@@ -134,8 +137,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             // reset selected file to null, just in case
             this.SelectedFile = null;
 
-            this._usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-            this._usbWatcher.Start();
+            this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Enable();
+
             this.FindConfigurationFiles();
 
             return base.OnAppearedAsync();
@@ -152,13 +156,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanRestore()
         {
-            return !this.IsBusy && !this.IsMoving && this.ImportingConfiguration != null;
+            return
+                !this.IsBusy
+                &&
+                !this.IsMoving
+                &&
+                this.ImportingConfiguration != null;
         }
 
         private void FindConfigurationFiles()
         {
             this.IsBusy = true;
-            var usb = this._usbWatcher;
+            var usb = this.usbWatcher;
             IEnumerable<FileInfo> configurationFiles = null;
 
             configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
@@ -213,13 +222,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = true;
 
                 // fetch the very last version
-                var source = await this._machineConfigurationWebService.GetAsync();
+                var source = await this.machineConfigurationWebService.GetAsync();
 
                 // merge and save
                 var result = source.ExtendWith(this.ImportingConfiguration);
                 var target = VertimagConfiguration.FromJson(result.ToString());
 
-                await this._machineConfigurationWebService.SetAsync(target);
+                await this.machineConfigurationWebService.SetAsync(target);
                 this.SelectedFile = null;
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.RestoreSuccessful"), Services.Models.NotificationSeverity.Success);
             }
@@ -233,7 +242,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
             this.FindConfigurationFiles();
         }

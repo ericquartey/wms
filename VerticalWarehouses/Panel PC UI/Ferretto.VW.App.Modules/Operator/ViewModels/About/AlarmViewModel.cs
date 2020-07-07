@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -18,13 +18,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly DelegateCommand goToExport;
+
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
-        private readonly UsbWatcherService usbWatcher;
+        private readonly IUsbWatcherService usbWatcher;
 
-        private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
-
-        private DelegateCommand goToExport;
+        private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
         private List<MachineError> machineErrors;
 
@@ -33,23 +33,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public AlarmViewModel(
-            IMachineErrorsWebService machineErrorsWebService, UsbWatcherService usbWatcher)
-                    : base()
+            IMachineErrorsWebService machineErrorsWebService,
+            IUsbWatcherService usbWatcher)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.usbWatcher = usbWatcher ?? throw new ArgumentNullException(nameof(usbWatcher));
+
+            this.goToExport = new DelegateCommand(this.ShowExport, this.CanShowExport);
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
+        public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
 
-        public ICommand GoToExport => this.goToExport
-                          ??
-                  (this.goToExport = new DelegateCommand(
-                      this.ShowExport, this.CanShowExport));
+        public ICommand GoToExport => this.goToExport;
 
         public List<MachineError> MachineErrors
         {
@@ -63,8 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Disable();
 
             base.Disappear();
         }
@@ -73,11 +72,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Start();
+            this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Enable();
 
 #if DEBUG
-            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
 
             await base.OnAppearedAsync();
@@ -114,22 +113,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
-            // exportable drives
-            var drives = ((UsbWatcherService)sender).Drives;
-            try
-            {
-                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.ToList());
-            }
-            catch (Exception ex)
-            {
-                var exc = ex;
-            }
+            this.availableDrives = this.usbWatcher.Drives;
+
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToExport?.RaiseCanExecuteChanged();
 
-            if (this.exportableDrives != null)
+            if (this.availableDrives != null)
             {
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.ExportableDeviceDetected"));
             }
