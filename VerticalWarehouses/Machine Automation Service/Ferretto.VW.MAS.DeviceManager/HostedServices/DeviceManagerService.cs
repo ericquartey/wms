@@ -261,6 +261,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 messageCurrentStateMachine?.PublishNotificationMessage(notificationMessage);
 
+                this.machineVolatileDataProvider.IsDeviceManagerBusy = this.currentStateMachines.Any();
+
                 return Task.CompletedTask;
             }
         }
@@ -431,6 +433,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogTrace("OnDataLayerReady end");
                 }
             }
+            this.machineVolatileDataProvider.IsDeviceManagerBusy = this.currentStateMachines.Any();
             return Task.CompletedTask;
         }
 

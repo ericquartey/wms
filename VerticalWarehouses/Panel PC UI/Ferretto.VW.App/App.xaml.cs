@@ -91,6 +91,13 @@ namespace Ferretto.VW.App
             base.OnExit(e);
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            this.Container.UseTelemetryHubs();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!AppCheck.Start())
@@ -108,16 +115,9 @@ namespace Ferretto.VW.App
 
             this.SetLanguage();
 
-            this.ClearTempFolder();
+            ClearTempFolder();
 
             base.OnStartup(e);
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-
-            this.Container.UseTelemetryHubs();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -152,17 +152,9 @@ namespace Ferretto.VW.App
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
             containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
-
-            // USB Watcher
-            RegisterUsbWatcher(containerRegistry);
         }
 
-        private static void RegisterUsbWatcher(IContainerRegistry container)
-        {
-            container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
-        }
-
-        private void ClearTempFolder()
+        private static void ClearTempFolder()
         {
             var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
 #if !DEBUG

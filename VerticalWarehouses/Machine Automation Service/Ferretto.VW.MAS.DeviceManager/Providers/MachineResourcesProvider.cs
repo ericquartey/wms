@@ -71,6 +71,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsAntiIntrusionBarrierBay3 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3];
 
+        public bool IsDeviceManagerBusy => this.machineVolatileDataProvider.IsDeviceManagerBusy;
+
         public bool IsDrawerCompletelyOffCradle => !this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] && !this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];

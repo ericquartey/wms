@@ -89,6 +89,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
 
+        public bool IsDeviceManagerBusy { get; set; }
+
         public bool IsHomingActive { get; set; }
 
         // this is a duplicate for IsBayHomingExecuted[BayNumber.ElevatorBay].
