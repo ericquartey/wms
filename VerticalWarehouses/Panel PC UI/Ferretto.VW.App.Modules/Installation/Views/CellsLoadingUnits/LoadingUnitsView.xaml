@@ -196,21 +196,6 @@
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="{res:Loc InstallationApp.Height}">
                     <!--  LabelText="Height">  -->
-                    <controls:PpcTextBox.Style>
-                        <Style TargetType="{x:Type controls:PpcTextBox}">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedLU.Status}"
-                                             Value="InBay">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding SelectedLU.Status}"
-                                             Value="InElevator">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:PpcTextBox.Style>
                 </controls:PpcTextBox>
 
                 <controls:PpcTextBox Grid.Row="1"

@@ -54,6 +54,14 @@
                                Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
                                Text="{res:Loc InstallationApp.MountCamera}" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding GoToMeasuredFront}"
+                                    Content="{res:Loc InstallationApp.Forwards}"
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 

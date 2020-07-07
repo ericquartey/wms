@@ -1988,4 +1988,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="TotalMissionsHeader" xml:space="preserve">
     <value>Total missions</value>
   </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Close line</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Updated value</value>
+  </data>
 </root>

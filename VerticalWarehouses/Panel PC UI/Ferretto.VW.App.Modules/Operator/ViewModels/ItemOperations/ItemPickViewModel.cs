@@ -90,7 +90,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public override Task OnAppearedAsync()
+        public override void Disappear()
+        {
+            this.lastMissionOperation.RequestedQuantity = this.InputQuantity.Value + this.MissionOperation.DispatchedQuantity;
+
+            this.lastSelectedCompartmentDetail.Stock = this.AvailableQuantity.Value;
+
+            base.Disappear();
+        }
+
+        public override async Task OnAppearedAsync()
         {
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
@@ -102,7 +111,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
-            return base.OnAppearedAsync();
+            await base.OnAppearedAsync();
+
+            this.SetLastQuantity();
         }
 
         public override void OnMisionOperationRetrieved()
@@ -115,7 +126,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.InputQuantity = this.MissionRequestedQuantity;
-                this.AvailableQuantity = this.MissionRequestedQuantity;
+                //this.AvailableQuantity = this.MissionRequestedQuantity;
 
                 this.RaisePropertyChanged(nameof(this.InputQuantity));
                 this.RaisePropertyChanged(nameof(this.AvailableQuantity));
@@ -155,11 +166,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.CanInputQuantity
                 &&
-                this.IsInputQuantityValid
-                &&
-                this.InputQuantity.Value > 0;
+                this.InputQuantity.Value == this.MissionRequestedQuantity;
 
             this.RaisePropertyChanged(nameof(this.CanConfirm));
+
+            this.CanConfirmPartialOperation =
+                this.MissionOperation != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.CanInputQuantity
+                &&
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value != this.MissionRequestedQuantity
+                &&
+                this.InputQuantity.Value <= this.AvailableQuantity;
+
+            this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
 
             //return this.CanConfirm;
             return false;
@@ -186,6 +216,65 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void SetLastQuantity()
+        {
+            try
+            {
+                if (this.lastMissionOperation == null)
+                {
+                    this.lastMissionOperation = this.MissionOperation;
+                    this.lastMissionOperation.RequestedQuantity = this.MissionRequestedQuantity;
+                }
+                else if (this.MissionOperation != null)
+                {
+                    if (this.lastMissionOperation.MissionId == this.MissionOperation.MissionId && this.lastMissionOperation.ItemCode == this.MissionOperation.ItemCode)
+                    {
+                        if (this.lastMissionOperation.RequestedQuantity != this.MissionRequestedQuantity)
+                        {
+                            //this.MissionOperation.RequestedQuantity = this.lastMissionOperation.RequestedQuantity;
+                            //this.RaisePropertyChanged(nameof(this.MissionOperation));
+                            this.InputQuantity = this.lastMissionOperation.RequestedQuantity;
+                            this.RaisePropertyChanged(nameof(this.InputQuantity));
+                        }
+                    }
+                    else
+                    {
+                        this.lastMissionOperation = this.MissionOperation;
+                        this.lastMissionOperation.RequestedQuantity = this.MissionRequestedQuantity;
+                    }
+                }
+
+                if (this.lastSelectedCompartmentDetail == null)
+                {
+                    this.lastSelectedCompartmentDetail = this.SelectedCompartmentDetail;
+                }
+                else if (this.SelectedCompartmentDetail != null)
+                {
+                    if (this.lastSelectedCompartmentDetail.ItemCode == this.SelectedCompartmentDetail.ItemCode)
+                    {
+                        if (this.lastMissionOperation.CompartmentId == this.MissionOperation.CompartmentId && this.lastMissionOperation.MissionId == this.MissionOperation.MissionId)
+                        {
+                            if (this.lastSelectedCompartmentDetail.Stock != this.SelectedCompartmentDetail.Stock)
+                            {
+                                //this.SelectedCompartmentDetail.Stock = this.lastSelectedCompartmentDetail.Stock;
+                                //this.RaisePropertyChanged(nameof(this.SelectedCompartmentDetail));
+                                this.AvailableQuantity = this.lastSelectedCompartmentDetail.Stock;
+                                this.RaisePropertyChanged(nameof(this.AvailableQuantity));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this.lastSelectedCompartmentDetail = this.SelectedCompartmentDetail;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //
             }
         }
 

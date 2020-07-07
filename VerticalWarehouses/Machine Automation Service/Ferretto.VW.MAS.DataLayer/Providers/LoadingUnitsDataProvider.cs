@@ -398,6 +398,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.GrossWeight = loadingUnit.GrossWeight;
                 luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
                 luDb.Tare = loadingUnit.Tare;
+                luDb.Height = loadingUnit.Height;
                 if (originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
                 {
                     luDb.Status = loadingUnit.Status;

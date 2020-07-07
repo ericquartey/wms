@@ -3,8 +3,6 @@ trigger:
   branches:
     include:
     - develop
-    - release
-    - master
   paths:
     include:
     - 'VerticalWarehouses/Utility/*'

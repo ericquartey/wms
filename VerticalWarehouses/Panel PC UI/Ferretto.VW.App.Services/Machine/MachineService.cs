@@ -1555,6 +1555,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
+                        else if (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0
+                            && this.MachineStatus.EmbarkedLoadingUnit.Height == 0
+                            )
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadUnitOnBoardHasInvalidHeight"), NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();

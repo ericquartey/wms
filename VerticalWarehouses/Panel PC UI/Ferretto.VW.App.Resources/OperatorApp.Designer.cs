@@ -484,6 +484,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close line.
+        /// </summary>
+        public static string CloseLine {
+            get {
+                return ResourceManager.GetString("CloseLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
@@ -4333,6 +4342,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitsInElevator {
             get {
                 return ResourceManager.GetString("UnitsInElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated value.
+        /// </summary>
+        public static string UpdatedValue {
+            get {
+                return ResourceManager.GetString("UpdatedValue", resourceCulture);
             }
         }
         
