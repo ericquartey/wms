@@ -388,24 +388,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             });
         }
 
-        private void CheckUDC()
-        {
-            try
-            {
-                var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
-
-                if (activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
-                {
-                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
-                    this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
-                }
-            }
-            catch(Exception)
-            {
-                //
-            }
-        }
-
         public override void RaisePropertyChanged()
         {
             base.RaisePropertyChanged();
@@ -526,6 +508,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsBusyConfirmingRecallOperation
                 &&
                 !(this.LoadingUnit is null);
+        }
+
+        private void CheckUDC()
+        {
+            try
+            {
+                var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+                if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
+                {
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
+                }
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
 
         private async Task ConfirmOperationAsync()
