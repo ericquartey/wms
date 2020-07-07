@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineUtcTimeWebService machineUtcTimeWebService;
 
+        private readonly int MillisecondsInHour = 1000 * 60 * 60;
+
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private bool canGoAutoSync;
@@ -220,7 +222,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             DateTimeOffset? currentDateTime = null;
             try
             {
-                this.TimeSyncMilliseconds = (int)(this.wmsStatusWebService.GetTimeSyncIntervalMillisecondsAsync().Result * Math.Pow(2.7778, -7));
+                this.TimeSyncMilliseconds = (this.wmsStatusWebService.GetTimeSyncIntervalMillisecondsAsync().Result / this.MillisecondsInHour);
 
                 this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
                 this.IsManualEnabled = true;
@@ -281,7 +283,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.isAuto)
                 {
-                    await this.wmsStatusWebService.UpdateTimeSyncIntervalMillisecondsAsync((int)(this.timeSyncMilliseconds * Math.Pow(3.6, 6)));
+                    await this.wmsStatusWebService.UpdateTimeSyncIntervalMillisecondsAsync(this.timeSyncMilliseconds * this.MillisecondsInHour);
                 }
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));

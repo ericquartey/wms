@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsAutomationServiceReady { get; set; }
 
+        bool IsDeviceManagerBusy { get; set; }
+
         Dictionary<BayNumber, bool> IsBayHomingExecuted { get; }
 
         Dictionary<BayNumber, bool> IsBayLightOn { get; }
