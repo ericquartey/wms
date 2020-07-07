@@ -373,6 +373,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.CheckUDC();
+
             this.Reasons = null;
 
             Task.Run(async () =>
@@ -384,6 +386,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 while (this.IsVisible);
             });
+        }
+
+        private void CheckUDC()
+        {
+            try
+            {
+                var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+                if (activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
+                {
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
+                }
+            }
+            catch(Exception)
+            {
+                //
+            }
         }
 
         public override void RaisePropertyChanged()
