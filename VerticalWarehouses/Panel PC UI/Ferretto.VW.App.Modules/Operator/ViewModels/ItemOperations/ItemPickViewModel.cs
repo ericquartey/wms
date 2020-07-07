@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value < this.MissionRequestedQuantity
+                this.InputQuantity.Value != this.MissionRequestedQuantity
                 &&
                 this.InputQuantity.Value <= this.AvailableQuantity;
 
