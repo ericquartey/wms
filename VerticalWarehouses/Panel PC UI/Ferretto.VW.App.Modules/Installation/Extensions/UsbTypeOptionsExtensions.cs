@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace Ferretto.VW.App
 {
@@ -11,19 +12,34 @@ namespace Ferretto.VW.App
 
         public static IEnumerable<FileInfo> FindFiles(this DriveInfo drive, string searchPattern)
         {
+            if (drive is null)
+            {
+                return Array.Empty<FileInfo>();
+            }
+
             try
             {
-                return (drive ?? throw new ArgumentNullException(nameof(drive)))
-                       .RootDirectory.GetFiles(searchPattern);
+                return drive.RootDirectory.GetFiles(searchPattern);
             }
-            catch
+            catch (Exception ex)
             {
+                LogManager.GetCurrentClassLogger().Error(ex);
+
                 return Array.Empty<FileInfo>();
             }
         }
 
         public static IEnumerable<string> FindFiles(this IEnumerable<DriveInfo> drives, string searchPattern)
-            => (drives ?? throw new ArgumentNullException(nameof(drives))).SelectMany(drive => drive.FindFiles(searchPattern))?.Select(f => f.FullName);
+        {
+            if (drives is null)
+            {
+                return Array.Empty<string>();
+            }
+
+            return drives
+                .SelectMany(drive => drive.FindFiles(searchPattern))?
+                .Select(f => f.FullName);
+        }
 
         #endregion
     }

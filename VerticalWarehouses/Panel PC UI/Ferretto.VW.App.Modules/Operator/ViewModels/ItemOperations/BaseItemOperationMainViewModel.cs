@@ -572,9 +572,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                            if (this.InputQuantity.HasValue)
+                            {
+                                this.ShowNotification("Operazione confermata tramite codice a barre.", Services.Models.NotificationSeverity.Success);
 
-                            await this.ConfirmOperationAsync();
+                                await this.ConfirmOperationAsync();
+                            }
+                            else
+                            {
+                                this.ShowNotification("Specificare la quantità prima di confermare.", Services.Models.NotificationSeverity.Warning);
+                            }
                         }
                     }
 

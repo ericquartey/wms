@@ -198,7 +198,7 @@ namespace Ferretto.VW.Installer.Core
                     Steps = Array.Empty<Step>(),
                     IsRollbackInProgress = false,
                     SetupMode = this.setupModeService.Mode,
-                    ActiveStep = (Step?) null,
+                    ActiveStep = (Step?)null,
                 };
 
                 serviceSnapshot = JsonConvert.DeserializeAnonymousType(
@@ -221,8 +221,8 @@ namespace Ferretto.VW.Installer.Core
                     .OrderBy(s => s.Number)
                     .ToArray();
 
-                if(serviceSnapshot.ActiveStep != null)
-                { 
+                if (serviceSnapshot.ActiveStep != null)
+                {
                     this.ActiveStep = this.Steps.SingleOrDefault(s => s.Number == serviceSnapshot.ActiveStep.Number);
                     this.logger.Debug($"Step #{this.ActiveStep?.Number} was restored as the active step.");
                 }
@@ -244,7 +244,7 @@ namespace Ferretto.VW.Installer.Core
 
         public void Run()
         {
-            if(this.isStarted)
+            if (this.isStarted)
             {
                 this.logger.Warn("Unable to start installation because installation is already started.");
                 return;
@@ -309,7 +309,13 @@ namespace Ferretto.VW.Installer.Core
         {
             this.logger.Debug("Taking snapshot of installation status ...");
 
-            var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
+            var objectString = JsonConvert.SerializeObject(new
+            {
+                this.Steps,
+                this.IsRollbackInProgress,
+                this.ActiveStep,
+                SetupMode = this.setupModeService.Mode,
+            }, SerializerSettings);
 
             const string OldFileName = "steps-snapshot.old.json";
             if (File.Exists("steps-snapshot.json"))

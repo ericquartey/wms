@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Prism.Commands;
-using Ferretto.VW.App;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using System;
-using CommonServiceLocator;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {

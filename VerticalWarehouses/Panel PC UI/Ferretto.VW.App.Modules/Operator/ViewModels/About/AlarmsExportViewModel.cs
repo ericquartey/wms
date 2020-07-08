@@ -8,7 +8,6 @@ using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -18,19 +17,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IMachineErrorsWebService machineErrorsWebService;
+        private readonly DelegateCommand exportCommand;
 
         private readonly string separator = ";";
 
-        private readonly UsbWatcherService usbWatcherService;
+        private readonly IUsbWatcherService usbWatcherService;
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
         private DriveInfo drive = null;
 
-        private DelegateCommand exportCommand;
-
-        private bool hasNameConflict = false;
+        private bool hasNameConflict;
 
         private bool includeBayNumber = true;
 
@@ -48,35 +45,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool includeResolutionDate = true;
 
-        private bool isBusy = false;
+        private bool isBusy;
 
         private IEnumerable<MachineError> machineErrors;
 
-        private bool overwrite = false;
+        private bool overwrite;
 
         #endregion
 
         #region Constructors
 
-        public AlarmsExportViewModel(IMachineErrorsWebService machineErrorsWebService, UsbWatcherService usb)
-                : base(PresentationMode.Operator)
+        public AlarmsExportViewModel(IUsbWatcherService usbWatcherService)
+            : base(PresentationMode.Operator)
         {
-            this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
-            this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
+            this.usbWatcherService = usbWatcherService ?? throw new ArgumentNullException(nameof(usbWatcherService));
+            this.exportCommand = new DelegateCommand(this.Export, this.CanExport);
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
+        public IEnumerable<DriveInfo> AvailableDrives
+        {
+            get => this.availableDrives;
+            set => this.SetProperty(ref this.availableDrives, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public ICommand ExportCommand =>
-            this.exportCommand ??
-            (this.exportCommand = new DelegateCommand(
-            this.Export, this.CanExport));
+        public ICommand ExportCommand => this.exportCommand;
 
         public bool HasFilenameConflict => this.hasNameConflict;
 
@@ -179,20 +177,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcherService.DrivesChange -= this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Dispose();
+            this.usbWatcherService.DrivesChanged -= this.UsbWatcherService_DrivesChanged;
+            this.usbWatcherService.Disable();
 
             base.Disappear();
         }
 
         public override Task OnAppearedAsync()
         {
-            this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Start();
+            this.usbWatcherService.DrivesChanged += this.UsbWatcherService_DrivesChanged;
+            this.usbWatcherService.Enable();
 
 #if DEBUG
-            //this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-            //this.RaisePropertyChanged(nameof(this.AvailableDrives));
+            // this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            // this.RaisePropertyChanged(nameof(this.AvailableDrives));
 #endif
 
             this.RaisePropertyChanged(nameof(this.Data));
@@ -216,6 +214,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void Export()
         {
+            if (this.SelectedDrive is null)
+            {
+                this.ShowNotification("No drive is selected.");
+            }
+
             var goback = false;
             try
             {
@@ -242,9 +245,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 // Create filename and full path
                 var filename = "Alarms_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".csv";
-                var fullPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, filename);
+                var fullPath = Path.Combine(this.SelectedDrive.RootDirectory.FullName, filename);
 
                 // create intestation
+                // HACK: very bad performance. Consider replacing with StringBuilder or, even better, writing directly to file
                 var intestation = string.Empty;
                 intestation += this.IncludeID ? Localized.Get("OperatorApp.Id") + this.separator : string.Empty;
                 intestation += this.IncludeBayNumber ? Localized.Get("OperatorApp.BayNumber") + this.separator : string.Empty;
@@ -258,22 +262,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 File.WriteAllText(fullPath, intestation + "\n");
 
                 File.AppendAllLines(fullPath, this.MachineErrors.Select(e =>
-                   {
-                       var line = string.Empty;
+                {
+                    var line = string.Empty;
+                    // HACK: very bad performance. Consider replacing with StringBuilder or, even better, writing directly to file
 
-                       line += this.IncludeID ? e.Id + this.separator : string.Empty;
-                       line += this.IncludeBayNumber ? e.BayNumber + this.separator : string.Empty;
-                       line += this.IncludeCode ? e.Code + this.separator : string.Empty;
-                       line += this.IncludeDescription ? e.Description + this.separator : string.Empty;
-                       line += this.IncludeDetailCode ? e.DetailCode + this.separator : string.Empty;
-                       line += this.IncludeInverterIndex ? e.InverterIndex + this.separator : string.Empty;
-                       line += this.IncludeOccurenceDate ? e.OccurrenceDate + this.separator : string.Empty;
-                       line += this.IncludeResolutionDate ? e.ResolutionDate + this.separator : string.Empty;
+                    line += this.IncludeID ? e.Id + this.separator : string.Empty;
+                    line += this.IncludeBayNumber ? e.BayNumber + this.separator : string.Empty;
+                    line += this.IncludeCode ? e.Code + this.separator : string.Empty;
+                    line += this.IncludeDescription ? e.Description + this.separator : string.Empty;
+                    line += this.IncludeDetailCode ? e.DetailCode + this.separator : string.Empty;
+                    line += this.IncludeInverterIndex ? e.InverterIndex + this.separator : string.Empty;
+                    line += this.IncludeOccurenceDate ? e.OccurrenceDate + this.separator : string.Empty;
+                    line += this.IncludeResolutionDate ? e.ResolutionDate + this.separator : string.Empty;
 
-                       return line;
-                   }
-
-                 ));
+                    return line;
+                }));
 
                 this.SelectedDrive = null;
                 this.ShowNotification(Localized.Get("InstallationApp.ExportSuccessful"), Services.Models.NotificationSeverity.Success);
@@ -320,18 +323,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
         }
 
-        private void UsbWatcherService_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcherService_DrivesChanged(object sender, DrivesChangedEventArgs e)
         {
-            var drives = this.availableDrives = ((UsbWatcherService)sender).Drives ?? Array.Empty<DriveInfo>();
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+            this.AvailableDrives = this.usbWatcherService.Drives;
 
-            if (!drives.Any())
+            if (this.AvailableDrives.Any())
             {
-                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("InstallationApp.ExportableDeviceDetected"));
             }
             else
             {
-                this.ShowNotification(Resources.Localized.Get("InstallationApp.ExportableDeviceDetected"));
+                this.ShowNotification(Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
             }
         }
 

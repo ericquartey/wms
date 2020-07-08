@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DevExpress.Mvvm.POCO;
-using DevExpress.Xpf.Layout.Core;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
@@ -683,7 +681,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.SelectedItem != null;
         }
-        
+
         private async Task OnProductsChangedAsync(ProductsChangedEventArgs e)
         {
             await this.RefreshItemsAsync();

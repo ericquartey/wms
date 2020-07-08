@@ -61,14 +61,14 @@
                                 Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Command="{Binding UpCommand}"
+                                Command="{Binding SelectPreviousCommand}"
                                 Content="{Resources:Loc OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="0,15,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Command="{Binding DownCommand}"
+                                Command="{Binding SelectNextCommand}"
                                 Content="{Resources:Loc OperatorApp.CommonDown}" />
 
         </Grid>
@@ -77,7 +77,7 @@
                 Grid.Row="2"
                 Grid.RowSpan="2"
                 Grid.Column="1"
-                Padding="15,20,15,0"
+                Padding="20"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Background="{DynamicResource PpcButtonBackground}"
@@ -88,7 +88,7 @@
                        Grid.Column="1"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       FontSize="12"
+                       FontSize="14"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{Binding UpdatesInfo}" />
         </Border>
