@@ -8,8 +8,6 @@ using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.IO;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -18,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly UsbWatcherService usbWatcherService;
+        private readonly IUsbWatcherService usbWatcherService;
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
@@ -46,17 +44,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public LogsExportViewModel(IMachineErrorsWebService machineErrorsWebService, UsbWatcherService usb)
+        public LogsExportViewModel(IUsbWatcherService usbWatcherService)
                 : base(PresentationMode.Operator)
         {
-            this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
+            this.usbWatcherService = usbWatcherService ?? throw new ArgumentNullException(nameof(usbWatcherService));
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
+        public IEnumerable<DriveInfo> AvailableDrives
+        {
+            get => this.availableDrives;
+            set => this.SetProperty(ref this.availableDrives, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -136,16 +138,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcherService.DrivesChange -= this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Dispose();
+            this.usbWatcherService.DrivesChanged -= this.UsbWatcherService_DrivesChange;
+            this.usbWatcherService.Disable();
 
             base.Disappear();
         }
 
         public override Task OnAppearedAsync()
         {
-            this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
-            this.usbWatcherService.Start();
+            this.usbWatcherService.DrivesChanged += this.UsbWatcherService_DrivesChange;
+            this.usbWatcherService.Enable();
 
             this.RaisePropertyChanged(nameof(this.Data));
 
@@ -182,6 +184,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         return Task.CompletedTask;
                     }
                 }
+
                 this.IsBusy = true;
                 this.IsBackNavigationAllowed = false;
 
@@ -193,10 +196,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 // Create path to export log
                 var logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + "\\";
-                var folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
+                var folderPath = Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
-                //
-                System.IO.Directory.CreateDirectory(folderPath);
+                Directory.CreateDirectory(folderPath);
 
                 var d = new DirectoryInfo(filepath);
                 foreach (var file in d.GetFiles("*.log"))
@@ -239,7 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     // Create path
                     var logFolder = "Logs_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day;
-                    var folderPath = System.IO.Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
+                    var folderPath = Path.Combine((this.SelectedDrive ?? throw new ArgumentNullException(nameof(this.SelectedDrive))).RootDirectory.FullName, logFolder);
 
                     hasConflict = Directory.Exists(folderPath);
                 }
@@ -248,6 +250,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(exc);
                 }
             }
+
             this.hasNameConflict = this.overwrite = hasConflict;
             this.RaisePropertyChanged(nameof(this.HasFilenameConflict));
             this.RaisePropertyChanged(nameof(this.OverwriteTargetFile));
@@ -256,17 +259,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
         }
 
-        private void UsbWatcherService_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcherService_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
-            var drives = this.availableDrives = ((UsbWatcherService)sender).Drives ?? Array.Empty<DriveInfo>();
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
-            if (!drives.Any())
+            this.AvailableDrives = this.usbWatcherService.Drives;
+            if (!this.AvailableDrives.Any())
             {
-                this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
             }
             else
             {
-                this.ShowNotification(Resources.Localized.Get("InstallationApp.ExportableDeviceDetected"));
+                this.ShowNotification(Localized.Get("InstallationApp.ExportableDeviceDetected"));
             }
         }
 

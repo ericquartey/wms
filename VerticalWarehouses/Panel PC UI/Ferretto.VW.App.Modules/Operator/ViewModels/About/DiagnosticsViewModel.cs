@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -20,22 +20,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineServicingWebService machineServicingWebService;
 
-        private readonly UsbWatcherService usbWatcher;
+        private readonly IUsbWatcherService usbWatcher;
 
-        private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
+        private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
         private DelegateCommand goToLogsExport;
 
-        private MachineStatistics totalStatistics;
-
         private MachineStatistics lastServiceStatistics;
+
+        private MachineStatistics totalStatistics;
 
         #endregion
 
         #region Constructors
 
         public DiagnosticsViewModel(
-            UsbWatcherService usbWatcher,
+            IUsbWatcherService usbWatcher,
             IMachineServicingWebService machineServicingWebService)
             : base()
         {
@@ -47,23 +47,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
+        public IEnumerable<DriveInfo> AvailableDrives
+        {
+            get => this.availableDrives;
+            set => this.SetProperty(ref this.availableDrives, value);
+        }
 
         public ICommand GoToLogsExport => this.goToLogsExport
                           ??
                   (this.goToLogsExport = new DelegateCommand(
                       this.ShowLogsExport, this.CanShowLogsExport));
 
-        public MachineStatistics TotalStatistics
-        {
-            get => this.totalStatistics;
-            set => this.SetProperty(ref this.totalStatistics, value);
-        }
-
         public MachineStatistics LastServiceStatistics
         {
             get => this.lastServiceStatistics;
             set => this.SetProperty(ref this.lastServiceStatistics, value);
+        }
+
+        public MachineStatistics TotalStatistics
+        {
+            get => this.totalStatistics;
+            set => this.SetProperty(ref this.totalStatistics, value);
         }
 
         #endregion
@@ -72,8 +76,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.OnUsbDrivesChanged;
+            this.usbWatcher.Disable();
 
             base.Disappear();
         }
@@ -86,11 +90,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsBackNavigationAllowed = true;
 
-                this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-                this.usbWatcher.Start();
+                this.usbWatcher.DrivesChanged += this.OnUsbDrivesChanged;
+                this.usbWatcher.Enable();
 
 #if DEBUG
-                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+                this.AvailableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
 
                 var lastServicing = await this.machineServicingWebService.GetLastValidAsync();
@@ -138,32 +142,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.AvailableDrives.Any();
         }
 
-        private void ShowLogsExport()
+        private void OnUsbDrivesChanged(object sender, DrivesChangedEventArgs e)
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.About.LOGSEXPORT,
-                null,
-                trackCurrentView: true);
-        }
+            this.AvailableDrives = this.usbWatcher.Drives;
 
-        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
-        {
-            // exportable drives
-            var drives = ((UsbWatcherService)sender).Drives;
-            try
-            {
-                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.ToList());
-            }
-            catch
-            {
-                // do nothing
-            }
-
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToLogsExport?.RaiseCanExecuteChanged();
 
-            if (this.exportableDrives != null)
+            if (this.AvailableDrives.Any())
             {
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.ExportableDeviceDetected"));
             }
@@ -171,6 +156,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
             }
+        }
+
+        private void ShowLogsExport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.About.LOGSEXPORT,
+                null,
+                trackCurrentView: true);
         }
 
         #endregion

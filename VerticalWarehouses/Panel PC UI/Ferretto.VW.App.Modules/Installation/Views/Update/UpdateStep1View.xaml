@@ -6,6 +6,7 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -30,12 +31,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
+        <TextBlock Margin="15"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.Update}" />
+                   Text="{res:Loc InstallationApp.SoftwareUpdate}" />
 
 
         <Border Grid.Row="1"
@@ -55,36 +55,73 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+
+                </Grid.ColumnDefinitions>
+
                 <controls:PpcLabeledText Grid.Row="0"
+                                         Grid.Column="1"
                                          Margin="0,0,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding SystemInfo}"
+                                         ContentText="{Binding ApplicationVersion}"
                                          LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
 
+
+                <icon:PackIconMaterial Grid.Row="1"
+                                       Width="24"
+                                       Height="24"
+                                       Margin="15"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Kind="Cloud" />
+
                 <controls:PpcLabeledText Grid.Row="1"
+                                         Grid.Column="1"
+                                         Margin="0,15,25,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding RepositoryPath}"
+                                         LabelText="{res:Loc InstallationApp.RepositoryPath}" />
+
+                <controls:PpcLabeledText Grid.Row="1"
+                                         Grid.Column="2"
                                          Margin="0,15,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding SharedFolderInfo}"
-                                         LabelText="{res:Loc InstallationApp.SharedFolder}" />
+                                         ContentText="{Binding RepositoryPackagesCount}"
+                                         LabelText="{res:Loc InstallationApp.AvailablePackages}" />
+
+                <icon:PackIconMaterial Grid.Row="2"
+                                       Width="24"
+                                       Height="24"
+                                       Margin="15"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Kind="Usb" />
 
                 <controls:PpcLabeledText Grid.Row="2"
-                                         Margin="0,15,0,0"
+                                         Grid.Column="1"
+                                         Margin="0,15,25,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding DeviceInfo}"
-                                         LabelText="{res:Loc InstallationApp.DeviceStatus}" />
+                                         ContentText="{Binding RemovableDevicesCount}"
+                                         LabelText="{res:Loc InstallationApp.RemovableDevicesCount}" />
 
-                <controls:PpcLabeledText Grid.Row="3"
+                <controls:PpcLabeledText Grid.Row="2"
+                                         Grid.Column="2"
                                          Margin="0,15,0,15"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding InstallationFilesInfo}"
-                                         LabelText="{res:Loc InstallationApp.Updates}" />
+                                         ContentText="{Binding RemovableDevicesPackagesCount}"
+                                         LabelText="{res:Loc InstallationApp.AvailablePackages}" />
 
             </Grid>
         </Border>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -22,15 +22,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private const string RESETDATA = "reset";
+
+        private readonly DelegateCommand goToImport;
+
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private readonly UsbWatcherService usbWatcher;
+        private readonly DelegateCommand setInvertersParamertersCommand;
+
+        private readonly DelegateCommand<InverterParametersData> showInverterParamertersCommand;
+
+        private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
-
-        private DelegateCommand goToImport;
 
         private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
@@ -42,26 +48,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private InverterParametersData selectedInverter;
 
-        private DelegateCommand setInvertersParamertersCommand;
-
-        private DelegateCommand<InverterParametersData> showInverterParamertersCommand;
-
         private VertimagConfiguration vertimagConfiguration;
-
-        private const string RESETDATA = "reset";
 
         #endregion
 
         #region Constructors
 
-        public ParameterInverterViewModel(IMachineDevicesWebService machineDevicesWebService,
-                                          IMachineConfigurationWebService machineConfigurationWebService,
-                                          UsbWatcherService usb)
-            : base()
+        public ParameterInverterViewModel(
+            IMachineDevicesWebService machineDevicesWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IUsbWatcherService usbWatcher)
         {
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
-            this.usbWatcher = usb;
+            this.usbWatcher = usbWatcher;
+
+            this.goToImport = new DelegateCommand(this.ShowImport, this.CanShowImport);
+            this.setInvertersParamertersCommand = new DelegateCommand(async () => await this.SaveAllParametersAsync(), this.CanSave);
+            this.showInverterParamertersCommand = new DelegateCommand<InverterParametersData>(this.ShowInverterParameters);
         }
 
         #endregion
@@ -70,10 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
 
-        public ICommand GoToImport => this.goToImport
-                                    ??
-                                    (this.goToImport = new DelegateCommand(
-                                     this.ShowImport, this.CanShowImport));
+        public ICommand GoToImport => this.goToImport;
 
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
@@ -97,16 +98,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.selectedInverter, value);
         }
 
-        public ICommand SetInvertersParamertersCommand =>
-                   this.setInvertersParamertersCommand
-               ??
-               (this.setInvertersParamertersCommand = new DelegateCommand(
-                async () => await this.SaveAllParametersAsync(), this.CanSave));
+        public ICommand SetInvertersParamertersCommand => this.setInvertersParamertersCommand;
 
-        public ICommand ShowInverterParamertersCommand =>
-           this.showInverterParamertersCommand
-       ??
-       (this.showInverterParamertersCommand = new DelegateCommand<InverterParametersData>(this.ShowInverterParameters));
+        public ICommand ShowInverterParamertersCommand => this.showInverterParamertersCommand;
 
         public VertimagConfiguration VertimagConfiguration
         {
@@ -145,8 +139,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Disable();
 
             base.Disappear();
         }
@@ -155,15 +149,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsWaitingForResponse = true;
 
-            if (this.Data == RESETDATA)
+            if (RESETDATA.Equals(this.Data))
             {
                 this.SelectedFileConfiguration = null;
                 this.VertimagConfiguration = null;
                 this.Data = null;
             }
 
-            this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Start();
+            this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Enable();
 
             await base.OnAppearedAsync();
 
@@ -300,10 +294,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 trackCurrentView: true);
         }
 
-        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
             // exportable drives
-            var drives = ((UsbWatcherService)sender).Drives;
+            var drives = this.usbWatcher.Drives;
             try
             {
                 this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());

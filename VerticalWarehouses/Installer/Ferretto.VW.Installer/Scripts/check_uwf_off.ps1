@@ -12,5 +12,5 @@ if($uwfCurrentEnabled)
 }
 else
 {
-    Write-Host "UWF is disabled. No action needed."
+    Write-Host "UWF is already disabled. No action needed."
 }

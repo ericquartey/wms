@@ -27,9 +27,9 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             this.FileName = fileName;
         }
 
-        public InstallerInfo(string fileName, bool isRemotePath) : this(fileName)
+        public InstallerInfo(string fileName, bool isOnUsb) : this(fileName)
         {
-            this.IsRemotePath = isRemotePath;
+            this.IsOnUsb = isOnUsb;
         }
 
         public InstallerInfo(string productVersion, string serviceVersion, string panelPcVersion, string fileName) : this()
@@ -46,16 +46,20 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         public string FileInfo { get; private set; }
 
-        public string FileName { get; private set; }
+        public string FileName { get; set; }
 
         public int Id { get; private set; }
 
-        public bool IsRemotePath { get; }
+        public bool IsOnUsb { get; }
 
-        public bool IsValid => !string.IsNullOrEmpty(this.FileName) &&
-                               !string.IsNullOrEmpty(this.PanelPcVersion) &&
-                               !string.IsNullOrEmpty(this.ProductVersion) &&
-                               !string.IsNullOrEmpty(this.ServiceVersion);
+        public bool IsValid =>
+            !string.IsNullOrEmpty(this.FileName)
+            &&
+            !string.IsNullOrEmpty(this.PanelPcVersion)
+            &&
+            !string.IsNullOrEmpty(this.ProductVersion)
+            &&
+            !string.IsNullOrEmpty(this.ServiceVersion);
 
         public string PanelPcVersion { get; private set; }
 
@@ -83,11 +87,6 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             {
                 this.ServiceVersion = version;
             }
-        }
-
-        public void SetFileName(string fileName)
-        {
-            this.FileName = fileName;
         }
 
         #endregion

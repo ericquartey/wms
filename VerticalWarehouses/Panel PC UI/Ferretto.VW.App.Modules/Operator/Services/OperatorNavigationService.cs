@@ -342,7 +342,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
-                else if(currentMission != null)
+                else if (currentMission != null)
                 {
                     this.navigationService.Appear(
                             nameof(Utils.Modules.Operator),

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly UsbWatcherService usbWatcher;
+        private readonly IUsbWatcherService usbWatcher;
 
         private VertimagConfiguration configuration;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
+        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService, IUsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
@@ -97,8 +97,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Disable();
 
             base.Disappear();
         }
@@ -107,8 +107,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-            this.usbWatcher.Start();
+            this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Enable();
 
 #if DEBUG
             this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
@@ -207,10 +207,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 trackCurrentView: true);
         }
 
-        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
             // exportable drives
-            var drives = ((UsbWatcherService)sender).Drives;
+            var drives = this.usbWatcher.Drives;
             try
             {
                 this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
