@@ -3,6 +3,8 @@ parameters:
   BuildPlatform: 'any cpu'
 
 steps:
+- checkout: self
+  submodules: recursive
 
 - template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
   parameters:
@@ -12,29 +14,8 @@ steps:
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
-- task: VSBuild@1
-  displayName: 'Build solution Simulator.sln'
-  inputs:
-    solution: 'VerticalWarehouses/Simulator.sln'
-    platform: ${{ parameters.BuildPlatform }}
-    configuration: ${{ parameters.BuildConfiguration }}
-    msbuildArchitecture: x64
-
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: 'VerticalWarehouses/Simulator/**/bin/**/*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'VerticalWarehouses/Simulator/**/bin/${{ parameters.BuildConfiguration }}/**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+- script: dotnet publish "VerticalWarehouses/Simulator/Ferretto.VW.Simulator/Ferretto.VW.Simulator.csproj" --configuration ${{ parameters.BuildConfiguration }} --framework net471
+  displayName: 'dotnet build & publish (${{ parameters.BuildConfiguration }})'
 
 
 - task: PublishBuildArtifacts@1

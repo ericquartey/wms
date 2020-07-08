@@ -3,6 +3,8 @@ parameters:
   BuildPlatform: 'any cpu'
 
 steps:
+- checkout: self
+  submodules: recursive
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 

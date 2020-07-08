@@ -602,7 +602,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private bool GenerateHoming(IBaysDataProvider bayProvider)
+        private bool GenerateHoming(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider)
         {
             if (this.machineVolatileDataProvider.IsHomingActive)
             {
@@ -622,7 +622,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         && x.CurrentMission == null
                         && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
 
-                if (bayNumber != BayNumber.None)
+                if (bayNumber != BayNumber.None
+                    && !sensorsProvider.IsDrawerInBayBottom(bayNumber))
                 {
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
                         Calibration.FindSensor,
@@ -715,6 +716,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
                         if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error || m.Status == MissionStatus.New))
                         {
@@ -748,7 +750,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                 && m.Step > MissionStep.New)
-                            && !this.GenerateHoming(bayProvider)
+                            && !this.GenerateHoming(bayProvider, machineResourcesProvider)
                             )
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))

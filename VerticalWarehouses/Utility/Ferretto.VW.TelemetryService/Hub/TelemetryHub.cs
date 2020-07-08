@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -33,10 +34,16 @@ namespace Ferretto.VW.TelemetryService
             return null;
         }
 
-        public async Task SendScreenshot(int bayNumber, byte[] screenshot)
+        public async Task SendScreenCast(int bayNumber, string serialNumber, byte[] screenshot)
         {
-            this.logger.LogInformation($"Screenshot size {screenshot.Length / 1024} Kb");
-            await this.telemetryWebHubClient.SendScreenshotAsync(bayNumber, screenshot);
+            this.logger.LogInformation($"Screencast image size {screenshot.Length / 1024} Kb");
+            await this.telemetryWebHubClient.SendScreenCastAsync(bayNumber, serialNumber, screenshot);
+        }
+
+        public async Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot)
+        {
+            this.logger.LogInformation($"Screenshot image size {screenshot.Length / 1024} Kb");
+            await this.telemetryWebHubClient.SendScreenShotAsync(bayNumber, serialNumber, timeStamp, screenshot);
         }
 
         #endregion

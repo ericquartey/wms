@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.ServiceDesk.Telemetry.Models;
 using Realms;
 
 namespace Ferretto.VW.TelemetryService.Model
 {
-    public class MissionLog : RealmObject
+    public class MissionLog : RealmObject, IMissionLog
     {
         #region Properties
 
@@ -25,6 +26,10 @@ namespace Ferretto.VW.TelemetryService.Model
         public int Id { get; set; }
 
         public int LoadUnitId { get; set; }
+
+        public Machine Machine { get; set; }
+
+        public int MachineId { get; set; }
 
         public int MissionId { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.ServiceDesk.Telemetry.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,31 +28,30 @@ namespace Ferretto.VW.MAS.AutomationService
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
-        private Task OnMoveLoadingUnit(MoveLoadingUnitMessageData message)
+        private async Task OnMoveLoadingUnit(MoveLoadingUnitMessageData message)
         {
-            //var missionLog = new MissionLog()
-            //{
-            //    Destination = message.Destination.ToString(),
-            //    CellId = message.DestinationCellId,
-            //    //EjectLoadUnit = message.,
-            //    //Id = message.,
-            //    LoadUnitId = message.LoadUnitId.Value,
-            //    MissionId = message.MissionId.Value,
-            //    MissionType = message.MissionType.ToString(),
-            //    //Bay = message,
-            //    //Direction = message.,
-            //    //CreationDate = message.,
-            //    //Priority = message.,
-            //    //Status = message.,
-            //    Step = (int)message.MissionStep,
-            //    StopReason = (int)message.StopReason,
-            //    TimeStamp = DateTime.Now,
-            //    WmsId = message.WmsId
-            //};
+            var missionLog = new MissionLog()
+            {
+                //Destination = message.Destination.ToString(),
+                CellId = message.DestinationCellId,
+                //EjectLoadUnit = message.,
+                //Id = message.,
+                LoadUnitId = message.LoadUnitId.Value,
+                MissionId = message.MissionId.Value,
+                MissionType = message.MissionType.ToString(),
+                //Bay = message,
+                //Direction = message.,
+                //CreationDate = message.,
+                //Priority = message.,
+                //Status = message.,
+                Step = (int)message.MissionStep,
+                StopReason = (int)message.StopReason,
+                TimeStamp = DateTime.Now,
+                WmsId = message.WmsId
+            };
 
             this.Logger.LogTrace("OnDataLayerReady end");
-            //await this.telemetryHub.SendMissionLog(this.serialNumber, missionLog);
-            return Task.CompletedTask;
+            await this.telemetryHub.SendMissionLog(this.serialNumber, missionLog);
         }
 
         #endregion
