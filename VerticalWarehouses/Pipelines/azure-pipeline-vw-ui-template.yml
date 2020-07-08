@@ -4,7 +4,7 @@ parameters:
 
 steps:
 - checkout: self
-  submodules: true
+  submodules: recursive
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
