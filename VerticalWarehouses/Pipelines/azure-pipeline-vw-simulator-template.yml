@@ -3,6 +3,8 @@ parameters:
   BuildPlatform: 'any cpu'
 
 steps:
+- checkout: self
+  submodules: true
 
 - template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
   parameters:
