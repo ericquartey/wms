@@ -22,9 +22,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        public MissionOperation lastMissionOperation;
-
-        public CompartmentDetails lastSelectedCompartmentDetail;
+        //public MissionOperation lastMissionOperation;
+        
+        //public CompartmentDetails lastSelectedCompartmentDetail;
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
@@ -628,8 +628,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
 
-                this.lastMissionOperation = null;
-                this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -658,8 +658,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.lastMissionOperation = null;
-                this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -711,8 +711,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
 
-                this.lastMissionOperation = null;
-                this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -874,8 +874,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
 
-                this.lastMissionOperation = null;
-                this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
