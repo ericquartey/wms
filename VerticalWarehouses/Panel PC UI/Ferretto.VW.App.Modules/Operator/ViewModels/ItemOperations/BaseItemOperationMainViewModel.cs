@@ -146,8 +146,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                     this.CanInputAvailableQuantity = true;
-                    //this.CanConfirmPresent = (value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock);
-                    //this.CanInputQuantity = false;
+                    this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
+                    this.CanInputQuantity = false;
                 });
             }
         }
