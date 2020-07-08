@@ -1,7 +1,7 @@
 parameters:
   BuildConfiguration: 'debug'
-  BuildPlatform: 'any cpu'   
-  RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'  
+  BuildPlatform: 'any cpu'
+  RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'
   TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
@@ -11,7 +11,7 @@ steps:
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: ${{ parameters.RestoreBuildProjects }} 
+    projects: ${{ parameters.RestoreBuildProjects }}
     feedsToUse: config
     nugetConfigPath: nuget.config
 
@@ -22,8 +22,8 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
-    projects: ${{ parameters.RestoreBuildProjects }} 
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }}' 
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime ${{ parameters.RuntimeIdentifier }}'
 
 
 - task: DotNetCoreCLI@2
@@ -45,7 +45,7 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: installer'
+  displayName: 'Publish Artifact: inverter'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
     ArtifactName: 'inverter'
