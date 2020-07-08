@@ -14,10 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StateMachines\RepetitiveHorizontalMovements\RepetitiveHorizontalMovementsStartOldState.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
@@ -34,6 +30,12 @@
     <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.IODriver\Ferretto.VW.MAS.IODriver.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="**\Providers\ElevatorProvider.*.cs">
+        <DependentUpon>ElevatorProvider.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
