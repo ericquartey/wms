@@ -124,6 +124,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drawer identification completed, switch to manual mode..
+        /// </summary>
+        public static string DrawerIdentificationCompletedManual {
+            get {
+                return ResourceManager.GetString("DrawerIdentificationCompletedManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Return Drawer.
         /// </summary>
         public static string DrawerReturn {
