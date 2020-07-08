@@ -21,7 +21,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Panel PC App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Simulator/Ferretto.VW.Simulator/bin/${{ parameters.BuildConfiguration }}/net471'
+    PathtoPublish: 'VerticalWarehouses/Simulator/Ferretto.VW.Simulator/bin/${{ parameters.BuildConfiguration }}/net471'
     ArtifactName: 'simulator_app'
-
 
