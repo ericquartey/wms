@@ -1,0 +1,31 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - 'VerticalWarehouses/Installer/*'
+    - 'VerticalWarehouses/Simulator/*'
+    - 'VerticalWarehouses/Machine Automation Service/*'
+    - 'VerticalWarehouses/Panel PC UI/*'
+    - 'Utility/Ferretto.VW.InvertersParametersGenerator/*'
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- checkout: self
+  submodules: recursive
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+- script: dotnet publish "VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/Ferretto.VW.TelemetryService.csproj" --configuration debug --framework netcoreapp3.1
+  displayName: 'Build & Publish (debug)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: telemetry_service'
+  inputs:
+    PathtoPublish: 'VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/bin/debug/netcoreapp3.1/publish'
+    ArtifactName: 'telemetry_service'
+
