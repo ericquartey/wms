@@ -3,9 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -14,18 +16,22 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationTelemetryService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
     {
-        //private readonly ITelemetryHubClient telemetryHub;
+        #region Fields
+
+        private readonly ITelemetryHubClient telemetryHub;
+
+        #endregion
 
         #region Constructors
 
         public NotificationTelemetryService(
             IEventAggregator eventAggregator,
-            //ITelemetryHubClient telemetryHub,
+            ITelemetryHubClient telemetryHub,
             ILogger<NotificationTelemetryService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            //this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
+            this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
         }
 
         #endregion

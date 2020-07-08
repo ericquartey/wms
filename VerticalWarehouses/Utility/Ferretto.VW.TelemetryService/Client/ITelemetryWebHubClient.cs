@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.ServiceDesk.Telemetry.Models;
 using Ferretto.VW.Common.Hubs;
 
 namespace Ferretto.VW.TelemetryService
@@ -7,9 +9,13 @@ namespace Ferretto.VW.TelemetryService
     {
         #region Methods
 
-        Task SendLogsAsync(int bayNumer);
+        Task SendErrorLogAsync(string serialNumber, ErrorLog errorLog);
 
-        Task SendScreenshotAsync(int bayNumer, byte[] screenshot);
+        Task SendMissionLogAsync(int bayNumer, string serialNumber, MissionLog missionLog);
+
+        Task SendScreenCastAsync(int bayNumer, string serialNumber, byte[] screenshot);
+
+        Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot);
 
         #endregion
     }

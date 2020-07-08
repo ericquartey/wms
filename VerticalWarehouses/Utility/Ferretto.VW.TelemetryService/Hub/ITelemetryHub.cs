@@ -10,7 +10,7 @@ namespace Ferretto.VW.TelemetryService
 
         Task SendMissionLog(string serialNumber, object missionLogs);
 
-        Task SendScreenShot(int bayNumber, byte[] images);
+        Task SendScreenCast(int bayNumber, byte[] images);
 
         #endregion
     }
