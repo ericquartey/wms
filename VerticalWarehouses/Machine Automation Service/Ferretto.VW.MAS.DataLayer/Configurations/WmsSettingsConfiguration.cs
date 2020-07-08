@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
     {
         #region Fields
 
-        private const int DefaultTimeSyncInterval = 10 * 1000;
+        private const int DefaultTimeSyncInterval = 60 * 1000;
 
         #endregion
 

@@ -22,6 +22,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        //public MissionOperation lastMissionOperation;
+        
+        //public CompartmentDetails lastSelectedCompartmentDetail;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -43,6 +47,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool canConfirmPresent;
 
         private bool canInputAvailableQuantity;
+
+        private bool closeLine;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
@@ -140,7 +146,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                     this.CanInputAvailableQuantity = true;
-                    this.CanConfirmPresent = (value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock);
+                    this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
                     this.CanInputQuantity = false;
                 });
             }
@@ -162,6 +168,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.canInputAvailableQuantity;
             set => this.SetProperty(ref this.canInputAvailableQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool CloseLine
+        {
+            get => this.closeLine;
+            set => this.SetProperty(ref this.closeLine, value, this.RaiseCanExecuteChanged);
         }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
@@ -441,8 +453,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.isOperationCanceled
                 &&
                 this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= 0
+                //&&
+                //this.InputQuantity.Value >= 0
                 &&
                 this.InputQuantity.Value == this.MissionRequestedQuantity;
         }
@@ -506,7 +518,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
-                        this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
+                        //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
@@ -539,7 +551,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
-                        this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
+                        //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
@@ -560,9 +572,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                            if (this.InputQuantity.HasValue)
+                            {
+                                this.ShowNotification("Operazione confermata tramite codice a barre.", Services.Models.NotificationSeverity.Success);
 
-                            await this.ConfirmOperationAsync();
+                                await this.ConfirmOperationAsync();
+                            }
+                            else
+                            {
+                                this.ShowNotification("Specificare la quantità prima di confermare.", Services.Models.NotificationSeverity.Warning);
+                            }
                         }
                     }
 
@@ -608,6 +627,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -636,6 +658,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -652,8 +676,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ClearNotifications();
 
                 this.IsOperationConfirmed = true;
+                bool canComplete;
 
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (this.closeLine)
+                {
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
                 if (canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -677,6 +710,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -777,7 +813,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmPresentOperation()
         {
-            return true;
+            this.CanConfirmPresent = !this.IsWaitingForResponse
+                &&
+                this.CanInputAvailableQuantity
+                &&
+                this.MissionOperation != null
+                &&
+                !this.IsBusyAbortingOperation
+                //&&
+                //!this.IsBusyConfirmingOperation
+                &&
+                !this.IsOperationConfirmed
+                &&
+                !this.isOperationCanceled;
+            return this.CanConfirmPresent;
         }
 
         private async Task ConfirmPresentOperationAsync()
@@ -806,8 +855,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //await this.MissionOperationsService.RecallLoadingUnitAsync(this.loadingUnitId.Value);
 
-                this.NavigationService.GoBack();
-                this.operatorNavigationService.NavigateToDrawerViewConfirmPresent();
+                //this.NavigationService.GoBack();
+                //this.operatorNavigationService.NavigateToDrawerViewConfirmPresent();
+
+                this.ShowNotification(Localized.Get("OperatorApp.UpdatedValue"), Services.Models.NotificationSeverity.Info);
+
+                await this.MissionOperationsService.RefreshAsync();
+                await this.GetLoadingUnitDetailsAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -819,6 +873,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 
@@ -923,7 +980,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputLot = null;
             this.InputItemCode = null;
             this.InputQuantity = this.MissionRequestedQuantity;
-            this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
+            //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }
 
         #endregion

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -21,42 +20,34 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IDialogService dialogService;
 
-        private DelegateCommand nextCommand;
+        private readonly DelegateCommand nextCommand;
 
-        private DelegateCommand restoreCommand;
+        private readonly DelegateCommand restoreCommand;
 
         #endregion
 
         #region Constructors
 
-        public UpdateStep1ViewModel(IDialogService dialogService, UsbWatcherService usb)
-            : base(usb)
+        public UpdateStep1ViewModel(IDialogService dialogService, IUsbWatcherService usbWatcher)
+            : base(usbWatcher)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+
+            this.nextCommand = new DelegateCommand(() => this.GoNextStep(), this.CanGoNextStep);
+            this.restoreCommand = new DelegateCommand(() => this.Restore(), this.CanRestore);
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand NextCommand =>
-                        this.nextCommand
-                        ??
-                        (this.nextCommand = new DelegateCommand(() => this.GoNextStep(), this.CanGoNextStep));
+        public ICommand NextCommand => this.nextCommand;
 
-        public ICommand RestoreCommand =>
-                        this.restoreCommand
-                        ??
-                        (this.restoreCommand = new DelegateCommand(() => this.Restore(), this.CanRestore));
+        public ICommand RestoreCommand => this.restoreCommand;
 
         #endregion
 
         #region Methods
-
-        public override void Disappear()
-        {
-            base.Disappear();
-        }
 
         public override async Task OnAppearedAsync()
         {
@@ -67,24 +58,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        public override void RaisePropertyChanged()
-        {
-            base.RaisePropertyChanged();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             this.restoreCommand.RaiseCanExecuteChanged();
             this.nextCommand.RaiseCanExecuteChanged();
+
             base.RaiseCanExecuteChanged();
         }
 
-        private bool CanGoNextStep()
-        {
-            return this.Installations.Count > 0
-                   &&
-                   !this.IsBusy;
-        }
+        private bool CanGoNextStep() =>
+            this.Installations.Any()
+            &&
+            !this.IsBusy;
 
         private bool CanRestore()
         {

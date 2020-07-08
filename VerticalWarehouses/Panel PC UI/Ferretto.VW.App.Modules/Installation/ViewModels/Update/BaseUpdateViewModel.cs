@@ -10,7 +10,7 @@ using System.Xml;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services.IO;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 
@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private const string DEFAULTEXTENSION = "*.exe";
-
         private const string DEFAULTMANIFESTFILE = "app.manifest";
 
         private const string DEFAULTMANIFESTFILENODE = "assemblyIdentity";
@@ -31,81 +29,88 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string DEFAULTMANIFESTFILENODEVERSION = "version";
 
-        private readonly string configurationUpdateRepositoryPath;
+        private const string InstallPackageExeExtension = "*.exe";
 
-        private readonly EventHandler<DrivesChangeEventArgs> drivesChangeEventHandler;
+        private const string InstallPackageZipExtension = "*.zip";
 
-        private readonly IList<InstallerInfo> installations = new List<InstallerInfo>();
+        private readonly EventHandler<DrivesChangedEventArgs> drivesChangeEventHandler;
 
-        private readonly UsbWatcherService usbWatcher;
+        private readonly IUsbWatcherService usbWatcher;
+
+        private IEnumerable<InstallerInfo> installations = new List<InstallerInfo>();
 
         private bool isBusy;
 
-        private bool isDeviceReady;
+        private bool isRepositoryAvailable;
 
-        private bool isInstallationReady;
+        private bool isScanInProgress;
 
-        private bool isRefresh;
+        private IEnumerable<string> removableDevicePackages;
 
-        private bool isSystemConfigurationPathReady;
+        private int removableDevicesCount;
 
-        private IEnumerable<string> zipFilesToCheck;
+        private int removableDevicesPackagesCount;
+
+        private IEnumerable<string> repositoryPackages;
+
+        private int repositoryPackagesCount;
+
+        private string repositoryPath;
 
         #endregion
 
         #region Constructors
 
-        public BaseUpdateViewModel(UsbWatcherService usb)
-            : base(Services.PresentationMode.Installer)
+        public BaseUpdateViewModel(IUsbWatcherService usbWatcher)
+            : base(PresentationMode.Installer)
         {
-            this.configurationUpdateRepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
-            this.usbWatcher = usb;
-            this.drivesChangeEventHandler = new EventHandler<DrivesChangeEventArgs>(async (sender, e) => await this.UsbWatcher_DrivesChangeAsync(sender, e));
+            this.usbWatcher = usbWatcher;
+
+            this.drivesChangeEventHandler = new EventHandler<DrivesChangedEventArgs>(this.OnUsbDrivesChanged);
         }
 
         #endregion
 
         #region Properties
 
-        public string DeviceInfo
+        public string AInfo
         {
             get
             {
-                if (!this.isDeviceReady)
-                {
-                    return Localized.Get("InstallationApp.NoRemovableDevicesFound");
-                }
-
-                return Localized.Get("InstallationApp.RemovableDevicesFound");
-            }
-        }
-
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public string InstallationFilesInfo
-        {
-            get
-            {
-                if (!this.IsInstallationReady)
+                if (!this.IsRepositoryAvailable)
                 {
                     return "-";
                 }
 
-                if (this.installations.Count == 0)
+                if (!this.installations.Any())
                 {
                     return Localized.Get("InstallationApp.NoInstallationFileFound");
                 }
 
-                if (this.installations.Count == 1)
+                if (this.installations.Count() == 1)
                 {
                     return Localized.Get("InstallationApp.OneInstallationFileFound");
                 }
 
-                return string.Format(Localized.Get("InstallationApp.InstallationFileFound"), this.installations.Count);
+                return string.Format(Localized.Get("InstallationApp.InstallationFileFound"), this.installations.Count());
             }
         }
 
-        public IList<InstallerInfo> Installations => new List<InstallerInfo>(this.installations);
+        public string ApplicationVersion => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
+
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        public IEnumerable<InstallerInfo> Installations
+        {
+            get => this.installations;
+            set => this.SetProperty(ref this.installations, value, () =>
+            {
+                this.RepositoryPackagesCount = this.installations.Count(p => !p.IsOnUsb);
+                this.RemovableDevicesPackagesCount = this.installations.Count(p => p.IsOnUsb);
+
+                this.RaiseCanExecuteChanged();
+            });
+        }
 
         public bool IsBusy
         {
@@ -121,35 +126,39 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public bool IsDeviceReady
+        public bool IsRepositoryAvailable
         {
-            get => this.isDeviceReady;
-            set => this.SetProperty(ref this.isDeviceReady, value);
+            get => this.isRepositoryAvailable;
+            set => this.SetProperty(ref this.isRepositoryAvailable, value, () => this.RaisePropertyChanged(nameof(this.RepositoryInfo)));
         }
 
-        public bool IsInstallationReady
+        public int RemovableDevicesCount
         {
-            get => this.isInstallationReady;
-            set => this.SetProperty(ref this.isInstallationReady, value);
+            get => this.removableDevicesCount;
+            set => this.SetProperty(ref this.removableDevicesCount, value);
         }
 
-        public bool IsInstallationReadyFromSystemConfiguration => this.isSystemConfigurationPathReady && this.IsInstallationReady;
-
-        public string SharedFolderInfo
+        public int RemovableDevicesPackagesCount
         {
-            get
-            {
-                var pathNotDFound = Localized.Get("InstallationApp.SystemPathNotFound");
-                if (!this.isSystemConfigurationPathReady)
-                {
-                    return string.Format(pathNotDFound, this.configurationUpdateRepositoryPath);
-                }
-
-                return string.Format(pathNotDFound, this.configurationUpdateRepositoryPath);
-            }
+            get => this.removableDevicesPackagesCount;
+            set => this.SetProperty(ref this.removableDevicesPackagesCount, value);
         }
 
-        public string SystemInfo => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
+        public string RepositoryInfo => this.IsRepositoryAvailable
+            ? Localized.Get("InstallationApp.SystemPathAvailable")
+            : string.Format(Localized.Get("InstallationApp.SystemPathNotFound"), this.RepositoryPath);
+
+        public int RepositoryPackagesCount
+        {
+            get => this.repositoryPackagesCount;
+            set => this.SetProperty(ref this.repositoryPackagesCount, value);
+        }
+
+        public string RepositoryPath
+        {
+            get => this.repositoryPath;
+            set => this.SetProperty(ref this.repositoryPath, value);
+        }
 
         #endregion
 
@@ -157,20 +166,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChange -= this.drivesChangeEventHandler;
-            this.usbWatcher.Dispose();
+            this.usbWatcher.DrivesChanged -= this.drivesChangeEventHandler;
+            this.usbWatcher.Disable();
 
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
+            this.ClearNotifications();
+
             try
             {
-                this.usbWatcher.DrivesChange += this.drivesChangeEventHandler;
-                this.usbWatcher.Start();
+                this.RepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
 
-                this.ClearNotifications();
+                this.usbWatcher.DrivesChanged += this.drivesChangeEventHandler;
+                this.usbWatcher.Enable();
+
+                this.ScanAllPackageSources();
 
                 await base.OnAppearedAsync();
             }
@@ -179,56 +192,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = false;
                 this.ShowNotification(ex);
             }
-        }
-
-        public virtual void RaisePropertyChanged()
-        {
-            this.RaisePropertyChanged(nameof(this.SharedFolderInfo));
-            this.RaisePropertyChanged(nameof(this.DeviceInfo));
-            this.RaisePropertyChanged(nameof(this.InstallationFilesInfo));
-        }
-
-        private void CheckForValidZipFiles(IEnumerable<string> zipFiles, bool isRemotePath)
-        {
-            foreach (var zipFile in zipFiles)
-            {
-                try
-                {
-                    using (var archive = ZipFile.OpenRead(zipFile))
-                    {
-                        var installerFileInfo = new InstallerInfo(zipFile, isRemotePath);
-
-                        foreach (var entry in archive.Entries.Where(e => e.FullName.Contains(DEFAULTMANIFESTFILE)))
-                        {
-                            using (var stream = entry.Open())
-                            {
-                                var attributes = this.GetFileAttribute(stream);
-                                if (!string.IsNullOrEmpty(attributes.assemblyVersion)
-                                    &&
-                                    !string.IsNullOrEmpty(attributes.assemblyName))
-                                {
-                                    installerFileInfo.SetAssemblyVersion(attributes.assemblyName, attributes.assemblyVersion);
-                                }
-                            }
-                        }
-
-                        if (installerFileInfo.IsValid)
-                        {
-                            this.installations.Add(installerFileInfo);
-                        }
-                    }
-                }
-                catch
-                {
-                    // Not supported file
-                }
-            }
-        }
-
-        private void CheckPath(IEnumerable<string> zipFiles, bool isRemotePath)
-        {
-            this.CheckForValidZipFiles(zipFiles, isRemotePath);
-            this.IsInstallationReady = this.installations.Count > 0;
         }
 
         private (string assemblyVersion, string assemblyName) GetFileAttribute(Stream stream)
@@ -256,88 +219,132 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return (assemblyVersion, assemblyName);
         }
 
-        private void Refresh()
+        private void OnUsbDrivesChanged(object sender, DrivesChangedEventArgs e)
         {
-            try
+            if (this.isScanInProgress)
             {
-                if (this.isRefresh)
-                {
-                    return;
-                }
-
-                this.IsBusy = true;
-
-                this.isRefresh = true;
-
-                this.installations.Clear();
-
-                this.RefreshDefaultPath();
-
-                this.RefreshDevicesStatus();
-
-                this.RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
-
-                this.isRefresh = false;
-            }
-            catch (Exception ex)
-            {
-                this.isRefresh = false;
-                this.ShowNotification(ex);
-            }
-
-            this.IsBusy = false;
-        }
-
-        private async Task RefreshAsync()
-        {
-            await Task.Run(() => this.Refresh());
-        }
-
-        private void RefreshDefaultPath()
-        {
-            if (!string.IsNullOrEmpty(this.configurationUpdateRepositoryPath)
-                &&
-                !Directory.Exists(this.configurationUpdateRepositoryPath))
-            {
-                this.isSystemConfigurationPathReady = false;
                 return;
             }
 
-            this.isSystemConfigurationPathReady = true;
+            this.isScanInProgress = true;
 
-            var repositoryZipFiles = Directory.EnumerateFiles(this.configurationUpdateRepositoryPath, DEFAULTEXTENSION, SearchOption.TopDirectoryOnly);
+            this.IsBusy = true;
 
-            this.CheckPath(repositoryZipFiles, true);
+            try
+            {
+                this.removableDevicePackages = this.ScanRemovableDevices();
+
+                this.Installations = this.SelectValidPackages();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+                this.isScanInProgress = false;
+            }
         }
 
-        private void RefreshDevicesStatus()
+        private void ScanAllPackageSources()
         {
-            if (this.zipFilesToCheck?.Any() == true)
+            if (this.isScanInProgress)
             {
-                this.CheckPath(this.zipFilesToCheck, false);
+                return;
             }
-            else
+
+            this.isScanInProgress = true;
+
+            try
             {
-                this.zipFilesToCheck = null;
-                this.IsInstallationReady = false;
-                this.IsDeviceReady = false;
+                this.IsBusy = true;
+
+                this.repositoryPackages = this.ScanRepository();
+
+                this.removableDevicePackages = this.ScanRemovableDevices();
+
+                this.Installations = this.SelectValidPackages();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.isScanInProgress = false;
+                this.IsBusy = false;
             }
         }
 
-        private async Task UsbWatcher_DrivesChangeAsync(object sender, DrivesChangeEventArgs e)
+        private IEnumerable<string> ScanRemovableDevices()
         {
-            if (e.Attached?.Any() == true)
+            this.RemovableDevicesCount = this.usbWatcher.Drives.Count();
+            if (this.RemovableDevicesCount > 0)
             {
-                var drives = ((UsbWatcherService)sender).Drives;
-                this.zipFilesToCheck = drives.FindFiles(DEFAULTEXTENSION).ToList();
-            }
-            else
-            {
-                this.zipFilesToCheck = null;
+                var exePackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageExeExtension).ToList();
+                var zipPackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageZipExtension).ToList();
+
+                return exePackageFiles.Union(zipPackageFiles).ToArray();
             }
 
-            await this.RefreshAsync();
+            return Array.Empty<string>();
+        }
+
+        private IEnumerable<string> ScanRepository()
+        {
+            this.IsRepositoryAvailable = Directory.Exists(this.RepositoryPath);
+            if (this.IsRepositoryAvailable)
+            {
+                var exePackageFiles = Directory.EnumerateFiles(this.RepositoryPath, InstallPackageExeExtension, SearchOption.TopDirectoryOnly);
+                var zipPackageFiles = Directory.EnumerateFiles(this.RepositoryPath, InstallPackageZipExtension, SearchOption.TopDirectoryOnly);
+
+                return exePackageFiles.Union(zipPackageFiles).ToArray();
+            }
+
+            return Array.Empty<string>();
+        }
+
+        private IEnumerable<InstallerInfo> SelectValidPackages()
+        {
+            var validPackages = new List<InstallerInfo>();
+
+            foreach (var fileName in this.removableDevicePackages.Union(this.repositoryPackages))
+            {
+                try
+                {
+                    using (var archive = ZipFile.OpenRead(fileName))
+                    {
+                        var isUsb = this.removableDevicePackages.Contains(fileName);
+                        var installerFileInfo = new InstallerInfo(fileName, isUsb);
+
+                        foreach (var entry in archive.Entries.Where(e => e.FullName.Contains(DEFAULTMANIFESTFILE)))
+                        {
+                            using (var stream = entry.Open())
+                            {
+                                var attributes = this.GetFileAttribute(stream);
+                                if (!string.IsNullOrEmpty(attributes.assemblyVersion)
+                                    &&
+                                    !string.IsNullOrEmpty(attributes.assemblyName))
+                                {
+                                    installerFileInfo.SetAssemblyVersion(attributes.assemblyName, attributes.assemblyVersion);
+                                }
+                            }
+                        }
+
+                        if (installerFileInfo.IsValid)
+                        {
+                            validPackages.Add(installerFileInfo);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Warn(ex);
+                }
+            }
+
+            return validPackages.ToArray();
         }
 
         #endregion

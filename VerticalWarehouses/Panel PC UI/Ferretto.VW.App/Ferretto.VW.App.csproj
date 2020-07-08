@@ -38,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Ferretto.VW.Common.Hubs\Ferretto.VW.Common.Hubs.csproj" />
+    <ProjectReference Include="..\..\Utility\Ferretto.VW.Telemetry.Contracts.Hub\Ferretto.VW.Telemetry.Contracts.Hub.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Accessories\Ferretto.VW.App.Accessories.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj" />

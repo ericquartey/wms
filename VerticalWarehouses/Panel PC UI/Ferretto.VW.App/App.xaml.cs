@@ -12,6 +12,7 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -90,6 +91,13 @@ namespace Ferretto.VW.App
             base.OnExit(e);
         }
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            this.Container.UseTelemetryHubs();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!AppCheck.Start())
@@ -107,7 +115,7 @@ namespace Ferretto.VW.App
 
             this.SetLanguage();
 
-            this.ClearTempFolder();
+            ClearTempFolder();
 
             base.OnStartup(e);
         }
@@ -117,10 +125,9 @@ namespace Ferretto.VW.App
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            var telemetryHubPath = ConfigurationManager.AppSettings.GetAutomationServiceTelemetryHubPath();
 
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
-            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath, telemetryHubPath);
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = new HttpClient();
@@ -132,6 +139,10 @@ namespace Ferretto.VW.App
                 return client;
             });
 
+            // Telemetry
+            var telemetryHubPathUri = ConfigurationManager.AppSettings.GetTelemetryHubPath();
+            containerRegistry.RegisterTelemetryHub(telemetryHubPathUri);
+
             // UI controls services
             containerRegistry.RegisterUiControlServices(
                 new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
@@ -141,17 +152,9 @@ namespace Ferretto.VW.App
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
             containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
-
-            // USB Watcher
-            RegisterUsbWatcher(containerRegistry);
         }
 
-        private static void RegisterUsbWatcher(IContainerRegistry container)
-        {
-            container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
-        }
-
-        private void ClearTempFolder()
+        private static void ClearTempFolder()
         {
             var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
 #if !DEBUG

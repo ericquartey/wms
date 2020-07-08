@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Devices.AlphaNumericBar;
-using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 

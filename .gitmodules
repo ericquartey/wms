@@ -1,0 +1,3 @@
+[submodule "VerticalWarehouses/Common/ServiceDesk"]
+	path = VerticalWarehouses/Common/ServiceDesk
+	url = https://ferrettogroup.visualstudio.com/Service%20Desk/_git/Common

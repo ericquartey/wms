@@ -4,13 +4,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace Ferretto.VW.App.Services.IO
+namespace Ferretto.VW.App.Services
 {
-    public class DrivesChangeEventArgs : EventArgs
+    public class DrivesChangedEventArgs : EventArgs
     {
         #region Constructors
 
-        internal DrivesChangeEventArgs(IEnumerable<DriveInfo> detached, IEnumerable<DriveInfo> attached)
+        internal DrivesChangedEventArgs(IEnumerable<DriveInfo> detached, IEnumerable<DriveInfo> attached)
         {
             this.Detached = new ReadOnlyCollection<DriveInfo>(AmendList(detached));
             this.Attached = new ReadOnlyCollection<DriveInfo>(AmendList(attached));

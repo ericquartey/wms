@@ -47,16 +47,6 @@ namespace Ferretto.VW.App
             return appSettings.Get("AutomationService:HealthChecks:Ready:Path");
         }
 
-        public static string GetAutomationServiceTelemetryHubPath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            return appSettings.Get("AutomationService:Hubs:Telemetry:Path");
-        }
-
         public static Uri GetAutomationServiceUrl(this NameValueCollection appSettings)
         {
             if (appSettings is null)
@@ -65,6 +55,16 @@ namespace Ferretto.VW.App
             }
 
             return new Uri(appSettings.Get("AutomationService:Url"));
+        }
+
+        public static Uri GetTelemetryHubPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return new Uri(appSettings.Get("TelemetryService:Hubs:Path"));
         }
 
         #endregion

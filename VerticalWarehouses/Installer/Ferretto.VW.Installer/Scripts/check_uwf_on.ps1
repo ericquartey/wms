@@ -5,5 +5,5 @@ $uwfCurrentEnabled = $outUwf2[0] -match "ON"
 
 if(!$uwfCurrentEnabled)
 {
-    throw "UWF is disabled."
+    throw "UWF is disabled, but should have been enabled."
 }

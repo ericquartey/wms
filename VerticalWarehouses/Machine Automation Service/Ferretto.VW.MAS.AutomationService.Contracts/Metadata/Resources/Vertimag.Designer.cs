@@ -754,6 +754,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine Id.
+        /// </summary>
+        public static string Machine_Id {
+            get {
+                return ResourceManager.GetString("Machine_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {

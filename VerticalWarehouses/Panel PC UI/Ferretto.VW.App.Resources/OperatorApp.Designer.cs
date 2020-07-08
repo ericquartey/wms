@@ -484,6 +484,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close line.
+        /// </summary>
+        public static string CloseLine {
+            get {
+                return ResourceManager.GetString("CloseLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
@@ -4211,6 +4220,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total missions.
+        /// </summary>
+        public static string TotalMissionsHeader {
+            get {
+                return ResourceManager.GetString("TotalMissionsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total time of active missions since last maintenance / total.
         /// </summary>
         public static string TotalMissionsTime {
@@ -4324,6 +4342,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitsInElevator {
             get {
                 return ResourceManager.GetString("UnitsInElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated value.
+        /// </summary>
+        public static string UpdatedValue {
+            get {
+                return ResourceManager.GetString("UpdatedValue", resourceCulture);
             }
         }
         

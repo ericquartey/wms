@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.TimeManagement", "Machine Automation Service\Ferretto.VW.MAS.DateTime\Ferretto.VW.MAS.TimeManagement.csproj", "{7530C34B-FFB3-4D77-833C-B319E31F85EB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Hubs", "Common\Ferretto.VW.Common.Hubs\Ferretto.VW.Common.Hubs.csproj", "{6222F238-1A88-464B-A859-B5382FDED009}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_no_autogen|Any CPU = Debug_no_autogen|Any CPU
@@ -343,6 +345,24 @@ Global
 		{7530C34B-FFB3-4D77-833C-B319E31F85EB}.Release|x64.Build.0 = Release|Any CPU
 		{7530C34B-FFB3-4D77-833C-B319E31F85EB}.Release|x86.ActiveCfg = Release|Any CPU
 		{7530C34B-FFB3-4D77-833C-B319E31F85EB}.Release|x86.Build.0 = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|Any CPU.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|x64.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|x64.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|x86.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug_no_autogen|x86.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|x64.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Debug|x86.Build.0 = Debug|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|x64.ActiveCfg = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|x64.Build.0 = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|x86.ActiveCfg = Release|Any CPU
+		{6222F238-1A88-464B-A859-B5382FDED009}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -364,6 +384,7 @@ Global
 		{9B83671D-551C-4AB4-B0EC-30A31180BA7C} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{1357C9A7-03A3-4024-AC68-BE998B19A224} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{7530C34B-FFB3-4D77-833C-B319E31F85EB} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{6222F238-1A88-464B-A859-B5382FDED009} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

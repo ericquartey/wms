@@ -119,6 +119,19 @@
             </StackPanel>
         </Grid>
 
+        <StackPanel Grid.Row="5"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Margin="40,0,0,15"
+                    HorizontalAlignment="Left">
+            <ctrls:PpcSpinEdit Width="200"
+                               Height="91"
+                               EditValue="{Binding TimeSyncMilliseconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               IsEnabled="{Binding CanGoAutoSync}"
+                               LabelText="{res:Loc InstallationApp.HoursRefresh}"
+                               MinValue="1" />
+        </StackPanel>
+
         <controls:PpcButton Grid.Row="5"
                             Grid.ColumnSpan="3"
                             Margin="15,15,15,0"

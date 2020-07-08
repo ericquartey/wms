@@ -373,6 +373,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.CheckUDC();
+
             this.Reasons = null;
 
             Task.Run(async () =>
@@ -406,7 +408,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (activeOperation != null)
                 {
-                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, 1);
+                    var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId && ic.ItemId == activeOperation.ItemId)?.Stock ?? activeOperation.RequestedQuantity;
+
+                    var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, quantity);
                     if (!canComplete)
                     {
                         this.Logger.Debug($"Operation '{activeOperation.Id}' cannot be completed, forcing recall of loading unit.");
@@ -504,6 +508,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsBusyConfirmingRecallOperation
                 &&
                 !(this.LoadingUnit is null);
+        }
+
+        private void CheckUDC()
+        {
+            try
+            {
+                var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+                if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
+                {
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
+                }
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
 
         private async Task ConfirmOperationAsync()
