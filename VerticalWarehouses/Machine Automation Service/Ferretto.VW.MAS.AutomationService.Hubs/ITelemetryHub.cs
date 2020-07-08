@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task SendLogs(BayNumber bayNumber);
 
-        Task SendScreenShot(BayNumber bayNumber, byte[] images);
+        Task SendScreenCast(BayNumber bayNumber, byte[] images);
 
         #endregion
     }
