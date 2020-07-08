@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
-            if (this.lastMissionOperation != null && this.MissionOperation != null)
+            if (this.lastMissionOperation != null && this.InputQuantity.HasValue && this.MissionOperation != null)
             {
                 this.lastMissionOperation.RequestedQuantity = this.InputQuantity.Value + this.MissionOperation.DispatchedQuantity;
             }
