@@ -331,7 +331,13 @@ namespace Ferretto.VW.MAS.DataLayer
                                 )
                             )
                         {
-                            availableCell.Add(new AvailableCell(cell, availableSpace));
+                            bool isFloating = false;
+                            if (!firstFree)
+                            {
+                                var prev = cells.LastOrDefault(c => c.Side == cell.Side && c.Position < cell.Position);
+                                isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
+                            }
+                            availableCell.Add(new AvailableCell(cell, availableSpace, isFloating));
                         }
                     }
                 });
@@ -355,6 +361,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // start from lower cells
                 var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                    .ThenBy(t => t.IsFloating)
+                    .ThenBy(t => t.Height)
                     .ThenBy(t => t.Cell.Priority)
                     .First();
                 var cellId = foundCell.Cell.Id;
@@ -575,7 +583,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .Where(c =>
                             c.Panel.Side == cell.Side
                             &&
-                            (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight: 0))
+                            (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight : 0))
                             &&
                             c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                         .ToArray();
