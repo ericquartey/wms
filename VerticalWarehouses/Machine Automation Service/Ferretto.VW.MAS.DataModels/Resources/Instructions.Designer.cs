@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AirFiltersCheck.
+        ///   Looks up a localized string similar to Air Filters Check.
         /// </summary>
         public static string AirFiltersCheck {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BearingsCheck.
+        ///   Looks up a localized string similar to Bearings Check.
         /// </summary>
         public static string BearingsCheck {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BearingsGrease.
+        ///   Looks up a localized string similar to Bearings Grease.
         /// </summary>
         public static string BearingsGrease {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltAdjust.
+        ///   Looks up a localized string similar to Belt Adjust.
         /// </summary>
         public static string BeltAdjust {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltFasten.
+        ///   Looks up a localized string similar to Belt Fasten.
         /// </summary>
         public static string BeltFasten {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltSubstitute.
+        ///   Looks up a localized string similar to Belt Substitute.
         /// </summary>
         public static string BeltSubstitute {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CableChainCheck.
+        ///   Looks up a localized string similar to Cable Chain Check.
         /// </summary>
         public static string CableChainCheck {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CablesCheck.
+        ///   Looks up a localized string similar to Cables Check.
         /// </summary>
         public static string CablesCheck {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChainAdjust.
+        ///   Looks up a localized string similar to Chain Adjust.
         /// </summary>
         public static string ChainAdjust {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChainGrease.
+        ///   Looks up a localized string similar to Chain Grease.
         /// </summary>
         public static string ChainGrease {
             get {
@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChainSubstitute.
+        ///   Looks up a localized string similar to Chain Substitute.
         /// </summary>
         public static string ChainSubstitute {
             get {
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ContactorsSubstitute.
+        ///   Looks up a localized string similar to Contactors Substitute.
         /// </summary>
         public static string ContactorsSubstitute {
             get {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ElectricalComponentsCheck.
+        ///   Looks up a localized string similar to Electrical Components Check.
         /// </summary>
         public static string ElectricalComponentsCheck {
             get {
@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FirstCellCheck.
+        ///   Looks up a localized string similar to First Cell Check.
         /// </summary>
         public static string FirstCellCheck {
             get {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GuidesCheck.
+        ///   Looks up a localized string similar to Guides Check.
         /// </summary>
         public static string GuidesCheck {
             get {
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GuidesSubstitute.
+        ///   Looks up a localized string similar to Guides Substitute.
         /// </summary>
         public static string GuidesSubstitute {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LampsCheck.
+        ///   Looks up a localized string similar to Lamps Check.
         /// </summary>
         public static string LampsCheck {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LinkCheck.
+        ///   Looks up a localized string similar to Link Check.
         /// </summary>
         public static string LinkCheck {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LinksGrease.
+        ///   Looks up a localized string similar to Links Grease.
         /// </summary>
         public static string LinksGrease {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LinkSubstitute.
+        ///   Looks up a localized string similar to Link Substitute.
         /// </summary>
         public static string LinkSubstitute {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MicroSwitchesCheck.
+        ///   Looks up a localized string similar to Micro Switches Check.
         /// </summary>
         public static string MicroSwitchesCheck {
             get {
@@ -250,7 +250,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MicroSwitchesMount.
+        ///   Looks up a localized string similar to Micro Switches Mount.
         /// </summary>
         public static string MicroSwitchesMount {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MicroSwitchesSubstitute.
+        ///   Looks up a localized string similar to Micro Switches Substitute.
         /// </summary>
         public static string MicroSwitchesSubstitute {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MotorChainAdjust.
+        ///   Looks up a localized string similar to Motor Chain Adjust.
         /// </summary>
         public static string MotorChainAdjust {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MotorChainGrease.
+        ///   Looks up a localized string similar to Motor Chain Grease.
         /// </summary>
         public static string MotorChainGrease {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MotorChainSubstitute.
+        ///   Looks up a localized string similar to Motor Chain Substitute.
         /// </summary>
         public static string MotorChainSubstitute {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MotorGearOil.
+        ///   Looks up a localized string similar to Motor Gear Oil.
         /// </summary>
         public static string MotorGearOil {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MotorGearSubstitute.
+        ///   Looks up a localized string similar to Motor Gear Substitute.
         /// </summary>
         public static string MotorGearSubstitute {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OpticalSensorsClean.
+        ///   Looks up a localized string similar to Optical Sensors Clean.
         /// </summary>
         public static string OpticalSensorsClean {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OpticalSensorsMount.
+        ///   Looks up a localized string similar to Optical Sensors Mount.
         /// </summary>
         public static string OpticalSensorsMount {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PinPawlFastenersCheck.
+        ///   Looks up a localized string similar to Pin Pawl Fasteners Check.
         /// </summary>
         public static string PinPawlFastenersCheck {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PinPawlFastenersGrease.
+        ///   Looks up a localized string similar to Pin Pawl Fasteners Grease.
         /// </summary>
         public static string PinPawlFastenersGrease {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PinPawlFastenersSubstitute.
+        ///   Looks up a localized string similar to Pin Pawl Fasteners Substitute.
         /// </summary>
         public static string PinPawlFastenersSubstitute {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PlasticCamsCheck.
+        ///   Looks up a localized string similar to Plastic Cams Check.
         /// </summary>
         public static string PlasticCamsCheck {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RandomCellCheck.
+        ///   Looks up a localized string similar to Random Cell Check.
         /// </summary>
         public static string RandomCellCheck {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SensorCheck.
+        ///   Looks up a localized string similar to Sensor Check.
         /// </summary>
         public static string SensorCheck {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SensorsClean.
+        ///   Looks up a localized string similar to Sensors Clean.
         /// </summary>
         public static string SensorsClean {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SensorsMount.
+        ///   Looks up a localized string similar to Sensors Mount.
         /// </summary>
         public static string SensorsMount {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ShaftCheck.
+        ///   Looks up a localized string similar to Shaft Check.
         /// </summary>
         public static string ShaftCheck {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SupportsCheck.
+        ///   Looks up a localized string similar to Supports Check.
         /// </summary>
         public static string SupportsCheck {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WheelsCheck.
+        ///   Looks up a localized string similar to Wheels Check.
         /// </summary>
         public static string WheelsCheck {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WheelsSubstitute.
+        ///   Looks up a localized string similar to Wheels Substitute.
         /// </summary>
         public static string WheelsSubstitute {
             get {
