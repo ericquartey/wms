@@ -58,8 +58,15 @@ namespace Ferretto.VW.App.Controls
 
         private Stream LoadFallbackImage()
         {
-            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
-            return new MemoryStream(this.ReadFully(sri.Stream));
+            try
+            {
+                var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
+                return new MemoryStream(this.ReadFully(sri.Stream));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

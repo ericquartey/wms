@@ -397,6 +397,40 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepManualMode}">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               TextWrapping="Wrap">
+                        <Run Text="{res:Loc General.SwitchToManual}" /><Run Text=":" />
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                               Text="{res:Loc ErrorsApp.DrawerIdentificationCompletedManual}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <!--<controls:PpcButton Grid.Row="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MarkAsResolvedCommand}"
+                                    Content="{res:Loc ErrorsApp.MarkAsResolved}" />-->
+
+                <controls:PpcButton Grid.Row="3"
+                                    Command="{Binding ManualCommand}"
+                                    Content="{res:Loc General.ManualMode}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+            </Grid>
+        </DataTemplate>
+
         <!--#endregion-->
     </ctrls:View.Resources>
 
@@ -617,6 +651,23 @@
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepAutomaticMode, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Border Background="{Binding HasStepManualMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="{Binding ManualStepText}" />
+            </Grid>
+            <Grid Grid.Row="6"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepManualMode, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
