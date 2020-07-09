@@ -2,7 +2,7 @@
 using Ferretto.ServiceDesk.Telemetry.Models;
 using Realms;
 
-namespace Ferretto.VW.TelemetryService.Model
+namespace Ferretto.VW.TelemetryService.Models
 {
     public class Screenshot : RealmObject, IScreenShot
     {

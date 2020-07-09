@@ -2,29 +2,17 @@
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.DataLayer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationTelemetryService
     {
-        #region Fields
-
-        private string serialNumber;
-
-        #endregion
-
         #region Methods
 
         private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
-            var baysDataProvider = serviceProvider.GetRequiredService<IMachineProvider>();
-            var bays = baysDataProvider.Get();
-            this.serialNumber = bays.SerialNumber;
-
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
@@ -51,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService
             };
 
             this.Logger.LogTrace("OnDataLayerReady end");
-            await this.telemetryHub.SendMissionLog(this.serialNumber, missionLog);
+            await this.telemetryHub.SendMissionLogAsync(missionLog);
         }
 
         #endregion

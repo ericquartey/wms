@@ -2,7 +2,7 @@
 using Ferretto.ServiceDesk.Telemetry.Models;
 using Realms;
 
-namespace Ferretto.VW.TelemetryService.Model
+namespace Ferretto.VW.TelemetryService.Models
 {
     public class ErrorLog : RealmObject, IErrorLog
     {
@@ -22,7 +22,7 @@ namespace Ferretto.VW.TelemetryService.Model
 
         public DateTimeOffset OccurrenceDate { get; set; }
 
-        public DateTimeOffset ResolutionDate { get; set; }
+        public DateTimeOffset? ResolutionDate { get; set; }
 
         #endregion
     }

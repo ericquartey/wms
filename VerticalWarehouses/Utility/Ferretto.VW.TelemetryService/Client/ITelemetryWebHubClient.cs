@@ -11,7 +11,9 @@ namespace Ferretto.VW.TelemetryService
 
         Task SendErrorLogAsync(string serialNumber, ErrorLog errorLog);
 
-        Task SendMissionLogAsync(int bayNumer, string serialNumber, MissionLog missionLog);
+        Task SendMachineAsync(Machine machine);
+
+        Task SendMissionLogAsync(string serialNumber, MissionLog missionLog);
 
         Task SendScreenCastAsync(int bayNumer, string serialNumber, byte[] screenshot);
 

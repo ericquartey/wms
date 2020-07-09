@@ -55,7 +55,6 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             INavigationService navigationService,
             IMachineService machineService,
-            ISessionService sessionService,
             IOperatorHubClient operatorHubClient,
             ITelemetryHubClient telemetryHubClient,
             ISensorsService sensorsService)
@@ -67,7 +66,6 @@ namespace Ferretto.VW.App.Services
             this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.sensorsToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                     .Subscribe(
@@ -176,10 +174,10 @@ namespace Ferretto.VW.App.Services
                             DetailCode = this.activeError.DetailCode,
                             InverterIndex = this.activeError.InverterIndex,
                             OccurrenceDate = this.activeError.OccurrenceDate,
-                            ResolutionDate = this.activeError.ResolutionDate.Value,
+                            ResolutionDate = this.activeError.ResolutionDate,
                         };
 
-                        await this.telemetryHubClient.SendErrorLog(this.sessionService.MachineIdentity.SerialNumber, errorLog);
+                        await this.telemetryHubClient.SendErrorLogAsync(errorLog);
                     }
                 }
             }

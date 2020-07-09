@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.Utils;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,8 +82,6 @@ namespace Ferretto.VW.MAS.AutomationService
             app.UseCors("AllowAll");
 
             app.UseDataLayer();
-
-            //app.UseTelemetryHub();
 
             app.UseMvc();
         }
@@ -156,8 +155,8 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();
             services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
 
-            //var telemetryUrl = this.Configuration.GetValue<string>("Telemetry:Url");
-            //services.AddTelemetryHub(new Uri(telemetryUrl));
+            var telemetryUrl = this.Configuration.GetValue<string>("Telemetry:Url");
+            services.AddTelemetryHub(new Uri(telemetryUrl));
         }
 
         private static void AddWmsServices(IServiceCollection services)

@@ -7,15 +7,23 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 {
     public interface ITelemetryHubClient : IAutoReconnectHubClient
     {
+        #region Events
+
+        event EventHandler MachineReceivedChanged;
+
+        #endregion
+
         #region Methods
 
-        Task SendErrorLog(string serialNumber, ErrorLog errorLog);
+        Task SendErrorLogAsync(ErrorLog errorLog);
 
-        Task SendMissionLog(string serialNumber, MissionLog missionLog);
+        Task SendMachineAsync(Machine machine);
 
-        Task SendScreenCastAsync(int bayNumer, string serialNumber, byte[] screenshot);
+        Task SendMissionLogAsync(MissionLog missionLog);
 
-        Task SendScreenShotAsync(int bayNumber, string machineSerial, DateTimeOffset timeSpan, byte[] screenShot);
+        Task SendScreenCastAsync(int bayNumer, byte[] screenshot);
+
+        Task SendScreenShotAsync(int bayNumber, DateTimeOffset timeSpan, byte[] screenShot);
 
         #endregion
     }

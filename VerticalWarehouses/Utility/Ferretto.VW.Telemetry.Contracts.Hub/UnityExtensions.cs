@@ -34,7 +34,7 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
             containerProvider
                .Resolve<ITelemetryHubClient>()
-               .ConnectAsync(true);
+               .ConnectAsync();
 
             return containerProvider;
         }
