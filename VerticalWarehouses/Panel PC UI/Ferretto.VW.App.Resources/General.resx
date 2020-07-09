@@ -453,4 +453,7 @@
   <data name="DateFormatHourMinuteSecond" xml:space="preserve">
     <value>{0: HH:mm:ss}</value>
   </data>
+  <data name="SwitchToManual" xml:space="preserve">
+    <value>Switch to Manual</value>
+  </data>
 </root>
