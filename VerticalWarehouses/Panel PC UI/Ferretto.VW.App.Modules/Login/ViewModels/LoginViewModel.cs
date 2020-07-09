@@ -262,12 +262,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private bool CanExecuteLogin()
         {
-            return
+            if (this.UserLogin.UserName == "operator")
+            {
+                return
                 this.machineIdentity != null
                 &&
                 !this.IsWaitingForResponse
                 &&
                 (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
+            }
+            else
+            {
+                return
+                this.machineIdentity != null
+                &&
+                !this.IsWaitingForResponse;
+            }
         }
 
         private async Task LoginAsync()
