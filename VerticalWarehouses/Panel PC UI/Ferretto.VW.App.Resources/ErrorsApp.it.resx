@@ -138,6 +138,9 @@
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Terminata la procedura di identificazione cassetto, passa in autmatico.</value>
   </data>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Terminata la procedura di identificazione cassetto, passa in manuale.</value>
+  </data>
   <data name="DrawerReturn" xml:space="preserve">
     <value>Rientra cassetto</value>
   </data>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -14,6 +15,10 @@ using Prism.Events;
 namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
     internal struct ErrorLoadunitMissingStepAutomaticMode
+    {
+    }
+
+    internal struct ErrorLoadunitMissingStepManualMode
     {
     }
 
@@ -53,7 +58,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand automaticCommand;
 
+        private DelegateCommand manualCommad;
+
         private string automaticStepText;
+
+        private string manualStepText;
 
         private string bay1StepText;
 
@@ -155,10 +164,23 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 async () => await this.AutomaticCommandAsync(),
                 this.CanAutomaticCommand));
 
+        public ICommand ManualCommand =>
+            this.manualCommad
+            ??
+            (this.manualCommad = new DelegateCommand(
+                async () => await this.ManualCommandAsync(),
+                this.CanManualCommand));
+
         public string AutomaticStepText
         {
             get => this.automaticStepText;
             set => this.SetProperty(ref this.automaticStepText, value);
+        }
+
+        public string ManualStepText
+        {
+            get => this.manualStepText;
+            set => this.SetProperty(ref this.manualStepText, value);
         }
 
         public string Bay1StepText
@@ -251,6 +273,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public bool HasBay3PositionUpVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
 
         public bool HasStepAutomaticMode => this.currentStep is ErrorLoadunitMissingStepAutomaticMode;
+
+        public bool HasStepManualMode => this.currentStep is ErrorLoadunitMissingStepManualMode;
 
         public bool HasStepLoadunitOnBay1 => this.currentStep is ErrorLoadunitMissingStepLoadunitOnBay1;
 
@@ -396,7 +420,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         }
                         else
                         {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            }
+                            else
+                            {
+                                this.NavigationService.GoBack();
+                            }
                         }
                     }
                     else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnElevator)
@@ -418,7 +449,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         }
                         else
                         {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            }
+                            else
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                            }
                         }
                     }
                     else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay1)
@@ -435,7 +473,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         }
                         else
                         {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            }
+                            else
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                            }
                         }
                     }
                     else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay2)
@@ -447,14 +492,32 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         }
                         else
                         {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                            }
+                            else
+                            {
+                                this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                            }
                         }
                     }
                     else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay3)
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                     else if (this.CurrentStep is ErrorLoadunitMissingStepAutomaticMode)
+                    {
+                        throw new NotSupportedException();
+                    }
+                    else if (this.CurrentStep is ErrorLoadunitMissingStepManualMode)
                     {
                         throw new NotSupportedException();
                     }
@@ -735,6 +798,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 this.AutomaticStepText = stepValue.ToString();
+                this.ManualStepText = stepValue.ToString();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -844,7 +908,93 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
         }
 
+        
+        private async Task ManualCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                // Elevator
+                if (this.SensorsService.IsLoadingUnitOnElevator &&
+                    this.LuIdOnElevator.HasValue)
+                {
+                    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                }
+
+                // Bay 1
+                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                    this.HasBay1PositionUpVisible &&
+                    this.LuIdOnBay1Up.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                    this.HasBay1PositionDownVisible &&
+                    this.LuIdOnBay1Down.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Down.Value);
+                }
+
+                // Bay 2
+                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                    this.HasBay2PositionUpVisible &&
+                    this.LuIdOnBay2Up.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                    this.HasBay2PositionDownVisible &&
+                    this.LuIdOnBay2Down.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Down.Value);
+                }
+
+                // Bay 3
+                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible &&
+                    this.LuIdOnBay3Up.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                    this.HasBay3PositionDownVisible &&
+                    this.LuIdOnBay3Down.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Down.Value);
+                }
+
+                await this.machineErrorsWebService.ResolveAllAsync();
+
+                await this.machineModeWebService.SetManualAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private bool CanAutomaticCommand()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   this.MachineService.MachineMode != MachineMode.Automatic;
+        }
+
+        private bool CanManualCommand()
         {
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
@@ -987,7 +1137,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                 }
             }
@@ -1012,7 +1169,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                 }
                 else
@@ -1036,18 +1200,39 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                 }
                 else
                 {
                     if (this.SensorsService.IsLoadingUnitOnElevator)
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                     else
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                 }
             }
@@ -1062,7 +1247,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                        }
+                        else
+                        {
+                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                        }
                     }
                 }
                 else
@@ -1086,7 +1278,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 if (e.Next)
                 {
-                    this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
+                    }
                 }
                 else
                 {
@@ -1111,6 +1310,35 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
             }
             else if (this.CurrentStep is ErrorLoadunitMissingStepAutomaticMode)
+            {
+                if (!e.Next)
+                {
+                    if ((this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) &&
+                        (this.HasBay3PositionUpVisible || this.HasBay3PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay3);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) &&
+                             (this.HasBay2PositionUpVisible || this.HasBay2PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay2);
+                    }
+                    else if ((this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) &&
+                             (this.HasBay1PositionUpVisible || this.HasBay1PositionDownVisible))
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnBay1);
+                    }
+                    else if (this.SensorsService.IsLoadingUnitOnElevator)
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
+                    }
+                    else
+                    {
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
+                    }
+                }
+            }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepManualMode)
             {
                 if (!e.Next)
                 {
@@ -1192,6 +1420,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                            this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay2));
                            this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay3));
                            this.RaisePropertyChanged(nameof(this.HasStepAutomaticMode));
+                           this.RaisePropertyChanged(nameof(this.HasStepManualMode));
 
                            this.RaisePropertyChanged(nameof(this.HasBay1PositionDownVisible));
                            this.RaisePropertyChanged(nameof(this.HasBay1PositionUpVisible));
@@ -1236,6 +1465,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.ShowPrevStepSinglePage(true, !this.IsMoving);
                 this.ShowNextStepSinglePage(true, false);
             }
+            else if (this.CurrentStep is ErrorLoadunitMissingStepManualMode)
+            {
+                this.ShowPrevStepSinglePage(true, !this.IsMoving);
+                this.ShowNextStepSinglePage(true, false);
+            }
 
             this.ShowAbortStep(true, !this.IsMoving);
 
@@ -1245,6 +1479,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay2));
             this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay3));
             this.RaisePropertyChanged(nameof(this.HasStepAutomaticMode));
+            this.RaisePropertyChanged(nameof(this.HasStepManualMode));
 
             this.RaisePropertyChanged(nameof(this.HasBay1PositionDownVisible));
             this.RaisePropertyChanged(nameof(this.HasBay1PositionUpVisible));
