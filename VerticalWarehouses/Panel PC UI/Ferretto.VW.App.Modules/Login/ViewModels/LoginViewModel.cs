@@ -397,6 +397,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     }
                 }
             }));
+
+            this.loginCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
