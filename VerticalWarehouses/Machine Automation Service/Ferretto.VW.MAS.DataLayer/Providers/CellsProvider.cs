@@ -331,12 +331,8 @@ namespace Ferretto.VW.MAS.DataLayer
                                 )
                             )
                         {
-                            bool isFloating = false;
-                            if (!firstFree)
-                            {
-                                var prev = cells.LastOrDefault(c => c.Side == cell.Side && c.Position < cell.Position);
-                                isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
-                            }
+                            var prev = cells.LastOrDefault(c => c.Side == cell.Side && c.Position < cell.Position);
+                            var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
                             availableCell.Add(new AvailableCell(cell, availableSpace, isFloating));
                         }
                     }
