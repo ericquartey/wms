@@ -6,11 +6,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Constructors
 
-        public AvailableCell(Cell cell, double height, bool isFloating)
+        public AvailableCell(Cell cell, double height)
         {
             this.Cell = cell;
             this.Height = height;
-            this.IsFloating = isFloating;
         }
 
         #endregion
@@ -20,8 +19,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public Cell Cell { get; set; }
 
         public double Height { get; set; }
-
-        public bool IsFloating { get; set; }
 
         #endregion
     }
