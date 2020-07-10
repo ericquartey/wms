@@ -293,7 +293,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     var cellsFollowing = cells.Where(c => c.Panel.Side == cell.Side
                         && c.Position >= cell.Position);
 
-                    if (cellsFollowing.Any())
+                    // load previous cell
+                    var prev = cells.LastOrDefault(c => c.Side == cell.Side
+                        && c.Position < cell.Position);
+
+                    // don't want floating cells: previous cell is free and available
+                    var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
+
+                    if (cellsFollowing.Any() && !isFloating)
                     {
                         // measure available space
                         var lastCellPosition = cellsFollowing.Last().Position;
@@ -353,9 +360,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
                 }
 
-                // start from lower cells
+                // sort cells from bottom to top, optimizing free space
                 var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
-                    .ThenBy(t => t.Cell.Priority)
+                    .ThenBy(t => t.Height)          // minimize free space
+                    .ThenBy(t => t.Cell.Priority)   // start from bottom to top
                     .First();
                 var cellId = foundCell.Cell.Id;
                 if (loadUnit.IsVeryHeavy)
@@ -575,7 +583,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .Where(c =>
                             c.Panel.Side == cell.Side
                             &&
-                            (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight: 0))
+                            (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy ? CellHeight : 0))
                             &&
                             c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                         .ToArray();
