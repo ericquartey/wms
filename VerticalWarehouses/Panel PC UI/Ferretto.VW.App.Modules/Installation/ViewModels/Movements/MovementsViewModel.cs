@@ -280,6 +280,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
+            this.sensorsTokenManual?.Dispose();
+            this.sensorsTokenManual = null;
+
             this.loadunitsToken?.Dispose();
             this.loadunitsToken = null;
 
@@ -297,6 +300,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.elevatorPositionChangedToken?.Dispose();
             this.elevatorPositionChangedToken = null;
+
+            this.lastActiveCommand = "";
 
             this.StopMoving();
         }
@@ -340,6 +345,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.InputCellIdPropertyChanged();
+
+                this.lastActiveCommand = "";
 
                 this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
@@ -500,6 +507,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
+            this.lastActiveCommand = "";
             if (isGuided)
             {
                 this.Title = Localized.Get("InstallationApp.MovementsGuided");
@@ -589,6 +597,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.OnManualPositioningOperationChanged(message);
             this.OnGuidedPositioningOperationChanged(message);
+        }
+
+        private async void OnSensorsChangedManual(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            if (this.IsMovementsManual && this.IsMoving)
+            {
+                switch (this.lastActiveCommand)
+                {
+                    case "MoveElevatorBackOrForwards":
+                        if (this.SensorsService.IsZeroChain || (this.SensorsService.Sensors.LuPresentInMachineSide && this.SensorsService.Sensors.LuPresentInOperatorSide))
+                        {
+                            await this.StopMovingReleaseAsync();
+                        }
+                        break;
+
+                    case "MoveOpenCarousel":
+                        if (this.SensorsService.BayZeroChain)
+                        {
+                            await this.StopMovingReleaseAsync();
+                        }
+                        break;
+
+                    case "MoveElevatorUp":
+                        if (this.SensorsService.Sensors.ElevatorOverrun && !this.SensorsService.Sensors.ZeroVerticalSensor)
+                        {
+                            await this.StopMovingReleaseAsync();
+                        }
+                        break;
+
+                    case "MoveElevatorDown":
+                        if (this.SensorsService.Sensors.ElevatorOverrun && this.SensorsService.Sensors.ZeroVerticalSensor)
+                        {
+                            await this.StopMovingReleaseAsync();
+                        }
+                        break;
+
+                    default:
+                            break;
+                }
+            }
         }
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -846,6 +894,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);
+
+            this.sensorsTokenManual = this.sensorsTokenManual
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChangedManual,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
 
             this.installationHubClient.BayLightChanged += this.OnBayLightChanged;
         }

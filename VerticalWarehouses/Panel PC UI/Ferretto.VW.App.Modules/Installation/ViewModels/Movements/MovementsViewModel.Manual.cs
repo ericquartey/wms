@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Prism.Events;
 using Axis = Ferretto.VW.MAS.AutomationService.Contracts.Axis;
 using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
@@ -102,6 +103,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand shutterMoveDownCommand;
 
         private DelegateCommand shutterMoveUpCommand;
+
+        private SubscriptionToken sensorsTokenManual;
+
+        private string lastActiveCommand;
 
         #endregion
 
@@ -369,6 +374,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task CloseCarouselAsync()
         {
+            this.lastActiveCommand = "CloseCarousel";
             await this.StartMovementAsync(VerticalMovementDirection.Down);
         }
 
@@ -386,46 +392,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveElevatorBackwardsAsync()
         {
+            this.lastActiveCommand = "MoveElevatorBackOrForwards";
             await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
         public async Task MoveElevatorDownAsync()
         {
+            this.lastActiveCommand = "MoveElevatorDown";
             await this.StartVerticalMovementAsync(VerticalMovementDirection.Down);
         }
 
         public async Task MoveElevatorForwardsAsync()
         {
+            this.lastActiveCommand = "MoveElevatorBackOrForwards";
             await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         public async Task MoveElevatorUpAsync()
         {
+            this.lastActiveCommand = "MoveElevatorUp";
             await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
         }
 
         public async Task MoveManualExternalBayTowardMachineAsync()
         {
+            this.lastActiveCommand = "MoveManualExternalBayTowardMachine";
             await this.StartExternalBayMovementAsync(ExternalBayMovementDirection.TowardMachine);
         }
 
         public async Task MoveManualExternalBayTowardOperatorAsync()
         {
+            this.lastActiveCommand = "MoveManualExternalBayTowardOperator";
             await this.StartExternalBayMovementAsync(ExternalBayMovementDirection.TowardOperator);
         }
 
         public async Task OpenCarouselAsync()
         {
+            this.lastActiveCommand = "MoveOpenCarousel";
             await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
         public async Task ShutterMoveDownAsync()
         {
+            this.lastActiveCommand = "ShutterMoveDown";
             await this.ManualShutterStartMovementAsync(ShutterMovementDirection.Down);
         }
 
         public async Task ShutterMoveUpAsync()
         {
+            this.lastActiveCommand = "ShutterMoveUp";
             await this.ManualShutterStartMovementAsync(ShutterMovementDirection.Up);
         }
 
@@ -484,6 +499,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task MoveToCellHeightAsync()
         {
+            this.lastActiveCommand = "MoveToCellHeight";
             try
             {
                 this.IsWaitingForResponse = true;
@@ -512,6 +528,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task MoveToHeightAsync()
         {
+            this.lastActiveCommand = "MoveToHeight";
             try
             {
                 this.IsWaitingForResponse = true;
