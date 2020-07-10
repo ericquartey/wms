@@ -138,6 +138,9 @@
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Drawer identification completed, switch to automatic mode.</value>
   </data>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Drawer identification completed, switch to manual mode.</value>
+  </data>
   <data name="DrawerReturn" xml:space="preserve">
     <value>Return Drawer</value>
   </data>

@@ -128,11 +128,11 @@
     <value>Open folder</value>
   </data>
   <data name="VertimagConfigurationFile" xml:space="preserve">
-    <value>Vertimag confdiguration file</value>
+    <value>Vertimag configuration file</value>
     <comment>Description</comment>
   </data>
   <data name="OpenFile" xml:space="preserve">
-    <value>Opend file</value>
+    <value>Open file</value>
   </data>
   <data name="InvertersFolder" xml:space="preserve">
     <value>Inverters folder</value>

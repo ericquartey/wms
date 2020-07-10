@@ -286,7 +286,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opend file.
+        ///   Looks up a localized string similar to Open file.
         /// </summary>
         public static string OpenFile {
             get {

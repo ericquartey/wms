@@ -26,12 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public NotificationTelemetryService(
             IEventAggregator eventAggregator,
-            ITelemetryHubClient telemetryHub,
+            //ITelemetryHubClient telemetryHub,
             ILogger<NotificationTelemetryService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
+            // this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
         }
 
         #endregion

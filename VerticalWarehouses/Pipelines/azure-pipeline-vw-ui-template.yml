@@ -12,7 +12,7 @@ steps:
   displayName: 'dotnet build & publish (${{ parameters.BuildConfiguration }})'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Panel PC App'
+  displayName: 'Publish Artifact: panelpc_app'
   inputs:
     PathtoPublish: '$(system.defaultworkingdirectory)/VerticalWarehouses/Panel PC UI/Ferretto.VW.App/bin/${{ parameters.BuildConfiguration }}/net471/publish'
     ArtifactName: 'panelpc_app'

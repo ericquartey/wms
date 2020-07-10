@@ -7,9 +7,6 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
-        [JsonIgnore]
-        private const double VeryHeavyLoadUnit = 0.85;
-
         private double grossWeight;
 
         private double height;
@@ -68,9 +65,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsInFullTest { get; set; }
 
         public bool IsIntoMachine { get; set; }
-
-        [JsonIgnore]
-        public bool IsVeryHeavy => this.NetWeight > this.MaxNetWeight * VeryHeavyLoadUnit;
 
         /// <summary>
         /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.
@@ -133,6 +127,11 @@ namespace Ferretto.VW.MAS.DataModels
         #endregion
 
         #region Methods
+
+        public bool IsVeryHeavy(double veryHeavyPercent)
+        {
+            return this.NetWeight > this.MaxNetWeight * veryHeavyPercent / 100;
+        }
 
         public void Validate()
         {
