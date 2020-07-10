@@ -163,11 +163,14 @@ namespace Ferretto.VW.App.Services
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
                 if (this.ActiveError != prevError)
                 {
+                    var screenshot = this.navigationService.GetScreenshot();
+                    await this.telemetryHubClient.SendScreenShotAsync((int)this.activeError.BayNumber, this.activeError.OccurrenceDate, screenshot);
                     await this.NavigateToErrorPageAsync();
                     if (!(this.ActiveError is null))
                     {
                         var errorLog = new ErrorLog
                         {
+                            ErrorId = (int)this.activeError.Id,
                             BayNumber = (int)this.activeError.BayNumber,
                             AdditionalText = this.activeError.Description,
                             Code = this.activeError.Code,
