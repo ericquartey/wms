@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineErrorsService machineErrorsService;
 
         private readonly ISessionService sessionService;
@@ -60,6 +62,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IBayManager bayManager,
             IBarcodeReaderService barcodeReaderService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService machineIdentityWebService,
             ILocalizationService localizationService)
             : base(PresentationMode.Login)
         {
@@ -72,6 +75,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.cardReaderService = cardReaderService;
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
 #if DEBUG
@@ -222,6 +226,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             else
             {
                 this.MachineIdentity = this.sessionService.MachineIdentity;
+            }
+            if (this.MachineIdentity is null)
+            {
+                try
+                {
+                    this.MachineIdentity = await this.machineIdentityWebService.GetAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
             }
 
             this.IsVisible = true;

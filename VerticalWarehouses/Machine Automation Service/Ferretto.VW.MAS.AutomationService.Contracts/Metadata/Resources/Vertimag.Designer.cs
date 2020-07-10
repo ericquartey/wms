@@ -790,11 +790,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer Tare.
+        ///   Looks up a localized string similar to Load unit Tare.
         /// </summary>
         public static string Machine_LoadUnitTare {
             get {
                 return ResourceManager.GetString("Machine_LoadUnitTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load unit very heavy percent.
+        /// </summary>
+        public static string Machine_LoadUnitVeryHeavyPercent {
+            get {
+                return ResourceManager.GetString("Machine_LoadUnitVeryHeavyPercent", resourceCulture);
             }
         }
         
