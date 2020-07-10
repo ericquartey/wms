@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false);
 
+        int CleanUnderWeightCells();
+
         int FindDownCell(LoadingUnit loadingUnit);
 
         int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false);

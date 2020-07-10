@@ -1402,8 +1402,15 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
 
-            this.HorizontalZeroSensor(false);
-
+            //if (this.AxisPosition == 0 && this.InverterRole == InverterRole.Main)
+            //{
+            //    // TEST!!!
+            //    this.HorizontalZeroSensor(true);
+            //}
+            //else
+            {
+                this.HorizontalZeroSensor(false);
+            }
             if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
                 this.AxisPosition = target;

@@ -19,9 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "LoadUnitVeryHeavyPercent",
                 table: "Machines",
                 nullable: false,
-                defaultValue: 85.0);
-
-            migrationBuilder.Sql("UPDATE Machines SET LoadUnitVeryHeavyPercent = 85.0");
+                defaultValue: 0.0);
         }
 
         #endregion

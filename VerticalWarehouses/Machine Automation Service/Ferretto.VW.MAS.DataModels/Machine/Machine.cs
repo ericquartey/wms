@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DataModels
         public double LoadUnitTare { get; set; }
 
         /// <summary>
-        /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell.
+        /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell. To disable heavy bin management use 0. suggested value is 85.
         /// </summary>
         public double LoadUnitVeryHeavyPercent { get; set; }
 
