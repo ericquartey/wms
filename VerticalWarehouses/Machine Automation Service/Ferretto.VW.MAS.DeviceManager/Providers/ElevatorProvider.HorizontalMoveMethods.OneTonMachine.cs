@@ -273,6 +273,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 horizontalTargetPosition = distance;
             }
 
+            // Take account of current position in the horizontal axes and carry out the compensation along distance
+            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            var percentileCompensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition) / Math.Abs(this.elevatorDataProvider.HorizontalPosition);
+            horizontalTargetPosition -= compensation;
+
             horizontalTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var horizontalSpeed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
@@ -314,7 +319,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 grossWeight = loadUnit.GrossWeight;
             }
-            var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight);
+            var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight) * percentileCompensation;  // <-- Check this!!
             displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
             this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement} mm [targetPosition: {this.VerticalPosition + displacement} mm], weight load unit: {grossWeight} kg");
 
