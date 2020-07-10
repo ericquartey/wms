@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace Ferretto.VW.CommonUtils
 {
@@ -14,9 +15,12 @@ namespace Ferretto.VW.CommonUtils
 
             if (!success)
             {
-                throw new InvalidOperationException("System time could not be set.");
+                throw new Win32Exception((int)GetLastError());
             }
         }
+
+        [DllImport("kernel32.dll")]
+        private static extern uint GetLastError();
 
         [DllImport("kernel32.dll")]
         private static extern bool SetSystemTime(ref SYSTEMTIME time);
