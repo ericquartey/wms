@@ -140,6 +140,37 @@ namespace Ferretto.VW.MAS.DataLayer
                 );
         }
 
+        public int CleanUnderWeightCells()
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.machineProvider.Get();
+                if (machine is null)
+                {
+                    throw new EntityNotFoundException();
+                }
+
+                if (machine.LoadUnitVeryHeavyPercent == 0)
+                {
+                    var cells = this.GetAll(x => x.BlockLevel == BlockLevel.UnderWeight)
+                        .ToArray();
+
+                    if (cells.Any())
+                    {
+                        for (var cellId = 0; cellId < cells.Length; cellId++)
+                        {
+                            cells[cellId].BlockLevel = BlockLevel.None;
+                            cells[cellId].IsFree = true;
+                            this.dataContext.Cells.Update(cells[cellId]);
+                        }
+                        this.dataContext.SaveChanges();
+                        return cells.Length;
+                    }
+                }
+                return 0;
+            }
+        }
+
         public int FindDownCell(LoadingUnit loadingUnit)
         {
             if (loadingUnit.Cell is null)

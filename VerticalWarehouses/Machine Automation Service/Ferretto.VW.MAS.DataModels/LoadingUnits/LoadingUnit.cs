@@ -130,6 +130,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsVeryHeavy(double veryHeavyPercent)
         {
+            if(veryHeavyPercent <= 0)
+            {
+                return false;
+            }
             return this.NetWeight > this.MaxNetWeight * veryHeavyPercent / 100;
         }
 
