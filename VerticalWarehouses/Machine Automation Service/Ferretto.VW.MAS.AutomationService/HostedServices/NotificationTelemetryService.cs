@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -47,8 +47,6 @@ namespace Ferretto.VW.MAS.AutomationService
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            await this.telemetryHub.ConnectAsync();
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)

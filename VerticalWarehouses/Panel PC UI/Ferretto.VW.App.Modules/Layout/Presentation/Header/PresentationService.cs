@@ -89,15 +89,15 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand ScreenCastCommand =>
              this.screenCastCommand
              ??
-             (this.screenCastCommand = new DelegateCommand(async () => await this.ScreenCastAsync()));
+             (this.screenCastCommand = new DelegateCommand(async () => await this.ToggleScreenCastAsync()));
 
         public ICommand SendLogCommand =>
-                     this.sendLogCommand
-             ??
-             (this.sendLogCommand = new DelegateCommand(async () => await this.SendLogAsync()));
+            this.sendLogCommand
+            ??
+            (this.sendLogCommand = new DelegateCommand(async () => await this.SendLogAsync()));
 
         public ICommand SendScreenSnapshotCommand =>
-                            this.sendScreenSnapshotCommand
+            this.sendScreenSnapshotCommand
             ??
             (this.sendScreenSnapshotCommand = new DelegateCommand(async () => await this.SendScreenSnapshotAsync(), this.CanSendScreenSnapshotAsync));
 
@@ -142,46 +142,70 @@ namespace Ferretto.VW.App.Modules.Layout
             return !this.isScreenCast;
         }
 
-        private async Task ScreenCastAsync()
+        private async Task ToggleScreenCastAsync()
         {
             this.IsServiceOptionsVisible = false;
 
-            if (this.isScreenCast)
+            this.IsScreenCast = !this.IsScreenCast;
+            if (!this.IsScreenCast)
             {
-                this.IsScreenCast = false;
                 return;
             }
 
-            this.IsScreenCast = true;
-
             await this.CheckBayNumberAsync();
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Task.Run(async () =>
             {
                 do
                 {
-                    Application.Current.Dispatcher.Invoke(async () =>
+                    byte[] screenshot = null;
+                    Application.Current.Dispatcher.Invoke(() =>
                          {
-                             try
-                             {
-                                 var screenshot = this.navigationService.GetScreenshot();
-                                 await this.telemetryHubClient.SendScreenCastAsync((int)this.bayNumber, screenshot);
-                             }
-                             catch (Exception ex)
-                             {
-                                 this.logger.Error(ex);
-                             }
+                             screenshot = this.navigationService.TakeScreenshot();
                          });
-                    await Task.Delay(SCREENSHOTDELAY);
+
+                    try
+                    {
+                        if (screenshot != null)
+                        {
+                            await this.telemetryHubClient.SendScreenCastAsync((int)this.bayNumber, screenshot, DateTimeOffset.Now);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.Error(ex);
+                    }
+                    finally
+                    {
+                        await Task.Delay(SCREENSHOTDELAY);
+                    }
                 }
                 while (this.isScreenCast);
             });
+#pragma warning restore CS4014
         }
 
         private async Task SendLogAsync()
         {
             this.IsServiceOptionsVisible = false;
-            await this.telemetryHubClient.SendErrorLogAsync(new ServiceDesk.Telemetry.Models.ErrorLog() { BayNumber = 1, AdditionalText = "Est" });
+            await this.CheckBayNumberAsync();
+
+            try
+            {
+                await this.telemetryHubClient.SendErrorLogAsync(
+                new ServiceDesk.Telemetry.ErrorLog
+                {
+                    BayNumber = (int)this.bayNumber,
+                    AdditionalText = "Test",
+                    Code = 14,
+                    OccurrenceDate = DateTimeOffset.Now
+                });
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
         }
 
         private async Task SendScreenSnapshotAsync()
@@ -189,8 +213,9 @@ namespace Ferretto.VW.App.Modules.Layout
             try
             {
                 this.IsServiceOptionsVisible = false;
+
                 await this.CheckBayNumberAsync();
-                var screenshot = this.navigationService.GetScreenshot();
+                var screenshot = this.navigationService.TakeScreenshot();
                 await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTime.Now, screenshot);
             }
             catch (Exception ex)

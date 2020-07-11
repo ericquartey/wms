@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry.Hubs;
-using Ferretto.ServiceDesk.Telemetry.Models;
-using Ferretto.VW.TelemetryService.Provider;
+using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.TelemetryService
@@ -14,7 +15,7 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly ILogger<TelemetryHub> logger;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly ITelemetryWebHubClient telemetryWebHubClient;
 
@@ -22,12 +23,13 @@ namespace Ferretto.VW.TelemetryService
 
         #region Constructors
 
-        public TelemetryHub(ITelemetryWebHubClient telemetryWebHubClient,
-                            IMachineProvider machineProvider,
-                            ILogger<TelemetryHub> logger)
+        public TelemetryHub(
+            ITelemetryWebHubClient telemetryWebHubClient,
+            IServiceScopeFactory serviceScopeFactory,
+            ILogger<TelemetryHub> logger)
         {
             this.telemetryWebHubClient = telemetryWebHubClient;
-            this.machineProvider = machineProvider;
+            this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
         }
 
@@ -39,52 +41,100 @@ namespace Ferretto.VW.TelemetryService
         {
             await base.OnConnectedAsync();
 
-            var machine = await this.machineProvider.GetAsync();
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
             if (machine is null)
             {
+                this.logger.LogDebug("No machine is defined in the database. Requesting identification to connected client.");
                 await this.Clients.Caller.RequestMachine();
             }
         }
 
         public async Task SendErrorLog(ErrorLog errorLog)
         {
-            this.logger.LogInformation($"ErrorLog");
-            var machine = await this.machineProvider.GetAsync();
-            await this.telemetryWebHubClient.SendErrorLogAsync(machine?.SerialNumber, errorLog);
+            if (errorLog is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received error log from client.");
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to send an error log with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendErrorLogAsync(machine.SerialNumber, errorLog);
         }
 
         public async Task SendMachine(Machine machine)
         {
-            this.logger.LogInformation($"machine");
-            var newMachine = new Models.Machine
+            if (machine is null)
             {
-                ModelName = machine.ModelName,
-                SerialNumber = machine.SerialNumber,
-            };
+                return;
+            }
 
-            await this.machineProvider.SaveAsync(newMachine);
+            this.logger.LogDebug(
+                "Received machine identification from client. Machine is '{model}', '{serial}'.",
+                machine.ModelName,
+                machine.SerialNumber);
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            await scope.ServiceProvider.GetRequiredService<IMachineProvider>().SaveAsync(machine);
+
             await this.telemetryWebHubClient.SendMachineAsync(machine);
         }
 
         public async Task SendMissionLog(MissionLog missionLog)
         {
-            this.logger.LogInformation($"MissionLog");
-            var machine = await this.machineProvider.GetAsync();
-            await this.telemetryWebHubClient.SendMissionLogAsync(machine?.SerialNumber, missionLog);
+            if (missionLog is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received mission log from client.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to send a mission log with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendMissionLogAsync(machine.SerialNumber, missionLog);
         }
 
-        public async Task SendScreenCast(int bayNumber, byte[] screenshot)
+        public async Task SendScreenCast(int bayNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
-            this.logger.LogInformation($"Screencast image size {screenshot.Length / 1024} Kb");
-            var machine = await this.machineProvider.GetAsync();
-            await this.telemetryWebHubClient.SendScreenCastAsync(bayNumber, machine?.SerialNumber, screenshot);
+            this.logger.LogDebug($"Received screencast image (size {screenshot.Length / 1024} Kb) from client.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to screen cast with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendScreenCastAsync(bayNumber, machine.SerialNumber, timeStamp, screenshot);
         }
 
         public async Task SendScreenShot(int bayNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
             this.logger.LogInformation($"Screenshot image size {screenshot.Length / 1024} Kb");
-            var machine = await this.machineProvider.GetAsync();
-            await this.telemetryWebHubClient.SendScreenShotAsync(bayNumber, machine?.SerialNumber, timeStamp, screenshot);
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to send a screenshot with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendScreenShotAsync(bayNumber, machine.SerialNumber, timeStamp, screenshot);
         }
 
         #endregion

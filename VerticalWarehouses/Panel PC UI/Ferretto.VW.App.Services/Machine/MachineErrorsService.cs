@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.Common.Hubs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -161,32 +161,24 @@ namespace Ferretto.VW.App.Services
             {
                 var prevError = this.ActiveError;
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
-                if (this.ActiveError != prevError)
-                {
-                    var screenshot = this.navigationService.GetScreenshot();
-                    await this.telemetryHubClient.SendScreenShotAsync((int)this.activeError.BayNumber, this.activeError.OccurrenceDate, screenshot);
-                    await this.NavigateToErrorPageAsync();
-                    if (!(this.ActiveError is null))
-                    {
-                        var errorLog = new ErrorLog
-                        {
-                            ErrorId = (int)this.activeError.Id,
-                            BayNumber = (int)this.activeError.BayNumber,
-                            AdditionalText = this.activeError.Description,
-                            Code = this.activeError.Code,
-                            DetailCode = this.activeError.DetailCode,
-                            InverterIndex = this.activeError.InverterIndex,
-                            OccurrenceDate = this.activeError.OccurrenceDate,
-                            ResolutionDate = this.activeError.ResolutionDate,
-                        };
 
-                        await this.telemetryHubClient.SendErrorLogAsync(errorLog);
-                    }
+                if (this.ActiveError != prevError
+                    &&
+                    this.ActiveError != null)
+                {
+                    var screenshot = this.navigationService.TakeScreenshot();
+
+                    await this.telemetryHubClient.SendScreenShotAsync(
+                        (int)this.activeError.BayNumber,
+                        this.activeError.OccurrenceDate,
+                        screenshot);
+
+                    await this.NavigateToErrorPageAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: show error
+                this.logger.Error(ex);
             }
         }
 

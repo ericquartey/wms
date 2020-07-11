@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Realms;
 
 namespace Ferretto.VW.TelemetryService.Models
@@ -8,7 +8,7 @@ namespace Ferretto.VW.TelemetryService.Models
     {
         #region Properties
 
-        public string AdditionalText { get; set; }
+        public string? AdditionalText { get; set; }
 
         public int BayNumber { get; set; }
 
@@ -16,7 +16,10 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public int DetailCode { get; set; }
 
-        public Machine Machine { get; set; }
+        [PrimaryKey]
+        public int Id { get; set; }
+
+        public Machine? Machine { get; set; }
 
         public int MachineId { get; set; }
 

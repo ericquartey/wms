@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Ferretto.VW.TelemetryService.Provider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +10,12 @@ namespace Ferretto.VW.TelemetryService
 {
     public class Startup
     {
+        #region Fields
+
+        private const string ConnectionStringName = "Database";
+
+        #endregion
+
         #region Constructors
 
         public Startup(IConfiguration configuration)
@@ -29,7 +33,6 @@ namespace Ferretto.VW.TelemetryService
 
         #region Methods
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -47,11 +50,11 @@ namespace Ferretto.VW.TelemetryService
                 endpoints.MapHub<TelemetryHub>("/telemetry");
             });
 
-            app.ApplicationServices.GetRequiredService<ITelemetryWebHubClient>()
+            app.ApplicationServices
+                .GetRequiredService<ITelemetryWebHubClient>()
                 .ConnectAsync();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -59,21 +62,19 @@ namespace Ferretto.VW.TelemetryService
             services.AddSignalR(options =>
             {
                 options.MaximumReceiveMessageSize = null;
-            })
-            /*.AddMessagePackProtocol(options =>
-            {
-                options.FormatterResolvers = new List<MessagePack.IFormatterResolver>()
-                 {
-                     MessagePack.Resolvers.ContractlessStandardResolver.Instance,
-                     MessagePack.Resolvers.StandardResolver.Instance
-                 };
-            })*/;
+            });
 
-            services.AddSingleton<ITelemetryWebHubClient>(s => new TelemetryWebHubClient(this.Configuration.GetValue<Uri>("Telemetry:Url")));
+            services.AddSingleton<ITelemetryWebHubClient>(
+                s => new TelemetryWebHubClient(
+                    this.Configuration.GetValue<Uri>("Telemetry:Url"),
+                    s.GetRequiredService<IServiceScopeFactory>()));
 
-            services.AddTransient<IMachineProvider, MachineProvider>();
+            services.AddMemoryCache();
 
-            services.AddTransient<Realm>(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString("Database"))));
+            services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
+            services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
+
+            services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
         }
 
         #endregion

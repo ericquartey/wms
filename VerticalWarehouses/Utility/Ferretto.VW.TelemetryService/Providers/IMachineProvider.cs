@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.TelemetryService.Models;
+using Ferretto.ServiceDesk.Telemetry;
 
-namespace Ferretto.VW.TelemetryService.Provider
+namespace Ferretto.VW.TelemetryService.Providers
 {
     public interface IMachineProvider
     {
         #region Methods
 
-        Task<Machine> GetAsync();
+        IMachine? Get();
 
-        Task SaveAsync(Machine machine);
+        Task SaveAsync(IMachine machine);
 
         #endregion
     }
