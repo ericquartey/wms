@@ -267,6 +267,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void CheckIntrusion(BayNumber bayNumber, bool enable)
+        {
+            this.PublishCommand(
+                new CheckIntrusionMessageData(enable),
+                "Execute Check Intrusion Command",
+                MessageActor.DeviceManager,
+                MessageType.CheckIntrusion,
+                bayNumber,
+                bayNumber);
+        }
+
         public Bay ClearMission(BayNumber bayNumber)
         {
             lock (this.dataContext)

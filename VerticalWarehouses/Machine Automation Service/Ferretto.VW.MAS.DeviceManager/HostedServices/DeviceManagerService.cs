@@ -236,6 +236,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.InverterProgramming:
                         this.ProcessInvertersProgramming(command, serviceProvider);
                         break;
+
+                    case MessageType.CheckIntrusion:
+                        this.ProcessCheckIntrusion(command);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(
@@ -280,6 +284,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.ResetSecurity:
                             case MessageType.InverterProgramming:
                             case MessageType.InverterPowerEnable:
+                            case MessageType.CheckIntrusion:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();

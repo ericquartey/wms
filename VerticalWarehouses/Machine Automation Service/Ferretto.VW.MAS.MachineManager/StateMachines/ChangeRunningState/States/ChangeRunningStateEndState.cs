@@ -98,6 +98,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     if (this.missionsDataProvider.GetAllExecutingMissions().Any(m => m.TargetBay == commandMessage.RequestingBay && m.Status == MissionStatus.Waiting))
                     {
                         this.baysDataProvider.Light(commandMessage.RequestingBay, true);
+                        this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay);
                     }
                 }
                 else

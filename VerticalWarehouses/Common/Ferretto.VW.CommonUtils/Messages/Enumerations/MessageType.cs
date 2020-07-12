@@ -123,6 +123,11 @@
         /// <summary>
         /// Low level driver generates this message to have a convenient slow clock for cleanup activities
         /// </summary>
-        TimePeriodElapsed
+        TimePeriodElapsed,
+
+        /// <summary>
+        /// use light curtain to check intrusion
+        /// </summary>
+        CheckIntrusion,
     }
 }

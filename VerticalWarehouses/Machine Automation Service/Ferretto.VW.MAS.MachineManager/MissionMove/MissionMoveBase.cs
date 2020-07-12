@@ -267,7 +267,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-
                             if (this.Mission.MissionType == MissionType.OUT
                             || this.Mission.MissionType == MissionType.WMS
                             || this.Mission.MissionType == MissionType.FullTestOUT
@@ -280,6 +279,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (!this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                    this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                                 }
                                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
@@ -318,6 +318,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                 return true;
             }
             return false;

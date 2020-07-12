@@ -15,6 +15,7 @@ using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -85,6 +86,40 @@ namespace Ferretto.VW.MAS.DeviceManager
                     message.RequestingBay,
                     MessageStatus.OperationEnd);
                 this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            }
+        }
+
+        private void ProcessCheckIntrusion(CommandMessage receivedMessage)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (receivedMessage.Data is CheckIntrusionMessageData data)
+            {
+                var isActive = this.currentStateMachines.Any(c => c.BayNumber == receivedMessage.TargetBay && c is CheckIntrusionStateMachine);
+                if (data.Enable
+                    && !isActive
+                    )
+                {
+                    var currentStateMachine = new CheckIntrusionStateMachine(
+                        receivedMessage,
+                        this.EventAggregator,
+                        this.Logger,
+                        this.ServiceScopeFactory);
+
+                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                    this.currentStateMachines.Add(currentStateMachine);
+
+                    this.StartStateMachine(currentStateMachine);
+                }
+                else if (!data.Enable
+                    && isActive
+                    )
+                {
+                    var currentStateMachine = this.currentStateMachines.FirstOrDefault(c => c.BayNumber == receivedMessage.TargetBay && c is CheckIntrusionStateMachine);
+
+                    this.Logger.LogTrace($"2:Stop FSM {currentStateMachine?.GetType().Name}");
+                    currentStateMachine?.Stop(StopRequestReason.NoReason);
+                }
             }
         }
 

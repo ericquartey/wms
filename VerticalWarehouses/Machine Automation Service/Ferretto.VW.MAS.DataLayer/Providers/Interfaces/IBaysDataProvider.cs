@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
 
+        void CheckIntrusion(BayNumber bayNumber, bool enable);
+
         Bay ClearMission(BayNumber bayNumber);
 
         double ConvertProfileToHeight(ushort profile, int positionId);

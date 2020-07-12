@@ -187,6 +187,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                        this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false);
                     }
 
                     if (this.Mission.RestoreConditions)

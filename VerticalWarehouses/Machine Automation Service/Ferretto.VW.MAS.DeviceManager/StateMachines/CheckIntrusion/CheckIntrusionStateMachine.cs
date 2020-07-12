@@ -2,8 +2,8 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DeviceManager.CheckSecurity.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.CheckSecurity.Models;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion.Models;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -11,19 +11,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity
+namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 {
-    internal class CheckSecurityStateMachine : StateMachineBase
+    internal class CheckIntrusionStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly ICheckSecurityMachineData machineData;
+        private readonly ICheckIntrusionMachineData machineData;
 
         #endregion
 
         #region Constructors
 
-        public CheckSecurityStateMachine(
+        public CheckIntrusionStateMachine(
             CommandMessage receivedMessage,
             IEventAggregator eventAggregator,
             ILogger logger,
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity
             var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-            this.machineData = new CheckSecurityMachineData(
+            this.machineData = new CheckIntrusionMachineData(
                 receivedMessage.RequestingBay,
                 receivedMessage.TargetBay,
                 machineResourcesProvider,
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity
         {
             lock (this.CurrentState)
             {
-                var stateData = new CheckSecurityStateData(this, this.machineData);
+                var stateData = new CheckIntrusionStateData(this, this.machineData);
                 var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
                 if ((bay.Shutter != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
@@ -82,13 +82,13 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity
                 {
                     // shutter is present
                     // or load unit is not in bay
-                    this.Logger.LogDebug($"Bay {this.machineData.TargetBay} do not need to check light curtain as security");
-                    this.ChangeState(new CheckSecurityEndState(stateData, this.Logger));
+                    this.Logger.LogDebug($"Bay {this.machineData.TargetBay} do not need to check light curtain for instrusion");
+                    this.ChangeState(new CheckIntrusionEndState(stateData, this.Logger));
                 }
                 else
                 {
                     // no shutter and load unit in bay: we can check security
-                    this.ChangeState(new CheckSecurityStartState(stateData, this.Logger));
+                    this.ChangeState(new CheckIntrusionStartState(stateData, this.Logger));
                 }
             }
         }
