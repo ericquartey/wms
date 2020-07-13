@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private const double policyVerticalTolerance = 0.01;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -114,12 +116,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ProfileHeightCheckViewModel(
+            IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineProfileProcedureWebService machineProfileProcedureWeb)
             : base(PresentationMode.Installer)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
@@ -864,10 +868,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false);
 
             this.profileCalibrationToken = this.profileCalibrationToken
-                ?? this.EventAggregator
+                ?? this.eventAggregator
                     .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
                     .Subscribe(
-                        (m) => this.OnProfileCalibrationMessageAsync(m),
+                    this.OnProfileCalibrationMessageAsync,
                         ThreadOption.UIThread,
                         false);
 

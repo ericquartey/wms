@@ -8,6 +8,8 @@
 
         double? ProfileStartDistance { get; }
 
+        double? Measured { get; }
+
         #endregion
     }
 }
