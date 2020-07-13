@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                 {
                     // shutter is present
                     // or load unit is not in bay
-                    this.Logger.LogDebug($"Bay {this.machineData.TargetBay} do not need to check light curtain for instrusion");
+                    this.Logger.LogDebug($"Bay {this.machineData.TargetBay} do not need to check light curtain for intrusion");
                     this.ChangeState(new CheckIntrusionEndState(stateData, this.Logger));
                 }
                 else

@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
 
-        void CheckIntrusion(BayNumber bayNumber, bool enable);
+        bool CheckIntrusion(BayNumber bayNumber, bool enable);
 
         Bay ClearMission(BayNumber bayNumber);
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <returns>The bay identified by the given identifier, or null if no bay with the given identifier exists.</returns>
         Bay GetByIdOrDefault(int id);
 
-        BayNumber GetByInverterIndex(InverterIndex inverterIndex);
+        BayNumber GetByInverterIndex(InverterIndex inverterIndex, FieldMessageType messageType = FieldMessageType.NoType);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
 

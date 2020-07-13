@@ -150,7 +150,7 @@ namespace Ferretto.VW.Simulator.Services
                 this.MaxProfileHeight.Add(LoadingUnitLocation.NoLocation, 10000);
                 foreach (var bayPosition in this.machine.Bays.Where(b => b.Positions != null).SelectMany(p => p.Positions))
                 {
-                    this.MinProfileHeight.Add(bayPosition.Location, (int)Math.Round((this.machine.LoadUnitMinHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
+                    this.MinProfileHeight.Add(bayPosition.Location, (int)Math.Round((this.machine.LoadUnitMinHeight - bayPosition.ProfileOffset + 212.5) / 0.0938));
                     var maxHeight = (bayPosition.MaxDoubleHeight > 0) ? bayPosition.MaxDoubleHeight : bayPosition.MaxSingleHeight;
                     if (maxHeight > this.machine.LoadUnitMaxHeight)
                     {
@@ -160,7 +160,7 @@ namespace Ferretto.VW.Simulator.Services
                     // simulate height errors
                     //maxHeight *= 1.1;
 
-                    this.MaxProfileHeight.Add(bayPosition.Location, (int)Math.Round((maxHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
+                    this.MaxProfileHeight.Add(bayPosition.Location, (int)Math.Round((maxHeight - bayPosition.ProfileOffset + 212.5) / 0.0938));
                     if (this.MaxProfileHeight[bayPosition.Location] > this.MaxProfileHeight[LoadingUnitLocation.NoLocation])
                     {
                         // warning: configuration error!!!
@@ -760,6 +760,12 @@ namespace Ferretto.VW.Simulator.Services
                     // simulate measure profile height
                     this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
+
+                    //
+                    // TEST: check intrusion
+                    //var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)4000));
+                    //
+
                     result = client.Client.Send(profileMessage);
                     break;
 

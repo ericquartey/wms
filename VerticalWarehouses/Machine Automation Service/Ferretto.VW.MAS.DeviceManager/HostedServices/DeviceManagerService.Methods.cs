@@ -120,6 +120,20 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogTrace($"2:Stop FSM {currentStateMachine?.GetType().Name}");
                     currentStateMachine?.Stop(StopRequestReason.NoReason);
                 }
+                else
+                {
+                    var msg = new NotificationMessage(
+                        null,
+                        $"Check intrusion completed for bay {receivedMessage.TargetBay}",
+                        MessageActor.Any,
+                        MessageActor.DeviceManager,
+                        MessageType.CheckIntrusion,
+                        receivedMessage.RequestingBay,
+                        receivedMessage.TargetBay,
+                        MessageStatus.OperationEnd);
+
+                    this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                }
             }
         }
 

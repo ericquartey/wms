@@ -180,6 +180,9 @@
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Check Intrusion by light curtain</value>
+  </data>
   <data name="Bay_IsDouble" xml:space="preserve">
     <value>Double</value>
   </data>

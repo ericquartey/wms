@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            var disableIntrusion = false;
+
             if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
             {
                 var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
@@ -179,7 +181,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByBayPositionId(sourceBayPositionId.Value);
                     var bayPosition = bay.Positions.First(p => p.Id == sourceBayPositionId.Value);
 
-                    // TODO - SYNCRHONYSE light and switch axys
                     if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
                         && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
                         && (bayPosition.IsUpper
@@ -187,7 +188,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.BaysDataProvider.Light(this.Mission.TargetBay, false);
-                        this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false);
+                        if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
+                        {
+                            this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");
+                            disableIntrusion = true;
+                        }
                     }
 
                     if (this.Mission.RestoreConditions)
@@ -210,7 +215,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
                     }
                 }
-                else
+                else if (!disableIntrusion)
                 {
                     this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
@@ -293,6 +298,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.CloseShutterBayNumber = BayNumber.None;
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            else if (notification.Type == MessageType.CheckIntrusion)
+                            {
+                                var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var sourceBayPositionId, out var sourceCellId);
+
+                                this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                                this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
+                                    this.Mission.CloseShutterBayNumber,
+                                    this.Mission.CloseShutterPosition,
+                                    measure: false,
+                                    MessageActor.MachineManager,
+                                    this.Mission.TargetBay,
+                                    this.Mission.RestoreConditions,
+                                    sourceBayPositionId,
+                                    sourceCellId);
                             }
                             this.MissionsDataProvider.Update(this.Mission);
                         }

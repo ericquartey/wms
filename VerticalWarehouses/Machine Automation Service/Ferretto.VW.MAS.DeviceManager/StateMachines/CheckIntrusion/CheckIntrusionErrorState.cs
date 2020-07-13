@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
             var notificationMessage = new NotificationMessage(
                 null,
-                $"Check intrusion failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",
+                $"Check intrusion failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData?.FieldMessage?.Description}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,
                 MessageType.CheckIntrusion,

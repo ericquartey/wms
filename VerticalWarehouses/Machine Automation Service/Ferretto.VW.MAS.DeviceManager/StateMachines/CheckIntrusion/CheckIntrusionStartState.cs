@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly Dictionary<InverterIndex, MessageStatus> inverterResponses = new Dictionary<InverterIndex, MessageStatus>();
-
         private readonly ICheckIntrusionMachineData machineData;
 
         private readonly double minHeight = 25.0;
@@ -56,6 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
             this.machineData = stateData.MachineData as ICheckIntrusionMachineData ?? throw new ArgumentNullException(nameof(stateData));
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
 
         #endregion
@@ -90,6 +89,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                                 )
                             {
                                 this.Logger.LogError($"Intrusion detected in Bay {this.machineData.RequestingBay} by height {profileHeight}!");
+                                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SecurityBarrierWasTriggered, this.machineData.RequestingBay);
                                 // stop timers
                                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                                 this.ParentStateMachine.ChangeState(new CheckIntrusionErrorState(this.stateData, this.Logger));
@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                         else if (message.Source == FieldMessageActor.IoDriver)
                         {
                             // we enable the timer to request the height only after IoDriver has set the reading enable signal
-                            this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, Timeout.Infinite);
+                            this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
                         }
                         break;
 

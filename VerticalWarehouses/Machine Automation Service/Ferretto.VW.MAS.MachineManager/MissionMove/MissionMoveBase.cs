@@ -603,6 +603,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Homing;
                     update = true;
                     break;
+
+                case MessageType.CheckIntrusion:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.CheckIntrusion;
+                    update = true;
+                    break;
             }
             return update;
         }

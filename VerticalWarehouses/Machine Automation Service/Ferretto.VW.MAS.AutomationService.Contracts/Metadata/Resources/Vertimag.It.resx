@@ -180,6 +180,9 @@
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Attiva</value>
   </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Controllo intrusione con barriera di controllo altezza</value>
+  </data>
   <data name="Bay_IsDouble" xml:space="preserve">
     <value>Doppia</value>
   </data>
