@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (machine.LoadUnitVeryHeavyPercent == 0)
                 {
-                    var cells = this.GetAll(x => x.BlockLevel == BlockLevel.UnderWeight)
+                    var cells = this.GetAll(x => x.BlockLevel == BlockLevel.UnderWeight || x.BlockLevel == BlockLevel.NeedsTest)
                         .ToArray();
 
                     if (cells.Any())
@@ -557,6 +557,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             )
                         {
                             cell.BlockLevel = BlockLevel.NeedsTest;
+                            this.dataContext.Cells.Update(cell);
                             count++;
                         }
                         else
@@ -573,6 +574,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 )
                             {
                                 cell.BlockLevel = BlockLevel.NeedsTest;
+                                this.dataContext.Cells.Update(cell);
                                 count++;
                             }
                         }
