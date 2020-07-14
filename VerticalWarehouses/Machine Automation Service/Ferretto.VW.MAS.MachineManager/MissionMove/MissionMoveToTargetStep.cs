@@ -73,14 +73,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
 
-                if (bay.Shutter == null)
+                if (bay.Shutter == null
+                    || bay.Shutter.Type == ShutterType.NotSpecified
+                    )
                 {
                     this.Mission.CloseShutterBayNumber = BayNumber.None;
                 }
-                else
-                {
-                    this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Number : BayNumber.None;
-                }
+
                 if (this.Mission.CloseShutterBayNumber != BayNumber.None)
                 {
                     this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitSource);
