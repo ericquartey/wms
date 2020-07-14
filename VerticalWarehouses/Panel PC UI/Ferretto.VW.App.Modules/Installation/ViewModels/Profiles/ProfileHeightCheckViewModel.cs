@@ -804,7 +804,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.CurrentStep = ProfileCheckStep.TuningChainSx;
+                    this.CurrentStep = ProfileCheckStep.ShapePositionSx;
                 }
             }
             else
@@ -814,10 +814,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.MeasuredSx = data.Measured;
 
-                this.CurrentStep = ProfileCheckStep.ResultCheck;
-                var bay = this.MachineService.Bay;
-                var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
-                await this.shuttersWebService.MoveToAsync(closePosition);
+                if(this.HasShutter)
+                {
+                    this.CurrentStep = ProfileCheckStep.ResultCheck;
+                    var bay = this.MachineService.Bay;
+                    var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
+                    await this.shuttersWebService.MoveToAsync(closePosition);
+                }
+                else
+                {
+                    this.CurrentStep = ProfileCheckStep.ResultCheck;
+                }
+
+                
             }
         }
 
