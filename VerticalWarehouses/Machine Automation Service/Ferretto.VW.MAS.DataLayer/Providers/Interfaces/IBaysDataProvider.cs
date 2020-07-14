@@ -15,6 +15,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
 
+        /// <summary>
+        /// Sends a CheckIntrusion command to Device Manager
+        /// </summary>
+        /// <param name="bayNumber"></param>
+        /// <param name="enable"></param>
+        /// <returns>true if CheckIntrusion is enabled for this bay number</returns>
         bool CheckIntrusion(BayNumber bayNumber, bool enable);
 
         Bay ClearMission(BayNumber bayNumber);

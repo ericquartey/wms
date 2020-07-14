@@ -267,12 +267,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        /// <summary>
-        /// Sends a CheckIntrusion command to Device Manager
-        /// </summary>
-        /// <param name="bayNumber"></param>
-        /// <param name="enable"></param>
-        /// <returns>true if CheckIntrusion is enabled for this bay number</returns>
         public bool CheckIntrusion(BayNumber bayNumber, bool enable)
         {
             var bay = this.GetByNumber(bayNumber);

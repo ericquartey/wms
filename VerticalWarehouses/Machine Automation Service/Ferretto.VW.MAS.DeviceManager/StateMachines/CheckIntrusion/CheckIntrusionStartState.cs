@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                         if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeightNew(data.Profile, this.bayPositionId);
-                            this.Logger.LogDebug($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
+                            this.Logger.LogTrace($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if ((profileHeight >= this.minHeight - tolerance)
                                 && data.Profile <= 10000
                                 )
@@ -93,6 +93,10 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                                 // stop timers
                                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                                 this.ParentStateMachine.ChangeState(new CheckIntrusionErrorState(this.stateData, this.Logger));
+                            }
+                            else
+                            {
+                                this.profileTimer?.Change(600, 600);
                             }
                         }
                         else if (message.Source == FieldMessageActor.IoDriver)
@@ -194,7 +198,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
         private void RequestMeasureProfile(object state)
         {
-            this.Logger.LogDebug($"Request MeasureProfile");
+            this.Logger.LogTrace($"Request MeasureProfile");
 
             var inverterCommandMessageData = new MeasureProfileFieldMessageData();
             var inverterCommandMessage = new FieldCommandMessage(
@@ -205,9 +209,12 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                 FieldMessageType.MeasureProfile,
                 (byte)this.inverterIndex);
 
-            this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            //this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            // suspend timer at every call
+            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
