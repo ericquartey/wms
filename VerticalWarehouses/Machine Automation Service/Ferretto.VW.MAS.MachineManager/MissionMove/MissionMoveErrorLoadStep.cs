@@ -261,10 +261,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                    positionId = bayPosition.Id;
+
+                    if ((this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator) || this.SensorsProvider.IsDrawerPartiallyOnCradle)
+                        && this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location)
+                        )
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+
                     //// always invert direction and do homing when loading from bay
                     //this.Mission.NeedMovingBackward = true;
                     //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {
                         this.Mission.Direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
@@ -273,8 +284,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
-                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
-                    positionId = bayPosition.Id;
                     if (bay.Carousel != null
                         && !bayPosition.IsUpper
                         )
