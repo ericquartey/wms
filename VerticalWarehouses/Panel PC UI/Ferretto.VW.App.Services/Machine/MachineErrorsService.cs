@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.ServiceDesk.Telemetry.Models;
 using Ferretto.VW.Common.Hubs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
@@ -36,6 +38,10 @@ namespace Ferretto.VW.App.Services
 
         private readonly SubscriptionToken sensorsToken;
 
+        private readonly ISessionService sessionService;
+
+        private readonly ITelemetryHubClient telemetryHubClient;
+
         private MachineError activeError;
 
         private bool autoNavigateOnError;
@@ -49,16 +55,19 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             INavigationService navigationService,
             IMachineService machineService,
+            ISessionService sessionService,
             IOperatorHubClient operatorHubClient,
+            ITelemetryHubClient telemetryHubClient,
             ISensorsService sensorsService)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+            this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
-
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.sensorsToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                     .Subscribe(
@@ -157,6 +166,21 @@ namespace Ferretto.VW.App.Services
                 if (this.ActiveError != prevError)
                 {
                     await this.NavigateToErrorPageAsync();
+                    if (!(this.ActiveError is null))
+                    {
+                        var errorLog = new ErrorLog
+                        {
+                            BayNumber = (int)this.activeError.BayNumber,
+                            AdditionalText = this.activeError.Description,
+                            Code = this.activeError.Code,
+                            DetailCode = this.activeError.DetailCode,
+                            // InverterIndex = this.activeError.InverterIndex,
+                            OccurrenceDate = this.activeError.OccurrenceDate,
+                            ResolutionDate = this.activeError.ResolutionDate.Value,
+                        };
+
+                        await this.telemetryHubClient.SendErrorLog(this.sessionService.MachineIdentity.SerialNumber, errorLog);
+                    }
                 }
             }
             catch (Exception)

@@ -259,6 +259,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.CheckMissionShowError())
             {
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else if (this.Mission.MissionType == MissionType.OUT
@@ -382,6 +383,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+            this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             // set gross weight to the maximum that do not show this error again
             this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare);

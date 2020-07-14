@@ -105,6 +105,16 @@ namespace Ferretto.VW.Common.Hubs
             await this.connection.SendAsync(methodName, arg1, arg2);
         }
 
+        public async Task SendAsync(string methodName, object arg1, object arg2, object arg3)
+        {
+            await this.connection.SendAsync(methodName, arg1, arg2, arg3);
+        }
+
+        public async Task SendAsync(string methodName, object arg1, object arg2, object arg3, object arg4)
+        {
+            await this.connection.SendAsync(methodName, arg1, arg2, arg3, arg4);
+        }
+
         protected abstract void RegisterEvents(HubConnection connection);
 
         private void Initialize(bool useMessagePackProtocol)

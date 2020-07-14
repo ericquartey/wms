@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatic restore of the movement is not allowed.
+        ///   Looks up a localized string similar to Check presence sensors of elevator and bay.
         /// </summary>
         public static string AutomaticRestoreNotAllowed {
             get {

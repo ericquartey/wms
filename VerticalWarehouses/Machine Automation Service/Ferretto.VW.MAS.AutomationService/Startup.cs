@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMissionManager();
 
             services.AddHostedService<NotificationRelayService>();
-            services.AddHostedService<NotificationTelemetryService>();
+            //services.AddHostedService<NotificationTelemetryService>();
 
             services.AddScoped<IInverterProvider, InverterProvider>();
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();

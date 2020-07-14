@@ -25,5 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.Common.Hubs\Ferretto.VW.Common.Hubs.csproj" />
+    <ProjectReference Include="..\..\Common\ServiceDesk\Ferretto.ServiceDesk.Telemetry\Ferretto.ServiceDesk.Telemetry.csproj" />
   </ItemGroup>
 </Project>

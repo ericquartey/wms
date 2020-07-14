@@ -81,6 +81,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(7)]
             public double LoadUnitTare { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitVeryHeavyPercent))]
+            [Id(15)]
+            public double LoadUnitVeryHeavyPercent { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
             [Unit("kg")]
             [Id(8)]

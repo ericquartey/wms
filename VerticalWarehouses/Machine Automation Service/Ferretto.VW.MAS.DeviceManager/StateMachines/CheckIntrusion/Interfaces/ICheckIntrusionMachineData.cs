@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
-namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity.Interfaces
+namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion.Interfaces
 {
-    internal interface ICheckSecurityMachineData : IMachineData
+    internal interface ICheckIntrusionMachineData : IMachineData
     {
         #region Properties
 
