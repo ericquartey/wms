@@ -193,14 +193,29 @@ namespace Ferretto.VW.App.Modules.Layout
 
             try
             {
-                await this.telemetryHubClient.SendErrorLogAsync(
-                new ServiceDesk.Telemetry.ErrorLog
+                //await this.telemetryHubClient.SendErrorLogAsync(
+                //new ServiceDesk.Telemetry.ErrorLog
+                //{
+                //    BayNumber = (int)this.bayNumber,
+                //    AdditionalText = "Test",
+                //    Code = 14,
+                //    OccurrenceDate = DateTimeOffset.Now
+                //});
+
+                await this.telemetryHubClient.SendMissionLogAsync(
+                new ServiceDesk.Telemetry.MissionLog
                 {
-                    BayNumber = (int)this.bayNumber,
-                    AdditionalText = "Test",
-                    Code = 14,
-                    OccurrenceDate = DateTimeOffset.Now
+                     Bay = (int)this.bayNumber,
+                     CellId = 1,
+                     Destination = "Test",
+                     Direction = 1,
+                     MissionType = "Test mission",
+                     Priority = 1,
+                     Stage = "",
+                     Status = "Moving 2",
+                     StopReason = 1,
                 });
+
             }
             catch (Exception ex)
             {
