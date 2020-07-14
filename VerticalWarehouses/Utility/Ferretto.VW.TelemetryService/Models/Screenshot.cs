@@ -4,7 +4,7 @@ using Realms;
 
 namespace Ferretto.VW.TelemetryService.Models
 {
-    public class Screenshot : RealmObject, IScreenShot
+    public class ScreenShot : RealmObject, IScreenShot
     {
         #region Properties
 
@@ -14,6 +14,10 @@ namespace Ferretto.VW.TelemetryService.Models
         public int Id { get; set; }
 
         public byte[]? Image { get; set; }
+
+        public Machine? Machine { get; set; }
+
+        public int MachineId { get; set; }
 
         public DateTimeOffset TimeStamp { get; set; }
 
