@@ -114,7 +114,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
-                                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                                    || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
+                                    )
                                 {
                                     this.RestoreOriginalStep();
                                 }
@@ -265,6 +267,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
                     positionId = bayPosition.Id;
 
+                    // TODO: extend this sensor check also to external bay
                     if ((this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator) || this.SensorsProvider.IsDrawerPartiallyOnCradle)
                         && this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location)
                         )
