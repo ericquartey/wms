@@ -4,11 +4,11 @@
     {
         #region Properties
 
-        double? ProfileCalibrateDistance { get; }
+        double Measured { get; }
 
-        double? ProfileStartDistance { get; }
+        double ProfileCalibrateDistance { get; }
 
-        double? Measured { get; }
+        double ProfileStartDistance { get; }
 
         #endregion
     }
