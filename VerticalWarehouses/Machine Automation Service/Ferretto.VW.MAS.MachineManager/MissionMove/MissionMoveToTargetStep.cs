@@ -79,6 +79,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Mission.CloseShutterBayNumber = BayNumber.None;
                 }
+                else
+                {
+                    this.Mission.CloseShutterBayNumber = bay.Number;
+                }
 
                 if (this.Mission.CloseShutterBayNumber != BayNumber.None)
                 {
