@@ -818,6 +818,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete mission.
+        /// </summary>
+        public static string DeleteMission {
+            get {
+                return ResourceManager.GetString("DeleteMission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -2506,6 +2515,24 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingUnitWidth {
             get {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoadUnit destination.
+        /// </summary>
+        public static string LoadUnitDestination {
+            get {
+                return ResourceManager.GetString("LoadUnitDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoadUnit source.
+        /// </summary>
+        public static string LoadUnitSource {
+            get {
+                return ResourceManager.GetString("LoadUnitSource", resourceCulture);
             }
         }
         
@@ -4477,6 +4504,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Weight {
             get {
                 return ResourceManager.GetString("Weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id Wms.
+        /// </summary>
+        public static string WmsId {
+            get {
+                return ResourceManager.GetString("WmsId", resourceCulture);
             }
         }
         

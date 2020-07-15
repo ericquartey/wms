@@ -1617,4 +1617,16 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="UpdatedValue" xml:space="preserve">
     <value>Valore aggiornato</value>
   </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Cancella missione</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Destinazione cassetto</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Origine cassetto</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
 </root>
