@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
-        #region Fields
+        //private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
 
-        private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
+        #region Fields
 
         private const int ProfileStep = 25;
 
@@ -341,7 +341,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
                 //this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}");
-                return heightClass + offset + AdditionalStorageSpace;
+                return heightClass + offset;
             }
         }
 
