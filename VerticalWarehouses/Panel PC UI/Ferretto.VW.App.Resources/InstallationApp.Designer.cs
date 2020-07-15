@@ -4426,6 +4426,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logs  from telemetry service loaded.
+        /// </summary>
+        public static string LogsFromTelemetryServiceCompleted {
+            get {
+                return ResourceManager.GetString("LogsFromTelemetryServiceCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lower Position.
         /// </summary>
         public static string LowerBayPosition {

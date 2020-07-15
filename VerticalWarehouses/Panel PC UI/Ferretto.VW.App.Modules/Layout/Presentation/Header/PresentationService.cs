@@ -273,7 +273,7 @@ namespace Ferretto.VW.App.Modules.Layout
             this.logger.Debug($"Loading logs from telemetryservice'{baseUri}' ...");
             try
             {
-                this.ShowNotification(InstallationApp.LoadingLogsFromTelemetryService, NotificationSeverity.Info);
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.LoadingLogsFromTelemetryService"), NotificationSeverity.Info);
 
                 var machineLogs = new MachineLogs();
 
@@ -299,6 +299,8 @@ namespace Ferretto.VW.App.Modules.Layout
                     machineLogs.ErrorLogs = errorLogs;
                     machineLogs.MissionLogs = missions;
                     machineLogs.ScreenShots = screenshots;
+
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.LogsFromTelemetryServiceCompleted"), NotificationSeverity.Info);
                 };
 
                 this.logger.Debug($"Logs loaded.");
@@ -365,7 +367,7 @@ namespace Ferretto.VW.App.Modules.Layout
                             }
                         }
                     }
-                    this.ShowNotification(InstallationApp.SaveSuccessful);
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"));
                 }
             }
             catch (Exception ex)

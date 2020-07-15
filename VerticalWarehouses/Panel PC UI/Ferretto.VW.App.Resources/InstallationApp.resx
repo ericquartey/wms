@@ -2877,4 +2877,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
     <value>Loading logs from telemetry service...</value>
   </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Logs  from telemetry service loaded</value>
+  </data>
 </root>
