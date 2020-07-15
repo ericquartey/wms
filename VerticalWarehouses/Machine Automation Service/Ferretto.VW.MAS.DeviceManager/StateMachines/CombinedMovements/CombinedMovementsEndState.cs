@@ -106,43 +106,61 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
         {
             this.Logger.LogDebug($"1:Start {this.GetType().Name} StopRequestReason {this.stateData.StopRequestReason}");
 
-            if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
+            switch (this.stateData.StopRequestReason)
             {
-                this.Logger.LogDebug("Stop Elevator Command");
+                case StopRequestReason.NoReason:
+                    {
+                        // Publish a notification message about the completion of operation
+                        var notificationMessage = new NotificationMessage(
+                             this.machineData.MessageData,
+                             "Combined Movements Test Completed",
+                             MessageActor.DeviceManager,
+                             MessageActor.DeviceManager,
+                             MessageType.CombinedMovements,
+                             this.machineData.RequestingBay,
+                             this.machineData.TargetBay,
+                             StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-                // Send a stop command message to Positioning state machine
-                var messageData = new StopMessageData(StopRequestReason.Stop);
-                var message = new CommandMessage(
-                    messageData,
-                    "Stop Elevator Command",
-                    MessageActor.DeviceManager,
-                    MessageActor.DeviceManager,
-                    MessageType.Stop,
-                    this.machineData.RequestingBay,
-                    BayNumber.ElevatorBay);
-                this.ParentStateMachine.PublishCommandMessage(message);
-            }
-            else
-            {
-                // Publish a notification message about the completion of operation
-                var notificationMessage = new NotificationMessage(
-                     this.machineData.MessageData,
-                     "Combined Movements Test Completed",
-                     MessageActor.DeviceManager,
-                     MessageActor.DeviceManager,
-                     MessageType.CombinedMovements,
-                     this.machineData.RequestingBay,
-                     this.machineData.TargetBay,
-                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        this.Logger.LogDebug("FSM Combined Movements End");
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                this.Logger.LogDebug("FSM Combined Movements End");
+                        break;
+                    }
+
+                case StopRequestReason.RunningStateChanged:
+                    {
+                        this.Logger.LogDebug($"No one Stop Command is sent to the {MessageActor.DeviceManager}");
+
+                        break;
+                    }
+
+                case StopRequestReason.Stop:
+                case StopRequestReason.Abort:
+                case StopRequestReason.Error:
+                case StopRequestReason.FaultStateChanged:
+                    {
+                        this.Logger.LogDebug($"Send Stop Elevator Command from {this.ParentStateMachine.ToString()} to {MessageActor.DeviceManager}");
+
+                        // Send a stop command message to Positioning state machine(s)
+                        var messageData = new StopMessageData(StopRequestReason.Stop);
+                        var message = new CommandMessage(
+                            messageData,
+                            "Stop Elevator Command",
+                            MessageActor.DeviceManager,
+                            MessageActor.DeviceManager,
+                            MessageType.Stop,
+                            this.machineData.RequestingBay,
+                            BayNumber.ElevatorBay);
+                        this.ParentStateMachine.PublishCommandMessage(message);
+
+                        break;
+                    }
             }
         }
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("Retry Stop Command");
+            this.Logger.LogDebug($"1: Retry Stop Command. Reason:{reason}");
             this.Start();
         }
 

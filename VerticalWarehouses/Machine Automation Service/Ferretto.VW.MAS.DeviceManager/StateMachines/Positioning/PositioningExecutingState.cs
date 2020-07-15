@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     switch (message.Type)
                     {
                         case FieldMessageType.Positioning:
-                            this.Logger.LogDebug($"Trace Notification Message {message.ToString()}");
+                            this.Logger.LogDebug($"Trace Notification Message {message.ToString()} Axis:{this.machineData.MessageData.AxisMovement}");
                             this.ProcessEndPositioning();
                             break;
 
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement}");
             FieldCommandMessage commandMessage = null;
             var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug($"1:Stop Method Start. Reason {reason}");
+            this.Logger.LogDebug($"1:Stop Method: Start. Reason {reason} Axis:{this.machineData.MessageData.AxisMovement}");
 
             // stop timers
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
@@ -1156,7 +1156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 (byte)this.machineData.CurrentInverterIndex);
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement}");
         }
 
         #endregion

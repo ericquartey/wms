@@ -111,23 +111,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
-                            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+
+                            // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
+                            if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
+                                (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
                             {
-                                this.Mission.NeedMovingBackward = false;
-                                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                                 {
-                                    this.RestoreOriginalStep();
+                                    this.Mission.NeedMovingBackward = false;
+                                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                                    {
+                                        this.RestoreOriginalStep();
+                                    }
+                                    else
+                                    {
+                                        this.CloseShutter();
+                                    }
                                 }
                                 else
                                 {
-                                    this.CloseShutter();
+                                    this.Mission.ErrorMovements = MissionErrorMovements.None;
+                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                                    this.LoadUnitEnd(restore: true);
                                 }
-                            }
-                            else
-                            {
-                                this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                this.LoadUnitEnd(restore: true);
                             }
                         }
                         break;

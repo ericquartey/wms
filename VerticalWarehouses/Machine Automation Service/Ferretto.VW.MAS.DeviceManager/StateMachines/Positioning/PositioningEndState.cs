@@ -164,12 +164,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.machineData.MessageData.AxisMovement}");
         }
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} StopRequestReason {this.stateData.StopRequestReason}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement} StopRequestReason {this.stateData.StopRequestReason}");
             if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
                 || this.machineData.MessageData.AxisMovement is Axis.BayChain
                 )
@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                this.Logger.LogDebug("FSM Positioning End");
+                this.Logger.LogDebug($"FSM Positioning End for axis:{this.machineData.MessageData.AxisMovement}");
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
@@ -260,7 +260,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("Retry Stop Command");
+            this.Logger.LogDebug($"Retry Stop Command. Reason:{reason} Axis:{this.machineData.MessageData.AxisMovement}");
             this.Start();
         }
 
@@ -308,7 +308,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void RequestMeasureProfile()
         {
-            this.Logger.LogDebug($"Request MeasureProfile ");
+            this.Logger.LogDebug($"Request MeasureProfile. Axis:{this.machineData.MessageData.AxisMovement}");
             var inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
 
             var inverterCommandMessageData = new MeasureProfileFieldMessageData();

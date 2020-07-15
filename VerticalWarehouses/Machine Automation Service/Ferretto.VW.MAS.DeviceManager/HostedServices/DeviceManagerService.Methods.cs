@@ -631,6 +631,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 {
                     if (message.Data is IStopMessageData data)
                     {
+                        this.Logger.LogDebug($"Stop for {currentStateMachine.ToString()} with reason:{data.StopReason}");
                         currentStateMachine.Stop(data.StopReason);
                     }
                     else

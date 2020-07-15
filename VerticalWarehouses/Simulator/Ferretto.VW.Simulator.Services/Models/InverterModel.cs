@@ -1188,19 +1188,35 @@ namespace Ferretto.VW.Simulator.Services.Models
                 target += this.StartPosition[this.currentAxis];
             }
             double increment = 1;
-            if (this.TargetSpeed[this.currentAxis] >= LOWER_SPEED_Y_AXIS &&
-                Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10)
-            {
-                increment = (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10;
-            }
-            else if (Math.Abs(target - this.AxisPosition) < 1)
-            {
-                increment = 0.1;
-            }
+            //if (this.TargetSpeed[this.currentAxis] >= LOWER_SPEED_Y_AXIS &&
+            //    Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10)
+            //{
+            //    increment = (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10;
+            //}
+            //else if (Math.Abs(target - this.AxisPosition) < 1)
+            //{
+            //    increment = 0.1;
+            //}
+
+            increment = (50.0d / 1000.0d) * (this.TargetSpeed[this.currentAxis] / this.ImpulsesEncoderPerRound); // space [mm]
+            //if (Math.Abs(target - this.AxisPosition) < 20)
+            //{
+            //    increment = 0.5;
+            //}
+            //if (Math.Abs(target - this.AxisPosition) < 1)
+            //{
+            //    increment = 0.1;
+            //}
 
             if (target > this.AxisPosition)
             {
                 this.AxisPosition += increment;
+
+                if (this.AxisPosition >= target)
+                {
+                    this.AxisPosition = target;
+                }
+
                 if (this.OperationMode == InverterOperationMode.TableTravel)
                 {
                     if (!this.IsStartedOnBoard)
@@ -1309,6 +1325,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             else
             {
                 this.AxisPosition -= increment;
+
+                if (this.AxisPosition <= target)
+                {
+                    this.AxisPosition = target;
+                }
+
                 if (this.OperationMode == InverterOperationMode.TableTravel)
                 {
                     if (!this.IsStartedOnBoard)

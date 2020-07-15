@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,15 +13,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 {
-    internal class CombinedMovementsStartState : StateBase
+    internal class CombinedMovementsStartState : StateBase, IDisposable
     {
         #region Fields
+
+        private const int TIMER_ELAPSED = 250;
 
         private readonly ICombinedMovementsMachineData machineData;
 
         private readonly IServiceScope scope;
 
         private readonly ICombinedMovementsStateData stateData;
+
+        private Timer delayTimer;
+
+        private bool isDisposed;
 
         private bool isHorizontalPositioningDone;
 
@@ -41,6 +48,11 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -66,10 +78,12 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                             if (data.AxisMovement == Axis.Vertical)
                             {
                                 this.isVerticalPositioningDone = true;
+                                this.machineData.OnVerticalPositioningStopped = true;
                             }
                             if (data.AxisMovement == Axis.Horizontal)
                             {
                                 this.isHorizontalPositioningDone = true;
+                                this.machineData.OnHorizontalPositioningStopped = true;
                             }
 
                             if (this.isVerticalPositioningDone &&
@@ -112,12 +126,57 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                 this.machineData.RequestingBay,
                 BayNumber.ElevatorBay);
 
+            this.Logger.LogDebug($"2:Start Horizontal movement");
             this.ParentStateMachine.PublishCommandMessage(message);
 
+            //var verticalMessageData = this.machineData.MessageData.VerticalPositioningMessageData;
+
+            //// Send message to move the vertical axis
+            //message = new CommandMessage(
+            //    verticalMessageData,
+            //    $"Execute {Axis.Vertical} Positioning Command",
+            //    MessageActor.DeviceManager,
+            //    MessageActor.DeviceManager,
+            //    MessageType.Positioning,
+            //    this.machineData.RequestingBay,
+            //    BayNumber.ElevatorBay);
+
+            //this.ParentStateMachine.PublishCommandMessage(message);
+
+            this.delayTimer = null; // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
+            this.DelayElapsed(null);  // uncomment this line to get an instantaneous call
+        }
+
+        public override void Stop(StopRequestReason reason)
+        {
+            this.Logger.LogDebug($"1:Stop Method: Start Reason:{reason}");
+
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new CombinedMovementsEndState(this.stateData, this.Logger));
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.delayTimer?.Dispose();
+                this.scope.Dispose();
+            }
+
+            this.isDisposed = true;
+        }
+
+        private void DelayElapsed(object state)
+        {
             var verticalMessageData = this.machineData.MessageData.VerticalPositioningMessageData;
 
             // Send message to move the vertical axis
-            message = new CommandMessage(
+            var message = new CommandMessage(
                 verticalMessageData,
                 $"Execute {Axis.Vertical} Positioning Command",
                 MessageActor.DeviceManager,
@@ -126,15 +185,8 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                 this.machineData.RequestingBay,
                 BayNumber.ElevatorBay);
 
+            this.Logger.LogDebug($"3:Start Vertical movement");
             this.ParentStateMachine.PublishCommandMessage(message);
-        }
-
-        public override void Stop(StopRequestReason reason)
-        {
-            this.Logger.LogDebug("1:Stop Method Start");
-
-            this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new CombinedMovementsEndState(this.stateData, this.Logger));
         }
 
         #endregion

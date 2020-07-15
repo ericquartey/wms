@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.AxisMovement}");
 
             // We make a check about the inverter index on message and inverter index of machine data
             if (message.Source == Utils.Enumerations.FieldMessageActor.InverterDriver &&
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.AxisMovement}");
 
             lock (this.CurrentState)
             {
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace($"1:Stop Method: Start. Reason:{reason} Axis:{this.AxisMovement}");
 
             lock (this.CurrentState)
             {

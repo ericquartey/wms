@@ -68,8 +68,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
 
-            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
-            var profileSteps = axis.Profiles
+            var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileSteps = horizontalAxis.Profiles
                 .Single(p => p.Name == profileType)
                 .Steps
                 .OrderBy(s => s.Number);
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             foreach (var profileStep in profileSteps)
             {
-                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
+                profileStep.ScaleMovementsByWeight(scalingFactor, horizontalAxis);
             }
 
             // if direction is Forwards then height increments, otherwise it decrements
@@ -117,10 +117,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var deceleration = profileSteps.Select(s => s.Acceleration).ToArray();
 
             // we use compensation for small errors only (large errors come from new database)
-            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
-            if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
+            var compensation = this.HorizontalPosition - horizontalAxis.LastIdealPosition;
+            if (Math.Abs(compensation) > Math.Abs(horizontalAxis.ChainOffset))
             {
-                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {axis.ChainOffset}");
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.00} > offset {horizontalAxis.ChainOffset}");
                 compensation = 0;
             }
             var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
@@ -215,11 +215,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 TargetBayPositionId = targetBayPositionId,
                 TargetCellId = targetCellId,
                 WaitContinue = false,
-                IsPickupMission = false
+                IsPickupMission = false,
+                BypassConditions = true,
             };
 
-            this.logger.LogInformation(
-                $"MoveToVerticalPosition: {MovementMode.Position}; " +
+            this.logger.LogInformation($"MoveToVerticalPosition: {MovementMode.Position}; " +
                 $"manualMovement: {false}; " +
                 $"targetPosition: {this.VerticalPosition + displacement}; [displacement: {displacement}]" +
                 $"homing: {false}; " +
@@ -229,7 +229,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"deceleration: {decelerationVertical[0]:0.00}; " +
                 $"speed w/o feedRate: {movementVerticalParameters.Speed:0.00}; " +
                 $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
-                $"Load Unit gross weight {grossWeight}");
+                $"Load Unit gross weight {grossWeight}; " +
+                $"Bypass condition {verticalMovementMessageData.BypassConditions}");
 
             // --------------------------
             // Combined movements message
@@ -255,6 +256,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         private void MoveHorizontalManual_ForOneTonMachine(
             HorizontalMovementDirection direction,
             double distance,
+            double verticalDisplacement,
             bool measure,
             int? loadingUnitId,
             int? positionId,
@@ -263,26 +265,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender)
         {
             // horizontal axis
-            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var horizontalTargetPosition = this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay]
-                ? axis.ManualMovements.TargetDistanceAfterZero.Value
-                : axis.ManualMovements.TargetDistance.Value;
-            if (distance > 0)
-            {
-                horizontalTargetPosition = distance;
-            }
+            var horizontalTargetPosition = distance;
 
             // Take account of current position in the horizontal axes and carry out the compensation along distance
-            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
-            var percentileCompensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition) / Math.Abs(this.elevatorDataProvider.HorizontalPosition);
-            horizontalTargetPosition -= compensation;
+            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
+            var percentileCompensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition) / Math.Abs(this.elevatorDataProvider.HorizontalPosition);
 
             horizontalTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var horizontalSpeed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
-            var horizontalAcceleration = new[] { axis.FullLoadMovement.Acceleration };
-            var horizontalDeceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var horizontalSpeed = new[] { horizontalAxis.FullLoadMovement.Speed * horizontalAxis.ManualMovements.FeedRate };
+            var horizontalAcceleration = new[] { horizontalAxis.FullLoadMovement.Acceleration };
+            var horizontalDeceleration = new[] { horizontalAxis.FullLoadMovement.Deceleration };
             var switchHorizontalPosition = new[] { 0.0 };
 
             // ---------------------------
@@ -306,10 +301,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             horizontalMovementMessageData.BypassConditions = bypassConditions;
 
             // vertical axis
-            axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-            var verticalAcceleration = new[] { axis.FullLoadMovement.Acceleration };
-            var verticalDeceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var verticalAcceleration = new[] { verticalAxis.FullLoadMovement.Acceleration };
+            var verticalDeceleration = new[] { verticalAxis.FullLoadMovement.Deceleration };
             var switchVerticalPosition = new[] { 0.0 };
 
             // Get the displacement along vertical axis
@@ -319,27 +314,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 grossWeight = loadUnit.GrossWeight;
             }
-            var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight) * percentileCompensation;  // <-- Check this!!
-            displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
-            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement} mm [targetPosition: {this.VerticalPosition + displacement} mm], weight load unit: {grossWeight} kg");
+
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {verticalDisplacement} mm [targetPosition: {this.VerticalPosition + verticalDisplacement} mm], weight load unit: {grossWeight} kg");
 
             var time = Math.Abs(horizontalTargetPosition) / horizontalSpeed[0];  // Calculate the time = space / speed [s]
 
             // Get the speed along vertical axis
-            var verticalSpeed = new[] { Math.Abs(displacement) / time };
+            var verticalSpeed = new[] { Math.Abs(verticalDisplacement) / time };
 
             // -------------------------
             // Vertical movement message
-            var verticalMovementMessageData = new PositioningMessageData(Axis.Horizontal,
+            var verticalMovementMessageData = new PositioningMessageData(
+                Axis.Vertical,
                 MovementType.Relative,
                 MovementMode.Position,
-                displacement,
+                verticalDisplacement,
                 verticalSpeed,
                 verticalAcceleration,
                 verticalDeceleration,
                 switchVerticalPosition,
                 direction);
-            verticalMovementMessageData.BypassConditions = bypassConditions;
+            verticalMovementMessageData.BypassConditions = true;
 
             // --------------------------
             // Combined movements message
