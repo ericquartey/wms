@@ -561,6 +561,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 {
                                     await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                                 }
+                                else
+                                {
+                                    break;
+                                }
                                 stream = client.GetStream();
                             }
 

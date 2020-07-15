@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<bool>("IsCheckIntrusion");
+
                     b.Property<bool>("IsExternal");
 
                     b.Property<bool>("IsFastDepositToBay");
@@ -822,6 +824,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 79,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1178,6 +1185,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("LoadUnitMinHeight");
 
                     b.Property<double>("LoadUnitTare");
+
+                    b.Property<double>("LoadUnitVeryHeavyPercent");
 
                     b.Property<double>("MaxGrossWeight");
 
@@ -1750,7 +1759,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             IsTimeSyncEnabled = false,
                             LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceUrl = "http://127.0.0.1:10000/",
-                            TimeSyncIntervalMilliseconds = 10000
+                            TimeSyncIntervalMilliseconds = 60000
                         });
                 });
 

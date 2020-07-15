@@ -538,7 +538,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source = new List<ItemListSetupProcedure>();
                 this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalAxisHomedDone"), Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalResolutionDone"), Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalOffsetVerify"), Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = Localized.Get("InstallationApp.HorizontalChainCalibration"),
@@ -555,6 +554,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Bypassed = status.BeltBurnishing.IsBypassed,
                     Command = this.BeltBurnishingTestBypassCommand,
                 });
+                this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalOffsetVerify"), Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = Localized.Get("InstallationApp.CellsControl"),

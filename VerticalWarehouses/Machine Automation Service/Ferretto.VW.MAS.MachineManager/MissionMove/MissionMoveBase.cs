@@ -267,10 +267,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-
                             if (this.Mission.MissionType == MissionType.OUT
-                            || this.Mission.MissionType == MissionType.WMS
-                            || this.Mission.MissionType == MissionType.FullTestOUT
+                                || this.Mission.MissionType == MissionType.WMS
+                                || this.Mission.MissionType == MissionType.FullTestOUT
                             )
                             {
                                 newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -280,6 +279,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (!this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                    if (this.Mission.MissionType != MissionType.Manual)
+                                    {
+                                        this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
+                                    }
                                 }
                                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
@@ -318,6 +321,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                 return true;
             }
             return false;
@@ -600,6 +604,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MessageType.Homing:
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Homing;
+                    update = true;
+                    break;
+
+                case MessageType.CheckIntrusion:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.CheckIntrusion;
                     update = true;
                     break;
             }

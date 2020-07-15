@@ -180,10 +180,10 @@ namespace Ferretto.VW.App.Services
                         .Publish(fsm);
                     break;
 
-                case NotificationMessageUI<ProfileCalibrationMessageData> rc:
+                case NotificationMessageUI<ProfileCalibrationMessageData> pcmd:
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
-                        .Publish(rc);
+                        .Publish(pcmd);
                     break;
 
                 case NotificationMessageUI<MoveTestMessageData> rc:

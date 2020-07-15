@@ -4,6 +4,9 @@ parameters:
   RuntimeIdentifier: 'win10-x64'
 
 steps:
+- checkout: self
+  submodules: recursive
+
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 2.2'
   inputs:

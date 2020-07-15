@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private const double policyVerticalTolerance = 0.01;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -114,12 +116,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ProfileHeightCheckViewModel(
+            IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineProfileProcedureWebService machineProfileProcedureWeb)
             : base(PresentationMode.Installer)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
@@ -800,7 +804,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    this.CurrentStep = ProfileCheckStep.TuningChainSx;
+                    this.CurrentStep = ProfileCheckStep.ShapePositionSx;
                 }
             }
             else
@@ -810,10 +814,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.MeasuredSx = data.Measured;
 
-                this.CurrentStep = ProfileCheckStep.ResultCheck;
-                var bay = this.MachineService.Bay;
-                var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
-                await this.shuttersWebService.MoveToAsync(closePosition);
+                if(this.HasShutter)
+                {
+                    this.CurrentStep = ProfileCheckStep.ResultCheck;
+                    var bay = this.MachineService.Bay;
+                    var closePosition = (bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors) ? MAS.AutomationService.Contracts.ShutterPosition.Half : MAS.AutomationService.Contracts.ShutterPosition.Closed;
+                    await this.shuttersWebService.MoveToAsync(closePosition);
+                }
+                else
+                {
+                    this.CurrentStep = ProfileCheckStep.ResultCheck;
+                }
+
+                
             }
         }
 
@@ -864,10 +877,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false);
 
             this.profileCalibrationToken = this.profileCalibrationToken
-                ?? this.EventAggregator
+                ?? this.eventAggregator
                     .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
                     .Subscribe(
-                        (m) => this.OnProfileCalibrationMessageAsync(m),
+                    this.OnProfileCalibrationMessageAsync,
                         ThreadOption.UIThread,
                         false);
 
