@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var missionLog = new MissionLog()
             {
-                Destination = message.Destination.ToString(),
+                //Destination = message.Destination.ToString(),
                 CellId = message.DestinationCellId,
                 //EjectLoadUnit = message.,
                 //Id = message.,

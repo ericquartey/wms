@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string instructionStatus;
 
+        private bool isOperator;
+
         private int lastInstruction = 0;
 
         private string mainteinanceRequest;
@@ -44,8 +46,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int servicingInfoId = 0;
 
         private ISessionService sessionService;
-
-        private bool isOperator;
 
         #endregion
 
@@ -98,7 +98,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isOperator;
             set => this.SetProperty(ref this.isOperator, value);
         }
-
 
         public string MainteinanceRequest
         {
@@ -266,7 +265,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.instructions = this.Service.Instructions.ToList();
                 this.RaisePropertyChanged(nameof(this.Instructions));
 
-                if (this.instructions != null)
+                if (this.instructions.Any())
                 {
                     if (this.lastInstruction == this.instructions.FirstOrDefault().Id || this.lastInstruction == 0)
                     {

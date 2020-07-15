@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public ProfileCalibrationMessageData(double? profileStartDistance, double? profileCalibrateDistance, double? measured, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ProfileCalibrationMessageData(double profileStartDistance, double profileCalibrateDistance, double measured, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ProfileStartDistance = profileStartDistance;
             this.ProfileCalibrateDistance = profileCalibrateDistance;
@@ -16,15 +16,37 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Verbosity = verbosity;
         }
 
+        public ProfileCalibrationMessageData(double profileStartDistance, double profileCalibrateDistance, double measured)
+        {
+            this.ProfileStartDistance = profileStartDistance;
+            this.ProfileCalibrateDistance = profileCalibrateDistance;
+            this.Measured = measured;
+
+            //this.Verbosity = verbosity;
+        }
+
+        public ProfileCalibrationMessageData(IProfileCalibrationMessageData ms)
+        {
+            this.ProfileStartDistance = ms.ProfileStartDistance;
+            this.ProfileCalibrateDistance = ms.ProfileCalibrateDistance;
+            this.Measured = ms.Measured;
+
+            this.Verbosity = ms.Verbosity;
+        }
+
+        public ProfileCalibrationMessageData()
+        {
+        }
+
         #endregion
 
         #region Properties
 
-        public double? Measured { get; }
+        public double Measured { get; }
 
-        public double? ProfileCalibrateDistance { get; }
+        public double ProfileCalibrateDistance { get; }
 
-        public double? ProfileStartDistance { get; }
+        public double ProfileStartDistance { get; }
 
         public MessageVerbosity Verbosity { get; }
 

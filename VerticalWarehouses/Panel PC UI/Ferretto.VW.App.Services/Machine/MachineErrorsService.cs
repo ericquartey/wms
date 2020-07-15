@@ -174,7 +174,7 @@ namespace Ferretto.VW.App.Services
                             AdditionalText = this.activeError.Description,
                             Code = this.activeError.Code,
                             DetailCode = this.activeError.DetailCode,
-                            InverterIndex = this.activeError.InverterIndex,
+                            // InverterIndex = this.activeError.InverterIndex,
                             OccurrenceDate = this.activeError.OccurrenceDate,
                             ResolutionDate = this.activeError.ResolutionDate.Value,
                         };

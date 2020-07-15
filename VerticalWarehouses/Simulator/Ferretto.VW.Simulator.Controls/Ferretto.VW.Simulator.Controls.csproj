@@ -1,18 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
         <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
         <TargetFramework>net471</TargetFramework>
+        <UseWPF>true</UseWPF>
         <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="WindowsBase" />
+        <Reference Include="System.Web" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
           <PrivateAssets>all</PrivateAssets>
@@ -23,21 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="**\*.xaml.cs">
-            <DependentUpon>%(Filename)</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Page Include="**\*.xaml" Exclude="App.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </Page>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Remove="Fonts\*.*" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Resource Include="Fonts\*.*" />
     </ItemGroup>
 

@@ -43,7 +43,15 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double LoadUnitMinHeight { get; set; }
 
+        /// <summary>
+        /// Gets or sets the weight of an empty load unit.
+        /// </summary>
         public double LoadUnitTare { get; set; }
+
+        /// <summary>
+        /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell. To disable heavy bin management use 0. suggested value is 85.
+        /// </summary>
+        public double LoadUnitVeryHeavyPercent { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum gross weight that the machine can have.

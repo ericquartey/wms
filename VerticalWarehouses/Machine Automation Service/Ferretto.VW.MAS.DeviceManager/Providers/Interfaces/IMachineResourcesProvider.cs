@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
-    internal interface IMachineResourcesProvider
+    public interface IMachineResourcesProvider
     {
         #region Events
 

@@ -364,7 +364,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                if (bay.Shutter != null)
+                if (bay.Shutter != null
+                    && bay.Shutter.Type != ShutterType.NotSpecified
+                    )
                 {
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
@@ -473,7 +475,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                if (bay.Shutter != null)
+                if (bay.Shutter != null
+                    && bay.Shutter.Type != ShutterType.NotSpecified
+                    )
                 {
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
@@ -504,7 +508,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var shutterInverter = InverterIndex.None;
             var shutterPosition = ShutterPosition.NotSpecified;
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if (bay.Shutter != null)
+            if (bay.Shutter != null
+                && bay.Shutter.Type != ShutterType.NotSpecified
+                )
             {
                 shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                 shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);

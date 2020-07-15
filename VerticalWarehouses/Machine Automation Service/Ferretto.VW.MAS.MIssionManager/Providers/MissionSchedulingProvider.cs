@@ -162,6 +162,7 @@ namespace Ferretto.VW.MAS.MissionManager
             int? cellId;
             LoadingUnit loadUnit;
 
+            this.cellsProvider.CleanUnderWeightCells();
             // first we try to find a lower place for each load unit, matching exactly the height
             if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
                 // then we try to find a lower place for each load unit

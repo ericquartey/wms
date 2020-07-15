@@ -73,7 +73,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column2"
-                                            Width="180"
+                                            Width="220"
                                             Binding="{Binding Path=Definition.Description}"
                                             Header="{res:Loc OperatorApp.Description}">
                             <DataGridTextColumn.CellStyle>
@@ -86,6 +86,7 @@
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>

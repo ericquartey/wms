@@ -392,7 +392,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 }
 
                 this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
-                this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
+
+                if (this.inverters.Count > 1)
+                {
+                    this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
+                }
+                
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
                 this.IsParametersSet = true;
             }

@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Intrusion by light curtain.
+        /// </summary>
+        public static string Bay_IsCheckIntrusion {
+            get {
+                return ResourceManager.GetString("Bay_IsCheckIntrusion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Double.
         /// </summary>
         public static string Bay_IsDouble {
@@ -790,11 +799,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer Tare.
+        ///   Looks up a localized string similar to Load unit Tare.
         /// </summary>
         public static string Machine_LoadUnitTare {
             get {
                 return ResourceManager.GetString("Machine_LoadUnitTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load unit very heavy % of net weight (0 to disable).
+        /// </summary>
+        public static string Machine_LoadUnitVeryHeavyPercent {
+            get {
+                return ResourceManager.GetString("Machine_LoadUnitVeryHeavyPercent", resourceCulture);
             }
         }
         
