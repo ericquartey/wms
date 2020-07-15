@@ -119,7 +119,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                                 {
                                     this.Mission.NeedMovingBackward = false;
-                                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                                       || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
+                                    )
                                     {
                                         this.RestoreOriginalStep();
                                     }
@@ -267,10 +269,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                    positionId = bayPosition.Id;
+
+                    // TODO: extend this sensor check also to external bay
+                    if ((this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator) || this.SensorsProvider.IsDrawerPartiallyOnCradle)
+                        && this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location)
+                        )
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+
                     //// always invert direction and do homing when loading from bay
                     //this.Mission.NeedMovingBackward = true;
                     //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {
                         this.Mission.Direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
@@ -279,8 +293,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
-                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
-                    positionId = bayPosition.Id;
                     if (bay.Carousel != null
                         && !bayPosition.IsUpper
                         )
@@ -296,7 +308,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.OpenShutterPosition = shutterPosition;
                     }
-                    if (shutterPosition != this.Mission.OpenShutterPosition)
+                    if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified
+                        && shutterPosition != this.Mission.OpenShutterPosition
+                        )
                     {
                         this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                         this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
@@ -329,9 +343,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 
-            if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+            if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward)
+                && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward)
+                )
             {
-                if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
+                if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell
+                    && this.Mission.CloseShutterPosition != ShutterPosition.NotSpecified
+                    )
                 {
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");

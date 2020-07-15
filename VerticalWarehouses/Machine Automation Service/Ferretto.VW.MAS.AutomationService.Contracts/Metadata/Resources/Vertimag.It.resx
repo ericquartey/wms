@@ -180,6 +180,9 @@
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Attiva</value>
   </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Controllo intrusione con barriera di controllo altezza</value>
+  </data>
   <data name="Bay_IsDouble" xml:space="preserve">
     <value>Doppia</value>
   </data>
@@ -433,7 +436,7 @@
     <value>Corsa</value>
   </data>
   <data name="SecondTermMultiplier" xml:space="preserve">
-    <value>Secondo fattore moltiplicativo</value>
+    <value>Secondo fattore moltiplicativo allungamento cinghia</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
     <value>Diametro albero</value>

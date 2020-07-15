@@ -1,14 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DeviceManager.CheckSecurity.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.DeviceManager.CheckSecurity.Models
+namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion.Models
 {
-    internal class CheckSecurityStateData : ICheckSecurityStateData
+    internal class CheckIntrusionStateData : ICheckIntrusionStateData
     {
         #region Constructors
 
-        public CheckSecurityStateData(IStateMachine parentMachine, IMachineData machineData)
+        public CheckIntrusionStateData(IStateMachine parentMachine, IMachineData machineData)
         {
             this.ParentMachine = parentMachine;
             this.MachineData = machineData;

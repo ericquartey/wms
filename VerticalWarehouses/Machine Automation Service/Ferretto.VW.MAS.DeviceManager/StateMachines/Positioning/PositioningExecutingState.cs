@@ -888,8 +888,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 }
                                 else
                                 {
-                                    double? profileCalibrateDistance = null;
-                                    double? profileStartDistance = null;
+                                    double profileCalibrateDistance = 0;
+                                    double profileStartDistance = 0;
                                     if (this.profileStartPosition.HasValue)
                                     {
                                         profileStartDistance = Math.Abs(this.profileStartPosition.Value - this.horizontalStartingPosition);
@@ -901,12 +901,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                                     var procedure = this.setupProceduresDataProvider.GetBayProfileCheck(this.machineData.RequestingBay);
 
-                                    double? measured = null;
+                                    double measured = 0;
 
                                     var radians = procedure.ProfileDegrees * (Math.PI / 180);
-                                    if (profileStartDistance.HasValue && profileCalibrateDistance.HasValue)
+                                    if (profileStartDistance != 0 && profileCalibrateDistance != 0)
                                     {
-                                        measured = (procedure.ProfileCorrectDistance - profileCalibrateDistance) * Math.Tan(radians);
+                                        measured = (double)((procedure.ProfileCorrectDistance - profileCalibrateDistance) * Math.Tan(radians));
                                     }
                                     else
                                     {
@@ -993,9 +993,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                         var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        double? profileOriginalDistance = axis.Profiles.FirstOrDefault()?.TotalDistance;
-                        double? profileCalibrateDistance = null;
-                        double? measured = null;
+                        double profileOriginalDistance = (double)(axis.Profiles.FirstOrDefault()?.TotalDistance);
+                        double profileCalibrateDistance = 0;
+                        double measured = 0;
                         if (this.findZeroStep == HorizontalCalibrationStep.FindCenter && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                         {
                             profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);

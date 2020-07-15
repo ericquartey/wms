@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Properties
 
+        bool IsDrawerPartiallyOnCradle { get; }
+
         bool IsMachineSecurityRunning { get; }
 
         #endregion

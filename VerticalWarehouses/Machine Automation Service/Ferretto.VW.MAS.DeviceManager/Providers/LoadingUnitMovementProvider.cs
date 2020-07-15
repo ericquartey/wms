@@ -234,6 +234,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Type == MessageType.Homing ||
                  notification.Type == MessageType.RunningStateChanged ||
                  notification.Type == MessageType.CombinedMovements ||
+                 notification.Type == MessageType.CheckIntrusion ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
@@ -592,6 +593,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 || message.Type == MessageType.ShutterPositioning
                 || message.Type == MessageType.Homing
                 || message.Type == MessageType.CombinedMovements
+                || message.Type == MessageType.CheckIntrusion
                 )
             {
                 return message.Status;
@@ -801,7 +803,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (message.Type == MessageType.Positioning ||
                 message.Type == MessageType.ShutterPositioning ||
                 message.Type == MessageType.MachineManagerException ||
-                message.Type == MessageType.Homing)
+                message.Type == MessageType.Homing ||
+                message.Type == MessageType.CheckIntrusion
+                )
             {
                 return message.Status;
             }

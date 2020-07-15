@@ -10,6 +10,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
@@ -140,7 +141,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             && command.Type != MessageType.SensorsChanged
                             && command.Type != MessageType.PowerEnable
                             && command.Type != MessageType.ContinueMovement
-                            && command.Type != MessageType.BayLight);
+                            && command.Type != MessageType.BayLight
+                            && command.Type != MessageType.CheckIntrusion);
                     }
 
                     // Publish a notification error, if occurs
@@ -239,6 +241,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.ProcessInvertersProgramming(command, serviceProvider);
                         break;
 
+                    case MessageType.CheckIntrusion:
+                        this.ProcessCheckIntrusion(command);
+                        break;
+                        
                     case MessageType.CombinedMovements:
                         this.ProcessCombinedMovemets(command, serviceProvider);
                         break;
@@ -288,6 +294,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.ResetSecurity:
                             case MessageType.InverterProgramming:
                             case MessageType.InverterPowerEnable:
+                            case MessageType.CheckIntrusion:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
@@ -619,7 +626,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
                         if (messageInverterIndex != InverterIndex.None)
                         {
-                            bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex);
+                            bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
                         }
                         break;
                     }
@@ -854,7 +861,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
 
                     case FieldMessageType.MeasureProfile:
-                        bayNumber = BayNumber.ElevatorBay;
+                        if (!this.currentStateMachines.Any(x => x.BayNumber == bayNumber && x is CheckIntrusionStateMachine))
+                        {
+                            bayNumber = BayNumber.ElevatorBay;
+                        }
                         break;
 
                     case FieldMessageType.Positioning when receivedMessage.Status is MessageStatus.OperationUpdateData &&

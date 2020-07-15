@@ -129,6 +129,11 @@
         /// <summary>
         /// Combined movements to load/unload a loading unit in elevator for 1 Ton machine.
         /// </summary>
-        CombinedMovements
+        CombinedMovements,
+        
+        /// <summary>
+        /// use light curtain to check intrusion
+        /// </summary>
+        CheckIntrusion
     }
 }
