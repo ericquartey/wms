@@ -4,6 +4,8 @@
     {
         #region Methods
 
+        string BrowseFolder(string description, string path = null);
+
         void Show(string moduleName, string viewModelName);
 
         void ShowCustomMessagePopup(string title, string message);

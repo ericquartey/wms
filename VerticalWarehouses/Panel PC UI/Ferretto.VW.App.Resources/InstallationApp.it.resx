@@ -2775,4 +2775,19 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RemovableDevicesCount" xml:space="preserve">
     <value>Dispositivi rimovibili collegati</value>
   </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Salva logs</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Salva logs</value>
+  </data>
+  <data name="LogFile" xml:space="preserve">
+    <value>File di log</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Caricamento logs da servizio telemetry..</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Logs caricati da servizio telemetry</value>
+  </data>
 </root>

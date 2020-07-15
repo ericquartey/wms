@@ -122,6 +122,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.positioningOperationChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.positioningOperationChangedToken);
+                this.positioningOperationChangedToken?.Dispose();
+                this.positioningOperationChangedToken = null;
+            }
+        }
+
+
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
@@ -139,14 +153,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
+        private async Task RefreshAllValue()
+        {
+            var cells = await this.machineCellsWebService.GetStatisticsAsync();
+            this.FragmentBackPercent = cells.FragmentBackPercent;
+            this.FragmentFrontPercent = cells.FragmentFrontPercent;
+            this.FragmentTotalPercent = cells.FragmentTotalPercent;
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             try
             {
-                var cells = await this.machineCellsWebService.GetStatisticsAsync();
-                this.FragmentBackPercent = cells.FragmentBackPercent;
-                this.FragmentFrontPercent = cells.FragmentFrontPercent;
-                this.FragmentTotalPercent = cells.FragmentTotalPercent;
+                await this.RefreshAllValue();
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
@@ -231,10 +250,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        var cells = await this.machineCellsWebService.GetStatisticsAsync();
-                        this.FragmentBackPercent = cells.FragmentBackPercent;
-                        this.FragmentFrontPercent = cells.FragmentFrontPercent;
-                        this.FragmentTotalPercent = cells.FragmentTotalPercent;
+                        await this.RefreshAllValue();
 
                         await base.OnDataRefreshAsync();
                         break;

@@ -1,14 +1,14 @@
 ﻿using System;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Realms;
 
-namespace Ferretto.VW.TelemetryService.Model
+namespace Ferretto.VW.TelemetryService.Models
 {
     public class ErrorLog : RealmObject, IErrorLog
     {
         #region Properties
 
-        public string AdditionalText { get; set; }
+        public string? AdditionalText { get; set; }
 
         public int BayNumber { get; set; }
 
@@ -16,13 +16,16 @@ namespace Ferretto.VW.TelemetryService.Model
 
         public int DetailCode { get; set; }
 
-        public Machine Machine { get; set; }
+        [PrimaryKey]
+        public int Id { get; set; }
+
+        public Machine? Machine { get; set; }
 
         public int MachineId { get; set; }
 
         public DateTimeOffset OccurrenceDate { get; set; }
 
-        public DateTimeOffset ResolutionDate { get; set; }
+        public DateTimeOffset? ResolutionDate { get; set; }
 
         #endregion
     }

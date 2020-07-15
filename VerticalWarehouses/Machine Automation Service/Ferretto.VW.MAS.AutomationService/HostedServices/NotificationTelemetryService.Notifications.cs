@@ -4,10 +4,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer;
-using Microsoft.Extensions.Logging;
-using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -31,19 +27,18 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             Contract.Requires(message != null);
 
-            if (message.ErrorLevel is ErrorLevel.Fatal)
-            {
-                this.Logger.LogCritical(message.Description);
-            }
-
             switch (message.Type)
             {
                 case MessageType.DataLayerReady:
-                    await this.OnDataLayerReady(serviceProvider);
+                    await this.OnDataLayerReadyAsync();
+                    break;
+
+                case MessageType.ErrorStatusChanged when message.Data is ErrorStatusMessageData messsageData:
+                    await this.OnErrorStatusChangedAsync(messsageData, serviceProvider);
                     break;
 
                 case MessageType.MoveLoadingUnit when message.Data is MoveLoadingUnitMessageData messsageData:
-                    await this.OnMoveLoadingUnit(messsageData);
+                    await this.OnMoveLoadingUnitAsync(messsageData);
                     break;
             }
         }

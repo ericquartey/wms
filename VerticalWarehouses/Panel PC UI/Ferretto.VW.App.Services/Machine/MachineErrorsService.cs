@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.Common.Hubs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -55,7 +55,6 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             INavigationService navigationService,
             IMachineService machineService,
-            ISessionService sessionService,
             IOperatorHubClient operatorHubClient,
             ITelemetryHubClient telemetryHubClient,
             ISensorsService sensorsService)
@@ -67,7 +66,6 @@ namespace Ferretto.VW.App.Services
             this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.sensorsToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                     .Subscribe(
@@ -163,29 +161,28 @@ namespace Ferretto.VW.App.Services
             {
                 var prevError = this.ActiveError;
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
-                if (this.ActiveError != prevError)
-                {
-                    await this.NavigateToErrorPageAsync();
-                    if (!(this.ActiveError is null))
-                    {
-                        var errorLog = new ErrorLog
-                        {
-                            BayNumber = (int)this.activeError.BayNumber,
-                            AdditionalText = this.activeError.Description,
-                            Code = this.activeError.Code,
-                            DetailCode = this.activeError.DetailCode,
-                            // InverterIndex = this.activeError.InverterIndex,
-                            OccurrenceDate = this.activeError.OccurrenceDate,
-                            ResolutionDate = this.activeError.ResolutionDate.Value,
-                        };
 
-                        await this.telemetryHubClient.SendErrorLog(this.sessionService.MachineIdentity.SerialNumber, errorLog);
-                    }
+                if (this.ActiveError != prevError
+                    &&
+                    this.ActiveError != null)
+                {
+                    byte[] screenshot = null;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        screenshot = this.navigationService.TakeScreenshot();
+                    });
+
+                    await this.telemetryHubClient.SendScreenShotAsync(
+                        (int)this.activeError.BayNumber,
+                        this.activeError.OccurrenceDate,
+                        screenshot);
+
+                    await this.NavigateToErrorPageAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: show error
+                this.logger.Error(ex);
             }
         }
 

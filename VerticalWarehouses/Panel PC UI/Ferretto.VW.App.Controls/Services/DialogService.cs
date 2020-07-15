@@ -28,6 +28,21 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
+        public string BrowseFolder(string description, string path = null)
+        {
+            using (var dlg = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                dlg.Description = description;
+                dlg.SelectedPath = path;
+
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    return dlg.SelectedPath;
+                }
+            }
+            return null;
+        }
+
         public void Show(string moduleName, string viewModelName)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.Common.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -17,30 +18,47 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         #endregion
 
+        #region Events
+
+        public event EventHandler MachineReceivedChanged;
+
+        #endregion
+
         #region Methods
 
-        public async Task SendErrorLog(string serialNumber, ErrorLog errorlog)
+        public async Task SendErrorLogAsync(IErrorLog errorlog)
         {
-            await this.SendAsync("SendErrorLog", serialNumber, errorlog);
+            await this.SendAsync("SendErrorLog", errorlog);
         }
 
-        public async Task SendMissionLog(string serialNumber, MissionLog missionLog)
+        public async Task SendMachineAsync(IMachine machine)
         {
-            await this.SendAsync("SendMissionLog", serialNumber, missionLog);
+            await this.SendAsync("SendMachine", machine);
         }
 
-        public async Task SendScreenCastAsync(int bayNumber, string serialNumber, byte[] screenshot)
+        public async Task SendMissionLogAsync(IMissionLog missionLog)
         {
-            await this.SendAsync("SendScreenCast", bayNumber, serialNumber, screenshot);
+            await this.SendAsync("SendMissionLog", missionLog);
         }
 
-        public async Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeSpan, byte[] screenShot)
+        public async Task SendScreenCastAsync(int bayNumber, byte[] screenshot, DateTimeOffset timeStamp)
         {
-            await this.SendAsync("SendScreenShot", bayNumber, serialNumber, timeSpan, screenShot);
+            await this.SendAsync("SendScreenCast", bayNumber, timeStamp, screenshot);
+        }
+
+        public async Task SendScreenShotAsync(int bayNumber, DateTimeOffset timeStamp, byte[] screenShot)
+        {
+            await this.SendAsync("SendScreenShot", bayNumber, timeStamp, screenShot);
         }
 
         protected override void RegisterEvents(HubConnection connection)
         {
+            connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
+        }
+
+        private void OnRequestMachine()
+        {
+            this.MachineReceivedChanged?.Invoke(this, new EventArgs());
         }
 
         #endregion

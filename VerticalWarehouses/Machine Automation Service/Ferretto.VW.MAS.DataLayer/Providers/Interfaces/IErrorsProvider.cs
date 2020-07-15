@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        MachineError GetById(int id);
+
         MachineError GetCurrent();
 
         List<MachineError> GetErrors();
