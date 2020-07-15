@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -229,25 +231,26 @@ namespace Ferretto.VW.App.Modules.Layout
                 new ServiceDesk.Telemetry.ErrorLog
                 {
                     BayNumber = (int)this.bayNumber,
-                    AdditionalText = "Test",
+                    AdditionalText = "Test error",
                     Code = 14,
                     OccurrenceDate = DateTimeOffset.Now
                 });
 
-                //await this.telemetryHubClient.SendMissionLogAsync(
-                //new ServiceDesk.Telemetry.MissionLog
-                //{
-                //     Bay = (int)this.bayNumber,
-                //     CellId = 1,
-                //     Destination = "Test",
-                //     Direction = 1,
-                //     MissionType = "Test mission",
-                //     Priority = 1,
-                //     Stage = "",
-                //     Status = "Moving 2",
-                //     StopReason = 1,
-                //});
-                //var machineLogs = await this.GetLogsAsync();
+                await this.telemetryHubClient.SendMissionLogAsync(
+                new ServiceDesk.Telemetry.MissionLog
+                {
+                    Bay = (int)this.bayNumber,
+                    CellId = 1,
+                    Destination = "Test",
+                    Direction = 1,
+                    MissionType = "Test mission",
+                    Priority = 1,
+                    Stage = "",
+                    Status = "Moving 2",
+                    StopReason = 1,
+                });
+
+                await this.SendScreenSnapshotAsync();
                 var machineLogs = await this.LoadMachineLogsFromWebServiceAsync();
                 this.ExportLogsOnFolder(machineLogs);
             }
@@ -326,6 +329,11 @@ namespace Ferretto.VW.App.Modules.Layout
         {
             try
             {
+                if (machineLogs is null)
+                {
+                    return;
+                }
+
                 var folder = this.dialogService.BrowseFolder(InstallationApp.SaveLogsFile, "c:");
 
                 if (!string.IsNullOrEmpty(folder))
@@ -343,6 +351,18 @@ namespace Ferretto.VW.App.Modules.Layout
                     }
                     var fullPathFileName = $"{newFolder}\\machinelogs.json";
                     File.WriteAllText(fullPathFileName, json);
+
+                    if (machineLogs.ScreenShots != null)
+                    {
+                        foreach (var screenShot in machineLogs.ScreenShots)
+                        {
+                            var fullPathImageFileName = $"{newFolder}\\ScreenShot_{screenShot.TimeStamp.ToLocalTime():yyyyMMdd_HHmmss}_Bay{screenShot.BayNumber}.jpg";
+                            using (var image = Image.FromStream(new MemoryStream(screenShot.Image)))
+                            {
+                                image.Save(fullPathImageFileName, ImageFormat.Jpeg);
+                            }
+                        }
+                    }
                     this.ShowNotification(InstallationApp.SaveSuccessful);
                 }
             }
@@ -360,7 +380,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
                 await this.CheckBayNumberAsync();
                 var screenshot = this.navigationService.TakeScreenshot();
-                await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTime.Now, screenshot);
+                await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTimeOffset.Now, screenshot);
             }
             catch (Exception ex)
             {
