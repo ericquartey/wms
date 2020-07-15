@@ -436,7 +436,7 @@
     <value>Corsa</value>
   </data>
   <data name="SecondTermMultiplier" xml:space="preserve">
-    <value>Secondo fattore moltiplicativo</value>
+    <value>Secondo fattore moltiplicativo allungamento cinghia</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
     <value>Diametro albero</value>

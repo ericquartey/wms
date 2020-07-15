@@ -17,7 +17,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double CellHeight = 25;
 
-        private const double VerticalPositionTolerance = 12.5;
+        private const double OldVerticalPositionTolerance = 12.5;
+
+        private const double VerticalPositionTolerance = 27;
 
         private static readonly Func<DataLayerContext, IEnumerable<Cell>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
@@ -651,12 +653,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     foreach (var occupiedCell in occupiedCells.Where(c => c.Position >= cell.Position || c.BlockLevel == BlockLevel.UnderWeight))
                     {
-                        if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != loadingUnit.Id)
+                        if (occupiedCell.LoadingUnit != null
+                            && occupiedCell.LoadingUnit.Id != loadingUnit.Id
+                            )
                         {
+                            // TODO - remove this check when all versions are > 0.27.18
+                            if (occupiedCell.Position >= cell.Position + loadingUnit.Height + OldVerticalPositionTolerance)
+                            {
+                                // this happens because of the change in VerticalPositionTolerance: from 12,5 to 27mm
+                                continue;
+                            }
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellUnexpectedlyContainsAnotherLoadingUnit", CommonUtils.Culture.Actual));
                         }
 
-                        if (occupiedCell.IsFree)
+                        if (occupiedCell.IsFree
+                            // TODO - remove this check when all versions are > 0.27.18
+                            && occupiedCell.Position < cell.Position + loadingUnit.Height + OldVerticalPositionTolerance
+                            )
                         {
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellIsUnexpectedlyFree", CommonUtils.Culture.Actual));
                         }
