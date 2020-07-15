@@ -227,30 +227,32 @@ namespace Ferretto.VW.App.Modules.Layout
 
             try
             {
-                await this.telemetryHubClient.SendErrorLogAsync(
-                new ServiceDesk.Telemetry.ErrorLog
-                {
-                    BayNumber = (int)this.bayNumber,
-                    AdditionalText = "Test error",
-                    Code = 14,
-                    OccurrenceDate = DateTimeOffset.Now
-                });
+                // perform test
+                //await this.telemetryHubClient.SendErrorLogAsync(
+                //new ServiceDesk.Telemetry.ErrorLog
+                //{
+                //    BayNumber = (int)this.bayNumber,
+                //    AdditionalText = "Test error",
+                //    Code = 14,
+                //    OccurrenceDate = DateTimeOffset.Now
+                //});
 
-                await this.telemetryHubClient.SendMissionLogAsync(
-                new ServiceDesk.Telemetry.MissionLog
-                {
-                    Bay = (int)this.bayNumber,
-                    CellId = 1,
-                    Destination = "Test",
-                    Direction = 1,
-                    MissionType = "Test mission",
-                    Priority = 1,
-                    Stage = "",
-                    Status = "Moving 2",
-                    StopReason = 1,
-                });
+                //await this.telemetryHubClient.SendMissionLogAsync(
+                //new ServiceDesk.Telemetry.MissionLog
+                //{
+                //    Bay = (int)this.bayNumber,
+                //    CellId = 1,
+                //    Destination = "Test",
+                //    Direction = 1,
+                //    MissionType = "Test mission",
+                //    Priority = 1,
+                //    Stage = "",
+                //    Status = "Moving 2",
+                //    StopReason = 1,
+                //});
 
-                await this.SendScreenSnapshotAsync();
+                //await this.SendScreenSnapshotAsync();
+                // end test
                 var machineLogs = await this.LoadMachineLogsFromWebServiceAsync();
                 this.ExportLogsOnFolder(machineLogs);
             }
