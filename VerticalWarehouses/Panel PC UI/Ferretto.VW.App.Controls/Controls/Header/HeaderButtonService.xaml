@@ -36,8 +36,8 @@
                 <controls:PpcButton Width="220"
                                     Margin="0 -2 0 0"
                                     HorizontalContentAlignment="Left"
-                                    Command="{Binding SendLogCommand}"
-                                    Content="{res:Loc InstallationApp.SendLog}" />
+                                    Command="{Binding SaveLogsCommand}"
+                                    Content="{res:Loc InstallationApp.SaveLogs}" />
 
                 <controls:PpcButton Width="220"
                                     Margin="0 -2 0 0"

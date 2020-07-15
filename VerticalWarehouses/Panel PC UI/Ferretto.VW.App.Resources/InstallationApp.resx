@@ -2865,4 +2865,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AvailablePackages" xml:space="preserve">
     <value>Pacchetti disponibili</value>
   </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Save logs</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Save logs</value>
+  </data>
+  <data name="LogFile" xml:space="preserve">
+    <value>Log file</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Loading logs from telemetry service...</value>
+  </data>
 </root>

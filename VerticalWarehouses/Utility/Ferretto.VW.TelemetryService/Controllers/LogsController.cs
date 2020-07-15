@@ -36,13 +36,13 @@ namespace Ferretto.VW.TelemetryService.Controllers
 
         #region Methods
 
-        [HttpGet("errorlogs")]
+        [HttpGet("errors")]
         public ActionResult<IEnumerable<IErrorLog>> GetErrorLogs()
         {
             return this.Ok(this.errorLogProvider.GetAll());
         }
 
-        [HttpGet("missionlogs")]
+        [HttpGet("missions")]
         public ActionResult<IEnumerable<IMissionLog>> GetMissionLogs()
         {
             return this.Ok(this.missionLogProvider.GetAll());
