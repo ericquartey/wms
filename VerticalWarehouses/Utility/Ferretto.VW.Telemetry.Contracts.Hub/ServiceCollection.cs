@@ -25,19 +25,7 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             return services;
         }
 
-        public static IApplicationBuilder UseTelemetryHub(this IApplicationBuilder applicationBuilder)
-        {
-            if (applicationBuilder is null)
-            {
-                throw new System.ArgumentNullException(nameof(applicationBuilder));
-            }
-
-            applicationBuilder
-               .ApplicationServices.GetRequiredService<ITelemetryHubClient>()             
-               .ConnectAsync(true);
-
-            return applicationBuilder;
-        }
+      
 
         #endregion
     }

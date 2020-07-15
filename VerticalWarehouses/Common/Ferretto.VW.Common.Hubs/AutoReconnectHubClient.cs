@@ -73,6 +73,8 @@ namespace Ferretto.VW.Common.Hubs
                     System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': connection established.");
 
                     this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(true));
+
+                    await this.OnConnectedAsync();
                 }
                 catch
                 {
@@ -113,6 +115,12 @@ namespace Ferretto.VW.Common.Hubs
         public async Task SendAsync(string methodName, object arg1, object arg2, object arg3, object arg4)
         {
             await this.connection.SendAsync(methodName, arg1, arg2, arg3, arg4);
+        }
+
+        protected virtual Task OnConnectedAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         protected abstract void RegisterEvents(HubConnection connection);

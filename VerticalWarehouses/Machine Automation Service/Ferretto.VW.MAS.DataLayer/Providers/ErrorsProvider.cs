@@ -49,6 +49,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public MachineError GetById(int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
+            }
+        }
+
         public MachineError GetCurrent()
         {
             lock (this.dataContext)

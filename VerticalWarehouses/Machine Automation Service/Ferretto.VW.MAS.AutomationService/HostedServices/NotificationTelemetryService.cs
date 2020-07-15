@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        private readonly IMachineProvider machineProvider;
+
         private readonly ITelemetryHubClient telemetryHub;
 
         #endregion
@@ -26,12 +29,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public NotificationTelemetryService(
             IEventAggregator eventAggregator,
-            //ITelemetryHubClient telemetryHub,
+            ITelemetryHubClient telemetryHub,
+            IMachineProvider machineProvider,
             ILogger<NotificationTelemetryService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            // this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
+            this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.telemetryHub.MachineReceivedChanged += async (s, e) => await this.TelemetryHub_MachineReceivedChangedAsync(s, e);
         }
 
         #endregion
@@ -41,13 +47,6 @@ namespace Ferretto.VW.MAS.AutomationService
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                //var dataHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryHubClient>();
-
-                //dataHubClient.ConnectionStatusChanged += this.OnHubConnectionStatusChanged1;
-            }
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)
@@ -80,6 +79,18 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 // To Do
             }
+        }
+
+        private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
+        {
+            var machine = this.machineProvider.Get();
+            var machineDto = new Machine
+            {
+                ModelName = machine.ModelName,
+                SerialNumber = machine.SerialNumber,
+            };
+
+            await this.telemetryHub.SendMachineAsync(machineDto);
         }
 
         #endregion

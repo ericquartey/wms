@@ -1,13 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Layout.Extensions;
+using Ferretto.VW.App.Modules.Layout.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Telemetry.Contracts.Hub;
+using Newtonsoft.Json;
 using NLog;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout
 {
@@ -15,9 +28,17 @@ namespace Ferretto.VW.App.Modules.Layout
     {
         #region Fields
 
+        private const string TelemetryServiceUrlKey = "TelemetryService:Url";
+
+        private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+
+        private readonly IEventAggregator eventAggregator;
+
         private const int SCREENSHOTDELAY = 200;
 
         private readonly IBayManager bayManagerService;
+
+        private readonly IDialogService dialogService;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
@@ -35,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private DelegateCommand screenCastCommand;
 
-        private DelegateCommand sendLogCommand;
+        private DelegateCommand saveLogsCommand;
 
         private DelegateCommand sendScreenSnapshotCommand;
 
@@ -47,14 +68,18 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public PresentationService(
             INavigationService navigationService,
-            ISessionService sessionService,
             IBayManager bayManagerService,
+            IDialogService dialogService,
+            ISessionService sessionService,
+            IEventAggregator eventAggregator,
             ITelemetryHubClient telemetryHubClient)
             : base(PresentationTypes.Service)
         {
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(telemetryHubClient));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.sessionService = sessionService;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
 
             this.bayNumber = BayNumber.None;
@@ -91,15 +116,15 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand ScreenCastCommand =>
              this.screenCastCommand
              ??
-             (this.screenCastCommand = new DelegateCommand(async () => await this.ScreenCastAsync()));
+             (this.screenCastCommand = new DelegateCommand(async () => await this.ToggleScreenCastAsync()));
 
-        public ICommand SendLogCommand =>
-                     this.sendLogCommand
-             ??
-             (this.sendLogCommand = new DelegateCommand(async () => await this.SendLogAsync()));
+        public ICommand SaveLogsCommand =>
+            this.saveLogsCommand
+            ??
+            (this.saveLogsCommand = new DelegateCommand(async () => await this.SaveLogsAsync()));
 
         public ICommand SendScreenSnapshotCommand =>
-                            this.sendScreenSnapshotCommand
+            this.sendScreenSnapshotCommand
             ??
             (this.sendScreenSnapshotCommand = new DelegateCommand(async () => await this.SendScreenSnapshotAsync(), this.CanSendScreenSnapshotAsync));
 
@@ -144,48 +169,185 @@ namespace Ferretto.VW.App.Modules.Layout
             return !this.isScreenCast;
         }
 
-        private async Task ScreenCastAsync()
+        private async Task ToggleScreenCastAsync()
         {
             this.IsServiceOptionsVisible = false;
 
-            if (this.isScreenCast)
+            this.IsScreenCast = !this.IsScreenCast;
+            if (!this.IsScreenCast)
             {
-                this.IsScreenCast = false;
                 return;
             }
 
-            this.IsScreenCast = true;
-
             await this.CheckBayNumberAsync();
 
-            var machineSerial = this.sessionService.MachineIdentity.SerialNumber;
-
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Task.Run(async () =>
             {
                 do
                 {
-                    Application.Current.Dispatcher.Invoke(async () =>
+                    byte[] screenshot = null;
+                    Application.Current.Dispatcher.Invoke(() =>
                          {
-                             try
-                             {
-                                 var screenshot = this.navigationService.GetScreenshot();
-                                 await this.telemetryHubClient.SendScreenCastAsync((int)this.bayNumber, machineSerial, screenshot);
-                             }
-                             catch (Exception ex)
-                             {
-                                 this.logger.Error(ex);
-                             }
+                             screenshot = this.navigationService.TakeScreenshot();
                          });
-                    await Task.Delay(SCREENSHOTDELAY);
+
+                    try
+                    {
+                        if (screenshot != null)
+                        {
+                            await this.telemetryHubClient.SendScreenCastAsync((int)this.bayNumber, screenshot, DateTimeOffset.Now);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.Error(ex);
+                    }
+                    finally
+                    {
+                        await Task.Delay(SCREENSHOTDELAY);
+                    }
                 }
                 while (this.isScreenCast);
             });
+#pragma warning restore CS4014
         }
 
-        private async Task SendLogAsync()
+        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
+        }
+
+        private async Task SaveLogsAsync()
         {
             this.IsServiceOptionsVisible = false;
-            //await this.telemetryHubClient.SendErrorLog((int)this.bayNumber);
+            await this.CheckBayNumberAsync();
+
+            try
+            {
+                var machineLogs = await this.LoadMachineLogsFromWebServiceAsync();
+                this.ExportLogsOnFolder(machineLogs);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
+        public async Task<MachineLogs> LoadMachineLogsFromWebServiceAsync()
+        {
+            var baseUri = new Uri(ConfigurationManager.AppSettings.Get(TelemetryServiceUrlKey));
+            if (baseUri is null)
+            {
+                throw new ArgumentNullException(nameof(baseUri));
+            }
+
+            this.logger.Debug($"Loading logs from telemetryservice'{baseUri}' ...");
+            try
+            {
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.LoadingLogsFromTelemetryService"), NotificationSeverity.Info);
+
+                var machineLogs = new MachineLogs();
+
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.Timeout = TimeSpan.FromSeconds(2);
+
+                    var serviceUri = $"{baseUri}api/logs/errors";
+                    this.logger.Debug($"Loading error logs from telemetryservice'{baseUri}' ...");
+                    var responseContents = await httpClient.GetContentFromServiceAsync(serviceUri);
+                    var errorLogs = JsonConvert.DeserializeObject<List<ServiceDesk.Telemetry.ErrorLog>>(responseContents, serializerSettings);
+
+                    serviceUri = $"{baseUri}api/logs/missions";
+                    this.logger.Debug($"Loading mission logs from telemetryservice'{baseUri}' ...");
+                    responseContents = await httpClient.GetContentFromServiceAsync(serviceUri);
+                    var missions = JsonConvert.DeserializeObject<List<ServiceDesk.Telemetry.MissionLog>>(responseContents, serializerSettings);
+
+                    serviceUri = $"{baseUri}api/logs/screenshots";
+                    this.logger.Debug($"Loading screenshot logs from telemetryservice'{baseUri}' ...");
+                    responseContents = await httpClient.GetContentFromServiceAsync(serviceUri);
+                    var screenshots = JsonConvert.DeserializeObject<List<ServiceDesk.Telemetry.ScreenShot>>(responseContents, serializerSettings);
+
+                    machineLogs.ErrorLogs = errorLogs;
+                    machineLogs.MissionLogs = missions;
+                    machineLogs.ScreenShots = screenshots;
+
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.LogsFromTelemetryServiceCompleted"), NotificationSeverity.Info);
+                };
+
+                this.logger.Debug($"Logs loaded.");
+
+                return machineLogs;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+
+            return null;
+        }
+
+        public void ShowNotification(Exception exception)
+        {
+            if (exception is null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            this.logger.Error(exception);
+
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        private void ExportLogsOnFolder(MachineLogs machineLogs)
+        {
+            try
+            {
+                if (machineLogs is null)
+                {
+                    return;
+                }
+
+                var folder = this.dialogService.BrowseFolder(InstallationApp.SaveLogsFile, "c:");
+
+                if (!string.IsNullOrEmpty(folder))
+                {
+                    var settings = new JsonSerializerSettings()
+                    {
+                        Formatting = Formatting.Indented,
+                    };
+                    var json = JsonConvert.SerializeObject(machineLogs, settings);
+                    var machineSerial = this.sessionService.MachineIdentity.SerialNumber;
+                    var newFolder = $"{folder}\\{DateTime.Now:yyyyMMdd_HHmmss}_{machineSerial}";
+                    if (!Directory.Exists(newFolder))
+                    {
+                        Directory.CreateDirectory(newFolder);
+                    }
+                    var fullPathFileName = $"{newFolder}\\machinelogs.json";
+                    File.WriteAllText(fullPathFileName, json);
+
+                    if (machineLogs.ScreenShots != null)
+                    {
+                        foreach (var screenShot in machineLogs.ScreenShots)
+                        {
+                            var fullPathImageFileName = $"{newFolder}\\ScreenShot_{screenShot.TimeStamp.ToLocalTime():yyyyMMdd_HHmmss}_Bay{screenShot.BayNumber}.jpg";
+                            using (var image = Image.FromStream(new MemoryStream(screenShot.Image)))
+                            {
+                                image.Save(fullPathImageFileName, ImageFormat.Jpeg);
+                            }
+                        }
+                    }
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex.Message, NotificationSeverity.Error);
+            }
         }
 
         private async Task SendScreenSnapshotAsync()
@@ -193,10 +355,10 @@ namespace Ferretto.VW.App.Modules.Layout
             try
             {
                 this.IsServiceOptionsVisible = false;
+
                 await this.CheckBayNumberAsync();
-                var machineSerial = this.sessionService.MachineIdentity.SerialNumber;
-                var screenshot = this.navigationService.GetScreenshot();
-                await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, machineSerial, DateTime.Now, screenshot);
+                var screenshot = this.navigationService.TakeScreenshot();
+                await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTimeOffset.Now, screenshot);
             }
             catch (Exception ex)
             {
