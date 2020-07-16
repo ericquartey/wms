@@ -1242,7 +1242,7 @@
                 },
                 {
                   "Acceleration": 1400.0,
-                  "AdjustAccelerationByWeight": false,
+                  "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 25,
@@ -1413,7 +1413,7 @@
                 },
                 {
                   "Acceleration": 1400.0,
-                  "AdjustAccelerationByWeight": false,
+                  "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
                   "Id": 24,

@@ -189,6 +189,10 @@ namespace Ferretto.VW.App.Controls
             if (!this.navigationStack.Any())
             {
                 this.logger.Warn($"Unable to navigate back because navigation stack is empty.");
+                this.navigationStack.Clear();
+                this.GoBackTo(
+                   nameof(Ferretto.VW.Utils.Modules.Menu),
+                    Ferretto.VW.Utils.Modules.Menu.MAIN_MENU);
                 return;
             }
 
