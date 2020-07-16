@@ -163,8 +163,8 @@ namespace Ferretto.VW.App.Services
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
 
                 if (this.ActiveError != prevError
-                    &&
-                    this.ActiveError != null)
+                    //&& this.ActiveError != null
+                    )
                 {
                     // TODO Telemetry
                     //byte[] screenshot = null;
