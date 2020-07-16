@@ -1629,4 +1629,79 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="WmsId" xml:space="preserve">
     <value>Id Wms</value>
   </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Baia 1 giostra pos. bassa</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Baia 1 giostra pos. alta</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Baia 2 giostra pos. bassa</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Baia 2 giostra pos. alta</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Baia 3 giostra pos. bassa</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Baia 3 giostra pos. alta</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cella</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Bassa</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevatore</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Baia 1 esterna pos. bassa</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Baia 1 esterna pos. alta</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Baia 2 esterna pos. bassa</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Baia 2 esterna pos. alta</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Baia 3 esterna pos. bassa</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Baia 3 esterna pos. alta</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Baia 1 interna pos. bassa</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Baia 1 interna pos. alta</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Baia 2 interna pos. bassa</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Baia 2 interna pos. alta</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Baia 3 interna pos. bassa</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Baia 3 interna pos. alta</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Cassetto</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Nessuna posizione</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Alta</value>
+  </data>
 </root>
