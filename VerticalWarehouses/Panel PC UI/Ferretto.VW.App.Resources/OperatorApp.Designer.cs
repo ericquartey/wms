@@ -3266,7 +3266,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay chain.
+        ///   Looks up a localized string similar to 7.Bay chain.
         /// </summary>
         public static string MissionStateBayChain {
             get {
@@ -3275,7 +3275,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close shutter.
+        ///   Looks up a localized string similar to 8.Close shutter.
         /// </summary>
         public static string MissionStateCloseShutter {
             get {
@@ -3284,7 +3284,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deposit unit.
+        ///   Looks up a localized string similar to 5.Deposit unit.
         /// </summary>
         public static string MissionStateDepositUnit {
             get {
@@ -3293,7 +3293,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End.
+        ///   Looks up a localized string similar to 13.End.
         /// </summary>
         public static string MissionStateEnd {
             get {
@@ -3302,7 +3302,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to 101.Error.
         /// </summary>
         public static string MissionStateError {
             get {
@@ -3311,7 +3311,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load elevator.
+        ///   Looks up a localized string similar to 3.Load elevator.
         /// </summary>
         public static string MissionStateLoadElevator {
             get {
@@ -3320,7 +3320,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to 1.New.
         /// </summary>
         public static string MissionStateNew {
             get {
@@ -3329,7 +3329,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not defined.
+        ///   Looks up a localized string similar to 0.Not defined.
         /// </summary>
         public static string MissionStateNotDefined {
             get {
@@ -3338,7 +3338,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
+        ///   Looks up a localized string similar to 2.Start.
         /// </summary>
         public static string MissionStateStart {
             get {
@@ -3347,7 +3347,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To target.
+        ///   Looks up a localized string similar to 4.To target.
         /// </summary>
         public static string MissionStateToTarget {
             get {
@@ -3356,7 +3356,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wait operator action.
+        ///   Looks up a localized string similar to 6.Wait operator action.
         /// </summary>
         public static string MissionStateWaitPick {
             get {
