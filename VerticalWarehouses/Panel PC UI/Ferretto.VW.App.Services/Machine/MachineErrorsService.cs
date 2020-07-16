@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Services
                     //    this.activeError.OccurrenceDate,
                     //    screenshot);
 
-                    //await this.NavigateToErrorPageAsync();
+                    await this.NavigateToErrorPageAsync();
                 }
             }
             catch (Exception ex)
