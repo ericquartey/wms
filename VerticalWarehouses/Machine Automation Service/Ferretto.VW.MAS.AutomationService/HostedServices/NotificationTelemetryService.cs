@@ -48,7 +48,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
-            await this.telemetryHub.ConnectAsync();
+            // TODO Telemetry
+            //await this.telemetryHub.ConnectAsync();
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)
