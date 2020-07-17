@@ -809,6 +809,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
+            if(message.Type == MessageType.Stop && message.Status == MessageStatus.OperationEnd)
+            {
+                return MessageStatus.OperationStop;
+            }
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
                 || message.Status == MessageStatus.OperationRunningStop

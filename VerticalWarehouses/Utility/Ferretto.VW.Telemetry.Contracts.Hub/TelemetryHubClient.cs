@@ -28,32 +28,47 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         public async Task SendErrorLogAsync(IErrorLog errorlog)
         {
-            await this.SendAsync("SendErrorLog", errorlog);
+            if (this.IsConnected)
+            {
+                await this.SendAsync("SendErrorLog", errorlog);
+            }
         }
 
         public async Task SendMachineAsync(IMachine machine)
         {
-            await this.SendAsync("SendMachine", machine);
+            if (this.IsConnected)
+            {
+                await this.SendAsync("SendMachine", machine);
+            }
         }
 
         public async Task SendMissionLogAsync(IMissionLog missionLog)
         {
-            await this.SendAsync("SendMissionLog", missionLog);
+            if (this.IsConnected)
+            {
+                await this.SendAsync("SendMissionLog", missionLog);
+            }
         }
 
         public async Task SendScreenCastAsync(int bayNumber, byte[] screenshot, DateTimeOffset timeStamp)
         {
-            await this.SendAsync("SendScreenCast", bayNumber, timeStamp, screenshot);
+            if (this.IsConnected)
+            {
+                await this.SendAsync("SendScreenCast", bayNumber, timeStamp, screenshot);
+            }
         }
 
         public async Task SendScreenShotAsync(int bayNumber, DateTimeOffset timeStamp, byte[] screenShot)
         {
-            await this.SendAsync("SendScreenShot", bayNumber, timeStamp, screenShot);
+            if (this.IsConnected)
+            {
+                await this.SendAsync("SendScreenShot", bayNumber, timeStamp, screenShot);
+            }
         }
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
+             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
         }
 
         private void OnRequestMachine()

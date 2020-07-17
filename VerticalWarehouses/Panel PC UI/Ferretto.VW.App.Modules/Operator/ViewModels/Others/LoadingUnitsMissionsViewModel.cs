@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -14,11 +16,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private const int PollIntervalMilliseconds = 5000;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
-        private readonly IList<Mission> missions = new List<Mission>();
+        private readonly ISessionService sessionService;
 
         private int currentMissionIndex;
+
+        private DelegateCommand deleteMissionCommand;
+
+        private bool isDeleteMissionCommand;
+
+        private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
 
         private Mission selectedMission;
 
@@ -27,19 +37,42 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitsMissionsViewModel(
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            ISessionService sessionService,
             IMachineMissionsWebService machineMissionsWebService)
             : base(PresentationMode.Operator)
         {
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+
+            this.Missions = new ObservableCollection<Mission>();
         }
 
         #endregion
 
         #region Properties
 
+        public System.Windows.Input.ICommand DeleteMissionCommand =>
+            this.deleteMissionCommand
+            ??
+            (this.deleteMissionCommand = new DelegateCommand(
+                async () => await this.DeleteMissionAsync(),
+                this.CanDeleteMission));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public IList<Mission> Missions => new List<Mission>(this.missions);
+        public bool IsDeleteMissionCommand
+        {
+            get => this.isDeleteMissionCommand;
+            set => this.SetProperty(ref this.isDeleteMissionCommand, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ObservableCollection<Mission> Missions
+        {
+            get => this.missions;
+            set => this.SetProperty(ref this.missions, value, this.RaiseCanExecuteChanged);
+        }
 
         public Mission SelectedMission
         {
@@ -68,6 +101,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
+        public ObservableCollection<T> Convert<T>(IEnumerable<T> original)
+        {
+            return new ObservableCollection<T>(original);
+        }
+
+        public async Task DeleteMissionAsync()
+        {
+            try
+            {
+                this.machineLoadingUnitsWebService.AbortAsync(this.selectedMission.Id, this.SelectedMission.TargetBay);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         public override void Disappear()
         {
             base.Disappear();
@@ -78,6 +132,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsDeleteMissionCommand = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+
+            this.RaisePropertyChanged(nameof(this.IsDeleteMissionCommand));
+
             await base.OnAppearedAsync();
 
             await this.RefreshMissionsAsync();
@@ -88,6 +146,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadListRowsAsync();
         }
 
+        private bool CanDeleteMission()
+        {
+            return this.selectedMission != null
+                && this.MachineModeService.MachineMode == MachineMode.Manual;
+        }
+
         private async Task LoadListRowsAsync()
         {
             try
@@ -96,7 +160,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var newMissions = await this.machineMissionsWebService.GetAllAsync();
 
                 this.missions.Clear();
-                newMissions.ForEach(l => this.missions.Add(l));
+                this.Missions = this.Convert(newMissions);
 
                 this.RaisePropertyChanged(nameof(this.Missions));
 

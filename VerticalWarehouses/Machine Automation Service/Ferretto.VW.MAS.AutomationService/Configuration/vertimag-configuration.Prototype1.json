@@ -298,7 +298,7 @@
                   "Speed": 650.0
                 },
                 {
-                  "AdjustAccelerationByWeight": false,
+                  "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 970.0,
@@ -400,7 +400,7 @@
                   "Speed": 650.0
                 },
                 {
-                  "AdjustAccelerationByWeight": false,
+                  "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Number": 3,
                   "Position": 970.0,
