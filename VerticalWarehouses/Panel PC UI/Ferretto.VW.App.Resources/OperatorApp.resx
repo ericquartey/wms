@@ -1374,47 +1374,47 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label</comment>
   </data>
   <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>Not defined</value>
+    <value>0.Not defined</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateNew" xml:space="preserve">
-    <value>New</value>
+    <value>1.New</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateStart" xml:space="preserve">
-    <value>Start</value>
+    <value>2.Start</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateLoadElevator" xml:space="preserve">
-    <value>Load elevator</value>
+    <value>3.Load elevator</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateToTarget" xml:space="preserve">
-    <value>To target</value>
+    <value>4.To target</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
-    <value>Deposit unit</value>
+    <value>5.Deposit unit</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitPick" xml:space="preserve">
-    <value>Wait operator action</value>
+    <value>6.Wait operator action</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateBayChain" xml:space="preserve">
-    <value>Bay chain</value>
+    <value>7.Bay chain</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateCloseShutter" xml:space="preserve">
-    <value>Close shutter</value>
+    <value>8.Close shutter</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateEnd" xml:space="preserve">
-    <value>End</value>
+    <value>13.End</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateError" xml:space="preserve">
-    <value>Error</value>
+    <value>101.Error</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeNoType" xml:space="preserve">
@@ -2080,6 +2080,21 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="Up" xml:space="preserve">
     <value>Up</value>
+  </data>
+  <data name="Cell_Status_Free" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="Cell_Status_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Cell_Status_Occupied" xml:space="preserve">
+    <value>Occupied</value>
+  </data>
+  <data name="Cell_Status_Unusable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="Complete Check" xml:space="preserve">
+    <value>Complete check</value>
   </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Back to bay</value>

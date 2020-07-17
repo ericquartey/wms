@@ -487,7 +487,7 @@
     <value>Velocità</value>
   </data>
   <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
-    <value>Correggi accelerazone con peso</value>
+    <value>Correggi accelerazione con peso</value>
   </data>
   <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
     <value>Correggi velocità con peso</value>

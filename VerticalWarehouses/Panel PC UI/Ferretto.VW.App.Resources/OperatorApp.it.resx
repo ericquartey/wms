@@ -1082,37 +1082,37 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Baia</value>
   </data>
   <data name="MissionStateNew" xml:space="preserve">
-    <value>Nuovo</value>
+    <value>1.Nuovo</value>
   </data>
   <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>Non definito</value>
+    <value>0.Non definito</value>
   </data>
   <data name="MissionStateStart" xml:space="preserve">
-    <value>Inizio</value>
+    <value>2.Inizio</value>
   </data>
   <data name="MissionStateToTarget" xml:space="preserve">
-    <value>A destinazione</value>
+    <value>4.A destinazione</value>
   </data>
   <data name="MissionStateWaitPick" xml:space="preserve">
-    <value>Attesa azione</value>
+    <value>6.Attesa azione</value>
   </data>
   <data name="MissionStateCloseShutter" xml:space="preserve">
-    <value>Chiusura serranda</value>
+    <value>8.Chiusura serranda</value>
   </data>
   <data name="MissionStateError" xml:space="preserve">
-    <value>Errore</value>
+    <value>101.Errore</value>
   </data>
   <data name="MissionStateEnd" xml:space="preserve">
-    <value>Fine</value>
+    <value>13.Fine</value>
   </data>
   <data name="MissionStateBayChain" xml:space="preserve">
-    <value>Taratura catena</value>
+    <value>7.Solleva baia</value>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
-    <value>Deposito unità</value>
+    <value>5.Deposito cassetto</value>
   </data>
   <data name="MissionStateLoadElevator" xml:space="preserve">
-    <value>Carico elevatore</value>
+    <value>3.Carico elevatore</value>
   </data>
   <data name="MissionTypeManual" xml:space="preserve">
     <value>Manuale</value>
@@ -1703,6 +1703,9 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="Up" xml:space="preserve">
     <value>Alta</value>
+  </data>
+  <data name="CompleteCheck" xml:space="preserve">
+    <value>Controllo completo</value>
   </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Torna a baia</value>

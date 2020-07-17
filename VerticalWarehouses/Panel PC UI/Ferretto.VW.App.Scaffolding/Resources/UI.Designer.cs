@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value not valid..
+        ///   Looks up a localized string similar to Invalid value.
         /// </summary>
         public static string GenericValidationError {
             get {
