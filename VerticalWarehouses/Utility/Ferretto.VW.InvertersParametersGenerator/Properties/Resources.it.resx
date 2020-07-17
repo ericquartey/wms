@@ -213,4 +213,7 @@
   <data name="FileNotSaved" xml:space="preserve">
     <value>File non salvato</value>
   </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Pattern files</value>
+  </data>
 </root>
