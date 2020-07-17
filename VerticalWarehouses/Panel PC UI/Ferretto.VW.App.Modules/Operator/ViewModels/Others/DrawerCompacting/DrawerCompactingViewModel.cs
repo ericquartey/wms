@@ -122,7 +122,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-
         public override void Disappear()
         {
             base.Disappear();
@@ -135,30 +134,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
-            this.positioningOperationChangedToken = this.positioningOperationChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                    .Subscribe(
-                        async m => await this.OnPositioningOperationChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        m => this.IsVisible);
+            //this.positioningOperationChangedToken = this.positioningOperationChangedToken
+            //    ??
+            //    this.EventAggregator
+            //        .GetEvent<NotificationEventUI<MissionOperationCompletedMessageData>>()
+            //        .Subscribe(
+            //            async m => await this.OnPositioningOperationChangedAsync(m),
+            //            ThreadOption.UIThread,
+            //            false,
+            //            m => this.IsVisible);
 
             await base.OnAppearedAsync();
-        }
-
-        private async Task RefreshAllValue()
-        {
-            var cells = await this.machineCellsWebService.GetStatisticsAsync();
-            this.FragmentBackPercent = cells.FragmentBackPercent;
-            this.FragmentFrontPercent = cells.FragmentFrontPercent;
-            this.FragmentTotalPercent = cells.FragmentTotalPercent;
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -185,6 +175,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             await base.OnMachineStatusChangedAsync(e);
+
+            if (this.MachineService.MachineMode == MachineMode.Compact)
+            {
+                if (e.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+                {
+                    await this.RefreshAllValue();
+                }
+            }
 
             if (!this.IsMachineMoving)
             {
@@ -244,19 +242,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        private async Task RefreshAllValue()
         {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        await this.RefreshAllValue();
-
-                        await base.OnDataRefreshAsync();
-                        break;
-                    }
-            }
+            var cells = await this.machineCellsWebService.GetStatisticsAsync();
+            this.FragmentBackPercent = cells.FragmentBackPercent;
+            this.FragmentFrontPercent = cells.FragmentFrontPercent;
+            this.FragmentTotalPercent = cells.FragmentTotalPercent;
         }
+
+        //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
+        //{
+        //    switch (message.Status)
+        //    {
+        //        case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+        //            {
+        //                await this.RefreshAllValue();
+
+        //                await base.OnDataRefreshAsync();
+        //                break;
+        //            }
+        //    }
+        //}
 
         private async Task StartAsync()
         {
