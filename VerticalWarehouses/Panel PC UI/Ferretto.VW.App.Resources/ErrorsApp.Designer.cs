@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Postazione bassa.
+        ///   Looks up a localized string similar to Low position.
         /// </summary>
         public static string LowPosition {
             get {

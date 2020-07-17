@@ -2081,4 +2081,19 @@ Please put back any moved pieces in their original position.</value>
   <data name="Up" xml:space="preserve">
     <value>Up</value>
   </data>
+  <data name="Cell_Status_Free" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="Cell_Status_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Cell_Status_Occupied" xml:space="preserve">
+    <value>Occupied</value>
+  </data>
+  <data name="Cell_Status_Unusable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="Complete Check" xml:space="preserve">
+    <value>Complete check</value>
+  </data>
 </root>

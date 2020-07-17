@@ -1567,7 +1567,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Tipo scelta sorgente non valida</value>
   </data>
   <data name="InvalidValue" xml:space="preserve">
-    <value>Invalid Value</value>
+    <value>Valore non valido</value>
   </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId deve essere strettamente positivo.</value>
@@ -2789,5 +2789,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
     <value>Logs caricati da servizio telemetry</value>
+  </data>
+  <data name="F" xml:space="preserve">
+    <value>Abort</value>
   </data>
 </root>
