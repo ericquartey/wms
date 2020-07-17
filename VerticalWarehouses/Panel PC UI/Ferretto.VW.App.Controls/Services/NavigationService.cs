@@ -286,7 +286,7 @@ namespace Ferretto.VW.App.Controls
                 .Subscribe(action);
         }
 
-        public byte[] TakeScreenshot()
+        public byte[] TakeScreenshot(bool checkWithPrevious)
         {
             try
             {
@@ -321,17 +321,20 @@ namespace Ferretto.VW.App.Controls
                     var screenshot = myStream.ToArray();
                     var areEqual = screenshot.Length == this.previousScreenshot?.Length;
 
-                    for (var i = 0; i < screenshot.Length && areEqual; i++)
+                    if (checkWithPrevious)
                     {
-                        if (screenshot[i] != this.previousScreenshot[i])
+                        for (var i = 0; i < screenshot.Length && areEqual; i++)
                         {
-                            areEqual = false;
+                            if (screenshot[i] != this.previousScreenshot[i])
+                            {
+                                areEqual = false;
+                            }
                         }
-                    }
 
-                    if (areEqual)
-                    {
-                        return Array.Empty<byte>();
+                        if (areEqual)
+                        {
+                            return Array.Empty<byte>();
+                        }
                     }
 
                     this.previousScreenshot = screenshot;

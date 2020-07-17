@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Layout
                     byte[] screenshot = null;
                     Application.Current.Dispatcher.Invoke(() =>
                          {
-                             screenshot = this.navigationService.TakeScreenshot();
+                             screenshot = this.navigationService.TakeScreenshot(true);
                          });
 
                     try
@@ -357,7 +357,7 @@ namespace Ferretto.VW.App.Modules.Layout
                 this.IsServiceOptionsVisible = false;
 
                 await this.CheckBayNumberAsync();
-                var screenshot = this.navigationService.TakeScreenshot();
+                var screenshot = this.navigationService.TakeScreenshot(false);
                 await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTimeOffset.Now, screenshot);
             }
             catch (Exception ex)

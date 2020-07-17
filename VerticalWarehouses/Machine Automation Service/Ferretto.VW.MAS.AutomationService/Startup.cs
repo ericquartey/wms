@@ -109,6 +109,7 @@ namespace Ferretto.VW.MAS.AutomationService
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
             services.AddSignalR();
 
             services.AddMasHealthChecks();
@@ -148,8 +149,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMachineManager()
                 .AddMissionManager();
 
-            services.AddHostedService<NotificationRelayService>();
-            //services.AddHostedService<NotificationTelemetryService>();
+            services.AddHostedService<NotificationTelemetryService>();
+            services.AddHostedService<NotificationRelayService>();            
 
             services.AddScoped<IInverterProvider, InverterProvider>();
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();

@@ -18,7 +18,7 @@
 
         INavigableViewModel GetActiveViewModel();
 
-        byte[] TakeScreenshot();
+        byte[] TakeScreenshot(bool checkWithPrevious);
 
         void GoBack();
 

@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Services
                     byte[] screenshot = null;
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        screenshot = this.navigationService.TakeScreenshot();
+                        screenshot = this.navigationService.TakeScreenshot(false);
                     });
 
                     await this.telemetryHubClient.SendScreenShotAsync(
