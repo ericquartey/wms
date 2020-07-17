@@ -216,8 +216,11 @@
                    VerticalAlignment="Top"
                    Padding="10 0 20 0"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
-                   Text="{Binding Pattern, StringFormat=''{0}'.'}" />
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}">                  
+                        <Run Text="'" />
+                        <Run Text="{Binding Pattern}" />
+                        <Run Text="'." />
+                </TextBlock>
 
                 <TextBlock
                    HorizontalAlignment="Left"
@@ -225,9 +228,8 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
                    Text="{x:Static res:Resources.SelectFile}" />
-                
             </StackPanel>
-            
+
             <TextBlock
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
@@ -373,7 +375,7 @@
                         </Border>
                     </ControlTemplate>
                 </DataGrid.Template>
-                
+
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
