@@ -203,14 +203,31 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
+                   Text="{x:Static res:Resources.SearchPattern}" />
+
+                <TextBlock
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Padding="10 0 20 0"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
+                   Text="{Binding Pattern, StringFormat=''{0}'.'}" />
+
+                <TextBlock
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}"
                    Text="{x:Static res:Resources.SelectFile}" />
-
-
+                
+            </StackPanel>
+            
             <TextBlock
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"

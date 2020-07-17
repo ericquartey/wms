@@ -225,4 +225,7 @@
   <data name="FileNotSaved" xml:space="preserve">
     <value>File not saved</value>
   </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Files pattern</value>
+  </data>
 </root>
