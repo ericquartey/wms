@@ -456,4 +456,7 @@
   <data name="SwitchToManual" xml:space="preserve">
     <value>Switch to Manual</value>
   </data>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>Login error: check user and password</value>
+  </data>
 </root>

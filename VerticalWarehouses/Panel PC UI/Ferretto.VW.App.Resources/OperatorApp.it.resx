@@ -1704,4 +1704,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Up" xml:space="preserve">
     <value>Alta</value>
   </data>
+  <data name="CompleteCheck" xml:space="preserve">
+    <value>Controllo completo</value>
+  </data>
 </root>

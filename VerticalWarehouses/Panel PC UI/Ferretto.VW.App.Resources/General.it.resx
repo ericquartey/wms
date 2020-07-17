@@ -223,7 +223,7 @@
     <value>[{0}]</value>
   </data>
   <data name="CheckBoxDark" xml:space="preserve">
-    <value>  Tema scuro.</value>
+    <value>Tema scuro</value>
   </data>
   <data name="MachineOff" xml:space="preserve">
     <value>Spenta</value>
@@ -419,5 +419,8 @@
   </data>
   <data name="SwitchToManual" xml:space="preserve">
     <value>Passa in manuale</value>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>Nome Utente</value>
   </data>
 </root>
