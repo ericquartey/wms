@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,10 +35,20 @@ namespace Ferretto.VW.MAS.AutomationService
                     messageData.ErrorId);
             }
 
+            var description = "";
+            if (error.Description != null)
+            {
+                description = $"{error?.Description} ";
+            }
+            if (error?.AdditionalText != null)
+            {
+                description += $"{error?.AdditionalText}";
+            }
+
             var errorLog = new ErrorLog
             {
                 ErrorId = error.Id,
-                AdditionalText = error.AdditionalText,
+                AdditionalText = description,
                 BayNumber = (int)error.BayNumber,
                 Code = error.Code,
                 DetailCode = error.DetailCode,
@@ -49,21 +60,24 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.SendErrorLogAsync(errorLog);
         }
 
-        private async Task OnMoveLoadingUnitAsync(MoveLoadingUnitMessageData message)
+        private async Task OnMoveLoadingUnitAsync(/*MoveLoadingUnitMessageData message,*/ NotificationMessage message)
         {
+            var messageData = (MoveLoadingUnitMessageData)message.Data;
+
             var missionLog = new MissionLog
             {
                 // TODO: fill all missing fields
-                Destination = message.Destination.ToString(),
-                CellId = message.DestinationCellId,
-                LoadUnitId = message.LoadUnitId.Value,
-                MissionId = message.MissionId.Value,
-                MissionType = message.MissionType.ToString(),
-                Status = string.Empty,
-                Stage = message.MissionStep.ToString(),
-                StopReason = (int)message.StopReason,
+                Bay = (int)message.RequestingBay,
+                Destination = messageData.Destination.ToString(),
+                CellId = messageData.DestinationCellId,
+                LoadUnitId = messageData.LoadUnitId.Value,
+                MissionId = messageData.MissionId.Value,
+                MissionType = messageData.MissionType.ToString(),
+                Status = messageData.MissionStep.ToString(),
+                Stage = string.Empty,
+                StopReason = (int)messageData.StopReason,
                 TimeStamp = DateTimeOffset.Now,
-                WmsId = message.WmsId
+                WmsId = messageData.WmsId
             };
 
             await this.SendMissionLogAsync(missionLog);

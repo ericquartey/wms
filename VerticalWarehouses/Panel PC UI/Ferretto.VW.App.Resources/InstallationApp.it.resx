@@ -2776,7 +2776,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Dispositivi rimovibili collegati</value>
   </data>
   <data name="SaveLogs" xml:space="preserve">
-    <value>Salva logs</value>
+    <value>Salva log</value>
   </data>
   <data name="SaveLogsFile" xml:space="preserve">
     <value>Salva logs</value>
