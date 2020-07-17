@@ -2081,4 +2081,22 @@ Please put back any moved pieces in their original position.</value>
   <data name="Up" xml:space="preserve">
     <value>Up</value>
   </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Back to bay</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Error deposit</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Error load</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Ext bay</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Wait chain</value>
+  </data>
+  <data name="MissionStateWaitDeposit" xml:space="preserve">
+    <value>Wait deposit</value>
+  </data>
 </root>
