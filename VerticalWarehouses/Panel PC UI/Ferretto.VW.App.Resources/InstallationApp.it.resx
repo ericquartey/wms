@@ -1939,7 +1939,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Assicurarsi di regolare le fotocellule di presenza cassetto, se non regolate potrebbe verificarsi un blocco dell'elevatore nella parte più alta della macchina.</value>
   </data>
   <data name="CellPanelsCheckPanel" xml:space="preserve">
-    <value>Controllo panelli:</value>
+    <value>Controllo pannelli:</value>
   </data>
   <data name="CellPanelsCheckPhotocells" xml:space="preserve">
     <value>Controllo fotocellule:</value>
@@ -2774,5 +2774,20 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="RemovableDevicesCount" xml:space="preserve">
     <value>Dispositivi rimovibili collegati</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Salva logs</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Salva logs</value>
+  </data>
+  <data name="LogFile" xml:space="preserve">
+    <value>File di log</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Caricamento logs da servizio telemetry..</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Logs caricati da servizio telemetry</value>
   </data>
 </root>

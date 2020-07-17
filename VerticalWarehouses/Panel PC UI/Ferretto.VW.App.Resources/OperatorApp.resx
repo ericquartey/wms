@@ -1374,47 +1374,47 @@ Please put back any moved pieces in their original position.</value>
     <comment>Label</comment>
   </data>
   <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>Not defined</value>
+    <value>0.Not defined</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateNew" xml:space="preserve">
-    <value>New</value>
+    <value>1.New</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateStart" xml:space="preserve">
-    <value>Start</value>
+    <value>2.Start</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateLoadElevator" xml:space="preserve">
-    <value>Load elevator</value>
+    <value>3.Load elevator</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateToTarget" xml:space="preserve">
-    <value>To target</value>
+    <value>4.To target</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
-    <value>Deposit unit</value>
+    <value>5.Deposit unit</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitPick" xml:space="preserve">
-    <value>Wait operator action</value>
+    <value>6.Wait operator action</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateBayChain" xml:space="preserve">
-    <value>Bay chain</value>
+    <value>7.Bay chain</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateCloseShutter" xml:space="preserve">
-    <value>Close shutter</value>
+    <value>8.Close shutter</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateEnd" xml:space="preserve">
-    <value>End</value>
+    <value>13.End</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateError" xml:space="preserve">
-    <value>Error</value>
+    <value>101.Error</value>
     <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionTypeNoType" xml:space="preserve">
@@ -1993,5 +1993,92 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="UpdatedValue" xml:space="preserve">
     <value>Updated value</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Delete mission</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>LoadUnit destination</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>LoadUnit source</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Carousel bay1 down</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Carousel bay 1 up</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Carousel bay 2 down</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Carousel bay 2 up</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Carousel bay 3 down</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Carousel bay 3 up</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevator</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>External bay 1 down</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>External bay 1 up</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>External bay 2 down</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>External bay 2 up</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>External bay 3 down</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>External bay 3 up</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Internal bay 1 down</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Internal bay 1 up</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Internal bay 2 down</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Internal bay 2 up</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Internal bay 3 down</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Internal bay 3 up</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Load unit</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>No location</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
   </data>
 </root>

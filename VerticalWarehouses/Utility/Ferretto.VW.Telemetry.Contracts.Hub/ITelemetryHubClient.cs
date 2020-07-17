@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry.Models;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.Common.Hubs;
 
 namespace Ferretto.VW.Telemetry.Contracts.Hub
 {
     public interface ITelemetryHubClient : IAutoReconnectHubClient
     {
+        #region Events
+
+        event EventHandler MachineReceivedChanged;
+
+        #endregion
+
         #region Methods
 
-        Task SendErrorLog(string serialNumber, ErrorLog errorLog);
+        Task SendErrorLogAsync(IErrorLog errorLog);
 
-        Task SendMissionLog(string serialNumber, MissionLog missionLog);
+        Task SendMachineAsync(IMachine machine);
 
-        Task SendScreenCastAsync(int bayNumer, string serialNumber, byte[] screenshot);
+        Task SendMissionLogAsync(IMissionLog missionLog);
 
-        Task SendScreenShotAsync(int bayNumber, string machineSerial, DateTimeOffset timeSpan, byte[] screenShot);
+        Task SendScreenCastAsync(int bayNumer, byte[] screenshot, DateTimeOffset dateTime);
+
+        Task SendScreenShotAsync(int bayNumber, DateTimeOffset dateTime, byte[] screenShot);
 
         #endregion
     }

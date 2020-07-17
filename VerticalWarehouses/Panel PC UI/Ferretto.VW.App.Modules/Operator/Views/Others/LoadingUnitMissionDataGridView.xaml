@@ -5,11 +5,12 @@
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:model="clr-namespace:Ferretto.VW.MAS.AutomationService.Contracts;assembly=Ferretto.VW.MAS.AutomationService.Contracts">
     <DataGrid Name="DataGrid"
+              HorizontalScrollBarVisibility="Auto"
               ItemsSource="{Binding Missions}"
               SelectedItem="{Binding SelectedMission}">
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="ColumnId"
-                                Width="Auto"
+                                Width="60"
                                 Binding="{Binding Path=Id}"
                                 Header="{Res:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
                 <DataGridTextColumn.CellStyle>
@@ -27,7 +28,7 @@
             </DataGridTextColumn>
 
             <DataGridTextColumn x:Name="ColumnLoadingUnit"
-                                Width="Auto"
+                                Width="100"
                                 Binding="{Binding Path=LoadUnitId}"
                                 Header="{Res:Loc OperatorApp.LoadingUnitId}">
                 <DataGridTextColumn.ElementStyle>
@@ -39,7 +40,7 @@
             </DataGridTextColumn>
 
             <DataGridTemplateColumn x:Name="Column3"
-                                    Width="*"
+                                    Width="100"
                                     Header="{Res:Loc OperatorApp.MissionStep}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -123,7 +124,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn x:Name="ColumnStatus"
-                                    Width="*"
+                                    Width="100"
                                     Header="{Res:Loc OperatorApp.MissionStatus}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -177,7 +178,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn x:Name="ColumnType"
-                                    Width="Auto"
+                                    Width="140"
                                     Header="{Res:Loc OperatorApp.MissionType}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -255,7 +256,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn x:Name="ColumnBay"
-                                    Width="Auto"
+                                    Width="80"
                                     Header="{Res:Loc OperatorApp.BayTarget}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -309,7 +310,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTextColumn x:Name="ColumnDate"
-                                Width="180"
+                                Width="150"
                                 Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormatComplete}}"
                                 Header="{Res:Loc OperatorApp.CreationDate}">
                 <DataGridTextColumn.ElementStyle>
@@ -320,6 +321,41 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
 
+            <DataGridTextColumn x:Name="ColumnLoadUnitDestination"
+                                Width="190"
+                                Binding="{Binding Path=LoadUnitDestination, Converter={StaticResource LULC}}"
+                                Header="{Res:Loc OperatorApp.LoadUnitDestination}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="ColumnLoadUnitSource"
+                                Width="180"
+                                Binding="{Binding Path=LoadUnitSource, Converter={StaticResource LULC}}"
+                                Header="{Res:Loc OperatorApp.LoadUnitSource}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="ColumnWmsId"
+                                Width="80"
+                                Binding="{Binding Path=WmsId, TargetNullValue='Off'}"
+                                Header="{Res:Loc OperatorApp.WmsId}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

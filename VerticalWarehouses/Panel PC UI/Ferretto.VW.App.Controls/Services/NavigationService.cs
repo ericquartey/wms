@@ -31,12 +31,14 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IRegionManager regionManager;
 
+        private byte[] previousScreenshot;
+
         #endregion
 
         #region Constructors
 
         public NavigationService(
-            IUnityContainer unityContainer,
+                    IUnityContainer unityContainer,
             IRegionManager regionManager,
             IEventAggregator eventAggregator,
             IModuleManager moduleManager)
@@ -174,49 +176,6 @@ namespace Ferretto.VW.App.Controls
             return null;
         }
 
-        public byte[] GetScreenshot()
-        {
-            try
-            {
-                var frameworkElement = Application.Current.MainWindow;
-                var relativeBounds = VisualTreeHelper.GetDescendantBounds(frameworkElement);
-                var areaWidth = frameworkElement.RenderSize.Width;
-                var areaHeight = frameworkElement.RenderSize.Height;
-                var xLeft = relativeBounds.X;
-                var xRight = xLeft + areaWidth;
-                var yTop = relativeBounds.Y;
-                var yBottom = yTop + areaHeight;
-                var bitmap = new RenderTargetBitmap(
-                    (int)Math.Round(xRight, MidpointRounding.AwayFromZero),
-                    (int)Math.Round(yBottom, MidpointRounding.AwayFromZero),
-                    96, 96, PixelFormats.Default);
-
-                var dv = new DrawingVisual();
-                using (var ctx = dv.RenderOpen())
-                {
-                    var vb = new VisualBrush(frameworkElement);
-                    ctx.DrawRectangle(vb, null, new Rect(new System.Windows.Point(xLeft, yTop), new System.Windows.Point(xRight, yBottom)));
-                }
-
-                bitmap.Render(dv);
-
-                var encoder = new JpegBitmapEncoder();
-                encoder.QualityLevel = 70;
-                using (var myStream = new MemoryStream())
-                {
-                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
-                    encoder.Save(myStream);
-                    return myStream.ToArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex, $"Cannot get screenshot from MainWindow.");
-            }
-
-            return null;
-        }
-
         public void GoBack()
         {
             // allow cancelation
@@ -230,6 +189,10 @@ namespace Ferretto.VW.App.Controls
             if (!this.navigationStack.Any())
             {
                 this.logger.Warn($"Unable to navigate back because navigation stack is empty.");
+                this.navigationStack.Clear();
+                this.GoBackTo(
+                   nameof(Ferretto.VW.Utils.Modules.Menu),
+                    Ferretto.VW.Utils.Modules.Menu.MAIN_MENU);
                 return;
             }
 
@@ -321,6 +284,66 @@ namespace Ferretto.VW.App.Controls
             return this.eventAggregator
                 .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                 .Subscribe(action);
+        }
+
+        public byte[] TakeScreenshot()
+        {
+            try
+            {
+                var frameworkElement = Application.Current.MainWindow;
+                var relativeBounds = VisualTreeHelper.GetDescendantBounds(frameworkElement);
+                var areaWidth = frameworkElement.RenderSize.Width;
+                var areaHeight = frameworkElement.RenderSize.Height;
+                var xLeft = relativeBounds.X;
+                var xRight = xLeft + areaWidth;
+                var yTop = relativeBounds.Y;
+                var yBottom = yTop + areaHeight;
+                var bitmap = new RenderTargetBitmap(
+                    (int)Math.Round(xRight, MidpointRounding.AwayFromZero),
+                    (int)Math.Round(yBottom, MidpointRounding.AwayFromZero),
+                    96, 96, PixelFormats.Default);
+
+                var dv = new DrawingVisual();
+                using (var ctx = dv.RenderOpen())
+                {
+                    var vb = new VisualBrush(frameworkElement);
+                    ctx.DrawRectangle(vb, null, new Rect(new Point(xLeft, yTop), new Point(xRight, yBottom)));
+                }
+
+                bitmap.Render(dv);
+
+                var encoder = new JpegBitmapEncoder();
+                encoder.QualityLevel = 70;
+                using (var myStream = new MemoryStream())
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(myStream);
+                    var screenshot = myStream.ToArray();
+                    var areEqual = screenshot.Length == this.previousScreenshot?.Length;
+
+                    for (var i = 0; i < screenshot.Length && areEqual; i++)
+                    {
+                        if (screenshot[i] != this.previousScreenshot[i])
+                        {
+                            areEqual = false;
+                        }
+                    }
+
+                    if (areEqual)
+                    {
+                        return Array.Empty<byte>();
+                    }
+
+                    this.previousScreenshot = screenshot;
+                    return screenshot;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"Cannot get screenshot from MainWindow.");
+            }
+
+            return null;
         }
 
         public void UnsubscribeToNavigationCompleted(object subscriptionToken)

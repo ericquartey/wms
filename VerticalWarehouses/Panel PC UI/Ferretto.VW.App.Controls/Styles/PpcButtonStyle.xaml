@@ -596,29 +596,33 @@
                                 FlowDirection="LeftToRight">
                             <Grid x:Name="PpcButton_Grid">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Border Name="PpcButtonMenu_Border"
-                                        HorizontalAlignment="Stretch"
                                         Grid.ColumnSpan="2"
                                         Margin="2,2"
+                                        HorizontalAlignment="Stretch"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="0,0,0,6"
                                         Opacity="1"
                                         Visibility="Collapsed" />
 
-                                <TextBlock HorizontalAlignment="Left"
+                                <TextBlock Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
-                                           Margin="10 0 0 0"
-                                           
                                            FontSize="{TemplateBinding FontSize}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap" />
 
-                                <Ellipse Grid.Column="1" Margin="0 1 6 0" Width="55" Height="55" Stroke="#FF000000" StrokeThickness="0">
-                                   
+                                <Ellipse Grid.Column="1"
+                                         Width="55"
+                                         Height="55"
+                                         Margin="0,1,6,0"
+                                         Stroke="#FF000000"
+                                         StrokeThickness="0">
+
                                     <Ellipse.Style>
                                         <Style TargetType="{x:Type Ellipse}">
                                             <Style.Triggers>
@@ -635,13 +639,13 @@
                                     </Ellipse.Style>
                                 </Ellipse>
 
-                                <TextBlock HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"
+                                <TextBlock Grid.Column="1"
                                            Width="50"
-                                           Margin="0 0 6 0"
-                                           Grid.Column="1"
-                                           FontSize="{TemplateBinding FontSize}"                                           
-                                           TextWrapping="Wrap" >
+                                           Margin="0,0,6,0"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           TextWrapping="Wrap">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
@@ -657,7 +661,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                              
+
                             </Grid>
                         </Border>
                     </Grid>

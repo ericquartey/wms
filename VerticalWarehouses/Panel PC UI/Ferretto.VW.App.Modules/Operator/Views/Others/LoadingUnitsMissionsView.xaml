@@ -30,6 +30,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.ColumnSpan="2"
@@ -60,5 +61,14 @@
             </Grid>
 
         </Border>
+
+        <controls:PpcButton Grid.Row="4"
+                            Margin="15,15,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding DeleteMissionCommand}"
+                            Content="{Resources:Loc OperatorApp.DeleteMission}"
+                            Style="{StaticResource ConfirmButton}"
+                            Visibility="{Binding IsDeleteMissionCommand, Converter={StaticResource BTVIC}}" />
     </Grid>
 </ctrls:View>

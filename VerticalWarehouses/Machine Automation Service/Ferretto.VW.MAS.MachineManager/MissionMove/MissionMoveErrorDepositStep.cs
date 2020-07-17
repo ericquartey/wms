@@ -115,7 +115,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                                 if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                                     && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                                    && bay.Shutter?.Type != ShutterType.NotSpecified
+                                    && bay.Shutter != null
+                                    && bay.Shutter.Type != ShutterType.NotSpecified
                                     && shutterPosition != this.Mission.CloseShutterPosition
                                     )
                                 {
@@ -249,7 +250,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                     if (shutterPosition != ShutterPosition.Opened
                         && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                        && bay.Shutter?.Type != ShutterType.NotSpecified
+                        && bay.Shutter != null
+                        && bay.Shutter.Type != ShutterType.NotSpecified
                         && this.Mission.ErrorMovements == MissionErrorMovements.None
                         && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)   // cannot move shutter if load unit is not in center
                         )
@@ -264,7 +266,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else if (this.Mission.OpenShutterPosition == ShutterPosition.Half
                         && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                        && bay.Shutter?.Type != ShutterType.NotSpecified
+                        && bay.Shutter != null
+                        && bay.Shutter.Type != ShutterType.NotSpecified
                         && shutterPosition != this.Mission.OpenShutterPosition
                         )
                     {
