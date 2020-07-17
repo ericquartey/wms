@@ -106,37 +106,44 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
-                            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
-                            {
-                                this.Mission.NeedMovingBackward = false;
-                                var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
-                                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
-                                if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                                    && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                                    && bay.Shutter?.Type != ShutterType.NotSpecified
-                                    && shutterPosition != this.Mission.CloseShutterPosition
-                                    )
+                            // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
+                            if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
+                                (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
+                            {
+                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                                 {
-                                    this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
-                                    this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterClosed;
-                                    this.MissionsDataProvider.Update(this.Mission);
+                                    this.Mission.NeedMovingBackward = false;
+                                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+                                    if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                                    && shutterInverter != InverterDriver.Contracts.InverterIndex.None
+                                    && bay.Shutter != null
+                                    && bay.Shutter.Type != ShutterType.NotSpecified
+                                        && shutterPosition != this.Mission.CloseShutterPosition
+                                        )
+                                    {
+                                        this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
+                                        this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterClosed;
+                                        this.MissionsDataProvider.Update(this.Mission);
+                                    }
+                                    else
+                                    {
+                                        this.Mission.RestoreStep = MissionStep.NotDefined;
+                                        this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
+                                        var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
                                 }
                                 else
                                 {
-                                    this.Mission.RestoreStep = MissionStep.NotDefined;
-                                    this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
-                                    var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                    newStep.OnEnter(null);
+                                    this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
+                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                                    this.DepositUnitEnd(restore: true);
                                 }
-                            }
-                            else
-                            {
-                                this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
-                                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                this.DepositUnitEnd(restore: true);
                             }
                         }
                         break;
@@ -249,7 +256,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                     if (shutterPosition != ShutterPosition.Opened
                         && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                        && bay.Shutter?.Type != ShutterType.NotSpecified
+                        && bay.Shutter != null
+                        && bay.Shutter.Type != ShutterType.NotSpecified
                         && this.Mission.ErrorMovements == MissionErrorMovements.None
                         && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)   // cannot move shutter if load unit is not in center
                         )
@@ -264,7 +272,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else if (this.Mission.OpenShutterPosition == ShutterPosition.Half
                         && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                        && bay.Shutter?.Type != ShutterType.NotSpecified
+                        && bay.Shutter != null
+                        && bay.Shutter.Type != ShutterType.NotSpecified
                         && shutterPosition != this.Mission.OpenShutterPosition
                         )
                     {

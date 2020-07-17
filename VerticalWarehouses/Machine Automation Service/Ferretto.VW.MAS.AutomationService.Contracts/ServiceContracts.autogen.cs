@@ -2854,8 +2854,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Homing")]
         Homing = 8,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CombinedMovements")]
+        CombinedMovements = 16,
+    
         [System.Runtime.Serialization.EnumMember(Value = @"CheckIntrusion")]
-        CheckIntrusion = 16,
+        CheckIntrusion = 32,
     
     }
     

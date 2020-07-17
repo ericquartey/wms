@@ -160,7 +160,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
-                            if (notification.Type == MessageType.Positioning)
+
+                            var bChangeDepositUnitPosition = false;
+                            bChangeDepositUnitPosition = (notification.Type == MessageType.Positioning && !this.MachineVolatileDataProvider.IsOneTonMachine.Value) ||
+                                                     (notification.Type == MessageType.CombinedMovements && this.MachineVolatileDataProvider.IsOneTonMachine.Value);
+                            if (bChangeDepositUnitPosition)
                             {
                                 this.DepositUnitChangePosition();
                             }
@@ -200,7 +204,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
                         }
 
-                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                        var isMovementEnded = (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning) && !(this.MachineVolatileDataProvider.IsOneTonMachine.Value)) ||
+                                         (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.CombinedMovements) && (this.MachineVolatileDataProvider.IsOneTonMachine.Value));
+
+                        if (isMovementEnded
                             && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
                                 || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                             )

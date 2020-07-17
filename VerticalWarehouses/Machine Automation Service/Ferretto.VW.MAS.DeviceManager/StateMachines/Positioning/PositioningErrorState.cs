@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status} Axis:{this.machineData.MessageData.AxisMovement}");
 
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
@@ -67,12 +67,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.machineData.MessageData.AxisMovement}");
         }
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement}");
             var inverterIndex = this.machineData.CurrentInverterIndex;
             var description = this.machineData.MessageData.RequiredCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 FieldMessageType.InverterStop,
                 (byte)inverterIndex);
 
-            this.Logger.LogDebug($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.Logger.LogDebug($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination} Axis:{this.machineData.MessageData.AxisMovement}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            this.Logger.LogDebug($"1:Stop Method: Empty. Reason:{reason} Axis:{this.machineData.MessageData.AxisMovement}");
         }
 
         #endregion
