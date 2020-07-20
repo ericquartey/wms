@@ -48,8 +48,15 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
             }
 
+            var newId = 0;
+            if (this.realm.All<Models.ErrorLog>().OrderByDescending(e => e.Id).FirstOrDefault() is Models.ErrorLog error)
+            {
+                newId = error.Id + 1;
+            }
+
             var logEntry = new Models.ErrorLog
             {
+                Id = newId,
                 Machine = machine,
                 AdditionalText = errorLog.AdditionalText,
                 BayNumber = errorLog.BayNumber,
