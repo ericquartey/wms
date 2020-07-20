@@ -53,6 +53,16 @@
                              IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.PrinterName}" />
 
+        <controls:PpcButton x:Name="PrintTestPage"
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding PrintTestPageCommand}"
+                            Content="{x:Static res:General.PrintTestPage}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+
         <controls:PpcButton x:Name="Save"
                             Grid.Row="7"
                             Grid.Column="2"

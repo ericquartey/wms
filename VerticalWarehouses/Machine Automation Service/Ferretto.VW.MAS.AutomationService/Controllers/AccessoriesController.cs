@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +15,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IAccessoriesDataProvider accessoriesDataProvider;
 
+        private readonly WMS.Data.WebAPI.Contracts.IPrintersWmsWebService printerWebService;
+
         #endregion
 
         #region Constructors
 
-        public AccessoriesController(IAccessoriesDataProvider accessoriesDataProvider)
+        public AccessoriesController(
+            IAccessoriesDataProvider accessoriesDataProvider,
+            WMS.Data.WebAPI.Contracts.IPrintersWmsWebService printerWebService)
         {
             this.accessoriesDataProvider = accessoriesDataProvider;
         }
@@ -41,6 +46,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var accessories = this.accessoriesDataProvider.GetAccessories(this.BayNumber);
 
             return this.Ok(accessories);
+        }
+
+        [HttpPost("print-test-page")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> PrintTestPage(string printerName)
+        {
+            await this.printerWebService.PrintTestPageAsync(printerName);
+
+            return this.Accepted();
         }
 
         [HttpPut("alpha-numeric-bar")]

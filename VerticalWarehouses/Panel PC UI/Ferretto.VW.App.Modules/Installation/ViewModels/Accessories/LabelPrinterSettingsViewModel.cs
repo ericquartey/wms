@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -14,6 +15,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineAccessoriesWebService machineAccessoriesWebService;
 
+        private readonly DelegateCommand printTestPageCommand;
+
         private string printerName;
 
         #endregion
@@ -21,9 +24,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public LabelPrinterSettingsViewModel(
-               IMachineAccessoriesWebService machineAccessoriesWebService)
+            IMachineAccessoriesWebService machineAccessoriesWebService)
         {
             this.machineAccessoriesWebService = machineAccessoriesWebService;
+
+            this.printTestPageCommand = new DelegateCommand(async () => await this.PrintTestPageAsync(), this.CanPrintTestPage);
         }
 
         #endregion
@@ -42,14 +47,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public System.Windows.Input.ICommand PrintTestPageCommand => this.printTestPageCommand;
+
         #endregion
 
         #region Methods
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-        }
 
         protected override async Task OnDataRefreshAsync()
         {
@@ -102,6 +104,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private bool CanPrintTestPage() => string.IsNullOrWhiteSpace(this.PrinterName);
+
+        private async Task PrintTestPageAsync()
+        {
+            this.Logger.Debug("Printing test page ...");
+
+            try
+            {
+                await this.machineAccessoriesWebService.PrintTestPageAsync(this.PrinterName);
+                this.ShowNotification(VW.App.Resources.InstallationApp.SuccessfullChange);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

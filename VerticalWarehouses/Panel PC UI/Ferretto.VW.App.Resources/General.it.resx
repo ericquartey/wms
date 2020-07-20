@@ -417,4 +417,7 @@
   <data name="DateFormatHourMinuteSecond" xml:space="preserve">
     <value>{0: HH:mm:ss}</value>
   </data>
+  <data name="PrintTestPage" xml:space="preserve">
+    <value>Stampa pagina di prova</value>
+  </data>
 </root>

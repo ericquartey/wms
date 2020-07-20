@@ -709,6 +709,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print Test Page.
+        /// </summary>
+        public static string PrintTestPage {
+            get {
+                return ResourceManager.GetString("PrintTestPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         public static string Priority {
