@@ -176,7 +176,10 @@ namespace Ferretto.VW.App.Services
                         (int)this.activeError.BayNumber,
                         this.activeError.OccurrenceDate,
                         screenshot);
+                }
 
+                if (this.ActiveError != prevError)
+                {
                     await this.NavigateToErrorPageAsync();
                 }
             }

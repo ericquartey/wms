@@ -48,8 +48,15 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
             }
 
+            var newId = 0;
+            if (this.realm.All<Models.ScreenShot>().OrderByDescending(e => e.Id).FirstOrDefault() is Models.ScreenShot screenShotFound)
+            {
+                newId = screenShotFound.Id + 1;
+            }
+
             var screenShotEntry = new Models.ScreenShot
             {
+                Id = newId,
                 BayNumber = screenShot.BayNumber,
                 Machine = machine,
                 Image = screenShot.Image,
