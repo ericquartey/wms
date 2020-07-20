@@ -2568,6 +2568,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsCheckIntrusion", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCheckIntrusion { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsDouble", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDouble { get; set; }
     
@@ -2857,6 +2860,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"Homing")]
         Homing = 8,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckIntrusion")]
+        CheckIntrusion = 16,
     
     }
     
@@ -4044,6 +4050,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("LoadUnitTare", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitTare { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LoadUnitVeryHeavyPercent", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitVeryHeavyPercent { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }

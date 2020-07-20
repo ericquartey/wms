@@ -73,6 +73,8 @@ namespace Ferretto.VW.TelemetryService
 
             services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
             services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
+            services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
+            services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
 
             services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
         }

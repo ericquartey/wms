@@ -389,13 +389,20 @@ namespace Ferretto.VW.App.Services
 
         public async Task GetTuningStatus()
         {
-            var idService = await this.machineIdentityWebService.GetAsync();
-            this.IsTuningCompleted = idService.InstallationDate.HasValue;
+            try
+            {
+                var idService = await this.machineIdentityWebService.GetAsync();
+                this.IsTuningCompleted = idService.InstallationDate.HasValue;
 
-            var setupStatus = await this.machineSetupStatusWebService.GetAsync();
-            this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
-                setupStatus.VerticalResolutionCalibration.IsCompleted &&
-                setupStatus.VerticalOffsetCalibration.IsCompleted;
+                var setupStatus = await this.machineSetupStatusWebService.GetAsync();
+                this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
+                    setupStatus.VerticalResolutionCalibration.IsCompleted &&
+                    setupStatus.VerticalOffsetCalibration.IsCompleted;
+            }
+            catch(Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public async Task OnInitializationServiceAsync()

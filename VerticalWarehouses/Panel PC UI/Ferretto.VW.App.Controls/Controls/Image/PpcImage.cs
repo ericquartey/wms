@@ -53,13 +53,20 @@ namespace Ferretto.VW.App.Controls
         public async Task<ImageSource> GetImageAsync(string path)
         {
             var stream = await this.imageService.GetImageAsync(path);
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.StreamSource = stream;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
+            if (stream != null)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = stream;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
 
-            return bitmap;
+                return bitmap;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion

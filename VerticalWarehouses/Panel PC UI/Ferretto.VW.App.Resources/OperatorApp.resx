@@ -1994,4 +1994,16 @@ Please put back any moved pieces in their original position.</value>
   <data name="UpdatedValue" xml:space="preserve">
     <value>Updated value</value>
   </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Delete mission</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>LoadUnit destination</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>LoadUnit source</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
 </root>

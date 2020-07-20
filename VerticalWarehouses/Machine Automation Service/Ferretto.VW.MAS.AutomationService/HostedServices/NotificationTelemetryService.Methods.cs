@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 LoadUnitId = message.LoadUnitId.Value,
                 MissionId = message.MissionId.Value,
                 MissionType = message.MissionType.ToString(),
+                Status = string.Empty,
                 Stage = message.MissionStep.ToString(),
                 StopReason = (int)message.StopReason,
                 TimeStamp = DateTimeOffset.Now,

@@ -16,23 +16,29 @@ namespace Ferretto.VW.MAS.DataModels
         {
             get
             {
-                if (this.Type == "String")
+                try
                 {
-                    return this.StringValue;
+                    if (this.Type == "String")
+                    {
+                        return this.StringValue;
+                    }
+                    else if (this.Type == "Int")
+                    {
+                        return int.Parse(this.StringValue);
+                    }
+                    else if (this.Type == "uInt")
+                    {
+                        return uint.Parse(this.StringValue);
+                    }
+                    else if (this.Type == "Long")
+                    {
+                        return long.Parse(this.StringValue);
+                    }
                 }
-                else if (this.Type == "Int")
+                catch (Exception ex)
                 {
-                    return int.Parse(this.StringValue);
+                    throw new ArgumentException($"{ex.Message}: On parameter {this.Code}, Type {this.Type} for value '{this.StringValue}', maybe is null or empty ");
                 }
-                else if (this.Type == "uInt")
-                {
-                    return uint.Parse(this.StringValue);
-                }
-                else if (this.Type == "Long")
-                {
-                    return long.Parse(this.StringValue);
-                }
-
                 throw new ArgumentException($"Type {this.Type} for value {this.StringValue}, not supported on parameter {this.Code}");
             }
         }

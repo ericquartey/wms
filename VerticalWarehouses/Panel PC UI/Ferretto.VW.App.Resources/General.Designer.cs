@@ -853,6 +853,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch to Manual.
+        /// </summary>
+        public static string SwitchToManual {
+            get {
+                return ResourceManager.GetString("SwitchToManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -.
         /// </summary>
         public static string TargetNullValue {

@@ -57,10 +57,7 @@ namespace Ferretto.VW.TelemetryService
 
         public async Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
-            if (this.IsConnected)
-            {
-                await this.SendAsync("SendScreenShot", bayNumber, serialNumber, timeStamp, screenshot);
-            }
+            await this.TrySendScreenShotAsync(serialNumber, bayNumber, timeStamp, screenshot, persistOnSendFailure: true);
         }
 
         protected override async Task OnConnectedAsync()
@@ -103,6 +100,18 @@ namespace Ferretto.VW.TelemetryService
                     });
                 }
             }
+
+            foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
+            {
+                var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                if (success)
+                {
+                    await realm.WriteAsync(r =>
+                    {
+                        r.Remove(screenShot);
+                    });
+                }
+            }
         }
 
         protected override void RegisterEvents(HubConnection connection)
@@ -122,32 +131,17 @@ namespace Ferretto.VW.TelemetryService
         private async Task SaveEntryAsync(string serialNumber, IMissionLog missionLog)
         {
             var scope = this.serviceScopeFactory.CreateScope();
-            // TODO: move logic to provider
-            var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>();
-            var machine = realm.All<Models.Machine>().SingleOrDefault(m => m.SerialNumber == serialNumber);
 
-            if (machine != null)
-            {
-                var logEntry = new Models.MissionLog
-                {
-                    Bay = missionLog.Bay,
-                    CellId = missionLog.CellId,
-                    Direction = missionLog.Direction,
-                    EjectLoadUnit = missionLog.EjectLoadUnit,
-                    LoadUnitId = missionLog.LoadUnitId,
-                    Machine = machine,
-                    MissionId = missionLog.MissionId,
-                    MissionType = missionLog.MissionType,
-                    Priority = missionLog.Priority,
-                    Status = missionLog.Status,
-                    Stage = missionLog.Stage,
-                    StopReason = missionLog.StopReason,
-                    TimeStamp = missionLog.TimeStamp,
-                    WmsId = missionLog.WmsId,
-                };
+            var missionLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IMissionLogProvider>();
+            await missionLogProvider.SaveAsync(serialNumber, missionLog);
+        }
 
-                await realm.WriteAsync(r => r.Add(logEntry));
-            }
+        private async Task SaveEntryAsync(string serialNumber, IScreenShot screenShot)
+        {
+            var scope = this.serviceScopeFactory.CreateScope();
+
+            var screenShotProvider = scope.ServiceProvider.GetRequiredService<Providers.IScreenShotProvider>();
+            await screenShotProvider.SaveAsync(serialNumber, screenShot);
         }
 
         private async Task<bool> TrySendErrorLogAsync(string serialNumber, IErrorLog errorLog, bool persistOnSendFailure)
@@ -194,6 +188,38 @@ namespace Ferretto.VW.TelemetryService
             if (!messageSent && persistOnSendFailure)
             {
                 await this.SaveEntryAsync(serialNumber, missionLog);
+            }
+
+            return messageSent;
+        }
+
+        private async Task<bool> TrySendScreenShotAsync(string serialNumber, int bayNumber, DateTimeOffset timeStamp, byte[] image, bool persistOnSendFailure)
+        {
+            var messageSent = false;
+
+            if (this.IsConnected)
+            {
+                try
+                {
+                    await this.SendAsync(nameof(ITelemetryHub.SendScreenShot), bayNumber, serialNumber, timeStamp, image);
+
+                    messageSent = true;
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            if (!messageSent && persistOnSendFailure)
+            {
+                var screenShot = new ScreenShot
+                {
+                    BayNumber = bayNumber,
+                    TimeStamp = timeStamp,
+                    Image = image,
+                };
+
+                await this.SaveEntryAsync(serialNumber, screenShot);
             }
 
             return messageSent;

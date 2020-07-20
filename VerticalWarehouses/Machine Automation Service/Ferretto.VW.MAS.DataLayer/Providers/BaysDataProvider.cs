@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
-        #region Fields
+        //private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
 
-        private const double AdditionalStorageSpace = 14.5;     // AdditionalStorageSpace + VerticalPositionTolerance = 27mm
+        #region Fields
 
         private const int ProfileStep = 25;
 
@@ -267,6 +267,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool CheckIntrusion(BayNumber bayNumber, bool enable)
+        {
+            var bay = this.GetByNumber(bayNumber);
+            if (bay.IsCheckIntrusion
+                && (bay.Shutter is null || bay.Shutter.Type == ShutterType.NotSpecified)
+                )
+            {
+                this.PublishCommand(
+                    new CheckIntrusionMessageData(enable),
+                    "Execute Check Intrusion Command",
+                    MessageActor.DeviceManager,
+                    MessageType.CheckIntrusion,
+                    bayNumber,
+                    bayNumber);
+                return true;
+            }
+            return false;
+        }
+
         public Bay ClearMission(BayNumber bayNumber)
         {
             lock (this.dataContext)
@@ -322,7 +341,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
                 //this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}");
-                return heightClass + offset + AdditionalStorageSpace;
+                return heightClass + offset;
             }
         }
 
@@ -435,10 +454,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
+        public BayNumber GetByInverterIndex(InverterIndex inverterIndex, FieldMessageType messageType = FieldMessageType.NoType)
         {
             lock (this.dataContext)
             {
+                if (messageType == FieldMessageType.MeasureProfile && inverterIndex == InverterIndex.MainInverter)
+                {
+                    return BayNumber.BayOne;
+                }
                 var cacheKey = GetInverterIndexCacheKey(inverterIndex);
                 if (!this.cache.TryGetValue(cacheKey, out BayNumber cacheEntry))
                 {
@@ -449,8 +472,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .AsNoTracking()
                         .SingleOrDefault(b =>
                             b.Inverter.Index == inverterIndex
-                            ||
-                            b.Shutter.Inverter.Index == inverterIndex);
+                            || b.Shutter.Inverter.Index == inverterIndex);
 
                     if (bay is null)
                     {
