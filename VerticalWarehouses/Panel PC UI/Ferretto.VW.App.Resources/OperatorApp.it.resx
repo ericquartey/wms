@@ -1707,4 +1707,22 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="CompleteCheck" xml:space="preserve">
     <value>Controllo completo</value>
   </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Torna a baia</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Errore deposito</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Errore caricamento</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Baia esterna</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Attesa catena</value>
+  </data>
+  <data name="MissionStateWaitDeposit" xml:space="preserve">
+    <value>Attesa deposito</value>
+  </data>
 </root>

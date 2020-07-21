@@ -3312,6 +3312,16 @@ namespace Ferretto.VW.App.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 7.Bay chain.
+        ///   Looks up a localized string similar to Back to bay.
+        /// </summary>
+        public static string MissionStateBackToBay {
+            get {
+                return ResourceManager.GetString("MissionStateBackToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay chain.
         /// </summary>
         public static string MissionStateBayChain {
             get {
@@ -3357,6 +3367,34 @@ namespace Ferretto.VW.App.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 3.Load elevator.
+        ///   Looks up a localized string similar to Error deposit.
+        /// </summary>
+        public static string MissionStateErrorDeposit {
+            get {
+                return ResourceManager.GetString("MissionStateErrorDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error load.
+        /// </summary>
+        public static string MissionStateErrorLoad {
+            get {
+                return ResourceManager.GetString("MissionStateErrorLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ext bay.
+        /// </summary>
+        public static string MissionStateExtBay {
+            get {
+                return ResourceManager.GetString("MissionStateExtBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load elevator.
         /// </summary>
         public static string MissionStateLoadElevator {
             get {
@@ -3402,6 +3440,25 @@ namespace Ferretto.VW.App.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 6.Wait operator action.
+        ///   Looks up a localized string similar to Wait chain.
+        /// </summary>
+        public static string MissionStateWaitChain {
+            get {
+                return ResourceManager.GetString("MissionStateWaitChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait deposit.
+        /// </summary>
+        public static string MissionStateWaitDeposit {
+            get {
+                return ResourceManager.GetString("MissionStateWaitDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait operator action.
         /// </summary>
         public static string MissionStateWaitPick {
             get {
