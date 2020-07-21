@@ -201,11 +201,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCompactingStart()
         {
-            return !this.IsWaitingForResponse &&
+            var result = !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
                    //(this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;
+
+            if (result)
+            {
+                this.OnDataRefreshAsync();
+            }
+
+            return result;
         }
 
         private bool CanCompactingStop()
