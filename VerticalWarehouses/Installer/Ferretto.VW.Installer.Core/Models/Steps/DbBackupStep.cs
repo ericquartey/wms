@@ -13,9 +13,17 @@ namespace Ferretto.VW.Installer.Core
 
         private const string SecondaryDbName = "secondary.db";
 
+        private const string TelemetryFirstDbName = "telemetry.realm";
+
+        private const string TelemetrySecondDbName = "telemetry.realm.lock";
+
         private string primaryDbPath;
 
         private string secondaryDbPath;
+
+        private string telemetryFirstDbPath;
+
+        private string telemetrySecondDbPath;
 
         #endregion
 
@@ -65,6 +73,8 @@ namespace Ferretto.VW.Installer.Core
 
                 this.primaryDbPath = appSettings.ConnectionStrings.PrimaryDbPath;
                 this.secondaryDbPath = appSettings.ConnectionStrings.SecondaryDbPath;
+                this.telemetryFirstDbPath = this.secondaryDbPath;
+                this.telemetryFirstDbPath = this.secondaryDbPath;
 
                 if (File.Exists(appSettingsProductionPath))
                 {
@@ -89,6 +99,15 @@ namespace Ferretto.VW.Installer.Core
                 this.Execution.LogInformation($"Backing up database file '{this.secondaryDbPath}' ...");
                 File.Copy(this.secondaryDbPath, Path.Combine(this.BackupPath, SecondaryDbName), true);
 
+                if (!Path.IsPathRooted(this.telemetryFirstDbPath))
+                {
+                    this.telemetryFirstDbPath = Path.Combine(this.AutomationServicePath, this.telemetryFirstDbPath);
+                }
+                this.Execution.LogInformation($"Backing up database file '{this.telemetryFirstDbPath}\\{TelemetryFirstDbName}' ...");
+                File.Copy(this.telemetryFirstDbPath, Path.Combine(this.BackupPath, TelemetryFirstDbName), true);
+
+                this.Execution.LogInformation($"Backing up database file '{this.telemetryFirstDbPath}\\{TelemetrySecondDbName}' ...");
+                File.Copy(this.telemetryFirstDbPath, Path.Combine(this.BackupPath, TelemetrySecondDbName), true);
                 return Task.FromResult(StepStatus.Done);
             }
             catch (Exception ex)

@@ -1,0 +1,1 @@
+﻿New-Service -name $(TS:Service:Name) -binaryPathName "$(Install:Root:Path)\$(TS:DirName)\$(TS:FileName) --service" -displayName "$(MAS:Service:DisplayName)" -description "$(MAS:Service:Description)" -startupType AutomaticDelayedStart
