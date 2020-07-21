@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            if (this.MachineService.MachineMode == MachineMode.Compact)
+            //if (this.MachineService.MachineMode == MachineMode.Compact || this.MachineService.MachineMode == MachineMode.Manual)
             {
                 if (e.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
                 {
@@ -204,7 +204,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   //(this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;
         }
 
