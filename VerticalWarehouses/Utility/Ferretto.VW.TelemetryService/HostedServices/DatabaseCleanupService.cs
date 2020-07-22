@@ -80,15 +80,15 @@ namespace Ferretto.VW.TelemetryService
 
                     scope.ServiceProvider
                         .GetRequiredService<IErrorLogProvider>()
-                        .DeleteOldLogsAsync(this.maximumLogTimespan);
+                        .DeleteOldLogs(this.maximumLogTimespan);
 
                     scope.ServiceProvider
                         .GetRequiredService<IMissionLogProvider>()
-                        .DeleteOldLogsAsync(this.maximumLogTimespan);
+                        .DeleteOldLogs(this.maximumLogTimespan);
 
                     scope.ServiceProvider
                        .GetRequiredService<IScreenShotProvider>()
-                       .DeleteOldLogsAsync(this.maximumLogTimespan);
+                       .DeleteOldLogs(this.maximumLogTimespan);
 
                     this.logger.LogDebug("Database cleanup completed.");
                 }

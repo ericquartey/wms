@@ -8,7 +8,7 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Methods
 
-        void DeleteOldLogsAsync(System.TimeSpan maximumLogTimespan);
+        void DeleteOldLogs(System.TimeSpan maximumLogTimespan);
 
         IEnumerable<IErrorLog> GetAll();
 

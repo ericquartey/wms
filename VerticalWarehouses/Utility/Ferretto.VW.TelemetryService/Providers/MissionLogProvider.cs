@@ -32,7 +32,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         #region Methods
 
-        public void DeleteOldLogsAsync(TimeSpan maximumLogTimespan)
+        public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
             this.logger.LogDebug("Deleting old mission logs ...");
 
