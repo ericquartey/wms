@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.ServiceDesk.Telemetry;
+using Microsoft.Extensions.Logging;
 using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
@@ -10,20 +13,51 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
+        private readonly ILogger<MissionLogProvider> logger;
+
         private readonly Realm realm;
 
         #endregion
 
         #region Constructors
 
-        public MissionLogProvider(Realm realm)
+        public MissionLogProvider(Realm realm,
+                                  ILogger<MissionLogProvider> logger)
         {
             this.realm = realm;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
+
+        public void DeleteOldLogsAsync(TimeSpan maximumLogTimespan)
+        {
+            this.logger.LogDebug("Deleting old mission logs ...");
+
+            var realm = Realm.GetInstance();
+
+            using var trans = realm.BeginWrite();
+
+            var missionLogs = realm.All<Models.MissionLog>();
+
+            var lastLog = missionLogs.OrderByDescending(e => e.TimeStamp).FirstOrDefault();
+
+            if (lastLog is null)
+            {
+                return;
+            }
+
+            var logsToDelete = missionLogs.OrderByDescending(e => e.TimeStamp)
+                                          .Where(e => (e.TimeStamp - maximumLogTimespan) < lastLog.TimeStamp);
+
+            realm.RemoveRange<Models.MissionLog>(logsToDelete);
+
+            trans.Commit();
+
+            this.logger.LogDebug("A total of {count} mission logs were deleted.", logsToDelete.Count());
+        }
 
         public IEnumerable<IMissionLog> GetAll()
         {
