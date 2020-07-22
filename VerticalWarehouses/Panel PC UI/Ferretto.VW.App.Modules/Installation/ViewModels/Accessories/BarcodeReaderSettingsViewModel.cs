@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -26,6 +27,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken barcodeSubscriptionToken;
 
         private DelegateCommand configureDeviceCommand;
+
+        private DeviceModel deviceModel;
+
+        private IEnumerable<DeviceModel> deviceModels;
 
         private string portName;
 
@@ -59,6 +64,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ConfigureDevice,
                 this.CanConfigureDevice));
 
+        public DeviceModel DeviceModel
+        {
+            get => this.deviceModel;
+            set => this.SetProperty(ref this.deviceModel, value);
+        }
+
+        public IEnumerable<DeviceModel> DeviceModels
+        {
+            get => this.deviceModels;
+            set => this.SetProperty(ref this.deviceModels, value);
+        }
+
         public string PortName
         {
             get => this.portName;
@@ -87,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            this.receivedBarcode = null;
+            this.ReceivedBarcode = null;
 
             this.barcodeSubscriptionToken?.Dispose();
             this.barcodeSubscriptionToken = null;
@@ -98,6 +115,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.ReceivedBarcode = null;
+
+            this.DeviceModels = Enum.GetValues(typeof(DeviceModel)).Cast<DeviceModel>();
 
             this.barcodeSubscriptionToken =
                 this.barcodeSubscriptionToken
@@ -119,9 +138,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsEnabled = this.CanEnable();
                 this.RaisePropertyChanged(nameof(this.IsEnabled));
 
-                if (this.Data is BayAccessories bayAccessories)
+                if (this.Data is BayAccessories bayAccessories && bayAccessories.BarcodeReader != null)
                 {
-                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew;
+                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew == true;
                     this.PortName = bayAccessories.BarcodeReader.PortName;
 
                     this.SetDeviceInformation(bayAccessories.BarcodeReader.DeviceInformation);
@@ -130,7 +149,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.Logger.Warn("Improper parameters were passed to the barcode reader settings page. Leaving the page ...");
 
-                    this.NavigationService.GoBack();
+                    //this.NavigationService.GoBack();
                 }
 
                 await this.barcodeReaderService.StartAsync();
@@ -154,16 +173,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.Logger.Debug("Saving barcode reader settings ...");
-
+                this.ClearNotifications();
                 this.IsWaitingForResponse = true;
-                await this.barcodeReaderService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.PortName);
+                await this.barcodeReaderService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.PortName, this.DeviceModel);
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful);
                 this.Logger.Debug("Barcode reader settings saved.");
+
+                var liveInformation = this.barcodeReaderService.DeviceInformation;
+                this.FirmwareVersion = liveInformation.FirmwareVersion;
+                this.SerialNumber = liveInformation.SerialNumber;
+                this.ManufactureDate = liveInformation.ManufactureDate;
+                this.ModelNumber = liveInformation.ModelNumber;
             }
-            catch (Exception ex)
+            catch
             {
-                this.ShowNotification(ex);
+                throw;
             }
             finally
             {

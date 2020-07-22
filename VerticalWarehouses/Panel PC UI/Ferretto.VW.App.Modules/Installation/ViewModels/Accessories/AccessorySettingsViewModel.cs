@@ -133,9 +133,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                        this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
                        this.AreSettingsChanged = false;
                    }
-                   catch
+                   catch (Exception ex)
                    {
-                       // do nothing
+                       this.ShowNotification(ex);
                    }
                },
                this.CanSave));
