@@ -18,8 +18,8 @@
                       CardText="{res:Loc SensorCard.Horizontal}"
                       CardValue="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F2}}"
                       Sensor1="{Binding SensorsService.IsZeroChain}"
-                      Sensor2="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
-                      Sensor3="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
+                      Sensor2="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
+                      Sensor3="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
                       Type="Axis" />
 
 </UserControl>
