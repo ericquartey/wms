@@ -8,6 +8,8 @@ namespace Ferretto.VW.Devices.BarcodeReader
 
         public int BaudRate { get; set; } = FactorySettings.BaudRate;
 
+        public DeviceModel DeviceModel { get; set; }
+
         public Parity Parity { get; set; } = FactorySettings.Parity;
 
         public string PortName { get; set; }

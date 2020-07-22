@@ -83,11 +83,6 @@ namespace Ferretto.VW.App.Accessories
         {
             get
             {
-                if (!this.isStarted)
-                {
-                    throw new InvalidOperationException("Cannot retrieve device information because the barcode is not connected.");//TODO localize
-                }
-
                 if (this.deviceDriver is IQueryableDevice queryableDevice)
                 {
                     return queryableDevice.Information;
@@ -98,6 +93,8 @@ namespace Ferretto.VW.App.Accessories
                 }
             }
         }
+
+        public DeviceModel DeviceModel { get; private set; }
 
         #endregion
 
@@ -126,20 +123,24 @@ namespace Ferretto.VW.App.Accessories
                     this.deviceDriver.Connect(
                         new ConfigurationOptions
                         {
-                            PortName = accessories.BarcodeReader.PortName
+                            PortName = accessories.BarcodeReader.PortName,
+                            DeviceModel = this.DeviceModel
                         });
                     this.isStarted = true;
 
                     await this.LoadRuleSetAsync();
 
-                    await this.accessoriesWebService.UpdateBarcodeReaderDeviceInfoAsync(
-                        new MAS.AutomationService.Contracts.DeviceInformation
-                        {
-                            FirmwareVersion = this.DeviceInformation.FirmwareVersion,
-                            ManufactureDate = this.DeviceInformation.ManufactureDate,
-                            ModelNumber = this.DeviceInformation.ModelNumber,
-                            SerialNumber = this.DeviceInformation.SerialNumber
-                        });
+                    if (!this.DeviceInformation.IsEmpty)
+                    {
+                        await this.accessoriesWebService.UpdateBarcodeReaderDeviceInfoAsync(
+                            new MAS.AutomationService.Contracts.DeviceInformation
+                            {
+                                FirmwareVersion = this.DeviceInformation.FirmwareVersion,
+                                ManufactureDate = this.DeviceInformation.ManufactureDate,
+                                ModelNumber = this.DeviceInformation.ModelNumber,
+                                SerialNumber = this.DeviceInformation.SerialNumber
+                            });
+                    }
                 }
             }
             catch (Exception ex)
@@ -181,12 +182,13 @@ namespace Ferretto.VW.App.Accessories
             return Task.CompletedTask;
         }
 
-        public async Task UpdateSettingsAsync(bool isEnabled, string portName)
+        public async Task UpdateSettingsAsync(bool isEnabled, string portName, DeviceModel model)
         {
             try
             {
                 await this.accessoriesWebService.UpdateBarcodeReaderSettingsAsync(isEnabled, portName);
 
+                this.DeviceModel = model;
                 this.isDeviceEnabled = isEnabled;
                 if (this.isDeviceEnabled)
                 {
@@ -267,19 +269,15 @@ namespace Ferretto.VW.App.Accessories
         /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if not match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
-            // note: rules with a context have priority
             var matchedRule = this.ruleSet
                 .FirstOrDefault(r =>
-                    r.ContextName != null && r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)
+                    (
+                        r.ContextName == null
+                        ||
+                        r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)
+                    )
                     &&
                     Regex.IsMatch(barcode, r.Pattern));
-
-            // note: rules without a context are applied globally
-            matchedRule = matchedRule ?? this.ruleSet
-               .FirstOrDefault(r =>
-                   r.ContextName == null
-                   &&
-                   Regex.IsMatch(barcode, r.Pattern));
 
             if (matchedRule is null)
             {
@@ -335,6 +333,7 @@ namespace Ferretto.VW.App.Accessories
                 .GetEvent<PubSubEvent<ActionEventArgs>>()
                 .Publish(e);
 
+            // do not process rules if the barcode configuration screens are activeò
             var skipProcessing = false;
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -411,7 +410,6 @@ namespace Ferretto.VW.App.Accessories
             }
 
             var nextRule = this.ruleSet.SingleOrDefault(r => r.Id == this.activeRule.NextRuleId);
-
             if (nextRule is null)
             {
                 this.logger.Warn($"Barcode '{code}': next chained rule not found. Check your rule set.");
@@ -427,7 +425,7 @@ namespace Ferretto.VW.App.Accessories
             }
             else
             {
-                this.logger.Warn($"Barcode '{code}': did not match the chained rule.");
+                this.logger.Warn($"Barcode '{code}': did not match the chained rule '{nextRule.Action}'.");
 
                 if (this.activeRule.RestartOnMismatch)
                 {
