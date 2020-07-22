@@ -4,10 +4,14 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    [Serializable]
+//    [Serializable]
     public class MoveLoadingUnitMessageData : IMoveLoadingUnitMessageData
     {
         #region Constructors
+
+        public MoveLoadingUnitMessageData()
+        {
+        }
 
         public MoveLoadingUnitMessageData(
             MissionType missionType,
