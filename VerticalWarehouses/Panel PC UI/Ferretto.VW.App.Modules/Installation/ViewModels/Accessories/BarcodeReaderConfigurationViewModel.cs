@@ -102,19 +102,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_enter_setup.png",
                 Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
-                Number = 1,
+                Number = 2,
             },
             new
             {
                 Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
                 Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
-                Number = 2,
+                Number = 3,
             },
             new
             {
                 Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_exit_setup.png",
                 Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
-                Number = 3,
+                Number = 4,
             },
         };
 
