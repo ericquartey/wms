@@ -115,7 +115,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your Newland barcode reader is set up as USB COM port emulation..
+        ///   Looks up a localized string similar to Device information not acquired. Ensure to leave the reader attached to its base..
+        /// </summary>
+        public static string AccessoriesBarcodeLeaveOnBase {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeLeaveOnBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shoot these barcodes in sequence to ensure your barcode reader is set up as USB COM port emulation..
         /// </summary>
         public static string AccessoriesBarcodeReaderConfigurationInstructions {
             get {

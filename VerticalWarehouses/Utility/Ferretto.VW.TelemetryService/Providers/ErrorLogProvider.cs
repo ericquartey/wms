@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.ServiceDesk.Telemetry;
+using Microsoft.Extensions.Logging;
 using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
@@ -10,20 +13,51 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
+        private readonly ILogger<ErrorLogProvider> logger;
+
         private readonly Realm realm;
 
         #endregion
 
         #region Constructors
 
-        public ErrorLogProvider(Realm realm)
+        public ErrorLogProvider(Realm realm,
+                                ILogger<ErrorLogProvider> logger)
         {
             this.realm = realm;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
+
+        public void DeleteOldLogsAsync(TimeSpan maximumLogTimespan)
+        {
+            this.logger.LogDebug("Deleting old error logs ...");
+
+            var realm = Realm.GetInstance();
+
+            using var trans = realm.BeginWrite();
+
+            var errorLogs = realm.All<Models.ErrorLog>();
+
+            var lastLog = errorLogs.OrderByDescending(e => e.OccurrenceDate).FirstOrDefault();
+
+            if (lastLog is null)
+            {
+                return;
+            }
+
+            var logsToDelete = errorLogs.OrderByDescending(e => e.OccurrenceDate)
+                                        .Where(e => (e.OccurrenceDate - maximumLogTimespan) < lastLog.OccurrenceDate);
+
+            realm.RemoveRange<Models.ErrorLog>(logsToDelete);
+
+            trans.Commit();
+
+            this.logger.LogDebug("A total of {count} error logs were deleted.", logsToDelete.Count());
+        }
 
         public IEnumerable<IErrorLog> GetAll()
         {

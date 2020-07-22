@@ -8,6 +8,15 @@ namespace Ferretto.VW.Devices
 
         public string FirmwareVersion { get; set; }
 
+        public bool IsEmpty =>
+            string.IsNullOrEmpty(this.SerialNumber)
+            &&
+            string.IsNullOrEmpty(this.ModelNumber)
+            &&
+            !this.ManufactureDate.HasValue
+            &&
+            string.IsNullOrEmpty(this.FirmwareVersion);
+
         public DateTime? ManufactureDate { get; set; }
 
         public string ModelNumber { get; set; }
