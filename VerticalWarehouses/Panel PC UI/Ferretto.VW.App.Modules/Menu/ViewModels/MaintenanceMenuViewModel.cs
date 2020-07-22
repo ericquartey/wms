@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -78,9 +79,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Compact) &&
                       this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                     (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-               )
-            );
+                     (!(!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay()) &&
+                     (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()))));
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
@@ -112,6 +112,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             else
             {
                 this.MachineIdentity = this.sessionService.MachineIdentity;
+            }
+
+            if (!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay())
+            {
+                this.ShowNotification(Localized.Get("OperatorApp.UnitInBayWarning"), Services.Models.NotificationSeverity.Warning);
             }
 
             await base.OnAppearedAsync();

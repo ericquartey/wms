@@ -1725,4 +1725,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MissionStateWaitDeposit" xml:space="preserve">
     <value>Attesa deposito</value>
   </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Cassetto presente in baia compattazione non permessa</value>
+  </data>
 </root>

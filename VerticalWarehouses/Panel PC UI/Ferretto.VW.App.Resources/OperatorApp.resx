@@ -2114,4 +2114,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="MissionStateWaitDeposit" xml:space="preserve">
     <value>Wait deposit</value>
   </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Unit present in bay compaction not allowed</value>
+  </data>
 </root>

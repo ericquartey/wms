@@ -3311,7 +3311,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 7.Bay chain.
         ///   Looks up a localized string similar to Back to bay.
         /// </summary>
         public static string MissionStateBackToBay {
@@ -3321,7 +3320,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay chain.
+        ///   Looks up a localized string similar to 7.Bay chain.
         /// </summary>
         public static string MissionStateBayChain {
             get {
@@ -3366,7 +3365,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.Load elevator.
         ///   Looks up a localized string similar to Error deposit.
         /// </summary>
         public static string MissionStateErrorDeposit {
@@ -3394,7 +3392,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load elevator.
+        ///   Looks up a localized string similar to 3.Load elevator.
         /// </summary>
         public static string MissionStateLoadElevator {
             get {
@@ -3439,7 +3437,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 6.Wait operator action.
         ///   Looks up a localized string similar to Wait chain.
         /// </summary>
         public static string MissionStateWaitChain {
@@ -3458,7 +3455,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wait operator action.
+        ///   Looks up a localized string similar to 6.Wait operator action.
         /// </summary>
         public static string MissionStateWaitPick {
             get {
@@ -4615,6 +4612,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitId {
             get {
                 return ResourceManager.GetString("UnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit present in bay compaction not allowed.
+        /// </summary>
+        public static string UnitInBayWarning {
+            get {
+                return ResourceManager.GetString("UnitInBayWarning", resourceCulture);
             }
         }
         
