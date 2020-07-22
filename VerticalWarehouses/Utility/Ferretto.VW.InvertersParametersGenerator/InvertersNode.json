@@ -134,7 +134,7 @@
         {
           "Code": 953,
           "Description": "TxPDO1 Word4",
-          "Value": "0"
+          "Value": "9"
         }
       ]
     },
@@ -175,17 +175,17 @@
         {
           "Code": 951,
           "Description": "TxPDO1 Word2",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 952,
           "Description": "TxPDO1 Word3",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 953,
           "Description": "TxPDO1 Word4",
-          "Value": "0"
+          "Value": "9"
         }
       ]
     },
@@ -226,17 +226,17 @@
         {
           "Code": 951,
           "Description": "TxPDO1 Word2",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 952,
           "Description": "TxPDO1 Word3",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 953,
           "Description": "TxPDO1 Word4",
-          "Value": "0"
+          "Value": "9"
         }
       ]
     },
@@ -338,7 +338,7 @@
         {
           "Code": 953,
           "Description": "TxPDO1 Word4",
-          "Value": "0"
+          "Value": "9"
         }
       ]
     },
@@ -379,17 +379,17 @@
         {
           "Code": 951,
           "Description": "TxPDO1 Word2",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 952,
           "Description": "TxPDO1 Word3",
-          "Value": "0"
+          "Value": "9"
         },
         {
           "Code": 953,
           "Description": "TxPDO1 Word4",
-          "Value": "0"
+          "Value": "9"
         }
       ]
     }

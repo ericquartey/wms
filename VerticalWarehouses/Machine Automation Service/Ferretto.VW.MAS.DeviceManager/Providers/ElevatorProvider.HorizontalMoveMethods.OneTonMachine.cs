@@ -192,7 +192,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 lastPosTmp = switchPosition[i];
             }
 
-            var speedVertical = new[] { Math.Abs(displacement) / time };  // time = space / speed [s]
+            const double MIN_SPEED_VALUE = 0.1d;
+            var speedVertical = new[] { (displacement != 0.0d) ? Math.Abs(displacement) / time : MIN_SPEED_VALUE };  // time = space / speed [s]
 
             var switchPositionVertical = new[] { 0.0 };
 
@@ -320,7 +321,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var time = Math.Abs(horizontalTargetPosition) / horizontalSpeed[0];  // Calculate the time = space / speed [s]
 
             // Get the speed along vertical axis
-            var verticalSpeed = new[] { Math.Abs(verticalDisplacement) / time };
+            const double MIN_SPEED_VALUE = 0.1d;
+            var verticalSpeed = new[] { (verticalDisplacement != 0.0d) ? Math.Abs(verticalDisplacement) / time : MIN_SPEED_VALUE };
 
             // -------------------------
             // Vertical movement message
