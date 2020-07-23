@@ -194,6 +194,7 @@
       "telemetryDatabaseRoot": "$(TS:Database:Root)",
       "telemetryDatabaseFolder": "$(TS:DatabaseFolder)",
       "backupPath": "$(Backup:Root:Path)\\Staging",
+      "machineRole": "Master",
       "setupMode": "UpdateAndRestore"
     },
     {
