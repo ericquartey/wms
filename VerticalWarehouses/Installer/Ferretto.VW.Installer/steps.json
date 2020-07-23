@@ -191,9 +191,9 @@
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
       "automationServicePath": "$(Install:Root:Path)\\$(MAS:DirName)",
-      "backupPath": "$(Backup:Root:Path)\\Staging",
-      "machineRole": "Master",
-      "setupMode": "UpdateAndRestore"
+      "telemetryDatabaseRoot": "$(TS:Database:Root)",
+      "telemetryDatabaseFolder": "$(TS:DatabaseFolder)",
+      "backupPath": "$(Backup:Root:Path)\\Staging"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -365,7 +365,7 @@
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
       "Script": "scripts/set_app_autostart.ps1",
       "rollbackScript": "scripts/set_app_autostart.rollback.ps1"
-    }
+    },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 44,
