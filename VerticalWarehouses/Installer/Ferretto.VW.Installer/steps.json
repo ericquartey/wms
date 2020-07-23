@@ -193,7 +193,8 @@
       "automationServicePath": "$(Install:Root:Path)\\$(MAS:DirName)",
       "telemetryDatabaseRoot": "$(TS:Database:Root)",
       "telemetryDatabaseFolder": "$(TS:DatabaseFolder)",
-      "backupPath": "$(Backup:Root:Path)\\Staging"
+      "backupPath": "$(Backup:Root:Path)\\Staging",
+      "setupMode": "UpdateAndRestore"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
