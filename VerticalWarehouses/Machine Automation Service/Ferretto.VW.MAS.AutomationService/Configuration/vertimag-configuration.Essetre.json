@@ -78,7 +78,7 @@
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 445.0,
+            "Height": 448.0,
             "Id": 1,
             "IsUpper": false,
             "Location": "InternalBay1Down",
@@ -88,7 +88,7 @@
             "ProfileOffset": 0.0
           },
           {
-            "Height": 888.0,
+            "Height": 895.0,
             "Id": 2,
             "IsUpper": true,
             "Location": "InternalBay1Up",

@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsFastDepositToBay { get; set; }
 
+        public bool IsAdjustByWeight { get; set; }
+
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }

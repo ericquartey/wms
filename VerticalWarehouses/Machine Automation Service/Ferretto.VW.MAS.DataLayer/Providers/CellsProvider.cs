@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
-            if (availableSpace <= loadUnitHeight)
+            if (availableSpace < loadUnitHeight)
             {
                 return false;
             }

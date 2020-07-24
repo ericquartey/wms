@@ -763,7 +763,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     //
                     // TEST: check intrusion
-                    //var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)3613));
+                    //var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)3918));
                     //
 
                     result = client.Client.Send(profileMessage);
