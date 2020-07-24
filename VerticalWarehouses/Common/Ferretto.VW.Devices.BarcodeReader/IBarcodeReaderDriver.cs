@@ -13,7 +13,7 @@ namespace Ferretto.VW.Devices.BarcodeReader
 
         #region Methods
 
-        void Connect(ConfigurationOptions options);
+        void Connect(SerialPortOptions options);
 
         void Disconnect();
 

@@ -88,6 +88,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Hubs", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Telemetry.Contracts.Hub", "Utility\Ferretto.VW.Telemetry.Contracts.Hub\Ferretto.VW.Telemetry.Contracts.Hub.csproj", "{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.WeightingScale", "Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj", "{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -458,6 +460,18 @@ Global
 		{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B}.Release|x64.Build.0 = Release|Any CPU
 		{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B}.Release|x86.ActiveCfg = Release|Any CPU
 		{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B}.Release|x86.Build.0 = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|x64.Build.0 = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -494,6 +508,7 @@ Global
 		{5818EDBF-4CA1-4A7C-A5B2-F6247B76D941} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{D0C8683C-8D74-4484-9D65-F5AA9B914AD6} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
+		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

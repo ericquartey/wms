@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.BarcodeReader\Ferretto.VW.Devices.BarcodeReader.csproj" />
+    <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices\Ferretto.VW.Devices.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
   </ItemGroup>

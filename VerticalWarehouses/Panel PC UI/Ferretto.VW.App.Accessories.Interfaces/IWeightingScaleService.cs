@@ -1,0 +1,63 @@
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Ferretto.VW.Devices.WeightingScale;
+
+namespace Ferretto.VW.App.Accessories.Interfaces
+{
+    public interface IWeightingScaleService : IAccessoryService
+    {
+        #region Properties
+
+        /// <summary>
+        /// Gets the names of the active serial ports on the local machine.
+        /// </summary>
+        ObservableCollection<string> PortNames { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Clears the message on the display of the device.
+        /// </summary>
+        /// <exception cref="System.Exception" />
+        Task ClearMessageAsync();
+
+        /// <summary>
+        /// Displays a message on the display of the device.
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        /// <exception cref="System.Exception" />
+        Task DisplayMessageAsync(string message);
+
+        /// <summary>
+        /// Displays a message on the display of the device for a limited amount of time
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        /// <param name="duration">The duration of the message on the display.</param>
+        /// <exception cref="System.Exception" />
+        Task DisplayMessageAsync(string message, System.TimeSpan duration);
+
+        /// <summary>
+        /// Measures the current weight on the device.
+        /// </summary>
+        /// <returns>A <see cref="IWeightSample"/> containing the measurement information.</returns>
+        /// <exception cref="System.Exception" />
+        Task<IWeightSample> MeasureWeightAsync();
+
+        /// <summary>
+        /// Resets the average unitary weight.
+        /// </summary>
+        /// <exception cref="System.Exception" />
+        Task ResetAverageUnitaryWeightAsync();
+
+        /// <summary>
+        /// Sets the average unitary weight.
+        /// </summary>
+        /// <param name="weight">The weight of the item.</param>
+        /// <exception cref="System.Exception" />
+        Task SetAverageUnitaryWeightAsync(float weight);
+
+        #endregion
+    }
+}

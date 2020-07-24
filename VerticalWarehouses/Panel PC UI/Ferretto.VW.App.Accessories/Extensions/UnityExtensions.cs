@@ -4,6 +4,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Ferretto.VW.Devices.LaserPointer;
+using Ferretto.VW.Devices.WeightingScale;
 using Prism.Ioc;
 using Unity;
 
@@ -60,6 +61,19 @@ namespace Ferretto.VW.App.Accessories
             }
 
             containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
+
+            return containerRegistry;
+        }
+
+        public static IContainerRegistry ConfigureWeightingScaleUiServices(this IContainerRegistry containerRegistry)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.ConfigureWeightingScaleDriver();
+            containerRegistry.RegisterSingleton<IWeightingScaleService, WeightingScaleService>();
 
             return containerRegistry;
         }

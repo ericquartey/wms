@@ -121,7 +121,7 @@ namespace Ferretto.VW.App.Accessories
                 if (this.isDeviceEnabled)
                 {
                     this.deviceDriver.Connect(
-                        new ConfigurationOptions
+                        new NewlandSerialPortOptions
                         {
                             PortName = accessories.BarcodeReader.PortName,
                             DeviceModel = this.DeviceModel
