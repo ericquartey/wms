@@ -1,5 +1,5 @@
 $basePath = $(Update:Temp:Path)\$(Installer:DirName) + "\Drivers";
-$driverFullPath = $basePath + "\BarcodeNewland";
+$driverFullPath = $basePath + "\BarcodeDatalogic";
 $contents = Get-ChildItem -Path $driverFullPath | sort | Select-Object -First 1;
 $driverFileName = $contents.Name;
 if ($driverFileName -ne $null)

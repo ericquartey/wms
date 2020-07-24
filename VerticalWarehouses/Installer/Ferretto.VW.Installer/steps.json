@@ -60,9 +60,23 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 9,
-      "title": "Installa Driver Barcode",
-      "description": "Installa il pacchetto dei driver del lettore di codici a barre.",
+      "title": "Installa Driver Barcode Newland",
+      "description": "Installa il pacchetto dei driver Newland del lettore di codici a barre.",
       "script": "scripts/install_newland_barcode_driver.ps1"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 9,
+      "title": "Installa Driver Barcode Datalogic",
+      "description": "Installa il pacchetto dei driver Datalogic del lettore di codici a barre.",
+      "script": "scripts/install_datalogic_barcode_driver.ps1"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 9,
+      "title": "Installa Driver Token reader Euchner",
+      "description": "Installa il pacchetto dei driver Euchner del lettore token.",
+      "script": "scripts/install_euchner_tokenreader_driver.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
