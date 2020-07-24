@@ -58,6 +58,14 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// <exception cref="System.Exception" />
         Task SetAverageUnitaryWeightAsync(float weight);
 
+        /// <summary>
+        /// Saves the device settings.
+        /// </summary>
+        /// <param name="isEnabled">If True, it means that the device is enabled and usable.</param>
+        /// <param name="portName">The system name of the serial port to which the device is connected.</param>
+        /// <returns></returns>
+        Task UpdateSettingsAsync(bool isEnabled, string portName);
+
         #endregion
     }
 }
