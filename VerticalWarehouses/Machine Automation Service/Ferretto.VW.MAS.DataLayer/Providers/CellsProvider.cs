@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
-            if (availableSpace <= loadUnitHeight)
+            if (availableSpace < loadUnitHeight)
             {
                 return false;
             }
@@ -366,7 +366,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
                         // check if load unit fits in available space
-                        if (availableSpace > loadUnitHeight + VerticalPositionTolerance
+                        if (availableSpace >= loadUnitHeight + VerticalPositionTolerance
                             && (compactingType != CompactingType.AnySpaceCompacting
                                 || firstFree
                                 )
