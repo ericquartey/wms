@@ -40,14 +40,14 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         #region Methods
 
-        public void Connect(ConfigurationOptions options)
+        public void Connect(NewlandConfigurationOptions options)
         {
             if (this.isDisposed)
             {
                 throw new ObjectDisposedException(nameof(BarcodeReader));
             }
 
-            this.logger.Debug($"Opening serial port {options.PortName} ...");
+            this.logger.Debug($"Opening serial port {this.serialPort.PortName} ...");
 
             if (this.serialPort.IsOpen)
             {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
             this.isReading = true;
 
-            if (optionsObject is ConfigurationOptions options
+            if (optionsObject is NewlandConfigurationOptions options
                 &&
                 options.DeviceModel is DeviceModel.Newland1550)
             {

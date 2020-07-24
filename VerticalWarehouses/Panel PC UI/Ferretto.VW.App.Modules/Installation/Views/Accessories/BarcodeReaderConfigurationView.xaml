@@ -98,7 +98,7 @@
                                FontSize="18"
                                FontWeight="DemiBold"
                                Foreground="White"
-                               Text="2" />
+                               Text="1" />
                 </Border>
                 <StackPanel VerticalAlignment="Center"
                             Orientation="Vertical">
@@ -147,6 +147,16 @@
                         </RadioButton.Content>
                     </RadioButton>
 
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsDatalogicPBT9501, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Datalogic PBT9501" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
                 </StackPanel>
 
 
@@ -165,10 +175,9 @@
 
 
         <StackPanel Grid.Row="2"
-                    Grid.Column="2" >
-            <StackPanel 
-                        Margin="0,0,0,30"
-                        Orientation="Horizontal" >
+                    Grid.Column="2">
+            <StackPanel Margin="0,0,0,30"
+                        Orientation="Horizontal">
                 <Border Width="40"
                         Height="40"
                         Margin="15,0,15,15"
