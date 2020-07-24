@@ -64,6 +64,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <controls:PpcTextBox Grid.Column="0"
@@ -110,6 +111,20 @@
                                      InputText="{Binding SelectedCell.Position, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="{res:Loc InstallationApp.Position}" />
+                <StackPanel Grid.Column="3"
+                            Margin="5,4,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Orientation="Vertical">
+                    <TextBlock Margin="5,0,0,0"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.IsFree}" />
+                    <controls:PpcCheckBox Margin="5,4,0,5"
+                                          IsChecked="{Binding SelectedCell.IsFree, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          IsEnabled="{Binding IsEnabledEditing}" />
+                </StackPanel>
+
+
                 <!--  LabelText="Position" />  -->
 
             </Grid>
