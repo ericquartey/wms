@@ -13,17 +13,9 @@ namespace Ferretto.VW.Installer.Core
 
         private const string SecondaryDbName = "secondary.db";
 
-        private const string TelemetryFirstDbName = "telemetry.realm";
-
-        private const string TelemetrySecondDbName = "telemetry.realm.lock";
-
         private string primaryDbPath;
 
         private string secondaryDbPath;
-
-        private string telemetryFirstDbPath;
-
-        private string telemetrySecondDbPath;
 
         #endregion
 
@@ -34,6 +26,8 @@ namespace Ferretto.VW.Installer.Core
             string title,
             string description,
             string automationServicePath,
+            string telemetryDatabaseRoot,
+            string telemetryDatabaseFolder,
             string backupPath,
             MachineRole machineRole,
             SetupMode setupMode,
@@ -42,14 +36,19 @@ namespace Ferretto.VW.Installer.Core
             : base(number, title, description, machineRole, setupMode, skipOnResume, skipRollback)
         {
             this.AutomationServicePath = InterpolateVariables(automationServicePath);
+            this.TelemetryDatabaseRoot = InterpolateVariables(telemetryDatabaseRoot);
+            this.TelemetryDatabaseFolder = InterpolateVariables(telemetryDatabaseFolder);
             this.BackupPath = InterpolateVariables(backupPath);
         }
 
         #endregion
 
         #region Properties
-
+        public string TelemetryDatabaseRoot { get; }
         public string AutomationServicePath { get; }
+
+        public string TelemetryDatabaseFolder { get; }
+        
 
         public string BackupPath { get; }
 
@@ -73,8 +72,6 @@ namespace Ferretto.VW.Installer.Core
 
                 this.primaryDbPath = appSettings.ConnectionStrings.PrimaryDbPath;
                 this.secondaryDbPath = appSettings.ConnectionStrings.SecondaryDbPath;
-                this.telemetryFirstDbPath = this.secondaryDbPath;
-                this.telemetryFirstDbPath = this.secondaryDbPath;
 
                 if (File.Exists(appSettingsProductionPath))
                 {
@@ -99,21 +96,56 @@ namespace Ferretto.VW.Installer.Core
                 this.Execution.LogInformation($"Backing up database file '{this.secondaryDbPath}' ...");
                 File.Copy(this.secondaryDbPath, Path.Combine(this.BackupPath, SecondaryDbName), true);
 
-                if (!Path.IsPathRooted(this.telemetryFirstDbPath))
+                var telemetryFolderPath = Path.Combine(this.TelemetryDatabaseRoot, this.TelemetryDatabaseFolder);
+                this.Execution.LogInformation($"Backing up database telemetry '{telemetryFolderPath}' ...");                
+                if (Directory.Exists(telemetryFolderPath))
                 {
-                    this.telemetryFirstDbPath = Path.Combine(this.AutomationServicePath, this.telemetryFirstDbPath);
+                    this.DirectoryCopy(telemetryFolderPath, Path.Combine(this.BackupPath, this.TelemetryDatabaseFolder));                    
                 }
-                this.Execution.LogInformation($"Backing up database file '{this.telemetryFirstDbPath}\\{TelemetryFirstDbName}' ...");
-                File.Copy(this.telemetryFirstDbPath, Path.Combine(this.BackupPath, TelemetryFirstDbName), true);
-
-                this.Execution.LogInformation($"Backing up database file '{this.telemetryFirstDbPath}\\{TelemetrySecondDbName}' ...");
-                File.Copy(this.telemetryFirstDbPath, Path.Combine(this.BackupPath, TelemetrySecondDbName), true);
                 return Task.FromResult(StepStatus.Done);
             }
             catch (Exception ex)
             {
                 this.Execution.LogError(ex.Message);
                 return Task.FromResult(StepStatus.Failed);
+            }
+        }
+
+        private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs = true)
+        {
+            // Get the subdirectories for the specified directory.
+            var dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                var msg = $"Source directory does not exist or could not be found: {sourceDirName}";
+                this.Execution.LogError(msg);
+                throw new DirectoryNotFoundException(msg);
+            }
+
+            var dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            var files = dir.GetFiles();
+            foreach (var file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (var subdir in dirs)
+                {
+                    var temppath = Path.Combine(destDirName, subdir.Name);
+                    this.DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
             }
         }
 
