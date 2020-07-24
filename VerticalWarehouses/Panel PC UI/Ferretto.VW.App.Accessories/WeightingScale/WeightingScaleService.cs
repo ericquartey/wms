@@ -135,6 +135,12 @@ namespace Ferretto.VW.App.Accessories
             return Task.CompletedTask;
         }
 
+        public Task UpdateItemAverageWeightAsync(int itemId, double averageWeight)
+        {
+            //TODO
+            return Task.CompletedTask;
+        }
+
         public async Task UpdateSettingsAsync(bool isEnabled, string portName)
         {
             try

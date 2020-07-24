@@ -59,11 +59,19 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         Task SetAverageUnitaryWeightAsync(float weight);
 
         /// <summary>
+        /// Updates the average unitary weight of the specified item.
+        /// </summary>
+        /// <param name="itemId">The identifier of the item to update.</param>
+        /// <param name="averageWeight">The new unitary average weight of the item.</param>
+        /// <returns></returns>
+        Task UpdateItemAverageWeightAsync(int itemId, double averageWeight);
+
+        /// <summary>
         /// Saves the device settings.
         /// </summary>
         /// <param name="isEnabled">If True, it means that the device is enabled and usable.</param>
         /// <param name="portName">The system name of the serial port to which the device is connected.</param>
-        /// <returns></returns>
+        /// <exception cref="System.Exception" />
         Task UpdateSettingsAsync(bool isEnabled, string portName);
 
         #endregion
