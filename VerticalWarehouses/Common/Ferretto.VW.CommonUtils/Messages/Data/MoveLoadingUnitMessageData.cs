@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-//    [Serializable]
+    //    [Serializable]
     public class MoveLoadingUnitMessageData : IMoveLoadingUnitMessageData
     {
         #region Constructors
@@ -39,6 +39,22 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.StopReason = stopReason;
             this.MissionStep = step;
             this.Verbosity = verbosity;
+        }
+
+        public MoveLoadingUnitMessageData(IMoveLoadingUnitMessageData other)
+        {
+            this.MissionType = other.MissionType;
+            this.Source = other.Source;
+            this.Destination = other.Destination;
+            this.SourceCellId = other.SourceCellId;
+            this.DestinationCellId = other.DestinationCellId;
+            this.LoadUnitId = other.LoadUnitId;
+            this.InsertLoadUnit = other.InsertLoadUnit;
+            this.MissionId = other.MissionId;
+            this.CommandAction = other.CommandAction;
+            this.StopReason = other.StopReason;
+            this.MissionStep = other.MissionStep;
+            this.Verbosity = other.Verbosity;
         }
 
         #endregion
