@@ -22,7 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ProfileCalibrateDistance = profileCalibrateDistance;
             this.Measured = measured;
 
-            //this.Verbosity = verbosity;
+            this.Verbosity = MessageVerbosity.Debug;
         }
 
         public ProfileCalibrationMessageData(IProfileCalibrationMessageData ms)
