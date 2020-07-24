@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        public DeviceModel DeviceModel { get; private set; }
+        public DeviceModel DeviceModel { get; set; }
 
         #endregion
 

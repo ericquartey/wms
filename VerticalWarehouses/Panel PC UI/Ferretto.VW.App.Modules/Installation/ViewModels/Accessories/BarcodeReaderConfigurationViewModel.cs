@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<object> barcodeSteps;
 
+        private bool isDatalogicPBT9501;
+
         private bool isNewland1550;
 
         private bool isNewland1580;
@@ -51,6 +53,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.barcodeSteps;
             set => this.SetProperty(ref this.barcodeSteps, value);
+        }
+
+        public bool IsDatalogicPBT9501
+        {
+            get => this.isDatalogicPBT9501;
+            set => this.SetProperty(ref this.isDatalogicPBT9501, value, this.UpdateBarcodes);
         }
 
         public bool IsNewland1550
@@ -96,27 +104,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return base.OnAppearedAsync();
         }
 
-        private IEnumerable<object> GetBarcodeSteps(DeviceModel deviceModel) => new List<object>()
+        private IEnumerable<object> GetBarcodeSteps(DeviceModel deviceModel)
         {
-            new
+            if (deviceModel == DeviceModel.DatalogicPBT9501)
             {
-                Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_enter_setup.png",
-                Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
-                Number = 2,
-            },
-            new
+                return new List<object>()
+                {
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 2,
+                    },
+                };
+            }
+            else
             {
-                Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
-                Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
-                Number = 3,
-            },
-            new
+                return new List<object>()
             {
-                Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_exit_setup.png",
-                Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
-                Number = 4,
-            },
-        };
+                new
+                {
+                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_enter_setup.png",
+                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
+                    Number = 2,
+                },
+                new
+                {
+                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                    Number = 3,
+                },
+                new
+                {
+                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_exit_setup.png",
+                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
+                    Number = 4,
+                },
+            };
+            }
+        }
 
         private void OnPortNamesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -141,6 +167,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (this.IsNewland3290)
             {
                 deviceModel = DeviceModel.Newland3290;
+            }
+            else if (this.IsDatalogicPBT9501)
+            {
+                deviceModel = DeviceModel.DatalogicPBT9501;
             }
 
             this.BarcodeSteps = this.GetBarcodeSteps(deviceModel);

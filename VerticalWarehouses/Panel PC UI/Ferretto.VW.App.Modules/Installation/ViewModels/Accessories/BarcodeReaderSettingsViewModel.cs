@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -70,12 +69,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.deviceModel, value);
         }
 
-        public IEnumerable<DeviceModel> DeviceModels
-        {
-            get => this.deviceModels;
-            set => this.SetProperty(ref this.deviceModels, value);
-        }
-
         public string PortName
         {
             get => this.portName;
@@ -116,8 +109,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ReceivedBarcode = null;
 
-            this.DeviceModels = Enum.GetValues(typeof(DeviceModel)).Cast<DeviceModel>();
-
             this.barcodeSubscriptionToken =
                 this.barcodeSubscriptionToken
                 ??
@@ -138,19 +129,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsEnabled = this.CanEnable();
                 this.RaisePropertyChanged(nameof(this.IsEnabled));
 
-                if (this.Data is BayAccessories bayAccessories && bayAccessories.BarcodeReader != null)
+                if (this.Data is BayAccessories bayAccessories
+                    &&
+                    bayAccessories.BarcodeReader != null)
                 {
-                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew == true;
+                    this.IsAccessoryEnabled = bayAccessories.BarcodeReader.IsEnabledNew;
                     this.PortName = bayAccessories.BarcodeReader.PortName;
+                    this.DeviceModel = bayAccessories.BarcodeReader.DeviceInformation?.ModelNumber?.Contains("1550") == true
+                        ? Devices.BarcodeReader.DeviceModel.Newland1550
+                        : Devices.BarcodeReader.DeviceModel.NotSpecified;
 
                     this.SetDeviceInformation(bayAccessories.BarcodeReader.DeviceInformation);
                 }
                 else
                 {
-                    this.Logger.Warn("Improper parameters were passed to the barcode reader settings page. Leaving the page ...");
-
-                    //this.NavigationService.GoBack();
+                    this.Logger.Warn("Improper parameters were passed to the barcode reader settings page.");
                 }
+
+                this.barcodeReaderService.DeviceModel = this.ModelNumber?.Contains("1550") == true
+                  ? Devices.BarcodeReader.DeviceModel.Newland1550
+                  : Devices.BarcodeReader.DeviceModel.NotSpecified;
 
                 await this.barcodeReaderService.StartAsync();
 
@@ -184,6 +182,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SerialNumber = liveInformation.SerialNumber;
                 this.ManufactureDate = liveInformation.ManufactureDate;
                 this.ModelNumber = liveInformation.ModelNumber;
+
+                this.DeviceModel = this.ModelNumber?.Contains("1550") == true
+                    ? Devices.BarcodeReader.DeviceModel.Newland1550
+                    : Devices.BarcodeReader.DeviceModel.NotSpecified;
             }
             catch
             {
