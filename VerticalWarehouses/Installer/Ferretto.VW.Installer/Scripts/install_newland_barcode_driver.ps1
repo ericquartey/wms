@@ -1,10 +1,9 @@
-$basePath = $(Update:Temp:Path)\$(Installer:DirName) + "\Drivers";
-$driverFullPath = $basePath + "\BarcodeNewland";
+$driverFullPath = "$(Update:Temp:Path)\$(Installer:DirName)\Drivers\BarcodeNewland";
 $contents = Get-ChildItem -Path $driverFullPath | sort | Select-Object -First 1;
 $driverFileName = $contents.Name;
 if ($driverFileName -ne $null)
 {
-    $arguments = "'/I ""$driverFullPath\$driverFileName"" /quiet'";
+    $arguments = "/I ""$driverFullPath\$driverFileName"" /quiet";
     Start-Process msiexec.exe -Wait -ArgumentList $arguments;
 }
 
