@@ -722,7 +722,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 if (targetBayPositionId != null)
                 {
                     var bay = this.baysDataProvider.GetByBayPositionId(targetBayPositionId.Value);
-                    if (Math.Abs(targetHeight - bay.Positions.FirstOrDefault(p => p.IsUpper)?.Height ?? 0) < 5)
+                    if (bay.IsAdjustByWeight
+                        && Math.Abs(targetHeight - bay.Positions.FirstOrDefault(p => p.IsUpper)?.Height ?? 0) < 5
+                        )
                     {
                         targetHeight = this.AdjustHeightWithBayChainWeight(targetHeight,
                             bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit?.GrossWeight ?? 0,
@@ -760,7 +762,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
-            if(message.Type == MessageType.Stop && message.Status == MessageStatus.OperationEnd)
+            if (message.Type == MessageType.Stop && message.Status == MessageStatus.OperationEnd)
             {
                 return MessageStatus.OperationStop;
             }
