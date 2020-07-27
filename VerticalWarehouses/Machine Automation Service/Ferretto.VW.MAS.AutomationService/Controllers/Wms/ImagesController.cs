@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet]
         public async Task<IActionResult> Download(string id)
         {
             var response = await this.imagesWmsWebService.DownloadAsync(id);

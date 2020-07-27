@@ -26,13 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Drivers\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Drivers\ufcom-1.7.12.msi">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

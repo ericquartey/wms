@@ -130,7 +130,7 @@
     <value>No items matching the navigation criteria.</value>
   </data>
   <data name="GenericValidationError" xml:space="preserve">
-    <value>Value not valid.</value>
+    <value>Invalid value</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>

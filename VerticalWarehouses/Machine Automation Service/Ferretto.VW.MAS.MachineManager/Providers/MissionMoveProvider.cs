@@ -256,6 +256,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     return false;
                 }
             }
+            else
+            {
+                var bay = baysDataProvider.GetByNumber(mission.TargetBay);
+                if(bay != null
+                    && bay.CurrentMission != null
+                    && bay.CurrentMission.LoadUnitId == mission.LoadUnitId
+                    )
+                {
+                    baysDataProvider.ClearMission(mission.TargetBay);
+                }
+            }
             return true;
         }
 

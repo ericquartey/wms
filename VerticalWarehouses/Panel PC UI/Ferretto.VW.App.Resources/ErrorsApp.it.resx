@@ -184,7 +184,7 @@
     <value>Ripristino errore INVERTER FAULT</value>
   </data>
   <data name="LowPosition" xml:space="preserve">
-    <value>Low position</value>
+    <value>Postazione bassa</value>
   </data>
   <data name="MarkAsResolved" xml:space="preserve">
     <value>Marca come risolto</value>

@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<bool>("IsAdjustByWeight");
+
                     b.Property<bool>("IsCheckIntrusion");
 
                     b.Property<bool>("IsExternal");

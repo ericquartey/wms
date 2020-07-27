@@ -153,6 +153,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private bool CanSendScreenSnapshotAsync()
         {
+            //return false;
             return !this.isScreenCast;
         }
 
