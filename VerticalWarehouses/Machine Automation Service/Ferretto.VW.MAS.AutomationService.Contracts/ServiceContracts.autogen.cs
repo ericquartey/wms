@@ -2580,6 +2580,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsAdjustByWeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAdjustByWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
     

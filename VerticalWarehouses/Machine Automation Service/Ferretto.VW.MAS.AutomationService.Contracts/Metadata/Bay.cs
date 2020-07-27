@@ -55,6 +55,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public bool IsActive { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsAdjustByWeight))]
+            [Id(33)]
+            public bool IsAdjustByWeight { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsCheckIntrusion))]
             [Id(32)]
             public bool IsCheckIntrusion { get; set; }

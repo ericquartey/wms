@@ -153,7 +153,9 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private bool CanSendScreenSnapshotAsync()
         {
-            return !this.isScreenCast;
+            return false;
+            // TODO Telemetry
+            //return !this.isScreenCast;
         }
 
         private async Task ToggleScreenCastAsync()

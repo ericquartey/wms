@@ -121,7 +121,7 @@
     <value>Acceleration</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
-    <value>Assited Movements</value>
+    <value>Assisted Movements</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Bay {0}</value>
@@ -179,6 +179,9 @@
   </data>
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Reduce pickup height when heavy load units are in bay</value>
   </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Check Intrusion by light curtain</value>

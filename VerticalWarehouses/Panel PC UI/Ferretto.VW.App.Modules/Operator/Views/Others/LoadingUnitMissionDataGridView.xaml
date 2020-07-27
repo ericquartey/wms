@@ -40,7 +40,7 @@
             </DataGridTextColumn>
 
             <DataGridTemplateColumn x:Name="Column3"
-                                    Width="100"
+                                    Width="120"
                                     Header="{Res:Loc OperatorApp.MissionStep}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -105,6 +105,30 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Step}">
                                             <DataTrigger.Value>
+                                                <model:MissionStep>BackToBay</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBackToBay}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStep>WaitChain</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitChain}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStep>WaitDeposit</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDeposit}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStep>ExtBay</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateExtBay}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
                                                 <model:MissionStep>End</model:MissionStep>
                                             </DataTrigger.Value>
                                             <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateEnd}" />
@@ -114,6 +138,18 @@
                                                 <model:MissionStep>Error</model:MissionStep>
                                             </DataTrigger.Value>
                                             <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateError}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStep>ErrorLoad</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorLoad}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Step}">
+                                            <DataTrigger.Value>
+                                                <model:MissionStep>ErrorDeposit</model:MissionStep>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
