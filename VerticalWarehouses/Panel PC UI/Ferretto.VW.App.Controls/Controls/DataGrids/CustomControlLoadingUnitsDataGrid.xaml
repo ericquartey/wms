@@ -4,6 +4,7 @@
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+
     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="2">
@@ -16,11 +17,12 @@
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
-                  CanUserSortColumns="False"
+                  CanUserSortColumns="True"
                   FontSize="{StaticResource FontSize_High}"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   IsReadOnly="True"
+                  IsSynchronizedWithCurrentItem="True"
                   ItemsSource="{Binding ItemsSource}"
                   RowHeight="30"
                   SelectedItem="{Binding SelectedItem}"
