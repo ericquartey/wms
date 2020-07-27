@@ -36,11 +36,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPutDetailsViewModel(
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
+            : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 

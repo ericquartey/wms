@@ -20,11 +20,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel, IDataErrorInfo, IOperationalContextViewModel
     {
-        #region Fields
-
         //public MissionOperation lastMissionOperation;
-        
+
         //public CompartmentDetails lastSelectedCompartmentDetail;
+
+        #region Fields
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
-            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
+            : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
             this.compartmentsWebService = compartmentsWebService;
@@ -902,7 +902,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
                     var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                     itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                    this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id).SingleOrDefault();
+                    this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id).SingleOrDefault();
                     this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
                 }
                 catch (Exception)

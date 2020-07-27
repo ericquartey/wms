@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
+
         private bool canInputQuantity;
 
         private string measureUnit;
@@ -30,17 +33,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? quantityTolerance;
 
+        private CompartmentDetails selectedCompartmentDetail;
+
         #endregion
 
         #region Constructors
 
         public BaseItemOperationViewModel(
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
+            this.loadingUnitsWebService = loadingUnitsWebService;
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
@@ -103,6 +110,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public CompartmentDetails SelectedCompartmentDetail
+        {
+            get => this.selectedCompartmentDetail;
+            set => this.SetProperty(ref this.selectedCompartmentDetail, value);
+        }
+
         public double? XPosition { get; set; }
 
         public double? YPosition { get; set; }
@@ -163,6 +176,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.QuantityTolerance = item.PickTolerance ?? 0;
                 this.MeasureUnit = item.MeasureUnitDescription;
 
+                var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.mission.LoadingUnit.Id);
+                itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
+                this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.missionOperation.CompartmentId).SingleOrDefault();
+
+                this.RaisePropertyChanged(nameof(this.SelectedCompartmentDetail));
                 this.RaisePropertyChanged(nameof(this.ItemId));
                 this.RaisePropertyChanged(nameof(this.MeasureUnit));
                 this.RaisePropertyChanged(nameof(this.QuantityTolerance));
