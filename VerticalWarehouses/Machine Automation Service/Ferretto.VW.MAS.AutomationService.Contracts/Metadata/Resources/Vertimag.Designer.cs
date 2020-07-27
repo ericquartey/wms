@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assited Movements.
+        ///   Looks up a localized string similar to Assisted Movements.
         /// </summary>
         public static string AssistedMovements {
             get {
@@ -111,6 +111,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Bay_IsActive {
             get {
                 return ResourceManager.GetString("Bay_IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reduce pickup height when heavy load units are in bay.
+        /// </summary>
+        public static string Bay_IsAdjustByWeight {
+            get {
+                return ResourceManager.GetString("Bay_IsAdjustByWeight", resourceCulture);
             }
         }
         

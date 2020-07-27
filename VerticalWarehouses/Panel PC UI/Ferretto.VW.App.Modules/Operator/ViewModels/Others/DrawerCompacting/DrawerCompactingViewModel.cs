@@ -122,7 +122,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-
         public override void Disappear()
         {
             base.Disappear();
@@ -135,30 +134,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
-            this.positioningOperationChangedToken = this.positioningOperationChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                    .Subscribe(
-                        async m => await this.OnPositioningOperationChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        m => this.IsVisible);
+            //this.positioningOperationChangedToken = this.positioningOperationChangedToken
+            //    ??
+            //    this.EventAggregator
+            //        .GetEvent<NotificationEventUI<MissionOperationCompletedMessageData>>()
+            //        .Subscribe(
+            //            async m => await this.OnPositioningOperationChangedAsync(m),
+            //            ThreadOption.UIThread,
+            //            false,
+            //            m => this.IsVisible);
 
             await base.OnAppearedAsync();
-        }
-
-        private async Task RefreshAllValue()
-        {
-            var cells = await this.machineCellsWebService.GetStatisticsAsync();
-            this.FragmentBackPercent = cells.FragmentBackPercent;
-            this.FragmentFrontPercent = cells.FragmentFrontPercent;
-            this.FragmentTotalPercent = cells.FragmentTotalPercent;
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -186,6 +176,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
+            //if (this.MachineService.MachineMode == MachineMode.Compact || this.MachineService.MachineMode == MachineMode.Manual)
+            {
+                if (e.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+                {
+                    await this.RefreshAllValue();
+                }
+            }
+
             if (!this.IsMachineMoving)
             {
                 this.IsStopPressed = false;
@@ -203,11 +201,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCompactingStart()
         {
-            return !this.IsWaitingForResponse &&
+            var result = !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   //(this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;
+
+            if (result)
+            {
+                this.OnDataRefreshAsync();
+            }
+
+            return result;
         }
 
         private bool CanCompactingStop()
@@ -244,19 +249,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        private async Task RefreshAllValue()
         {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        await this.RefreshAllValue();
-
-                        await base.OnDataRefreshAsync();
-                        break;
-                    }
-            }
+            var cells = await this.machineCellsWebService.GetStatisticsAsync();
+            this.FragmentBackPercent = cells.FragmentBackPercent;
+            this.FragmentFrontPercent = cells.FragmentFrontPercent;
+            this.FragmentTotalPercent = cells.FragmentTotalPercent;
         }
+
+        //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
+        //{
+        //    switch (message.Status)
+        //    {
+        //        case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+        //            {
+        //                await this.RefreshAllValue();
+
+        //                await base.OnDataRefreshAsync();
+        //                break;
+        //            }
+        //    }
+        //}
 
         private async Task StartAsync()
         {

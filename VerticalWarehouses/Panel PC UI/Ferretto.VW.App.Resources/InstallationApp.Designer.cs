@@ -3823,7 +3823,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Valore non valido..
+        ///   Looks up a localized string similar to Invalid value.
         /// </summary>
         public static string InvalidValue {
             get {
@@ -7241,6 +7241,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TolleranceRequired {
             get {
                 return ResourceManager.GetString("TolleranceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total completed cycles.
+        /// </summary>
+        public static string TotalCompletedCycles {
+            get {
+                return ResourceManager.GetString("TotalCompletedCycles", resourceCulture);
             }
         }
         

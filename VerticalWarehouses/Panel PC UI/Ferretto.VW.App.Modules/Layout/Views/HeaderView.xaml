@@ -22,7 +22,9 @@
         </Grid.ColumnDefinitions>
 
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="250">
+        <StackPanel Width="250"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal">
             <Image Name="imgLogo"
                    Grid.Column="0"
                    Width="47"
@@ -75,7 +77,6 @@
 
 
         <StackPanel Grid.Column="1"
-                    
                     HorizontalAlignment="Stretch"
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
@@ -139,7 +140,8 @@
                               PresentationType="{x:Static enums:PresentationTypes.Shutdown}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
-                                    Content="{res:Loc General.SwitchOff}" />
+                                    Content="{res:Loc General.SwitchOff}"
+                                    Visibility="Collapsed" />
             </ctrls:PpcControl>
         </StackPanel>
 
