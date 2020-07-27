@@ -109,7 +109,6 @@ namespace Ferretto.VW.MAS.AutomationService
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-
             services.AddSignalR();
 
             services.AddMasHealthChecks();
@@ -124,6 +123,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         Version = "v1",
                     });
                 config.OperationFilter<BayNumberOperationFilter>();
+                config.CustomSchemaIds(i => i.FullName);
             });
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMissionManager();
 
             services.AddHostedService<NotificationTelemetryService>();
-            services.AddHostedService<NotificationRelayService>();            
+            services.AddHostedService<NotificationRelayService>();
 
             services.AddScoped<IInverterProvider, InverterProvider>();
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();

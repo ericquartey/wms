@@ -17,9 +17,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double CellHeight = 25;
 
-        private const double OldVerticalPositionTolerance = 12.5;
+        // TODO - remove this parameter when all versions are > 0.27.24
+        private const double OldVerticalPositionTolerance = 27;
 
-        private const double VerticalPositionTolerance = 27;
+        private const double VerticalPositionTolerance = 12.5;
 
         private static readonly Func<DataLayerContext, IEnumerable<Cell>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
@@ -117,7 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
-            if (availableSpace <= loadUnitHeight)
+            if (availableSpace < loadUnitHeight)
             {
                 return false;
             }
@@ -630,7 +631,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             &&
                             (c.Position >= cell.Position - (loadingUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
                             &&
-                            c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
+                            c.Position <= cell.Position + loadingUnit.Height + OldVerticalPositionTolerance)
                         .ToArray();
 
                     var weight = loadingUnit.GrossWeight;
@@ -657,8 +658,8 @@ namespace Ferretto.VW.MAS.DataLayer
                             && occupiedCell.LoadingUnit.Id != loadingUnit.Id
                             )
                         {
-                            // TODO - remove this check when all versions are > 0.27.18
-                            if (occupiedCell.Position >= cell.Position + loadingUnit.Height + OldVerticalPositionTolerance)
+                            // TODO - remove this check when all versions are > 0.27.24
+                            if (occupiedCell.Position >= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                             {
                                 // this happens because of the change in VerticalPositionTolerance: from 12,5 to 27mm
                                 continue;
@@ -668,7 +669,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         if (occupiedCell.IsFree
                             // TODO - remove this check when all versions are > 0.27.18
-                            && occupiedCell.Position < cell.Position + loadingUnit.Height + OldVerticalPositionTolerance
+                            && occupiedCell.Position < cell.Position + loadingUnit.Height + VerticalPositionTolerance
                             )
                         {
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellIsUnexpectedlyFree", CommonUtils.Culture.Actual));

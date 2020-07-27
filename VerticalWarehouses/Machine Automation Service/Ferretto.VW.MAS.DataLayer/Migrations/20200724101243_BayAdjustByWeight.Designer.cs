@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200724101243_BayAdjustByWeight")]
+    partial class BayAdjustByWeight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1814,16 +1816,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("TokenReader");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightingScale", b =>
-                {
-                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
-
-                    b.Property<string>("PortName")
-                        .HasColumnName("WeightingScale_PortName");
-
-                    b.HasDiscriminator().HasValue("WeightingScale");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1916,6 +1908,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("ZOffsetUpperPosition");
 
                     b.HasDiscriminator().HasValue("LaserPointer");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightingScale", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.HasDiscriminator().HasValue("WeightingScale");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", b =>

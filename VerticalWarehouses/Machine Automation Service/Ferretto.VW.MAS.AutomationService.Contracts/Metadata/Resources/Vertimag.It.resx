@@ -180,6 +180,9 @@
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Attiva</value>
   </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Ridurre la quota di prelievo con cassetti pesanti in baia</value>
+  </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Controllo intrusione con barriera di controllo altezza</value>
   </data>
@@ -487,7 +490,7 @@
     <value>Velocità</value>
   </data>
   <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
-    <value>Correggi accelerazone con peso</value>
+    <value>Correggi accelerazione con peso</value>
   </data>
   <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
     <value>Correggi velocità con peso</value>

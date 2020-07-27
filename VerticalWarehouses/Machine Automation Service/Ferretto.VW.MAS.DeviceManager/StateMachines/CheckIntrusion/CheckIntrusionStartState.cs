@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
         private readonly ICheckIntrusionMachineData machineData;
 
-        private readonly double minHeight = 25.0;
+        private readonly IMachineProvider machineProvider;
 
         private readonly IServiceScope scope;
 
@@ -40,6 +40,10 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
         private InverterIndex inverterIndex;
 
         private bool isDisposed;
+
+        private bool measureRequest;
+
+        private double minHeight;
 
         private Timer profileTimer;
 
@@ -55,6 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            this.machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
         }
 
         #endregion
@@ -96,13 +101,36 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                             }
                             else
                             {
+                                this.measureRequest = false;
+                                var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
+                                var ioCommandMessage = new FieldCommandMessage(
+                                    ioCommandMessageData,
+                                    $"Measure Profile Start ",
+                                    FieldMessageActor.IoDriver,
+                                    FieldMessageActor.DeviceManager,
+                                    FieldMessageType.MeasureProfile,
+                                    (byte)this.baysDataProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                                this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
                                 this.profileTimer?.Change(600, 600);
                             }
                         }
-                        else if (message.Source == FieldMessageActor.IoDriver)
+                        else if (message.Source == FieldMessageActor.IoDriver && this.measureRequest)
                         {
-                            // we enable the timer to request the height only after IoDriver has set the reading enable signal
-                            this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
+                            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
+                            var inverterCommandMessage = new FieldCommandMessage(
+                                inverterCommandMessageData,
+                                $"Measure Profile",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.DeviceManager,
+                                FieldMessageType.MeasureProfile,
+                                (byte)this.inverterIndex);
+
+                            //this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
                         }
                         break;
 
@@ -127,8 +155,9 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
             this.inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.inverterIndex}");
 
-            var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
             this.bayPositionId = bay.Positions.First(p => p.IsUpper).Id;
+            this.minHeight = this.machineProvider.Get().LoadUnitMinHeight;
 
             var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
             var ioCommandMessage = new FieldCommandMessage(
@@ -154,6 +183,10 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                 MessageStatus.OperationStart);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.measureRequest = false;
+
+            this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
         }
 
         public override void Stop(StopRequestReason reason)
@@ -199,19 +232,20 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
         private void RequestMeasureProfile(object state)
         {
             this.Logger.LogTrace($"Request MeasureProfile");
-
-            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
-            var inverterCommandMessage = new FieldCommandMessage(
-                inverterCommandMessageData,
-                $"Measure Profile",
-                FieldMessageActor.InverterDriver,
+            var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
+            var ioCommandMessage = new FieldCommandMessage(
+                ioCommandMessageData,
+                $"Measure Profile Start ",
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.DeviceManager,
                 FieldMessageType.MeasureProfile,
-                (byte)this.inverterIndex);
+                (byte)this.baysDataProvider.GetIoDevice(this.machineData.RequestingBay));
 
-            //this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+            this.measureRequest = true;
 
             // suspend timer at every call
             this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
