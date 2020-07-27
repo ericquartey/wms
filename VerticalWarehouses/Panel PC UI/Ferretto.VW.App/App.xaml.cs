@@ -95,8 +95,7 @@ namespace Ferretto.VW.App
         {
             base.OnInitialized();
 
-            // TODO Telemetry
-            //this.Container.UseTelemetryHubs();
+            this.Container.UseTelemetryHubs();
         }
 
         protected override void OnStartup(StartupEventArgs e)
