@@ -1,11 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
 using Ferretto.VW.Devices.WeightingScale;
 
 namespace Ferretto.VW.App.Accessories.Interfaces
 {
     public interface IWeightingScaleService : IAccessoryService
     {
+        #region Events
+
+        event System.EventHandler<WeightAcquiredEventArgs> WeighAcquired;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -57,6 +64,18 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// <param name="weight">The weight of the item.</param>
         /// <exception cref="System.Exception" />
         Task SetAverageUnitaryWeightAsync(float weight);
+
+        /// <summary>
+        /// Starts the continuous weight acquisition.
+        /// </summary>
+        /// <exception cref="System.Exception" />
+        void StartWeightAcquisition();
+
+        /// <summary>
+        /// Stops the continuous weight acquisition.
+        /// </summary>
+        /// <exception cref="System.Exception" />
+        void StopWeightAcquisition();
 
         /// <summary>
         /// Updates the average unitary weight of the specified item.

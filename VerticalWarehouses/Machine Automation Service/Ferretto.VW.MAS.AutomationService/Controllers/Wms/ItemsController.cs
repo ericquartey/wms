@@ -70,6 +70,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("{id}/average-weight")]
+        public async Task<IActionResult> UpdateAverageWeight(int id, double weight)
+        {
+            //_ = await this.itemsWmsWebService.UpdateAverageWeight(id, weight);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
         #endregion
     }
 }

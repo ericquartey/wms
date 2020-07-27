@@ -231,16 +231,15 @@ namespace Ferretto.VW.Devices.WeightingScale
             this.serialPort.Write($"{command}\r\n");
             var response = this.serialPort.ReadLine();
 
-            Console.WriteLine($"Port {this.serialPort.PortName}: received '{response}'.");
+            this.logger.Debug($"Port {this.serialPort.PortName}: received '{response}'.");
 
             switch (response)
             {
-                case "OK": return response;
                 case "ERR01": throw new Exception($"The string '{command}' is a valid command but it is followed by unexpected characters.");
                 case "ERR02": throw new Exception($"The command '{command}' contains invalid data.");
                 case "ERR03": throw new Exception($"The command '{command}' is not valid in the current context.");
                 case "ERR04": throw new Exception($"The string '{command}' is not a valid command.");
-                default: throw new Exception($"The device replied with the unexpected string '{response}'."); ;
+                default: return response;
             };
         }
 

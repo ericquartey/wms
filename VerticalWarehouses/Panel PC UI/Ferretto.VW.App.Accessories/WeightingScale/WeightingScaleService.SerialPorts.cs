@@ -36,7 +36,8 @@ namespace Ferretto.VW.App.Accessories
 
         private void InitializeSerialPortsTimer()
         {
-            this.serialPortsPollTimer?.Dispose();
+            this.DisableSerialPortsTimer();
+
             this.serialPortsPollTimer = new Timer(this.RefreshSystemPorts, null, 0, SerialPortRefreshInterval);
         }
 

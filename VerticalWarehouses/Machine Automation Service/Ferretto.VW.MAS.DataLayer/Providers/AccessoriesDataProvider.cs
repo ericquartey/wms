@@ -183,6 +183,34 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateWeightingScaleDeviceInfo(BayNumber bayNumber, DeviceInformation deviceInformation)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.WeightingScale)
+                    .ThenInclude(r => r.DeviceInformation)
+                    .Single(b => b.Number == bayNumber);
+
+                if (bay.Accessories.WeightingScale.DeviceInformation is null)
+                {
+                    bay.Accessories.WeightingScale.DeviceInformation = new DeviceInformation();
+                    this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);
+                }
+
+                var deviceInfo = bay.Accessories.WeightingScale.DeviceInformation;
+
+                deviceInfo.SerialNumber = deviceInformation.SerialNumber;
+                deviceInfo.FirmwareVersion = deviceInformation.FirmwareVersion;
+                deviceInfo.ManufactureDate = deviceInformation.ManufactureDate;
+                deviceInfo.ModelNumber = deviceInformation.ModelNumber;
+
+                this.dataContext.DeviceInformation.Update(deviceInfo);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string portName)
         {
             if (portName is null)
