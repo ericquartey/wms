@@ -2883,7 +2883,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="TotalCompletedCycles" xml:space="preserve">
     <value>Total completed cycles</value>
   </data>
-</root>
   <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
     <value>Device information not acquired. Ensure to leave the reader attached to its base.</value>
   </data>
