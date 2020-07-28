@@ -10,13 +10,12 @@
                   mc:Ignorable="d">
 
     <Grid Name="LayoutRoot">
-        <!--ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"-->
         <controls:PpcButton x:Name="ServiceButtonRoot"
                             Width="100"
                             Height="60"
                             HorizontalAlignment="Stretch"
                             Command="{Binding ExecuteCommand}"
-                            Content="{res:Loc InstallationApp.SendLog}"/>
+                            Content="{res:Loc InstallationApp.SendLog}" />
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                Margin="0,20"
@@ -26,21 +25,17 @@
                PlacementTarget="{Binding ElementName=ServiceButtonRoot}">
             <StackPanel>
                 <controls:PpcButton Width="220"
-                          
                                     Command="{Binding SendScreenSnapshotCommand}"
-                                    Content="{res:Loc InstallationApp.SendScreenSnapshot}">
-                                            
-                    
-                </controls:PpcButton>
+                                    Content="{res:Loc InstallationApp.SendScreenSnapshot}" />
 
                 <controls:PpcButton Width="220"
-                                    Margin="0 -2 0 0"
+                                    Margin="0,-2,0,0"
                                     HorizontalContentAlignment="Left"
                                     Command="{Binding SaveLogsCommand}"
                                     Content="{res:Loc InstallationApp.SaveLogs}" />
 
                 <controls:PpcButton Width="220"
-                                    Margin="0 -2 0 0"
+                                    Margin="0,-2,0,0"
                                     HorizontalContentAlignment="Left"
                                     Command="{Binding ScreenCastCommand}"
                                     Content="{res:Loc InstallationApp.ScreenCast}"
