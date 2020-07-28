@@ -811,18 +811,37 @@
     "Bays": [
       {
         "Accessories": {
-          "Id": 1,
+          "AlphaNumericBar": {
+            "IsEnabledNew": false,
+            "IpAddress": "192.168.101.11",
+            "TcpPort": 2020,
+            "Size": "ExtraLarge"
+          },
+          "LabelPrinter": {
+            "IsEnabledNew": false,
+            "Name": "Microsoft Print to PDF"
+          },
           "LaserPointer": {
-            "Id": 1,
-            "IpAddress": "127.0.0.1",
+            "Id": 5,
+            "IpAddress": "192.168.0.13",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
-            "TcpPort": 12020,
+            "TcpPort": 2020,
             "XOffset": 0.0,
             "YOffset": 0.0,
             "ZOffsetLowerPosition": 0.0,
-            "ZOffsetUpperPosition": 0.0
+            "ZOffsetUpperPosition": 1030.0
+          },
+          "BarcodeReader": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
+          },
+          "CardReader": {
+            "IsEnabledNew": false
           }
+          /*  "WeightingScale": {
+            "IsEnabledNew": true
+          }*/
         },
         "Carousel": {
           "AssistedMovements": {
