@@ -132,8 +132,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
 #if DEBUG
             this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+#else
+            this.availableDrives = this.usbWatcherService.Drives.Writable();
 #endif
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
 
             this.RaisePropertyChanged(nameof(this.Data));
 
