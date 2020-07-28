@@ -61,29 +61,29 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public CommandAction CommandAction { get; }
+        public CommandAction CommandAction { get; set; }
 
-        public LoadingUnitLocation Destination { get; }
+        public LoadingUnitLocation Destination { get; set; }
 
         public int? DestinationCellId { get; set; }
 
-        public bool InsertLoadUnit { get; }
+        public bool InsertLoadUnit { get; set; }
 
-        public int? LoadUnitId { get; }
+        public int? LoadUnitId { get; set; }
 
-        public int? MissionId { get; }
+        public int? MissionId { get; set; }
 
-        public MissionStep MissionStep { get; }
+        public MissionStep MissionStep { get; set; }
 
         public MissionType MissionType { get; set; }
 
-        public LoadingUnitLocation Source { get; }
+        public LoadingUnitLocation Source { get; set; }
 
-        public int? SourceCellId { get; }
+        public int? SourceCellId { get; set; }
 
-        public StopRequestReason StopReason { get; }
+        public StopRequestReason StopReason { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; set; }
 
         public int? WmsId { get; set; }
 
