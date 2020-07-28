@@ -247,12 +247,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 //fix null Accessories
-                for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                if (Login.ScaffolderUserAccesLevel.UseAccessories)
                 {
-                    if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
+                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
                     {
-                        var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
-                        output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
+                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
+                        {
+                            var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
+                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                    {
+                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories != null)
+                        {
+                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = null;
+                        }
                     }
                 }
 

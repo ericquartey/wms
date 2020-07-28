@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Controls
@@ -27,6 +28,9 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         private static readonly DependencyPropertyKey HasStatisticsPropertyKey
             = DependencyProperty.RegisterReadOnly(nameof(HasStatistics), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(OnHasStatisticsPropertyChanged));
 
+        private static readonly DependencyPropertyKey HasAccessoriesPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(HasAccessories), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(OnHasAccessoriesPropertyChanged));
+
         public static readonly DependencyProperty HasCellPanelsProperty = HasCellPanelsPropertyKey.DependencyProperty;
 
         public static readonly DependencyProperty HasLoadingUnitsProperty = HasLoadingUnitsPropertyKey.DependencyProperty;
@@ -36,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         public static readonly DependencyProperty HasSetupProceduresProperty = HasSetupProceduresPropertyKey.DependencyProperty;
 
         public static readonly DependencyProperty HasStatisticsProperty = HasStatisticsPropertyKey.DependencyProperty;
+
+        public static readonly DependencyProperty HasAccessoriesProperty = HasAccessoriesPropertyKey.DependencyProperty;
 
         public static readonly DependencyProperty InputProperty
             = DependencyProperty.Register(nameof(Input), typeof(VertimagConfiguration), typeof(ImportExportFeatures), new PropertyMetadata(OnInputPropertyChanged));
@@ -69,6 +75,10 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
         private static readonly DependencyProperty IncludeStatisticsProperty
             = DependencyProperty.Register(nameof(IncludeStatistics), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
+
+        private static readonly DependencyProperty IncludeAccessoriesProperty
+           = DependencyProperty.Register(nameof(IncludeAccessories), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
+
 
         #endregion
 
@@ -113,6 +123,12 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             private set => this.SetValue(HasSetupProceduresPropertyKey, value);
         }
 
+        public bool HasAccessories
+        {
+            get => (bool)this.GetValue(HasAccessoriesProperty);
+            private set => this.SetValue(HasSetupProceduresPropertyKey, value);
+        }
+
         public bool IncludeCellPanels
         {
             get => (bool)this.GetValue(IncludeCellPanelsProperty);
@@ -141,6 +157,12 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         {
             get => (bool)this.GetValue(IncludeStatisticsProperty);
             set => this.SetValue(IncludeStatisticsProperty, value);
+        }
+
+        public bool IncludeAccessories
+        {
+            get => (bool)this.GetValue(IncludeAccessoriesProperty);
+            set => this.SetValue(IncludeAccessoriesProperty, value);
         }
 
         public VertimagConfiguration Input
@@ -189,6 +211,12 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             impExp.CoercePropertyValue(e.Property, IncludeSetupProceduresProperty);
         }
 
+        private static void OnHasAccessoriesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var impExp = (ImportExportFeatures)d;
+            impExp.CoercePropertyValue(e.Property, IncludeAccessoriesProperty);
+        }
+
         private static void OnInputPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var impExp = (ImportExportFeatures)d;
@@ -219,7 +247,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         private void AdjustOutput(VertimagConfiguration configuration)
         {
             object outputObject = null;
-            if (configuration != null && (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits || this.IncludeStatistics))
+            if (configuration != null && (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits || this.IncludeStatistics || this.IncludeAccessories))
             {
                 // clone to avoid unwanted references' collisions.
                 var output = this.CloneInput(configuration);
@@ -286,9 +314,20 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                         outputObject = jobject.ToObject<object>();
                     }
 
+                    //remove accessories
+                    if (!this.IncludeAccessories)
+                    {
+                        //output.Machine.Bays.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).ToList().Clear();
+                        ScaffolderUserAccesLevel.UseAccessories = false;
+                    }
+                    else
+                    {
+                        ScaffolderUserAccesLevel.UseAccessories = true;
+                    }
                 }
-            }
 
+                
+            }
             this.Output = outputObject;
         }
 
@@ -299,18 +338,21 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             var setup = configuration?.SetupProcedures != null;
             var parameters = configuration?.HasParameters() == true;
             var statistics = configuration?.MachineStatistics != null;
+            var accessories = configuration?.Machine?.Bays?.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).Any() == true;
 
             this.SetValue(IncludeCellPanelsProperty, cellPanels);
             this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
             this.SetValue(IncludeParametersProperty, parameters);
             this.SetValue(IncludeSetupProceduresProperty, setup);
             this.SetValue(IncludeStatisticsProperty, statistics);
+            this.SetValue(IncludeAccessoriesProperty, accessories);
 
             this.SetValue(HasCellPanelsPropertyKey, cellPanels);
             this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
             this.SetValue(HasSetupProceduresPropertyKey, setup);
             this.SetValue(HasParametersPropertyKey, parameters);
             this.SetValue(HasStatisticsPropertyKey, statistics);
+            this.SetValue(HasAccessoriesPropertyKey, accessories);
 
             this.AdjustOutput(configuration);
         }
