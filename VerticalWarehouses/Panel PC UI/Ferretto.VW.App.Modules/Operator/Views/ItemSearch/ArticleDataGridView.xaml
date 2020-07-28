@@ -8,8 +8,6 @@
 
     <DataGrid Name="DataGrid"
               extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
-              CanUserSortColumns="True"
-              IsSynchronizedWithCurrentItem="True"
               ItemsSource="{Binding Items}"
               SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
         <DataGrid.Resources>
