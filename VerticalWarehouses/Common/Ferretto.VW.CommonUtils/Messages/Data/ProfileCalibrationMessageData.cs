@@ -42,13 +42,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public double Measured { get; }
+        public double Measured { get; set; }
 
-        public double ProfileCalibrateDistance { get; }
+        public double ProfileCalibrateDistance { get; set; }
 
-        public double ProfileStartDistance { get; }
+        public double ProfileStartDistance { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
 
