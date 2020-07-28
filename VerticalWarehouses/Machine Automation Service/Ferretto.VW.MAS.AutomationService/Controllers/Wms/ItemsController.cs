@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut("{id}/average-weight")]
         public async Task<IActionResult> UpdateAverageWeight(int id, double weight)
         {
-            await this.itemsWmsWebService.(id, weight);
+            await this.itemsWmsWebService.UpdateAverageWeightAsync(id, weight);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
