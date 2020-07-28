@@ -132,7 +132,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Hubs", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Telemetry.Contracts.Hub", "Utility\Ferretto.VW.Telemetry.Contracts.Hub\Ferretto.VW.Telemetry.Contracts.Hub.csproj", "{67106B84-5230-45AF-B72B-741394608585}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.ServiceDesk.Telemetry", "Common\ServiceDesk\Ferretto.ServiceDesk.Telemetry\Ferretto.ServiceDesk.Telemetry.csproj", "{36701253-D562-4FDA-AF71-13B212E11E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.ServiceDesk.Telemetry", "Common\Ferretto.ServiceDesk.Telemetry\Ferretto.ServiceDesk.Telemetry.csproj", "{36701253-D562-4FDA-AF71-13B212E11E8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.Devices.WeightingScale", "Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj", "{D557F757-100B-4457-BDAF-F5A94DFE3849}"
 EndProject

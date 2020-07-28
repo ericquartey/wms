@@ -1,0 +1,13 @@
+﻿namespace Ferretto.ServiceDesk.Telemetry
+{
+    public class Machine : IMachine
+    {
+        #region Properties
+
+        public string ModelName { get; set; }
+
+        public string SerialNumber { get; set; }
+
+        #endregion
+    }
+}
