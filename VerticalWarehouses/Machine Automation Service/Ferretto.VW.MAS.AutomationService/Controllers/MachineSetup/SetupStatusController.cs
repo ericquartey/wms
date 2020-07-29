@@ -10,9 +10,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class SetupStatusController : ControllerBase, IRequestingBayController
     {
-        #region Fields
+        //private readonly IServicingProvider servicingProvider;
 
-        private readonly IServicingProvider servicingProvider;
+        #region Fields
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -109,6 +109,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("full-test-bypass")]
+        public IActionResult FullTestBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetFullTest(this.BayNumber), true);
+            return this.Ok();
+        }
+
         [HttpGet]
         public ActionResult<SetupStatusCapabilities> Get()
         {
@@ -126,13 +133,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult LoadFirstDrawerTestBypass()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetLoadFirstDrawerTest(), true);
-            return this.Ok();
-        }
-
-        [HttpPost("full-test-bypass")]
-        public IActionResult FullTestBypass()
-        {
-            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetFullTest(this.BayNumber), true);
             return this.Ok();
         }
 
