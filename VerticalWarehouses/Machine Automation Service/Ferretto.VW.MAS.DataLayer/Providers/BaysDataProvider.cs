@@ -735,7 +735,7 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (bayNumber)
             {
                 case BayNumber.BayOne:
-                    returnValue = (this.machineVolatileDataProvider.IsOneTonMachine.Value) ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                    returnValue = InverterIndex.MainInverter;
                     break;
 
                 case BayNumber.BayTwo:
