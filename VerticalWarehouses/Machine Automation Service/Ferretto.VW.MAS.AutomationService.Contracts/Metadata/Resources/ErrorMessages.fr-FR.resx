@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Range" xml:space="preserve">
+    <value>La valeur du champ {0} doit être comprise entre {1} et {2}</value>
+  </data>
+  <data name="RangeMax" xml:space="preserve">
+    <value>La valeur du champ {0} ne peut pas être supérieure à {2}</value>
+  </data>
+  <data name="RangeMin" xml:space="preserve">
+    <value>La valeur du champ {0} ne peut pas être inférieure à {1}</value>
+  </data>
+  <data name="Regex" xml:space="preserve">
+    <value>La valeur du champ {0} n&amp;#39;est pas valide</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Le champ {0} est obligatoire</value>
+  </data>
 </root>

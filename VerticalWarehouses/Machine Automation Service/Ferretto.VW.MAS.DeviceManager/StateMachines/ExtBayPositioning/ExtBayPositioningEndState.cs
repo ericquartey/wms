@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         private readonly IExtBayPositioningMachineData machineData;
 
-        private readonly double minHeight = 25.0;
+        //private readonly double minHeight = 25.0;
 
         private readonly IServiceScope scope;
 

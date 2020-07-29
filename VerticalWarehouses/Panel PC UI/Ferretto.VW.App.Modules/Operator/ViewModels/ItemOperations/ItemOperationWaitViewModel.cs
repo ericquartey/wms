@@ -15,9 +15,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly List<LoadingUnit> loadingUnits;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineService machineService;
+
+        private readonly List<LoadingUnit> moveUnits;
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
@@ -27,8 +31,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGridVisible;
 
-        private List<LoadingUnit> loadingUnits;
-
         private string loadingUnitsInfo;
 
         private int loadingUnitsMovements;
@@ -36,8 +38,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private IEnumerable<int> moveUnitId;
 
         private IEnumerable<int> moveUnitIdToCell;
-
-        private List<LoadingUnit> moveUnits;
 
         private bool moveVisible;
 
