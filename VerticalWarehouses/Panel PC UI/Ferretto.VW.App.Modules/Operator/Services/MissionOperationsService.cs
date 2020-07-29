@@ -315,14 +315,13 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
                 {
-                    //if (this.ActiveMachineMission?.LoadUnitId != null
+                    // if (this.ActiveMachineMission?.LoadUnitId != null
                     //    &&
                     //    this.ActiveMachineMission?.LoadUnitId != newMachineMission?.LoadUnitId)
-                    //{
+                    // {
                     //    this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission.Id}' was removed, but must be completed before proceeding: recalling loading unit '{this.ActiveMachineMission.LoadUnitId}'.");
                     //    await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
-                    //}
-
+                    // }
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;
                     this.ActiveWmsOperation = newWmsOperation;

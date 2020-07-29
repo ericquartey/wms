@@ -137,4 +137,97 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PpcCheckBoxStyleSmall"
+           TargetType="{x:Type CheckBox}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+        <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource GrayA}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+        <Setter Property="MinWidth" Value="35" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid x:Name="templateRoot"
+                          Height="{TemplateBinding Height}"
+                          MinWidth="{TemplateBinding MinWidth}"
+                          Background="Transparent"
+                          SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{TemplateBinding MinWidth}" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="checkBoxBorder"
+                                Width="{TemplateBinding MinWidth}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource PpcCornerRadius}">
+                            <!--<Border.Effect>
+                                    <DropShadowEffect BlurRadius="6"
+                                                      Opacity="0.5"
+                                                      RenderingBias="Quality"
+                                                      ShadowDepth="2"
+                                                      Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
+                                </Border.Effect>-->
+
+                            <Grid x:Name="markGrid"
+                                  SnapsToDevicePixels="True">
+                                <Path x:Name="optionMark"
+                                      Margin="5"
+                                      Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z "
+                                      Fill="{StaticResource FerrettoPureWhite}"
+                                      Opacity="0"
+                                      Stretch="Uniform" />
+                                <Rectangle x:Name="indeterminateMark"
+                                           Margin="3"
+                                           Fill="{StaticResource FerrettoBlack}"
+                                           Opacity="0"
+                                           RadiusX="1"
+                                           RadiusY="1" />
+                            </Grid>
+                        </Border>
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Column="1"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasContent" Value="true">
+                            <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}" />
+                            <Setter Property="Padding" Value="4,-1,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource OptionMark.Disabled.Background}" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource OptionMark.Disabled.Border}" />
+                            <Setter TargetName="optionMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
+                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
+                            <Setter Property="Foreground" Value="{DynamicResource GrayA}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="optionMark" Property="Opacity" Value="1" />
+                            <Setter TargetName="indeterminateMark" Property="Opacity" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="optionMark" Property="Opacity" Value="0" />
+                            <Setter TargetName="indeterminateMark" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

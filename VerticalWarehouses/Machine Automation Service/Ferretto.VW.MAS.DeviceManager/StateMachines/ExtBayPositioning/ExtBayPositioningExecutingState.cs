@@ -32,13 +32,13 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
+        //private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
 
         private readonly IExtBayPositioningMachineData machineData;
 
         private readonly IServiceScope scope;
 
-        private readonly double secondPosition;
+        //private readonly double secondPosition;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
