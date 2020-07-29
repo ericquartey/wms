@@ -6507,6 +6507,7 @@
     {
       "Id": 1,
       "InstallationDate": "2020-03-03T08:08:47.9891779+01:00",
+      "MachineStatisticsId": -1,
       "ServiceStatus": "Valid",
       "TotalMissions": 783
     }

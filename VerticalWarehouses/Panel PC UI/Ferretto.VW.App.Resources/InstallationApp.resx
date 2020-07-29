@@ -2886,4 +2886,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
     <value>Device information not acquired. Ensure to leave the reader attached to its base.</value>
   </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Accessories</value>
+  </data>
 </root>

@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineServicingWebService machineServicingWebService;
 
+        private readonly IMachineAccessoriesWebService machineAccessoriesWebService;
+
         private readonly IUsbWatcherService usbWatcherService;
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
@@ -43,11 +45,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersExportViewModel(IMachineConfigurationWebService machineConfigurationWebService,
+        public ParametersExportViewModel(
+             IMachineAccessoriesWebService machineAccessoriesWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IUsbWatcherService usb,
             IMachineServicingWebService machineServicingWebService)
             : base(PresentationMode.Installer)
         {
+            this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcherService = usb ?? throw new ArgumentNullException(nameof(usb));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
@@ -132,8 +137,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
 #if DEBUG
             this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+#else
+            this.availableDrives = this.usbWatcherService.Drives.Writable();
 #endif
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
 
             this.RaisePropertyChanged(nameof(this.Data));
 
@@ -245,12 +252,26 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 //fix null Accessories
-                for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                if (Login.ScaffolderUserAccesLevel.UseAccessories)
                 {
-                    if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
+                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
                     {
-                        var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
-                        output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
+                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
+                        {
+                            //var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
+                            //output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
+                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = await this.machineAccessoriesWebService.GetAllWithBayNumberAsync(output.Machine.Bays.ElementAtOrDefault(i).Number);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                    {
+                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories != null)
+                        {
+                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = null;
+                        }
                     }
                 }
 
