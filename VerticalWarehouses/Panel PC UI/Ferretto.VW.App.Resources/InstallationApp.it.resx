@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1567,7 +1567,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Tipo scelta sorgente non valida</value>
   </data>
   <data name="InvalidValue" xml:space="preserve">
-    <value>Valore non valido</value>
+    <value>Invalid Value</value>
   </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId deve essere strettamente positivo.</value>
@@ -2620,7 +2620,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Controlla porte seriali</value>
   </data>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
-    <value>Sparare questi codici a barre per configurare il lettore Newland in emulazione seriale.</value>
+    <value>Sparare questi codici a barre per configurare il lettore in emulazione seriale.</value>
   </data>
   <data name="Operator" xml:space="preserve">
     <value>Operatore</value>
@@ -2776,10 +2776,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Dispositivi rimovibili collegati</value>
   </data>
   <data name="SaveLogs" xml:space="preserve">
-    <value>Salva logs</value>
+    <value>Salva log</value>
   </data>
   <data name="SaveLogsFile" xml:space="preserve">
-    <value>Salva logs</value>
+    <value>Salva log</value>
   </data>
   <data name="LogFile" xml:space="preserve">
     <value>File di log</value>
@@ -2790,8 +2790,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
     <value>Logs caricati da servizio telemetry</value>
   </data>
-  <data name="F" xml:space="preserve">
-    <value>Abort</value>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Total completed cycles</value>
+  </data>
+  <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
+    <value>Impossibile recuperare le informazioni del dispositivo. Assicurarsi che il dispositivo sia alloggiato nella sua base.</value>
   </data>
   <data name="Accessories" xml:space="preserve">
     <value>Accessori</value>

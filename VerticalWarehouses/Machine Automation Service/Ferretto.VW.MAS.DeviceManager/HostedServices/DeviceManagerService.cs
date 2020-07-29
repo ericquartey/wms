@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
 using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
@@ -122,7 +123,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 var publishErrorNotification = false;
                 if (messageCurrentStateMachine != null)
                 {
-                    if (messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine)
+                    if (messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine ||
+                        messageCurrentStateMachine is CombinedMovementsStateMachine)
                     {
                         publishErrorNotification = (command.Type != MessageType.Positioning
                             && command.Type != MessageType.Stop
@@ -242,6 +244,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.CheckIntrusion:
                         this.ProcessCheckIntrusion(command);
                         break;
+                        
+                    case MessageType.CombinedMovements:
+                        this.ProcessCombinedMovemets(command, serviceProvider);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(
@@ -278,6 +284,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 {
                     foreach (var messageCurrentStateMachine in this.currentStateMachines.Where(x => x.BayNumber == message.TargetBay).Reverse().ToList())
                     {
+                        var notifyMessageToAny = true;
+
                         switch (message.Type)
                         {
                             case MessageType.Homing:
@@ -308,19 +316,48 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 if (messageCurrentStateMachine is PositioningStateMachine ||
                                     messageCurrentStateMachine is ExtBayPositioningStateMachine)
                                 {
-                                    // deallocate only Positioning state machine
-                                    this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
-                                    this.currentStateMachines.Remove(messageCurrentStateMachine);
-                                    this.SendCleanDebug();
+                                    if (messageCurrentStateMachine is PositioningStateMachine machine)
+                                    {
+                                        var positioningMessageData = message.Data as IPositioningMessageData;
+                                        if (machine.AxisMovement == positioningMessageData.AxisMovement)
+                                        {
+                                            // deallocate only Positioning state machine
+                                            this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                            this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                            this.SendCleanDebug();
+                                        }
+                                        else
+                                        {
+                                            // Discharge the current state machine elaboration
+                                            continue;
+                                        }
+                                    }
+
+                                    if (messageCurrentStateMachine is ExtBayPositioningStateMachine)
+                                    {
+                                        // deallocate only Positioning state machine
+                                        this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                        this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                        this.SendCleanDebug();
+                                    }
                                 }
                                 else
                                 {
-                                    if (!(messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine))
+                                    if (!(messageCurrentStateMachine is RepetitiveHorizontalMovementsStateMachine) &&
+                                        !(messageCurrentStateMachine is CombinedMovementsStateMachine))
                                     {
                                         continue;
                                     }
 
-                                    // Current message can be processed by the RepetitiveHorizontalMovements state machine
+                                    if (messageCurrentStateMachine is CombinedMovementsStateMachine)
+                                    {
+                                        // Handle this exceptional case, where the message cannot be sent notification
+                                        // to any destination (major on Machine Manager component)
+                                        notifyMessageToAny = false;
+                                    }
+
+                                    // Current message must be processed by the RepetitiveHorizontalMovements state machine
+                                    // or by the CombinedMovements state machine
                                 }
                                 break;
 
@@ -345,6 +382,17 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
                                 break;
+
+                            case MessageType.CombinedMovements:
+                                if (!(messageCurrentStateMachine is CombinedMovementsStateMachine))
+                                {
+                                    // deallocate only CombinedMovements state machine
+                                    continue;
+                                }
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
                         }
 
                         var notificationMessage = new NotificationMessage(
@@ -358,10 +406,15 @@ namespace Ferretto.VW.MAS.DeviceManager
                             message.Status,
                             message.ErrorLevel);
 
-                        this.EventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(notificationMessage);
+                        if (notifyMessageToAny)
+                        {
+                            // Publish notification message to any destination
+                            this.EventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(notificationMessage);
+                        }
 
+                        // Process message by the current state machine
                         messageCurrentStateMachine?.ProcessNotificationMessage(message);
                     }
                 }

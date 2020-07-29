@@ -51,6 +51,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private DelegateCommand loadFileCommand = null;
 
+        private string pattern;
+
         private Regex regexDataSet;
 
         private Regex regexDigit;
@@ -104,6 +106,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             ??
             (this.loadFileCommand = new DelegateCommand(
             this.LoadParameters, this.CanImport));
+
+        public string Pattern
+        {
+            get => this.pattern;
+            set => this.SetProperty(ref this.pattern, value);
+        }
 
         public FileInfo SelectedFile
         {
@@ -250,9 +258,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             try
             {
                 var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
-                var files = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.txt";
+                this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.txt";
                 var di = new DirectoryInfo(this.configurationService.InvertersParametersFolder);
-                this.configurationFiles = di.EnumerateFiles(files);
+                this.configurationFiles = di.EnumerateFiles(this.Pattern);
 
                 this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
                 if (!this.configurationFiles.Any())
@@ -397,7 +405,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 {
                     this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
                 }
-                
+
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
                 this.IsParametersSet = true;
             }

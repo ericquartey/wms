@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private readonly ITelemetryHubClient telemetryHubClient;
 
-        private BayNumber bayNumber;
+        private readonly BayNumber bayNumber;
 
         private bool isScreenCast;
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Modules.Layout
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
 
-            this.bayNumber = BayNumber.None;
+            this.bayNumber = (BayNumber)Enum.Parse(typeof(BayNumber), ConfigurationManager.AppSettings.GetBayNumber());
         }
 
         #endregion
@@ -138,19 +138,6 @@ namespace Ferretto.VW.App.Modules.Layout
 
         #region Methods
 
-        public async Task CheckBayNumberAsync()
-        {
-            try
-            {
-                var bay = await this.bayManagerService.GetBayAsync();
-                this.bayNumber = bay.Number;
-            }
-            catch
-            {
-                // TODO please fix this
-            }
-        }
-
         public override Task ExecuteAsync()
         {
             this.IsServiceOptionsVisible = !this.IsServiceOptionsVisible;
@@ -166,9 +153,8 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private bool CanSendScreenSnapshotAsync()
         {
-            return false;
-            // TODO Telemetry
-            //return !this.isScreenCast;
+            //return false;
+            return !this.isScreenCast;
         }
 
         private async Task ToggleScreenCastAsync()
@@ -181,8 +167,6 @@ namespace Ferretto.VW.App.Modules.Layout
                 return;
             }
 
-            await this.CheckBayNumberAsync();
-
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Task.Run(async () =>
             {
@@ -191,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Layout
                     byte[] screenshot = null;
                     Application.Current.Dispatcher.Invoke(() =>
                          {
-                             screenshot = this.navigationService.TakeScreenshot();
+                             screenshot = this.navigationService.TakeScreenshot(true);
                          });
 
                     try
@@ -225,7 +209,6 @@ namespace Ferretto.VW.App.Modules.Layout
         private async Task SaveLogsAsync()
         {
             this.IsServiceOptionsVisible = false;
-            await this.CheckBayNumberAsync();
 
             try
             {
@@ -358,8 +341,7 @@ namespace Ferretto.VW.App.Modules.Layout
             {
                 this.IsServiceOptionsVisible = false;
 
-                await this.CheckBayNumberAsync();
-                var screenshot = this.navigationService.TakeScreenshot();
+                var screenshot = this.navigationService.TakeScreenshot(false);
                 await this.telemetryHubClient.SendScreenShotAsync((int)this.bayNumber, DateTimeOffset.Now, screenshot);
             }
             catch (Exception ex)

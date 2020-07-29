@@ -1,1 +1,9 @@
-Start-Process msiexec.exe -Wait -ArgumentList '/I "$(Update:Temp:Path)\$(Installer:DirName)\Drivers\ufcom-1.7.12.msi" /quiet'
+$driverFullPath = "$(Update:Temp:Path)\$(Installer:DirName)\Drivers\BarcodeNewland";
+$contents = Get-ChildItem -Path $driverFullPath | sort | Select-Object -First 1;
+$driverFileName = $contents.Name;
+if ($driverFileName -ne $null)
+{
+    $arguments = "/I ""$driverFullPath\$driverFileName"" /quiet";
+    Start-Process msiexec.exe -Wait -ArgumentList $arguments;
+}
+

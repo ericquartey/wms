@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 const int HighMissionCount = 3000000;
                 const int NormalMissionCount = 40000;
                 const int LowMissionCount = 20000;
-                const int VeryHighMissionCount = 600000;
+                //const int VeryHighMissionCount = 600000;
                 const int OneYear = 365;
 
                 // this instruction is reeeeally slow

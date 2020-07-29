@@ -24,15 +24,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IUsersProvider usersProvider;
 
+        private readonly IUsersWmsWebService usersWmsWebService;
+
         #endregion
 
         #region Constructors
 
         public UsersController(
             IUsersProvider usersProvider,
+            IUsersWmsWebService usersWmsWebService,
             ILogger<UsersController> logger)
         {
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
+            this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -52,14 +56,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<UserClaims>> AuthenticateWithBearerToken(
            string bearerToken,
-           [FromServices] IWmsSettingsProvider wmsSettingsProvider,
-           [FromServices] IUsersWmsWebService usersWmsWebService)
+           [FromServices] IWmsSettingsProvider wmsSettingsProvider)
         {
             this.logger.LogDebug($"Login requested for token '{bearerToken}' by '{this.BayNumber}'.");
 
             if (wmsSettingsProvider.IsEnabled)
             {
-                var claims = await usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
+                var claims = await this.usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
 
                 this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
 
@@ -76,26 +79,75 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<UserClaims>> AuthenticateWithResourceOwnerPassword(
             string userName,
             string password,
-            string supportToken,
-            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
-            [FromServices] IUsersWmsWebService usersWmsWebService)
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider)
         {
-            this.logger.LogDebug($"Login requested for user '{userName}' by '{this.BayNumber}'.");
+            this.logger.LogDebug(
+                "User '{name}': login requested on bay '{number}'.",
+                userName,
+                this.BayNumber);
 
-            if (string.IsNullOrEmpty(supportToken) && wmsSettingsProvider.IsEnabled)
+            if (wmsSettingsProvider.IsEnabled)
             {
                 try
                 {
-                    var claims = await usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
+                    this.logger.LogDebug("User '{name}': attempting login through WMS ...", userName);
 
-                    this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' through WMS.");
+                    var claims = await this.usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
+
+                    this.logger.LogInformation(
+                        "User '{name}': login successful on bay '{number}' trhough WMS.",
+                        userName,
+                        this.BayNumber);
 
                     return this.Ok(claims);
                 }
                 catch
                 {
-                    this.logger.LogWarning($"Unable to authenticate user '{userName}' by '{this.BayNumber}' through WMS.");
+                    this.logger.LogWarning(
+                        "User '{name}': unable to authenticate on bay '{number}' through WMS.",
+                        userName,
+                        this.BayNumber);
                 }
+            }
+
+            var accessLevel = this.usersProvider.Authenticate(userName, password, null);
+            if (!accessLevel.HasValue)
+            {
+                this.logger.LogWarning(
+                    "User '{name}': login on '{number}' failed.",
+                    userName,
+                    this.BayNumber);
+
+                return this.Unauthorized();
+            }
+
+            this.logger.LogInformation(
+                "User '{name}': login success on bay '{number}'.",
+                userName,
+                this.BayNumber);
+
+            return this.Ok(
+                new UserClaims
+                {
+                    Name = userName,
+                    AccessLevel = (UserAccessLevel)accessLevel.Value,
+                });
+        }
+
+        [HttpPost("authenticate-support-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<UserClaims>> AuthenticateWithSupportToken(
+           string userName,
+           string password,
+           string supportToken)
+        {
+            this.logger.LogDebug($"Login requested for user '{userName}' by '{this.BayNumber}'.");
+
+            if (string.IsNullOrEmpty(supportToken))
+            {
+                return this.Unauthorized();
             }
 
             var accessLevel = this.usersProvider.Authenticate(userName, password, supportToken);

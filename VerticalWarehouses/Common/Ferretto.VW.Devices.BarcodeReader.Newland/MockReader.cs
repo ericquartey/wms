@@ -69,7 +69,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         #region Methods
 
-        public void Connect(ConfigurationOptions options)
+        public void Connect(SerialPortOptions options)
         {
             this.Disconnect();
             this.barcodeIndex = 0;

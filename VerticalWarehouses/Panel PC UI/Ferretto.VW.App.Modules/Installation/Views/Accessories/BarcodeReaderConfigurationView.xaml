@@ -47,9 +47,11 @@
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition x:Name="Title"
                            Height="Auto" />
@@ -62,6 +64,8 @@
             <RowDefinition x:Name="Refresh" />
 
         </Grid.RowDefinitions>
+
+
 
         <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Center"
@@ -78,7 +82,91 @@
                    Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                    Text="{res:Loc InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
 
+
+        <StackPanel Grid.Row="2"
+                    Grid.Column="0">
+            <StackPanel Margin="0,0,0,30"
+                        Orientation="Horizontal">
+                <Border Width="40"
+                        Height="40"
+                        Margin="15,0,15,15"
+                        VerticalAlignment="Top"
+                        Background="{StaticResource FerrettoBlue}"
+                        CornerRadius="20">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="DemiBold"
+                               Foreground="White"
+                               Text="1" />
+                </Border>
+                <StackPanel VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,10"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="Seleziona il modello" />
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsNewland1550, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Newland 1550" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsNewland1580, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Newland 1580" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsNewland3280, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Newland 3280" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsNewland3290, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Newland 3290" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
+                    <RadioButton Margin="5"
+                                 GroupName="ModelNameRadioGroup"
+                                 IsChecked="{Binding IsDatalogicPBT9501, Mode=TwoWay}">
+                        <RadioButton.Content>
+                            <TextBlock Margin="0,5,0,0"
+                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                       Text="Datalogic PBT9501" />
+                        </RadioButton.Content>
+                    </RadioButton>
+
+                </StackPanel>
+
+
+
+            </StackPanel>
+
+        </StackPanel>
+
         <ItemsControl Grid.Row="2"
+                      Grid.Column="1"
                       Background="Transparent"
                       BorderThickness="0"
                       Focusable="False"
@@ -87,13 +175,12 @@
 
 
         <StackPanel Grid.Row="2"
-                    Grid.Column="1">
-            <StackPanel Height="140"
-                        Margin="0,0,0,30"
+                    Grid.Column="2">
+            <StackPanel Margin="0,0,0,30"
                         Orientation="Horizontal">
                 <Border Width="40"
                         Height="40"
-                        Margin="15"
+                        Margin="15,0,15,15"
                         Background="{StaticResource FerrettoBlue}"
                         CornerRadius="20">
                     <TextBlock HorizontalAlignment="Center"
@@ -101,7 +188,7 @@
                                FontSize="18"
                                FontWeight="DemiBold"
                                Foreground="White"
-                               Text="4" />
+                               Text="5" />
                 </Border>
                 <StackPanel VerticalAlignment="Center"
                             Orientation="Vertical">
@@ -134,6 +221,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+
 
 
             </StackPanel>

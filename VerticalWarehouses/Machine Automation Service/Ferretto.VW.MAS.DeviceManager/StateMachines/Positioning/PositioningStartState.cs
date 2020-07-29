@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -52,7 +53,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.machineData.MessageData.AxisMovement}");
 
             if (message.Type == FieldMessageType.SwitchAxis)
             {
@@ -117,7 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement}");
             if (!this.machineData.MessageData.IsOneTonMachine &&
                 this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {
@@ -213,7 +214,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Start");
+            this.Logger.LogDebug($"1:Stop Method: Start. Reason:{reason} Axis:{this.machineData.MessageData.AxisMovement}");
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));

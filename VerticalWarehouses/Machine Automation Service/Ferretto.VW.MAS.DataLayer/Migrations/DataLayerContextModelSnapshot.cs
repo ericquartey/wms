@@ -1814,6 +1814,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator().HasValue("TokenReader");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightingScale", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
+
+                    b.Property<string>("PortName")
+                        .HasColumnName("WeightingScale_PortName");
+
+                    b.HasDiscriminator().HasValue("WeightingScale");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1906,13 +1916,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("ZOffsetUpperPosition");
 
                     b.HasDiscriminator().HasValue("LaserPointer");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightingScale", b =>
-                {
-                    b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
-
-                    b.HasDiscriminator().HasValue("WeightingScale");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", b =>

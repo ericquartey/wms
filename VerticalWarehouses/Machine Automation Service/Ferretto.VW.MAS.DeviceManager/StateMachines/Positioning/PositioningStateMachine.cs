@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Models;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -54,6 +55,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #endregion
 
+        public Axis AxisMovement => this.machineData.MessageData.AxisMovement;
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
@@ -68,7 +71,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.AxisMovement}");
+
+            // We make a check about the inverter index on message and inverter index of machine data
+            if (message.Source == Utils.Enumerations.FieldMessageActor.InverterDriver &&
+                message.DeviceIndex != (byte)this.machineData.CurrentInverterIndex)
+            {
+                return;
+            }
 
             lock (this.CurrentState)
             {
@@ -78,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status} Axis:{this.AxisMovement}");
 
             lock (this.CurrentState)
             {
@@ -126,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace($"1:Stop Method: Start. Reason:{reason} Axis:{this.AxisMovement}");
 
             lock (this.CurrentState)
             {

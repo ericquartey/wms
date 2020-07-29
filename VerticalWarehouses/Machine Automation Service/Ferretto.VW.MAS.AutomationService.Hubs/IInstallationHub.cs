@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
+        Task CombinedMovementsNotify(IBaseNotificationMessageUI message);
+
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
         Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper);

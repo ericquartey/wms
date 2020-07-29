@@ -1,0 +1,383 @@
+﻿using System;
+using System.Threading.Tasks;
+using System.Threading;
+using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
+using Ferretto.VW.Devices.WeightingScale;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using NLog;
+using Prism.Events;
+using System.Collections.Generic;
+
+namespace Ferretto.VW.App.Accessories
+{
+    internal sealed partial class WeightingScaleService : Interfaces.IWeightingScaleService
+    {
+        #region Fields
+
+        private const int WeightPollInterval = 100;
+
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
+
+        private readonly IWeightingScaleDriver deviceDriver;
+
+        private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly Dictionary<int, IWeightSample> lastWeightSampleByScaleNumber = new Dictionary<int, IWeightSample>();
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineItemsWebService machineItemsWebService;
+
+        private bool isDeviceEnabled;
+
+        private bool isStarted;
+
+        private Timer weightPollTimer;
+
+        #endregion
+
+        #region Constructors
+
+        public WeightingScaleService(
+                    IWeightingScaleDriver deviceDriver,
+            IMachineAccessoriesWebService accessoriesWebService,
+            IMachineItemsWebService machineItemsWebService,
+            IEventAggregator eventAggregator)
+        {
+            this.deviceDriver = deviceDriver;
+            this.accessoriesWebService = accessoriesWebService;
+            this.machineItemsWebService = machineItemsWebService;
+            this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<WeightAcquiredEventArgs> WeighAcquired;
+
+        #endregion
+
+        #region Properties
+
+        public Devices.DeviceInformation DeviceInformation => this.deviceInformation;
+
+        #endregion
+
+        #region Methods
+
+        public async Task ClearMessageAsync()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.deviceDriver.ClearMessageAsync();
+        }
+
+        public async Task DisplayMessageAsync(string message)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.deviceDriver.DisplayMessageAsync(message);
+        }
+
+        public async Task DisplayMessageAsync(string message, TimeSpan duration)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.deviceDriver.DisplayMessageAsync(message, duration);
+        }
+
+        public async Task<IWeightSample> MeasureWeightAsync()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            if (this.weightPollTimer != null)
+            {
+                this.logger.Debug("Called weight measurement while the continuous polling mode is active.");
+            }
+
+            return await this.deviceDriver.MeasureWeightAsync();
+        }
+
+        public async Task ResetAverageUnitaryWeightAsync()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.deviceDriver.ResetAverageUnitaryWeightAsync();
+        }
+
+        public async Task SetAverageUnitaryWeightAsync(float weight)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.deviceDriver.SetAverageUnitaryWeightAsync(weight);
+        }
+
+        public async Task StartAsync()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (this.isStarted)
+            {
+                this.logger.Warn("The weighting scale service is already started.");
+                return;
+            }
+
+            this.logger.Debug("Starting the weighting scale service ...");
+
+            this.InitializeSerialPortsTimer();
+
+            try
+            {
+                var accessories = await this.accessoriesWebService.GetAllAsync();
+                this.isDeviceEnabled = accessories.WeightingScale?.IsEnabledNew == true;
+                if (!this.isDeviceEnabled)
+                {
+                    return;
+                }
+
+                this.deviceDriver.Connect(new ScaleSerialPortOptions
+                {
+                    PortName = accessories.WeightingScale.PortName
+                });
+
+                this.deviceInformation.FirmwareVersion = await this.deviceDriver.RetrieveVersionAsync();
+
+                if (!this.DeviceInformation.IsEmpty)
+                {
+                    await this.accessoriesWebService.UpdateWeightingScaleDeviceInfoAsync(
+                        new DeviceInformation
+                        {
+                            FirmwareVersion = this.DeviceInformation.FirmwareVersion,
+                            ManufactureDate = this.DeviceInformation.ManufactureDate,
+                            ModelNumber = this.DeviceInformation.ModelNumber,
+                            SerialNumber = this.DeviceInformation.SerialNumber
+                        });
+                }
+
+                this.isStarted = true;
+
+                this.logger.Debug("The weighting scale service has started.");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, "Error while initializing the weighting scale service.");
+
+                throw;
+            }
+        }
+
+        public void StartWeightAcquisition()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                   "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            this.logger.Debug("Starting continuous weight acquisition ...");
+
+            this.DisableWeightPollTimer();
+            this.weightPollTimer = new Timer(
+                async state => await this.OnWeightPollTimerTickAsync(),
+                null,
+                0,
+                WeightPollInterval);
+        }
+
+        public Task StopAsync()
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                this.logger.Debug("The weighting scale service is already stopped.");
+                return Task.CompletedTask;
+            }
+
+            this.logger.Debug("Stopping the weighting scale service ...");
+
+            this.isStarted = false;
+            this.DisableWeightPollTimer();
+            this.DisableSerialPortsTimer();
+            this.deviceDriver.Disconnect();
+
+            this.logger.Debug("The weighting scale service has stopped.");
+
+            return Task.CompletedTask;
+        }
+
+        public void StopWeightAcquisition()
+        {
+            this.logger.Debug("Stopping continuous weight acquisition ...");
+            this.DisableWeightPollTimer();
+        }
+
+        public async Task UpdateItemAverageWeightAsync(int itemId, double averageWeight)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            if (!this.isStarted)
+            {
+                throw new InvalidOperationException(
+                    "Cannot perform the operation because the weighting scale service is not started.");
+            }
+
+            await this.machineItemsWebService.UpdateAverageWeightAsync(itemId, averageWeight);
+        }
+
+        public async Task UpdateSettingsAsync(bool isEnabled, string portName)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+            }
+
+            this.logger.Debug("Updating the weighting scale settings on MAS ...");
+
+            await this.accessoriesWebService.UpdateWeightingScaleSettingsAsync(isEnabled, portName);
+
+            this.logger.Debug("The weighting scale settings were updated.");
+
+            this.isDeviceEnabled = isEnabled;
+            if (this.isDeviceEnabled)
+            {
+                await this.StartAsync();
+            }
+            else
+            {
+                await this.StopAsync();
+            }
+        }
+
+        private void DisableWeightPollTimer()
+        {
+            this.weightPollTimer?.Dispose();
+            this.weightPollTimer = null;
+        }
+
+        private async Task OnWeightPollTimerTickAsync()
+        {
+            if (this.isDisposed || !this.isStarted)
+            {
+                return;
+            }
+
+            if (this.WeighAcquired is null)
+            {
+                this.logger.Debug("There are no subscribers to the WeightAcquired event.");
+
+                this.StopWeightAcquisition();
+            }
+            else
+            {
+                try
+                {
+                    var weightSample = await this.deviceDriver.MeasureWeightAsync();
+
+                    var hasSampleChanged = true;
+                    if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))
+                    {
+                        hasSampleChanged =
+                            weightSample.Weight != lastWeightSample.Weight
+                            ||
+                            weightSample.Quality != lastWeightSample.Quality
+                            ||
+                            weightSample.Tare != lastWeightSample.Tare
+                            ||
+                            weightSample.UnitOfMeasure != lastWeightSample.UnitOfMeasure
+                            ||
+                            weightSample.AverageUnitWeight != lastWeightSample.AverageUnitWeight;
+                    }
+
+                    this.lastWeightSampleByScaleNumber[weightSample.ScaleNumber] = weightSample;
+
+                    if (hasSampleChanged)
+                    {
+                        this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
+
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
+                        );
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.logger.Error(ex, "Error while performing continuous weight sampling.");
+                }
+            }
+        }
+
+        #endregion
+    }
+}

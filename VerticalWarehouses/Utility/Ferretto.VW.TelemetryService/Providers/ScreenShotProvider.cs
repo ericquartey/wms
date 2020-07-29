@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Microsoft.Extensions.Logging;
 using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
@@ -10,20 +12,51 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
+        private readonly ILogger<ErrorLogProvider> logger;
+
         private readonly Realm realm;
 
         #endregion
 
         #region Constructors
 
-        public ScreenShotProvider(Realm realm)
+        public ScreenShotProvider(Realm realm,
+                                  ILogger<ErrorLogProvider> logger)
         {
             this.realm = realm;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
+
+        public void DeleteOldLogs(TimeSpan maximumLogTimespan)
+        {
+            this.logger.LogDebug("Deleting old screenShot ...");
+
+            var realm = Realm.GetInstance();
+
+            using var trans = realm.BeginWrite();
+
+            var screenShotLogs = realm.All<Models.ScreenShot>();
+
+            var lastLog = screenShotLogs.OrderByDescending(e => e.TimeStamp).FirstOrDefault();
+
+            if (lastLog is null)
+            {
+                return;
+            }
+
+            var logsToDelete = screenShotLogs.OrderByDescending(e => e.TimeStamp)
+                                             .Where(e => (e.TimeStamp - maximumLogTimespan) < lastLog.TimeStamp);
+
+            realm.RemoveRange<Models.ScreenShot>(logsToDelete);
+
+            trans.Commit();
+
+            this.logger.LogDebug("A total of {count} screenShot were deleted.", logsToDelete.Count());
+        }
 
         public IEnumerable<IScreenShot> GetAll()
         {
@@ -48,8 +81,15 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
             }
 
+            var newId = 0;
+            if (this.realm.All<Models.ScreenShot>().OrderByDescending(e => e.Id).FirstOrDefault() is Models.ScreenShot screenShotFound)
+            {
+                newId = screenShotFound.Id + 1;
+            }
+
             var screenShotEntry = new Models.ScreenShot
             {
+                Id = newId,
                 BayNumber = screenShot.BayNumber,
                 Machine = machine,
                 Image = screenShot.Image,

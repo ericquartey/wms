@@ -117,6 +117,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("weighting-scale/info")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateWeightingScaleDeviceInfo(DeviceInformation deviceInformation)
+        {
+            this.accessoriesDataProvider.UpdateWeightingScaleDeviceInfo(this.BayNumber, deviceInformation);
+
+            return this.Ok();
+        }
+
+        [HttpPut("weighting-scale")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateWeightingScaleSettingsAsync(bool isEnabled, string portName)
+        {
+            this.accessoriesDataProvider.UpdateWeightingScaleSettings(this.BayNumber, isEnabled, portName);
+
+            return this.Ok();
+        }
+
         #endregion
     }
 }

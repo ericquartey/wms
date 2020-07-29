@@ -2031,7 +2031,6 @@
             "IsFree": true,
             "BlockLevel": "SpaceOnly"
           }
-
         ]
       }
     ],
@@ -2267,7 +2266,7 @@
       "IsBypassed": false,
       "IsCompleted": false
     }
-    },
+  },
   "Wms": {
     "Id": -1,
     "IsEnabled": false,

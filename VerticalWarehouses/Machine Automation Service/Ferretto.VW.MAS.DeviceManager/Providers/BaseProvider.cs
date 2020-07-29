@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class BaseProvider

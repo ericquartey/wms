@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
@@ -592,6 +593,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var update = false;
             switch (type)
             {
+                case MessageType.CombinedMovements:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.CombinedMovements;
+                    update = true;
+                    break;
+
                 case MessageType.Positioning:
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Positioning;
                     update = true;

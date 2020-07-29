@@ -123,6 +123,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         Version = "v1",
                     });
                 config.OperationFilter<BayNumberOperationFilter>();
+                config.CustomSchemaIds(i => i.FullName);
             });
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -148,8 +149,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMachineManager()
                 .AddMissionManager();
 
+            services.AddHostedService<NotificationTelemetryService>();
             services.AddHostedService<NotificationRelayService>();
-            //services.AddHostedService<NotificationTelemetryService>();
 
             services.AddScoped<IInverterProvider, InverterProvider>();
             services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();

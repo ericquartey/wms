@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Ferretto.VW.CommonUtils;
 using NLog;
@@ -16,16 +14,15 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         private const int DefaultReadTimeout = 6000;
 
-        private static readonly Regex responseRegex = new Regex(
-           @"@@@@!(?<command>\w+);(&{(?<params>.+)\|\w+})?\^\^\^\^", RegexOptions.Compiled);
-
-        private readonly DeviceInformation information = new DeviceInformation();
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly SerialPort serialPort = new SerialPort();
 
+        private DeviceInformation information = new DeviceInformation();
+
         private bool isDisposed;
+
+        private bool isReading;
 
         #endregion
 
@@ -43,16 +40,18 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         #region Methods
 
-        public void Connect(ConfigurationOptions options)
+        public void Connect(SerialPortOptions options)
         {
             if (this.isDisposed)
             {
                 throw new ObjectDisposedException(nameof(BarcodeReader));
             }
 
+            this.logger.Debug($"Opening serial port {options.PortName} ...");
+
             if (this.serialPort.IsOpen)
             {
-                if (options.PortName == this.serialPort.PortName)
+                if (options.PortName.Equals(this.serialPort.PortName, StringComparison.OrdinalIgnoreCase))
                 {
                     this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
 
@@ -64,19 +63,19 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
                 }
             }
 
+            this.information = new DeviceInformation();
+
             this.serialPort.PortName = options.PortName;
             this.serialPort.BaudRate = options.BaudRate;
             this.serialPort.Parity = options.Parity;
             this.serialPort.StopBits = options.StopBits;
             this.serialPort.ReadTimeout = DefaultReadTimeout;
 
-            this.logger.Debug($"Opening serial port {this.serialPort.PortName}.");
-
             this.serialPort.Open();
 
-            this.RetrieveDeviceInfo();
+            this.logger.Debug($"Serial port {this.serialPort.PortName} opened.");
 
-            new Thread(this.ReadLoop).Start();
+            new Thread(this.ReadLoop).Start(options);
         }
 
         public void Disconnect()
@@ -88,19 +87,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing)
             this.Dispose(true);
-        }
-
-        public void SendCommand(string command)
-        {
-            if (command is null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
-
-            var commandString = new CommandString(command);
-            this.serialPort.Write(commandString.ToString());
         }
 
         private void Dispose(bool disposing)
@@ -125,16 +112,22 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
                 var buffer = new byte[this.serialPort.ReadBufferSize];
 
                 var byteCount = this.serialPort.Read(buffer, 0, buffer.Length);
+                if (byteCount > 0)
+                {
+                    var barcode = Encoding.ASCII.GetString(buffer, 0, byteCount);
 
-                var barcode = Encoding.ASCII.GetString(buffer, 0, byteCount);
+                    this.logger.Debug($"Received barcode '{barcode.Replace("\r", "<CR>").Replace("\n", "<LF>")}'.");
 
-                this.logger.Debug($"Received barcode '{barcode.Replace("\r", "<CR>").Replace("\n", "<LF>")}'.");
-
-                this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
+                    this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
+                }
             }
-            catch (System.IO.IOException)
+            catch (TimeoutException)
             {
-                this.logger.Trace($"Serial port '{this.serialPort.PortName}': read timeout.");
+                Thread.Sleep(100);
+            }
+            catch (System.IO.IOException ex)
+            {
+                this.logger.Trace($"Serial port '{this.serialPort.PortName}': {ex.Message}.");
                 Thread.Sleep(100);
             }
             catch (Exception ex)
@@ -143,20 +136,33 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
         }
 
-        private void ReadLoop()
+        private void ReadLoop(object optionsObject)
         {
+            while (this.isReading) { Thread.Sleep(100); }
+
+            this.isReading = true;
+
+            if (optionsObject is NewlandSerialPortOptions options
+                &&
+                options.DeviceModel is DeviceModel.Newland1550)
+            {
+                this.Retrieve1550DeviceInfo();
+            }
+
             do
             {
                 this.ReadBytes();
             }
             while (this.serialPort.IsOpen && !this.isDisposed);
+
+            this.isReading = false;
         }
 
-        private void RetrieveDeviceInfo()
+        private void Retrieve1550DeviceInfo()
         {
             try
             {
-                var responseParams = this.SendCommand(BarcodeCommand.InquireAllInformation);
+                var responseParams = Barcode1550Command.InquireAllInformation.Send(this.serialPort);
                 if (responseParams.Any())
                 {
                     foreach (var parameter in responseParams)
@@ -187,7 +193,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
                     return;
                 }
 
-                responseParams = this.SendCommand(BarcodeCommand.InquireManufactureDate);
+                responseParams = Barcode1550Command.InquireManufactureDate.Send(this.serialPort);
                 if (responseParams.Count() == 1
                     &&
                     DateTime.TryParse(responseParams.First(), out var dateTime))
@@ -202,38 +208,6 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             catch (Exception ex)
             {
                 this.logger.Warn($"Unable to retrieve device info: {ex.Message}.");
-            }
-        }
-
-        private IEnumerable<string> SendCommand(BarcodeCommand command)
-        {
-            try
-            {
-                var commandCode = (int)command;
-                var commandString = $"$$$$#{commandCode};%%%%";
-                this.logger.Debug($"Sending command '{commandString}' to barcode reader ...");
-                this.serialPort.Write(commandString);
-
-                var buffer = new byte[this.serialPort.ReadBufferSize];
-                var byteCount = this.serialPort.Read(buffer, 0, buffer.Length);
-                var response = Encoding.ASCII.GetString(buffer, 0, byteCount);
-                this.logger.Debug($"Received command response: '{response}'.");
-
-                var match = responseRegex.Match(response);
-                if (!match.Success)
-                {
-                    this.logger.Warn("Unable to parse command response.");
-                    return Array.Empty<string>();
-                }
-                else
-                {
-                    return match.Groups["params"].Value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error($"Unable to send command to barcode reader: {ex.Message}.");
-                return null;
             }
         }
 

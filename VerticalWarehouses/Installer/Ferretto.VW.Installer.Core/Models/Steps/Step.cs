@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Installer.Core.Models.Steps;
-using NLog;
 
 #nullable enable
 

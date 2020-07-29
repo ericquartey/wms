@@ -16,6 +16,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         Homing = 4,
 
+        CombinedMovements = 8,
+
         CheckIntrusion = 16
     }
 }

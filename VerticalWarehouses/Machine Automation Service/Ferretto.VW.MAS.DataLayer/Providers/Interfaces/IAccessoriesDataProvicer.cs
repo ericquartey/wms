@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateLaserPointer(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);
 
+        void UpdateWeightingScaleDeviceInfo(BayNumber bayNumber, DeviceInformation deviceInformation);
+
+        void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string portName);
+
         #endregion
     }
 }

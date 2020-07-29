@@ -37,8 +37,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.OnErrorStatusChangedAsync(messsageData, serviceProvider);
                     break;
 
-                case MessageType.MoveLoadingUnit when message.Data is MoveLoadingUnitMessageData messsageData:
-                    await this.OnMoveLoadingUnitAsync(messsageData);
+                case MessageType.MoveLoadingUnit when message.Data is MoveLoadingUnitMessageData:
+                    await this.OnMoveLoadingUnitAsync(message);
                     break;
             }
         }

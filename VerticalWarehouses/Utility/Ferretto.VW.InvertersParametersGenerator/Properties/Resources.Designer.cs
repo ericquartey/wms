@@ -322,6 +322,15 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files pattern.
+        /// </summary>
+        public static string SearchPattern {
+            get {
+                return ResourceManager.GetString("SearchPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select file.
         /// </summary>
         public static string SelectFile {
@@ -340,7 +349,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertimag confdiguration file.
+        ///   Looks up a localized string similar to Vertimag configuration file.
         /// </summary>
         public static string VertimagConfigurationFile {
             get {
