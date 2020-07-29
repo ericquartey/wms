@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.CheckIntrusion:
                         this.ProcessCheckIntrusion(command);
                         break;
-                        
+
                     case MessageType.CombinedMovements:
                         this.ProcessCombinedMovemets(command, serviceProvider);
                         break;
