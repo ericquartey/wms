@@ -117,11 +117,18 @@
 
                 <controls:PpcLabeledText Grid.Row="2"
                                          Grid.Column="1"
-                                         Grid.ColumnSpan="3"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.ItemListDescription}"
                                          LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
+
+                <controls:PpcLabeledText Grid.Row="2"
+                                         Grid.Column="2"
+                                         Grid.ColumnSpan="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding SelectedCompartmentDetail.Stock}"
+                                         LabelText="{resources:Loc OperatorApp.ItemStock}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
                                          Grid.Column="0"

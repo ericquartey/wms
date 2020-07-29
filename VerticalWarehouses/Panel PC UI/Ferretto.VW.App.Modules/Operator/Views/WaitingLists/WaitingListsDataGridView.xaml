@@ -26,6 +26,8 @@
     </UserControl.Resources>
 
     <DataGrid x:Name="DataGrid"
+              CanUserSortColumns="True"
+              IsSynchronizedWithCurrentItem="True"
               ItemsSource="{Binding Lists}"
               SelectedItem="{Binding SelectedList}"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}">

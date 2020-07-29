@@ -297,6 +297,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task LoginAsync()
         {
+            ScaffolderUserAccesLevel.ActualBay = this.BayNumber;
+
             this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;

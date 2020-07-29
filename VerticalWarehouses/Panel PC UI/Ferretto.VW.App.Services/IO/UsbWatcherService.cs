@@ -92,12 +92,12 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
+            this.isEnabled = true;
             this.ReloadDriveInfos();
 
             this.eventWatcher.EventArrived += this.Watcher_EventArrived;
             this.eventWatcher.Start();
 
-            this.isEnabled = true;
             this.logger.Debug("USB watcher service enabled.");
         }
 

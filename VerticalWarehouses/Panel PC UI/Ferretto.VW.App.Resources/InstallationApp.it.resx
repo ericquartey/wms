@@ -2796,4 +2796,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
     <value>Impossibile recuperare le informazioni del dispositivo. Assicurarsi che il dispositivo sia alloggiato nella sua base.</value>
   </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Accessori</value>
+  </data>
 </root>
