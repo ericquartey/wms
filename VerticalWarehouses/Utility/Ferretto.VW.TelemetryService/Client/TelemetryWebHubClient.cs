@@ -155,7 +155,7 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }
@@ -180,7 +180,7 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }
@@ -205,7 +205,7 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }

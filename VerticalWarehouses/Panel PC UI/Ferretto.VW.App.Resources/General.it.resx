@@ -289,7 +289,7 @@
     <value>Errore di comunicazione con i servizi.</value>
   </data>
   <data name="ErrorLogin" xml:space="preserve">
-    <value>Errore: login fallito. Controlla la correttezza di user e password.</value>
+    <value>Errore: login fallito. Controlla la correttezza di user e password</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
     <value>{0:0} ore fa</value>
@@ -394,7 +394,7 @@
     <value>{0:dd.MM.yyyy HH:mm}</value>
   </data>
   <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>L'area della macchina è sconosciuta.</value>
+    <value>L'area della macchina è sconosciuta</value>
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Questo converter può convertire solo valori di tipo Visibility.</value>
