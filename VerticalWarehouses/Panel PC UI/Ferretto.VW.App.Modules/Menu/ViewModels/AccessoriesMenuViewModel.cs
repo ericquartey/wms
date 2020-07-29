@@ -75,9 +75,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return
                 (this.MachineModeService.MachinePower == MachinePowerState.Powered
                 ||
-                this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
+                this.MachineModeService.MachinePower == MachinePowerState.Unpowered
+                ||
+                this.MachineModeService.MachinePower == MachinePowerState.NotSpecified)
                 &&
-                this.MachineModeService.MachineMode == MachineMode.Manual
+                !(this.MachineModeService.MachineMode == MachineMode.Automatic)
                 &&
                 (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
                 ||

@@ -88,6 +88,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accessories.
+        /// </summary>
+        public static string Accessories {
+            get {
+                return ResourceManager.GetString("Accessories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable COM Emulation.
         /// </summary>
         public static string AccessoriesBarcodeEnableComEmulation {

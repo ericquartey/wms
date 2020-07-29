@@ -43,6 +43,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(accessories);
         }
 
+        [HttpGet("get-all-bay-number")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<BayAccessories> GetAllWithBayNumber(BayNumber BayNumber)
+        {
+            var accessories = this.accessoriesDataProvider.GetAccessories(BayNumber);
+
+            return this.Ok(accessories);
+        }
+
         [HttpPut("alpha-numeric-bar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]

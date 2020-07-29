@@ -15,48 +15,57 @@
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=self:ImportExportFeatures}}">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
         <CheckBox Grid.Column="0"
-                  Margin="0,0,20,0"
+                  Margin="0,0,15,0"
                   Content="{res:Loc InstallationApp.Parameters}"
                   Foreground="{DynamicResource CheckBoxDescription}"
                   IsChecked="{Binding IncludeParameters, Mode=TwoWay}"
                   IsEnabled="{Binding HasParameters}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
         <CheckBox Grid.Column="1"
-                  Margin="0,0,20,0"
+                  Margin="0,0,15,0"
                   Content="{res:Loc InstallationApp.Unit}"
                   Foreground="{DynamicResource CheckBoxDescription}"
                   IsChecked="{Binding IncludeLoadingUnits, Mode=TwoWay}"
                   IsEnabled="{Binding HasLoadingUnits}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
         <CheckBox Grid.Column="2"
-                  Margin="0,0,20,0"
+                  Margin="0,0,15,0"
                   Content="{res:Loc InstallationApp.Panels}"
                   Foreground="{DynamicResource CheckBoxDescription}"
                   IsChecked="{Binding IncludeCellPanels, Mode=TwoWay}"
                   IsEnabled="{Binding HasCellPanels}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
         <CheckBox Grid.Column="3"
-                  Margin="0,0,20,0"
+                  Margin="0,0,15,0"
                   Content="{res:Loc InstallationApp.TestData}"
                   Foreground="{DynamicResource CheckBoxDescription}"
                   IsChecked="{Binding IncludeSetupProcedures, Mode=TwoWay}"
                   IsEnabled="{Binding HasSetupProcedures}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
         <CheckBox Grid.Column="4"
-                  Margin="0,0,0,0"
+                  Margin="0,0,15,0"
                   HorizontalAlignment="Right"
                   Content="{res:Loc InstallationApp.Statistics}"
                   Foreground="{DynamicResource CheckBoxDescription}"
                   IsChecked="{Binding IncludeStatistics, Mode=TwoWay}"
                   IsEnabled="{Binding HasStatistics}"
-                  Style="{StaticResource PpcCheckBoxStyle}" />
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
+
+        <CheckBox Grid.Column="5"
+                  HorizontalAlignment="Right"
+                  Content="{res:Loc InstallationApp.Accessories}"
+                  Foreground="{DynamicResource CheckBoxDescription}"
+                  IsChecked="{Binding IncludeAccessories, Mode=TwoWay}"
+                  IsEnabled="{Binding HasAccessories}"
+                  Style="{StaticResource PpcCheckBoxStyleSmall}" />
     </Grid>
 </UserControl>
