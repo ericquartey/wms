@@ -35,7 +35,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private int port = PORT_DEFAULT;
 
-        private LaserPointerCommands.Command setPositionStatus = LaserPointerCommands.Command.SETP_F;
+        //private LaserPointerCommands.Command setPositionStatus = LaserPointerCommands.Command.SETP_F;
 
         private bool testEnabled = false;
 
@@ -387,15 +387,15 @@ namespace Ferretto.VW.Devices.LaserPointer
                     strCommand += " " + setPosition.ToString();
                     break;
 
-                case LaserPointerCommands.Command.SETP_I:
-                    this.setPositionStatus = LaserPointerCommands.Command.SETP_I;
-                    strCommand = "SETP I";
-                    break;
+                //case LaserPointerCommands.Command.SETP_I:
+                //    this.setPositionStatus = LaserPointerCommands.Command.SETP_I;
+                //    strCommand = "SETP I";
+                //    break;
 
-                case LaserPointerCommands.Command.SETP_F:
-                    this.setPositionStatus = LaserPointerCommands.Command.SETP_F;
-                    strCommand = "SETP F";
-                    break;
+                //case LaserPointerCommands.Command.SETP_F:
+                //    this.setPositionStatus = LaserPointerCommands.Command.SETP_F;
+                //    strCommand = "SETP F";
+                //    break;
 
                 case LaserPointerCommands.Command.SETP_S:
                     strCommand = "SETP S";

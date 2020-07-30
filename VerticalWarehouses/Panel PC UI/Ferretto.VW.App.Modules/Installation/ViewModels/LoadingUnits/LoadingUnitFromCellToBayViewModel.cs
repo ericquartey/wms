@@ -20,9 +20,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand confirmEjectLoadingUnitCommand;
 
-        private bool isEjectLoadingUnitConfirmationEnabled;
-
         #endregion
+
+        //private bool isEjectLoadingUnitConfirmationEnabled;
 
         #region Constructors
 
@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Ended();
 
-            this.isEjectLoadingUnitConfirmationEnabled = true;
+            // this.isEjectLoadingUnitConfirmationEnabled = true;
 
             this.RaiseCanExecuteChanged();
         }
@@ -145,7 +145,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override void OnWaitResume()
         {
-            this.isEjectLoadingUnitConfirmationEnabled = true;
+            // this.isEjectLoadingUnitConfirmationEnabled = true;
 
             this.RaiseCanExecuteChanged();
         }
