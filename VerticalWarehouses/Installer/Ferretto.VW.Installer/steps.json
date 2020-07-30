@@ -17,41 +17,34 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 3,
-      "title": "Imposta auto-logon",
-      "description": "Imposta l'utente predefinito per il logon automatico.",
-      "script": "scripts/set_auto_logon.ps1"
-    },
-    {
-      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 4,
       "title": "Rimuovi sfondo login",
       "description": "Rimuove l'immagine di sfondo sulla schermata di login utente.",
       "script": "scripts/remove_logon_background.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 5,
+      "number": 4,
       "title": "Disabilita il firewall",
       "description": "Modifica le impostazioni del firewall in modo che il pannello non blocchi alcun traffico di rete.",
       "script": "scripts/disable_firewall.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 6,
+      "number": 5,
       "title": "Configura UWF (registro)",
       "description": "Modifica le impostazioni del filtro di protezione del registro di sistema.",
       "script": "scripts/setup_uwf_registry.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 7,
+      "number": 6,
       "title": "Configura UWF (file)",
       "description": "Modifica le impostazioni del filtro di protezione del disco fisso.",
       "script": "scripts/setup_uwf_files.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 8,
+      "number": 7,
       "title": "Verifica dischi",
       "description": "Verifica che i dischi di destinazione siano vuoti.",
       "script": "scripts/check_volumes.ps1",
@@ -59,7 +52,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 9,
+      "number": 8,
       "title": "Installa Driver Barcode Newland",
       "description": "Installa il pacchetto dei driver Newland del lettore di codici a barre.",
       "script": "scripts/install_newland_barcode_driver.ps1",
@@ -67,7 +60,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 10,
+      "number": 9,
       "title": "Installa Driver Barcode Datalogic",
       "description": "Installa il pacchetto dei driver Datalogic del lettore di codici a barre.",
       "script": "scripts/install_datalogic_barcode_driver.ps1",
@@ -75,11 +68,20 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 11,
+      "number": 10,
       "title": "Installa Driver Token reader Euchner",
       "description": "Installa il pacchetto dei driver Euchner del lettore token.",
       "script": "scripts/install_euchner_tokenreader_driver.ps1",
       "setupMode": "install"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 11,
+      "title": "Creazione utente",
+      "description": "Crea nuovo utente ferretto.",
+      "script": "scripts/set_default_user.ps1",
+      "setupMode": "install",
+      "skipOnResume": "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -388,6 +390,13 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 46,
+      "title": "Imposta auto-logon",
+      "description": "Imposta l'utente predefinito per il logon automatico.",
+      "script": "scripts/set_auto_logon.ps1"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 47,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",
