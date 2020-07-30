@@ -6,12 +6,19 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 {
     public class IPAddressToStringConverter : IValueConverter
     {
+        #region Fields
+
         private byte[] _ipV4;
-        private Models.ScaffoldedEntity _entity;
+
+        #endregion
+
+        //private Models.ScaffoldedEntity _entity;
+
+        #region Methods
 
         public object Convert/*ToString*/(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            this._entity = null;
+            //this._entity = null;
             this._ipV4 = new byte[4];
 
             if (value is System.Net.IPAddress ipAddress)
@@ -43,5 +50,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 
             return null;
         }
+
+        #endregion
     }
 }

@@ -350,7 +350,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public MachineError MachineError
         {
             get => this.machineError;
-            set => this.SetProperty(ref this.machineError, value, () => this.OnErrorChanged(null));
+            set => this.SetProperty(ref this.machineError, value, () => this.OnErrorChanged());
         }
 
         public ICommand MarkAsResolvedCommand =>
@@ -620,8 +620,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
-
-            int row = 0;
 
             this.UpdateStatusButtonFooter();
 
@@ -1125,7 +1123,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
         }
 
-        private void OnErrorChanged(object state)
+        private void OnErrorChanged()
         {
             if (this.MachineError is null)
             {

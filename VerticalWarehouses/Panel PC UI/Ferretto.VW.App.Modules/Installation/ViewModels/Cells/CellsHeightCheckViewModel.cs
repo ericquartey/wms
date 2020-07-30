@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMoving;
 
-        private bool isElevatorOperationCompleted;
+        //private bool isElevatorOperationCompleted;
 
         private DelegateCommand moveToCellHeightCommand;
 
@@ -318,7 +318,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.IsNotRunning())
             {
                 this.IsElevatorMoving = false;
-                this.isElevatorOperationCompleted = true;
+                //this.isElevatorOperationCompleted = true;
 
                 // this.ShowSteps();
                 switch (message.Status)
