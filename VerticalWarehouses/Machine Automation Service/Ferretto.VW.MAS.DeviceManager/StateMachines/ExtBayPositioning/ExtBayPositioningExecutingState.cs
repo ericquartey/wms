@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IExtBayPositioningStateData stateData;
 
-        private HorizontalCalibrationStep findZeroStep;
+        //private HorizontalCalibrationStep findZeroStep;
 
         private double horizontalStartingPosition;
 
@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
                 case MovementMode.HorizontalCalibration:
                     {
-                        this.findZeroStep = HorizontalCalibrationStep.LeaveZeroSensor;
+                        //this.findZeroStep = HorizontalCalibrationStep.LeaveZeroSensor;
                         this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
                         this.targetPosition = Math.Abs(this.machineData.MessageData.TargetPosition) * 0.99;
                         statusWordPollingInterval = 500;

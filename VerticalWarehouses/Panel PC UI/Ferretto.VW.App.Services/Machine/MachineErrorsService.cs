@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly SubscriptionToken sensorsToken;
 
-        private readonly ISessionService sessionService;
+        //private readonly ISessionService sessionService;
 
         private readonly ITelemetryHubClient telemetryHubClient;
 
