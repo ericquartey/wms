@@ -2,3 +2,4 @@
 uwfmgr.exe registry add-exclusion "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Time Zones"
 uwfmgr.exe registry add-exclusion "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Schedule"
 uwfmgr.exe registry add-exclusion "HKLM\System\CurrentControlSet\Control\TimeZoneInformation"
+uwfmgr.exe registry add-exclusion "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
