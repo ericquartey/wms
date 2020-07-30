@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? inputUpperBound;
 
-        private bool isCompleted;
+        //private bool isCompleted;
 
         private bool isExecutingProcedure;
 
@@ -493,7 +493,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
-                this.isCompleted = true;
+                //this.isCompleted = true;
                 this.IsExecutingProcedure = false;
             }
         }
@@ -531,7 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var totalCyclesToPerform = this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value;
                 if (totalCyclesToPerform <= 0)
                 {
-                    this.isCompleted = true;
+                    //this.isCompleted = true;
                     this.ShowNotification(Localized.Get("InstallationApp.RequiredCyclesCompleted"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
@@ -543,7 +543,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.PerformedCyclesThisSession = 0;
                 this.RaisePropertyChanged(nameof(this.PerformedCyclesThisSession));
 
-                this.isCompleted = false;
+                //this.isCompleted = false;
 
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
@@ -570,7 +570,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineService.StopMovingByAllAsync();
 
-                this.isCompleted = true;
+                //this.isCompleted = true;
             }
             catch (Exception ex)
             {

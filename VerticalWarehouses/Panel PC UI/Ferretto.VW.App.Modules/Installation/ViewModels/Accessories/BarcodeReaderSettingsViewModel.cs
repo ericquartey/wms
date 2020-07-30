@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DeviceModel deviceModel;
 
-        private IEnumerable<DeviceModel> deviceModels;
+        //private IEnumerable<DeviceModel> deviceModels;
 
         private string portName;
 

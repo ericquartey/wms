@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isChainOffsetVisible;
 
-        private bool isCompleted;
+        //private bool isCompleted;
 
         private bool isExecutingProcedure;
 
@@ -876,7 +876,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
-                this.isCompleted = true;
+                //this.isCompleted = true;
                 this.IsExecutingProcedure = false;
 
                 this.CurrentStep = DepositAndPickUpStep.CycleTest;
@@ -959,7 +959,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var totalCyclesToPerform = this.RequiredCycles.Value - this.CumulativePerformedCycles.Value;
                 if (totalCyclesToPerform <= 0)
                 {
-                    this.isCompleted = true;
+                    //this.isCompleted = true;
                     this.ShowNotification(Localized.Get("InstallationApp.RequiredCyclesCompleted"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
@@ -969,7 +969,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.CumulativePerformedCycles));
 
-                this.isCompleted = false;
+                //this.isCompleted = false;
 
                 var bay = await this.bayManager.GetBayAsync();
                 var bayPosition = bay.Positions.Single(b => b.LocationUpDown == MAS.AutomationService.Contracts.LoadingUnitLocation.Up);

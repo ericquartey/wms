@@ -59,7 +59,7 @@ namespace Ferretto.VW.Installer.Core
             {
                 throw new NotImplementedException();
 
-                return Task.FromResult(StepStatus.RolledBack);
+                //return Task.FromResult(StepStatus.RolledBack);
             }
             catch (Exception ex)
             {
@@ -137,7 +137,7 @@ namespace Ferretto.VW.Installer.Core
 
             throw new NotImplementedException();
 
-            mergedDocument.Save(this.NewPathName + ".new.xml");
+            //mergedDocument.Save(this.NewPathName + ".new.xml");
         }
 
         private XmlNode MergeNodes(XmlNode oldNode, XmlNode newNode, XmlDocument targetDocument)
