@@ -380,6 +380,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationRunningStop:
+                case MessageStatus.OperationFaultStop:
                     this.OnStop(StopRequestReason.Error);
                     break;
             }

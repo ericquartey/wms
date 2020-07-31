@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.QuantityTolerance = item.PickTolerance ?? 0;
                 this.MeasureUnit = item.MeasureUnitDescription;
 
-                var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.mission.LoadingUnit.Id);
+                var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.Mission.LoadingUnit.Id);
                 itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                 this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.missionOperation.CompartmentId).SingleOrDefault();
 
