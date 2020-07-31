@@ -1738,7 +1738,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Reset cicli</value>
   </data>
   <data name="SelectDirectionAndApply" xml:space="preserve">
-    <value>Selezionare la direzione e applicare la correzione premendo Applica correzione.</value>
+    <value>Selezionare + se si è al di sopra del sensore oppure - se si è al di sotto e applicare la correzione premendo Applica correzione.</value>
   </data>
   <data name="StopInProgress" xml:space="preserve">
     <value>Arresto in fase in corso ...</value>
@@ -2789,9 +2789,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
     <value>Logs caricati da servizio telemetry</value>
-  </data>
-  <data name="TotalCompletedCycles" xml:space="preserve">
-    <value>Total completed cycles</value>
   </data>
   <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
     <value>Impossibile recuperare le informazioni del dispositivo. Assicurarsi che il dispositivo sia alloggiato nella sua base.</value>

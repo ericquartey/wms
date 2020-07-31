@@ -178,10 +178,12 @@ namespace Ferretto.VW.App.Services
                         screenshot);
                 }
 
-                if (this.ActiveError != prevError)
-                {
-                    await this.NavigateToErrorPageAsync();
-                }
+                //if (this.ActiveError != prevError)
+                //{
+                //    await this.NavigateToErrorPageAsync();
+                //}
+
+                await this.NavigateToErrorPageAsync();
             }
             catch (Exception ex)
             {

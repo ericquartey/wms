@@ -222,6 +222,10 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "Id": 2,
+          "Inverter": {
+            "Index": "Slave1",
+            "Type": "Acu"
+          },
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
           "LowerBound": -4000.0,

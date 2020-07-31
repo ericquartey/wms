@@ -134,7 +134,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
                 $"scalingFactor: {scalingFactor:0.0000}; " +
-                $"compensation: {compensation:0.00}");
+                $"compensation: {compensation:0.00}" +
+                $"horizontal current position: {this.HorizontalPosition} mm");
 
             // ---------------------------
             // Horizontal movement message
@@ -185,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // Calculate time [s] to perform the horizontal movement
             var nItems = profileSteps.Count();
-            var time = 0.0d; var lastPosTmp = 0.0d;
+            var time = 0.0d; var lastPosTmp = this.HorizontalPosition;
             for (var i = 0; i < nItems; i++)
             {
                 time += Math.Abs(switchPosition[i] - lastPosTmp) / speed[i];
@@ -215,7 +216,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ComputeElongation = false,
                 TargetBayPositionId = targetBayPositionId,
                 TargetCellId = targetCellId,
-                WaitContinue = false,
+                WaitContinue = waitContinue,
                 IsPickupMission = false,
                 BypassConditions = true,
             };
@@ -224,6 +225,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"manualMovement: {false}; " +
                 $"targetPosition: {this.VerticalPosition + displacement}; [displacement: {displacement}]" +
                 $"homing: {false}; " +
+                $"waitContinue: {waitContinue}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
                 $"speed: {speedVertical[0]:0.00}; " +
                 $"acceleration: {accelerationVertical[0]:0.00}; " +
@@ -231,7 +233,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"speed w/o feedRate: {movementVerticalParameters.Speed:0.00}; " +
                 $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
                 $"Load Unit gross weight {grossWeight}; " +
-                $"Bypass condition {verticalMovementMessageData.BypassConditions}");
+                $"Bypass condition {verticalMovementMessageData.BypassConditions}; " +
+                $"time to perform the movement: {time} s" +
+                $"vertical current position: {this.VerticalPosition} mm");
 
             // --------------------------
             // Combined movements message

@@ -1811,7 +1811,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Reset Cycles</value>
   </data>
   <data name="SelectDirectionAndApply" xml:space="preserve">
-    <value>Select the direction and apply the correction by pressing Apply correction button.</value>
+    <value>Select + if you are above the sensor or - if you are below and apply the correction by pressing Apply correction.</value>
   </data>
   <data name="StopInProgress" xml:space="preserve">
     <value>Stop in progress</value>
