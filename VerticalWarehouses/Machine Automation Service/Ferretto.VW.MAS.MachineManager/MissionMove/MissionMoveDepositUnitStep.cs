@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         if (!bay.IsFastDepositToBay
                             && (bay.Carousel == null
-                                || bay.Positions.Any(p => p.IsUpper && p.Location == this.Mission.LoadUnitDestination)
+                                || bay.Positions.Any(p => p.Location == this.Mission.LoadUnitDestination)
                                 )
                             )
                         {

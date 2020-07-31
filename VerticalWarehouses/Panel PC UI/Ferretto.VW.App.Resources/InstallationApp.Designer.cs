@@ -6462,7 +6462,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the direction and apply the correction by pressing Apply correction button..
+        ///   Looks up a localized string similar to Select + if you are above the sensor or - if you are below and apply the correction by pressing Apply correction..
         /// </summary>
         public static string SelectDirectionAndApply {
             get {

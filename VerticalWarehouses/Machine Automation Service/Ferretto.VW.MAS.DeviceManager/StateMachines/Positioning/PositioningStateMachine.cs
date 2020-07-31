@@ -75,7 +75,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             // We make a check about the inverter index on message and inverter index of machine data
             if (message.Source == Utils.Enumerations.FieldMessageActor.InverterDriver &&
-                message.DeviceIndex != (byte)this.machineData.CurrentInverterIndex)
+                message.DeviceIndex != (byte)this.machineData.CurrentInverterIndex &&
+                message.Type != Utils.Enumerations.FieldMessageType.MeasureProfile)
             {
                 return;
             }
