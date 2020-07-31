@@ -155,10 +155,9 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             {
                 // If loading unit exists in the elevator then the vertical movement call is delayed with a calculated amount of time based on the current net weight
                 var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-                var grossWeight = loadUnit.GrossWeight;
-                var factorWeight = Math.Abs((loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight);
+                var factorNetWeight = Math.Abs((loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight);
 
-                this.timerElapsed = Convert.ToInt32((1 - factorWeight) * TIMER_ELAPSED);
+                this.timerElapsed = Convert.ToInt32(factorNetWeight * TIMER_ELAPSED);
                 this.timerElapsed = Math.Min(this.timerElapsed, TIMER_ELAPSED);
                 if (this.timerElapsed < 0) { this.timerElapsed = 0; }
 
