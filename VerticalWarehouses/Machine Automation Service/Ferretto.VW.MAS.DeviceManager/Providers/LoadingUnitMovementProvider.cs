@@ -106,6 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationFaultStop
                 || message.Status == MessageStatus.OperationRunningStop
                 )
             {
@@ -203,6 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationFaultStop
                 || message.Status == MessageStatus.OperationRunningStop
                 )
             {
@@ -601,6 +603,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
                 || message.Status == MessageStatus.OperationRunningStop
+                || message.Status == MessageStatus.OperationFaultStop
                 || message.Type == MessageType.Stop
                 )
             {
@@ -818,6 +821,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
                 || message.Status == MessageStatus.OperationRunningStop
+                || message.Status == MessageStatus.OperationFaultStop
                 )
             {
                 return message.Status;
@@ -868,6 +872,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (message.Status == MessageStatus.OperationError
                 || message.Status == MessageStatus.OperationStop
                 || message.Status == MessageStatus.OperationRunningStop
+                || message.Status == MessageStatus.OperationFaultStop
                 )
             {
                 return message.Status;
@@ -924,7 +929,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (message.Status == MessageStatus.OperationFaultStop ||
                 message.Status == MessageStatus.OperationStop ||
-                message.Status == MessageStatus.OperationRunningStop)
+                message.Status == MessageStatus.OperationRunningStop ||
+                message.Status == MessageStatus.OperationFaultStop)
             {
                 return MessageStatus.OperationEnd;
             }

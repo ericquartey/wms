@@ -220,6 +220,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
+                case MessageStatus.OperationFaultStop:
                     if (this.Mission.Status == MissionStatus.Executing
                         && notification.RequestingBay == this.Mission.TargetBay
                         )

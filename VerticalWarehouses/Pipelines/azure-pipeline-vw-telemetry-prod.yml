@@ -10,12 +10,12 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
-- script: dotnet publish "VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/Ferretto.VW.TelemetryService.csproj" --configuration release --framework netcoreapp3.1
+- script: dotnet publish "VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/Ferretto.VW.TelemetryService.csproj" --runtime win10-x64 --configuration release --self-contained --framework netcoreapp3.1
   displayName: 'Build & Publish (release)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: telemetry_service'
   inputs:
-    PathtoPublish: 'VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/bin/release/netcoreapp3.1/publish'
+    PathtoPublish: 'VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/bin/release/netcoreapp3.1/win10-x64/publish'
     ArtifactName: 'telemetry_service'
 

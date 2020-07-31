@@ -613,9 +613,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowOperationCanceledMessage();
                 }
 
-                this.navigationService.GoBackTo(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
+                //this.navigationService.GoBackTo(
+                //    nameof(Utils.Modules.Operator),
+                //    Utils.Modules.Operator.ItemOperations.WAIT);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
