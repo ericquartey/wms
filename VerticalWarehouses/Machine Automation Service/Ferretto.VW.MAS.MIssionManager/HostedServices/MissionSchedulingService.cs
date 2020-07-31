@@ -1002,6 +1002,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (message.Status == MessageStatus.OperationError
                     || message.Status == MessageStatus.OperationRunningStop
+                    || message.Status == MessageStatus.OperationFaultStop
                     )
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
