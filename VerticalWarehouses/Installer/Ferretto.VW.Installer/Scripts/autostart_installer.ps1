@@ -1,1 +1,1 @@
-﻿schtasks.exe /Create /SC ONLOGON /TN "$(Install:TaskScheduler:Installer)" /TR "$(Update:Temp:Path)\$(Installer:DirName)\$(Installer:FileName)" /RL HIGHEST /F
+﻿Set-ItemProperty "$(PPC:Registry:Path)" -Name "$(PPC:Registry:Key)" -Value "$(Update:Temp:Path)\$(Installer:DirName)\$(Installer:FileName)";
