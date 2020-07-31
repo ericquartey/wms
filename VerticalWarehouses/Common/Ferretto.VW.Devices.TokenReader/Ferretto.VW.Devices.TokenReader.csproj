@@ -6,4 +6,12 @@
       <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ferretto.VW.Devices\Ferretto.VW.Devices.csproj" />
+  </ItemGroup>
+
 </Project>
