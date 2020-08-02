@@ -130,16 +130,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case ExternalBayMovementDirection.TowardOperator:
-                    if (
 #if CHECK_BAY_SENSOR
-                        isLoadingUnitInExternalPosition /*||*/
-#endif
-                        //bay.Positions.FirstOrDefault().LoadingUnit != null
-                        )
+                    if (isLoadingUnitInExternalPosition)
                     {
                         return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
                     }
-
+#endif
                     break;
 
                 default:

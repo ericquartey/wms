@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.TokenReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
@@ -11,13 +13,15 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
-        public event EventHandler<TokenStatusChangedEventArgs> TokenStatusChanged;
-
         private readonly IMachineAccessoriesWebService accessoriesWebService;
+
+        private readonly IAuthenticationService authenticationService;
 
         private readonly ITokenReaderDriver deviceDriver;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly INavigationService navigationService;
 
         private bool isDeviceEnabled;
 
@@ -31,19 +35,33 @@ namespace Ferretto.VW.App.Accessories
 
         public TokenReaderService(
             IMachineAccessoriesWebService accessoriesWebService,
-            ITokenReaderDriver deviceDriver)
+            ITokenReaderDriver deviceDriver,
+            IAuthenticationService authenticationService,
+            INavigationService navigationService)
         {
             this.accessoriesWebService = accessoriesWebService;
             this.deviceDriver = deviceDriver;
+            this.authenticationService = authenticationService;
+            this.navigationService = navigationService;
 
             this.deviceDriver.TokenStatusChanged += this.OnTokenStatusChanged;
         }
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<TokenStatusChangedEventArgs> TokenStatusChanged;
+
+        #endregion
+
         #region Properties
 
         public Devices.DeviceInformation DeviceInformation => throw new NotSupportedException();
+
+        public bool IsTokenInserted { get; private set; }
+
+        public string TokenSerialNumber { get; private set; }
 
         #endregion
 
@@ -129,6 +147,21 @@ namespace Ferretto.VW.App.Accessories
 
         private void OnTokenStatusChanged(object sender, TokenStatusChangedEventArgs e)
         {
+            this.IsTokenInserted = e.IsInserted;
+            this.TokenSerialNumber = e.SerialNumber;
+
+            if (!e.IsInserted)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (!this.navigationService.IsActiveView(nameof(Utils.Modules.Accessories), Utils.Modules.Accessories.TokenReader))
+                    {
+                        this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
+                        this.authenticationService.LogOutAsync();
+                    }
+                });
+            }
+
             this.TokenStatusChanged?.Invoke(sender, e);
         }
 

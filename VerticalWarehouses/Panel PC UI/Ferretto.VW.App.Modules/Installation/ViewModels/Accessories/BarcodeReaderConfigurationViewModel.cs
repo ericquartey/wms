@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
+        private readonly ISerialPortsService serialPortsService;
+
         private IEnumerable<object> barcodeSteps;
 
         private bool isDatalogicPBT9501;
@@ -38,11 +40,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BarcodeReaderConfigurationViewModel(
-            IBarcodeReaderService barcodeReaderService)
+            IBarcodeReaderService barcodeReaderService,
+            ISerialPortsService serialPortsService)
             : base(PresentationMode.Installer)
         {
             this.barcodeReaderService = barcodeReaderService;
-            this.barcodeReaderService.PortNames.CollectionChanged += this.OnPortNamesChanged;
+            this.serialPortsService = serialPortsService;
+            this.serialPortsService.PortNames.CollectionChanged += this.OnPortNamesChanged;
         }
 
         #endregion
@@ -85,7 +89,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isNewland3290, value, this.UpdateBarcodes);
         }
 
-        public IEnumerable<string> PortNames => this.barcodeReaderService.PortNames;
+        public IEnumerable<string> PortNames => this.serialPortsService.PortNames;
 
         public bool SystemPortsAvailable
         {
@@ -146,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPortNamesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.SystemPortsAvailable = this.barcodeReaderService.PortNames.Any();
+            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         private void UpdateBarcodes()

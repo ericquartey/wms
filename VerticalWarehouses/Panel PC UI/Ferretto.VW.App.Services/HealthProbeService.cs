@@ -228,26 +228,35 @@ namespace Ferretto.VW.App.Services
 
         private async Task RunHealthProbeWmsAsync(CancellationToken cancellationToken)
         {
+            var isWmsEnabled = false;
             do
             {
                 try
                 {
-                    var healthStatusString = await this.wmsStatusWebService.GetHealthAsync();
-
-                    if (Enum.TryParse<HealthStatus>(healthStatusString, out var healthStatus))
+                    if (isWmsEnabled)
                     {
-                        this.HealthWmsStatus = healthStatus;
+                        var healthStatusString = await this.wmsStatusWebService.GetHealthAsync();
+
+                        if (Enum.TryParse<HealthStatus>(healthStatusString, out var healthStatus))
+                        {
+                            this.HealthWmsStatus = healthStatus;
+                        }
+                        else
+                        {
+                            this.logger.Debug($"Unable to parse health status of WMS (response was '{healthStatus}').");
+
+                            this.HealthWmsStatus = HealthStatus.Unknown;
+                        }
                     }
                     else
                     {
-                        this.logger.Debug($"Unable to parse health status of WMS (response was '{healthStatus}').");
-
-                        this.HealthWmsStatus = HealthStatus.Unknown;
+                        isWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
                     }
                 }
                 catch
                 {
                     this.HealthWmsStatus = HealthStatus.Unhealthy;
+                    isWmsEnabled = false;
                 }
 
                 await Task.Delay(this.pollInterval);

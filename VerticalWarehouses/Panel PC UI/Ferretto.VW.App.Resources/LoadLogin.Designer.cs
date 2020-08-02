@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticating user ....
+        /// </summary>
+        public static string AuthenticatingUser {
+            get {
+                return ResourceManager.GetString("AuthenticatingUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Services Connection Established.
         /// </summary>
         public static string ConnectionEstablished {
@@ -178,6 +187,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token inserted. Autenticazione in corso ....
+        /// </summary>
+        public static string TokenInserted {
+            get {
+                return ResourceManager.GetString("TokenInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token removed..
+        /// </summary>
+        public static string TokenRemoved {
+            get {
+                return ResourceManager.GetString("TokenRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to authenticate user with the barcode..
         /// </summary>
         public static string UnableToAuthenticateWithTheBarcode {
@@ -192,6 +219,24 @@ namespace Ferretto.VW.App.Resources {
         public static string UnableToAuthenticateWithTheCard {
             get {
                 return ResourceManager.GetString("UnableToAuthenticateWithTheCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to authentincate user with the token..
+        /// </summary>
+        public static string UnableToAuthenticateWithTheToken {
+            get {
+                return ResourceManager.GetString("UnableToAuthenticateWithTheToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to authentincate user with the token. because the WMS is not reachable..
+        /// </summary>
+        public static string UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable {
+            get {
+                return ResourceManager.GetString("UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable", resourceCulture);
             }
         }
         

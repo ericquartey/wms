@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
@@ -19,13 +15,9 @@ namespace Ferretto.VW.Devices.TokenReader
 
         private const byte StartOfText = 0x02;
 
+        private const int TokenPresencePollMilliseconds = 500;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly object syncRoot = new object();
-
-        private DeviceInformation information = new DeviceInformation();
-
-        private bool isDisposed;
 
         #endregion
 
@@ -37,22 +29,24 @@ namespace Ferretto.VW.Devices.TokenReader
 
         #region Methods
 
-        protected override void OnSerialPortClosed()
+        protected override Task OnSerialPortClosedAsync()
         {
             this.TokenStatusChanged?.Invoke(this, new TokenStatusChangedEventArgs(false, null));
+
+            return Task.CompletedTask;
         }
 
-        protected override void OnSerialPortOpened()
+        protected override async Task OnSerialPortOpenedAsync()
         {
-            Task.Run(() =>
+            do
             {
-                do
+                try
                 {
                     this.logger.Debug($"Port {this.SerialPort.PortName}: waiting for token to be inserted...");
 
                     while (this.SerialPort.IsOpen && !this.SerialPort.CtsHolding)
                     {
-                        Thread.Sleep(500);
+                        await Task.Delay(TokenPresencePollMilliseconds);
                     }
 
                     if (!this.SerialPort.IsOpen)
@@ -62,6 +56,8 @@ namespace Ferretto.VW.Devices.TokenReader
                     }
 
                     this.logger.Debug($"Port {this.SerialPort.PortName}: token is inserted. Querying serial number ...");
+
+                    this.RaiseTokenStatusChanged(true, null);
 
                     var queryMessage = new Message(
                         Command.TL,
@@ -76,23 +72,39 @@ namespace Ferretto.VW.Devices.TokenReader
                         this.logger.Debug($"Port {this.SerialPort.PortName}: token serial number is {serialNumber}.");
 
                         var serialNumberString = serialNumber.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                        this.TokenStatusChanged?.Invoke(this, new TokenStatusChangedEventArgs(true, serialNumberString));
+                        this.RaiseTokenStatusChanged(true, serialNumberString);
                     }
                     else
                     {
                         this.logger.Warn($"Port {this.SerialPort.PortName}: unexpected message received from the device.");
                     }
 
+                    this.logger.Debug($"Port {this.SerialPort.PortName}: waiting for token to be removed ...");
                     while (this.SerialPort.IsOpen && this.SerialPort.CtsHolding)
                     {
-                        this.logger.Debug($"Port {this.SerialPort.PortName}: waiting for token to be removed.");
-                        Thread.Sleep(500);
+                        await Task.Delay(TokenPresencePollMilliseconds);
                     }
 
-                    this.TokenStatusChanged?.Invoke(this, new TokenStatusChangedEventArgs(false, null));
+                    this.RaiseTokenStatusChanged(false, null);
                 }
-                while (this.SerialPort.IsOpen);
-            });
+                catch (Exception ex)
+                {
+                    this.logger.Error(ex, $"Port {this.SerialPort.PortName}: error.");
+
+                    this.SerialPort.Close();
+                    this.SerialPort.Open();
+                    if (this.SerialPort.IsOpen && !this.SerialPort.CtsHolding)
+                    {
+                        this.RaiseTokenStatusChanged(false, null);
+                    }
+                }
+            }
+            while (this.SerialPort.IsOpen);
+        }
+
+        private void RaiseTokenStatusChanged(bool isInserted, string serialNumber)
+        {
+            this.TokenStatusChanged?.Invoke(this, new TokenStatusChangedEventArgs(isInserted, serialNumber));
         }
 
         private Message SendMessage(Message message)
@@ -147,24 +159,24 @@ namespace Ferretto.VW.Devices.TokenReader
 
                 // response = port.ReadByte();
                 // Console.WriteLine($"Port {port.PortName}: received response 0x{response:X2}.");
-                totalReadBytes = 0;
+                /*       totalReadBytes = 0;
 
-                do
-                {
-                    readBytes = this.SerialPort.Read(buffer, totalReadBytes, buffer.Length - totalReadBytes);
-                    totalReadBytes += readBytes;
+                       do
+                       {
+                           readBytes = this.SerialPort.Read(buffer, totalReadBytes, buffer.Length - totalReadBytes);
+                           totalReadBytes += readBytes;
 
-                    this.logger.Debug($"Port {this.SerialPort.PortName}: len={totalReadBytes} buffer {new string(buffer.Take(totalReadBytes).SelectMany(b => $" {(int)b}").ToArray())}.");
+                           this.logger.Debug($"Port {this.SerialPort.PortName}: len={totalReadBytes} buffer {new string(buffer.Take(totalReadBytes).SelectMany(b => $" {(int)b}").ToArray())}.");
 
-                    if (readBytes == 1 && buffer[totalReadBytes] is StartOfText)
-                    {
-                        this.logger.Debug($"Port {this.SerialPort.PortName}: received STX.");
+                           if (readBytes == 1 && buffer[totalReadBytes] is StartOfText)
+                           {
+                               this.logger.Debug($"Port {this.SerialPort.PortName}: received STX.");
 
-                        this.SerialPort.WriteByte(DataLinkEscape);
-                        break;
-                    }
-                } while (readBytes > 0);
-
+                               this.SerialPort.WriteByte(DataLinkEscape);
+                               break;
+                           }
+                       } while (readBytes > 0);
+                */
                 return responseMessage;
             }
             catch

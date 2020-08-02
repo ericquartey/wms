@@ -179,8 +179,6 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting the weighting scale service ...");
 
-            this.InitializeSerialPortsTimer();
-
             try
             {
                 var accessories = await this.accessoriesWebService.GetAllAsync();
@@ -262,7 +260,6 @@ namespace Ferretto.VW.App.Accessories
 
             this.isStarted = false;
             this.DisableWeightPollTimer();
-            this.DisableSerialPortsTimer();
             this.deviceDriver.Disconnect();
 
             this.logger.Debug("The weighting scale service has stopped.");

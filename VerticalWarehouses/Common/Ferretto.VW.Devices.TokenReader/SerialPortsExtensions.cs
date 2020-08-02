@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO.Ports;
-using System.Linq;
 
 namespace Ferretto.VW.Devices.TokenReader
 {

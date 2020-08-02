@@ -168,4 +168,19 @@
   <data name="LoggingInUsingCard" xml:space="preserve">
     <value>Performing login through card ...</value>
   </data>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Authenticating user ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Token inserted. Autenticazione in corso ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Token removed.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Unable to authentincate user with the token.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Unable to authentincate user with the token. because the WMS is not reachable.</value>
+  </data>
 </root>

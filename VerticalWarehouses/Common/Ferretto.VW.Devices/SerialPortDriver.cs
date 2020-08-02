@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Threading.Tasks;
 using NLog;
 
-namespace Ferretto.VW.Devices.TokenReader
+namespace Ferretto.VW.Devices
 {
     public abstract class SerialPortDriver : IDisposable
     {
@@ -69,7 +70,7 @@ namespace Ferretto.VW.Devices.TokenReader
 
             this.logger.Debug($"Serial port {this.serialPort.PortName} opened.");
 
-            this.OnSerialPortOpened();
+            Task.Run(async () => await this.OnSerialPortOpenedAsync());
         }
 
         public void Disconnect()
@@ -80,7 +81,7 @@ namespace Ferretto.VW.Devices.TokenReader
 
             this.logger.Debug($"Serial port {this.serialPort.PortName}: closed.");
 
-            this.OnSerialPortClosed();
+            Task.Run(async () => await this.OnSerialPortClosedAsync());
         }
 
         public void Dispose()
@@ -101,9 +102,9 @@ namespace Ferretto.VW.Devices.TokenReader
             this.isDisposed = true;
         }
 
-        protected abstract void OnSerialPortClosed();
+        protected abstract Task OnSerialPortClosedAsync();
 
-        protected abstract void OnSerialPortOpened();
+        protected abstract Task OnSerialPortOpenedAsync();
 
         #endregion
     }

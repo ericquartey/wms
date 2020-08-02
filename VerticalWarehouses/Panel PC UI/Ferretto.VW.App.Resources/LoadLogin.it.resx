@@ -163,9 +163,24 @@
     <value>Il nome utente deve essere specificato.</value>
   </data>
   <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
-    <value>La carta non è associata ad un utente.</value>
+    <value>La carta non è associata ad un utente registrato.</value>
   </data>
   <data name="LoggingInUsingCard" xml:space="preserve">
     <value>Login tramite lettura carta ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Gettone inserito. Autenticazione in corso ...</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Autenticazione tramite gettone fallita.</value>
+  </data>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Autenticazione utente in corso ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Gettone rimosso.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Impossibile effettuare l'autenticazione con il gettone perché il WMS non è raggiungibile.</value>
   </data>
 </root>

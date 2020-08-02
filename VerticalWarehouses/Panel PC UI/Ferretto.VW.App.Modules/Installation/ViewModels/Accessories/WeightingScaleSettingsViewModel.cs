@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ISerialPortsService serialPortsService;
 
         private readonly IWeightingScaleService weightingScaleService;
 
@@ -35,13 +38,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public WeightingScaleSettingsViewModel(
             IWeightingScaleService weightingScaleService,
+            ISerialPortsService serialPortsService,
             IEventAggregator eventAggregator)
         {
             this.weightingScaleService = weightingScaleService;
             this.eventAggregator = eventAggregator;
+            this.serialPortsService = serialPortsService;
 
-            this.weightingScaleService.PortNames.CollectionChanged += this.OnPortNamesChanged;
-            this.SystemPortsAvailable = this.weightingScaleService.PortNames.Any();
+            this.serialPortsService.PortNames.CollectionChanged += this.OnPortNamesChanged;
+            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion
@@ -61,7 +66,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.portName, value, () => this.AreSettingsChanged = true);
         }
 
-        public IEnumerable<string> PortNames => this.weightingScaleService.PortNames;
+        public IEnumerable<string> PortNames => this.serialPortsService.PortNames;
 
         public bool SystemPortsAvailable
         {
@@ -176,7 +181,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPortNamesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.SystemPortsAvailable = this.weightingScaleService.PortNames.Any();
+            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion

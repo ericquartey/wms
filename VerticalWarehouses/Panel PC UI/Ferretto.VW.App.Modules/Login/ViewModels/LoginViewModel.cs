@@ -100,11 +100,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.cardReaderTokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(
                 async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e));
-            this.cardReaderService.TokenAcquired += this.cardReaderTokenAcquiredEventHandler;
 
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
-            this.tokenReaderService.TokenStatusChanged += this.tokenReaderTokenStatusChangedEventHandler;
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -128,12 +126,24 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             if (!e.IsInserted)
             {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.TokenRemoved"), Services.Models.NotificationSeverity.Info);
+                return;
+            }
+            else if (e.SerialNumber is null)
+            {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.TokenInserted"), Services.Models.NotificationSeverity.Info);
+                return;
+            }
+
+            if (!this.IsWmsHealthy)
+            {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable"), Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
             try
             {
-                this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingToken"), Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.AuthenticatingUser"), Services.Models.NotificationSeverity.Info);
 
                 var claims = await this.authenticationService.LogInAsync(e.SerialNumber);
 
@@ -142,7 +152,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             catch (Exception ex)
             {
                 this.Logger.Error(ex, $"Unable to authenticate user with token.");
-                this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheToken"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheToken"), Services.Models.NotificationSeverity.Error);
             }
         }
 
@@ -229,7 +239,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.cardReaderService.StopAsync();
             this.cardReaderService.TokenAcquired -= this.cardReaderTokenAcquiredEventHandler;
 
-            this.tokenReaderService.TokenStatusChanged += this.tokenReaderTokenStatusChangedEventHandler;
+            this.tokenReaderService.TokenStatusChanged -= this.tokenReaderTokenStatusChangedEventHandler;
 
             this.UserLogin.IsValidationEnabled = true;
             this.UserLogin.Password = null;
@@ -277,6 +287,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.IsVisible = true;
             this.IsEnabled = true;
+
+            this.tokenReaderService.TokenStatusChanged += this.tokenReaderTokenStatusChangedEventHandler;
+            this.cardReaderService.TokenAcquired += this.cardReaderTokenAcquiredEventHandler;
 
             await this.barcodeReaderService.StartAsync();
             await this.cardReaderService.StartAsync();
@@ -397,17 +410,20 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 await this.machineBaysWebService.ActivateAsync();
 
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Menu),
-                    Utils.Modules.Menu.MAIN_MENU,
-                    data: this.Data,
-                    trackCurrentView: true);
+                Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Menu),
+                            Utils.Modules.Menu.MAIN_MENU,
+                            data: this.Data,
+                            trackCurrentView: true);
 
-                this.machineErrorsService.AutoNavigateOnError = true;
+                        this.machineErrorsService.AutoNavigateOnError = true;
 
-                this.localizationService.ActivateCulture(claims.AccessLevel);
+                        this.localizationService.ActivateCulture(claims.AccessLevel);
 
-                ScaffolderUserAccesLevel.IsLogged = true;
+                        ScaffolderUserAccesLevel.IsLogged = true;
+                    });
             }
             else
             {

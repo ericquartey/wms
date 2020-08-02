@@ -7,9 +7,7 @@
         public TokenReaderSerialPortOptions()
         {
             this.BaudRate = 9600;
-            ;
             this.Parity = System.IO.Ports.Parity.Even;
-            this.Parity = System.IO.Ports.Parity.None;
             this.StopBits = System.IO.Ports.StopBits.One;
         }
 
