@@ -89,6 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationStop:
                     case MessageStatus.OperationRunningStop:
+                    case MessageStatus.OperationFaultStop:
                         if (this.UpdateStopList(notification.TargetBay))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
