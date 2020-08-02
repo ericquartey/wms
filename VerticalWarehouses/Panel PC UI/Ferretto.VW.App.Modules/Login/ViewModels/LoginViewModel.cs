@@ -6,6 +6,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.TokenReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -37,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly ICardReaderService cardReaderService;
 
+        private readonly ITokenReaderService tokenReaderService;
+
         private readonly ILocalizationService localizationService;
 
         private DelegateCommand loginCommand;
@@ -47,7 +50,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private SubscriptionToken subscriptionToken;
 
-        private readonly EventHandler<RegexMatchEventArgs> tokenAcquiredEventHandler;
+        private readonly EventHandler<RegexMatchEventArgs> cardReaderTokenAcquiredEventHandler;
+
+        private readonly EventHandler<TokenStatusChangedEventArgs> tokenReaderTokenStatusChangedEventHandler;
 
         #endregion
 
@@ -59,6 +64,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IHealthProbeService healthProbeService,
             ISessionService sessionService,
             ICardReaderService cardReaderService,
+            ITokenReaderService tokenReaderService,
             IBayManager bayManager,
             IBarcodeReaderService barcodeReaderService,
             IMachineBaysWebService machineBaysWebService,
@@ -72,7 +78,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
-            this.cardReaderService = cardReaderService;
+            this.cardReaderService = cardReaderService ?? throw new ArgumentNullException(nameof(cardReaderService));
+            this.tokenReaderService = tokenReaderService ?? throw new ArgumentNullException(nameof(tokenReaderService));
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -85,14 +92,19 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 Password = "vertimag2020",
             };
 #else
-            this.UserLogin = new UserLogin { };
+            this.UserLogin = new UserLogin();
 #endif
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
             this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
 
-            this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e));
-            this.cardReaderService.TokenAcquired += this.tokenAcquiredEventHandler;
+            this.cardReaderTokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(
+                async (sender, e) => await this.OnCardReaderTokenAcquired(sender, e));
+            this.cardReaderService.TokenAcquired += this.cardReaderTokenAcquiredEventHandler;
+
+            this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
+                async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
+            this.tokenReaderService.TokenStatusChanged += this.tokenReaderTokenStatusChangedEventHandler;
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -109,6 +121,28 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.Logger.Error(ex, $"Unable to authenticate user with card.");
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheCard"), Services.Models.NotificationSeverity.Warning);
+            }
+        }
+
+        private async Task OnTokenReaderTokenAcquired(object sender, TokenStatusChangedEventArgs e)
+        {
+            if (!e.IsInserted)
+            {
+                return;
+            }
+
+            try
+            {
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingToken"), Services.Models.NotificationSeverity.Info);
+
+                var claims = await this.authenticationService.LogInAsync(e.SerialNumber);
+
+                await this.NavigateToMainMenuAsync(claims);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, $"Unable to authenticate user with token.");
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.UnableToAuthenticateWithTheToken"), Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -193,7 +227,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             base.Disappear();
 
             this.cardReaderService.StopAsync();
-            this.cardReaderService.TokenAcquired -= this.tokenAcquiredEventHandler;
+            this.cardReaderService.TokenAcquired -= this.cardReaderTokenAcquiredEventHandler;
+
+            this.tokenReaderService.TokenStatusChanged += this.tokenReaderTokenStatusChangedEventHandler;
 
             this.UserLogin.IsValidationEnabled = true;
             this.UserLogin.Password = null;
@@ -244,6 +280,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             await this.barcodeReaderService.StartAsync();
             await this.cardReaderService.StartAsync();
+            await this.tokenReaderService.StartAsync();
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)

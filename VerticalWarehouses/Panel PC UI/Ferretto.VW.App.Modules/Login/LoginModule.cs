@@ -38,6 +38,7 @@ namespace Ferretto.VW.App.Modules.Login
             containerRegistry.ConfigureLaserPointerUiServices();
             containerRegistry.ConfigureCardReaderUiServices();
             containerRegistry.ConfigureBarcodeReaderUiServices();
+            containerRegistry.ConfigureTokenReaderUiServices();
 
             containerRegistry.RegisterForNavigation<LoginView>();
 
