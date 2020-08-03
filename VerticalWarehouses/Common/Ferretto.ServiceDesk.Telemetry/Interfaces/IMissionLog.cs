@@ -4,9 +4,13 @@ namespace Ferretto.ServiceDesk.Telemetry
 {
     public interface IMissionLog
     {
+        #region Properties
+
         int Bay { get; set; }
 
         int? CellId { get; set; }
+
+        DateTimeOffset CreationDate { get; set; }
 
         int Direction { get; set; }
 
@@ -26,10 +30,14 @@ namespace Ferretto.ServiceDesk.Telemetry
 
         string Status { get; set; }
 
+        int Step { get; set; }
+
         int StopReason { get; set; }
 
         DateTimeOffset TimeStamp { get; set; }
 
         int? WmsId { get; set; }
+
+        #endregion
     }
 }
