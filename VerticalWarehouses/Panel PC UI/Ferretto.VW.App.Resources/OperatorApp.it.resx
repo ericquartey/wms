@@ -1728,4 +1728,13 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Cassetto presente in baia compattazione non permessa</value>
   </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Peso medio unitario effettivo [g]</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Peso misurato [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Peso medio unitario originale [g]</value>
+  </data>
 </root>

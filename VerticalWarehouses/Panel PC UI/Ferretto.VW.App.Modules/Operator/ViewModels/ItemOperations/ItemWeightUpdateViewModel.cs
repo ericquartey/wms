@@ -12,8 +12,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
     {
         #region Fields
 
-        private readonly DelegateCommand abortCommand;
-
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly DelegateCommand updateWeightCommand;
@@ -45,15 +43,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
             this.weightingScaleService = weightingScaleService;
             this.itemsWebService = itemsWebService;
 
-            this.abortCommand = new DelegateCommand(this.Abort);
             this.updateWeightCommand = new DelegateCommand(async () => await this.UpdateWeightAsync());
         }
 
         #endregion
 
         #region Properties
-
-        public ICommand AbortCommand => this.abortCommand;
 
         public double? ActualAverageWeight
         {
@@ -108,11 +103,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
                     Resources.ErrorsApp.NoItemLoadedOnPage,
                     Services.Models.NotificationSeverity.Error);
             }
-        }
-
-        private void Abort()
-        {
-            this.NavigationService.GoBack();
         }
 
         private async Task LoadItemData(int itemId)

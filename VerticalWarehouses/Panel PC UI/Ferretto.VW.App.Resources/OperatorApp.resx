@@ -2117,4 +2117,16 @@ Please put back any moved pieces in their original position.</value>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Unit present in bay compaction not allowed</value>
   </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Update average unitary weight</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Actual Average Unitary Weight [g]</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Measured Weight [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Original Average Unitary Weight [g]</value>
+  </data>
 </root>

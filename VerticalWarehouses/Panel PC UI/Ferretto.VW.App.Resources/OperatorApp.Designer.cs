@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual Average Unitary Weight [g].
+        /// </summary>
+        public static string ActualAverageWeight {
+            get {
+                return ResourceManager.GetString("ActualAverageWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Additional Information.
         /// </summary>
         public static string AdditionalText {
@@ -3284,6 +3293,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measured Weight [g].
+        /// </summary>
+        public static string MeasuredWeight {
+            get {
+                return ResourceManager.GetString("MeasuredWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not defined.
         /// </summary>
         public static string MisionStateNotDefined {
@@ -3784,6 +3802,15 @@ namespace Ferretto.VW.App.Resources {
         public static string OperationConfirmed {
             get {
                 return ResourceManager.GetString("OperationConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Average Unitary Weight [g].
+        /// </summary>
+        public static string OriginalAverageWeight {
+            get {
+                return ResourceManager.GetString("OriginalAverageWeight", resourceCulture);
             }
         }
         
@@ -4711,6 +4738,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UpdatedValue {
             get {
                 return ResourceManager.GetString("UpdatedValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update average unitary weight.
+        /// </summary>
+        public static string UpdateItemAverageUnitaryWeight {
+            get {
+                return ResourceManager.GetString("UpdateItemAverageUnitaryWeight", resourceCulture);
             }
         }
         
