@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
 using Ferretto.VW.Devices.WeightingScale;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
-using Prism.Events;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Accessories
 {
@@ -21,8 +20,6 @@ namespace Ferretto.VW.App.Accessories
         private readonly IWeightingScaleDriver deviceDriver;
 
         private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly Dictionary<int, IWeightSample> lastWeightSampleByScaleNumber = new Dictionary<int, IWeightSample>();
 
@@ -41,15 +38,13 @@ namespace Ferretto.VW.App.Accessories
         #region Constructors
 
         public WeightingScaleService(
-                    IWeightingScaleDriver deviceDriver,
+            IWeightingScaleDriver deviceDriver,
             IMachineAccessoriesWebService accessoriesWebService,
-            IMachineItemsWebService machineItemsWebService,
-            IEventAggregator eventAggregator)
+            IMachineItemsWebService machineItemsWebService)
         {
             this.deviceDriver = deviceDriver;
             this.accessoriesWebService = accessoriesWebService;
             this.machineItemsWebService = machineItemsWebService;
-            this.eventAggregator = eventAggregator;
         }
 
         #endregion
@@ -184,14 +179,13 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting the weighting scale service ...");
 
-            this.InitializeSerialPortsTimer();
-
             try
             {
                 var accessories = await this.accessoriesWebService.GetAllAsync();
                 this.isDeviceEnabled = accessories.WeightingScale?.IsEnabledNew == true;
                 if (!this.isDeviceEnabled)
                 {
+                    this.logger.Debug("The weighting scale is not configured to be enabled.");
                     return;
                 }
 
@@ -266,7 +260,6 @@ namespace Ferretto.VW.App.Accessories
 
             this.isStarted = false;
             this.DisableWeightPollTimer();
-            this.DisableSerialPortsTimer();
             this.deviceDriver.Disconnect();
 
             this.logger.Debug("The weighting scale service has stopped.");

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Services
 {
-    internal sealed partial class WeightingScaleService
+    internal sealed class SerialPortsService : ISerialPortsService, IDisposable
     {
         #region Fields
 
@@ -16,7 +16,18 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly object portsSyncRoot = new object();
 
-        private Timer serialPortsPollTimer;
+        private readonly Timer serialPortsPollTimer;
+
+        private bool isDisposed;
+
+        #endregion
+
+        #region Constructors
+
+        public SerialPortsService()
+        {
+            this.serialPortsPollTimer = new Timer(this.RefreshSystemPorts);
+        }
 
         #endregion
 
@@ -28,17 +39,26 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        private void DisableSerialPortsTimer()
+        public void Dispose()
         {
-            this.serialPortsPollTimer?.Dispose();
-            this.serialPortsPollTimer = null;
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            this.serialPortsPollTimer.Dispose();
+
+            this.isDisposed = true;
         }
 
-        private void InitializeSerialPortsTimer()
+        public void Start()
         {
-            this.DisableSerialPortsTimer();
+            this.serialPortsPollTimer.Change(0, SerialPortRefreshInterval);
+        }
 
-            this.serialPortsPollTimer = new Timer(this.RefreshSystemPorts, null, 0, SerialPortRefreshInterval);
+        public void Stop()
+        {
+            this.serialPortsPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void RefreshSystemPorts(object state)

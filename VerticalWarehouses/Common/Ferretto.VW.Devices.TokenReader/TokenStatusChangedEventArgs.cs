@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Devices.TokenReader
 {
-    public class TokenStatusChangedEventArgs : System.EventArgs
+    public sealed class TokenStatusChangedEventArgs : System.EventArgs
     {
         #region Constructors
 

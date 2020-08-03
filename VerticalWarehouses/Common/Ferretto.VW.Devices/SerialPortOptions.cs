@@ -12,6 +12,8 @@ namespace Ferretto.VW.Devices
 
         public string PortName { get; set; }
 
+        public System.TimeSpan? ReadTimeout { get; set; }
+
         public StopBits StopBits { get; set; }
 
         #endregion

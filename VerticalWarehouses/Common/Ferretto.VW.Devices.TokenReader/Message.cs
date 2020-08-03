@@ -144,7 +144,7 @@ namespace Ferretto.VW.Devices.TokenReader
         private static byte GetBlockCheckCharacter(byte[] message)
         {
             byte blockCheckCharacter = 0;
-            for (int i = 0; i < message.Length - 1; i++)
+            for (var i = 0; i < message.Length - 1; i++)
             {
                 blockCheckCharacter ^= message[i];
             }

@@ -114,8 +114,6 @@ namespace Ferretto.VW.App.Accessories
 
             try
             {
-                this.InitializeSerialPortsTimer();
-
                 var accessories = await this.accessoriesWebService.GetAllAsync();
                 this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
                 if (this.isDeviceEnabled)
@@ -166,9 +164,6 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
-                this.ruleSet = Array.Empty<BarcodeRule>();
-
-                this.DisableSerialPortsTimer();
             }
             catch (Exception ex)
             {

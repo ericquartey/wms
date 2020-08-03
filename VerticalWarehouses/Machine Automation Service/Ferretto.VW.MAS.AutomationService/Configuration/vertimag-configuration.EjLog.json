@@ -227,6 +227,10 @@
           "WeightingScale": {
             "IsEnabledNew": true,
             "PortName": "COM1"
+          },
+          "TokenReader": {
+            "IsEnabledNew": true,
+            "PortName": "COM9"
           }
         },
         "Carousel": {
@@ -6324,7 +6328,7 @@
     }
   },
   "Wms": {
-    "IsEnabled": true,
+    "IsEnabled": false,
     "ServiceUrl": "http://localhost:10000",
     "IsTimeSyncEnabled": true,
     "TimeSyncIntervalMilliseconds": 10000

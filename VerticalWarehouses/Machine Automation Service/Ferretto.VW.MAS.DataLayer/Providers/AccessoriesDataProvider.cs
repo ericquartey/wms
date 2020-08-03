@@ -183,6 +183,28 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateTokenReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
+        {
+            if (portName is null)
+            {
+                throw new ArgumentNullException(nameof(portName));
+            }
+
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Accessories)
+                    .ThenInclude(a => a.TokenReader)
+                    .Single(b => b.Number == bayNumber);
+
+                bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
+                bay.Accessories.TokenReader.PortName = portName;
+
+                this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateWeightingScaleDeviceInfo(BayNumber bayNumber, DeviceInformation deviceInformation)
         {
             lock (this.dataContext)
