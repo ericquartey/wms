@@ -126,7 +126,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
 
-            return this.Ok(await loadingUnitsWmsWebService.GetCompartmentsAsync(id));
+            try
+            {
+                return this.Ok(await loadingUnitsWmsWebService.GetCompartmentsAsync(id));
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            }
+            return this.Ok();
         }
 
         [HttpGet("statistics/space")]
@@ -273,7 +281,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             if (wmsSettingsProvider.IsEnabled)
             {
-                await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
+                try
+                {
+                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
+                }
+                catch (WmsWebApiException ex)
+                {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+                }
             }
             else
             {

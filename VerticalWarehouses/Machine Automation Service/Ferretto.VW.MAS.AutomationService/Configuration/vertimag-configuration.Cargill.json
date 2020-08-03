@@ -19,7 +19,12 @@
           "LaserPointer": {
             "IsEnabledNew": true,
             "IpAddress": "192.168.101.13",
-            "TcpPort": 2020
+            "TcpPort": 2020,
+            "IsConfiguredNew": false,
+            "XOffset": 0.0,
+            "YOffset": 0.0,
+            "ZOffsetLowerPosition": 0.0,
+            "ZOffsetUpperPosition": 1030.0
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
