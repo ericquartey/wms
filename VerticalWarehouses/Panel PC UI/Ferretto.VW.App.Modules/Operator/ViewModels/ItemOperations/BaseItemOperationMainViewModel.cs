@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
+        private readonly DelegateCommand weightCommand;
+
         private double? availableQuantity;
 
         private Bay bay;
@@ -129,6 +131,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.navigationService = navigationService;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
+
+            this.weightCommand = new DelegateCommand(this.Weight);
         }
 
         #endregion
@@ -140,16 +144,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? AvailableQuantity
         {
             get => this.availableQuantity;
-            set
-            {
-                this.SetProperty(ref this.availableQuantity, value, () =>
-                {
-                    this.RaiseCanExecuteChanged();
-                    this.CanInputAvailableQuantity = true;
-                    this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
-                    this.CanInputQuantity = false;
-                });
-            }
+            set => this.SetProperty(ref this.availableQuantity, value, () =>
+                 {
+                     this.RaiseCanExecuteChanged();
+                     this.CanInputAvailableQuantity = true;
+                     this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
+                     this.CanInputQuantity = false;
+                 });
         }
 
         public bool CanConfirmPartialOperation
@@ -358,6 +359,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showDetailsCommand
             ??
             (this.showDetailsCommand = new DelegateCommand(this.ShowOperationDetails));
+
+        public ICommand WeightCommand => this.weightCommand;
 
         protected bool IsOperationConfirmed { get; set; }
 
@@ -981,6 +984,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputItemCode = null;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
+        }
+
+        private void Weight()
+        {
+            this.navigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.WEIGHT);
         }
 
         #endregion

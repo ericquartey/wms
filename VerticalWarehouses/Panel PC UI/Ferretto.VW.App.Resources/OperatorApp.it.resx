@@ -1737,4 +1737,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Peso medio unitario originale [g]</value>
   </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Pesa e conta pezzi</value>
+  </data>
 </root>

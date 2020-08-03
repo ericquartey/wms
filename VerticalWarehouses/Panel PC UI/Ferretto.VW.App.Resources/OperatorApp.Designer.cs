@@ -3302,6 +3302,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measure weight and count pieces.
+        /// </summary>
+        public static string MeasureWeightAndCount {
+            get {
+                return ResourceManager.GetString("MeasureWeightAndCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not defined.
         /// </summary>
         public static string MisionStateNotDefined {

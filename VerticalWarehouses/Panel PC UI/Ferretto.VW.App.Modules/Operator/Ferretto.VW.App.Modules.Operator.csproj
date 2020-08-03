@@ -36,4 +36,16 @@
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\ItemOperations\ItemWeightView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\ItemOperations\ItemWeightView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

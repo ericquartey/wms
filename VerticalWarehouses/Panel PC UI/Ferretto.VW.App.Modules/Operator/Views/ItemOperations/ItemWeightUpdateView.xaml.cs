@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Modules.Operator.Views
 {
-    public partial class ItemWeightUpdateViewModel
+    public partial class ItemWeightUpdateView
     {
         #region Constructors
 
-        public ItemWeightUpdateViewModel()
+        public ItemWeightUpdateView()
         {
             InitializeComponent();
         }

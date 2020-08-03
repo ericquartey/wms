@@ -2129,4 +2129,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Original Average Unitary Weight [g]</value>
   </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Measure weight and count pieces</value>
+  </data>
 </root>
