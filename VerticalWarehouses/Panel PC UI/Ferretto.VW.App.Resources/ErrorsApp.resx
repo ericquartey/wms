@@ -195,6 +195,9 @@
     <value>Mark as resolved</value>
     <comment>Action</comment>
   </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>No item was loaded on the page.</value>
+  </data>
   <data name="SelectUnitOnElevator" xml:space="preserve">
     <value>Select the unit id on the elevator.</value>
   </data>

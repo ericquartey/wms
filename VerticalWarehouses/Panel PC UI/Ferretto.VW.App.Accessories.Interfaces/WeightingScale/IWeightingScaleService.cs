@@ -72,9 +72,9 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// Updates the average unitary weight of the specified item.
         /// </summary>
         /// <param name="itemId">The identifier of the item to update.</param>
-        /// <param name="averageWeight">The new unitary average weight of the item.</param>
+        /// <param name="averageWeight">The new unitary average weight of the item, or null to leave it undefined.</param>
         /// <returns></returns>
-        Task UpdateItemAverageWeightAsync(int itemId, double averageWeight);
+        Task UpdateItemAverageWeightAsync(int itemId, double? averageWeight);
 
         /// <summary>
         /// Saves the device settings.
