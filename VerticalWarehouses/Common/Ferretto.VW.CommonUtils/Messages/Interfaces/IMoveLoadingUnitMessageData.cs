@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -7,6 +8,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         #region Properties
 
         CommandAction CommandAction { get; }
+
+        DateTimeOffset CreationDate { get; }
 
         LoadingUnitLocation Destination { get; }
 

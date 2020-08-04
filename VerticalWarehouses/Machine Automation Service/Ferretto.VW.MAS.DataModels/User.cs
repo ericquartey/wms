@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 Id = -3,
                 Name = "service",
-                AccessLevel = 2,
+                AccessLevel = 3,
                 PasswordHash = "",
                 PasswordSalt = "",
             };
