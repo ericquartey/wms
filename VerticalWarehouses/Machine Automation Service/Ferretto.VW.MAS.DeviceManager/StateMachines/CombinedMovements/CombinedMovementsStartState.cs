@@ -151,27 +151,8 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             //this.ParentStateMachine.PublishCommandMessage(message);
 
             this.timerElapsed = 0;
-            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null)
-            {
-                // If loading unit exists in the elevator then the vertical movement call is delayed with a calculated amount of time based on the current net weight
-                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-                var factorNetWeight = Math.Abs((loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight);
-
-                this.timerElapsed = Convert.ToInt32(factorNetWeight * TIMER_ELAPSED);
-                this.timerElapsed = Math.Min(this.timerElapsed, TIMER_ELAPSED);
-                if (this.timerElapsed < 0) { this.timerElapsed = 0; }
-
-                this.delayTimer = new Timer(this.DelayElapsed, null, this.timerElapsed, Timeout.Infinite);
-            }
-            else
-            {
-                // Start the vertical movement immediately
-                this.delayTimer = null;
-                this.DelayElapsed(null);
-            }
-
-            //this.delayTimer = null; // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
-            //this.DelayElapsed(null);  // uncomment this line to get an instantaneous call
+            this.delayTimer = null;  // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
+            this.DelayElapsed(null);  // uncomment this line to get an instantaneous call
         }
 
         public override void Stop(StopRequestReason reason)
@@ -212,7 +193,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                 this.machineData.RequestingBay,
                 BayNumber.ElevatorBay);
 
-            this.Logger.LogDebug($"3:Start Vertical movement [fixed delay: {this.timerElapsed} ms");
+            this.Logger.LogDebug($"3:Start Vertical movement [fixed delay: {this.timerElapsed} ms]");
             this.ParentStateMachine.PublishCommandMessage(message);
         }
 
