@@ -10,11 +10,6 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         DeviceModel DeviceModel { get; set; }
 
-        /// <summary>
-        /// Gets the names of the active serial ports on the local machine.
-        /// </summary>
-        ObservableCollection<string> PortNames { get; }
-
         #endregion
 
         #region Methods

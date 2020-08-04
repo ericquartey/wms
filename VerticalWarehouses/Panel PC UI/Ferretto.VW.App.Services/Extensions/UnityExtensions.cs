@@ -31,6 +31,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
             containerRegistry.RegisterSingleton<IUsbWatcherService, UsbWatcherService>();
 
+            containerRegistry.RegisterSingleton<ISerialPortsService, SerialPortsService>();
             containerRegistry.RegisterSingleton<ILocalizationService, LocalizationService>();
 
             containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
@@ -62,6 +63,7 @@ namespace Ferretto.VW.App.Services
             containerProvider.Resolve<IHealthProbeService>().Start();
             containerProvider.Resolve<IMachineService>().StartAsync();
             containerProvider.Resolve<ITimeSyncService>().Start();
+            containerProvider.Resolve<ISerialPortsService>().Start();
 
             return containerProvider;
         }

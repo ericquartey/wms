@@ -117,6 +117,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("token-reader")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateTokenReaderSettings(bool isEnabled, string portName)
+        {
+            this.accessoriesDataProvider.UpdateTokenReaderSettings(this.BayNumber, isEnabled, portName);
+
+            return this.Ok();
+        }
+
         [HttpPut("weighting-scale/info")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

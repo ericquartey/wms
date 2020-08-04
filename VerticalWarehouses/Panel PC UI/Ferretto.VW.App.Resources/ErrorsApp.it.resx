@@ -189,6 +189,9 @@
   <data name="MarkAsResolved" xml:space="preserve">
     <value>Marca come risolto</value>
   </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Nessun articolo è stato caricato sulla pagina.</value>
+  </data>
   <data name="SelectUnitOnElevator" xml:space="preserve">
     <value>Selezionare l'id del cassetto presente sull'elevatore.</value>
   </data>

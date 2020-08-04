@@ -63,6 +63,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public CommandAction CommandAction { get; set; }
 
+        public DateTimeOffset CreationDate { get; set; } = DateTime.Now;
+
         public LoadingUnitLocation Destination { get; set; }
 
         public int? DestinationCellId { get; set; }

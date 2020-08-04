@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
 using Ferretto.VW.Devices.WeightingScale;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
-using Prism.Events;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Accessories
 {
@@ -22,34 +21,32 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly Dictionary<int, IWeightSample> lastWeightSampleByScaleNumber = new Dictionary<int, IWeightSample>();
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineItemsWebService machineItemsWebService;
 
+        private readonly Timer weightPollTimer;
+
         private bool isDeviceEnabled;
 
         private bool isStarted;
-
-        private Timer weightPollTimer;
 
         #endregion
 
         #region Constructors
 
         public WeightingScaleService(
-                    IWeightingScaleDriver deviceDriver,
+            IWeightingScaleDriver deviceDriver,
             IMachineAccessoriesWebService accessoriesWebService,
-            IMachineItemsWebService machineItemsWebService,
-            IEventAggregator eventAggregator)
+            IMachineItemsWebService machineItemsWebService)
         {
             this.deviceDriver = deviceDriver;
             this.accessoriesWebService = accessoriesWebService;
             this.machineItemsWebService = machineItemsWebService;
-            this.eventAggregator = eventAggregator;
+
+            this.weightPollTimer = new Timer(async s => await this.OnWeightPollTimerTickAsync());
         }
 
         #endregion
@@ -184,14 +181,13 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting the weighting scale service ...");
 
-            this.InitializeSerialPortsTimer();
-
             try
             {
                 var accessories = await this.accessoriesWebService.GetAllAsync();
                 this.isDeviceEnabled = accessories.WeightingScale?.IsEnabledNew == true;
                 if (!this.isDeviceEnabled)
                 {
+                    this.logger.Debug("The weighting scale is not configured to be enabled.");
                     return;
                 }
 
@@ -241,12 +237,7 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting continuous weight acquisition ...");
 
-            this.DisableWeightPollTimer();
-            this.weightPollTimer = new Timer(
-                async state => await this.OnWeightPollTimerTickAsync(),
-                null,
-                0,
-                WeightPollInterval);
+            this.weightPollTimer.Change(0, WeightPollInterval);
         }
 
         public Task StopAsync()
@@ -265,8 +256,8 @@ namespace Ferretto.VW.App.Accessories
             this.logger.Debug("Stopping the weighting scale service ...");
 
             this.isStarted = false;
-            this.DisableWeightPollTimer();
-            this.DisableSerialPortsTimer();
+            this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
             this.deviceDriver.Disconnect();
 
             this.logger.Debug("The weighting scale service has stopped.");
@@ -277,10 +268,10 @@ namespace Ferretto.VW.App.Accessories
         public void StopWeightAcquisition()
         {
             this.logger.Debug("Stopping continuous weight acquisition ...");
-            this.DisableWeightPollTimer();
+            this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
-        public async Task UpdateItemAverageWeightAsync(int itemId, double averageWeight)
+        public async Task UpdateItemAverageWeightAsync(int itemId, double? averageWeight)
         {
             if (this.isDisposed)
             {
@@ -293,7 +284,7 @@ namespace Ferretto.VW.App.Accessories
                     "Cannot perform the operation because the weighting scale service is not started.");
             }
 
-            await this.machineItemsWebService.UpdateAverageWeightAsync(itemId, averageWeight);
+            await this.machineItemsWebService.UpdateAverageWeightAsync(itemId, averageWeight ?? 0);
         }
 
         public async Task UpdateSettingsAsync(bool isEnabled, string portName)
@@ -318,12 +309,6 @@ namespace Ferretto.VW.App.Accessories
             {
                 await this.StopAsync();
             }
-        }
-
-        private void DisableWeightPollTimer()
-        {
-            this.weightPollTimer?.Dispose();
-            this.weightPollTimer = null;
         }
 
         private async Task OnWeightPollTimerTickAsync()

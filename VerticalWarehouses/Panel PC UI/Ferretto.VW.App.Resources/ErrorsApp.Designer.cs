@@ -277,6 +277,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No item was loaded on the page..
+        /// </summary>
+        public static string NoItemLoadedOnPage {
+            get {
+                return ResourceManager.GetString("NoItemLoadedOnPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the unit id on the elevator..
         /// </summary>
         public static string SelectUnitOnElevator {

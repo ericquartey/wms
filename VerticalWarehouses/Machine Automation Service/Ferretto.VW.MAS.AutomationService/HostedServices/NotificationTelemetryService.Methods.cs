@@ -68,12 +68,14 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 // TODO: fill all missing fields
                 Bay = (int)message.RequestingBay,
+                CreationDate = messageData.CreationDate,
                 Destination = messageData.Destination.ToString(),
                 CellId = messageData.DestinationCellId,
                 LoadUnitId = messageData.LoadUnitId.Value,
                 MissionId = messageData.MissionId.Value,
                 MissionType = messageData.MissionType.ToString(),
                 Status = messageData.MissionStep.ToString(),
+                Step = (int)messageData.MissionStep,
                 Stage = string.Empty,
                 StopReason = (int)messageData.StopReason,
                 TimeStamp = DateTimeOffset.Now,

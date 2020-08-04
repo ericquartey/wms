@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -23,13 +24,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ISerialPortsService serialPortsService;
+
         private SubscriptionToken barcodeSubscriptionToken;
 
         private DelegateCommand configureDeviceCommand;
 
         private DeviceModel deviceModel;
-
-        //private IEnumerable<DeviceModel> deviceModels;
 
         private string portName;
 
@@ -43,13 +44,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BarcodeReaderSettingsViewModel(
             IBarcodeReaderService barcodeReaderService,
+            ISerialPortsService serialPortsService,
             IEventAggregator eventAggregator)
         {
             this.barcodeReaderService = barcodeReaderService;
             this.eventAggregator = eventAggregator;
 
-            this.barcodeReaderService.PortNames.CollectionChanged += this.OnPortNamesChanged;
-            this.SystemPortsAvailable = this.barcodeReaderService.PortNames.Any();
+            this.serialPortsService = serialPortsService;
+            this.serialPortsService.PortNames.CollectionChanged += this.OnPortNamesChanged;
+            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion
@@ -75,7 +78,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.portName, value, () => this.AreSettingsChanged = true);
         }
 
-        public IEnumerable<string> PortNames => this.barcodeReaderService.PortNames;
+        public IEnumerable<string> PortNames => this.serialPortsService.PortNames;
 
         public string ReceivedBarcode
         {
@@ -216,7 +219,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPortNamesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.SystemPortsAvailable = this.barcodeReaderService.PortNames.Any();
+            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion
