@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -45,7 +46,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
-                    return this.StatusCode((int)result.StatusCode, await result.Content.ReadAsStringAsync());
+                    var statusString = await result.Content.ReadAsStringAsync();
+                    if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                    {
+                        this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
+                    }
+                    return this.StatusCode((int)result.StatusCode, statusString);
                 }
                 catch
                 {

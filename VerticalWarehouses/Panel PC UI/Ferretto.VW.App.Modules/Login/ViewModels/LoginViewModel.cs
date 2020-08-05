@@ -396,6 +396,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ShowNotification(Ferretto.VW.App.Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
             finally
             {
                 this.IsWaitingForResponse = false;
