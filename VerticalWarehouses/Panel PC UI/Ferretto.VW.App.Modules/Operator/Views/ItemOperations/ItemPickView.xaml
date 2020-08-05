@@ -248,8 +248,18 @@
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
+                                Width="120"
                                 Command="{Binding ShowDetailsCommand}"
                                 Content="{resources:Loc OperatorApp.Details}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+
+            <controls:PpcButton Grid.Row="4"
+                                Width="100"
+                                Margin="0,8,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding WeightCommand}"
+                                Content="{resources:Loc OperatorApp.Weight}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="4"

@@ -14,6 +14,8 @@ namespace Ferretto.VW.TelemetryService
 
         private const string ConnectionStringName = "Database";
 
+        private const string SchemaVersionName = "SchemaVersion";
+
         #endregion
 
         #region Constructors
@@ -76,7 +78,12 @@ namespace Ferretto.VW.TelemetryService
             services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
             services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
 
-            services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
+            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+            var schemaVersion = Convert.ToUInt64(this.Configuration.GetConnectionString(SchemaVersionName));
+
+            var config = new RealmConfiguration(connectionString) { SchemaVersion = schemaVersion };
+            services.AddTransient(s => Realm.GetInstance(config));
+            //services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
 
             services.AddHostedService<DatabaseCleanupService>();
         }

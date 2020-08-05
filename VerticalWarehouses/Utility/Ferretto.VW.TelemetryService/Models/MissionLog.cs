@@ -12,6 +12,8 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public int? CellId { get; set; }
 
+        public DateTimeOffset CreationDate { get; set; }
+
         public string? Destination { get; set; }
 
         public int Direction { get; set; }
@@ -36,6 +38,8 @@ namespace Ferretto.VW.TelemetryService.Models
         public string Stage { get; set; }
 
         public string? Status { get; set; }
+
+        public int Step { get; set; }
 
         public int StopReason { get; set; }
 

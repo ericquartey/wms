@@ -34,7 +34,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old error logs ...");            
+            this.logger.LogDebug("Deleting old error logs ...");
 
             using var trans = this.realm.BeginWrite();
 
@@ -47,10 +47,11 @@ namespace Ferretto.VW.TelemetryService.Providers
                 return;
             }
 
-            var logsToDelete = errorLogs.OrderByDescending(e => e.OccurrenceDate)
-                                        .Where(e => (e.OccurrenceDate - maximumLogTimespan) < lastLog.OccurrenceDate);
+            var minTimestamp = lastLog.OccurrenceDate - maximumLogTimespan;
 
-            this.realm.RemoveRange<Models.ErrorLog>(logsToDelete);
+            var logsToDelete = errorLogs.Where(e => e.OccurrenceDate < minTimestamp);
+
+            this.realm.RemoveRange(logsToDelete);
 
             trans.Commit();
 

@@ -34,7 +34,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old mission logs ...");            
+            this.logger.LogDebug("Deleting old mission logs ...");
 
             using var trans = this.realm.BeginWrite();
 
@@ -47,10 +47,11 @@ namespace Ferretto.VW.TelemetryService.Providers
                 return;
             }
 
-            var logsToDelete = missionLogs.OrderByDescending(e => e.TimeStamp)
-                                          .Where(e => (e.TimeStamp - maximumLogTimespan) < lastLog.TimeStamp);
+            var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
 
-            this.realm.RemoveRange<Models.MissionLog>(logsToDelete);
+            var logsToDelete = missionLogs.Where(e => e.TimeStamp < minTimestamp);
+
+            this.realm.RemoveRange(logsToDelete);
 
             trans.Commit();
 
@@ -92,6 +93,7 @@ namespace Ferretto.VW.TelemetryService.Providers
                 Machine = machine,
                 Bay = missionLog.Bay,
                 CellId = missionLog.CellId,
+                CreationDate = missionLog.CreationDate,
                 //Destination = missionLog.,
                 Direction = missionLog.Direction,
                 EjectLoadUnit = missionLog.EjectLoadUnit,
