@@ -82,6 +82,15 @@ namespace Ferretto.VW.MAS.AutomationService
                 WmsId = messageData.WmsId
             };
 
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var missionProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                if (messageData.MissionId.HasValue)
+                {
+                    var mission = missionProvider.GetById(messageData.MissionId.Value);
+                }
+            }
+
             await this.SendMissionLogAsync(missionLog);
         }
 
