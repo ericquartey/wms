@@ -201,8 +201,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSave()
         {
             return
-                !this.IsWaitingForResponse
-                &&
+                //!this.IsWaitingForResponse
+                //&&
                 this.AreSettingsChanged;
         }
 

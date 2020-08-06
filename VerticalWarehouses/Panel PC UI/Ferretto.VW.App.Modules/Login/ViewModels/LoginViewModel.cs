@@ -339,8 +339,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             else
             {
                 return
-                this.machineIdentity != null
-                &&
+                //this.machineIdentity != null
+                //&&
                 !this.IsWaitingForResponse;
             }
         }

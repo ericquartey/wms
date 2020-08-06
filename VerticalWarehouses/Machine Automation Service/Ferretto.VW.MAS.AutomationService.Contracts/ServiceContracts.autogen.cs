@@ -4910,6 +4910,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class WmsSettings : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("IsConnected", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsConnected { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsEnabled", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnabled { get; set; }
     

@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
                 catch
                 {
+                    this.wmsSettingsProvider.IsConnected = false;
                     return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
                 }
             }
