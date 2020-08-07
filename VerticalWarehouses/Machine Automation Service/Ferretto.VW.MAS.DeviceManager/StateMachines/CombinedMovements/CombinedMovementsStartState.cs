@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.CombinedMovements.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,9 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
     {
         #region Fields
 
-        private const int TIMER_ELAPSED = 250;
+        private const int TIMER_ELAPSED = 1500;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly ICombinedMovementsMachineData machineData;
 
@@ -33,6 +36,8 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 
         private bool isVerticalPositioningDone;
 
+        private int timerElapsed;
+
         #endregion
 
         #region Constructors
@@ -43,6 +48,8 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ICombinedMovementsMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+
+            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
         }
 
         #endregion
@@ -143,7 +150,8 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 
             //this.ParentStateMachine.PublishCommandMessage(message);
 
-            this.delayTimer = null; // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
+            this.timerElapsed = 0;
+            this.delayTimer = null;  // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
             this.DelayElapsed(null);  // uncomment this line to get an instantaneous call
         }
 
@@ -185,7 +193,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                 this.machineData.RequestingBay,
                 BayNumber.ElevatorBay);
 
-            this.Logger.LogDebug($"3:Start Vertical movement");
+            this.Logger.LogDebug($"3:Start Vertical movement [fixed delay: {this.timerElapsed} ms]");
             this.ParentStateMachine.PublishCommandMessage(message);
         }
 

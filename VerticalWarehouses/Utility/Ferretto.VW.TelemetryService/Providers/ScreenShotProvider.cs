@@ -33,7 +33,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old screenShot ...");            
+            this.logger.LogDebug("Deleting old screenShot ...");
 
             using var trans = this.realm.BeginWrite();
 
@@ -46,8 +46,9 @@ namespace Ferretto.VW.TelemetryService.Providers
                 return;
             }
 
-            var logsToDelete = screenShotLogs.OrderByDescending(e => e.TimeStamp)
-                                             .Where(e => (e.TimeStamp - maximumLogTimespan) < lastLog.TimeStamp);
+            var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
+
+            var logsToDelete = screenShotLogs.Where(e => e.TimeStamp < minTimestamp);
 
             this.realm.RemoveRange<Models.ScreenShot>(logsToDelete);
 

@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.DataModels
                 Id = -99,
                 Name = "admin",
                 AccessLevel = 99,
-                PasswordHash = "hnxfwmv7zEfyPQReC+IS5dGisCYf5r6wTo/87XLv0tU=",
-                PasswordSalt = "1PPY6bdLHijNylozacy1RQ==",
+                PasswordHash = "8k2DQfWKVZ2FAX+miwsVYN+RSiQZ/dxRO1IcRAC+TvA=",
+                PasswordSalt = "7T4XrBJfRzWtyFNGrXFlsw==",
             };
 
             public static readonly User Installer = new User
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 Id = -3,
                 Name = "service",
-                AccessLevel = 3,
+                AccessLevel = 99,
                 PasswordHash = "",
                 PasswordSalt = "",
             };

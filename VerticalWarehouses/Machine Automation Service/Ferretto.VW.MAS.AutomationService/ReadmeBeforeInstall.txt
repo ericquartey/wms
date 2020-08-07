@@ -35,4 +35,4 @@ alter table MovementParameters add column AdjustSpeedByWeight INTEGER;
 update MovementParameters set AdjustSpeedByWeight = AdjustByWeight;
 update MovementParameters set AdjustAccelerationByWeight = AdjustByWeight;
 
-automation_service: rimuovere WMS e Kestrel da appsettings.json 
+

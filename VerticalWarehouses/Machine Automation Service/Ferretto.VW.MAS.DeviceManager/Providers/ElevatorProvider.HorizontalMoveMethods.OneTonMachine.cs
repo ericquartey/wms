@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
                 $"Load Unit gross weight {grossWeight}; " +
                 $"Bypass condition {verticalMovementMessageData.BypassConditions}; " +
-                $"time to perform the movement: {time} s" +
+                $"time to perform the movement: {time} s " +
                 $"vertical current position: {this.VerticalPosition} mm");
 
             // --------------------------

@@ -1,7 +1,7 @@
 ﻿$serviceName = "Ferretto_VW_Telemetry"
 $serviceDisplayName = "Ferretto Vertimag Telemetry Service"
 
-$servicePort = 5000
+$servicePort = 5050
 $serviceUri = "http://localhost:" + $servicePort + "/health/live"
 $totalHealthRetries = 20
 

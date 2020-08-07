@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using UserAccessLevel = Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel;
 using UserClaims = Ferretto.VW.CommonUtils.Messages.Data.UserClaims;
@@ -86,7 +87,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 userName,
                 this.BayNumber);
 
-            if (wmsSettingsProvider.IsEnabled)
+            if (wmsSettingsProvider.IsEnabled
+                && wmsSettingsProvider.IsConnected
+                )
             {
                 try
                 {

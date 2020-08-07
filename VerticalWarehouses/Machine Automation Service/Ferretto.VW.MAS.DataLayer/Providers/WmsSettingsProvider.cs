@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
@@ -37,6 +38,33 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Properties
 
+        public bool IsConnected
+        {
+            get
+            {
+                if (this.dataLayerService.IsReady)
+                {
+                    lock (this.dataContext)
+                    {
+                        return this.dataContext.WmsSettings.AsNoTracking().Single().IsConnected;
+                    }
+                }
+
+                return false;
+            }
+            set
+            {
+                if (this.dataLayerService.IsReady)
+                {
+                    lock (this.dataContext)
+                    {
+                        this.dataContext.WmsSettings.Single().IsConnected = value;
+                        this.dataContext.SaveChanges();
+                    }
+                }
+            }
+        }
+
         public bool IsEnabled
         {
             get
@@ -70,6 +98,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             .Publish(
                                 new CommonUtils.Messages.NotificationMessage
                                 {
+                                    Destination = MessageActor.AutomationService,
+                                    Source = MessageActor.DataLayer,
                                     Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
                                 });
                     }

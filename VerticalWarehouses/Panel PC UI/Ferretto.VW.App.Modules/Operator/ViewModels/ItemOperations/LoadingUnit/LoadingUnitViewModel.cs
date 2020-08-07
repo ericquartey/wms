@@ -373,7 +373,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.CheckUDC();
+            if (!this.CheckUDC())
+            {
+                return;
+            }
 
             this.Reasons = null;
 
@@ -510,7 +513,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !(this.LoadingUnit is null);
         }
 
-        private void CheckUDC()
+        private bool CheckUDC()
         {
             try
             {
@@ -522,11 +525,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
+                else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
+                {
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+            return true;
         }
 
         private async Task ConfirmOperationAsync()

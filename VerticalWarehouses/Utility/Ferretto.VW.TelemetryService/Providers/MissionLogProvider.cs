@@ -47,10 +47,11 @@ namespace Ferretto.VW.TelemetryService.Providers
                 return;
             }
 
-            var logsToDelete = missionLogs.OrderByDescending(e => e.TimeStamp)
-                                          .Where(e => (e.TimeStamp - maximumLogTimespan) < lastLog.TimeStamp);
+            var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
 
-            this.realm.RemoveRange<Models.MissionLog>(logsToDelete);
+            var logsToDelete = missionLogs.Where(e => e.TimeStamp < minTimestamp);
+
+            this.realm.RemoveRange(logsToDelete);
 
             trans.Commit();
 

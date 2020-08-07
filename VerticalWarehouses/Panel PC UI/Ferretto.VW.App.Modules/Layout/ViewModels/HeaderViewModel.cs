@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
-            this.isServiceUser = e.AccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support;
+            this.isServiceUser = (e.AccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support) || (e.AccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin);
         }
 
         private bool CanGoToMenu()

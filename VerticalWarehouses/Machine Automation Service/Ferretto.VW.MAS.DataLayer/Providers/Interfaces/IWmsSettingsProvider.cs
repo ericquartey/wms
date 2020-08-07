@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        bool IsConnected { get; set; }
+
         bool IsEnabled { get; set; }
 
         bool IsTimeSyncEnabled { get; set; }
