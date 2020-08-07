@@ -56,11 +56,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemsWebService = itemsWebService;
         }
 
-        private bool CanReset()
-        {
-            return this.totalMeasuredQuantity.HasValue;
-        }
-
         #endregion
 
         #region Properties
@@ -157,6 +152,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.measuredQuantity.HasValue;
         }
 
+        private bool CanReset()
+        {
+            return this.totalMeasuredQuantity.HasValue;
+        }
+
         private void ConfirmMeasuredQty()
         {
             if (!this.measuredQuantity.HasValue
@@ -169,6 +169,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var newQuantity = (this.TotalMeasuredQuantity.HasValue) ? this.TotalMeasuredQuantity : this.measuredQuantity;
             var msg = new ItemWeightChangedMessage(newQuantity, null);
             this.EventAggregator.GetEvent<PubSubEvent<ItemWeightChangedMessage>>().Publish(msg);
+
+            this.TotalMeasuredQuantity = null;
             this.NavigationService.GoBack();
         }
 
@@ -176,6 +178,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var msg = new ItemWeightChangedMessage(null, this.requestedQuantity);
             this.EventAggregator.GetEvent<PubSubEvent<ItemWeightChangedMessage>>().Publish(msg);
+
+            this.TotalMeasuredQuantity = null;
+
             this.NavigationService.GoBack();
         }
 

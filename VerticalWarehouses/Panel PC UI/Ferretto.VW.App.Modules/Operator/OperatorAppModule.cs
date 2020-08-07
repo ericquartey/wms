@@ -43,7 +43,6 @@ namespace Ferretto.VW.App.Modules.Operator
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
             containerProvider.Resolve<IAlphaNumericBarService>().StartAsync();
             containerProvider.Resolve<ILaserPointerService>().StartAsync();
-            containerProvider.Resolve<IWeightingScaleService>().StartAsync();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

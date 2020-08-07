@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
-        private const int WeightPollInterval = 100;
+        private const int WeightPollInterval = 500;
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
@@ -179,6 +179,8 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
+            this.isStarted = true;
+
             this.logger.Debug("Starting the weighting scale service ...");
 
             try
@@ -210,14 +212,12 @@ namespace Ferretto.VW.App.Accessories
                         });
                 }
 
-                this.isStarted = true;
-
                 this.logger.Debug("The weighting scale service has started.");
             }
             catch (Exception ex)
             {
                 this.logger.Error(ex, "Error while initializing the weighting scale service.");
-
+                this.isStarted = false;
                 throw;
             }
         }
@@ -329,6 +329,10 @@ namespace Ferretto.VW.App.Accessories
                 try
                 {
                     var weightSample = await this.deviceDriver.MeasureWeightAsync();
+                    if (weightSample is null)
+                    {
+                        return;
+                    }
 
                     var hasSampleChanged = true;
                     if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))

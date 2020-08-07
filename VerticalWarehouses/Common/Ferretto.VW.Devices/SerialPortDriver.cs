@@ -13,6 +13,8 @@ namespace Ferretto.VW.Devices
 
         private readonly SerialPort serialPort = new SerialPort();
 
+        private readonly object syncRoot = new object();
+
         private bool isDisposed;
 
         #endregion
@@ -39,49 +41,55 @@ namespace Ferretto.VW.Devices
                 throw new ObjectDisposedException(nameof(SerialPortDriver));
             }
 
-            this.logger.Debug($"Opening serial port {options.PortName} ...");
-
-            if (this.serialPort.IsOpen)
+            lock (this.syncRoot)
             {
-                if (options.PortName.Equals(this.serialPort.PortName, StringComparison.OrdinalIgnoreCase))
+                this.logger.Debug($"Opening serial port {options.PortName} ...");
+
+                if (this.serialPort.IsOpen)
                 {
-                    this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
+                    if (options.PortName.Equals(this.serialPort.PortName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
 
-                    return;
+                        return;
+                    }
+                    else
+                    {
+                        this.Disconnect();
+                    }
                 }
-                else
+
+                this.Information = new DeviceInformation();
+
+                this.serialPort.PortName = options.PortName;
+                this.serialPort.BaudRate = options.BaudRate;
+                this.serialPort.Parity = options.Parity;
+                this.serialPort.StopBits = options.StopBits;
+                if (options.ReadTimeout.HasValue)
                 {
-                    this.Disconnect();
+                    this.serialPort.ReadTimeout = (int)options.ReadTimeout.Value.TotalMilliseconds;
                 }
+
+                this.serialPort.Open();
+
+                this.logger.Debug($"Serial port {this.serialPort.PortName} opened.");
+
+                Task.Run(async () => await this.OnSerialPortOpenedAsync().ConfigureAwait(true));
             }
-
-            this.Information = new DeviceInformation();
-
-            this.serialPort.PortName = options.PortName;
-            this.serialPort.BaudRate = options.BaudRate;
-            this.serialPort.Parity = options.Parity;
-            this.serialPort.StopBits = options.StopBits;
-            if (options.ReadTimeout.HasValue)
-            {
-                this.serialPort.ReadTimeout = (int)options.ReadTimeout.Value.TotalMilliseconds;
-            }
-
-            this.serialPort.Open();
-
-            this.logger.Debug($"Serial port {this.serialPort.PortName} opened.");
-
-            Task.Run(async () => await this.OnSerialPortOpenedAsync());
         }
 
         public void Disconnect()
         {
-            this.logger.Debug($"Serial port {this.serialPort.PortName}: closing ...");
+            lock (this.syncRoot)
+            {
+                this.logger.Debug($"Serial port {this.serialPort.PortName}: closing ...");
 
-            this.serialPort.Close();
+                this.serialPort.Close();
 
-            this.logger.Debug($"Serial port {this.serialPort.PortName}: closed.");
+                this.logger.Debug($"Serial port {this.serialPort.PortName}: closed.");
+            }
 
-            Task.Run(async () => await this.OnSerialPortClosedAsync());
+            Task.Run(async () => await this.OnSerialPortClosedAsync().ConfigureAwait(true));
         }
 
         public void Dispose()
