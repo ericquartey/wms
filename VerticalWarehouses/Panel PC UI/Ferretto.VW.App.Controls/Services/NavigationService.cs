@@ -197,7 +197,7 @@ namespace Ferretto.VW.App.Controls
             }
 
             var currentHistoryRecord = this.navigationStack.Pop();
-            this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
+            this.logger.Debug($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
             while (this.navigationStack.Any()
                 &&
@@ -235,7 +235,7 @@ namespace Ferretto.VW.App.Controls
             }
 
             var currentHistoryRecord = this.navigationStack.Pop();
-            this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
+            this.logger.Debug($"Navigating go back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
             while (this.navigationStack.Any()
                 &&

@@ -6,7 +6,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemWeightUpdateViewModel : BaseOperatorViewModel
     {
@@ -35,10 +35,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
         #region Constructors
 
         public ItemWeightUpdateViewModel(
-            PresentationMode mode,
             IMachineItemsWebService itemsWebService,
             IWeightingScaleService weightingScaleService)
-            : base(mode)
+            : base(PresentationMode.Operator)
         {
             this.weightingScaleService = weightingScaleService;
             this.itemsWebService = itemsWebService;
@@ -130,6 +129,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
 
         private void UpdateActualAverageWeight()
         {
+            if (this.ItemQuantity == 0)
+            {
+                this.ActualAverageWeight = 0;
+                return;
+            }
+
             this.ActualAverageWeight = this.ItemQuantity > 0
                 ? this.MeasuredWeight / this.ItemQuantity
                 : 0;
@@ -142,6 +147,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
             try
             {
                 await this.weightingScaleService.UpdateItemAverageWeightAsync(this.itemId, this.actualAverageWeight);
+                this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

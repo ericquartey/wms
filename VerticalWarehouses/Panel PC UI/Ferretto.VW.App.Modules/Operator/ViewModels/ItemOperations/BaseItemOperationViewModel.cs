@@ -159,6 +159,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.MissionOperationsService.ActiveWmsOperation is null)
             {
                 // ?????????????? this.NavigationService.GoBack();
+                this.NavigationService.GoBackTo(
+                   nameof(Utils.Modules.Operator),
+                   Utils.Modules.Operator.ItemOperations.WAIT);
                 return;
             }
 
@@ -167,6 +170,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck)
             {
+                this.NavigationService.GoBackTo(
+                   nameof(Utils.Modules.Operator),
+                   Utils.Modules.Operator.ItemOperations.WAIT);
                 return;
             }
 
@@ -178,6 +184,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.Mission is null)
                 {
+                    this.NavigationService.GoBackTo(
+                       nameof(Utils.Modules.Operator),
+                       Utils.Modules.Operator.ItemOperations.WAIT);
                     return;
                 }
 
@@ -185,6 +194,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                 if (this.missionOperation is null)
                 {
+                    this.NavigationService.GoBackTo(
+                       nameof(Utils.Modules.Operator),
+                       Utils.Modules.Operator.ItemOperations.WAIT);
                     return;
                 }
 
@@ -199,7 +211,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
-                this.NavigationService.GoBack();
+                this.NavigationService.GoBackTo(
+                   nameof(Utils.Modules.Operator),
+                   Utils.Modules.Operator.ItemOperations.WAIT);
                 this.ShowNotification(ex);
             }
         }

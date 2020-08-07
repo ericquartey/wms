@@ -112,7 +112,9 @@ namespace Ferretto.VW.App.Services
 
         public async Task InitializeAsync()
         {
-            if (this.Identity != null)
+            if (this.Identity != null
+                && this.Identity.AreaId != null
+                )
             {
                 return;
             }

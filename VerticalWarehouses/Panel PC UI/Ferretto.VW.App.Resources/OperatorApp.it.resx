@@ -1740,4 +1740,22 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MeasureWeightAndCount" xml:space="preserve">
     <value>Pesa e conta pezzi</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reimposta</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Quantità rilevata</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Aggiorna peso unitario</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Conferma quantità rilevata</value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Conferma quantità richiesta</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Peso unitario [g]</value>
+  </data>
 </root>

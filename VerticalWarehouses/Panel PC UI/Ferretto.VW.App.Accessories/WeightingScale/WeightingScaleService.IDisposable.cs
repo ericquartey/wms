@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Accessories
 
             this.StopAsync();
 
+            this.weightPollTimer.Dispose();
+
             this.isDisposed = true;
         }
 
