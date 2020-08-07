@@ -31,7 +31,7 @@
 
         <Border Grid.Row="1"
                 Grid.ColumnSpan="4"
-                Margin="15"
+                Margin="0,0,0,30"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}"
                 CornerRadius="2">
@@ -42,7 +42,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="300" />
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
@@ -63,7 +63,7 @@
 
                 <controls:PpcLabeledText Grid.Row="0"
                                          Grid.Column="3"
-                                         HorizontalAlignment="Left"
+                                         HorizontalAlignment="Center"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding ItemCode}"
                                          LabelText="{resources:Loc OperatorApp.ItemCode}" />
@@ -115,31 +115,14 @@
             </Grid>
         </Border>
 
-        <StackPanel Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="LEft"
-                    Orientation="Horizontal">
 
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="0"
-                                Margin="15,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Command="{Binding CancelCommand}"
-                                Content="{resources:Loc General.Cancel}"
-                                IsBusy="{Binding IsWaitingForResponse}" />
-
-
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="1"
-                                Margin="15,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Command="{Binding UpdateAverageWeightCommand}"
-                                Content="{resources:Loc OperatorApp.UpdateAverageWeight}"
-                                Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}" />
-        </StackPanel>
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding UpdateAverageWeightCommand}"
+                            Content="{resources:Loc OperatorApp.UpdateAverageWeight}"
+                            Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}" />
 
         <StackPanel Grid.Row="2"
                     Grid.Column="2"
@@ -158,7 +141,7 @@
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="3"
-                                Margin="20,0,14,0"
+                                Margin="20,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding ConfirmRequestedQtyCommand}"
