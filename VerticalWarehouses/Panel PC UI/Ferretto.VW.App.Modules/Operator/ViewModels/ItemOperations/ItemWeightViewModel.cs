@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.WeightingScale;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -35,6 +36,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int itemId;
 
+        private SampleQuality measuredQuality;
+
         private int? measuredQuantity;
 
         private double requestedQuantity;
@@ -52,14 +55,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWeightingScaleService weightingScaleService)
             : base(PresentationMode.Operator)
         {
+            this.itemsWebService = itemsWebService;
+            this.weightingScaleService = weightingScaleService;
+
             this.cancelCommand = new DelegateCommand(this.Cancel);
             this.updateAverageWeightCommand = new DelegateCommand(this.UpdateAverageWeight);
             this.confirmMeasuredQtyCommand = new DelegateCommand(this.ConfirmMeasuredQty, this.CanConfirmMeasuredQty);
             this.confirmRequestedQtyCommand = new DelegateCommand(this.ConfirmRequestedQty);
-            this.addCommand = new DelegateCommand(this.AddMeasuredQty);
+            this.addCommand = new DelegateCommand(this.AddMeasuredQty, this.CanAddMeasuredQty);
             this.resetCommand = new DelegateCommand(this.ResetMeasuredQty, this.CanReset);
-            this.itemsWebService = itemsWebService;
-            this.weightingScaleService = weightingScaleService;
         }
 
         #endregion
@@ -82,6 +86,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.itemCode;
             set => this.SetProperty(ref this.itemCode, value);
+        }
+
+        public SampleQuality MeasuredQuality
+        {
+            get => this.measuredQuality;
+            set => this.SetProperty(ref this.measuredQuality, value, this.RaiseCanExecuteChanged);
         }
 
         public int? MeasuredQuantity
@@ -148,6 +158,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private bool CanAddMeasuredQty()
+        {
+            return this.measuredQuality == SampleQuality.Stable
+                &&
+                this.measuredQuantity.HasValue
+                &&
+                this.measuredQuantity.Value > 0;
+        }
+
         private void Cancel()
         {
             this.NavigationService.GoBack();
@@ -155,9 +174,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmMeasuredQty()
         {
-            if ((this.totalMeasuredQuantity.HasValue && this.totalMeasuredQuantity.Value > 0)
+            if (((this.totalMeasuredQuantity.HasValue && this.totalMeasuredQuantity.Value > 0)
                 ||
                 (this.measuredQuantity.HasValue && this.measuredQuantity.Value > 0))
+                &&
+                this.measuredQuality == SampleQuality.Stable)
             {
                 return true;
             }
@@ -179,7 +200,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            var newQuantity = (this.TotalMeasuredQuantity.HasValue) ? this.TotalMeasuredQuantity : this.measuredQuantity;
+            var newQuantity = (this.TotalMeasuredQuantity ?? 0) + (this.measuredQuantity ?? 0);
+
             var msg = new ItemWeightChangedMessage(newQuantity, null);
             this.EventAggregator.GetEvent<PubSubEvent<ItemWeightChangedMessage>>().Publish(msg);
 
@@ -231,6 +253,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmMeasuredQtyCommand.RaiseCanExecuteChanged();
             this.confirmRequestedQtyCommand.RaiseCanExecuteChanged();
             this.resetCommand.RaiseCanExecuteChanged();
+            this.addCommand.RaiseCanExecuteChanged();
         }
 
         private void ResetMeasuredQty()

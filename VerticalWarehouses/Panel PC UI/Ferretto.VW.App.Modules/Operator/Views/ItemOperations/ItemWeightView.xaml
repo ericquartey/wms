@@ -110,6 +110,7 @@
                                       Grid.ColumnSpan="3"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
+                                      Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"
                                       UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
                                       Weight="{Binding Weight, Mode=TwoWay}" />
             </Grid>
