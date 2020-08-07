@@ -6,7 +6,7 @@
 
         public ItemWeightUpdateView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

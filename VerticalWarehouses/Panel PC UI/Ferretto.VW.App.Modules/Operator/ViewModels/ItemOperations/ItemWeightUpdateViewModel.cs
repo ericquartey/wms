@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.WeightingScale;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int itemQuantity;
 
+        private SampleQuality measuredQuality;
+
         private double? measuredWeight;
 
         private double? originalAverageWeight;
@@ -42,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.weightingScaleService = weightingScaleService;
             this.itemsWebService = itemsWebService;
 
-            this.updateWeightCommand = new DelegateCommand(async () => await this.UpdateWeightAsync());
+            this.updateWeightCommand = new DelegateCommand(async () => await this.UpdateWeightAsync(), this.CanUpdateWeight);
         }
 
         #endregion
@@ -65,6 +68,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.itemQuantity;
             set => this.SetProperty(ref this.itemQuantity, value, this.UpdateActualAverageWeight);
+        }
+
+        public SampleQuality MeasuredQuality
+        {
+            get => this.measuredQuality;
+            set => this.SetProperty(ref this.measuredQuality, value, this.RaiseCanExecuteChanged);
         }
 
         public double? MeasuredWeight
@@ -102,6 +111,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Resources.ErrorsApp.NoItemLoadedOnPage,
                     Services.Models.NotificationSeverity.Error);
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.updateWeightCommand.RaiseCanExecuteChanged();
+            base.RaiseCanExecuteChanged();
+        }
+
+        private bool CanUpdateWeight()
+        {
+            return this.MeasuredQuality == SampleQuality.Stable;
         }
 
         private async Task LoadItemData(int itemId)

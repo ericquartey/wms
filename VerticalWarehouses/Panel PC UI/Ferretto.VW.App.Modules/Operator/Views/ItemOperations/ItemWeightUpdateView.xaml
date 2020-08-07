@@ -25,7 +25,7 @@
 
         <Border Grid.Row="1"
                 Grid.ColumnSpan="4"
-                Margin="15"
+                Margin="0 0 0 30"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}"
                 CornerRadius="2">
@@ -36,7 +36,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="230" />
-                    <ColumnDefinition Width="240" />
+                    <ColumnDefinition Width="280" />
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
@@ -66,19 +66,20 @@
 
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="1"
+                                         Margin="0,40,0,0"
                                          HorizontalAlignment="center"
                                          VerticalAlignment="Top"
-                                         Margin="0 40 0 0"
                                          ContentText="{Binding ActualAverageWeight, StringFormat={}{0:F2}}"
                                          LabelText="{resources:Loc OperatorApp.ActualAverageWeight}" />
 
 
                 <ctrls:WeightingScale Grid.Row="1"
                                       Grid.Column="2"
-                                      Grid.ColumnSpan="2"
+                                      Grid.ColumnSpan="2"                                      
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"
+                                      Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"                                      
                                       UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
                                       Weight="{Binding MeasuredWeight, Mode=TwoWay}" />
 
@@ -87,7 +88,7 @@
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="2"
-                            Margin="15,8,15,0"
+                            Margin="15,8,0,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding UpdateWeightCommand}"
