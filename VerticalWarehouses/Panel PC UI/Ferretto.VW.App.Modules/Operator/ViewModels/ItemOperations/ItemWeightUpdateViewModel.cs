@@ -129,6 +129,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void UpdateActualAverageWeight()
         {
+            if (this.ItemQuantity == 0)
+            {
+                this.ActualAverageWeight = 0;
+                return;
+            }
+
             this.ActualAverageWeight = this.ItemQuantity > 0
                 ? this.MeasuredWeight / this.ItemQuantity
                 : 0;
@@ -141,6 +147,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 await this.weightingScaleService.UpdateItemAverageWeightAsync(this.itemId, this.actualAverageWeight);
+                this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

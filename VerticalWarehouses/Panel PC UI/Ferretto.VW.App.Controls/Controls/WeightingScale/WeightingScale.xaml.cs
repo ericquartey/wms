@@ -280,7 +280,7 @@ namespace Ferretto.VW.App.Controls
             this.UnitOfMeasure = currWeightSample.UnitOfMeasure;
             this.UnitsCount = currWeightSample.UnitsCount;
             this.Weight = currWeightSample.Weight;
-            this.WeightInfo = this.Weight.ToString("#.#");
+            this.WeightInfo = this.Weight.ToString("0.0");
             this.TareInfo = this.Tare.ToString("#.#");
         }
 
