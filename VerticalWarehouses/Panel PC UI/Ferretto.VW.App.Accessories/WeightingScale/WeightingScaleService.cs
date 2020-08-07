@@ -329,6 +329,10 @@ namespace Ferretto.VW.App.Accessories
                 try
                 {
                     var weightSample = await this.deviceDriver.MeasureWeightAsync();
+                    if (weightSample is null)
+                    {
+                        return;
+                    }
 
                     var hasSampleChanged = true;
                     if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))

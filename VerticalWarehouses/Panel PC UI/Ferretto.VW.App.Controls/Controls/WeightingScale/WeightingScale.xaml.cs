@@ -280,8 +280,10 @@ namespace Ferretto.VW.App.Controls
             this.UnitOfMeasure = currWeightSample.UnitOfMeasure;
             this.UnitsCount = currWeightSample.UnitsCount;
             this.Weight = currWeightSample.Weight;
-            this.WeightInfo = this.Weight.ToString("0.0");
-            this.TareInfo = this.Tare.ToString("#.#");
+            this.WeightInfo = this.Quality == SampleQuality.Stable || this.Quality == SampleQuality.Unstable
+                ? this.Weight.ToString("0.0")
+                : "-----.-";
+            this.TareInfo = this.Tare.ToString("0.0 g");
         }
 
         private void WeightingScaleService_WeighAcquired(object sender, Accessories.Interfaces.WeightingScale.WeightAcquiredEventArgs e)
