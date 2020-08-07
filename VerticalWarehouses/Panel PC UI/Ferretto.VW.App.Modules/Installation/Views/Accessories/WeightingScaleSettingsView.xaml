@@ -185,7 +185,8 @@
         </ListView>
 
         <ctrls:WeightingScale Grid.Row="6"
-                              Grid.Column="1" />
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3" />
 
 
         <controls:PpcButton x:Name="Save"
