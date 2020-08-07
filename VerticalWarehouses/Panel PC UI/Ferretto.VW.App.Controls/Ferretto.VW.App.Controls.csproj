@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.Core" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Gauges" Version="19.2.4" />
     <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.2.4" />
     <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="19.2.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.2.4" />
@@ -42,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ferretto.VW.App.Accessories.Interfaces\Ferretto.VW.App.Accessories.Interfaces.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />

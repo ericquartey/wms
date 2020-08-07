@@ -56,12 +56,21 @@
                                  ContentText="{Binding OriginalAverageWeight}"
                                  LabelText="{resources:Loc OperatorApp.OriginalAverageWeight}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <!--<controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MeasuredWeight}"
-                                 LabelText="{resources:Loc OperatorApp.MeasuredWeight}" />
+                                 LabelText="{resources:Loc OperatorApp.MeasuredWeight}" />-->
+
+
+        <ctrls:WeightingScale Grid.Row="1"
+                                      Grid.Column="2"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"
+                                      UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
+                                      Weight="{Binding MeasuredWeight, Mode=TwoWay}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="2"

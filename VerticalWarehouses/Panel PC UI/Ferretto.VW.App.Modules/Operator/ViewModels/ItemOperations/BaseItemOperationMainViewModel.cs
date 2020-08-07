@@ -98,6 +98,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken missionToken;
 
+        private SubscriptionToken itemWeightToken;
+
         private bool resetFieldsOnNextAction;
 
         private TrayControlCompartment selectedCompartment;
@@ -724,6 +726,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionToken?.Dispose();
             this.missionToken = null;
 
+            this.itemWeightToken?.Dispose();
+            this.itemWeightToken = null;
+
             base.Disappear();
         }
 
@@ -754,8 +759,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         ThreadOption.UIThread,
                         false);
 
+            this.itemWeightToken = this.itemWeightToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ItemWeightChangedMessage>>()
+                    .Subscribe(
+                        (e) => this.OnItemWeightChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+
             await this.MissionOperationsService.RefreshAsync();
             await this.GetLoadingUnitDetailsAsync();
+        }
+
+        private void OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
+        {
+            if (itemWeightChanged.MeasureadQuantity.HasValue)
+            {
+                this.InputQuantity = itemWeightChanged.MeasureadQuantity;
+                return;
+            }
+
+            if (itemWeightChanged.RequestedQuantity.HasValue)
+            {
+                this.InputQuantity = itemWeightChanged.RequestedQuantity;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()

@@ -6,7 +6,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemWeightUpdateViewModel : BaseOperatorViewModel
     {
@@ -35,10 +35,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels.ItemOperations
         #region Constructors
 
         public ItemWeightUpdateViewModel(
-            PresentationMode mode,
             IMachineItemsWebService itemsWebService,
             IWeightingScaleService weightingScaleService)
-            : base(mode)
+            : base(PresentationMode.Operator)
         {
             this.weightingScaleService = weightingScaleService;
             this.itemsWebService = itemsWebService;

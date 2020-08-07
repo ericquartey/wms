@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.WeightingScale"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             Name="WeightingScaleUC"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid>
+        <Border x:Name="border"
+                Width="200"
+                Height="Auto"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                SnapsToDevicePixels="True">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Margin="4,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}">
+                    <Run Text="{res:Loc InstallationApp.WeightingScaleTare}" /> <Run Text="{Binding ElementName=WeightingScaleUC, Path=TareInfo}" />
+                </TextBlock>
+
+                <dxga:DigitalGaugeControl x:Name="testMatrix8x14"
+                                          Grid.Row="0"
+                                          Grid.RowSpan="3"
+                                          Grid.Column="0"
+                                          Grid.ColumnSpan="3"
+                                          Width="180"
+                                          Margin="0,5,0,5"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          FlowDirection="LeftToRight"
+                                          SymbolCount="4"
+                                          Text="{Binding ElementName=WeightingScaleUC, Path=WeightInfo}"
+                                          TextDirection="RightToLeft">
+                    <dxga:DigitalGaugeControl.Model>
+                        <dxga:DigitalMagicLightModel />
+                    </dxga:DigitalGaugeControl.Model>
+
+                    <dxga:DigitalGaugeControl.SymbolView>
+                        <dxga:FourteenSegmentsView>
+                            <dxga:FourteenSegmentsView.Animation>
+                                <dxga:BlinkingAnimation RefreshTime="00:001:00" />
+                            </dxga:FourteenSegmentsView.Animation>
+                        </dxga:FourteenSegmentsView>
+                    </dxga:DigitalGaugeControl.SymbolView>
+                </dxga:DigitalGaugeControl>
+
+                <!--Text="{Binding ElementName=WeightingScaleUC, Path=UnitOfMeasure}"-->
+                <TextBlock Grid.Row="0"
+                           Grid.RowSpan="3"
+                           Grid.Column="2"
+                           Margin="15,0,0,20"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           FontSize="{StaticResource FontSize_Normal}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="g" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
