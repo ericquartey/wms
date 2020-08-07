@@ -149,7 +149,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmMeasuredQty()
         {
-            return this.measuredQuantity.HasValue;
+            if ((this.totalMeasuredQuantity.HasValue && this.totalMeasuredQuantity.Value > 0)
+                ||
+                (this.measuredQuantity.HasValue && this.measuredQuantity.Value > 0))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool CanReset()
