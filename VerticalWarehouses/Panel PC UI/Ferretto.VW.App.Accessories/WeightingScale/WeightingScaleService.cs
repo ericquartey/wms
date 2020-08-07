@@ -331,6 +331,7 @@ namespace Ferretto.VW.App.Accessories
                     var weightSample = await this.deviceDriver.MeasureWeightAsync();
                     if (weightSample is null)
                     {
+                        this.logger.Warn("No sample was received from the scale.");
                         return;
                     }
 

@@ -66,9 +66,9 @@
 
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="1"
+                                         Margin="0,40,0,0"
                                          HorizontalAlignment="center"
                                          VerticalAlignment="Top"
-                                         Margin="0 40 0 0"
                                          ContentText="{Binding ActualAverageWeight, StringFormat={}{0:F2}}"
                                          LabelText="{resources:Loc OperatorApp.ActualAverageWeight}" />
 
@@ -78,7 +78,6 @@
                                       Grid.ColumnSpan="2"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"
                                       UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
                                       Weight="{Binding MeasuredWeight, Mode=TwoWay}" />
 

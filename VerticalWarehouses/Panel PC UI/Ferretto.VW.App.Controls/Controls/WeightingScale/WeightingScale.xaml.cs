@@ -14,15 +14,6 @@ namespace Ferretto.VW.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty AverageUnitWeightProperty = DependencyProperty.Register(
-            nameof(AverageUnitWeight),
-            typeof(float?),
-            typeof(WeightingScale),
-            new FrameworkPropertyMetadata(
-                null,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                new PropertyChangedCallback(async (d, e) => await WeightingScale.OnAverageUnitWeightPropertyChanged(d, e))));
-
         public static readonly DependencyProperty IsWeightingScaleEnabledProperty = DependencyProperty.Register(
                                 nameof(IsWeightingScaleEnabled),
                                 typeof(bool),
@@ -40,12 +31,6 @@ namespace Ferretto.VW.App.Controls
                                 typeof(int),
                                 typeof(WeightingScale),
                                 new PropertyMetadata(0));
-
-        public static readonly DependencyProperty SetAverageUnitaryWeightCommandProperty = DependencyProperty.Register(
-                                nameof(SetAverageUnitaryWeightCommand),
-                                typeof(ICommand),
-                                typeof(WeightingScale),
-                                new UIPropertyMetadata(null, async (d, e) => await SetAverageUnitaryWeightAsync(d, e)));
 
         public static readonly DependencyProperty TareInfoProperty = DependencyProperty.Register(
                                 nameof(TareInfo),
@@ -103,12 +88,6 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
-        public float? AverageUnitWeight
-        {
-            get => (float?)this.GetValue(AverageUnitWeightProperty);
-            set => this.SetValue(AverageUnitWeightProperty, value);
-        }
-
         public bool IsWeightingScaleEnabled
         {
             get => (bool)this.GetValue(IsWeightingScaleEnabledProperty);
@@ -125,12 +104,6 @@ namespace Ferretto.VW.App.Controls
         {
             get => (int)this.GetValue(ScaleNumberProperty);
             set => this.SetValue(ScaleNumberProperty, value);
-        }
-
-        public ICommand SetAverageUnitaryWeightCommand
-        {
-            get => (ICommand)this.GetValue(SetAverageUnitaryWeightCommandProperty);
-            set => this.SetValue(SetAverageUnitaryWeightCommandProperty, value);
         }
 
         public float Tare
@@ -173,52 +146,6 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public async Task SetAverageUnitaryWeightAsync()
-        {
-            if (this.AverageUnitWeight.HasValue)
-            {
-                try
-                {
-                    await this.weightingScaleService?.SetAverageUnitaryWeightAsync(this.AverageUnitWeight.Value);
-                }
-                catch (Exception ex)
-                {
-                    this.logger.Error(ex);
-                }
-            }
-        }
-
-        private static async Task OnAverageUnitWeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WeightingScale weightingScale)
-            {
-                try
-                {
-                    await weightingScale.ResetAsync();
-                    await weightingScale.SetAverageUnitaryWeightAsync();
-                }
-                catch (Exception ex)
-                {
-                    LogManager.GetCurrentClassLogger().Error(ex);
-                }
-            }
-        }
-
-        private static async Task SetAverageUnitaryWeightAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WeightingScale weightingScale)
-            {
-                try
-                {
-                    await weightingScale.SetAverageUnitaryWeightAsync();
-                }
-                catch (Exception ex)
-                {
-                    LogManager.GetCurrentClassLogger().Error(ex);
-                }
-            }
-        }
-
         private async Task OnLoadedAsync(object s, RoutedEventArgs e)
         {
             this.weightingScaleService.WeighAcquired += this.WeightingScaleService_WeighAcquired;
@@ -228,7 +155,7 @@ namespace Ferretto.VW.App.Controls
             {
                 await this.weightingScaleService.StartAsync();
                 await this.weightingScaleService.ClearMessageAsync();
-                //  await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
+                await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
 
                 this.weightingScaleService.StartWeightAcquisition();
 
@@ -273,7 +200,6 @@ namespace Ferretto.VW.App.Controls
         private void Update(Accessories.Interfaces.WeightingScale.WeightAcquiredEventArgs e)
         {
             var currWeightSample = e.WeightSample;
-            this.AverageUnitWeight = currWeightSample.AverageUnitWeight;
             this.Quality = currWeightSample.Quality;
             this.ScaleNumber = currWeightSample.ScaleNumber;
             this.Tare = currWeightSample.Tare;

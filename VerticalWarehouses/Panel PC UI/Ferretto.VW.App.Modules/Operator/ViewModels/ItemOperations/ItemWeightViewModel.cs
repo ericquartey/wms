@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly DelegateCommand updateAverageWeightCommand;
 
+        private readonly IWeightingScaleService weightingScaleService;
+
         private float? averageWeight;
 
         private string itemCode;
@@ -44,7 +47,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public ItemWeightViewModel(IMachineItemsWebService itemsWebService)
+        public ItemWeightViewModel(
+            IMachineItemsWebService itemsWebService,
+            IWeightingScaleService weightingScaleService)
             : base(PresentationMode.Operator)
         {
             this.cancelCommand = new DelegateCommand(this.Cancel);
@@ -54,6 +59,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.addCommand = new DelegateCommand(this.AddMeasuredQty);
             this.resetCommand = new DelegateCommand(this.ResetMeasuredQty, this.CanReset);
             this.itemsWebService = itemsWebService;
+            this.weightingScaleService = weightingScaleService;
         }
 
         #endregion
@@ -117,7 +123,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.Data is MissionOperation missionOperation)
             {
                 this.RequestedQuantity = missionOperation.RequestedQuantity;
-                await this.LoadItemData(missionOperation.ItemId);
+                await this.LoadItemDataAsync(missionOperation.ItemId);
             }
 
             await base.OnAppearedAsync();
@@ -184,7 +190,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.GoBack();
         }
 
-        private async Task LoadItemData(int itemId)
+        private async Task LoadItemDataAsync(int itemId)
         {
             this.itemId = itemId;
 
@@ -194,11 +200,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ItemCode = item.Code;
                 this.AverageWeight = item.AverageWeight;
+
+                if (this.AverageWeight.HasValue)
+                {
+                    await this.weightingScaleService.SetAverageUnitaryWeightAsync(this.AverageWeight.Value);
+                }
+                else
+                {
+                    await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
+                }
             }
             catch (Exception ex)
             {
-                this.ItemCode = "123 test";
-                this.AverageWeight = 0.3f;
+                this.ItemCode = null;
+                this.AverageWeight = null;
                 this.ShowNotification(ex);
             }
         }

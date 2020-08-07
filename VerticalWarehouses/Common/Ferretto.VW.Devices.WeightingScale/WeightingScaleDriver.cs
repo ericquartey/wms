@@ -113,7 +113,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             {
                 lock (this.syncRoot)
                 {
-                    this.SendCommand($"X0.0");
+                    this.SendCommand($"SPMU0000.0");
                 }
             });
         }
@@ -135,11 +135,16 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task SetAverageUnitaryWeightAsync(float weight)
         {
+            if (weight <= 0)
+            {
+                throw new ArgumentNullException(nameof(weight), "Average unitary weight must be strictly positive.");
+            }
+
             await Task.Run(() =>
             {
                 lock (this.syncRoot)
                 {
-                    var line = this.SendCommand($"X{weight:0.0}");
+                    var line = this.SendCommand($"SPMU{weight:0.0}");
                 }
             });
         }
