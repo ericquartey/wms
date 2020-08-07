@@ -4399,7 +4399,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movement To Location.
+        ///   Looks up a localized string similar to Transfer.
         /// </summary>
         public static string LoadingUnitStatus_OnMovementToLocation {
             get {

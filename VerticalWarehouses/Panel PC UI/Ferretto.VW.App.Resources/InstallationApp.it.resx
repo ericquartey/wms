@@ -2656,7 +2656,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Movimento a Baia</value>
   </data>
   <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
-    <value>Movimento a Locazione</value>
+    <value>Trasferimento</value>
   </data>
   <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
     <value>Indefinito</value>

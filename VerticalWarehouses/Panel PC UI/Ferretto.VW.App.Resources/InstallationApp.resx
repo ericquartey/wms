@@ -2746,7 +2746,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Movement To Bay</value>
   </data>
   <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
-    <value>Movement To Location</value>
+    <value>Transfer</value>
   </data>
   <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
     <value>Undefined</value>
