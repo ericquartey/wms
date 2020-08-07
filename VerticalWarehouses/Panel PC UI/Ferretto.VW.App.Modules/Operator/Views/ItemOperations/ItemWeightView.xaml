@@ -110,7 +110,6 @@
                                       Grid.ColumnSpan="3"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"                                   
                                       UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
                                       Weight="{Binding Weight, Mode=TwoWay}" />
             </Grid>

@@ -75,11 +75,10 @@
 
                 <ctrls:WeightingScale Grid.Row="1"
                                       Grid.Column="2"
-                                      Grid.ColumnSpan="2"                                      
+                                      Grid.ColumnSpan="2"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"
-                                      Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"                                      
+                                      Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"
                                       UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
                                       Weight="{Binding MeasuredWeight, Mode=TwoWay}" />
 
