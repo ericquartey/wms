@@ -11,7 +11,7 @@
              mc:Ignorable="d">
     <Grid>
         <Border x:Name="border"
-                Width="200"
+                Width="380"
                 Height="Auto"
                 Background="{DynamicResource PpcBackground}"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -47,12 +47,12 @@
                                           Grid.RowSpan="3"
                                           Grid.Column="0"
                                           Grid.ColumnSpan="3"
-                                          Width="180"
+                                          Width="350"
                                           Margin="0,5,0,5"
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch"
                                           FlowDirection="LeftToRight"
-                                          SymbolCount="4"
+                                          SymbolCount="6"
                                           Text="{Binding ElementName=WeightingScaleUC, Path=WeightInfo}"
                                           TextDirection="RightToLeft">
                     <dxga:DigitalGaugeControl.Model>

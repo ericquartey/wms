@@ -240,7 +240,7 @@ namespace Ferretto.VW.App.Controls
                 Tare = 10,
                 UnitOfMeasure = "kg",
                 UnitsCount = new Random().Next(10, 15),
-                Weight = new Random().Next(100, 105)
+                Weight = (float)(new Random().NextDouble() * 10 + 100)
             };
 
             var weightAcquired = new Accessories.Interfaces.WeightingScale.WeightAcquiredEventArgs(weightSample);
@@ -257,8 +257,8 @@ namespace Ferretto.VW.App.Controls
             this.Tare = currWeightSample.Tare;
             this.UnitOfMeasure = currWeightSample.UnitOfMeasure;
             this.UnitsCount = currWeightSample.UnitsCount;
-            this.Weight = currWeightSample.Weight;
-            this.WeightInfo = this.Weight.ToString("#.#");
+            this.Weight = currWeightSample.Weight;            
+            this.WeightInfo = this.Weight.ToString("0.0");
             this.TareInfo = this.Tare.ToString("#.#");
         }
 

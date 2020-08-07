@@ -108,6 +108,7 @@
 
                 <ctrls:WeightingScale Grid.Row="1"
                                       Grid.Column="2"
+                                      Grid.ColumnSpan="3"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       AverageUnitWeight="{Binding AverageWeight, Mode=TwoWay}"
