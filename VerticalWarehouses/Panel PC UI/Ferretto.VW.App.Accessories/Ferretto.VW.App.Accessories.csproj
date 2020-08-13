@@ -1,18 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <TargetFrameworks>net471</TargetFrameworks>
+    <UseWPF>true</UseWPF>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Barcode\Resources\*.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -23,8 +21,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <!-- this is the current interactivity lib -->
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,49 +42,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Barcode\Resources\*.png" />
+    <Content Remove="Barcode\Resources\*.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Update="Barcode\Resources\datalogicPBT9501_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Barcode\Resources\*.png" />
   </ItemGroup>
 
 </Project>
