@@ -41,46 +41,7 @@
 
   <ItemGroup>
     <Resource Include="Barcode\Resources\*.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Update="Barcode\Resources\datalogicPBT9501_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1550_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland1580_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3280_usb_com_emulation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_enter_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_exit_setup.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Update="Barcode\Resources\newland3290_usb_com_emulation.png">
+    <Resource Update="Barcode\Resources\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
