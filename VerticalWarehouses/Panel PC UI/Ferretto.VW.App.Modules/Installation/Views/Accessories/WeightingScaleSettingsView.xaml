@@ -1,14 +1,14 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.WeightingScaleSettingsView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -184,16 +184,9 @@
             </ListView.ItemTemplate>
         </ListView>
 
-
-        <!--<controls:PpcButton x:Name="Configure"
-                            Grid.Row="6"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ConfigureDeviceCommand}"
-                            Content="{x:Static res:InstallationApp.ConfigureDevice}"
-                            IsBusy="{Binding IsWaitingForResponse}" />-->
+        <ctrls:WeightingScale Grid.Row="6"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3" />
 
 
         <controls:PpcButton x:Name="Save"

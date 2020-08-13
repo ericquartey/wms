@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -2795,5 +2795,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="Accessories" xml:space="preserve">
     <value>Accessori</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Tara</value>
   </data>
 </root>

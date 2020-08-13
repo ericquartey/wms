@@ -20,10 +20,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel, IDataErrorInfo, IOperationalContextViewModel
     {
-        //public MissionOperation lastMissionOperation;
-
-        //public CompartmentDetails lastSelectedCompartmentDetail;
-
         #region Fields
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
@@ -87,6 +83,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isItemSerialNumberValid = true;
 
         private bool isOperationCanceled;
+
+        private SubscriptionToken itemWeightToken;
+
+        private ItemWeightChangedMessage lastItemQuantityMessage;
 
         private double loadingUnitDepth;
 
@@ -399,6 +399,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //        if (this.AvailableQuantity != null && this.AvailableQuantity != this.MissionOperation?.RequestedQuantity)
                     //        {
                     //            return columnName;
+                    //        }
                     //        }
 
                     //        break;
@@ -735,11 +736,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusyConfirmingPartialOperation = false;
             this.IsOperationConfirmed = false;
             this.IsOperationCanceled = false;
-            this.InputQuantity = null;
             this.AvailableQuantity = null;
             this.SelectedCompartment = null;
-
-            await base.OnAppearedAsync();
+            this.InitializeInputQuantity();
 
             this.bay = await this.BayManager.GetBayAsync();
 
@@ -753,6 +752,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         async e => await this.OnMissionChangedAsync(),
                         ThreadOption.UIThread,
                         false);
+
+            this.itemWeightToken = this.itemWeightToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ItemWeightChangedMessage>>()
+                    .Subscribe(
+                        (e) => this.OnItemWeightChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            await base.OnAppearedAsync();
 
             await this.MissionOperationsService.RefreshAsync();
             await this.GetLoadingUnitDetailsAsync();
@@ -961,6 +971,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private void InitializeInputQuantity()
+        {
+            if (this.lastItemQuantityMessage is null)
+            {
+                this.InputQuantity = null;
+            }
+            else
+            {
+                if (this.lastItemQuantityMessage.MeasureadQuantity.HasValue)
+                {
+                    this.InputQuantity = this.lastItemQuantityMessage.MeasureadQuantity;
+                    return;
+                }
+
+                if (this.lastItemQuantityMessage.RequestedQuantity.HasValue)
+                {
+                    this.InputQuantity = this.lastItemQuantityMessage.RequestedQuantity;
+                }
+
+                this.lastItemQuantityMessage = null;
+            }
+        }
+
+        private void OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
+        {
+            this.lastItemQuantityMessage = itemWeightChanged;
+        }
+
         private async Task OnMissionChangedAsync()
         {
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
@@ -990,7 +1028,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.ItemOperations.WEIGHT);
+                Utils.Modules.Operator.ItemOperations.WEIGHT,
+                this.MissionOperation);
         }
 
         #endregion

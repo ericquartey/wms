@@ -241,7 +241,7 @@
             <controls:PpcButton Grid.Row="3"
                                 Width="100"
                                 Margin="15,15,15,0"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Command="{Binding ShowDetailsCommand}"
                                 Content="{resources:Loc OperatorApp.Details}"
@@ -249,9 +249,9 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Width="100"
-                                Margin="0,8,15,0"
+                                Margin="0,15,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
+                                VerticalAlignment="Top"
                                 Command="{Binding WeightCommand}"
                                 Content="{resources:Loc OperatorApp.Weight}"
                                 Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />

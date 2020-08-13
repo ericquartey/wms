@@ -124,8 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Logger.Warn("Improper parameters were passed to Weighting Scale settings page.");
                 }
 
-                await this.weightingScaleService.StartAsync();
-
                 var liveInformation = this.weightingScaleService.DeviceInformation;
                 this.FirmwareVersion = liveInformation.FirmwareVersion;
                 this.SerialNumber = liveInformation.SerialNumber;

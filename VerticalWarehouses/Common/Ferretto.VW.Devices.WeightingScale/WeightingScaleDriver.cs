@@ -8,21 +8,13 @@ using NLog;
 
 namespace Ferretto.VW.Devices.WeightingScale
 {
-    public sealed class WeightingScaleDriver : IWeightingScaleDriver, IDisposable
+    public sealed class WeightingScaleDriver : SerialPortDriver, IWeightingScaleDriver
     {
         #region Fields
 
-        private const int DefaultReadTimeout = 6000;
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly SerialPort serialPort = new SerialPort();
-
         private readonly object syncRoot = new object();
-
-        private DeviceInformation information = new DeviceInformation();
-
-        private bool isDisposed;
 
         #endregion
 
@@ -30,14 +22,9 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task ClearMessageAsync()
         {
-            if (this.isDisposed)
+            if (!this.SerialPort.IsOpen)
             {
-                throw new ObjectDisposedException(nameof(WeightingScaleDriver));
-            }
-
-            if (!this.serialPort.IsOpen)
-            {
-                this.logger.Warn($"Serial port {this.serialPort.PortName}: cannot send command because the port is not open.");
+                this.logger.Warn($"Serial port {this.SerialPort.PortName}: cannot send command because the port is not open.");
             }
 
             var displayIdentifier = 1;
@@ -50,51 +37,6 @@ namespace Ferretto.VW.Devices.WeightingScale
             });
         }
 
-        public void Connect(SerialPortOptions options)
-        {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(WeightingScaleDriver));
-            }
-
-            this.logger.Debug($"Opening serial port {options.PortName} ...");
-
-            if (this.serialPort.IsOpen)
-            {
-                if (options.PortName.Equals(this.serialPort.PortName, StringComparison.OrdinalIgnoreCase))
-                {
-                    this.logger.Warn($"Serial port {this.serialPort.PortName} is already open.");
-
-                    return;
-                }
-                else
-                {
-                    this.Disconnect();
-                }
-            }
-
-            this.information = new DeviceInformation();
-
-            this.serialPort.PortName = options.PortName;
-            this.serialPort.BaudRate = options.BaudRate;
-            this.serialPort.Parity = options.Parity;
-            this.serialPort.StopBits = options.StopBits;
-            this.serialPort.ReadTimeout = DefaultReadTimeout;
-
-            this.serialPort.Open();
-
-            this.logger.Debug($"Serial port {this.serialPort.PortName} opened.");
-        }
-
-        public void Disconnect()
-        {
-            this.logger.Debug($"Serial port {this.serialPort.PortName}: closing ...");
-
-            this.serialPort.Close();
-
-            this.logger.Debug($"Serial port {this.serialPort.PortName}: closed.");
-        }
-
         public async Task DisplayMessageAsync(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
@@ -102,14 +44,9 @@ namespace Ferretto.VW.Devices.WeightingScale
                 throw new ArgumentException("The message cannot be null or whitespace.", nameof(message));
             }
 
-            if (this.isDisposed)
+            if (!this.SerialPort.IsOpen)
             {
-                throw new ObjectDisposedException(nameof(WeightingScaleDriver));
-            }
-
-            if (!this.serialPort.IsOpen)
-            {
-                this.logger.Warn($"Serial port {this.serialPort.PortName}: cannot send command because the port is not open.");
+                this.logger.Warn($"Serial port {this.SerialPort.PortName}: cannot send command because the port is not open.");
             }
 
             var displayIdentifier = 1;
@@ -130,14 +67,9 @@ namespace Ferretto.VW.Devices.WeightingScale
                 throw new ArgumentException("The message cannot be null or whitespace.", nameof(message));
             }
 
-            if (this.isDisposed)
+            if (!this.SerialPort.IsOpen)
             {
-                throw new ObjectDisposedException(nameof(WeightingScaleDriver));
-            }
-
-            if (!this.serialPort.IsOpen)
-            {
-                this.logger.Warn($"Serial port {this.serialPort.PortName}: cannot send command because the port is not open.");
+                this.logger.Warn($"Serial port {this.SerialPort.PortName}: cannot send command because the port is not open.");
             }
 
             var totalMilliseconds = duration.TotalMilliseconds;
@@ -154,18 +86,6 @@ namespace Ferretto.VW.Devices.WeightingScale
                     this.SendCommand($"DISP01{message}");
                 }
             });
-        }
-
-        public void Dispose()
-        {
-            if (this.isDisposed)
-            {
-                return;
-            }
-
-            this.Disconnect();
-
-            this.isDisposed = true;
         }
 
         public async Task<IWeightSample> MeasureWeightAsync()
@@ -193,7 +113,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             {
                 lock (this.syncRoot)
                 {
-                    this.SendCommand($"X0.0");
+                    this.SendCommand($"SPMU0000.0");
                 }
             });
         }
@@ -206,7 +126,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                 lock (this.syncRoot)
                 {
                     var line = this.SendCommand("VER");
-                    versionString = line.Replace("VER", "");
+                    versionString = line.Replace("VER,", string.Empty);
                 }
             });
 
@@ -215,23 +135,40 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task SetAverageUnitaryWeightAsync(float weight)
         {
+            if (weight <= 0)
+            {
+                throw new ArgumentNullException(nameof(weight), "Average unitary weight must be strictly positive.");
+            }
+
             await Task.Run(() =>
             {
                 lock (this.syncRoot)
                 {
-                    var line = this.SendCommand($"X{weight:0.0}");
+                    var line = this.SendCommand($"SPMU{weight:0.0}");
                 }
             });
         }
 
+        protected override Task OnSerialPortClosedAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
+        }
+
+        protected override Task OnSerialPortOpenedAsync()
+        {
+            // do nothing
+            return Task.CompletedTask;
+        }
+
         private string SendCommand(string command)
         {
-            this.logger.Debug($"Port {this.serialPort.PortName}: sending command '{command}'.");
+            this.logger.Debug($"Port {this.SerialPort.PortName}: sending command '{command}'.");
 
-            this.serialPort.Write($"{command}\r\n");
-            var response = this.serialPort.ReadLine();
+            this.SerialPort.Write($"{command}\r\n");
+            var response = this.SerialPort.ReadLine();
 
-            this.logger.Debug($"Port {this.serialPort.PortName}: received '{response}'.");
+            this.logger.Debug($"Port {this.SerialPort.PortName}: received '{response}'.");
 
             switch (response)
             {

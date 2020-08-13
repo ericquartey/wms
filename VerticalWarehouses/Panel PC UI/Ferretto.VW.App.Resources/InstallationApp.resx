@@ -2889,4 +2889,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Accessories" xml:space="preserve">
     <value>Accessories</value>
   </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Tare</value>
+  </data>
 </root>

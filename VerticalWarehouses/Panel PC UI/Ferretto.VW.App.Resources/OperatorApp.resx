@@ -2132,4 +2132,23 @@ Please put back any moved pieces in their original position.</value>
   <data name="MeasureWeightAndCount" xml:space="preserve">
     <value>Measure weight and count pieces</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Measured quantity</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Update unit weight</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Confirm measured quantity </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Confirm requested quantity</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Unit weight [g]</value>
+  </data>
 </root>
