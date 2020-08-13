@@ -116,7 +116,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     new
                     {
-                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
                         Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
                         Number = 2,
                     },

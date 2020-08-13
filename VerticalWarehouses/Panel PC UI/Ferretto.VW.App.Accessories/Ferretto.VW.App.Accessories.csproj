@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Barcode\Resources\*.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
@@ -23,8 +19,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <!-- this is the current interactivity lib -->
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Remove="Barcode\Resources\*.png" />
+    <Content Remove="Barcode\Resources\*.png" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Resource Include="Barcode\Resources\*.png" />
   </ItemGroup>
