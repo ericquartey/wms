@@ -40,10 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Remove="Barcode\Resources\*.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Resource Include="Barcode\Resources\*.png" />
-    <Resource Update="Barcode\Resources\*.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>
