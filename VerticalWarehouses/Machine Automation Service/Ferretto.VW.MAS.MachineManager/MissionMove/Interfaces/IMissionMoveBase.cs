@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
         void DepositUnitEnd(bool restore = false);
 
         void LoadUnitEnd(bool restore = false);
-
+        void NotifyAssignedMissionChanged(BayNumber bayNumber, int? missionId);
         void OnCommand(CommandMessage command);
 
         bool OnEnter(CommandMessage command, bool showErrors = true);

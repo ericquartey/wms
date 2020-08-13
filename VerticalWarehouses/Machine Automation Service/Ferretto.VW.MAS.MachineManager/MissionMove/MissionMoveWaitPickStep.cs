@@ -153,6 +153,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 // bay to bay movement
                                 this.Mission.LoadUnitDestination = messageData.Destination;
                             }
+                            this.LoadingUnitsDataProvider.SetStatus(this.Mission.LoadUnitId, DataModels.Enumerations.LoadingUnitStatus.OnMovementToLocation);
+
                             this.MissionsDataProvider.Update(this.Mission);
                             var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             newStep.OnEnter(null);

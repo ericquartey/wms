@@ -190,7 +190,7 @@ namespace Ferretto.VW.App.Services
 
         public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSide && this.Sensors.LuPresentInOperatorSide;
 
-        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+        public bool IsOneTonMachine => this.bayManagerService.Identity?.IsOneTonMachine ?? false;
 
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneTon : this.sensors.ZeroPawlSensor;
 

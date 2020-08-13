@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public bool IsConnected { get; set; }
+
         public bool IsEnabled { get; set; }
 
         public bool IsTimeSyncEnabled { get; set; }

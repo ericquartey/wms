@@ -373,7 +373,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.CheckUDC();
+            if (!this.CheckUDC())
+            {
+                return;
+            }
 
             this.Reasons = null;
 
@@ -381,9 +384,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(500);
-                    await this.GetLoadingUnitsAsync();
-                }
+                        await Task.Delay(500);
+                        await this.GetLoadingUnitsAsync();
+                    }
                 while (this.IsVisible);
             });
         }
@@ -510,7 +513,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !(this.LoadingUnit is null);
         }
 
-        private void CheckUDC()
+        private bool CheckUDC()
         {
             try
             {
@@ -522,11 +525,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
+                else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
+                {
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+            return true;
         }
 
         private async Task ConfirmOperationAsync()
@@ -577,18 +588,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.reasonNotes);
 
                     await this.OnDataRefreshAsync();
+                    this.IsBusyConfirmingOperation = false;
+                }
+                else
+                {
+                    this.IsBusyConfirmingOperation = false;
                 }
 
                 this.HideOperation();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
+                this.IsBusyConfirmingOperation = false;
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.IsBusyConfirmingOperation = false;
                 this.Reasons = null;
                 this.RaiseCanExecuteChanged();
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -439,6 +440,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     loadingUnit.Height = Math.Max(loadingUnit.Height, height);
                 }
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetStatus(int id, LoadingUnitStatus status)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                loadingUnit.Status = status;
+
                 this.dataContext.SaveChanges();
             }
         }

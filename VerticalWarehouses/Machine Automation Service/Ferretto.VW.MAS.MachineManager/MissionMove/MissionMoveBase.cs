@@ -574,6 +574,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
+        public void NotifyAssignedMissionChanged(
+            BayNumber bayNumber,
+            int? missionId)
+        {
+            var data = new AssignedMissionChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission assigned to bay {bayNumber} has changed.",
+                MessageActor.WebApi,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+        }
+
         public void SendPositionNotification(string description)
         {
             var msg = new NotificationMessage(

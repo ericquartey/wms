@@ -81,7 +81,9 @@ namespace Ferretto.VW.MAS.MissionManager
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var wmsSettingsProvider = scope.ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
-                if (!wmsSettingsProvider.IsEnabled)
+                if (!wmsSettingsProvider.IsEnabled
+                    || !wmsSettingsProvider.IsConnected
+                    )
                 {
                     return;
                 }

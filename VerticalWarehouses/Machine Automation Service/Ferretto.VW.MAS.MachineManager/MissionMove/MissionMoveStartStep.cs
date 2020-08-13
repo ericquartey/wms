@@ -203,6 +203,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.CloseShutterBayNumber = bay.Number;
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, bayPosition.Location);
                     }
+
+                    this.LoadingUnitsDataProvider.SetStatus(this.Mission.LoadUnitId, DataModels.Enumerations.LoadingUnitStatus.OnMovementToLocation);
+                    //this.NotifyAssignedMissionChanged(bay.Number, null);
                 }
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)

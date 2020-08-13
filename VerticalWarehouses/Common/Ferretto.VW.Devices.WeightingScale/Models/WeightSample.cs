@@ -49,12 +49,12 @@
             {
                 sample = new WeightSample
                 {
-                    AverageUnitWeight = float.Parse(match.Groups[nameof(AverageUnitWeight)].Value),
+                    AverageUnitWeight = float.Parse(match.Groups[nameof(AverageUnitWeight)].Value, System.Globalization.CultureInfo.InvariantCulture),
                     ScaleNumber = int.Parse(match.Groups[nameof(ScaleNumber)].Value),
-                    Tare = float.Parse(match.Groups[nameof(Tare)].Value),
+                    Tare = float.Parse(match.Groups[nameof(Tare)].Value, System.Globalization.CultureInfo.InvariantCulture),
                     UnitOfMeasure = match.Groups[nameof(UnitOfMeasure)].Value,
                     UnitsCount = int.Parse(match.Groups[nameof(UnitsCount)].Value),
-                    Weight = float.Parse(match.Groups[nameof(Weight)].Value),
+                    Weight = float.Parse(match.Groups[nameof(Weight)].Value, System.Globalization.CultureInfo.InvariantCulture),
                     Quality = ParseQualityString(match.Groups[nameof(Quality)].Value)
                 };
 

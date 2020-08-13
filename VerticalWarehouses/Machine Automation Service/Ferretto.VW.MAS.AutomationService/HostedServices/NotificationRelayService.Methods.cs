@@ -141,6 +141,7 @@ namespace Ferretto.VW.MAS.AutomationService
             if (wmsSettingsProvider.IsEnabled)
             {
                 var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+                wmsSettingsProvider.IsConnected = false;
                 dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
             }
 
@@ -251,6 +252,7 @@ namespace Ferretto.VW.MAS.AutomationService
             var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
             if (wmsSettingsProvider.IsEnabled)
             {
+                wmsSettingsProvider.IsConnected = false;
                 await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
             }
             else
