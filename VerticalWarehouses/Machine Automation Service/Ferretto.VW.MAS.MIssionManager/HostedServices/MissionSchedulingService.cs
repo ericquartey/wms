@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machineProvider.BayTestNumber);
                     return false;
                 }
-                this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {machineProvider.BayTestNumber}");
+                this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {machineProvider.BayTestNumber} for {machineProvider.RequiredCycles} cells");
             }
 
             var returnValue = false;
@@ -827,7 +827,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.FirstTest:
                     {
-                        if (!this.ScheduleFirstTestMissions(serviceProvider))
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                        if (!this.GenerateHoming(bayProvider, machineResourcesProvider)
+                            && !this.ScheduleFirstTestMissions(serviceProvider)
+                            )
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");

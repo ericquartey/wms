@@ -339,13 +339,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     // don't want floating cells: previous cell is free and available
                     var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
 
-                    if (cellsFollowing.Any() && !isFloating)
+                    if (cellsFollowing.Any() && (!isFloating || isCellTest))
                     {
                         // measure available space
                         var lastCellPosition = cellsFollowing.Last().Position;
                         if (cellsFollowing.Count() > 1)
                         {
-                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || c.BlockLevel == BlockLevel.NeedsTest);
+                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || (c.BlockLevel == BlockLevel.NeedsTest && c.Position > cell.Position));
                             if (firstUnavailable != null)
                             {
                                 lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
@@ -401,7 +401,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // sort cells from bottom to top, optimizing free space
                 var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
-                    .ThenBy(t => t.Height)          // minimize free space
+                    .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
                     .ThenBy(t => t.Cell.Priority)   // start from bottom to top
                     .First();
                 var cellId = foundCell.Cell.Id;
