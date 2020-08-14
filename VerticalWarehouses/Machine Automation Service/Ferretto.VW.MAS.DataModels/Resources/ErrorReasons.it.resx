@@ -403,7 +403,7 @@
     <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
   </data>
   <data name="WmsError" xml:space="preserve">
-    <value>The WMS system has answerd with an error code</value>
+    <value>Il WMS ha risposto con un codice di errore</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
     <value>Il cassetto è troppo alto per questa baia. Prelevalo con un'altra baia o muovilo manualmente</value>

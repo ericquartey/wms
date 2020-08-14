@@ -406,7 +406,7 @@
     <value>Baia esterna vuota</value>
   </data>
   <data name="WmsError" xml:space="preserve">
-    <value>WMS error</value>
+    <value>Errore di WMS</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
     <value>Spostamento non valido</value>
