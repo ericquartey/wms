@@ -520,9 +520,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
 
                 // if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
-                if (activeOperation != null && activeOperation.CompartmentId > 0)
+                if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
-                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId).FirstOrDefault();
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))

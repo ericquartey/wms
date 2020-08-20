@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Accessories
                             return;
                         }
 
-                        var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.SingleOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
+                        var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
                         double itemHeight = 0;
                         if (e.WmsOperation.ItemHeight != null)
