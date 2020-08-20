@@ -5,7 +5,7 @@
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
     <DataGrid ItemsSource="{Binding Items}"
-              SelectedItem="{Binding SelectedItem, Mode=OneWay}">
+              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
                                 Width="100"
