@@ -19,10 +19,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand closedShutterCommand;
 
-        private int? inputCellId;
-
-        private double? inputHeight;
-
         private int? inputLoadingUnitId;
 
         private DelegateCommand intermediateShutterCommand;
@@ -155,18 +151,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
-
-        public int? InputCellId
-        {
-            get => this.inputCellId;
-            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged); // HACK: 2
-        }
-
-        public double? InputHeight
-        {
-            get => this.inputHeight;
-            set => this.SetProperty(ref this.inputHeight, value, this.RaiseCanExecuteChanged);
-        }
 
         public int? InputLoadingUnitId
         {
@@ -716,38 +700,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void InputCellIdPropertyChanged()
-        {
-            if (this.Cells is null)
-            {
-                return;
-            }
-
-            // HACK: 2
-            this.selectedCell = this.inputCellId is null
-                ? null
-                : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
-
-            if (this.selectedCell != null)
-            {
-                this.inputHeight = this.SelectedCell.Position;
-                this.InputLoadingUnitId = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
-            }
-
-            if (this.selectedLoadingUnit?.CellId is null)
-            {
-                this.loadingUnitInCell = null;
-            }
-            else
-            {
-                this.loadingUnitInCell = this.selectedLoadingUnit;
-            }
-
-            this.RaisePropertyChanged(nameof(this.InputHeight));
-            this.RaisePropertyChanged(nameof(this.LoadingUnitInCell));
-            this.RaiseCanExecuteChanged();
-        }
-
         private void InputLoadingUnitIdPropertyChanged()
         {
             if (this.LoadingUnits is null)
@@ -765,8 +717,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 // valorizzo l'id della cella del cassetto selezionato nella view dei comandi manuali
                 // Hack: 3
-                this.InputCellId = this.selectedLoadingUnit.CellId;
 
+                if (this.selectedLoadingUnit.CellId != null)
+                {
+                    this.InputCellId = this.selectedLoadingUnit.CellId;
+                }
                 // Uso la proprietà per scatenare action sulla proprietà
                 //this.RaisePropertyChanged(nameof(this.InputCellId));
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -46,6 +47,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canShutterMoveUpCommand;
 
+        private int? inputCellId;
+
+        private double? inputHeight;
+
         private bool isCarouselClosing;
 
         private bool isCarouselOpening;
@@ -76,6 +81,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterMovingUp;
 
+        private string lastActiveCommand;
+
         private DelegateCommand lightCommand;
 
         private string lightIcon;
@@ -100,13 +107,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToHeightCommand;
 
+        private SubscriptionToken sensorsTokenManual;
+
         private DelegateCommand shutterMoveDownCommand;
 
         private DelegateCommand shutterMoveUpCommand;
-
-        private SubscriptionToken sensorsTokenManual;
-
-        private string lastActiveCommand;
 
         #endregion
 
@@ -188,6 +193,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canShutterMoveUpCommand;
             private set => this.SetProperty(ref this.canShutterMoveUpCommand, value);
+        }
+
+        public int? InputCellId
+        {
+            get => this.inputCellId;
+            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged); // HACK: 2
+        }
+
+        public double? InputHeight
+        {
+            get => this.inputHeight;
+            set => this.SetProperty(ref this.inputHeight, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsCarouselClosing
@@ -468,6 +485,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.isPolicyBypassed = false;
         }
 
+        private void InputCellIdPropertyChanged()
+        {
+            if (this.Cells is null)
+            {
+                return;
+            }
+
+            // HACK: 2
+            this.selectedCell = this.inputCellId is null
+                ? null
+                : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
+
+            if (this.selectedCell != null)
+            {
+                this.inputHeight = this.SelectedCell.Position;
+
+                this.InputLoadingUnitId = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
+            }
+
+            if (this.selectedLoadingUnit?.CellId is null)
+            {
+                this.loadingUnitInCell = null;
+            }
+            else
+            {
+                this.loadingUnitInCell = this.selectedLoadingUnit;
+            }
+
+            this.RaisePropertyChanged(nameof(this.InputHeight));
+            this.RaisePropertyChanged(nameof(this.SelectedCell));
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInCell));
+            this.RaisePropertyChanged(nameof(this.InputCellId));
+            this.RaiseCanExecuteChanged();
+        }
+
         private async Task ManualShutterStartMovementAsync(ShutterMovementDirection direction)
         {
             if (this.IsShutterMovingUp || this.IsShutterMovingDown)
@@ -589,6 +641,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnManualRaiseCanExecuteChanged()
         {
+            this.RaisePropertyChanged(nameof(this.InputHeight));
+
             this.CanInputCellId =
                 this.CanBaseExecute()
                 &&
