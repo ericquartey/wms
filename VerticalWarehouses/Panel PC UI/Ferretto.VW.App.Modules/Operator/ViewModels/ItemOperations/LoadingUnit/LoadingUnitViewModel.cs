@@ -520,9 +520,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
 
                 // if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
-                if (activeOperation != null && activeOperation.CompartmentId > 0)
+                if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
-                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId).FirstOrDefault();
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
@@ -661,13 +661,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (operationType == OperatorApp.Pick)
                 {
-                    this.InputQuantity = null;
+                    this.InputQuantity = 0;
                     this.IsPickVisible = !this.IsPickVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PickingQuantity"), this.MeasureUnit);
                 }
                 else if (operationType == OperatorApp.Put)
                 {
-                    this.InputQuantity = null;
+                    this.InputQuantity = 0;
                     this.IsPutVisible = !this.IsPutVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PutQuantity"), this.MeasureUnit);
                 }
