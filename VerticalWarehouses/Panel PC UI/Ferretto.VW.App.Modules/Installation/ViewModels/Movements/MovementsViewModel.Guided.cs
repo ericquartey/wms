@@ -793,6 +793,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.loadFromCellCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -1174,6 +1175,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.unloadToCellCommand?.RaiseCanExecuteChanged();
             }
         }
 
