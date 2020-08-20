@@ -57,9 +57,10 @@
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
+          "Id": 4,
           "Speed": 130.0
         },
+        "Id": 1,
         "Inverter": {
           "Index": "Slave3",
           "Parameters": [],
@@ -67,7 +68,6 @@
           "Type": "Acu"
         },
         "IoDevice": {
-          "Id": 1,
           "Index": "IoDevice1",
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
@@ -185,19 +185,19 @@
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
+          "Id": 4,
           "Speed": 130.0
         },
+        "Id": 2,
         "Inverter": {
-          "Index": "Slave3",
+          "Index": "Slave5",
           "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
         "IoDevice": {
-          "Id": 1,
-          "Index": "IoDevice1",
-          "IpAddress": "192.168.0.1",
+          "Index": "IoDevice2",
+          "IpAddress": "192.168.0.2",
           "TcpPort": 19550
         },
         "IsActive": true,
@@ -210,7 +210,7 @@
           {
             "Height": 767.5,
             "IsUpper": true,
-            "Location": "InternalBay1Up",
+            "Location": "InternalBay2Up",
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
