@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private bool isBeltButnishing = false;
+
         private readonly Services.IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
@@ -254,7 +256,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+        //public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public bool IsNewErrorValueVisible
         {
@@ -474,7 +476,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
 
-                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
+                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
 
                 this.RaiseCanExecuteChanged();
             }
@@ -621,8 +623,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStartCalibration()
         {
-            return !this.IsKeyboardOpened &&
-                   !this.IsMoving &&
+            return (!this.IsMoving || this.isBeltButnishing) &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    this.SensorsService.BayZeroChain;
@@ -630,8 +631,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStop()
         {
-            return
-                this.IsMoving;
+            return this.IsMoving ||
+                this.IsExecutingProcedure;
         }
 
         private bool CanStopInPhase()
@@ -644,7 +645,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuneBay()
         {
-            return this.CanBaseExecute() &&
+            return (!this.IsMoving || this.isBeltButnishing) &&
                    !this.IsTuningBay &&
                    this.MachineStatus.LoadingUnitPositionDownInBay is null &&
                    this.MachineStatus.LoadingUnitPositionUpInBay is null &&
@@ -688,6 +689,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
+            {
+                this.isBeltButnishing = true;
+            }
+
+
             if (message.Data?.MovementMode != MovementMode.BayTest)
             {
                 return;
@@ -825,6 +832,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
+                this.IsWaitingForResponse = false;
             }
             finally
             {
