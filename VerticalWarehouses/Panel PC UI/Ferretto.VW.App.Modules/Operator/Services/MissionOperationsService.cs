@@ -203,6 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator
             if (e.BayNumber == this.bayNumber)
             {
                 this.logger.Debug($"Mission assigned to bay has changed to '{e.MissionId}'.");
+                this.ActiveWmsMission = null;
                 await this.RefreshActiveMissionAsync();
             }
         }
