@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private bool isBeltButnishing = false;
-
         private readonly Services.IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
@@ -55,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? cyclesPercent;
 
         private TimeSpan firstCycleTime = default(TimeSpan);
+
+        private bool isBeltButnishing = false;
 
         private bool isCalibrationCompletedOrStopped;
 
@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isCalibrationCompletedOrStopped, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -251,7 +251,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isExecutingStopInPhase, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -283,7 +283,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.performedCycles, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -291,7 +291,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public TimeSpan RemainingTime
         {
             get => new TimeSpan(this.remainingTime.Hours, this.remainingTime.Minutes, this.remainingTime.Seconds);
-            set => this.SetProperty(ref this.remainingTime, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.remainingTime, value, this.UpdateView);
         }
 
         public ICommand RepeatCalibrationCommand =>
@@ -311,7 +311,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.requiredCycles, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -323,7 +323,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.sessionPerformedCycles, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -342,7 +342,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.startPerformedCycles, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
                 }
             }
         }
@@ -439,7 +439,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await this.RetrieveProcedureInformationAsync();
 
-            this.RaiseCanExecuteChanged();
+            this.UpdateView();
 
             await base.OnAppearedAsync();
         }
@@ -478,7 +478,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
 
-                this.RaiseCanExecuteChanged();
+                this.UpdateView();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -526,30 +526,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
             }
 
-            this.RaiseCanExecuteChanged();
-        }
-
-        protected override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.stopCommand?.RaiseCanExecuteChanged();
-            this.stopInPhaseCommand?.RaiseCanExecuteChanged();
-
-            this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
-            this.startCalibrationCommand?.RaiseCanExecuteChanged();
-            this.applyCommand?.RaiseCanExecuteChanged();
-            this.completeCommand?.RaiseCanExecuteChanged();
-            this.tuningBayCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.RemainingTime));
-            this.RaisePropertyChanged(nameof(this.PerformedCycles));
-            this.RaisePropertyChanged(nameof(this.RequiredCycles));
-            this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
-            this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
-
-            this.RaisePropertyChanged(nameof(this.NewErrorValue));
-            this.RaisePropertyChanged(nameof(this.ChainOffset));
+            this.UpdateView();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -694,7 +671,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.isBeltButnishing = true;
             }
 
-
             if (message.Data?.MovementMode != MovementMode.BayTest)
             {
                 return;
@@ -771,7 +747,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NewErrorValue = 0;
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
-                this.RaiseCanExecuteChanged();
+                this.UpdateView();
             }
 
             if (message.Status == MessageStatus.OperationStop)
@@ -791,7 +767,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.NewErrorValue = 0;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
-                this.RaiseCanExecuteChanged();
+                this.UpdateView();
 
                 this.IsExecutingProcedure = false;
             }
@@ -822,7 +798,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
 
                     this.IsExecutingProcedure = true;
-                    this.RaiseCanExecuteChanged();
+                    this.UpdateView();
 
                     await this.machineCarouselWebService.StartCalibrationAsync();
 
@@ -1023,6 +999,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
+        }
+
+        private void UpdateView()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.stopCommand?.RaiseCanExecuteChanged();
+            this.stopInPhaseCommand?.RaiseCanExecuteChanged();
+
+            this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
+            this.startCalibrationCommand?.RaiseCanExecuteChanged();
+            this.applyCommand?.RaiseCanExecuteChanged();
+            this.completeCommand?.RaiseCanExecuteChanged();
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.RemainingTime));
+            this.RaisePropertyChanged(nameof(this.PerformedCycles));
+            this.RaisePropertyChanged(nameof(this.RequiredCycles));
+            this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
+            this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
+
+            this.RaisePropertyChanged(nameof(this.NewErrorValue));
+            this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 
         #endregion
