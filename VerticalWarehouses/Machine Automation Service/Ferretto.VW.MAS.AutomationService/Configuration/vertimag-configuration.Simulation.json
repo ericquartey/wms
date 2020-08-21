@@ -47,7 +47,7 @@
         "Accessories": {
           "AlphaNumericBar": {
             "IsEnabledNew": false,
-            "IpAddress": "127.0.0.1",
+            "IpAddress": "192.168.101.11",
             "TcpPort": 1234,
             "Size": "Medium"
           },
@@ -57,7 +57,128 @@
           },
           "LaserPointer": {
             "IsEnabledNew": false,
-            "IpAddress": "127.0.0.1",
+            "IpAddress": "192.168.101.13",
+            "TcpPort": 12020
+          },
+          "BarcodeReader": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
+          },
+          "CardReader": {
+            "IsEnabledNew": false
+          }
+          /*  "WeightingScale": {
+            "IsEnabledNew": true
+          }*/
+        },
+        "Carousel": {
+          "AssistedMovements": {
+            "FeedRate": 1.0
+          },
+          "ElevatorDistance": 448.216880625668,
+          "HomingCreepSpeed": 5.0,
+          "HomingFastSpeed": 22.0,
+          "Id": 1,
+          "LastIdealPosition": 888.37927637888936,
+          "ManualMovements": {
+            "FeedRate": 0.1
+          }
+        },
+        "ChainOffset": -8.0,
+        "EmptyLoadMovement": {
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
+          "Speed": 140.0
+        },
+        "FullLoadMovement": {
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
+          "Speed": 130.0
+        },
+        "Id": 1,
+        "Inverter": {
+          "Index": "Slave3",
+          "Parameters": [],
+          "TcpPort": 0,
+          "Type": "Acu"
+        },
+        "IoDevice": {
+          "Index": "IoDevice1",
+          "IpAddress": "192.168.0.1",
+          "TcpPort": 19550
+        },
+        "IsActive": true,
+        "IsDouble": true,
+        "IsExternal": false,
+        "IsFastDepositToBay": false,
+        "Number": "BayOne",
+        "Operation": "Idle",
+        "Positions": [
+          {
+            "Height": 445.5,
+            "Id": 1,
+            "IsUpper": false,
+            "Location": "InternalBay1Down",
+            "LocationUpDown": "Down",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 395.0,
+            "ProfileOffset": 0.0
+          },
+          {
+            "Height": 888.0,
+            "Id": 2,
+            "IsUpper": true,
+            "Location": "InternalBay1Up",
+            "LocationUpDown": "Up",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 395.0,
+            "ProfileOffset": 25.0
+          }
+        ],
+        "Resolution": 296.2282068,
+        "Shutter": {
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "HighSpeedDurationClose": 14.0,
+            "HighSpeedDurationOpen": 14.0,
+            "HighSpeedHalfDurationClose": 6.0,
+            "HighSpeedHalfDurationOpen": 7.0,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Inverter": {
+            "Index": "Slave2",
+            "Parameters": [],
+            "TcpPort": 0,
+            "Type": "Agl"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "HighSpeedDurationClose": 0.0,
+            "HighSpeedDurationOpen": 0.0,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Type": "ThreeSensors"
+        },
+        "Side": "Front",
+        "Status": "Idle"
+      },
+      {
+        "Accessories": {
+          "AlphaNumericBar": {
+            "IsEnabledNew": false,
+            "IpAddress": "192.168.101.21",
+            "TcpPort": 1234,
+            "Size": "Medium"
+          },
+          "LabelPrinter": {
+            "IsEnabledNew": false,
+            "Name": "Microsoft Print to PDF"
+          },
+          "LaserPointer": {
+            "IsEnabledNew": false,
+            "IpAddress": "192.168.101.23",
             "TcpPort": 12020
           },
           "BarcodeReader": {
@@ -73,20 +194,18 @@
         },
         "External": {
           "AssistedMovements": {
-            "FeedRate": 1.0,
-            "Id": 1
+            "FeedRate": 1.0
           },
-          "Race": 1100.0,
+          "Race": 448.216880625668,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 22.0,
           "Id": 1,
-          "LastIdealPosition": 0,
+          "LastIdealPosition": 0.0,
           "ManualMovements": {
-            "FeedRate": 0.1,
-            "Id": 2
+            "FeedRate": 0.1
           }
         },
-        "ChainOffset": 0.0,
+        "ChainOffset": -8.0,
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
@@ -95,103 +214,46 @@
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Speed": 140.0
+          "Speed": 130.0
         },
+        "Id": 2,
         "Inverter": {
-          "Index": "Slave3",
+          "Index": "Slave5",
+          "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
         "IoDevice": {
-          "Index": "IoDevice1",
-          "IpAddress": "127.0.0.1",
+          "Index": "IoDevice2",
+          "IpAddress": "192.168.0.2",
           "TcpPort": 19550
         },
         "IsActive": true,
+        "IsDouble": false,
         "IsExternal": true,
-        "Number": "BayOne",
-        "Operation": "Idle",
-        "Positions": [
-          {
-            "Height": 782.0,
-            "Location": "InternalBay1Up",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 695.0,
-            "ProfileOffset": 50.0
-          }
-        ],
-        "Resolution": 369.8453,
-        "Shutter": {
-          "AssistedMovements": {
-            "FeedRate": 0.2,
-            "HighSpeedDurationClose": 16.0,
-            "HighSpeedDurationOpen": 16.0,
-            "MaxSpeed": 32000.0,
-            "MinSpeed": 5000.0
-          },
-          "Id": 1,
-          "Inverter": {
-            "Index": "Slave2",
-            "TcpPort": 0,
-            "Type": "Agl"
-          },
-          "ManualMovements": {
-            "FeedRate": 0.1,
-            "MaxSpeed": 32000.0,
-            "MinSpeed": 5000.0
-          },
-          "Type": "TwoSensors"
-        },
-        "Side": "Front",
-        "Status": "Idle"
-      },
-      {
-        "ChainOffset": 0.0,
-        "EmptyLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 140.0
-        },
-        "FullLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 140.0
-        },
-        "IoDevice": {
-          "Index": "IoDevice2",
-          "IpAddress": "127.0.0.1",
-          "TcpPort": 19551
-        },
-        "IsExternal": false,
+        "IsFastDepositToBay": false,
         "Number": "BayTwo",
         "Operation": "Idle",
         "Positions": [
           {
-            "IsUpper": false,
-            "Height": 772,
-            "MaxSingleHeight": 320,
-            "MaxDoubleHeight": 695,
-            "ProfileOffset": 50,
-            "Location": "InternalBay2Down",
-            "LocationUpDown": "Down"
-          },
-          {
+            "Height": 767.5,
             "IsUpper": true,
-            "Height": 1190,
-            "MaxSingleHeight": 320,
-            "MaxDoubleHeight": 695,
-            "ProfileOffset": -370,
             "Location": "InternalBay2Up",
-            "LocationUpDown": "Up"
+            "LocationUpDown": "Up",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 695.0,
+            "ProfileOffset": 25.0
           }
         ],
-        "Resolution": 0.0,
+        "Resolution": 296.2282068,
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "HighSpeedDurationClose": 16.0,
-            "HighSpeedDurationOpen": 16.0,
-            "MaxSpeed": 32000.0,
+            "HighSpeedDurationClose": 13.0,
+            "HighSpeedDurationOpen": 14.0,
+            "HighSpeedHalfDurationClose": 5.0,
+            "HighSpeedHalfDurationOpen": 6.0,
+            "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
           "Inverter": {
@@ -201,12 +263,12 @@
           },
           "ManualMovements": {
             "FeedRate": 0.1,
-            "HighSpeedDurationClose": 16.0,
-            "HighSpeedDurationOpen": 16.0,
-            "MaxSpeed": 32000.0,
+            "HighSpeedDurationClose": 0.0,
+            "HighSpeedDurationOpen": 0.0,
+            "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Type": "TwoSensors"
+          "Type": "ThreeSensors"
         },
         "Side": "Back",
         "Status": "Idle"
@@ -2208,6 +2270,7 @@
       }
     ],
     "SerialNumber": "Prototype #1 Sim",
+    "Simulation": true,
     "Id": 1
   },
   "SetupProcedures": {
