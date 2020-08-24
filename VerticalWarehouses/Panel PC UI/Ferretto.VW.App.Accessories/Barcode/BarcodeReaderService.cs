@@ -100,6 +100,11 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
+        public void SimulateRead(string barcode)
+        {
+            this.deviceDriver.SimulateRead(barcode);
+        }
+
         public async Task StartAsync()
         {
             if (this.isDisposed)
@@ -118,6 +123,8 @@ namespace Ferretto.VW.App.Accessories
                 this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
                 if (this.isDeviceEnabled)
                 {
+                    await this.LoadRuleSetAsync();
+
                     this.deviceDriver.Connect(
                         new NewlandSerialPortOptions
                         {
@@ -125,8 +132,6 @@ namespace Ferretto.VW.App.Accessories
                             DeviceModel = this.DeviceModel
                         });
                     this.isStarted = true;
-
-                    await this.LoadRuleSetAsync();
 
                     if (!this.DeviceInformation.IsEmpty)
                     {
@@ -276,7 +281,7 @@ namespace Ferretto.VW.App.Accessories
 
             if (matchedRule is null)
             {
-                this.logger.Warn($"Barcode '{barcode}': no matching rule found.");
+                this.logger.Warn($"Barcode '{barcode}': no matching rule found for context {activeContextName}.");
             }
             else
             {
@@ -293,6 +298,16 @@ namespace Ferretto.VW.App.Accessories
                 var rules = await this.barcodesWebService.GetAllAsync();
 
                 this.ruleSet = rules.OrderBy(r => r.Priority).ToArray();
+
+                if (this.ruleSet.Any())
+                {
+                    this.logger.Debug($"{this.ruleSet.Count()} Barcode rules available:");
+
+                    foreach (var rule in this.ruleSet)
+                    {
+                        this.logger.Trace($"Id: {rule.Id}; Action: {rule.Action}; ContextName: {rule.ContextName}; Pattern: {rule.Pattern}");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -328,7 +343,11 @@ namespace Ferretto.VW.App.Accessories
                 .GetEvent<PubSubEvent<ActionEventArgs>>()
                 .Publish(e);
 
-            // do not process rules if the barcode configuration screens are activeò
+            var code = e.Code
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
+            // do not process rules if the barcode configuration screens are active
             var skipProcessing = false;
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -343,13 +362,8 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            var code = e.Code
-                .Replace("\r", string.Empty)
-                .Replace("\n", string.Empty);
-
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
-
             this.logger.Debug(
                 $"Barcode '{code}': active context is '{activeContext?.GetType().Name ?? "<global>"}'.");
 
@@ -390,7 +404,7 @@ namespace Ferretto.VW.App.Accessories
 
         private BarcodeRule SelectActiveRule(string code, IOperationalContextViewModel activeContext)
         {
-            this.logger.Debug($"Barcode '{code}': active rule is '{this.activeRule?.Action ?? "<none>"}'.");
+            this.logger.Debug($"Barcode '{code}': active rule is '{this.activeRule?.Action ?? "<none>"}' for context '{activeContext?.ActiveContextName ?? "<global>"}'.");
 
             if (this.activeRule is null)
             {

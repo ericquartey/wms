@@ -989,14 +989,15 @@
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
-            "PortName": "COM4"
+            "PortName": "COM3"
           },
           "CardReader": {
             "IsEnabledNew": false
+          },
+          "WeightingScale": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
           }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
         },
         "Carousel": {
           "AssistedMovements": {

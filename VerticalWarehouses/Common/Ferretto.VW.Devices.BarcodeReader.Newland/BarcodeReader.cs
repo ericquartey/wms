@@ -90,6 +90,11 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             this.Dispose(true);
         }
 
+        public void SimulateRead(string barcode)
+        {
+            this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
+        }
+
         private void Dispose(bool disposing)
         {
             if (this.isDisposed)
