@@ -49,6 +49,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                                 nameof(Utils.Modules.Operator),
                                 Utils.Modules.Operator.ItemOperations.WAIT);
             }
+            else if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Installation.SHUTTERENDURANCETEST && this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Test)
+            {
+                this.ShowNotification(Resources.Localized.Get("General.BackShutterTest"), Services.Models.NotificationSeverity.Info);
+            }
             else
             {
                 if (this.navigationService.GetActiveView() is INavigableView view
