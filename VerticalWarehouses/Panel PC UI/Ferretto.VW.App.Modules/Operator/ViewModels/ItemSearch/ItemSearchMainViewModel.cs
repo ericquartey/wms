@@ -799,11 +799,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ShowItemDetails(ItemInfo item)
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                item,
-                trackCurrentView: true);
+            this.barcodeReaderService.SimulateRead("000Prova1\r");
+            //this.NavigationService.Appear(
+            //    nameof(Utils.Modules.Operator),
+            //    Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
+            //    item,
+            //    trackCurrentView: true);
         }
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
