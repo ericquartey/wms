@@ -454,8 +454,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
             await base.OnAppearedAsync();
-
-            //this.barcodeReaderService.SimulateRead("000Prova1\r");
         }
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
@@ -799,12 +797,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ShowItemDetails(ItemInfo item)
         {
-            this.barcodeReaderService.SimulateRead("000Prova1\r");
-            //this.NavigationService.Appear(
-            //    nameof(Utils.Modules.Operator),
-            //    Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-            //    item,
-            //    trackCurrentView: true);
+            //this.barcodeReaderService.SimulateRead("000Prova1\r");
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
+                item,
+                trackCurrentView: true);
         }
 
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
@@ -840,7 +838,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //else
                     //{
                     this.SearchItem = itemCode;
-                    await this.RefreshItemsAsync();
+                    this.items.AddRange(items.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                     //}
                 }
