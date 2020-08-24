@@ -423,4 +423,7 @@
   <data name="UserLogin_UserName" xml:space="preserve">
     <value>Nome Utente</value>
   </data>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>Test in corso... Impossibile uscire dalla pagina</value>
+  </data>
 </root>

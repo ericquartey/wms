@@ -459,4 +459,7 @@
   <data name="ErrorLogin" xml:space="preserve">
     <value>Login error: check user and password</value>
   </data>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>Test in progress... Unable to exit the page</value>
+  </data>
 </root>

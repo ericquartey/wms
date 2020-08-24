@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Xpf.Editors;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
@@ -33,8 +34,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly INavigationService navigationService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
-
-        private readonly DelegateCommand weightCommand;
 
         private double? availableQuantity;
 
@@ -106,6 +105,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand showDetailsCommand;
 
+        private DelegateCommand weightCommand;
+
         #endregion
 
         #region Constructors
@@ -131,8 +132,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.navigationService = navigationService;
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
-
-            this.weightCommand = new DelegateCommand(this.Weight);
         }
 
         #endregion
@@ -360,7 +359,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.showDetailsCommand = new DelegateCommand(this.ShowOperationDetails));
 
-        public ICommand WeightCommand => this.weightCommand;
+        public ICommand WeightCommand =>
+            this.weightCommand
+            ??
+            (this.weightCommand = new DelegateCommand(
+                () => this.Weight(),
+                this.CanOpenWeightPage));
 
         protected bool IsOperationConfirmed { get; set; }
 
@@ -493,6 +497,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity.Value == this.MissionRequestedQuantity;
 
             return !visibility;
+        }
+
+        public bool CanOpenWeightPage()
+        {
+            //if (this.MachineService.Bay.Accessories.WeightingScale is null)
+            //{
+            //    return false;
+            //}
+            //else
+            //{
+            //    return this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew;
+            //}
+
+            return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew;
         }
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
@@ -777,6 +795,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPresentOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
+            this.weightCommand?.RaiseCanExecuteChanged();
         }
 
         protected void ShowOperationCanceledMessage()

@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -13,6 +15,8 @@ namespace Ferretto.VW.App.Controls
         #region Fields
 
         private readonly IEventAggregator eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+
+        private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
         private DelegateCommand executeCommand;
 
@@ -56,6 +60,8 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isVisible, value);
         }
 
+        public IMachineModeService MachineModeService => this.machineModeService;
+
         public PresentationStates State
         {
             get => this.state;
@@ -81,6 +87,13 @@ namespace Ferretto.VW.App.Controls
         public virtual Task OnLoadedAsync()
         {
             return Task.CompletedTask;
+        }
+
+        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         protected virtual bool CanExecute()
