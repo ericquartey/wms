@@ -12,6 +12,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
+        private LoadingUnit selectedLU;
+
+        private bool isEnabledEditing;
+
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
@@ -32,6 +36,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public bool IsEnabledEditing
+        {
+            get => this.isEnabledEditing;
+            set => this.SetProperty(ref this.isEnabledEditing, value && !this.IsMoving);
+        }
+
+        public LoadingUnit SelectedLU
+        {
+            get => this.selectedLU;
+            set => this.SetProperty(ref this.selectedLU, value);
+        }
 
         public override bool CanStart()
         {
@@ -146,6 +162,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override async void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            await this.UpdateDrawerInfo();
+        }
+
+        private async Task UpdateDrawerInfo()
+        {
+            var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
+
+            if (lst.Where(i => i.Id == this.LoadingUnitId).Any())
+            {
+                this.isEnabledEditing = false;
+                this.selectedLU = lst.Where(i => i.Id == this.LoadingUnitId).FirstOrDefault();
+            }
+            else
+            {
+                this.isEnabledEditing = true;
+                var maxLU = lst.OrderByDescending(S => S.Id).FirstOrDefault();
+                this.selectedLU = new LoadingUnit();
+                this.selectedLU.Tare = maxLU.Tare;
+                this.selectedLU.Height = maxLU.Height;
+                this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
+                this.selectedLU.NetWeight = maxLU.NetWeight;
+                this.selectedLU.GrossWeight = maxLU.GrossWeight;
+            }
+
+            this.RaisePropertyChanged(nameof(this.SelectedLU));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+        }
         #endregion
     }
 }

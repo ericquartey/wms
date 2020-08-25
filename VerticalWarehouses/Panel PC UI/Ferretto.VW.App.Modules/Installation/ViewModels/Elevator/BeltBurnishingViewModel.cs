@@ -25,6 +25,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         // TODO: Move this to parameters
         private const int positionOffset = 500; //mm
 
+        private bool isCarouselCalibration = false;
+
+        private bool isBeltBurnishing = false;
+
         private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
 
         private readonly Services.IDialogService dialogService;
@@ -366,6 +370,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
                 this.PerformedCyclesThisSession = 0;
             }
+            else
+            {
+                this.isBeltBurnishing = false;
+            }
 
             this.SubscribeToEvents();
 
@@ -380,7 +388,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
-                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+                this.IsExecutingProcedure = (this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test);
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
@@ -432,11 +440,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStartTest()
         {
             return
-                !this.MachineService.MachineStatus.IsMoving
+                (!this.MachineService.MachineStatus.IsMoving ||this.isCarouselCalibration)
                 &&
                 this.SensorsService.ShutterSensors.Closed
+                //&&
+                //(!this.IsExecutingProcedure || this.isCarouselCalibration)
                 &&
-                !this.IsExecutingProcedure
+                !this.isBeltBurnishing
                 &&
                 string.IsNullOrWhiteSpace(this.Error);
         }
@@ -453,6 +463,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            if (message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                this.isCarouselCalibration = true;
+            }
+
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
@@ -466,6 +481,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
+                this.isBeltBurnishing = true;
                 if (this.PerformedCyclesThisSession == null && this.CumulativePerformedCycles.HasValue)
                 {
                     this.totalPerformedCyclesBeforeStart = this.CumulativePerformedCycles.Value;

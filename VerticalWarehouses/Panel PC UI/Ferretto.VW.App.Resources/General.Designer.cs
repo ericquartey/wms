@@ -115,6 +115,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test in progress... Unable to exit the page.
+        /// </summary>
+        public static string BackShutterTest {
+            get {
+                return ResourceManager.GetString("BackShutterTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {

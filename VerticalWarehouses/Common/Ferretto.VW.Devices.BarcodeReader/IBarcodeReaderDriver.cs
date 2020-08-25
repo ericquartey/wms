@@ -16,6 +16,7 @@ namespace Ferretto.VW.Devices.BarcodeReader
         void Connect(SerialPortOptions options);
 
         void Disconnect();
+        void SimulateRead(string barcode);
 
         #endregion
     }

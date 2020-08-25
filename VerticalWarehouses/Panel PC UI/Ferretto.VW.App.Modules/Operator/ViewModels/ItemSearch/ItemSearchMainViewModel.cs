@@ -239,12 +239,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public ICommand UnitsPageCommand =>
-            this.unitsPageCommand
-            ??
-            (this.unitsPageCommand = new DelegateCommand(
-                () => this.ShowUnitsPage(this.SelectedItem),
-                this.CanShowUnitsPage));
+        public ICommand ItemDetailButtonCommand =>
+           this.showItemDetailsCommand
+           ??
+           (this.showItemDetailsCommand = new DelegateCommand(
+               () => this.ShowItemDetails(this.SelectedItem),
+               this.CanShowItemDetails));
 
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
 
@@ -324,12 +324,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.selectedItemTxt, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand ItemDetailButtonCommand =>
-           this.showItemDetailsCommand
-           ??
-           (this.showItemDetailsCommand = new DelegateCommand(
-               () => this.ShowItemDetails(this.SelectedItem),
-               this.CanShowItemDetails));
+        public ICommand UnitsPageCommand => this.unitsPageCommand
+            ??
+            (this.unitsPageCommand = new DelegateCommand(
+                () => this.ShowUnitsPage(this.SelectedItem),
+                this.CanShowUnitsPage));
 
         #endregion
 
@@ -533,6 +532,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLotEnabled = false;
                     this.IsDistinctBySerialNumberEnabled = false;
                 }
+                else if (this.items.Count == 1)
+                {
+                    this.IsGroupbyLotEnabled = true;
+                    this.IsDistinctBySerialNumberEnabled = true;
+                    this.SelectedItem = this.items.FirstOrDefault();
+                }
                 else
                 {
                     this.IsGroupbyLotEnabled = true;
@@ -554,6 +559,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.RaisePropertyChanged(nameof(this.Items));
+            this.RaisePropertyChanged(nameof(this.SelectedItem));
 
             this.SetCurrentIndex(selectedItemId);
             this.AdjustItemsAppearance();
@@ -791,6 +797,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ShowItemDetails(ItemInfo item)
         {
+            //this.barcodeReaderService.SimulateRead("000Prova1\r");
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
@@ -824,15 +831,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (items.Any())
                 {
-                    if (items.Count() == 1)
-                    {
-                        this.ShowItemDetails(new ItemInfo(items.First(), this.bayManager.Identity.Id));
-                    }
-                    else
-                    {
-                        this.SearchItem = itemCode;
-                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
-                    }
+                    //if (items.Count() == 1)
+                    //{
+                    //    this.ShowItemDetails(new ItemInfo(items.First(), this.bayManager.Identity.Id));
+                    //}
+                    //else
+                    //{
+                    this.SearchItem = itemCode;
+                    this.items.AddRange(items.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
+                    //}
                 }
                 else
                 {

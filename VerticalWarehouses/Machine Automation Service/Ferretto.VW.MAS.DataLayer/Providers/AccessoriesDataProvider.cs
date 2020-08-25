@@ -247,8 +247,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.WeightingScale)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
-                bay.Accessories.WeightingScale.PortName = portName;
+                if(bay.Accessories.WeightingScale is null)
+                {
+                    bay.Accessories.WeightingScale = new WeightingScale();
+                    bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
+                    bay.Accessories.WeightingScale.PortName = portName;
+                }
+                else
+                {
+                    bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
+                    bay.Accessories.WeightingScale.PortName = portName;
+                }
 
                 this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);
                 this.dataContext.SaveChanges();
