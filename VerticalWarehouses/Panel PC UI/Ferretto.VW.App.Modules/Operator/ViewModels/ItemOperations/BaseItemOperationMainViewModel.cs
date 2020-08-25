@@ -538,15 +538,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
 
-                        this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
+                        //this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
                         //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
-                        this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+                        //this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
-                        this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        //this.InputLot = e.GetItemLot() ?? this.InputLot;
 
-                        e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
+                        //e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
+                        e.HasMismatch = (this.MissionOperation?.ItemCode != this.InputItemCode);
                         if (e.HasMismatch)
                         {
                             if (e.RestartOnMismatch)
@@ -561,7 +562,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                            //this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                            this.ShowNotification("Operazione confermata tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+
+                            await this.ConfirmOperationAsync();
                         }
                     }
 

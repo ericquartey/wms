@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
+        private readonly IBarcodeReaderService barcodeReaderService;
+
         private readonly IMachineErrorsService machineErrorsService;
 
         private DevExpress.Mvvm.DelegateCommand goToMenuCommand;
@@ -26,11 +29,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         #region Constructors
 
         public HeaderViewModel(IMachineErrorsService machineErrorsService,
-                               IAuthenticationService authenticationService)
+                               IAuthenticationService authenticationService,
+            IBarcodeReaderService barcodeReaderService)
         {
             this.machineErrorsService = machineErrorsService;
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
+            this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
         }
 
         #endregion
@@ -170,6 +175,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private void GoToMenu()
         {
+            //this.barcodeReaderService.SimulateRead("\\$RIENTROUDC\r");
+            //this.barcodeReaderService.SimulateRead("000prova1\r");
             this.NavigationService.Appear(
                     nameof(Utils.Modules.Menu),
                     Utils.Modules.Menu.MAIN_MENU,
