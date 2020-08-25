@@ -9,6 +9,7 @@ using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.VW.MAS.SocketLink;
 using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.Telemetry.Contracts.Hub;
@@ -178,6 +179,8 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddWmsMissionManager();
 
             services.AddTimeServices();
+
+            services.AddSocketLinkServices();
         }
 
         #endregion
