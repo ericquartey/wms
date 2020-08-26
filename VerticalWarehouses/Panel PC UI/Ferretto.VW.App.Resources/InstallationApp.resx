@@ -2892,4 +2892,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WeightingScaleTare" xml:space="preserve">
     <value>Tare</value>
   </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>No drive is selected.</value>
+  </data>
 </root>

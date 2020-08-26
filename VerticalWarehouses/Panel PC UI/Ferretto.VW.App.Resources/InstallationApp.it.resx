@@ -2799,4 +2799,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WeightingScaleTare" xml:space="preserve">
     <value>Tara</value>
   </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Selezionare il drive di destinazione.</value>
+  </data>
 </root>

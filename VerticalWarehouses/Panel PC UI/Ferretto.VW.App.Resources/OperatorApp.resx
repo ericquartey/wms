@@ -1577,10 +1577,6 @@ Please put back any moved pieces in their original position.</value>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="BarcodeNotRecognized" xml:space="preserve">
-    <value>Barcode '{0}' not recognized.</value>
-    <comment>Error Message</comment>
-  </data>
   <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
     <value>The current page does not support barcode scanning.</value>
   </data>
@@ -2150,5 +2146,23 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="UnitWeight" xml:space="preserve">
     <value>Unit weight [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Operation confirmed by Barcode Reader</value>
+    <comment>Information</comment>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Some parts of the barcode '{0}' do not match the article.</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Some parts of the barcode '{0}' do not match the article. Restart.</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="BarcodeOperationValidated" xml:space="preserve">
+    <value>Article validated by Barcode reader</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Missing quantity before confirming.</value>
   </data>
 </root>

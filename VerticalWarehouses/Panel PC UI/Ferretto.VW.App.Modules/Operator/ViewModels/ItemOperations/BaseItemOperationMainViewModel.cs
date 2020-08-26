@@ -552,17 +552,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             if (e.RestartOnMismatch)
                             {
                                 this.resetFieldsOnNextAction = true;
-                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo. Ricominciare.", Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatchRestart"), e.Code), Services.Models.NotificationSeverity.Warning);
                             }
                             else
                             {
-                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo.", Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Warning);
                             }
                         }
                         else
                         {
-                            //this.ShowNotification("Articolo validato tramite codice a barre.", Services.Models.NotificationSeverity.Success);
-                            this.ShowNotification("Operazione confermata tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                            //this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationValidated"), Services.Models.NotificationSeverity.Success);
+                            this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed"), Services.Models.NotificationSeverity.Success);
 
                             await this.ConfirmOperationAsync();
                         }
@@ -587,25 +587,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             if (e.RestartOnMismatch)
                             {
-                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo. Ricominciare.", Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatchRestart"), e.Code), Services.Models.NotificationSeverity.Warning);
                                 this.resetFieldsOnNextAction = true;
                             }
                             else
                             {
-                                this.ShowNotification($"Alcuni campi del codice a barre '{e.Code}' non coincidono con quelli dell'articolo.", Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Warning);
                             }
                         }
                         else
                         {
                             if (this.InputQuantity.HasValue)
                             {
-                                this.ShowNotification("Operazione confermata tramite codice a barre.", Services.Models.NotificationSeverity.Success);
+                                this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed"), Services.Models.NotificationSeverity.Success);
 
                                 await this.ConfirmOperationAsync();
                             }
                             else
                             {
-                                this.ShowNotification("Specificare la quantità prima di confermare.", Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(Localized.Get("OperatorApp.BarcodeMissingQuantity"), Services.Models.NotificationSeverity.Warning);
                             }
                         }
                     }
