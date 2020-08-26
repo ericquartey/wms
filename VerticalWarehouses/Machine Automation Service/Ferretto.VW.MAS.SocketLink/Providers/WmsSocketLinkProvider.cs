@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,14 +50,82 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
-        public ExtractCommandResponseCode ExtractCommand(int tryNumber, int WarehouseNumber, int ExitBayNumber)
+        public string ProcessCommands(string buffer)
         {
-            throw new NotImplementedException();
+            var result = "";
+            var commandsReceived = ParseReceivedCommands(buffer);
+            var commandsResponse = new List<SocketLinkCommand>();
+
+            foreach (var cmdReceived in commandsReceived)
+            {
+                SocketLinkCommand cmdResponse;
+                switch (cmdReceived.Header)
+                {
+                    case SocketLinkCommand.HeaderType.EXTRACT_CMD:
+                        cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.EXTRACT_CMD_RES);
+                        cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.requestAccepted);
+                        cmdResponse.AddPayload("1");
+                        cmdResponse.AddPayload("");
+                        commandsResponse.Add(cmdResponse);
+                        break;
+
+                    case SocketLinkCommand.HeaderType.STORE_CMD:
+                        cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STORE_CMD_RES);
+                        cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.requestAccepted);
+                        cmdResponse.AddPayload("1");
+                        cmdResponse.AddPayload("");
+                        commandsResponse.Add(cmdResponse);
+                        break;
+                }
+            }
+
+            foreach (var cmdResponse in commandsResponse)
+            {
+                result += cmdResponse.ToString();
+            }
+
+            return result;
         }
 
-        public StoreCommandResponseCode StoreCommand(int WarehouseNumber, int BayNumber)
+        private static SocketLinkCommand[] ParseReceivedCommands(string buffer)
         {
-            throw new NotImplementedException();
+            var result = new List<SocketLinkCommand>();
+
+            var arrayOfMessages = buffer.Split(SocketLinkCommand.CARRIAGE_RETURN);
+
+            foreach (var message in arrayOfMessages)
+            {
+                var msg = message.Trim();
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    var arrayOfBlocks = buffer.Split(SocketLinkCommand.SEPARATOR);
+                    SocketLinkCommand command = null;
+
+                    foreach (var block in arrayOfBlocks)
+                    {
+                        var blk = block.Trim();
+                        if (command == null)
+                        {
+                            var header = SocketLinkCommand.HeaderType.NONE;
+                            if (Enum.TryParse(blk, true, out header))
+                            {
+                                command = new SocketLinkCommand(header);
+                            }
+                        }
+                        else
+                        {
+                            command.AddPayload(blk);
+                        }
+                    }
+
+                    if (command != null)
+                    {
+                        result.Add(command);
+                    }
+                }
+            }
+
+            return result.ToArray();
         }
 
         #endregion

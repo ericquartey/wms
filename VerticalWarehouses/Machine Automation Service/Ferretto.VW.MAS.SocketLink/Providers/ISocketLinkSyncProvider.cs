@@ -31,25 +31,9 @@ namespace Ferretto.VW.MAS.SocketLink
 
     internal interface ISocketLinkSyncProvider
     {
-        #region Properties
-
-        /// <summary>
-        /// Returns True if it is possible to enable the time socket link, False otherwise.
-        /// </summary>
-        bool CanEnableSocketLinkSyncMode { get; }
-
-        /// <summary>
-        /// Gets or sets the indication of whether the socket link is enabled.
-        /// </summary>
-        bool IsWmsAutoSyncEnabled { get; set; }
-
-        #endregion
-
         #region Methods
 
-        ExtractCommandResponseCode ExtractCommand(int tryNumber, int WarehouseNumber, int ExitBayNumber);
-
-        StoreCommandResponseCode StoreCommand(int WarehouseNumber, int BayNumber);
+        string ProcessCommands(string buffer);
 
         #endregion
     }

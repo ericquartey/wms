@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj" />
   </ItemGroup>
 
 </Project>

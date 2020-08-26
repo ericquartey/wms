@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -119,22 +120,46 @@ namespace Ferretto.VW.MAS.SocketLink
                     {
                         if (this.listenerSocketLink.Pending())
                         {
-                            Thread tmp_thread = new Thread(new ThreadStart(() =>
-                            {
-                                string msg = null;
+                            var client = this.listenerSocketLink.AcceptTcpClient();
+                            _ = Task.Run(() => this.ManageClient(client));
 
-                                TcpClient clt = this.listenerSocketLink.AcceptTcpClient();
+                            //var tmp_thread = new Thread(new ThreadStart(() =>
+                            //{
+                            //    var timeout = false;
+                            //    var lastActivity = DateTime.Now;
 
-                                using (NetworkStream ns = clt.GetStream())
-                                using (StreamReader sr = new StreamReader(ns))
-                                {
-                                    msg = sr.ReadToEnd();
-                                }
+                            //    var client = this.listenerSocketLink.AcceptTcpClient();
+                            //    while (client.Connected && !timeout)
+                            //    {
+                            //        string msg = null;
+                            //        try
+                            //        {
+                            //            using (var stream = client.GetStream())
+                            //            {
+                            //                if (stream.DataAvailable)
+                            //                {
+                            //                    var data = new byte[client.ReceiveBufferSize];
+                            //                    var bytes = stream.Read(data, 0, data.Length);
+                            //                    msg = Encoding.ASCII.GetString(data, 0, bytes);
+                            //                    lastActivity = DateTime.Now;
+                            //                }
+                            //            }
+                            //        }
+                            //        catch (Exception ex)
+                            //        {
+                            //            this.logger.LogError("Error socket link " + ex.Message);
+                            //        }
 
-                                Console.WriteLine("Received new message (" + msg.Length + " bytes):\n" + msg);
-                            }));
+                            //        this.logger.LogTrace("Received new message (" + msg.Length + " bytes):\n" + msg);
 
-                            tmp_thread.Start();
+                            //        if (DateTime.Now > lastActivity.AddSeconds(120))
+                            //        {
+                            //            timeout = true;
+                            //        }
+                            //    }
+                            //}));
+
+                            //tmp_thread.Start();
                         }
                         else
                         {
@@ -154,6 +179,84 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 this.logger.LogTrace("Stopping Socket Link service.");
                 return;
+            }
+        }
+
+        private void ManageClient(TcpClient client)
+        {
+            var timeout = false;
+            var lastActivity = DateTime.Now;
+
+            var socket = client.Client;
+            var buffer = new byte[1024];
+
+            //while (client.Connected && !timeout)
+            while (!timeout)
+            {
+                if (socket != null && socket.Connected)
+                {
+                    if (socket.Poll(50000, SelectMode.SelectRead))
+                    {
+                        var bytes = socket.Receive(buffer);
+
+                        if (bytes > 0)
+                        {
+                            var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
+                            lastActivity = DateTime.Now;
+                            this.logger.LogTrace("SocketLink Recived " + msgReceived);
+
+                            var msgResponse = "";
+                            using (var scope = this.serviceScopeFactory.CreateScope())
+                            {
+                                var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived);
+                            }
+
+                            if (!string.IsNullOrEmpty(msgResponse))
+                            {
+                                var outStream = Encoding.ASCII.GetBytes(msgResponse);
+                                socket.Send(outStream);
+                                this.logger.LogTrace("SocketLink Send " + msgResponse);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    break;
+                }
+
+                //    try
+                //{
+                //    using (var stream = client.GetStream())
+                //    {
+                //        if (stream.DataAvailable)
+                //        {
+                //            var data = new byte[client.ReceiveBufferSize];
+                //            var bytes = stream.Read(data, 0, data.Length);
+                //            var msg = Encoding.ASCII.GetString(data, 0, bytes);
+                //            lastActivity = DateTime.Now;
+
+                //            using (var scope = this.serviceScopeFactory.CreateScope())
+                //            {
+                //                var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                //                var response = socketLinkSyncProvider.ProcessCommands(msg);
+                //            }
+
+                //            this.logger.LogTrace("Received new message (" + msg.Length + " bytes): " + msg);
+                //        }
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    this.logger.LogError("Error socket link " + ex.Message);
+                //    break;
+                //}
+
+                if (DateTime.Now > lastActivity.AddSeconds(120))
+                {
+                    timeout = true;
+                }
             }
         }
 
