@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         public Dictionary<string, string> Parameters { get; } = new Dictionary<string, string>();
 
-        public bool RestartOnMismatch => this.rule?.RestartOnMismatch == true;
+        public bool RestartOnMismatch => (this.rule?.NextRuleId != null && this.rule?.RestartOnMismatch == true);
 
         public UserAction UserAction { get; } = UserAction.NotSpecified;
 
