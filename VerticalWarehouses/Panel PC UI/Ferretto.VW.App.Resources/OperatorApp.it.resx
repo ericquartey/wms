@@ -1770,4 +1770,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Specificare la quantità prima di confermare.</value>
   </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Codice a barre '{0}' non riconosciuto.</value>
+  </data>
 </root>

@@ -2165,4 +2165,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Missing quantity before confirming.</value>
   </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Barcode '{0}' not recognized.</value>
+  </data>
 </root>

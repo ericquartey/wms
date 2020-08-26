@@ -241,6 +241,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode &apos;{0}&apos; not recognized..
+        /// </summary>
+        public static string BarcodeNotRecognized {
+            get {
+                return ResourceManager.GetString("BarcodeNotRecognized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation confirmed by Barcode Reader.
         /// </summary>
         public static string BarcodeOperationConfirmed {
