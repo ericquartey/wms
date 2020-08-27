@@ -19,9 +19,15 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
+        private const int DEFAULT_PORT = 7075;
+
+        private const int SOCKET_POOL_TIMEOUT_MILLI_SECONDS = 50000;
+
+        private const int SOCKET_TIMEOUT_SECONDS = 120;
+
         private readonly IDataLayerService dataLayerService;
 
-        private readonly TcpListener listenerSocketLink = new TcpListener(IPAddress.Any, 7075);
+        private readonly TcpListener listenerSocketLink = new TcpListener(IPAddress.Any, DEFAULT_PORT);
 
         private readonly ILogger<SocketLinkSyncService> logger;
 
@@ -122,44 +128,6 @@ namespace Ferretto.VW.MAS.SocketLink
                         {
                             var client = this.listenerSocketLink.AcceptTcpClient();
                             _ = Task.Run(() => this.ManageClient(client));
-
-                            //var tmp_thread = new Thread(new ThreadStart(() =>
-                            //{
-                            //    var timeout = false;
-                            //    var lastActivity = DateTime.Now;
-
-                            //    var client = this.listenerSocketLink.AcceptTcpClient();
-                            //    while (client.Connected && !timeout)
-                            //    {
-                            //        string msg = null;
-                            //        try
-                            //        {
-                            //            using (var stream = client.GetStream())
-                            //            {
-                            //                if (stream.DataAvailable)
-                            //                {
-                            //                    var data = new byte[client.ReceiveBufferSize];
-                            //                    var bytes = stream.Read(data, 0, data.Length);
-                            //                    msg = Encoding.ASCII.GetString(data, 0, bytes);
-                            //                    lastActivity = DateTime.Now;
-                            //                }
-                            //            }
-                            //        }
-                            //        catch (Exception ex)
-                            //        {
-                            //            this.logger.LogError("Error socket link " + ex.Message);
-                            //        }
-
-                            //        this.logger.LogTrace("Received new message (" + msg.Length + " bytes):\n" + msg);
-
-                            //        if (DateTime.Now > lastActivity.AddSeconds(120))
-                            //        {
-                            //            timeout = true;
-                            //        }
-                            //    }
-                            //}));
-
-                            //tmp_thread.Start();
                         }
                         else
                         {
@@ -170,14 +138,14 @@ namespace Ferretto.VW.MAS.SocketLink
                     do
                     {
                         await Task.Delay(5000).ConfigureAwait(true);
-                        this.logger.LogTrace("ExecutePollingAsync Socket Link");
+                        this.logger.LogTrace("SocketLink ExecutePollingAsync");
                     }
                     while (!cancellationToken.IsCancellationRequested);
                 }
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
-                this.logger.LogTrace("Stopping Socket Link service.");
+                this.logger.LogTrace("SocketLink Stopping Socket");
                 return;
             }
         }
@@ -191,11 +159,11 @@ namespace Ferretto.VW.MAS.SocketLink
             var buffer = new byte[1024];
 
             //while (client.Connected && !timeout)
-            while (!timeout)
+            while (client.Connected && !timeout)
             {
                 if (socket != null && socket.Connected)
                 {
-                    if (socket.Poll(50000, SelectMode.SelectRead))
+                    if (socket.Poll(SOCKET_POOL_TIMEOUT_MILLI_SECONDS, SelectMode.SelectRead))
                     {
                         var bytes = socket.Receive(buffer);
 
@@ -226,36 +194,10 @@ namespace Ferretto.VW.MAS.SocketLink
                     break;
                 }
 
-                //    try
-                //{
-                //    using (var stream = client.GetStream())
-                //    {
-                //        if (stream.DataAvailable)
-                //        {
-                //            var data = new byte[client.ReceiveBufferSize];
-                //            var bytes = stream.Read(data, 0, data.Length);
-                //            var msg = Encoding.ASCII.GetString(data, 0, bytes);
-                //            lastActivity = DateTime.Now;
-
-                //            using (var scope = this.serviceScopeFactory.CreateScope())
-                //            {
-                //                var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                //                var response = socketLinkSyncProvider.ProcessCommands(msg);
-                //            }
-
-                //            this.logger.LogTrace("Received new message (" + msg.Length + " bytes): " + msg);
-                //        }
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    this.logger.LogError("Error socket link " + ex.Message);
-                //    break;
-                //}
-
-                if (DateTime.Now > lastActivity.AddSeconds(120))
+                if (DateTime.Now > lastActivity.AddSeconds(SOCKET_TIMEOUT_SECONDS))
                 {
                     timeout = true;
+                    this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
                 }
             }
         }
@@ -266,13 +208,13 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (true)
                 {
-                    this.logger.LogDebug("Starting Socket Link service.");
+                    this.logger.LogDebug("SocketLink Starting  service");
 
                     this.Enable();
                 }
                 else
                 {
-                    this.logger.LogDebug("Stopping Socket Link sync service.");
+                    this.logger.LogDebug("SocketLink Stopping sync service");
 
                     this.Disable();
                 }

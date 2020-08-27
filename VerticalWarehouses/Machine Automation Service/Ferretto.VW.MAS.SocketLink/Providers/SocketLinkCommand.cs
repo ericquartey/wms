@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.SocketLink
@@ -16,7 +13,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public const char SEPARATOR = '|';
 
-        private readonly HeaderType header = HeaderType.NONE;
+        private readonly HeaderType header = HeaderType.CMD_NOT_RECOGNIZED;
 
         private readonly List<string> payload = new List<string>();
 
@@ -53,8 +50,6 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public enum HeaderType
         {
-            NONE,
-
             EXTRACT_CMD,
 
             EXTRACT_CMD_RES,
@@ -119,6 +114,13 @@ namespace Ferretto.VW.MAS.SocketLink
             atLeastOneAlarmActiveOnTheMachine = 1
         }
 
+        public enum RequestResetResponseResult
+        {
+            deletionRequestAccepted = 0,
+
+            errorInDeletionRequest = 1
+        }
+
         public enum StroreCommandResponseResult
         {
             requestAccepted = 0,
@@ -142,6 +144,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
+        public static string InvalidFormat(string description)
+        {
+            return HeaderType.INVALID_FORMAT + SEPARATOR + description + CARRIAGE_RETURN;
+        }
+
         public bool AddPayload(string field)
         {
             this.payload.Add(field);
@@ -154,43 +161,85 @@ namespace Ferretto.VW.MAS.SocketLink
             return true;
         }
 
-        public int GetBayNumber()
+        public BayNumber GetBayNumber()
+        {
+            var result = BayNumber.None;
+            var bayNumber = "";
+
+            BayNumber bayNumberEnum;
+            switch (this.header)
+            {
+                case HeaderType.STORE_CMD:
+                case HeaderType.REQUEST_RESET_CMD:
+                case HeaderType.LED_CMD:
+                case HeaderType.LED_RES:
+                case HeaderType.CONFIRM_OPERATION:
+                case HeaderType.CONFIRM_OPERATION_RES:
+                case HeaderType.REQUEST_INFO:
+                case HeaderType.REQUEST_INFO_RES:
+                case HeaderType.LASER_CMD:
+                case HeaderType.LASER_RES:
+                    bayNumber = this.GetPayloadByPosition(1);
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    {
+                        result = bayNumberEnum;
+                    }
+                    break;
+
+                case HeaderType.REQUEST_RESET_RES:
+                    bayNumber = this.GetPayloadByPosition(2);
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    {
+                        result = bayNumberEnum;
+                    }
+                    break;
+            }
+
+            if (result == BayNumber.None)
+            {
+                throw new BayNumberException("bay not correct", bayNumber);
+            }
+
+            return result;
+        }
+
+        public int GetBayNumberInt()
         {
             var result = -1;
+            var bayNumber = "";
 
-            try
+            int bayNumberInt;
+            switch (this.header)
             {
-                int value;
-                switch (this.header)
-                {
-                    case HeaderType.STORE_CMD:
-                    case HeaderType.REQUEST_RESET_CMD:
-                    case HeaderType.LED_CMD:
-                    case HeaderType.LED_RES:
-                    case HeaderType.CONFIRM_OPERATION:
-                    case HeaderType.CONFIRM_OPERATION_RES:
-                    case HeaderType.REQUEST_INFO:
-                    case HeaderType.REQUEST_INFO_RES:
-                    case HeaderType.LASER_CMD:
-                    case HeaderType.LASER_RES:
-                        if (int.TryParse(this.payload.ToArray()[1], out value))
-                        {
-                            result = value;
-                        }
+                case HeaderType.STORE_CMD:
+                case HeaderType.REQUEST_RESET_CMD:
+                case HeaderType.LED_CMD:
+                case HeaderType.LED_RES:
+                case HeaderType.CONFIRM_OPERATION:
+                case HeaderType.CONFIRM_OPERATION_RES:
+                case HeaderType.REQUEST_INFO:
+                case HeaderType.REQUEST_INFO_RES:
+                case HeaderType.LASER_CMD:
+                case HeaderType.LASER_RES:
+                    bayNumber = this.GetPayloadByPosition(1);
+                    if (int.TryParse(bayNumber, out bayNumberInt))
+                    {
+                        result = bayNumberInt;
+                    }
+                    break;
 
-                        break;
-
-                    case HeaderType.REQUEST_RESET_RES:
-                        if (int.TryParse(this.payload.ToArray()[2], out value))
-                        {
-                            result = value;
-                        }
-
-                        break;
-                }
+                case HeaderType.REQUEST_RESET_RES:
+                    bayNumber = this.GetPayloadByPosition(2);
+                    if (int.TryParse(bayNumber, out bayNumberInt))
+                    {
+                        result = bayNumberInt;
+                    }
+                    break;
             }
-            catch (Exception ex)
+
+            if (result == -1)
             {
+                throw new BayNumberException("bay not correct", bayNumber);
             }
 
             return result;
@@ -199,23 +248,33 @@ namespace Ferretto.VW.MAS.SocketLink
         public BayNumber GetExitBayNumber()
         {
             var result = BayNumber.None;
-
-            try
+            var bayNumber = this.GetPayloadByPosition(2);
+            switch (this.header)
             {
-                switch (this.header)
-                {
-                    case HeaderType.EXTRACT_CMD:
-
-                        var bayNumber = BayNumber.None;
-                        if (Enum.TryParse(this.payload.ToArray()[2], true, out bayNumber))
-                        {
-                            result = bayNumber;
-                        }
-                        break;
-                }
+                case HeaderType.EXTRACT_CMD:
+                    BayNumber bayNumberEnum;
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    {
+                        result = bayNumberEnum;
+                    }
+                    break;
             }
-            catch (Exception ex)
+
+            if (result == BayNumber.None)
             {
+                throw new BayNumberException("bay not correct", bayNumber);
+            }
+
+            return result;
+        }
+
+        public string GetPayloadByPosition(int position)
+        {
+            var result = "";
+
+            if (position >= 0 && this.payload.ToArray().Length > position)
+            {
+                result = this.payload.ToArray()[position];
             }
 
             return result;
@@ -225,30 +284,32 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var result = -1;
 
-            try
+            int tryNumberInt;
+            string trayNumber = "";
+            switch (this.header)
             {
-                int value;
-                switch (this.header)
-                {
-                    case HeaderType.EXTRACT_CMD:
+                case HeaderType.EXTRACT_CMD:
+                    trayNumber = this.GetPayloadByPosition(0);
 
-                        if (int.TryParse(this.payload.ToArray()[0], out value))
-                        {
-                            result = value;
-                        }
-                        break;
+                    if (int.TryParse(trayNumber, out tryNumberInt))
+                    {
+                        result = tryNumberInt;
+                    }
+                    break;
 
-                    case HeaderType.EXTRACT_CMD_RES:
-                    case HeaderType.STORE_CMD_RES:
-                        if (int.TryParse(this.payload.ToArray()[1], out value))
-                        {
-                            result = value;
-                        }
-                        break;
-                }
+                case HeaderType.EXTRACT_CMD_RES:
+                case HeaderType.STORE_CMD_RES:
+                    trayNumber = this.GetPayloadByPosition(1);
+                    if (int.TryParse(trayNumber, out tryNumberInt))
+                    {
+                        result = tryNumberInt;
+                    }
+                    break;
             }
-            catch (Exception ex)
+
+            if (result == -1)
             {
+                throw new TrayNumberException("tray number not correct", trayNumber);
             }
 
             return result;
@@ -258,47 +319,48 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var result = -1;
 
-            try
+            int warehouseNumberInt;
+            string warehouseNumber;
+            switch (this.header)
             {
-                int value;
-                switch (this.header)
-                {
-                    case HeaderType.STORE_CMD:
-                    case HeaderType.STATUS_REQUEST_CMD:
-                    case HeaderType.STATUS:
-                    case HeaderType.REQUEST_RESET_CMD:
-                    case HeaderType.REQUEST_RESET_RES:
-                    case HeaderType.ALARM_RESET_CMD:
-                    case HeaderType.ALARM_RESET_RES:
-                    case HeaderType.LED_CMD:
-                    case HeaderType.LED_RES:
-                    case HeaderType.REQUEST_ALARMS:
-                    case HeaderType.CONFIRM_OPERATION:
-                    case HeaderType.CONFIRM_OPERATION_RES:
-                    case HeaderType.REQUEST_INFO:
-                    case HeaderType.REQUEST_INFO_RES:
-                    case HeaderType.STATUS_EXT_REQUEST_CMD:
-                    case HeaderType.STATUS_EXT:
-                    case HeaderType.REQUEST_UDCS_HEIGHT:
-                    case HeaderType.LASER_CMD:
-                    case HeaderType.LASER_RES:
-                        if (int.TryParse(this.payload.ToArray()[0], out value))
-                        {
-                            result = value;
-                        }
-                        break;
+                case HeaderType.STORE_CMD:
+                case HeaderType.STATUS_REQUEST_CMD:
+                case HeaderType.STATUS:
+                case HeaderType.REQUEST_RESET_CMD:
+                case HeaderType.REQUEST_RESET_RES:
+                case HeaderType.ALARM_RESET_CMD:
+                case HeaderType.ALARM_RESET_RES:
+                case HeaderType.LED_CMD:
+                case HeaderType.LED_RES:
+                case HeaderType.REQUEST_ALARMS:
+                case HeaderType.CONFIRM_OPERATION:
+                case HeaderType.CONFIRM_OPERATION_RES:
+                case HeaderType.REQUEST_INFO:
+                case HeaderType.REQUEST_INFO_RES:
+                case HeaderType.STATUS_EXT_REQUEST_CMD:
+                case HeaderType.STATUS_EXT:
+                case HeaderType.REQUEST_UDCS_HEIGHT:
+                case HeaderType.LASER_CMD:
+                case HeaderType.LASER_RES:
+                    warehouseNumber = this.payload.ToArray()[0];
+                    if (int.TryParse(warehouseNumber, out warehouseNumberInt))
+                    {
+                        result = warehouseNumberInt;
+                    }
+                    break;
 
-                    case HeaderType.EXTRACT_CMD:
-
-                        if (int.TryParse(this.payload.ToArray()[1], out value))
-                        {
-                            result = value;
-                        }
-                        break;
-                }
+                case HeaderType.EXTRACT_CMD:
+                    warehouseNumber = this.payload.ToArray()[1];
+                    if (int.TryParse(warehouseNumber, out warehouseNumberInt))
+                    {
+                        result = warehouseNumberInt;
+                    }
+                    break;
             }
-            catch (Exception ex)
+
+            if (result == -1)
             {
+                throw new Exception();
             }
 
             return result;

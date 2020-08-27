@@ -20,10 +20,6 @@ namespace Ferretto.VW.MAS.SocketLink
             services.AddHostedService<SocketLinkSyncService>();
             services.AddScoped<ISocketLinkSyncProvider, SocketLinkProvider>();
 
-            //services.AddScoped<ISocketLinkSyncProvider, WmsSocketLinkProvider>();
-
-            //services.AddScoped(s => s.GetRequiredService<ISystemTimeProvider>() as IInternalSystemTimeProvider);
-
             return services;
         }
 
