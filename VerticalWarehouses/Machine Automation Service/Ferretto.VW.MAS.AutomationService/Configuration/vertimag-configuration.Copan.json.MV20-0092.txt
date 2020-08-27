@@ -1,4 +1,4 @@
-
+{
   "$schema": "./schemas/vertimag-configuration-schema.json",
   "LoadingUnits": [
   ],
