@@ -444,7 +444,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     break;
             }
 
-            this.lastActiveMissionId = this.missionOperationsService.ActiveWmsMission.Id;
+            this.lastActiveMissionId = this.missionOperationsService.ActiveWmsMission?.Id;
 
             var loadingUnitId = this.missionOperationsService.ActiveWmsMission?.LoadingUnit?.Id;
             this.logger.Debug($"Auto-navigating to '{viewModelName}' with loading unit '{loadingUnitId}'.");
