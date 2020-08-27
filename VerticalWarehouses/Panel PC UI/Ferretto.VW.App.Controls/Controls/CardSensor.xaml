@@ -401,7 +401,7 @@
                         <TextBlock.Style>
                             <Style>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=HasCarousel}"
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=HasBayWithInverter}"
                                                  Value="false">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                     </DataTrigger>
