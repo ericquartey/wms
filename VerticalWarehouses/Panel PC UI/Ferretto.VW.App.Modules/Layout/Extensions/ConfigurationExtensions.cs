@@ -14,6 +14,12 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(appSettings));
             }
 
+            var bayNumberStringEnv = Environment.GetEnvironmentVariable("BAY_NUMBER");
+            if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
+            {
+                return bayNumberStringEnv;
+            }
+
             return appSettings.Get("BayNumber");
         }
 
