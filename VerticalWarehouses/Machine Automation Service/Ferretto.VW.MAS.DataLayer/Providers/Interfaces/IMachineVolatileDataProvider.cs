@@ -20,11 +20,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsAutomationServiceReady { get; set; }
 
-        bool IsDeviceManagerBusy { get; set; }
-
         Dictionary<BayNumber, bool> IsBayHomingExecuted { get; }
 
         Dictionary<BayNumber, bool> IsBayLightOn { get; }
+
+        bool IsDeviceManagerBusy { get; set; }
 
         bool IsHomingActive { get; set; }
 
@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }
+
+        Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
         Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 
