@@ -204,6 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
+            // Target position is positive with TowardOperator movement direction, otherwise is negative
             var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
 
             // if weight is unknown we move as full weight
@@ -230,7 +231,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                //direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             if (loadUnitId.HasValue)
             {
@@ -243,6 +245,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
+                $"Direction: {direction}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
                 $"deceleration: {deceleration[0]:0.00};");
@@ -302,13 +305,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                //direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             this.logger.LogDebug(
                 $"Move External Bay Assisted " +
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"targetPosition: {targetPosition}; " +
+                $"Direction: {direction}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
@@ -346,6 +351,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 targetPosition = distance;
             }
 
+            // Target position is positive with TowardOperator movement direction, otherwise position is negative
             targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
 
             // Use this for .Absolute
@@ -371,7 +377,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+                //direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             if (loadUnitId.HasValue)
             {
@@ -385,6 +392,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
+                $"Direction: {direction}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
@@ -462,7 +470,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 upperBound: 0,
                 delay: 0,
                 switchPosition,
-                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards /*HorizontalMovementDirection.Forwards*/);
+                //direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards /*HorizontalMovementDirection.Forwards*/
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             this.logger.LogDebug(
                 $"Start External Bay Calibration Test " +
