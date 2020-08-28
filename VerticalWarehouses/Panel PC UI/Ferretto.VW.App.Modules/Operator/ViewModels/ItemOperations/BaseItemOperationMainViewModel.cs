@@ -916,7 +916,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task GetLoadingUnitDetailsAsync()
         {
-            if (this.Mission is null || this.Mission.LoadingUnit is null)
+            if (this.Mission is null || this.Mission.LoadingUnit is null || this.MissionOperation is null)
             {
                 this.Compartments = null;
                 this.SelectedCompartment = null;
