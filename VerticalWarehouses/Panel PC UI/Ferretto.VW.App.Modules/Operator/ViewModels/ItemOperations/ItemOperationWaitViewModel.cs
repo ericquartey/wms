@@ -51,6 +51,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ISessionService sessionService,
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionsWebService machineMissionsWebService,
+            IMissionOperationsService missionOperationsService,
             IMachineService machineService)
             : base(PresentationMode.Operator)
         {
@@ -58,6 +59,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
 
             this.loadingUnits = new List<LoadingUnit>();
             this.moveUnits = new List<LoadingUnit>();
@@ -109,6 +111,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.pendingMissionOperationsCount, value);
         }
 
+        protected IMissionOperationsService MissionOperationsService { get; }
+
         #endregion
 
         #region Methods
@@ -134,6 +138,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     foreach (var unit in this.moveUnitId)
                     {
                         this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
+                        if (this.machineService.Loadunits.Any(i => i.Id == unit && i.Status == LoadingUnitStatus.InBay)
+                            && !this.machineService.Loadunits.Any(i => i.Status == LoadingUnitStatus.OnMovementToLocation)
+                            )
+                        {
+                            await this.MissionOperationsService.RefreshAsync();
+                        }
                         this.count++;
                     }
                 }
@@ -205,7 +215,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(800);
                     await this.CheckForNewOperationCount();
                     await this.GetLoadingUnitsAsync();
                 }
