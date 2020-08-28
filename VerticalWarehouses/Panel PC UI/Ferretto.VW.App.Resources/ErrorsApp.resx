@@ -124,7 +124,7 @@
     <value>Cell Side</value>
   </data>
   <data name="CheckUnit" xml:space="preserve">
-    <value>Verifica cassetto:</value>
+    <value>Check load unit:</value>
   </data>
   <data name="CurrentCell" xml:space="preserve">
     <value>Current cell</value>
@@ -171,7 +171,7 @@
     <value>Forwards</value>
   </data>
   <data name="HighPosition" xml:space="preserve">
-    <value>Postazione alta</value>
+    <value>High position</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
