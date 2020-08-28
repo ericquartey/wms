@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.SocketLink
@@ -34,6 +35,13 @@ namespace Ferretto.VW.MAS.SocketLink
         #endregion
 
         #region Enums
+
+        public enum AlarmResetResponseResult
+        {
+            messageReceived = 0,
+
+            errorInParameters = 1
+        }
 
         public enum ExtractCommandResponseResult
         {
@@ -161,6 +169,26 @@ namespace Ferretto.VW.MAS.SocketLink
             return true;
         }
 
+        public bool AddPayload(int[] arrayOfInteger)
+        {
+            var result = false;
+
+            try
+            {
+                foreach (var block in arrayOfInteger.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray())
+                {
+                    this.payload.Add(block);
+                }
+
+                result = true;
+            }
+            catch (Exception)
+            {
+            }
+
+            return result;
+        }
+
         public BayNumber GetBayNumber()
         {
             var result = BayNumber.None;
@@ -180,7 +208,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 case HeaderType.LASER_CMD:
                 case HeaderType.LASER_RES:
                     bayNumber = this.GetPayloadByPosition(1);
-                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
                     {
                         result = bayNumberEnum;
                     }
@@ -188,7 +216,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
                 case HeaderType.REQUEST_RESET_RES:
                     bayNumber = this.GetPayloadByPosition(2);
-                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
                     {
                         result = bayNumberEnum;
                     }
@@ -197,7 +225,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (result == BayNumber.None)
             {
-                throw new BayNumberException("bay not correct", bayNumber);
+                throw new BayNumberException($"incorrect bay number ({bayNumber})");
             }
 
             return result;
@@ -239,7 +267,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (result == -1)
             {
-                throw new BayNumberException("bay not correct", bayNumber);
+                throw new BayNumberException($"incorrect bay number ({bayNumber})");
             }
 
             return result;
@@ -253,7 +281,7 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 case HeaderType.EXTRACT_CMD:
                     BayNumber bayNumberEnum;
-                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum))
+                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
                     {
                         result = bayNumberEnum;
                     }
@@ -262,7 +290,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (result == BayNumber.None)
             {
-                throw new BayNumberException("bay not correct", bayNumber);
+                throw new BayNumberException($"incorrect bay number ({bayNumber})");
             }
 
             return result;
@@ -285,7 +313,7 @@ namespace Ferretto.VW.MAS.SocketLink
             var result = -1;
 
             int tryNumberInt;
-            string trayNumber = "";
+            var trayNumber = "";
             switch (this.header)
             {
                 case HeaderType.EXTRACT_CMD:
@@ -309,7 +337,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (result == -1)
             {
-                throw new TrayNumberException("tray number not correct", trayNumber);
+                throw new TrayNumberException($"incorrect tray number ({trayNumber})");
             }
 
             return result;
@@ -320,7 +348,7 @@ namespace Ferretto.VW.MAS.SocketLink
             var result = -1;
 
             int warehouseNumberInt;
-            string warehouseNumber;
+            var warehouseNumber = "";
             switch (this.header)
             {
                 case HeaderType.STORE_CMD:
@@ -360,7 +388,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (result == -1)
             {
-                throw new Exception();
+                throw new WarehouseNumberException($"incorrect tray number ({warehouseNumber})");
             }
 
             return result;

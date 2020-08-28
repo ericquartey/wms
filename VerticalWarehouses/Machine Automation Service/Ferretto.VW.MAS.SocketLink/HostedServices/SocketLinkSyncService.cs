@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -21,9 +22,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private const int DEFAULT_PORT = 7075;
 
+        private const int PERIODIC_RESPONSE_SECONDS = 120;
+
         private const int SOCKET_POOL_TIMEOUT_MILLI_SECONDS = 50000;
 
-        private const int SOCKET_TIMEOUT_SECONDS = 120;
+        private const int SOCKET_TIMEOUT_SECONDS = 600;
 
         private readonly IDataLayerService dataLayerService;
 
@@ -154,6 +157,7 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var timeout = false;
             var lastActivity = DateTime.Now;
+            var periodicActivity = DateTime.MinValue;
 
             var socket = client.Client;
             var buffer = new byte[1024];
@@ -198,6 +202,24 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     timeout = true;
                     this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
+                }
+                else if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                {
+                    periodicActivity = DateTime.Now;
+                    var msgResponse = "";
+                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    {
+                        var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                        var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS };
+                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
+
+                        if (!string.IsNullOrEmpty(msgResponse))
+                        {
+                            var outStream = Encoding.ASCII.GetBytes(msgResponse);
+                            socket.Send(outStream);
+                            this.logger.LogTrace("SocketLink Send " + msgResponse);
+                        }
+                    }
                 }
             }
         }
