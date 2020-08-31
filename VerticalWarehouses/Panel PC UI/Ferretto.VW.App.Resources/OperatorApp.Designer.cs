@@ -4121,6 +4121,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Put request for item {0} (q.ty {1}) was accepted..
+        /// </summary>
+        public static string PutRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("PutRequestWasAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
         public static string Quantity {

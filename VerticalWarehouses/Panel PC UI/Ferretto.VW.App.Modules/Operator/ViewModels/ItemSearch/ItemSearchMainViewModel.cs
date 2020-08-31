@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyRequestingItemPick;
 
+        private bool isBusyRequestingItemPut;
+
         private bool isDistinctBySerialNumber;
 
         private bool isDistinctBySerialNumberEnabled;
@@ -87,6 +89,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private IEnumerable<OperationReason> reasons;
 
         private DelegateCommand requestItemPickCommand;
+
+        private DelegateCommand requestItemPutCommand;
 
         private DelegateCommand<object> scrollCommand;
 
@@ -147,7 +151,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
           this.confirmReasonCommand
           ??
           (this.confirmReasonCommand = new DelegateCommand(
-              async () => await this.ExecuteItemPickAsync(),
+              async () => await this.ExecuteItemAsync(),
               this.CanExecuteItemPick));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -168,6 +172,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyRequestingItemPick;
             private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyRequestingItemPut
+        {
+            get => this.isBusyRequestingItemPut;
+            private set => this.SetProperty(ref this.isBusyRequestingItemPut, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsDistinctBySerialNumber
@@ -275,6 +285,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.RequestItemPickAsync(this.selectedItem.Id, this.selectedItem.Code),
                 this.CanRequestItemPick));
 
+        public ICommand RequestItemPutCommand =>
+            this.requestItemPutCommand
+            ??
+            (this.requestItemPutCommand = new DelegateCommand(
+                async () => await this.RequestItemPutAsync(this.selectedItem.Id, this.selectedItem.Code),
+                this.CanRequestItemPut));
+
         public ICommand ScrollCommand => this.scrollCommand ?? (this.scrollCommand = new DelegateCommand<object>((arg) => this.Scroll(arg)));
 
         public string SearchItem
@@ -343,7 +360,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyLoadingNextPage = true;
                 this.ReasonNotes = null;
 
-                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                if (this.IsBusyRequestingItemPick)
+                {
+                    this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Pick);
+                }
+                else
+                {
+                    this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
+                }
 
                 if (this.reasons?.Any() == true)
                 {
@@ -399,6 +423,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.productsChangedToken = null;
         }
 
+        public async Task ExecuteItemAsync()
+        {
+            if (this.isBusyRequestingItemPick)
+            {
+                ExecuteItemPickAsync();
+            }
+            else
+            {
+                ExecuteItemPutAsync();
+            }
+        }
+
         public async Task ExecuteItemPickAsync()
         {
             try
@@ -442,6 +478,49 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task ExecuteItemPutAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.IsBusyRequestingItemPut = true;
+
+                Analytics.TrackEvent("Product Put Requested", new Dictionary<string, string> {
+                    { "Item Code", this.itemToPickCode },
+                    { "Requested Quantity", this.inputQuantity?.ToString() },
+                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
+                });
+
+                await this.wmsDataProvider.PutAsync(
+                    this.itemToPickId.Value,
+                    this.InputQuantity.Value,
+                    this.reasonId,
+                    this.reasonNotes);
+
+                this.Reasons = null;
+
+                this.ShowNotification(
+                    string.Format(
+                        Resources.Localized.Get("OperatorApp.PutRequestWasAccepted"),
+                        this.itemToPickCode,
+                        this.InputQuantity),
+                    Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.InputQuantity = 0;
+                this.IsBusyRequestingItemPut = false;
+                this.IsWaitingForResponse = false;
+
+                this.itemToPickCode = null;
+                this.itemToPickId = null;
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.InputQuantity = 0;
@@ -469,6 +548,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (!waitForReason)
             {
                 await this.ExecuteItemPickAsync();
+            }
+
+            this.selectedItem = null;
+            this.RaisePropertyChanged(nameof(this.SelectedItem));
+        }
+
+        public async Task RequestItemPutAsync(int itemId, string itemCode)
+        {
+            this.IsWaitingForResponse = true;
+            this.IsBusyRequestingItemPut = true;
+
+            this.itemToPickId = itemId;
+            this.itemToPickCode = itemCode;
+
+            var waitForReason = await this.CheckReasonsAsync();
+
+            if (!waitForReason)
+            {
+                await this.ExecuteItemPutAsync();
             }
 
             this.selectedItem = null;
@@ -596,6 +694,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.requestItemPutCommand?.RaiseCanExecuteChanged();
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
             this.unitsPageCommand?.RaiseCanExecuteChanged();
 
@@ -648,6 +747,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity > 0
                 &&
                 this.InputQuantity <= this.AvailableQuantity.Value
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private bool CanRequestItemPut()
+        {
+            return
+                this.SelectedItem != null
+                &&
+                this.AvailableQuantity.HasValue
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity > 0
                 &&
                 !this.IsWaitingForResponse;
         }
