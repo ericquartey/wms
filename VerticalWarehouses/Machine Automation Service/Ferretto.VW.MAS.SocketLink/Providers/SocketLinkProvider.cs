@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -14,7 +17,7 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const string VERSION = "4.1";
+        private const string VERSION = "4.4";
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -23,6 +26,8 @@ namespace Ferretto.VW.MAS.SocketLink
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
+        private readonly IMachineModeProvider machineModeProvider;
 
         private readonly IMachineProvider machineProvider;
 
@@ -34,12 +39,21 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Constructors
 
-        public SocketLinkProvider(IEventAggregator eventAggregator, IErrorsProvider errorsProvider, IBaysDataProvider baysDataProvider, ILoadingUnitsDataProvider loadingUnitsDataProvider, IMachineProvider machineProvider, IMissionsDataProvider missionsDataProvider, IMissionSchedulingProvider missionSchedulingProvider)
+        public SocketLinkProvider(
+            IEventAggregator eventAggregator,
+            IErrorsProvider errorsProvider,
+            IBaysDataProvider baysDataProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineModeProvider machineModeProvider,
+            IMachineProvider machineProvider,
+            IMissionsDataProvider missionsDataProvider,
+            IMissionSchedulingProvider missionSchedulingProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
             this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
             this.baysDataProvider = baysDataProvider ?? throw new System.ArgumentNullException(nameof(baysDataProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
@@ -66,6 +80,10 @@ namespace Ferretto.VW.MAS.SocketLink
                     case SocketLinkCommand.HeaderType.STATUS:
                     case SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD:
                         response = this.ProcessCommandStatus().ToString();
+                        break;
+
+                    case SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD:
+                        response = this.ProcessCommandStatusExt().ToString();
                         break;
                 }
             }
@@ -106,17 +124,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         break;
 
                     case SocketLinkCommand.HeaderType.ALARM_RESET_CMD:
-                        break;
-
-                    case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
-                        cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED);
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                        commandsResponse.Add(cmdResponse);
-                        break;
-
-                    case SocketLinkCommand.HeaderType.LED_CMD:
-                        cmdResponse = SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived);
-                        commandsResponse.Add(cmdResponse);
+                        commandsResponse.Add(this.ProcessCommandAlarmReset(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_VERSION:
@@ -126,21 +134,26 @@ namespace Ferretto.VW.MAS.SocketLink
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_ALARMS:
-                        break;
-
-                    case SocketLinkCommand.HeaderType.CONFIRM_OPERATION:
+                        commandsResponse.Add(this.ProcessCommandAlarmsDetails(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_INFO:
+                        commandsResponse.Add(this.ProcessCommandInfo(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD:
+                        commandsResponse.Add(this.ProcessCommandStatusExt(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT:
+                        commandsResponse.Add(this.ProcessCommandLoadingUnitsHeight(cmdReceived));
                         break;
 
+                    case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
+                    case SocketLinkCommand.HeaderType.CONFIRM_OPERATION:
+                    case SocketLinkCommand.HeaderType.LED_CMD:
                     case SocketLinkCommand.HeaderType.LASER_CMD:
+                        commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived));
                         break;
                 }
             }
@@ -153,9 +166,13 @@ namespace Ferretto.VW.MAS.SocketLink
             return response;
         }
 
+        /// <summary>
+        /// Function call from periodic action
+        /// </summary>
+        /// <returns></returns>
         public SocketLinkCommand ProcessCommandStatus()
         {
-            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD, new List<string>() { this.machineProvider.GetIdentity().ToString() });
+            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
             var cmdResponse = this.ProcessCommandStatus(cmdReceived);
 
             return cmdResponse;
@@ -226,6 +243,109 @@ namespace Ferretto.VW.MAS.SocketLink
             return result.ToArray();
         }
 
+        /// <summary>
+        /// Function return an array of 7 integers with the allarm status and for each bay yhe id tray and the number mission enquesd.
+        ///
+        /// Annotation: the status message can be sent to the ExtSys as a response of the status request message, or also automatically every n milliseconds (with n configurable).
+        /// </summary>
+        /// <returns>
+        /// An array of 7 integers where:
+        /// [0] MachineAlarmStatus (0: no active alarm, 1: at least one alarm active on the machine)
+        /// [1] TrayIdentfierInBay1 (tray id on bay 1)
+        /// [2] NumberOfTraysCurrentlyInTheQueueBay1
+        /// [3] TrayIdentfierInBay2
+        /// [4] NumberOfTraysCurrentlyInTheQueueBay2
+        /// [5] TrayIdentfierInBay3
+        /// [6] NumberOfTraysCurrentlyInTheQueueBay3
+        /// </returns>
+        private int[] GetPayloadArrayForStatus()
+        {
+            var payLoadArray = new int[7] { (int)SocketLinkCommand.MachineAlarmStatus.noActiveAlarm, 0, 0, 0, 0, 0, 0 }; //[0] MachineAlarmStatus [1] TrayIdentfierInBay1 [2] NumberOfTraysCurrentlyInTheQueueBay1 [3] TrayIdentfierInBay2 [4] NumberOfTraysCurrentlyInTheQueueBay2 ...
+
+            foreach (var bay in this.baysDataProvider.GetAll())
+            {
+                if (bay.Number == BayNumber.BayOne || bay.Number == BayNumber.BayTwo || bay.Number == BayNumber.BayThree)
+                {
+                    var trayNumber = bay.Positions.OrderBy(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
+                    var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == MissionType.OUT).Count();
+
+                    var pos = (((int)bay.Number - 1) * 2) + 1;
+
+                    payLoadArray[pos] = trayNumber;
+                    payLoadArray[pos + 1] = numberMissionOnBay;
+                }
+            }
+
+            return payLoadArray;
+        }
+
+        /// <summary>
+        /// Annotation: when the MAS receives the Alarm Reset Command, it sends it to the machine. The alarms will be cleared only if machine condition allow this.
+        /// </summary>
+        /// <param name="cmdReceived">Received command width header ALARM _RESET_CMD</param>
+        /// <returns>Response command width header ALARM _RESET_RES</returns>
+        private SocketLinkCommand ProcessCommandAlarmReset(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.ALARM_RESET_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => e.ResolutionDate == null);
+                    this.errorsProvider.ResolveAll(true);
+
+                    cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.messageReceived);
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    cmdResponse.AddPayload($"alarms reset {errorsWithoutResolving.Count()}");
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.errorInParameters);
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                cmdResponse.AddPayload(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandAlarmsDetails(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_ALARMS_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    //var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => !e.ResolutionDate.HasValue).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    var errorsWithoutResolving = this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    cmdResponse.AddPayload(errorsWithoutResolving.Count());
+                    cmdResponse.AddPayload(errorsWithoutResolving.ToArray());
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        /// <summary>
+        /// ExtSys can transfer many extraction messages. MAS will queue the requests. Extractions will be done when the output bay will be free.
+        /// One single tray can be requested only once.
+        /// </summary>
+        /// <param name="cmdReceived">Received command width header EXTRACT_CMD</param>
+        /// <returns>Response command width header EXTRACT_CMD_RES</returns>
         private SocketLinkCommand ProcessCommandExtract(SocketLinkCommand cmdReceived)
         {
             var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.EXTRACT_CMD_RES);
@@ -283,6 +403,93 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload(ex.Message);
             }
+            catch (Exception ex)
+            {
+                cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayNumberNotCorrect);
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                cmdResponse.AddPayload(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandInfo(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_INFO_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    var htmlMessage = "";
+
+                    if (cmdReceived.GetBayNumberInt() == 0)    // info about vertimag machine
+                    {
+                        htmlMessage = $"ID:{this.machineProvider.GetIdentity()}";
+                        htmlMessage += $"< br>HEIGHT:{this.machineProvider.GetHeight()}<br>MODE:{this.machineModeProvider.GetCurrent()}<br>";
+                    }
+                    else // info about a specific bay
+                    {
+                        var bay = this.baysDataProvider.GetByIdOrDefault(cmdReceived.GetBayNumberInt());
+
+                        htmlMessage = $"STATUS:{bay.Status}";
+                        htmlMessage += $"<br>CURRENT_MISSION:{bay.CurrentMission.Id}";
+                        htmlMessage += $"<br>LAST_ERROR:" + this.errorsProvider.GetErrors().Where(e => e.BayNumber == cmdReceived.GetBayNumber()).Last().Description ?? "";
+                    }
+
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.noError);
+                    cmdResponse.AddPayload(htmlMessage);
+                }
+                else
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.warehouseNotFound);
+                    cmdResponse.AddPayload($"warehouse not found {cmdReceived.GetPayloadByPosition(0)}");
+                }
+            }
+            catch (BayNumberException ex)
+            {
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.bayNotFoundForSpecifiedWarehouse);
+                cmdResponse.AddPayload($"bay not found for specified warehouse {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandLoadingUnitsHeight(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+
+                    foreach (var loadingunit in this.loadingUnitsDataProvider.GetAll())
+                    {
+                        cmdResponse.AddPayload(loadingunit.Id);
+                        cmdResponse.AddPayload(loadingunit.Height.ToString(CultureInfo.InvariantCulture));
+                    }
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
 
             return cmdResponse;
         }
@@ -290,9 +497,13 @@ namespace Ferretto.VW.MAS.SocketLink
         /// <summary>
         /// Requests Deletion Message
         ///
-        /// The ExtSys can request the deletion of the tray extraction requests already transferred to EjLog.
+        /// The ExtSys can request the deletion of the tray extraction requests already transferred to MAS.
         ///
         /// Annotation: the requests deletion message doesn’t force the automatic coming back to the warehouse for the trays currently in the operator’s bays.
+        ///
+        ///Bay Number:
+        /// 0: deletes all the requests for the specified warehouse
+        /// >0: deletes only requests for the specified bay
         ///
         /// </summary>
         /// <param name="cmdReceived">Received command width header REQUEST_RESET_CMD</param>
@@ -363,37 +574,65 @@ namespace Ferretto.VW.MAS.SocketLink
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
                     cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
-                    var payLoadArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 }; //[0] MachineAlarmStatus [1] TrayIdentfierInBay1 [2] NumberOfTraysCurrentlyInTheQueueBay1 [3] TrayIdentfierInBay2 [4] NumberOfTraysCurrentlyInTheQueueBay2 ...
-
-                    if (this.errorsProvider.GetCurrent() != null)
-                    {
-                        payLoadArray[0] = (int)SocketLinkCommand.MachineAlarmStatus.atLeastOneAlarmActiveOnTheMachine;
-                    }
-
-                    foreach (var bay in this.baysDataProvider.GetAll())
-                    {
-                        if (bay.Number == BayNumber.BayOne || bay.Number == BayNumber.BayTwo || bay.Number == BayNumber.BayThree)
-                        {
-                            var trayNumber = bay.Positions.OrderBy(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
-                            var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == MissionType.OUT).Count();
-
-                            var pos = (((int)bay.Number - 1) * 2) + 1;
-
-                            payLoadArray[pos] = trayNumber;
-                            payLoadArray[pos + 1] = numberMissionOnBay;
-                        }
-                    }
-
-                    cmdResponse.AddPayload(payLoadArray);
+                    cmdResponse.AddPayload(this.GetPayloadArrayForStatus());
                 }
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        /// <summary>
+        /// Function call from periodic action
+        /// </summary>
+        /// <returns></returns>
+        private SocketLinkCommand ProcessCommandStatusExt()
+        {
+            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
+            var cmdResponse = this.ProcessCommandStatusExt(cmdReceived);
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandStatusExt(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+
+                    if (this.machineModeProvider.GetCurrent() == CommonUtils.Messages.MachineMode.Automatic)
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.StatusAutomatic.machineIsWorkingInAutomaticMode);
+                    }
+                    else
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.StatusAutomatic.machineIsTurnedOffOrIsNotInAutomaticMode);
+                    }
+
+                    cmdResponse.AddPayload((int)SocketLinkCommand.StatusEnabled.machineIsLogicallyEnabled);     // machine is always enabled
+                    cmdResponse.AddPayload(this.GetPayloadArrayForStatus());
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
             }
 
             return cmdResponse;
@@ -462,14 +701,25 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload(ex.Message);
             }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
 
             return cmdResponse;
         }
 
         private bool WarehouseNumberIsValid(SocketLinkCommand command)
         {
-            var warehouseNumber = command.GetWarehouseNumber();
-            var result = warehouseNumber == this.machineProvider.GetIdentity();
+            var result = false;
+            try
+            {
+                var warehouseNumber = command.GetWarehouseNumber();
+                result = (warehouseNumber == this.machineProvider.GetIdentity());
+            }
+            catch
+            {
+            }
 
             return result;
         }

@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.SocketLink
             LASER_RES
         }
 
+        public enum InfoErrorCode
+        {
+            noError = 0,
+
+            warehouseNotFound = 1,
+
+            bayNotFoundForSpecifiedWarehouse = 2
+        }
+
         public enum MachineAlarmStatus
         {
             noActiveAlarm = 0,
@@ -127,6 +136,20 @@ namespace Ferretto.VW.MAS.SocketLink
             deletionRequestAccepted = 0,
 
             errorInDeletionRequest = 1
+        }
+
+        public enum StatusAutomatic
+        {
+            machineIsTurnedOffOrIsNotInAutomaticMode = 0,
+
+            machineIsWorkingInAutomaticMode = 1
+        }
+
+        public enum StatusEnabled
+        {
+            machineIsLogicallyDisabled = 0,
+
+            machineIsLogicallyEnabled = 1
         }
 
         public enum StroreCommandResponseResult
@@ -182,7 +205,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
                 result = true;
             }
-            catch (Exception)
+            catch
             {
             }
 
@@ -192,6 +215,7 @@ namespace Ferretto.VW.MAS.SocketLink
         public BayNumber GetBayNumber()
         {
             var result = BayNumber.None;
+            var position = -1;
             var bayNumber = "";
 
             BayNumber bayNumberEnum;
@@ -207,23 +231,24 @@ namespace Ferretto.VW.MAS.SocketLink
                 case HeaderType.REQUEST_INFO_RES:
                 case HeaderType.LASER_CMD:
                 case HeaderType.LASER_RES:
-                    bayNumber = this.GetPayloadByPosition(1);
-                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
-                    {
-                        result = bayNumberEnum;
-                    }
+                    position = 1;
                     break;
 
                 case HeaderType.REQUEST_RESET_RES:
-                    bayNumber = this.GetPayloadByPosition(2);
-                    if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
-                    {
-                        result = bayNumberEnum;
-                    }
+                    position = 2;
                     break;
             }
 
-            if (result == BayNumber.None)
+            if (position != -1)
+            {
+                bayNumber = this.GetPayloadByPosition(position);
+                if (Enum.TryParse(bayNumber, true, out bayNumberEnum) && Enum.IsDefined(typeof(BayNumber), bayNumberEnum))
+                {
+                    result = bayNumberEnum;
+                }
+            }
+
+            if (result != BayNumber.BayOne && result != BayNumber.BayTwo && result != BayNumber.BayThree)
             {
                 throw new BayNumberException($"incorrect bay number ({bayNumber})");
             }
@@ -234,6 +259,7 @@ namespace Ferretto.VW.MAS.SocketLink
         public int GetBayNumberInt()
         {
             var result = -1;
+            var position = -1;
             var bayNumber = "";
 
             int bayNumberInt;
@@ -249,20 +275,21 @@ namespace Ferretto.VW.MAS.SocketLink
                 case HeaderType.REQUEST_INFO_RES:
                 case HeaderType.LASER_CMD:
                 case HeaderType.LASER_RES:
-                    bayNumber = this.GetPayloadByPosition(1);
-                    if (int.TryParse(bayNumber, out bayNumberInt))
-                    {
-                        result = bayNumberInt;
-                    }
+                    position = 1;
                     break;
 
                 case HeaderType.REQUEST_RESET_RES:
-                    bayNumber = this.GetPayloadByPosition(2);
-                    if (int.TryParse(bayNumber, out bayNumberInt))
-                    {
-                        result = bayNumberInt;
-                    }
+                    position = 2;
                     break;
+            }
+
+            if (position != -1)
+            {
+                bayNumber = this.GetPayloadByPosition(position);
+                if (int.TryParse(bayNumber, out bayNumberInt))
+                {
+                    result = bayNumberInt;
+                }
             }
 
             if (result == -1)
@@ -288,7 +315,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     break;
             }
 
-            if (result == BayNumber.None)
+            if (result != BayNumber.BayOne && result != BayNumber.BayTwo && result != BayNumber.BayThree)
             {
                 throw new BayNumberException($"incorrect bay number ({bayNumber})");
             }
@@ -311,28 +338,29 @@ namespace Ferretto.VW.MAS.SocketLink
         public int GetTrayNumber()
         {
             var result = -1;
+            var position = -1;
 
             int tryNumberInt;
             var trayNumber = "";
             switch (this.header)
             {
                 case HeaderType.EXTRACT_CMD:
-                    trayNumber = this.GetPayloadByPosition(0);
-
-                    if (int.TryParse(trayNumber, out tryNumberInt))
-                    {
-                        result = tryNumberInt;
-                    }
+                    position = 0;
                     break;
 
                 case HeaderType.EXTRACT_CMD_RES:
                 case HeaderType.STORE_CMD_RES:
-                    trayNumber = this.GetPayloadByPosition(1);
-                    if (int.TryParse(trayNumber, out tryNumberInt))
-                    {
-                        result = tryNumberInt;
-                    }
+                    position = 1;
                     break;
+            }
+
+            if (position != -1)
+            {
+                trayNumber = this.GetPayloadByPosition(position);
+                if (int.TryParse(trayNumber, out tryNumberInt))
+                {
+                    result = tryNumberInt;
+                }
             }
 
             if (result == -1)
@@ -346,6 +374,7 @@ namespace Ferretto.VW.MAS.SocketLink
         public int GetWarehouseNumber()
         {
             var result = -1;
+            var position = -1;
 
             int warehouseNumberInt;
             var warehouseNumber = "";
@@ -370,25 +399,26 @@ namespace Ferretto.VW.MAS.SocketLink
                 case HeaderType.REQUEST_UDCS_HEIGHT:
                 case HeaderType.LASER_CMD:
                 case HeaderType.LASER_RES:
-                    warehouseNumber = this.payload.ToArray()[0];
-                    if (int.TryParse(warehouseNumber, out warehouseNumberInt))
-                    {
-                        result = warehouseNumberInt;
-                    }
+                    position = 0;
                     break;
 
                 case HeaderType.EXTRACT_CMD:
-                    warehouseNumber = this.payload.ToArray()[1];
-                    if (int.TryParse(warehouseNumber, out warehouseNumberInt))
-                    {
-                        result = warehouseNumberInt;
-                    }
+                    position = 1;
                     break;
+            }
+
+            if (position != -1)
+            {
+                warehouseNumber = this.payload.ToArray()[position];
+                if (int.TryParse(warehouseNumber, out warehouseNumberInt))
+                {
+                    result = warehouseNumberInt;
+                }
             }
 
             if (result == -1)
             {
-                throw new WarehouseNumberException($"incorrect tray number ({warehouseNumber})");
+                throw new WarehouseNumberException($"incorrect warehouse number ({warehouseNumber})");
             }
 
             return result;

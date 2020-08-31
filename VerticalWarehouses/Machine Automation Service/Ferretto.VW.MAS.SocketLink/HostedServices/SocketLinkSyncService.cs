@@ -162,7 +162,6 @@ namespace Ferretto.VW.MAS.SocketLink
             var socket = client.Client;
             var buffer = new byte[1024];
 
-            //while (client.Connected && !timeout)
             while (client.Connected && !timeout)
             {
                 if (socket != null && socket.Connected)
@@ -203,24 +202,33 @@ namespace Ferretto.VW.MAS.SocketLink
                     timeout = true;
                     this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
                 }
-                else if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                else
                 {
-                    periodicActivity = DateTime.Now;
-                    var msgResponse = "";
-                    using (var scope = this.serviceScopeFactory.CreateScope())
-                    {
-                        var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                        var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS };
-                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
-
-                        if (!string.IsNullOrEmpty(msgResponse))
-                        {
-                            var outStream = Encoding.ASCII.GetBytes(msgResponse);
-                            socket.Send(outStream);
-                            this.logger.LogTrace("SocketLink Send " + msgResponse);
-                        }
-                    }
+                    this.PeridicAction(socket, ref periodicActivity);
                 }
+
+                //else if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                //{
+                //    if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                //    {
+                //        periodicActivity = DateTime.Now;
+                //        var msgResponse = "";
+
+                //        using (var scope = this.serviceScopeFactory.CreateScope())
+                //        {
+                //            var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                //            var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS };
+                //            msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
+
+                //            if (!string.IsNullOrEmpty(msgResponse))
+                //            {
+                //                var outStream = Encoding.ASCII.GetBytes(msgResponse);
+                //                socket.Send(outStream);
+                //                this.logger.LogTrace("SocketLink Send " + msgResponse);
+                //            }
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -239,6 +247,32 @@ namespace Ferretto.VW.MAS.SocketLink
                     this.logger.LogDebug("SocketLink Stopping sync service");
 
                     this.Disable();
+                }
+            }
+        }
+
+        private void PeridicAction(Socket socket, ref DateTime periodicActivity)
+        {
+            if (PERIODIC_RESPONSE_SECONDS > 0)
+            {
+                if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                {
+                    periodicActivity = DateTime.Now;
+                    var msgResponse = "";
+
+                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    {
+                        var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                        var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD };
+                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
+
+                        if (!string.IsNullOrEmpty(msgResponse))
+                        {
+                            var outStream = Encoding.ASCII.GetBytes(msgResponse);
+                            socket.Send(outStream);
+                            this.logger.LogTrace("SocketLink Periodic Send " + msgResponse);
+                        }
+                    }
                 }
             }
         }
