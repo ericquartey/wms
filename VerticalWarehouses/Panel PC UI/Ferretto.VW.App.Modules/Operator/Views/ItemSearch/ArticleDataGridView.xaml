@@ -58,8 +58,8 @@
                               Header="{Resources:Loc OperatorApp.ListAvailable}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate>
-            <Rectangle Width="20"
-                       Height="20"
+            <Rectangle Width="30"
+                       Height="30"
                        Fill="{DynamicResource FerrettoGreen}"
                        Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}" />
           </DataTemplate>
