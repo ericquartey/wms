@@ -140,13 +140,13 @@
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
             "Id": 2,
-            "Speed": 700.0
+            "Speed": 650.0
           },
           "FullLoadMovement": {
             "Acceleration": 600.0,
             "Deceleration": 600.0,
             "Id": 1,
-            "Speed": 480.0
+            "Speed": 400.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,

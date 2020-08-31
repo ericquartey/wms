@@ -97,6 +97,8 @@ namespace Ferretto.VW.App.Controls.Controls
             this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
 
             this.HasCarousel = this.MachineService.HasCarousel;
+
+            this.HasBayWithInverter = this.MachineService.HasBayWithInverter;
         }
 
         #endregion
@@ -209,6 +211,8 @@ namespace Ferretto.VW.App.Controls.Controls
             get => (string)this.GetValue(CardValueProperty);
             set => this.SetValue(CardValueProperty, value);
         }
+
+        public bool HasBayWithInverter { get; set; }
 
         public bool HasCarousel { get; set; }
 

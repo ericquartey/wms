@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.SelectedDrive is null)
             {
-                this.ShowNotification("No drive is selected.");
+                this.ShowNotification(Localized.Get("InstallationApp.NoDriveSelected"));
             }
 
             var goback = false;

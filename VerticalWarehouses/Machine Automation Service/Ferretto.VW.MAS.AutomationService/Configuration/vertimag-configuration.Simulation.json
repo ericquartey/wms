@@ -62,14 +62,15 @@
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
-            "PortName": "COM4"
+            "PortName": "COM3"
           },
           "CardReader": {
             "IsEnabledNew": false
+          },
+          "WeightingScale": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
           }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
         },
         "Carousel": {
           "AssistedMovements": {
@@ -183,14 +184,15 @@
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
-            "PortName": "COM4"
+            "PortName": "COM3"
           },
           "CardReader": {
             "IsEnabledNew": false
+          },
+          "WeightingScale": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
           }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
         },
         "External": {
           "AssistedMovements": {
@@ -2426,5 +2428,13 @@
     },
     "HorizontalChainCalibration": {
     }
+  },
+  "Wms": {
+    "Id": -1,
+    "IsEnabled": false,
+    "IsTimeSyncEnabled": false,
+    "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
+    "ServiceUrl": "http://192.168.1.22:10000/",
+    "TimeSyncIntervalMilliseconds": 10000
   }
 }

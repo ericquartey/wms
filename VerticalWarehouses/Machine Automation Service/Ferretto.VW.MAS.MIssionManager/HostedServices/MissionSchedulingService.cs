@@ -602,6 +602,42 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private bool CloseShutter(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider, IShutterProvider shutterProvider)
+        {
+            if (this.machineVolatileDataProvider.IsShutterHomingActive.Any(x => x.Value))
+            {
+                return true;
+            }
+
+            var bays = bayProvider.GetAll().Where(x =>
+                        x.Shutter != null
+                        && x.Shutter.Type != ShutterType.NotSpecified
+                        && x.CurrentMission == null
+                        && x.Positions.All(p => p.LoadingUnit == null));
+
+            var generated = false;
+
+            if (bays.Any())
+            {
+                foreach (var bay in bays)
+                {
+                    var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                    if (sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
+                        && sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
+                        )
+                    {
+                        shutterProvider.Move(ShutterMovementDirection.Down, bypassConditions: false, bay.Number, MessageActor.MachineManager);
+                        this.machineVolatileDataProvider.IsShutterHomingActive[bay.Number] = true;
+                        generated = true;
+                        this.Logger.LogDebug($"Close Shutter: bay {bay.Number}");
+                        break;
+                    }
+                }
+            }
+
+            return generated;
+        }
+
         private bool GenerateHoming(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider)
         {
             if (this.machineVolatileDataProvider.IsHomingActive)
@@ -697,6 +733,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
+            var shutterProvider = serviceProvider.GetRequiredService<IShutterProvider>();
+
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
@@ -750,6 +788,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                 && m.Step > MissionStep.New)
+                            && !this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
                             && !this.GenerateHoming(bayProvider, machineResourcesProvider)
                             )
                         {
@@ -828,7 +867,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.FirstTest:
                     {
                         var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-                        if (!this.GenerateHoming(bayProvider, machineResourcesProvider)
+                        if (!this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
+                            && !this.GenerateHoming(bayProvider, machineResourcesProvider)
                             && !this.ScheduleFirstTestMissions(serviceProvider)
                             )
                         {
@@ -1100,6 +1140,28 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
+        }
+
+        private async Task OnShutterPositioning(NotificationMessage message, IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
+            {
+                if (message.Status == MessageStatus.OperationEnd
+                    && message.Data is ShutterPositioningMessageData data
+                    )
+                {
+                    this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
+                    await this.InvokeSchedulerAsync(serviceProvider);
+                }
+                else if (message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationRunningStop
+                    || message.Status == MessageStatus.OperationFaultStop
+                    )
+                {
+                    this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
+                }
+            }
         }
 
         /// <summary>

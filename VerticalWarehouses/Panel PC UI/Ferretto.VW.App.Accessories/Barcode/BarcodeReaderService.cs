@@ -242,7 +242,7 @@ namespace Ferretto.VW.App.Accessories
 
             if (!handled)
             {
-                this.logger.Warn("The rule was not handled."); // TODO localize
+                this.logger.Warn("The rule was not handled.");
             }
         }
 

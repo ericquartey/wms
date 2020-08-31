@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verifica cassetto:.
+        ///   Looks up a localized string similar to Check load unit:.
         /// </summary>
         public static string CheckUnit {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Postazione alta.
+        ///   Looks up a localized string similar to High position.
         /// </summary>
         public static string HighPosition {
             get {

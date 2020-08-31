@@ -60,6 +60,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MessageType.TimePeriodElapsed:
                     this.OnTimePeriodElapsed(serviceProvider);
                     break;
+
+                case MessageType.ShutterPositioning:
+                    await this.OnShutterPositioning(message, serviceProvider);
+                    break;
             }
         }
 
