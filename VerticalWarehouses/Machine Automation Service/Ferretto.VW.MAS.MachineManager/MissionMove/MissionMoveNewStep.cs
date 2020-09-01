@@ -557,31 +557,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (messageData.SourceCellId != null)
                     {
                         var sourceCell = this.CellsProvider.GetById(messageData.SourceCellId.Value);
-                        unitToMove = sourceCell.LoadingUnit;
-
-                        mission.LoadUnitSource = LoadingUnitLocation.Cell;
-                        mission.LoadUnitCellSourceId = sourceCell.Id;
-
-                        bay = this.BaysDataProvider.GetByCell(sourceCell);
-                        if (bay != null
-                            && bay.Shutter != null
-                            && bay.Shutter.Type != ShutterType.NotSpecified)
+                        if (sourceCell.BlockLevel != BlockLevel.Blocked)
                         {
-                            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
-                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                            if (shutterPosition != ShutterPosition.Closed
-                                && shutterPosition != ShutterPosition.Half
-                                )
+                            unitToMove = sourceCell.LoadingUnit;
+                            mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                            mission.LoadUnitCellSourceId = sourceCell.Id;
+
+                            bay = this.BaysDataProvider.GetByCell(sourceCell);
+                            if (bay != null
+                                && bay.Shutter != null
+                                && bay.Shutter.Type != ShutterType.NotSpecified)
                             {
-                                if (showErrors)
+                                var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                                if (shutterPosition != ShutterPosition.Closed
+                                    && shutterPosition != ShutterPosition.Half
+                                    )
                                 {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bay.Number);
+                                    if (showErrors)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bay.Number);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                    }
+                                    return false;
                                 }
-                                else
-                                {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
-                                }
-                                return false;
                             }
                         }
                     }
@@ -614,8 +616,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             if (!messageData.InsertLoadUnit)
                             {
-                                mission.LoadUnitSource = LoadingUnitLocation.Cell;
-                                mission.LoadUnitCellSourceId = sourceCell.Id;
+                                if (sourceCell.BlockLevel == BlockLevel.Blocked)
+                                {
+                                    if (showErrors)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell);
+                                    }
+                                    return false;
+                                }
+                                else
+                                {
+                                    mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                                    mission.LoadUnitCellSourceId = sourceCell.Id;
+                                }
                             }
                         }
                         else
