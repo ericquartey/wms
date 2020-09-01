@@ -264,6 +264,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         case AcuInverterStatus acuInverter:
 
+                            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                            var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
+                            if (baysDataProvider.GetByNumber(bayNumber).IsExternal)
+                            {
+                                // INFO The ACU_ZeroSensor must be inverted (WORKAROUND)
+                                ioStatuses[2] = !ioStatuses[2];
+                            }
+
                             if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
                                 var msgNotification = new FieldNotificationMessage(
