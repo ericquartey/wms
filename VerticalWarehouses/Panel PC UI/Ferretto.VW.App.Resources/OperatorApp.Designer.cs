@@ -2177,6 +2177,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Picking operations on unit n..
+        /// </summary>
+        public static string IdDrawerActivityPickingPageHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityPickingPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
         public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
@@ -4117,6 +4126,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PutQuantity {
             get {
                 return ResourceManager.GetString("PutQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put request for item {0} (q.ty {1}) was accepted..
+        /// </summary>
+        public static string PutRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("PutRequestWasAccepted", resourceCulture);
             }
         }
         

@@ -45,6 +45,12 @@ namespace Ferretto.VW.MAS.DataLayer
             this.IsBayHomingExecuted.Add(BayNumber.BayThree, false);
             this.IsBayHomingExecuted.Add(BayNumber.ElevatorBay, false);
 
+            this.IsShutterHomingActive = new Dictionary<BayNumber, bool>();
+            this.IsShutterHomingActive.Add(BayNumber.BayOne, false);
+            this.IsShutterHomingActive.Add(BayNumber.BayTwo, false);
+            this.IsShutterHomingActive.Add(BayNumber.BayThree, false);
+            this.IsShutterHomingActive.Add(BayNumber.ElevatorBay, false);
+
             this.positions.Add(BayNumber.BayOne, 0);
             this.positions.Add(BayNumber.BayTwo, 0);
             this.positions.Add(BayNumber.BayThree, 0);
@@ -123,6 +129,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool IsMachineRunning => (this.MachinePowerState == MachinePowerState.Powered);
 
         public bool? IsOneTonMachine { get; set; }
+
+        public Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
         public Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 

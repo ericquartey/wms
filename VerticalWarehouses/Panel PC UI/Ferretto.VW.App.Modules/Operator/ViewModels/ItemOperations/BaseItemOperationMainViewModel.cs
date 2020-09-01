@@ -731,6 +731,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyConfirmingPartialOperation = false;
                 this.IsOperationConfirmed = false;
             }
+            catch(Exception ex2)
+            {
+                this.ShowNotification(ex2);
+            }
             finally
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
@@ -916,7 +920,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task GetLoadingUnitDetailsAsync()
         {
-            if (this.Mission is null || this.Mission.LoadingUnit is null)
+            if (this.Mission is null || this.Mission.LoadingUnit is null || this.MissionOperation is null)
             {
                 this.Compartments = null;
                 this.SelectedCompartment = null;
@@ -937,7 +941,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
                     var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                     itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                    this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == this.MissionOperation.ItemId).SingleOrDefault();
+                    this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).SingleOrDefault();
                     this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
                 }
                 catch (Exception)

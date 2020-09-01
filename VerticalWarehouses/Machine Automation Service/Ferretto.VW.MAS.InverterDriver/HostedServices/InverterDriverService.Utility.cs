@@ -509,6 +509,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
                     currentStateMachine.Start();
                 }
+
+                if(inverter.SystemIndex == InverterIndex.MainInverter || inverter.SystemIndex == InverterIndex.Slave1)
+                {
+                    this.dataOld = null;
+                }
             }
             else
             {
