@@ -277,6 +277,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blocked.
+        /// </summary>
+        public static string BayPosition_IsBlocked {
+            get {
+                return ResourceManager.GetString("BayPosition_IsBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum Double Height.
         /// </summary>
         public static string BayPosition_MaxDoubleHeight {

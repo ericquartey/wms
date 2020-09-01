@@ -229,7 +229,7 @@
     <value>Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
   </data>
   <data name="LoadUnitSourceCell" xml:space="preserve">
-    <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
+    <value>Verificare che la cella sorgente del cassetto all'interno del database sia correttamente configurata</value>
   </data>
   <data name="LoadUnitSourceDb" xml:space="preserve">
     <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
@@ -410,5 +410,8 @@
   </data>
   <data name="ElevatorUnderrunDetected" xml:space="preserve">
     <value>L'elevatore ha raggiunto il sensore di oltrecorsa in basso</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>La posizione di baia è disabilitata</value>
   </data>
 </root>

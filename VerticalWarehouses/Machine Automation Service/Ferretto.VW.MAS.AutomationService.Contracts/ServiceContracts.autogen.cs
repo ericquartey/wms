@@ -3079,6 +3079,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WmsError = 79,
     
+        BayPositionDisabled = 80,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -3538,6 +3540,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsBlocked", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsBlocked { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsUpper", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpper { get; set; }
