@@ -2168,6 +2168,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="BarcodeNotRecognized" xml:space="preserve">
     <value>Barcode '{0}' not recognized.</value>
   </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Put request for item {0} (q.ty {1}) was accepted.</value>
+    <comment>Information Message</comment>
+  </data>
   <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Picking operations on unit n.</value>
   </data>

@@ -295,14 +295,27 @@
                                         Content="{Resources:Loc OperatorApp.Units}" />
                 </StackPanel>
 
-                <controls:PpcButton Grid.Row="5"
+                <StackPanel Grid.Row="5"
+                            Orientation="Horizontal">
+                    <controls:PpcButton 
                                     Margin="15,7,15,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding RequestItemPickCommand}"
-                                    Content="{Resources:Loc OperatorApp.ItemSearchCall}"
+                                    Content="{Resources:Loc OperatorApp.Pick}"
                                     IsBusy="{Binding IsBusyRequestingItemPick}"
                                     Style="{StaticResource ConfirmButton}" />
+                
+                    <controls:PpcButton
+                                    Margin="15,7,15,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding RequestItemPutCommand}"
+                                    Content="{Resources:Loc OperatorApp.Put}"
+                                    IsBusy="{Binding IsBusyRequestingItemPut}"
+                                    Style="{StaticResource ConfirmButton}" />
+                    </StackPanel>
+                
             </Grid>
 
         </Grid>
