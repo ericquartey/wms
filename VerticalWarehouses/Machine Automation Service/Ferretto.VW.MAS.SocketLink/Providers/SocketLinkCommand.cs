@@ -327,7 +327,12 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var result = "";
 
-            if (position >= 0 && this.payload.ToArray().Length > position)
+            if (this.payload == null)
+            {
+                return result;
+            }
+
+            if (position >= 0 && position < this.payload.ToArray().Length)
             {
                 result = this.payload.ToArray()[position];
             }

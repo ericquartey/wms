@@ -197,38 +197,14 @@ namespace Ferretto.VW.MAS.SocketLink
                     break;
                 }
 
-                if (DateTime.Now > lastActivity.AddSeconds(SOCKET_TIMEOUT_SECONDS))
+                if (this.PeriodicCheckTimeoutIsExpired(lastActivity))
                 {
                     timeout = true;
-                    this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
                 }
                 else
                 {
                     this.PeridicAction(socket, ref periodicActivity);
                 }
-
-                //else if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
-                //{
-                //    if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
-                //    {
-                //        periodicActivity = DateTime.Now;
-                //        var msgResponse = "";
-
-                //        using (var scope = this.serviceScopeFactory.CreateScope())
-                //        {
-                //            var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                //            var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS };
-                //            msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
-
-                //            if (!string.IsNullOrEmpty(msgResponse))
-                //            {
-                //                var outStream = Encoding.ASCII.GetBytes(msgResponse);
-                //                socket.Send(outStream);
-                //                this.logger.LogTrace("SocketLink Send " + msgResponse);
-                //            }
-                //        }
-                //    }
-                //}
             }
         }
 
@@ -275,6 +251,22 @@ namespace Ferretto.VW.MAS.SocketLink
                     }
                 }
             }
+        }
+
+        private bool PeriodicCheckTimeoutIsExpired(DateTime lastActivity)
+        {
+            var timeout = false;
+
+            if (SOCKET_TIMEOUT_SECONDS > 0)
+            {
+                if (DateTime.Now > lastActivity.AddSeconds(SOCKET_TIMEOUT_SECONDS))
+                {
+                    timeout = true;
+                    this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
+                }
+            }
+
+            return timeout;
         }
 
         #endregion

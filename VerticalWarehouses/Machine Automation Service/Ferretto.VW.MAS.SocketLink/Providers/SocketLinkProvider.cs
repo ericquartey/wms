@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.SocketLink
@@ -63,6 +60,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
+        /// <summary>
+        /// Method return the straing contains the commands that must periodically send.
+        /// </summary>
+        /// <param name="typeOfResponses"></param>
+        /// <returns></returns>
         public string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses)
         {
             var commandsResponse = new List<SocketLinkCommand>();
@@ -79,11 +81,11 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     case SocketLinkCommand.HeaderType.STATUS:
                     case SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD:
-                        response = this.ProcessCommandStatus().ToString();
+                        commandsResponse.Add(this.ProcessCommandStatus());
                         break;
 
                     case SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD:
-                        response = this.ProcessCommandStatusExt().ToString();
+                        commandsResponse.Add(this.ProcessCommandStatusExt());
                         break;
                 }
             }
@@ -104,7 +106,6 @@ namespace Ferretto.VW.MAS.SocketLink
 
             foreach (var cmdReceived in commandsReceived)
             {
-                SocketLinkCommand cmdResponse;
                 switch (cmdReceived.Header)
                 {
                     case SocketLinkCommand.HeaderType.EXTRACT_CMD:
@@ -128,9 +129,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_VERSION:
-                        cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_VERSION_RES);
-                        cmdResponse.AddPayload(VERSION);
-                        commandsResponse.Add(cmdResponse);
+                        commandsResponse.Add(new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_VERSION_RES, new List<string> { VERSION }));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_ALARMS:
@@ -262,11 +261,16 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var payLoadArray = new int[7] { (int)SocketLinkCommand.MachineAlarmStatus.noActiveAlarm, 0, 0, 0, 0, 0, 0 }; //[0] MachineAlarmStatus [1] TrayIdentfierInBay1 [2] NumberOfTraysCurrentlyInTheQueueBay1 [3] TrayIdentfierInBay2 [4] NumberOfTraysCurrentlyInTheQueueBay2 ...
 
+            if (this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).Count > 0)
+            {
+                payLoadArray[0] = (int)SocketLinkCommand.MachineAlarmStatus.atLeastOneAlarmActiveOnTheMachine;
+            }
+
             foreach (var bay in this.baysDataProvider.GetAll())
             {
                 if (bay.Number == BayNumber.BayOne || bay.Number == BayNumber.BayTwo || bay.Number == BayNumber.BayThree)
                 {
-                    var trayNumber = bay.Positions.OrderBy(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
+                    var trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
                     var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == MissionType.OUT).Count();
 
                     var pos = (((int)bay.Number - 1) * 2) + 1;
@@ -301,7 +305,9 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.errorInParameters);
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -431,9 +437,10 @@ namespace Ferretto.VW.MAS.SocketLink
                     else // info about a specific bay
                     {
                         var bay = this.baysDataProvider.GetByIdOrDefault(cmdReceived.GetBayNumberInt());
+                        var currentMissionId = bay.CurrentMission == null ? 0 : bay.CurrentMission.Id;
 
                         htmlMessage = $"STATUS:{bay.Status}";
-                        htmlMessage += $"<br>CURRENT_MISSION:{bay.CurrentMission.Id}";
+                        htmlMessage += $"<br>CURRENT_MISSION:{currentMissionId}";
                         htmlMessage += $"<br>LAST_ERROR:" + this.errorsProvider.GetErrors().Where(e => e.BayNumber == cmdReceived.GetBayNumber()).Last().Description ?? "";
                     }
 
@@ -527,8 +534,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     else
                     {
                         var bayNumber = cmdReceived.GetBayNumber();
-                        var bay = this.baysDataProvider.GetByNumber(bayNumber);
-                        missionsToReset = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
+                        missionsToReset = this.missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
                     }
 
                     foreach (var mission in missionsToReset)
@@ -543,7 +549,10 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse.AddPayload((int)SocketLinkCommand.RequestResetResponseResult.errorInDeletionRequest);
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -609,7 +618,8 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
-                    var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    //var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    var errorsWithoutResolving = this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
 
                     cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
 
@@ -648,7 +658,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     var bayNumber = cmdReceived.GetBayNumber();
                     var bay = this.baysDataProvider.GetByNumber(bayNumber);
-                    trayNumber = bay.Positions.OrderBy(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
+                    trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
 
                     if (trayNumber > 0)
                     {
@@ -673,7 +683,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     {
                         cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
                         cmdResponse.AddPayload(trayNumber);
-                        cmdResponse.AddPayload($"incorrect tray number ({trayNumber})");
+                        cmdResponse.AddPayload($"no tray currently present in the specific bay ({trayNumber})");
                     }
                 }
                 else
