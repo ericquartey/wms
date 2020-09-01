@@ -207,19 +207,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // Target position is positive with TowardOperator movement direction, otherwise is negative
             var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
 
-            // if weight is unknown we move as full weight
-            double scalingFactor = 1;
-            if (loadUnitId.HasValue)
-            {
-                var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
-                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
-                {
-                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
-                }
-            }
-            var speed = new[] { bay.EmptyLoadMovement.Speed - ((bay.EmptyLoadMovement.Speed - bay.FullLoadMovement.Speed) * scalingFactor) };
-            var acceleration = new[] { bay.EmptyLoadMovement.Acceleration - ((bay.EmptyLoadMovement.Acceleration - bay.FullLoadMovement.Acceleration) * scalingFactor) };
-            var deceleration = new[] { bay.EmptyLoadMovement.Deceleration - ((bay.EmptyLoadMovement.Deceleration - bay.FullLoadMovement.Deceleration) * scalingFactor) };
+            var speed = new[] { bay.FullLoadMovement.Speed };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
