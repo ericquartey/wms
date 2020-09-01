@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string installerLanguage;
 
-        private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN" };
+        private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN"/*, "DE", "ES", "FR", "PL", "RU", "SK", "SI"*/ };
 
         private string operatorLanguage;
 
@@ -109,33 +109,73 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string GetCultureFromShortcut(string shortcut)
         {
-            if (shortcut == "ITA")
+            switch (shortcut)
             {
-                return "it-IT";
-            }
-            else if (shortcut == "EN")
-            {
-                return "en-EN";
-            }
-            else
-            {
-                return "en-EN";
+                case "ITA":
+                    return "it-IT";
+
+                case "EN":
+                    return "en-EN";
+
+                //case "DE":
+                //    return "de-DE";
+
+                //case "ES":
+                //    return "es-ES";
+
+                //case "FR":
+                //    return "fr-FR";
+
+                //case "PL":
+                //    return "pl-PL";
+
+                //case "RU":
+                //    return "ru-RU";
+
+                //case "SK":
+                //    return "sk-SK";
+
+                //case "SI":
+                //    return "si-SI";
+
+                default:
+                    return "en-EN";
             }
         }
 
         public string GetShortcutFromCulture(string language)
         {
-            if (language == "it-IT")
+            switch (language)
             {
-                return "ITA";
-            }
-            else if (language == "en-EN")
-            {
-                return "EN";
-            }
-            else
-            {
-                return "EN";
+                case "it-IT":
+                    return "ITA";
+
+                case "en-EN":
+                    return "EN";
+
+                //case "de-DE":
+                //    return "DE";
+
+                //case "es-ES":
+                //    return "ES";
+
+                //case "fr-FR":
+                //    return "FR";
+
+                //case "pl-PL":
+                //    return "PL";
+
+                //case "ru-RU":
+                //    return "RU";
+
+                //case "sk-SK":
+                //    return "SK";
+
+                //case "si-SI":
+                //    return "SI";
+
+                default:
+                    return "EN";
             }
         }
 
