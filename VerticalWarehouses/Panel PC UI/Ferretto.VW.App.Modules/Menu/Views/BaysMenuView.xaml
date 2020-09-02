@@ -97,10 +97,10 @@
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
-                                        IsBypassed="{Binding IsExternalBayCalibrationBypassed}"
-                                        IsCompleted="{Binding IsExternalBayCalibrationCompleted}"
                                         Command="{Binding ExternalBayCalibrationCommand}"
                                         Content="{res:Loc InstallationApp.ExternalBayCalibrationMenuDescription}"
+                                        IsBypassed="{Binding IsExternalBayCalibrationBypassed}"
+                                        IsCompleted="{Binding IsExternalBayCalibrationCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsExternalBayCalibrationVisible, Converter={StaticResource BTVC}}" />
@@ -116,7 +116,7 @@
                                         IsCompleted="{Binding IsTestShutterCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsTestShutterVisible, Converter={StaticResource BTVC}}"/>
+                                        Visibility="{Binding IsTestShutterVisible, Converter={StaticResource BTVC}}" />
 
                     <controls:PpcButton Title="{res:Loc InstallationApp.BayTestMenuTitle}"
                                         Margin="0,0,30,30"

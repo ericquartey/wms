@@ -262,20 +262,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var race = bay.External.Race;
 
-            var distance = race; //race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
+            var distance = race;
 
+            // Be careful: the distance value is used in a relative position mode
             switch (direction)
             {
                 case ExternalBayMovementDirection.TowardOperator:
-                    distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
+                    distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - bay.ChainOffset;
                     break;
 
                 case ExternalBayMovementDirection.TowardMachine:
-                    distance = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
+                    distance = bay.ChainOffset - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber));
                     break;
             }
 
-            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? distance : -distance; /* : 0;*/ // for .Absolute
+            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
             var targetPosition = distance;
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
@@ -301,6 +302,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"targetPosition: {targetPosition}; " +
+                $"current bay axis position: {this.baysDataProvider.GetChainPosition(bayNumber)}; " +
+                $"chain offset parameter: {bay.ChainOffset}; " +
                 $"Direction: {direction}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
@@ -422,21 +425,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(bayNumber);
 
-            //var targetPosition = bay.External.Race;  // Use .Absolute
-
             var distance = bay.External.Race;
             switch (direction)
             {
                 case ExternalBayMovementDirection.TowardOperator:
-                    distance = bay.External.Race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
+                    distance = bay.External.Race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + bay.ChainOffset;
                     break;
 
                 case ExternalBayMovementDirection.TowardMachine:
-                    distance = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)); //+ bay.ChainOffset;
+                    distance = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + bay.ChainOffset;
                     break;
             }
 
-            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? distance : -distance; /* : 0;*/ // for .Absolute
+            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
             var targetPosition = distance;
 
             var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
