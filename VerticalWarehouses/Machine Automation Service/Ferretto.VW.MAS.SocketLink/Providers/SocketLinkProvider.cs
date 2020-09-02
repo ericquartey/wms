@@ -329,9 +329,14 @@ namespace Ferretto.VW.MAS.SocketLink
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
                     //var errorsWithoutResolving = this.errorsProvider.GetErrors().Where(e => !e.ResolutionDate.HasValue).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
-                    var errorsWithoutResolving = this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    //var errorsWithoutResolving = this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate).Select(e => e.Code);
+                    var errorsWithoutResolving = this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).OrderByDescending(e => e.OccurrenceDate);
+
                     cmdResponse.AddPayload(errorsWithoutResolving.Count());
-                    cmdResponse.AddPayload(errorsWithoutResolving.ToArray());
+                    foreach (var error in errorsWithoutResolving)
+                    {
+                        cmdResponse.AddPayload(error.Code + "." + error.DetailCode + " " + error.Description);
+                    }
                 }
                 else
                 {
@@ -505,6 +510,7 @@ namespace Ferretto.VW.MAS.SocketLink
         /// Requests Deletion Message
         ///
         /// The ExtSys can request the deletion of the tray extraction requests already transferred to MAS.
+        /// NOTE. Only missions width status "new" are deleted.
         ///
         /// Annotation: the requests deletion message doesn’t force the automatic coming back to the warehouse for the trays currently in the operator’s bays.
         ///
@@ -529,12 +535,12 @@ namespace Ferretto.VW.MAS.SocketLink
                     IEnumerable<DataModels.Mission> missionsToReset;
                     if (bayNumberInt == 0)
                     {
-                        missionsToReset = this.missionsDataProvider.GetAllActiveMissions();
+                        missionsToReset = this.missionsDataProvider.GetAllActiveMissions().Where(m => m.Status == MissionStatus.New);
                     }
                     else
                     {
                         var bayNumber = cmdReceived.GetBayNumber();
-                        missionsToReset = this.missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
+                        missionsToReset = this.missionsDataProvider.GetAllActiveMissionsByBay(bayNumber).Where(m => m.Status == MissionStatus.New);
                     }
 
                     foreach (var mission in missionsToReset)

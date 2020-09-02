@@ -21,17 +21,9 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const int DEFAULT_PORT = 7075;
-
-        private const int PERIODIC_RESPONSE_SECONDS = 120;
-
         private const int SOCKET_POOL_TIMEOUT_MILLI_SECONDS = 50000;
 
-        private const int SOCKET_TIMEOUT_SECONDS = 600;
-
         private readonly IDataLayerService dataLayerService;
-
-        private readonly TcpListener listenerSocketLink = new TcpListener(IPAddress.Any, DEFAULT_PORT);
 
         private readonly ILogger<SocketLinkSyncService> logger;
 
@@ -42,6 +34,8 @@ namespace Ferretto.VW.MAS.SocketLink
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         private CancellationTokenSource cancellationTokenSource;
+
+        private TcpListener listenerSocketLink;
 
         #endregion
 
@@ -126,6 +120,8 @@ namespace Ferretto.VW.MAS.SocketLink
 
             try
             {
+                this.listenerSocketLink = new TcpListener(IPAddress.Any, this.wmsSettingsProvider.SocketLinkPort);
+
                 using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     this.listenerSocketLink.Start();
@@ -219,7 +215,7 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.wmsSettingsProvider.SocketLinkIsEnabled)
                 {
-                    this.logger.LogDebug("SocketLink Starting  service");
+                    this.logger.LogDebug("SocketLink Starting service on port " + this.wmsSettingsProvider.SocketLinkPort);
 
                     this.Enable();
                 }
@@ -234,9 +230,9 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private void PeridicAction(Socket socket, ref DateTime periodicActivity)
         {
-            if (PERIODIC_RESPONSE_SECONDS > 0)
+            if (this.wmsSettingsProvider.SocketLinkTimeout > 0)
             {
-                if (DateTime.Now > periodicActivity.AddSeconds(PERIODIC_RESPONSE_SECONDS))
+                if (DateTime.Now > periodicActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkTimeout))
                 {
                     periodicActivity = DateTime.Now;
                     var msgResponse = "";
@@ -262,12 +258,12 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var timeout = false;
 
-            if (SOCKET_TIMEOUT_SECONDS > 0)
+            if (this.wmsSettingsProvider.SocketLinkTimeout > 0)
             {
-                if (DateTime.Now > lastActivity.AddSeconds(SOCKET_TIMEOUT_SECONDS))
+                if (DateTime.Now > lastActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkTimeout))
                 {
                     timeout = true;
-                    this.logger.LogTrace("SocketLink socket Timeout " + SOCKET_TIMEOUT_SECONDS);
+                    this.logger.LogTrace("SocketLink socket Timeout " + this.wmsSettingsProvider.SocketLinkTimeout);
                 }
             }
 

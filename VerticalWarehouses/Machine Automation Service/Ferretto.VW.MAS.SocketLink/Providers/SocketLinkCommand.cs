@@ -182,6 +182,14 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public bool AddPayload(string field)
         {
+            if (field == null)
+            {
+                return true;
+            }
+
+            field = field?.Replace(CARRIAGE_RETURN, ' ');
+            field = field?.Replace(SEPARATOR, ' ');
+
             this.payload.Add(field);
             return true;
         }
