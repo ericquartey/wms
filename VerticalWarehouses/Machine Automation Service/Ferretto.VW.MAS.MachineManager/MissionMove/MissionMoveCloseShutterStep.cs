@@ -149,7 +149,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
                     if (bay.Positions.Count() == 1
-                        || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
+                        || bay.Positions.Any(x => x.Location == this.Mission.LoadUnitDestination && x.IsUpper)
+                        || bay.Positions.Any(x => x.IsUpper && x.IsBlocked)
                         || bay.Carousel is null)
                     {
                         if (bay.External != null)

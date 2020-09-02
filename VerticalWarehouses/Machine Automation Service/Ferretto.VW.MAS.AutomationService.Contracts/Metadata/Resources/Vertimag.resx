@@ -159,6 +159,9 @@
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Height</value>
   </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
   <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
     <value>Maximum Double Height</value>
   </data>

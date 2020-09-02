@@ -1779,4 +1779,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Operazione di prelievo su cassetto n.</value>
   </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Operazione di versamento su cassetto n.</value>
+  </data>
 </root>

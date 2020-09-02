@@ -106,6 +106,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The bay position is disabled.
+        /// </summary>
+        public static string BayPositionDisabled {
+            get {
+                return ResourceManager.GetString("BayPositionDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bottom Bay Level is Empty.
         /// </summary>
         public static string BottomLevelBayEmpty {
