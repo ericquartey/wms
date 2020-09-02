@@ -8064,6 +8064,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zero chain carousel.
+        /// </summary>
+        public static string ZeroChainCarousel {
+            get {
+                return ResourceManager.GetString("ZeroChainCarousel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zero Pawl Sensor.
         /// </summary>
         public static string ZeroPawlSensor {
